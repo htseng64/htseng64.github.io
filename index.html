@@ -1,30 +1,85 @@
-<div class="card">
-  <h2>課程入口（Courses）</h2>
-  <ul>
-    <li>
-      <a href="/teaching/courses/med-surg-nursing/">內外科護理學</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/evidence-based-nursing/">研究及實證護理概論</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/clinical-symptom-nursing/">臨床症狀護理</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/bioethics/">醫療與生命倫理</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/healthcare-ethics-law/">醫護倫理與法規概論</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/professional-english-presentations/">職場專業英文簡報</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/intro-to-nursing/">護理學導論</a>
-    </li>
-    <li>
-      <a href="/teaching/courses/climate-health-nursing-practicum/">護理視角下的氣候健康挑戰與調適（實作）</a>
-    </li>
-  </ul>
-</div>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Teaching Hub</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI",
+                   "Noto Sans TC", Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin: 8px 0;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .updated {
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
 
+  <h1>Teaching Hub（教學互動總站）</h1>
+
+  <div class="card">
+    <p>
+      本網站為課程互動教材與學習入口。<br>
+      HTML 互動教材請直接點選課程進入。
+    </p>
+    <p>
+      PPT、PDF 與教學說明將由 Notion 提供連結。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>課程入口（Courses）</h2>
+    <ul id="course-list"></ul>
+  </div>
+
+  <p class="updated">
+    Last updated: 2025-12-17
+  </p>
+
+  <!-- 課程資料 -->
+  <script src="/courses.js"></script>
+
+  <!-- 自動產生課程清單 -->
+  <script>
+    const list = document.getElementById("course-list");
+
+    courses
+      .sort((a, b) => a.stroke - b.stroke)
+      .forEach(course => {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = `/teaching/courses/${course.id}/`;
+        link.textContent = course.name;
+        li.appendChild(link);
+        list.appendChild(li);
+      });
+  </script>
+
+</body>
+</html>
