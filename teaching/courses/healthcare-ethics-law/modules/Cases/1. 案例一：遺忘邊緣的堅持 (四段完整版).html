@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例一：遺忘邊緣 (四段完整版)</title>
+    <style>
+        :root { --bg-color: #1a1a1a; --left-bg: #ffffff; --right-bg: #2c3e50; --text-main: #2c3e50; --text-light: #ffffff; --highlight: #f1c40f; --btn-blue: #3498db; --nurse-bg: #d4efdf; --npc-bg: #f2f3f4; --jit-color: #d35400; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        #stage-container { width: 100vw; height: 100vh; background-color: #fff; display: flex; flex-direction: row; position: relative; }
+        #story-panel { width: 60%; background-color: var(--left-bg); display: flex; flex-direction: column; padding: 20px; border-right: 5px solid #bdc3c7; position: relative; }
+        #mood-badge { position: absolute; top: 20px; left: 20px; background-color: #e74c3c; color: white; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; z-index: 5; }
+        #vocab-btn { position: absolute; top: 20px; right: 20px; background-color: var(--highlight); color: #2c3e50; border: 3px solid #fff; padding: 10px 20px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; z-index: 100; box-shadow: 0 4px 5px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        #vocab-btn:hover { transform: scale(1.05); }
+        #dialogue-box { flex: 1; overflow-y: auto; padding: 80px 20px 20px 20px; display: flex; flex-direction: column; gap: 25px; scroll-behavior: smooth; }
+        .msg { max-width: 90%; padding: 25px 35px; border-radius: 20px; font-size: 2rem; line-height: 1.6; animation: fadeIn 0.5s ease; }
+        .msg-npc { align-self: flex-start; background-color: var(--npc-bg); border-left: 10px solid #c0392b; }
+        .msg-player { align-self: flex-end; background-color: var(--nurse-bg); border-right: 10px solid #27ae60; }
+        .msg strong { display: block; font-size: 1.6rem; margin-bottom: 10px; opacity: 0.8; }
+        .jit-term { color: var(--jit-color); font-weight: bold; border-bottom: 3px dotted var(--jit-color); cursor: help; position: relative; display: inline-block; }
+        #global-tooltip { position: fixed; display: none; background-color: #34495e; color: #fff; padding: 20px; border-radius: 12px; max-width: 350px; font-size: 1.4rem; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; border: 2px solid #fff; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+        #global-tooltip strong { display: block; color: #f1c40f; font-size: 1.6rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+        #analysis-panel { width: 40%; background-color: var(--right-bg); color: var(--text-light); display: flex; flex-direction: column; padding: 30px; overflow-y: auto; }
+        .section-box { margin-bottom: 25px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; border-left: 6px solid var(--highlight); flex-shrink: 0; }
+        .section-title { font-size: 1.4rem; color: var(--highlight); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .section-content { font-size: 1.5rem; line-height: 1.6; color: #fff; }
+        .ui-hint { text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; flex-shrink: 0; }
+        #controls-area { margin-top: auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; flex-shrink: 0; }
+        .btn { background-color: var(--btn-blue); color: white; border: 2px solid rgba(255,255,255,0.2); padding: 25px; font-size: 1.8rem; border-radius: 15px; cursor: pointer; text-align: left; }
+        .btn:hover { background-color: #2980b9; transform: translateY(-2px); }
+        #feedback-box { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; font-size: 1.6rem; margin-top: 20px; margin-bottom: 20px; text-align: center; border: 3px solid white; flex-shrink: 0; }
+        #vocab-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
+        #vocab-content { background-color: #fff; width: 80%; max-width: 900px; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 40px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        #vocab-content h2 { color: #2c3e50; border-bottom: 3px solid var(--highlight); padding-bottom: 10px; }
+        .vocab-item { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .vocab-term { font-size: 1.8rem; font-weight: bold; color: #2980b9; margin-bottom: 5px; }
+        .vocab-def { font-size: 1.5rem; color: #555; line-height: 1.6; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; }
+        @media (max-width: 1024px) or (orientation: portrait) {
+            body { overflow-y: auto; height: auto; }
+            #stage-container { flex-direction: column; height: auto; width: 100%; }
+            #story-panel { width: 100%; height: 50vh; border-right: none; border-bottom: 5px solid #bdc3c7; }
+            #analysis-panel { width: 100%; min-height: 50vh; padding: 20px; padding-bottom: 80px; }
+            .msg { font-size: 1.3rem; padding: 15px; } .btn { font-size: 1.4rem; padding: 15px; }
+            #global-tooltip { max-width: 80%; font-size: 1.2rem; bottom: 20px !important; top: auto !important; left: 50% !important; transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+<div id="global-tooltip"></div>
+<div id="vocab-modal">
+    <div id="vocab-content"><span class="close-btn" onclick="toggleVocab()">×</span><h2>📖 專業詞彙速查</h2>
+        <div class="vocab-item"><div class="vocab-term">BPSD</div><div class="vocab-def">Behavioral and Psychological Symptoms of Dementia。指失智症患者出現的幻覺、妄想、攻擊、遊走、抗拒照護等行為。</div></div>
+        <div class="vocab-item"><div class="vocab-term">行善原則 (Beneficence)</div><div class="vocab-def">醫療人員應採取對病人有益的行動（如：清潔身體、維護安全）。但若過度強調，可能變成「父權主義」。</div></div>
+        <div class="vocab-item"><div class="vocab-term">自主原則 (Autonomy)</div><div class="vocab-def">尊重病人自我決定的權利，包括拒絕醫療照護。</div></div>
+        <div class="vocab-item"><div class="vocab-term">約束 (Restraint)</div><div class="vocab-def">使用物理或藥物方式限制病人行動自由，應為「最後手段 (Last Resort)」。</div></div>
+        <div class="vocab-item"><div class="vocab-term">SDM (Shared Decision Making)</div><div class="vocab-def">醫護人員與病人/家屬共同討論，結合實證醫學與病人價值觀，達成最佳決策。</div></div>
+    </div>
+</div>
+<div id="stage-container">
+    <button id="vocab-btn" onclick="toggleVocab()">📖 知識速查</button>
+    <div id="story-panel"><div id="mood-badge">Segment 1</div><div id="dialogue-box"></div></div>
+    <div id="analysis-panel">
+        <div class="ui-hint">💡 提示：點擊對話中的 <span style="color:var(--jit-color); border-bottom:2px dashed var(--jit-color);">橘色虛線詞彙</span> 可即時查看定義</div>
+        <div class="section-box"><div class="section-title">🎯 Objectives</div><div class="section-content" id="obj-text"></div></div>
+        <div class="section-box"><div class="section-title">❓ Question</div><div class="section-content" id="question-text"></div></div>
+        <div class="section-box"><div class="section-title">📝 Task</div><div class="section-content" id="task-text"></div></div>
+        <div id="feedback-box"></div><div id="controls-area"></div>
+    </div>
+</div>
+<script>
+    const chatBox = document.getElementById('dialogue-box'); const controls = document.getElementById('controls-area'); const moodBadge = document.getElementById('mood-badge'); const objText = document.getElementById('obj-text'); const qText = document.getElementById('question-text'); const taskText = document.getElementById('task-text'); const feedbackBox = document.getElementById('feedback-box'); const vocabModal = document.getElementById('vocab-modal'); const tooltip = document.getElementById('global-tooltip');
+    function toggleVocab() { vocabModal.style.display = vocabModal.style.display === 'flex' ? 'none' : 'flex'; }
+    function enableJIT() { const terms = document.querySelectorAll('.jit-term'); terms.forEach(term => { term.addEventListener('mouseenter', (e) => showTooltip(e, term)); term.addEventListener('mousemove', (e) => moveTooltip(e)); term.addEventListener('mouseleave', hideTooltip); term.addEventListener('click', (e) => showTooltip(e, term)); }); }
+    function showTooltip(e, term) { const def = term.getAttribute('data-def'); const title = term.innerText; tooltip.innerHTML = `<strong>${title}</strong>${def}`; tooltip.style.display = 'block'; requestAnimationFrame(() => { tooltip.style.opacity = '1'; moveTooltip(e); }); }
+    function moveTooltip(e) { const w = window.innerWidth; const h = window.innerHeight; let x = e.clientX + 15; let y = e.clientY + 15; if (x + 300 > w) x = e.clientX - 320; if (y + 150 > h) y = e.clientY - 160; if(w > 1024) { tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px'; } }
+    function hideTooltip() { tooltip.style.opacity = '0'; setTimeout(() => { tooltip.style.display = 'none'; }, 200); }
+
+    const scenes = {
+        start: { segment: "Segment 1: 倫理敏感度", objectives: "辨識倫理衝突 (Sensitivity)", questions: "家屬的「好意」與病人的「拒絕」，代表哪兩個原則的衝突？", tasks: "請分析對話，辨識出家屬要求與病人反應背後的倫理原則。", messages: [{ role: "system", text: "【情境】82歲失智症李奶奶入院第二天，出現 <span class='jit-term' data-def='BPSD：失智症的行為精神症狀，如抗拒照護。'>BPSD</span> 症狀，抗拒照護。" }, { role: "npc", name: "李奶奶", text: "走開！不要碰我！" }, { role: "npc", name: "陳先生 (兒子)", text: "護理師，拜託妳幫她洗澡，我是家屬我負責！" }], choices: [{ text: "A. <span class='jit-term' data-def='行善原則：採取對病人有益的行動(如清潔)。'>行善原則</span> vs. <span class='jit-term' data-def='自主原則：尊重病人拒絕的權利。'>自主原則</span>", next: "correct_s1" }, { text: "B. 不傷害原則 vs. 公平原則", next: "wrong_s1" }] },
+        wrong_s1: { feedback: "⚠️ 提示：這不是資源分配(公平)問題。家屬想做「好事」(行善)，病人說「不要」(自主)。", repeat_scene: "start" },
+        correct_s1: { feedback: "🎉 正確！這是典型的「行善 (衛生益處)」與「自主 (拒絕權)」衝突。", next_scene: "seg2_intro" },
+        seg2_intro: { segment: "Segment 2: 倫理推理", objectives: "運用 Jonsen 四象限分析", questions: "約束能解決跌倒問題，但對「人」的影響是什麼？", tasks: "請運用四象限架構，權衡「醫療適應症」與「生命品質」。", messages: [{ role: "system", text: "【演變】當晚李奶奶躁動。兒子要求：「為了安全，把她綁起來！」" }, { role: "npc", name: "陳先生", text: "如果不綁，跌倒骨折你們賠嗎？快綁！" }], choices: [{ text: "A. 僅考量醫療適應症：<span class='jit-term' data-def='約束：限制行動自由，應為最後手段。'>約束</span>防跌，應執行。", next: "wrong_s2" }, { text: "B. 考量生命品質：約束損害尊嚴與心理安適。", next: "correct_s2" }] },
+        wrong_s2: { feedback: "⚠️ 鷹架：倫理決策不能只看生理安全，必須考量約束帶來的心理傷害(生命品質)。", repeat_scene: "seg2_intro" },
+        correct_s2: { feedback: "🎉 分析正確！您看到了「生理安全」以外的「心理傷害」與「尊嚴」問題。", next_scene: "seg3_intro" },
+        seg3_intro: { segment: "Segment 3: 專業行動", objectives: "展現道德勇氣與溝通", questions: "如何同理家屬恐懼，同時堅持倫理底線？", tasks: "選擇符合 <span class='jit-term' data-def='SDM：醫病共享決策。'>SDM</span> 的溝通策略。", messages: [{ role: "player", text: "（我看著焦慮的家屬，我知道直接拒絕會引發衝突...）" }], choices: [{ text: "A. 【權威回應】醫院規定不能隨便綁，請配合。", next: "action_bad" }, { text: "B. 【SDM 溝通】我了解您的擔心。我們先試試離床警報器？", next: "action_good" }] },
+        action_bad: { segment: "Segment 3: 結果", objectives: "反思", questions: "溝通為何失效？", tasks: "檢討權威式溝通的後果。", messages: [{ role: "npc", name: "陳先生", text: "你在講什麼規定！我要投訴你！" }, { role: "system", text: "❌ 結果：衝突升級，醫病關係破裂。" }], choices: [{ text: "再試一次", next: "seg3_intro" }] },
+        action_good: { segment: "Segment 3: 結局", objectives: "完成", questions: "這就是專業價值。", tasks: "恭喜完成演練。", messages: [{ role: "npc", name: "陳先生", text: "...如果不綁也能安全，那當然好。" }, { role: "system", text: "✨ 成功：您同理了家屬，並提供了替代方案。" }], choices: [{ text: "進入反思與評值", next: "seg4_intro" }] },
+        
+        // --- 新增 Segment 4: 反思與評值 ---
+        seg4_intro: { 
+            segment: "Segment 4: 反思與評值", 
+            objectives: "學習遷移 (Transfer of Learning)", 
+            questions: "這次經驗教會了您什麼？", 
+            tasks: "請回顧過程：您學會了哪些處理失智症倫理衝突的關鍵？", 
+            messages: [
+                { role: "system", text: "【案例總結】<br>您成功在「家屬的安全焦慮」與「病人的尊嚴」間取得了平衡。" },
+                { role: "player", text: "（看著李奶奶安穩睡去，沒有被約束，我感到很欣慰...）" }
+            ], 
+            choices: [
+                { text: "🔄 重新練習：我想再試一次溝通。", next: "start", restart: true },
+                { text: "✅ 完成案例：我已掌握約束倫理的原則。", next: "start", restart: true } 
+            ] 
+        }
+    };
+    function renderScene(sceneId) { const scene = scenes[sceneId]; if (scene.feedback) { feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = scene.next_scene ? '#27ae60' : '#e67e22'; feedbackBox.innerHTML = scene.feedback; controls.innerHTML = ''; const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = scene.restart ? "重新開始 ↻" : (scene.repeat_scene ? "🔙 返回重選" : "下一階段 ➔"); btn.onclick = () => { feedbackBox.style.display = 'none'; renderScene(scene.next_scene || scene.repeat_scene); }; controls.appendChild(btn); return; } moodBadge.innerText = scene.segment; objText.innerHTML = scene.objectives; qText.innerHTML = scene.questions; taskText.innerHTML = scene.tasks; controls.innerHTML = ''; chatBox.innerHTML = ''; let delay = 0; scene.messages.forEach((msg, index) => { setTimeout(() => { const div = document.createElement('div'); div.className = msg.role === 'system' ? 'msg msg-player' : (msg.role === 'npc' ? 'msg msg-npc' : 'msg msg-player'); if(msg.role === 'system') { div.style.backgroundColor = '#fff3cd'; div.style.color = '#856404'; div.style.border = 'none'; } div.innerHTML = (msg.role === 'npc' ? `<strong>${msg.name}</strong>` : '') + msg.text; chatBox.appendChild(div); chatBox.scrollTop = chatBox.scrollHeight; enableJIT(); if (index === scene.messages.length - 1) { scene.choices.forEach(c => { const btn = document.createElement('button'); btn.className = 'btn'; btn.innerHTML = c.text; btn.onclick = () => renderScene(c.next); controls.appendChild(btn); }); setTimeout(enableJIT, 100); } }, delay); delay += 800; }); }
+    renderScene('start');
+</script>
+</body>
+</html>

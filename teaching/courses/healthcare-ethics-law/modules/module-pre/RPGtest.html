@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: 你的護理師 RPG 屬性檢測</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        /* (這裡的 CSS 樣式維持不變，與上一版相同) */
+        :root { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #e2e8f0; --accent-color: #38bdf8; --highlight: #facc15; --bar-bg: #334155; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; display: flex; justify-content: center; min-height: 100vh; }
+        #game-container { width: 100%; max-width: 900px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; }
+        header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
+        h1 { color: var(--accent-color); margin: 0; font-size: 1.8rem; }
+        .visual-area { width: 100%; height: 300px; background-color: #000; border-radius: 15px; margin-bottom: 20px; border: 2px solid var(--accent-color); overflow: hidden; position: relative; }
+        .game-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .question-box { background-color: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); animation: fadeIn 0.5s; }
+        .q-text { font-size: 1.4rem; line-height: 1.6; margin-bottom: 25px; font-weight: bold; }
+        .btn { display: block; width: 100%; padding: 15px; margin-bottom: 15px; background: linear-gradient(90deg, #334155 0%, #1e293b 100%); border: 1px solid #475569; color: white; border-radius: 10px; font-size: 1.2rem; cursor: pointer; text-align: left; transition: all 0.2s; }
+        .btn:hover { background: linear-gradient(90deg, var(--accent-color) 0%, #0284c7 100%); border-color: var(--accent-color); transform: translateX(5px); }
+        #result-section { display: none; animation: popIn 0.6s; }
+        #download-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 3px solid var(--highlight); border-radius: 20px; padding: 30px; display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; box-shadow: 0 0 30px rgba(250, 204, 21, 0.2); margin-bottom: 20px; position: relative; overflow: hidden; }
+        #download-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 20%); pointer-events: none; }
+        .card-visual-box { flex: 1; min-width: 260px; max-width: 320px; aspect-ratio: 9/16; background-color: #000; border-radius: 15px; border: 4px solid #cbd5e1; margin: 0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6); overflow: hidden; }
+        .result-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .card-info { flex: 2; min-width: 280px; text-align: left; z-index: 2; }
+        .role-title { font-size: 2.4rem; color: var(--highlight); margin: 0; font-weight: 900; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .role-eng { font-size: 1.1rem; color: var(--accent-color); font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .spirit-box { background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--highlight); padding: 15px; margin-bottom: 20px; border-radius: 0 10px 10px 0; }
+        .spirit-item { margin-bottom: 8px; font-size: 1.1rem; line-height: 1.4; }
+        .spirit-label { color: #94a3b8; font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 2px; }
+        .spirit-content { color: #f1f5f9; }
+        .stats-container { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-top: 10px; }
+        .stat-row { margin-bottom: 12px; }
+        .stat-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 1rem; color: #cbd5e1; }
+        .progress-bg { width: 100%; height: 10px; background-color: var(--bar-bg); border-radius: 5px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 5px; transition: width 1s ease-out; }
+        .action-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .action-btn { flex: 1; min-width: 200px; padding: 15px; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: bold; cursor: pointer; color: #0f172a; }
+        .btn-download { background-color: var(--highlight); box-shadow: 0 4px 15px rgba(250, 204, 21, 0.4); }
+        .btn-download:hover { background-color: #fde047; transform: translateY(-2px); }
+        .btn-reflect { background-color: var(--accent-color); }
+        #reflection-area { display: none; margin-top: 30px; background: #1e293b; padding: 20px; border-radius: 15px; border: 1px dashed #475569; }
+        textarea { width: 100%; height: 150px; background: #0f172a; color: white; border: 1px solid #475569; padding: 15px; border-radius: 10px; font-size: 1.1rem; resize: none; box-sizing: border-box; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @media (max-width: 768px) {
+            #download-card { flex-direction: column; text-align: center; }
+            .card-info { text-align: left; width: 100%; }
+            .spirit-box { text-align: left; }
+            .role-title { text-align: center; }
+            .role-eng { text-align: center; display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <header><h1>⚔️ 德行論 RPG：你的隱藏屬性</h1></header>
+    <div id="quiz-area">
+        <div class="visual-area">
+            <img id="scene-img" class="game-img" src="" alt="情境圖" crossorigin="anonymous">
+        </div>
+        <div class="question-box"><div id="question-text" class="q-text">載入中...</div><div id="choices-area"></div></div>
+    </div>
+    <div id="result-section">
+        <div id="download-card">
+            <div class="card-visual-box">
+                <img id="final-card-img" class="result-img" src="" alt="結果卡牌" crossorigin="anonymous">
+            </div>
+            <div class="card-info">
+                <div class="role-title" id="final-title">???</div>
+                <div class="role-eng" id="final-eng">???</div>
+                <div class="spirit-box">
+                    <div class="spirit-item"><span class="spirit-label">✨ 守護靈 (Guardian Spirit)</span><span class="spirit-content" id="spirit-name">???</span></div>
+                    <div class="spirit-item"><span class="spirit-label">💡 象徵意義 (Symbolism)</span><span class="spirit-content" id="spirit-meaning">???</span></div>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-row"><div class="stat-label"><span>🧠 實踐智慧 (Wisdom)</span><span id="score-wis">0</span></div><div class="progress-bg"><div class="progress-fill" id="bar-wis" style="width: 0%; background: #38bdf8;"></div></div></div>
+                    <div class="stat-row"><div class="stat-label"><span>🛡️ 道德勇氣 (Courage)</span><span id="score-cou">0</span></div><div class="progress-bg"><div class="progress-fill" id="bar-cou" style="width: 0%; background: #ef4444;"></div></div></div>
+                    <div class="stat-row"><div class="stat-label"><span>❤️ 仁慈關懷 (Compassion)</span><span id="score-com">0</span></div><div class="progress-bg"><div class="progress-fill" id="bar-com" style="width: 0%; background: #22c55e;"></div></div></div>
+                    <div class="stat-row"><div class="stat-label"><span>⚖️ 正直誠信 (Integrity)</span><span id="score-int">0</span></div><div class="progress-bg"><div class="progress-fill" id="bar-int" style="width: 0%; background: #facc15;"></div></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="action-btns">
+            <button class="action-btn btn-download" onclick="downloadResult()">📸 下載我的屬性卡</button>
+            <button class="action-btn btn-reflect" onclick="showReflection()">📝 進入反思 (Level Up)</button>
+        </div>
+    </div>
+    <div id="reflection-area">
+        <h3 style="color:var(--highlight)">📝 課後任務：裝備你的屬性</h3>
+        <p>請根據屬性圖，完成反思並複製到 TronClass：</p>
+        <textarea id="reflect-input" placeholder="1. 看到這個結果，你覺得準確嗎？為什麼？&#10;2. 哪一個屬性是你目前最缺乏的？&#10;3. 在未來的臨床實習中，你打算如何「修煉」這個屬性？"></textarea>
+        <button class="btn" style="margin-top:15px; background:var(--highlight); color:#0f172a; font-weight:bold;" onclick="copyToClipboard()">📋 複製文字</button>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // ▼ 請在下方貼上您生成的圖片網址 (Direct Link) ▼
+    // ==========================================
+    
+    // 1. 情境橫圖 (建議 16:9)
+    const sceneImgs = [
+        "https://i.ibb.co/KxVSswQR/DALL-E-2025-12-10-22-42-23-Scene-1-Medication-Error-A-3-D-rendered-Pixar-style-close-up-of-a-nur.webp", // 情境一：給錯藥
+        "https://i.ibb.co/ntXv9Gz/DALL-E-2025-12-10-22-50-32-Scene-2-Homeless-Patient-A-3-D-rendered-Pixar-style-isometric-hospita.webp", // 情境二：街友
+        "https://i.ibb.co/s99YSzyH/DALL-E-2025-12-10-22-42-52-Scene-3-Angry-Doctor-A-3-D-rendered-Pixar-style-isometric-hospital-co.webp", // 情境三：暴躁醫師
+        "https://i.ibb.co/zTW4FChq/DALL-E-2025-12-10-22-50-59-Scene-4-Busy-Nurse-A-3-D-rendered-Pixar-style-isometric-hospital-room.webp"  // 情境四：忙碌
+    ];
+
+    // 2. 結果直式卡牌 (建議 9:16)
+    const resultData = {
+        wis: {
+            title: "睿智的導航者",
+            eng: "The Wise Navigator",
+            spirit: "貓頭鷹 與 星盤 (Owl & Astrolabe)",
+            meaning: "貓頭鷹代表洞察真相的智慧；星盤代表在迷霧中導航的能力。",
+            // ▼ 貼上您的【智慧貓頭鷹】卡牌網址
+            imgUrl: "https://i.ibb.co/HcHfJfT/DALL-E-2025-12-11-00-13-06-A-vertical-trading-card-design-in-Pixar-style-titled-The-Wise-Navigat.webp" 
+        },
+        cou: {
+            title: "無畏的守護者",
+            eng: "The Fearless Guardian",
+            spirit: "獅鷲 與 光盾 (Griffin & Shield)",
+            meaning: "獅鷲結合勇氣與視野；光盾代表守護病人安全的堅定界線。",
+            // ▼ 貼上您的【勇氣獅鷲】卡牌網址
+            imgUrl: "https://i.ibb.co/mr8yXVYc/DALL-E-2025-12-10-23-48-55-A-vertical-trading-card-design-in-Pixar-style-titled-The-Fearless-Gua.webp"
+        },
+        com: {
+            title: "溫柔的療癒者",
+            eng: "The Gentle Healer",
+            spirit: "獨角獸 (Unicorn)",
+            meaning: "獨角獸代表純潔的治癒力；光芒代表看見人性溫度的同理心。",
+            // ▼ 貼上您的【關懷獨角獸】卡牌網址
+            imgUrl: "https://i.ibb.co/d0Mjp6rT/DALL-E-2025-12-10-23-52-19-A-vertical-trading-card-design-in-Pixar-style-titled-The-Gentle-Heale.webp"
+        },
+        int: {
+            title: "正直的審判官",
+            eng: "The Integrity Arbiter",
+            spirit: "天鵝 與 天平 (Swan & Scales)",
+            meaning: "天鵝代表高潔、不染污泥的品格；天平代表公正與原則。",
+            // ▼ 貼上您的【正直天鵝】卡牌網址
+            imgUrl: "https://i.ibb.co/jk7Tjxp0/DALL-E-2025-12-11-00-01-31-A-vertical-trading-card-design-in-Pixar-style-titled-The-Integrity-Ar.webp"
+        }
+    };
+
+    // --- 遊戲邏輯 ---
+    const scenarios = [
+        {
+            q: "【情境一：正直的試煉】給錯藥但無害，沒人發現。你會？",
+            choices: [
+                { text: "A. 假裝沒事", stats: { int: 1, wis: 1 } },
+                { text: "B. 誠實通報", stats: { int: 5, cou: 4 } },
+                { text: "C. 先觀察病人", stats: { int: 2, wis: 3 } }
+            ]
+        },
+        {
+            q: "【情境二：關懷的邊界】街友病人大吼大叫且有異味。你會？",
+            choices: [
+                { text: "A. 迅速處理不說話", stats: { com: 2, wis: 3 } },
+                { text: "B. 忍耐並溫柔安撫", stats: { com: 5, cou: 3 } },
+                { text: "C. 請學長幫忙", stats: { com: 3, wis: 4 } }
+            ]
+        },
+        {
+            q: "【情境三：勇氣的挑戰】暴躁醫師開錯劑量，學姊叫你照做。你會？",
+            choices: [
+                { text: "A. 聽話照做", stats: { cou: 1, wis: 2 } },
+                { text: "B. 私下委婉詢問", stats: { cou: 3, wis: 5 } },
+                { text: "C. 堅持拒絕給藥", stats: { cou: 5, int: 5 } }
+            ]
+        },
+        {
+            q: "【情境四：智慧的抉擇】VIP要喝水 vs 阿嬤傷口痛。你會？",
+            choices: [
+                { text: "A. 先倒水 (怕投訴)", stats: { wis: 2, com: 2 } },
+                { text: "B. 先看阿嬤 (評估優先級)", stats: { wis: 5, com: 4 } },
+                { text: "C. 請同事支援", stats: { wis: 4, com: 3 } }
+            ]
+        }
+    ];
+
+    let currentStep = 0;
+    let playerStats = { wis: 0, cou: 0, com: 0, int: 0 };
+
+    function initGame() { showQuestion(0); }
+
+    function showQuestion(index) {
+        if (index >= scenarios.length) { showResult(); return; }
+        const s = scenarios[index];
+        document.getElementById('scene-img').src = sceneImgs[index];
+        document.getElementById('question-text').innerText = s.q;
+        const cArea = document.getElementById('choices-area');
+        cArea.innerHTML = '';
+        s.choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = c.text;
+            btn.onclick = () => {
+                for (let key in c.stats) playerStats[key] += c.stats[key];
+                currentStep++;
+                showQuestion(currentStep);
+            };
+            cArea.appendChild(btn);
+        });
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        const maxStat = Object.keys(playerStats).reduce((a, b) => playerStats[a] > playerStats[b] ? a : b);
+        const result = resultData[maxStat];
+        document.getElementById('final-title').innerText = result.title;
+        document.getElementById('final-eng').innerText = result.eng;
+        document.getElementById('spirit-name').innerText = result.spirit;
+        document.getElementById('spirit-meaning').innerText = result.meaning;
+        document.getElementById('final-card-img').src = result.imgUrl;
+        updateBar('wis', playerStats.wis);
+        updateBar('cou', playerStats.cou);
+        updateBar('com', playerStats.com);
+        updateBar('int', playerStats.int);
+    }
+
+    function updateBar(type, score) {
+        const pct = Math.min((score / 15) * 100, 100);
+        document.getElementById(`score-${type}`).innerText = score;
+        setTimeout(() => { document.getElementById(`bar-${type}`).style.width = `${pct}%`; }, 100);
+    }
+
+    function showReflection() {
+        document.getElementById('reflection-area').style.display = 'block';
+        document.getElementById('reflection-area').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function downloadResult() {
+        const element = document.getElementById("download-card");
+        element.style.backgroundColor = "#0f172a"; 
+        html2canvas(element, {
+            useCORS: true, 
+            scale: 2,
+            backgroundColor: "#0f172a"
+        }).then(canvas => {
+            const link = document.createElement("a");
+            link.download = "我的護理師屬性卡.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }).catch(err => {
+            console.error("截圖失敗:", err);
+            alert("圖片下載失敗，請確認您的圖片網址是否支援跨域(CORS)。");
+        });
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('reflect-input').value;
+        if (!text) { alert("請先輸入您的反思內容喔！"); return; }
+        navigator.clipboard.writeText(text).then(() => { alert("✅ 複製成功！\n請前往 TronClass 貼上繳交。"); });
+    }
+
+    initGame();
+</script>
+</body>
+</html>

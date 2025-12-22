@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例三：AI 的誤判 (Global JIT + SBAR)</title>
+    <style>
+        /* CSS 樣式同上，確保顯示一致性 */
+        :root { --bg-color: #1a1a1a; --left-bg: #ffffff; --right-bg: #2c3e50; --text-main: #2c3e50; --text-light: #ffffff; --highlight: #2980b9; --btn-blue: #8e44ad; --nurse-bg: #d4efdf; --npc-bg: #f2f3f4; --jit-color: #d35400; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        #stage-container { width: 100vw; height: 100vh; background-color: #fff; display: flex; flex-direction: row; position: relative; }
+        #story-panel { width: 60%; background-color: var(--left-bg); display: flex; flex-direction: column; padding: 20px; border-right: 5px solid #bdc3c7; position: relative; }
+        #mood-badge { position: absolute; top: 20px; left: 20px; background-color: #27ae60; color: white; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; z-index: 5; }
+        #vocab-btn { position: absolute; top: 20px; right: 20px; background-color: var(--highlight); color: #fff; border: 3px solid #fff; padding: 10px 20px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; z-index: 100; transition: transform 0.2s; }
+        #vocab-btn:hover { transform: scale(1.05); }
+        #dialogue-box { flex: 1; overflow-y: auto; padding: 80px 20px 20px 20px; display: flex; flex-direction: column; gap: 25px; scroll-behavior: smooth; }
+        .msg { max-width: 90%; padding: 25px 35px; border-radius: 20px; font-size: 2rem; line-height: 1.6; animation: fadeIn 0.5s ease; }
+        .msg-npc { align-self: flex-start; background-color: var(--npc-bg); border-left: 10px solid #8e44ad; }
+        .msg-player { align-self: flex-end; background-color: var(--nurse-bg); border-right: 10px solid #27ae60; }
+        .msg strong { display: block; font-size: 1.6rem; margin-bottom: 10px; opacity: 0.8; }
+        
+        .jit-term { color: var(--jit-color); font-weight: bold; border-bottom: 3px dotted var(--jit-color); cursor: help; transition: background 0.2s; }
+        .jit-term:hover { background-color: rgba(243, 156, 18, 0.2); }
+        
+        #global-tooltip { position: fixed; display: none; background-color: #34495e; color: #fff; padding: 20px; border-radius: 12px; max-width: 350px; font-size: 1.4rem; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; border: 2px solid #fff; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+        #global-tooltip strong { display: block; color: #f1c40f; font-size: 1.6rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+
+        #analysis-panel { width: 40%; background-color: var(--right-bg); color: var(--text-light); display: flex; flex-direction: column; padding: 30px; overflow-y: auto; }
+        .section-box { margin-bottom: 25px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; border-left: 6px solid var(--highlight); flex-shrink: 0; }
+        .section-title { font-size: 1.4rem; color: var(--highlight); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .section-content { font-size: 1.5rem; line-height: 1.6; color: #fff; }
+        .ui-hint { text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; flex-shrink: 0; }
+        #controls-area { margin-top: auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; flex-shrink: 0; }
+        .btn { background-color: var(--btn-blue); color: white; border: 2px solid rgba(255,255,255,0.2); padding: 25px; font-size: 1.8rem; border-radius: 15px; cursor: pointer; text-align: left; }
+        .btn:hover { background-color: #9b59b6; transform: translateY(-2px); }
+        #feedback-box { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; font-size: 1.6rem; margin-top: 20px; margin-bottom: 20px; text-align: center; border: 3px solid white; flex-shrink: 0; }
+        
+        #vocab-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
+        #vocab-content { background-color: #fff; width: 80%; max-width: 900px; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 40px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        #vocab-content h2 { color: #2c3e50; border-bottom: 3px solid var(--highlight); padding-bottom: 10px; }
+        .vocab-item { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .vocab-term { font-size: 1.8rem; font-weight: bold; color: #2980b9; margin-bottom: 5px; }
+        .vocab-def { font-size: 1.5rem; color: #555; line-height: 1.6; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; }
+
+        @media (max-width: 1024px) or (orientation: portrait) {
+            body { overflow-y: auto; height: auto; }
+            #stage-container { flex-direction: column; height: auto; width: 100%; }
+            #story-panel { width: 100%; height: 50vh; border-right: none; border-bottom: 5px solid #bdc3c7; }
+            #analysis-panel { width: 100%; min-height: 50vh; padding: 20px; padding-bottom: 80px; }
+            .msg { font-size: 1.3rem; padding: 15px; } .btn { font-size: 1.4rem; padding: 15px; }
+            #global-tooltip { max-width: 80%; font-size: 1.2rem; bottom: 20px !important; top: auto !important; left: 50% !important; transform: translateX(-50%); }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div id="global-tooltip"></div>
+<div id="vocab-modal">
+    <div id="vocab-content"><span class="close-btn" onclick="toggleVocab()">×</span><h2>📖 專業詞彙速查</h2>
+        <div class="vocab-item"><div class="vocab-term">演算法偏見</div><div class="vocab-def">Algorithmic Bias。AI 因訓練數據不足，對特定族群(如深膚色)產生不公預測。</div></div>
+        <div class="vocab-item"><div class="vocab-term">自動化偏誤</div><div class="vocab-def">Automation Bias。人類過度信任機器建議，忽略了自己的臨床觀察。</div></div>
+        <div class="vocab-item"><div class="vocab-term">SBAR 溝通</div><div class="vocab-def">Situation(情境)-Background(背景)-Assessment(評估)-Recommendation(建議) 的標準化溝通。</div></div>
+        <div class="vocab-item"><div class="vocab-term">專業當責</div><div class="vocab-def">醫療人員需對最終決策負責。AI 只是工具。</div></div>
+        <div class="vocab-item"><div class="vocab-term">人在迴路</div><div class="vocab-def">Human-in-the-loop。專業人員必須介入自動化流程，擔任安全守門員。</div></div>
+    </div>
+</div>
+<div id="stage-container">
+    <button id="vocab-btn" onclick="toggleVocab()">📖 知識速查</button>
+    <div id="story-panel"><div id="mood-badge">Segment 1</div><div id="dialogue-box"></div></div>
+    <div id="analysis-panel">
+        <div class="ui-hint">💡 提示：點擊對話中的 <span style="color:var(--jit-color); border-bottom:2px dashed var(--jit-color);">橘色虛線詞彙</span> 可即時查看定義</div>
+        <div class="section-box"><div class="section-title">🎯 Objectives</div><div class="section-content" id="obj-text"></div></div>
+        <div class="section-box"><div class="section-title">❓ Question</div><div class="section-content" id="question-text"></div></div>
+        <div class="section-box"><div class="section-title">📝 Task</div><div class="section-content" id="task-text"></div></div>
+        <div id="feedback-box"></div><div id="controls-area"></div>
+    </div>
+</div>
+<script>
+    const chatBox = document.getElementById('dialogue-box'); const controls = document.getElementById('controls-area'); const moodBadge = document.getElementById('mood-badge'); const objText = document.getElementById('obj-text'); const qText = document.getElementById('question-text'); const taskText = document.getElementById('task-text'); const feedbackBox = document.getElementById('feedback-box'); const vocabModal = document.getElementById('vocab-modal'); const tooltip = document.getElementById('global-tooltip');
+    function toggleVocab() { vocabModal.style.display = vocabModal.style.display === 'flex' ? 'none' : 'flex'; }
+    function enableJIT() { const terms = document.querySelectorAll('.jit-term'); terms.forEach(term => { term.addEventListener('mouseenter', (e) => showTooltip(e, term)); term.addEventListener('mousemove', (e) => moveTooltip(e)); term.addEventListener('mouseleave', hideTooltip); term.addEventListener('click', (e) => showTooltip(e, term)); }); }
+    function showTooltip(e, term) { const def = term.getAttribute('data-def'); const title = term.innerText; tooltip.innerHTML = `<strong>${title}</strong>${def}`; tooltip.style.display = 'block'; requestAnimationFrame(() => { tooltip.style.opacity = '1'; moveTooltip(e); }); }
+    function moveTooltip(e) { const w = window.innerWidth; const h = window.innerHeight; let x = e.clientX + 15; let y = e.clientY + 15; if (x + 300 > w) x = e.clientX - 320; if (y + 150 > h) y = e.clientY - 160; if(w > 1024) { tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px'; } }
+    function hideTooltip() { tooltip.style.opacity = '0'; setTimeout(() => { tooltip.style.display = 'none'; }, 200); }
+
+    const scenes = {
+        start: { segment: "Segment 1: 倫理敏感度", objectives: "察覺潛在的科技風險", questions: "當「病人主訴」與「AI 數據」不符時，您相信誰？", tasks: "請評估臨床表徵與 AI 數據的衝突，並辨識潛在的偏誤。", messages: [{ role: "system", text: "【情境】一位深膚色病人主訴「胸口劇痛」。" }, { role: "npc", name: "AI 檢傷系統", text: "⚠️ 掃描結果：風險評估低 (Low Risk)。建議分流至：一般門診等待。" }, { role: "npc", name: "病人", text: "(冒冷汗、手壓胸口) 護理師...我好痛..." }], choices: [{ text: "A. 相信 AI：系統有大數據支持，病人可能只是恐慌。", next: "wrong_s1" }, { text: "B. 懷疑 AI：臨床表徵危急，AI 可能有<span class='jit-term' data-def='演算法偏見：AI 因數據不足，對特定族群(如深膚色)判讀失準。'>演算法偏見</span>。", next: "correct_s1" }] },
+        wrong_s1: { feedback: "⚠️ 鷹架：這可能是<span class='jit-term' data-def='自動化偏誤：過度信任機器而忽略眼前事實。'>自動化偏誤</span>。請仔細觀察病人「冒冷汗」的臨床徵象。", repeat_scene: "start" },
+        correct_s1: { feedback: "🎉 正確！您敏銳地察覺到 AI 可能誤判。臨床觀察永遠是護理評估的核心。", next_scene: "seg2_intro" },
+        seg2_intro: { segment: "Segment 2: 倫理推理", objectives: "運用不傷害原則檢視 AI", questions: "如果照著 AI 做導致誤診，誰要負責？", tasks: "請思考並權衡<span class='jit-term' data-def='專業當責：護理師需對決策負責，AI 只是工具。'>專業當責</span>與<span class='jit-term' data-def='不傷害原則：避免因忽視徵象而延誤治療。'>不傷害原則</span>。", messages: [{ role: "system", text: "【演變】您發現血氧不穩。AI 彈出警告。" }, { role: "npc", name: "AI 檢傷系統", text: "⚠️ 警告：請勿違反分流建議。影響績效分數。" }], choices: [{ text: "A. 遵守 AI 建議：為了不影響醫院績效。", next: "wrong_s2" }, { text: "B. 堅持臨床判斷：AI 只是輔助，我是病人的<span class='jit-term' data-def='人在迴路：專業人員必須介入自動化流程。'>守門員</span>。", next: "correct_s2" }] },
+        wrong_s2: { feedback: "⚠️ 鷹架：績效重要還是病人生命重要？若因盲信 AI 導致死亡，護理師難辭其咎。", repeat_scene: "seg2_intro" },
+        correct_s2: { feedback: "🎉 推理正確！您堅守了「不傷害原則」。績效指標不能凌駕於病人安全之上。", next_scene: "seg3_intro" },
+        seg3_intro: { segment: "Segment 3: 專業行動", objectives: "執行人機協作判斷", questions: "如何向醫師報告，同時挑戰 AI？", tasks: "運用 <span class='jit-term' data-def='SBAR：情境-背景-評估-建議 的標準溝通模式。'>SBAR</span> 技巧進行有效溝通。", messages: [{ role: "player", text: "（我必須解釋為什麼我無視 AI 的建議...）" }], choices: [{ text: "A. 【猶豫報告】醫師，AI 說沒事，但病人看起來怪怪的...", next: "action_bad" }, { text: "B. 【<span class='jit-term' data-def='SBAR：情境-背景-評估-建議'>SBAR</span> 溝通】醫師，病人胸痛(S)，AI 判低風險(B)，但我評估是誤判(A)，建議做心電圖(R)。", next: "action_good" }] },
+        action_bad: { segment: "Segment 3: 結果", objectives: "反思", questions: "語氣不確定會帶來什麼後果？", tasks: "檢討：猶豫會讓醫師也傾向相信 AI。", messages: [{ role: "npc", name: "醫師", text: "既然 AI 說沒事，那就先讓他在旁邊等一下吧。" }, { role: "system", text: "❌ 結果：錯失黃金治療時間。" }], choices: [{ text: "再試一次", next: "seg3_intro" }] },
+        action_good: { segment: "Segment 3: 總結", objectives: "完成", questions: "這就是人機協作。", tasks: "恭喜完成演練。", messages: [{ role: "npc", name: "醫師", text: "好，我相信妳的判斷。馬上推心電圖機！" }, { role: "system", text: "✨ 成功：心電圖顯示急性心肌梗塞。您挽救了性命。" }], choices: [{ text: "重新開始", next: "start" }] }
+    };
+    function renderScene(sceneId) { const scene = scenes[sceneId]; if (scene.feedback) { feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = scene.next_scene ? '#27ae60' : '#e67e22'; feedbackBox.innerHTML = scene.feedback; controls.innerHTML = ''; const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = scene.next_scene ? "下一階段 ➔" : "🔙 返回重選"; btn.onclick = () => { feedbackBox.style.display = 'none'; renderScene(scene.next_scene || scene.repeat_scene); }; controls.appendChild(btn); return; } moodBadge.innerText = scene.segment; objText.innerHTML = scene.objectives; qText.innerHTML = scene.questions; taskText.innerHTML = scene.tasks; controls.innerHTML = ''; chatBox.innerHTML = ''; let delay = 0; scene.messages.forEach((msg, index) => { setTimeout(() => { const div = document.createElement('div'); div.className = msg.role === 'system' ? 'msg msg-player' : (msg.role === 'npc' ? 'msg msg-npc' : 'msg msg-player'); if(msg.role === 'system') { div.style.backgroundColor = '#fff3cd'; div.style.color = '#856404'; div.style.border = 'none'; } div.innerHTML = (msg.role === 'npc' ? `<strong>${msg.name}</strong>` : '') + msg.text; chatBox.appendChild(div); chatBox.scrollTop = chatBox.scrollHeight; enableJIT(); if (index === scene.messages.length - 1) { scene.choices.forEach(c => { const btn = document.createElement('button'); btn.className = 'btn'; btn.innerHTML = c.text; btn.onclick = () => renderScene(c.next); controls.appendChild(btn); }); setTimeout(enableJIT, 100); } }, delay); delay += 800; }); }
+    renderScene('start');
+</script>
+</body>
+</html>
