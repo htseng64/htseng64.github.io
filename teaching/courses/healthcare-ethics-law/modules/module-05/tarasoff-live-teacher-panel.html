@@ -57,7 +57,15 @@
     .ok{border-color:rgba(67,160,71,.35)}
     .note{font-size:12px;color:var(--muted);line-height:1.6}
     .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-  </style>
+  
+  .hidden{display:none!important}
+
+  .cardmini{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px}
+  .chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:6px 0;user-select:none}
+  .chk input{transform:translateY(1px)}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--fg);padding:10px 12px;border-radius:12px;cursor:pointer;margin-left:6px}
+
+</style>
 </head>
 <body>
 <header>
@@ -114,6 +122,21 @@
       <div class="divider"></div>
       <button onclick="applyRoom()" class="ok">套用房間碼並開始即時更新</button>
       <div class="small" id="rtMsg"></div>
+
+      <div class="divider"></div>
+      <div class="cardmini" id="teacherPanel">
+        <div class="small" style="margin-bottom:6px;">🎛️ 老師控制面板（投影端）</div>
+        <label class="chk"><input type="checkbox" id="tShowStats" checked> 顯示即時統計（Scene 1/2）</label>
+        <label class="chk"><input type="checkbox" id="tShowScene2" checked> 顯示 Scene 2（專業切換）</label>
+        <label class="chk"><input type="checkbox" id="tShowModels" checked> 顯示 六模型同場對話</label>
+        <label class="chk"><input type="checkbox" id="tShowTrigger" checked> 顯示 警告觸發點（Tarasoff）</label>
+        <label class="chk"><input type="checkbox" id="tShowReflect" checked> 顯示 反思區</label>
+        <div style="height:6px"></div>
+        <button class="ok" onclick="teacherRevealAll()">全部顯示</button>
+        <button class="ghost" onclick="teacherResetReveal()">回到只看 Scene 1</button>
+        <div class="small" style="opacity:.8;margin-top:6px;">提示：這些開關只影響你目前這個投影畫面，不會改到學生端資料。</div>
+      </div>
+
 
       <div class="divider"></div>
       <div class="small">Scene 1 統計</div>
@@ -185,7 +208,71 @@
   </section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ===== Teacher projector controls (local only) =====
+function teacherApplyVisibility(){
+  const showStats = document.getElementById('tShowStats')?.checked ?? true;
+  const showScene2 = document.getElementById('tShowScene2')?.checked ?? true;
+  const showModels = document.getElementById('tShowModels')?.checked ?? true;
+  const showTrigger = document.getElementById('tShowTrigger')?.checked ?? true;
+  const showReflect = document.getElementById('tShowReflect')?.checked ?? true;
+
+  // stats blocks in sidebar
+  document.querySelectorAll('[data-teacher="stats"]').forEach(el=>{
+    el.classList.toggle('hidden', !showStats);
+  });
+
+  // main content sections
+  const elScene2 = document.getElementById('scene2');
+  if(elScene2) elScene2.classList.toggle('hidden', !showScene2);
+
+  const elModels = document.getElementById('modelsWrap');
+  if(elModels) elModels.closest('section')?.classList.toggle('hidden', !showModels);
+
+  const elTrigger = document.getElementById('triggerList');
+  if(elTrigger) elTrigger.closest('section')?.classList.toggle('hidden', !showTrigger);
+
+  const ref1 = document.getElementById('ref1');
+  if(ref1) ref1.closest('section')?.classList.toggle('hidden', !showReflect);
+}
+
+function teacherRevealAll(){
+  ['tShowStats','tShowScene2','tShowModels','tShowTrigger','tShowReflect'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.checked=true;
+  });
+  teacherApplyVisibility();
+}
+
+function teacherResetReveal(){
+  // only Scene 1 + (optional) keep reflection off for class
+  const set = (id,val)=>{const el=document.getElementById(id); if(el) el.checked=val;}
+  set('tShowStats', false);
+  set('tShowScene2', false);
+  set('tShowModels', false);
+  set('tShowTrigger', false);
+  set('tShowReflect', false);
+  teacherApplyVisibility();
+}
+
+// hook checkbox changes
+window.addEventListener('DOMContentLoaded', ()=>{
+  // tag stats blocks for easy hide/show
+  const s1label = document.querySelector('#statsScene1')?.previousElementSibling;
+  const s2label = document.querySelector('#statsScene2')?.previousElementSibling;
+  [s1label, document.getElementById('statsScene1'), s2label, document.getElementById('statsScene2')]
+    .filter(Boolean)
+    .forEach(el=>el.setAttribute('data-teacher','stats'));
+
+  ['tShowStats','tShowScene2','tShowModels','tShowTrigger','tShowReflect'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('change', teacherApplyVisibility);
+  });
+
+  // default: keep everything shown (teacher can click reset)
+  teacherApplyVisibility();
+});
+
+</script>
 <script>
   const SUPABASE_URL = "https://nbiylpyckbcargzvpael.supabase.co";
   const SUPABASE_KEY = "sb_publishable_SKcUTeg69UhmS2RpY3Rv1Q_P-5ngvrQ";

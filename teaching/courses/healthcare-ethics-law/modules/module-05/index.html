@@ -2,80 +2,150 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Module 05｜Tarasoff 互動情境學習（入口）</title>
+  <title>Module 05｜Tarasoff 情境互動學習</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root{
-      --bg:#0b1020; --card:#121a33; --muted:#9aa6c2; --text:#e9eeff;
-      --line:rgba(255,255,255,.12); --ok:#43a047; --blue:#1e88e5;
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg,#0b1020,#0e1535);
+      color:#eef2ff;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,"Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#080c18,#0b1020);color:var(--text)}
-    header{padding:18px 16px;border-bottom:1px solid var(--line);background:rgba(11,16,32,.92);backdrop-filter:blur(6px)}
-    header h1{margin:0;font-size:18px}
-    header .sub{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.6}
-    main{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:14px}
-    .card{background:rgba(18,26,51,.86);border:1px solid var(--line);border-radius:16px;padding:14px}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:880px){.grid{grid-template-columns:1fr 1fr}}
+    header{
+      padding:24px;
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+    }
+    header p{
+      margin:8px 0 0;
+      color:#b8c1ff;
+      font-size:14px;
+      line-height:1.6;
+    }
+    main{
+      max-width:960px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:16px;
+      padding:20px;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .card p{
+      margin:0 0 14px;
+      color:#c7d2fe;
+      font-size:14px;
+      line-height:1.6;
+    }
     a.btn{
-      display:block;text-decoration:none;color:var(--text);
-      border:1px solid var(--line);background:#0f1630;
-      padding:14px;border-radius:14px;transition:.15s transform,.15s background,.15s border-color
+      display:inline-block;
+      text-decoration:none;
+      color:white;
+      padding:12px 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.2);
+      background:#1e2a6d;
+      transition:.15s;
+      font-weight:600;
     }
-    a.btn:hover{transform:translateY(-1px);background:#101c3e;border-color:rgba(255,255,255,.22)}
-    .tag{display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:8px}
-    .pill{padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-    .title{font-size:16px;margin:0 0 6px 0}
-    .note{font-size:12px;color:var(--muted);line-height:1.7}
-    .ok{color:var(--ok);font-weight:700}
-    .blue{color:var(--blue);font-weight:700}
-    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace}
+    a.btn:hover{
+      background:#27358f;
+      transform:translateY(-1px);
+    }
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      margin-right:6px;
+      border:1px solid rgba(255,255,255,.25);
+      color:#dbe4ff;
+    }
+    footer{
+      text-align:center;
+      padding:18px;
+      font-size:12px;
+      color:#9aa6ff;
+    }
   </style>
 </head>
+
 <body>
+
 <header>
-  <h1>Module 05｜Tarasoff 互動情境學習（入口）</h1>
-  <div class="sub">
-    請依上課情境選擇：<span class="ok">課堂即時投票（Supabase）</span> 或 <span class="blue">離線作業（匯出 JSON）</span>
-  </div>
+  <h1>Module 05｜Tarasoff 情境互動學習</h1>
+  <p>
+    以 Tarasoff 案為核心，透過 <b>情境互動 → 即時投票 → 倫理模型對話</b>，
+    引導學生理解「警告義務（Duty to Warn）」的倫理與法律意涵。
+  </p>
 </header>
 
 <main>
+
+  <!-- 老師投影 -->
   <section class="card">
-    <div class="tag"><span class="pill">老師用</span><span class="pill">學生用</span><span class="pill">同一入口</span></div>
-    <div class="note">
-      ✅ 建議做法：兩個版本都放在同一資料夾，讓你不需要每次改連結。<br>
-      檔名建議：<span class="mono">live.html</span>（即時版）、<span class="mono">local.html</span>（離線版）。
-    </div>
+    <span class="tag">老師用</span>
+    <span class="tag">投影</span>
+    <h2>① 課堂即時互動（老師投影版）</h2>
+    <p>
+      老師操作版本，包含：
+      <br>・Scene 1 / Scene 2 情境
+      <br>・全班即時統計
+      <br>・六倫理模型逐步揭示
+      <br>・Tarasoff 警告觸發點提示
+    </p>
+    <a class="btn" href="./tarasoff-live-teacher-panel.html">
+      進入 老師投影互動版
+    </a>
   </section>
 
-  <section class="grid">
+  <!-- 學生即時 -->
+  <section class="card">
+    <span class="tag">學生用</span>
+    <span class="tag">即時投票</span>
+    <h2>② 課堂即時投票（學生版）</h2>
+    <p>
+      學生使用手機或電腦作答：
+      <br>・參與 Scene 1 / Scene 2 投票
+      <br>・答案即時納入全班統計
+      <br>・適合同步課堂討論
+    </p>
     <a class="btn" href="./tarasoff-live.html">
-      <div class="tag"><span class="pill">即時版</span><span class="pill">全班統計</span></div>
-      <div class="title">A. 課堂投影：房間碼＋即時統計（Supabase）</div>
-      <div class="note">
-        適合：全班手機投票 → 右側長條圖即時更新。<br>
-        使用前：請先在頁面右側輸入房間碼（例如 <span class="mono">ETHICS-2026-01</span>）。
-      </div>
-    </a>
-
-    <a class="btn" href="./tarasoff-local.html">
-      <div class="tag"><span class="pill">離線版</span><span class="pill">免資料庫</span></div>
-      <div class="title">B. 遠距自學：個人作答＋匯出 JSON（離線）</div>
-      <div class="note">
-        適合：學生在家完成 Scenes、六模型、觸發點、反思。<br>
-        交作業：按「匯出 JSON」→ 貼到 TronClass 作業區或表單。
-      </div>
+      進入 學生即時作答版
     </a>
   </section>
 
+  <!-- 離線作業 -->
   <section class="card">
-    <div class="tag"><span class="pill">小提醒</span></div>
-    <div class="note">
-      若你現在用的是本機路徑（<span class="mono">C:\</span> / <span class="mono">D:\</span>）開檔，功能有時會受瀏覽器限制；上傳到 GitHub Pages 後最穩。
-    </div>
+    <span class="tag">作業用</span>
+    <span class="tag">離線</span>
+    <h2>③ 個人反思作業（離線版）</h2>
+    <p>
+      不需即時連線，適合遠距或課後作業：
+      <br>・完整情境與倫理模型分析
+      <br>・可匯出 JSON 作為作業繳交
+    </p>
+    <a class="btn" href="./tarasoff-local.html">
+      進入 離線反思作業版
+    </a>
   </section>
+
 </main>
+
+<footer>
+  Healthcare Ethics & Law｜Module 05｜Tarasoff Case
+</footer>
+
 </body>
 </html>
