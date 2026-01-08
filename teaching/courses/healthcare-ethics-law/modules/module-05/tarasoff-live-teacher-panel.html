@@ -1,3 +1,21 @@
+<script>
+/* ===== 老師密碼保護（教學用） ===== */
+const TEACHER_PASSWORD = "ETHICS2026"; // ←你要的老師密碼，自己改
+
+(function teacherGate(){
+  const ok = sessionStorage.getItem("teacher_ok");
+  if(ok === "yes") return;
+
+  const input = prompt("🔐 老師專用頁面\n請輸入老師密碼：");
+  if(input === TEACHER_PASSWORD){
+    sessionStorage.setItem("teacher_ok","yes");
+  }else{
+    alert("密碼錯誤，將返回學生作答頁。");
+    window.location.href = "./tarasoff-live.html";
+  }
+})();
+</script>
+
 <!doctype html>
 <html lang="zh-Hant">
 <head>
