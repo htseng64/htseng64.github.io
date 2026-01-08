@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>倫理密室逃脫｜Bioethics Escape Room</title>
+  <meta name="description" content="倫理密室逃脫互動式教學模組（四大原則＋道德困境整合）" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950">
+  <div id="root"></div>
+
+  <!-- React 18 UMD -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel for in-browser TSX/JSX transform -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect } = React;
+
+    const Icon = ({ children, className = "" }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+       strokeLinecap="round" strokeLinejoin="round"
+       className={className} aria-hidden="true">{children}</svg>
+);
+
+const Lock = (props) => (
+  <Icon {...props}>
+    <rect x="4" y="11" width="16" height="10" rx="2" />
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+  </Icon>
+);
+
+const CheckCircle = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 12l2.5 2.5L16 9" />
+  </Icon>
+);
+
+const AlertCircle = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 8v4" />
+    <path d="M12 16h.01" />
+  </Icon>
+);
+
+const Clock = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </Icon>
+);
+
+const Award = (props) => (
+  <Icon {...props}>
+    <circle cx="12" cy="8" r="5" />
+    <path d="M8 14l-1 7 5-3 5 3-1-7" />
+  </Icon>
+);
+
+const BookOpen = (props) => (
+  <Icon {...props}>
+    <path d="M2 4h9a3 3 0 0 1 3 3v14a3 3 0 0 0-3-3H2z" />
+    <path d="M22 4h-9a3 3 0 0 0-3 3v14a3 3 0 0 1 3-3h9z" />
+  </Icon>
+);
+
+const RotateCcw = (props) => (
+  <Icon {...props}>
+    <path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-6.36-2.64" />
+    <path d="M3 12V7" />
+    <path d="M3 7h5" />
+  </Icon>
+);
+
+    const EthicsEscapeRoom = () => {
+  const [currentRoom, setCurrentRoom] = useState(0);
+  const [completedRooms, setCompletedRooms] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
+  const [showKnowledgeBoost, setShowKnowledgeBoost] = useState(false);
+  const [restartCountdown, setRestartCountdown] = useState(null);
+
+  useEffect(() => {
+    let interval;
+    if (gameStarted && !gameComplete) {
+      interval = setInterval(() => {
+        setTimeElapsed(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [gameStarted, gameComplete]);
+
+  useEffect(() => {
+    let countdownInterval;
+    if (restartCountdown !== null && restartCountdown > 0) {
+      countdownInterval = setInterval(() => {
+        setRestartCountdown(prev => prev - 1);
+      }, 1000);
+    } else if (restartCountdown === 0) {
+      handleRestart();
+    }
+    return () => clearInterval(countdownInterval);
+  }, [restartCountdown]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const rooms = [
+    {
+      id: 1,
+      title: "第一關：病人自主權與知情同意",
+      scenario: "莊女士，68歲，末期腎病患者。家屬要求醫護人員不要告知病人真實病情。但莊女士開始詢問：我的病到底有多嚴重？",
+      question: "依據病人自主權原則，護理師應該如何處理？",
+      options: [
+        {
+          text: "溫和地探索莊女士想知道什麼，評估她的資訊偏好，尊重她的知情權",
+          correct: true,
+          explanation: "正確！根據自主原則，有決定能力的成人病人有權獲得充分資訊。應評估病人個人偏好，而非僅依據家屬意願。"
+        },
+        {
+          text: "完全尊重家屬意願，避免告知病人真實病情",
+          correct: false,
+          explanation: "不正確。這違反了病人自主權。病人對自己健康的知情權是首要的。"
+        },
+        {
+          text: "立即詳細告知病人所有病情",
+          correct: false,
+          explanation: "不正確。缺乏評估病人接受程度的過程，缺乏個別化考量。"
+        },
+        {
+          text: "建議由家屬代替病人做所有決定",
+          correct: false,
+          explanation: "不正確。只要病人有決策能力，就應由病人自己做決定。"
+        }
+      ],
+      ethicalPrinciple: "自主原則 - 尊重病人自我決定權與知情權",
+      knowledgeBoost: {
+        title: "知識小補帖：病人自主權",
+        points: [
+          "自主原則是尊重病人自己做決定的原則",
+          "知情同意三要素：知情、能力、自願",
+          "病人自決法案確保病人選擇或拒絕醫療的權利",
+          "我國是亞洲第一個立法施行自然死法案的國家",
+          "應評估個別病人的資訊偏好"
+        ]
+      }
+    },
+    {
+      id: 2,
+      title: "第二關：道德困擾與有效因應",
+      scenario: "加護病房末期癌症病人持續接受無效治療，明顯痛苦。醫師堅持繼續治療。護理師小陳認為違反不傷害原則，但意見不被採納。小陳感到極度挫折，考慮離職。",
+      question: "小陳正經歷什麼倫理問題？最適當的因應方式是什麼？",
+      options: [
+        {
+          text: "道德困擾。應尋求倫理諮詢委員會協助，並與團隊進行倫理討論",
+          correct: true,
+          explanation: "正確！道德困擾是知道什麼是對的卻無法實踐。有效因應包括尋求倫理委員會支持、團隊討論。"
+        },
+        {
+          text: "倫理困境。應該直接拒絕執行醫囑",
+          correct: false,
+          explanation: "不正確。這是道德困擾非倫理困境。直接拒絕可能違反專業責任。"
+        },
+        {
+          text: "保持沉默，壓抑自己的感受",
+          correct: false,
+          explanation: "不正確。這是無效因應。長期壓抑會導致精神耗竭。"
+        },
+        {
+          text: "護理師不應質疑醫師決定",
+          correct: false,
+          explanation: "不正確。護理師是病人倡導者，有責任為病人發聲。"
+        }
+      ],
+      ethicalPrinciple: "道德困擾的覺察與有效因應",
+      knowledgeBoost: {
+        title: "知識小補帖：道德困擾",
+        points: [
+          "道德困擾：知道什麼是對的，卻受阻礙無法落實",
+          "可能導致：挫折、生氣、精神耗竭、離職",
+          "有效因應：尋求倫理諮詢、團隊討論、接受教育",
+          "培養道德自主權和倫理思辨能力",
+          "護理師應成為病人的有效倡導者"
+        ]
+      }
+    },
+    {
+      id: 3,
+      title: "第三關：公平正義與資源分配",
+      scenario: "急診室有兩位需要插管的病人：A是25歲車禍傷患預後良好但無健保；B是75歲有健保的慢性病患預後較差。只有一台呼吸器。",
+      question: "根據分配正義原則，應該如何決定？",
+      options: [
+        {
+          text: "使用客觀臨床標準：存活可能性、預後和生命年數，不考慮經濟因素",
+          correct: true,
+          explanation: "正確！應基於臨床標準而非社會地位、經濟能力或保險狀況。每個生命有同等價值。"
+        },
+        {
+          text: "優先給有健保的病人",
+          correct: false,
+          explanation: "不正確。分配不應基於經濟能力或保險狀況。"
+        },
+        {
+          text: "先到先得原則",
+          correct: false,
+          explanation: "不正確。不考慮臨床需求和受益可能性。"
+        },
+        {
+          text: "由醫師決定，護理師不應參與",
+          correct: false,
+          explanation: "不正確。護理師有責任參與倫理決策。"
+        }
+      ],
+      ethicalPrinciple: "公正原則 - 稀缺資源的公平分配",
+      knowledgeBoost: {
+        title: "知識小補帖：分配正義",
+        points: [
+          "公正性：公平公正地分配醫療資源",
+          "應考慮：存活率、生命年數、疾病嚴重度",
+          "不應考慮：社會地位、經濟能力、種族性別",
+          "分配原則：最大化效益、平等對待、基於需求",
+          "護理師應確保過程透明、倡導公平使用"
+        ]
+      }
+    },
+    {
+      id: 4,
+      title: "第四關：保密義務與例外情況",
+      scenario: "HIV陽性已婚男性病人從未告知妻子感染狀況，持續有性行為。病人強調：這是我的隱私，你不能告訴任何人。護理師擔心妻子健康風險。",
+      question: "如何平衡保密義務與保護第三者的責任？",
+      options: [
+        {
+          text: "嘗試說服病人主動告知，若拒絕則依法定通報程序保護第三者",
+          correct: true,
+          explanation: "正確！保密雖重要但非絕對。當有明確傷害風險時，保護他人義務可能優先。應先鼓勵主動告知，必要時依法通報。"
+        },
+        {
+          text: "完全尊重保密原則，不告知任何人",
+          correct: false,
+          explanation: "不正確。當有明確傷害第三者風險時，保密並非絕對。"
+        },
+        {
+          text: "立即通知病人妻子",
+          correct: false,
+          explanation: "不正確。未經適當程序違反專業倫理。應先說服並透過合法途徑處理。"
+        },
+        {
+          text: "忽視此問題，這是私人事務",
+          correct: false,
+          explanation: "不正確。護理師有責任保護公眾健康。"
+        }
+      ],
+      ethicalPrinciple: "保密義務與保護第三者責任的平衡",
+      knowledgeBoost: {
+        title: "知識小補帖：保密與例外",
+        points: [
+          "保密是信任基礎，但不是絕對的",
+          "例外情況：傷害危險、虐待證據、法律要求報告",
+          "傳染病防治法規定醫事人員應依規定通報",
+          "平衡原則：先說服主動告知，必要時依法保護第三者",
+          "了解相關法規，在保密與保護公眾健康間平衡"
+        ]
+      }
+    },
+    {
+      id: 5,
+      title: "第五關：醫護團隊合作倫理",
+      scenario: "護理師發現同事出現多次給藥錯誤，身上有酒精味。同事正經歷離婚和財務問題，懇求不要報告。護理師擔心病人安全，但也同情朋友。",
+      question: "依據護理倫理規範，應該如何處理？",
+      options: [
+        {
+          text: "向護理主管報告，同時表達對同事的關懷，協助她獲得支援",
+          correct: true,
+          explanation: "正確！病人安全是首要考量。報告受損執業是倫理義務。這是保護病人和幫助同事。"
+        },
+        {
+          text: "保守秘密並密切監視同事",
+          correct: false,
+          explanation: "不正確。這讓病人處於危險，違反專業責任。"
+        },
+        {
+          text: "建議她休假並自行尋求協助",
+          correct: false,
+          explanation: "不正確。無法充分保護當下病人安全。"
+        },
+        {
+          text: "這是個人隱私，不應介入",
+          correct: false,
+          explanation: "不正確。影響病人安全時有責任採取行動。"
+        }
+      ],
+      ethicalPrinciple: "專業責任與團隊合作倫理",
+      knowledgeBoost: {
+        title: "知識小補帖：團隊合作倫理",
+        points: [
+          "團隊倫理基礎：尊重、忠誠、開放溝通、相互信任",
+          "護理倫理規範：同儕違法應規勸，必要時舉發",
+          "受損執業：物質濫用或身心狀況影響專業表現",
+          "報告義務：保護病人安全是首要責任",
+          "多數機構設有員工協助方案提供專業協助"
+        ]
+      }
+    }
+  ];
+
+  const startGame = () => {
+    setGameStarted(true);
+    setTimeElapsed(0);
+    setCurrentRoom(0);
+    setCompletedRooms([]);
+    setSelectedAnswers({});
+    setShowFeedback(false);
+    setGameComplete(false);
+    setShowKnowledgeBoost(false);
+    setRestartCountdown(null);
+  };
+
+  const handleRestart = () => {
+    setGameStarted(true);
+    setTimeElapsed(0);
+    setCurrentRoom(0);
+    setCompletedRooms([]);
+    setSelectedAnswers({});
+    setShowFeedback(false);
+    setGameComplete(false);
+    setShowKnowledgeBoost(false);
+    setRestartCountdown(null);
+  };
+
+  const handleAnswerSelect = (roomId, optionIndex) => {
+    setSelectedAnswers({
+      ...selectedAnswers,
+      [roomId]: optionIndex
+    });
+  };
+
+  const checkAnswer = () => {
+    const currentRoomData = rooms[currentRoom];
+    const selectedIndex = selectedAnswers[currentRoomData.id];
+    
+    if (selectedIndex === undefined) {
+      alert("請先選擇答案再送出！");
+      return;
+    }
+
+    const isCorrect = currentRoomData.options[selectedIndex].correct;
+    setShowFeedback(true);
+
+    if (!isCorrect) {
+      setShowKnowledgeBoost(true);
+      setRestartCountdown(30);
+    }
+  };
+
+  const nextRoom = () => {
+    const currentRoomData = rooms[currentRoom];
+    const selectedIndex = selectedAnswers[currentRoomData.id];
+    const isCorrect = currentRoomData.options[selectedIndex].correct;
+
+    if (!isCorrect) {
+      return;
+    }
+
+    setCompletedRooms([...completedRooms, currentRoomData.id]);
+    setShowFeedback(false);
+
+    if (currentRoom < rooms.length - 1) {
+      setCurrentRoom(currentRoom + 1);
+    } else {
+      setGameComplete(true);
+    }
+  };
+
+  if (!gameStarted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-xl p-8">
+            <div className="text-center">
+              <Lock className="w-20 h-20 mx-auto mb-6 text-indigo-600" />
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">
+                護理倫理密室逃脫
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                基於護理倫理規範的臨床情境挑戰
+              </p>
+            </div>
+
+            <div className="bg-indigo-50 rounded-lg p-6 mb-8">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">遊戲規則</h2>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">1.</span>
+                  <span>根據護理倫理規範，仔細思考每個臨床情境</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">2.</span>
+                  <span>應用倫理決策過程選擇最適當的回應</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">3.</span>
+                  <span>答對才能解鎖下一關，答錯會提供知識小補帖</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">4.</span>
+                  <span>答錯後30秒將自動重新開始遊戲</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+              <div className="flex items-start">
+                <AlertCircle className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-1" />
+                <div>
+                  <p className="font-semibold text-yellow-800">學習目標</p>
+                  <ul className="mt-2 text-yellow-700 space-y-1 text-sm">
+                    <li>應用護理倫理規範於臨床情境</li>
+                    <li>培養道德敏感度與倫理思辨能力</li>
+                    <li>理解倫理決策過程與倫理原則</li>
+                    <li>處理道德困擾與倫理困境</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={startGame}
+              className="w-full bg-indigo-600 text-white py-4 rounded-lg text-xl font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              開始挑戰
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (gameComplete) {
+    const score = (completedRooms.length / rooms.length) * 100;
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-xl p-8 text-center">
+            <Award className="w-24 h-24 mx-auto mb-6 text-green-600" />
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+              恭喜完成！
+            </h1>
+            <div className="text-6xl font-bold text-green-600 mb-4">
+              {score}%
+            </div>
+            <p className="text-xl text-gray-600 mb-8">
+              完成時間：{formatTime(timeElapsed)}
+            </p>
+
+            <div className="bg-green-50 rounded-lg p-6 mb-8 text-left">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                複習的倫理原則
+              </h2>
+              <ul className="space-y-3 text-gray-700">
+                {rooms.map((room) => (
+                  <li key={room.id} className="flex items-start">
+                    <CheckCircle className="w-6 h-6 text-green-600 mr-3 flex-shrink-0 mt-1" />
+                    <div>
+                      <span className="font-semibold">{room.title.split('：')[1]}</span>
+                      <p className="text-sm text-gray-600 mt-1">{room.ethicalPrinciple}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              onClick={startGame}
+              className="bg-indigo-600 text-white py-3 px-8 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              再玩一次
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentRoomData = rooms[currentRoom];
+  const selectedIndex = selectedAnswers[currentRoomData.id];
+  const isWrongAnswer = showFeedback && selectedIndex !== undefined && !currentRoomData.options[selectedIndex].correct;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-xl p-8">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-2">
+              <Clock className="w-6 h-6 text-indigo-600" />
+              <span className="text-xl font-semibold text-gray-700">
+                {formatTime(timeElapsed)}
+              </span>
+            </div>
+            <div className="text-lg font-semibold text-gray-700">
+              第 {currentRoom + 1} 關，共 {rooms.length} 關
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <div className="flex space-x-2">
+              {rooms.map((room, index) => (
+                <div
+                  key={room.id}
+                  className={`flex-1 h-2 rounded ${
+                    completedRooms.includes(room.id)
+                      ? 'bg-green-500'
+                      : index === currentRoom
+                      ? 'bg-indigo-500'
+                      : 'bg-gray-200'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {isWrongAnswer && restartCountdown !== null && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <RotateCcw className="w-6 h-6 text-red-600 mr-3" />
+                  <p className="text-red-800 font-semibold">
+                    答錯了！{restartCountdown} 秒後將重新開始遊戲
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            {currentRoomData.title}
+          </h2>
+
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
+            <p className="text-lg text-gray-800 leading-relaxed">
+              {currentRoomData.scenario}
+            </p>
+          </div>
+
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            {currentRoomData.question}
+          </h3>
+
+          <div className="space-y-4 mb-8">
+            {currentRoomData.options.map((option, index) => (
+              <div
+                key={index}
+                onClick={() => !showFeedback && handleAnswerSelect(currentRoomData.id, index)}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  selectedIndex === index
+                    ? showFeedback
+                      ? option.correct
+                        ? 'border-green-500 bg-green-50'
+                        : 'border-red-500 bg-red-50'
+                      : 'border-indigo-500 bg-indigo-50'
+                    : 'border-gray-300 hover:border-indigo-300 bg-white'
+                } ${showFeedback ? 'cursor-default' : 'cursor-pointer'}`}
+              >
+                <div className="flex items-start">
+                  <div className={`w-6 h-6 rounded-full border-2 mr-3 flex-shrink-0 mt-1 flex items-center justify-center ${
+                    selectedIndex === index
+                      ? showFeedback
+                        ? option.correct
+                          ? 'border-green-500 bg-green-500'
+                          : 'border-red-500 bg-red-500'
+                        : 'border-indigo-500 bg-indigo-500'
+                      : 'border-gray-400'
+                  }`}>
+                    {selectedIndex === index && (
+                      <div className="w-3 h-3 bg-white rounded-full" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-gray-800">{option.text}</p>
+                    {showFeedback && selectedIndex === index && (
+                      <div className={`mt-3 p-3 rounded ${
+                        option.correct ? 'bg-green-100' : 'bg-red-100'
+                      }`}>
+                        <p className={`text-sm ${
+                          option.correct ? 'text-green-800' : 'text-red-800'
+                        }`}>
+                          {option.explanation}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {showKnowledgeBoost && (
+            <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-6">
+              <div className="flex items-start mb-4">
+                <BookOpen className="w-8 h-8 text-yellow-600 mr-3 flex-shrink-0" />
+                <h3 className="text-2xl font-bold text-yellow-900">
+                  {currentRoomData.knowledgeBoost.title}
+                </h3>
+              </div>
+              <ul className="space-y-3 text-gray-800">
+                {currentRoomData.knowledgeBoost.points.map((point, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-yellow-600 mr-2 font-bold">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="bg-indigo-50 rounded-lg p-4 mb-6">
+            <p className="text-sm font-semibold text-indigo-900">
+              倫理原則：<span className="font-normal">{currentRoomData.ethicalPrinciple}</span>
+            </p>
+          </div>
+
+          {!showFeedback ? (
+            <button
+              onClick={checkAnswer}
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              提交答案
+            </button>
+          ) : (
+            <button
+              onClick={nextRoom}
+              disabled={isWrongAnswer}
+              className={`w-full py-3 rounded-lg text-lg font-semibold transition-colors ${
+                isWrongAnswer
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-green-600 text-white hover:bg-green-700'
+              }`}
+            >
+              {isWrongAnswer ? '等待重新開始...' : currentRoom < rooms.length - 1 ? '下一關 →' : '完成挑戰！'}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default EthicsEscapeRoom;
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<EthicsEscapeRoom />);
+  </script>
+</body>
+</html>
