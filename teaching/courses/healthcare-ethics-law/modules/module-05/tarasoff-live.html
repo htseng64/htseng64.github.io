@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tarasoff 互動情境學習｜Supabase 即時版</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --muted:#9aa6c2; --text:#e9eeff;
+      --red:#e53935; --blue:#1e88e5; --yellow:#fbc02d; --green:#43a047;
+      --line:rgba(255,255,255,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#080c18, #0b1020);color:var(--text)}
+    header{padding:18px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,16,32,.92);backdrop-filter:blur(6px);z-index:10}
+    header h1{margin:0;font-size:18px}
+    header .sub{margin-top:6px;color:var(--muted);font-size:12px}
+    main{max-width:1040px;margin:0 auto;padding:16px;display:grid;gap:14px}
+    .row{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:980px){ .row{grid-template-columns:1.2fr .8fr} }
+    .card{background:rgba(18,26,51,.86);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .tag{display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+    .pill{padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+    .title{font-size:16px;margin:6px 0 10px 0}
+    .sceneText{white-space:pre-wrap;line-height:1.6;color:#f2f5ff}
+    .btns{display:grid;gap:8px;margin-top:10px}
+    button{
+      border:1px solid var(--line);background:#0f1630;color:var(--text);
+      padding:10px 12px;border-radius:12px;cursor:pointer;text-align:left;
+      transition:.15s transform,.15s background,.15s border-color
+    }
+    button:hover{transform:translateY(-1px);background:#101c3e;border-color:rgba(255,255,255,.22)}
+    .small{font-size:12px;color:var(--muted)}
+    .bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .fill{height:100%;width:0%}
+    .statRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:8px}
+    .k{color:var(--muted);font-size:12px}
+    .right{display:flex;gap:8px;flex-wrap:wrap}
+    .accent-red{color:var(--red)} .accent-blue{color:var(--blue)} .accent-yellow{color:var(--yellow)} .accent-green{color:var(--green)}
+    .divider{border-top:1px solid var(--line);margin:12px 0}
+    .grid2{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:980px){ .grid2{grid-template-columns:1fr 1fr} }
+    textarea, input{
+      width:100%;border-radius:12px;border:1px solid var(--line);background:#0f1630;color:var(--text);
+      padding:10px 12px;outline:none
+    }
+    textarea{min-height:110px;resize:vertical;line-height:1.5}
+    .models{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:980px){ .models{grid-template-columns:1fr 1fr} }
+    details{border:1px solid var(--line);border-radius:14px;background:#0f1630;padding:10px 12px}
+    summary{cursor:pointer;font-weight:700}
+    .hint{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.5}
+    .checklist label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.12)}
+    .checklist label:last-child{border-bottom:none}
+    .topActions{display:flex;gap:8px;flex-wrap:wrap}
+    .ghost{background:transparent}
+    .ok{border-color:rgba(67,160,71,.35)}
+    .note{font-size:12px;color:var(--muted);line-height:1.6}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  
+  .hidden{display:none!important}
+
+  .cardmini{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px}
+  .chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:6px 0;user-select:none}
+  .chk input{transform:translateY(1px)}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--fg);padding:10px 12px;border-radius:12px;cursor:pointer;margin-left:6px}
+
+</style>
+</head>
+<body>
+<header>
+  <h1>Tarasoff 互動情境學習｜Supabase 即時版</h1>
+  <div class="sub">課堂投影 / 遠距自學皆可｜同房間碼＝全班即時統計</div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="topActions">
+      <button class="ghost" onclick="resetAll()">重設本機資料</button>
+      <button class="ghost" onclick="exportJSON()">匯出我的作答 JSON</button>
+      <span class="pill">建議流程：Scene1 → Scene2 → 六模型 → 觸發點 → 反思</span>
+    </div>
+    <div class="note">
+      這是「匿名」即時統計版：不收集姓名學號。<br>
+      若你在 Supabase 還沒建立資料表/權限，請看頁面最下方「老師快速檢查清單」。
+    </div>
+  </div>
+
+  <div class="row">
+    <section class="card">
+      <div class="tag"><span class="pill">互動</span><span class="pill">Scenes</span><span class="pill">投票</span></div>
+      <h2 class="title">一、情境互動（Scenes）</h2>
+
+      <div class="card" style="margin-top:10px" id="scene1">
+        <div class="tag"><span class="pill">Scene 1</span><span class="pill">舞會曖昧（情緒層）</span></div>
+        <div class="sceneText" id="scene1Text"></div>
+        <div class="divider"></div>
+        <div class="small">你會怎麼反應？（選一個最接近的直覺）</div>
+        <div class="btns" id="scene1Btns"></div>
+        <div class="divider"></div>
+        <div class="small">我的選擇：<span id="scene1Mine" class="accent-yellow">尚未作答</span></div>
+      </div>
+
+      <div class="card" style="margin-top:10px" id="scene2">
+        <div class="tag"><span class="pill">Scene 2</span><span class="pill">臨床 confession（專業切換）</span></div>
+        <div class="sceneText" id="scene2Text"></div>
+        <div class="divider"></div>
+        <div class="small">你會怎麼做？（選一個最可能的第一步）</div>
+        <div class="btns" id="scene2Btns"></div>
+        <div class="divider"></div>
+        <div class="small">我的選擇：<span id="scene2Mine" class="accent-yellow">尚未作答</span></div>
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="tag"><span class="pill">即時</span><span class="pill">全班統計</span></div>
+      <h2 class="title">二、全班投票統計（同房間碼）</h2>
+
+      <div class="small">房間碼（同一堂課全班輸入同一碼，例如 <span class="mono">ETHICS-2026-01</span>）</div>
+      <input id="roomCode" placeholder="例：ETHICS-2026-01" />
+
+      <div class="divider"></div>
+      <button onclick="applyRoom()" class="ok">套用房間碼並開始即時更新</button>
+      <div class="small" id="rtMsg"></div>
+
+      <div class="divider"></div>
+      <div class="cardmini" id="teacherPanel">
+        <div class="small" style="margin-bottom:6px;">🎛️ 老師控制面板（投影端）</div>
+        <label class="chk"><input type="checkbox" id="tShowStats" checked> 顯示即時統計（Scene 1/2）</label>
+        <label class="chk"><input type="checkbox" id="tShowScene2" checked> 顯示 Scene 2（專業切換）</label>
+        <label class="chk"><input type="checkbox" id="tShowModels" checked> 顯示 六模型同場對話</label>
+        <label class="chk"><input type="checkbox" id="tShowTrigger" checked> 顯示 警告觸發點（Tarasoff）</label>
+        <label class="chk"><input type="checkbox" id="tShowReflect" checked> 顯示 反思區</label>
+        <div style="height:6px"></div>
+        <button class="ok" onclick="teacherRevealAll()">全部顯示</button>
+        <button class="ghost" onclick="teacherResetReveal()">回到只看 Scene 1</button>
+        <div class="small" style="opacity:.8;margin-top:6px;">提示：這些開關只影響你目前這個投影畫面，不會改到學生端資料。</div>
+      </div>
+
+
+      <div class="divider"></div>
+      <div class="small">Scene 1 統計</div>
+      <div id="statsScene1"></div>
+
+      <div class="divider"></div>
+      <div class="small">Scene 2 統計</div>
+      <div id="statsScene2"></div>
+
+      <div class="divider"></div>
+      <div class="note">
+        <b>老師引導金句：</b><br>
+        「剛剛你可以只為自己負責；現在你必須為<b class="accent-red">他人生命</b>負責。」
+      </div>
+    </aside>
+  </div>
+
+  <section class="card">
+    <div class="tag"><span class="pill">六模型</span><span class="pill">逐步展開</span></div>
+    <h2 class="title">三、六模型同場對話（點開＝模型在乎什麼）</h2>
+    <div class="models" id="modelsWrap"></div>
+  </section>
+
+  <section class="card">
+    <div class="tag"><span class="pill">互動</span><span class="pill">Tarasoff 警告觸發點</span></div>
+    <h2 class="title">四、找出「警告觸發點」</h2>
+    <div class="note">勾選你認為已構成「可信暴力風險」的語言線索（可複選）。</div>
+    <div class="divider"></div>
+    <div class="checklist" id="triggerList"></div>
+  </section>
+
+  <section class="card">
+    <div class="tag"><span class="pill">反思</span><span class="pill">遠距作業</span></div>
+    <h2 class="title">五、我的反思（自動存本機）</h2>
+    <div class="grid2">
+      <div>
+        <div class="small">我在 Scene 1 的情緒反應是什麼？（1–2 句）</div>
+        <textarea id="ref1" placeholder="例：我感到不舒服但又不想掃興..."></textarea>
+      </div>
+      <div>
+        <div class="small">我在 Scene 2 的專業掙扎是什麼？（1–2 句）</div>
+        <textarea id="ref2" placeholder="例：我擔心保密與他人安全衝突..."></textarea>
+      </div>
+      <div>
+        <div class="small">我最想用哪個模型來說明我的決策？為什麼？</div>
+        <textarea id="ref3" placeholder="例：Curtin，因為法律責任與可交代性..."></textarea>
+      </div>
+      <div>
+        <div class="small">一句話帶走</div>
+        <input id="ref4" placeholder="例：倫理不是選對答案，而是承擔後果與責任。" />
+      </div>
+    </div>
+    <div class="divider"></div>
+    <button onclick="saveReflection()" class="ok">儲存反思</button>
+    <div class="small" id="saveMsg"></div>
+  </section>
+
+  <section class="card">
+    <div class="tag"><span class="pill">老師</span><span class="pill">快速檢查</span></div>
+    <h2 class="title">六、如果「即時統計」沒有更新，先檢查這三件事</h2>
+    <div class="note">
+      <ol>
+        <li><b>資料表</b>：是否已建立 <span class="mono">poll_events</span>？</li>
+        <li><b>RLS</b>：是否允許 <span class="mono">anon</span> 做 insert / select？</li>
+        <li><b>Realtime</b>：是否把 <span class="mono">poll_events</span> 加入 Realtime（Replication）？</li>
+      </ol>
+      （你若願意貼一張 Supabase 的截圖，我可以直接指出是哪一步沒開。）
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ===== Teacher projector controls (local only) =====
+function teacherApplyVisibility(){
+  const showStats = document.getElementById('tShowStats')?.checked ?? true;
+  const showScene2 = document.getElementById('tShowScene2')?.checked ?? true;
+  const showModels = document.getElementById('tShowModels')?.checked ?? true;
+  const showTrigger = document.getElementById('tShowTrigger')?.checked ?? true;
+  const showReflect = document.getElementById('tShowReflect')?.checked ?? true;
+
+  // stats blocks in sidebar
+  document.querySelectorAll('[data-teacher="stats"]').forEach(el=>{
+    el.classList.toggle('hidden', !showStats);
+  });
+
+  // main content sections
+  const elScene2 = document.getElementById('scene2');
+  if(elScene2) elScene2.classList.toggle('hidden', !showScene2);
+
+  const elModels = document.getElementById('modelsWrap');
+  if(elModels) elModels.closest('section')?.classList.toggle('hidden', !showModels);
+
+  const elTrigger = document.getElementById('triggerList');
+  if(elTrigger) elTrigger.closest('section')?.classList.toggle('hidden', !showTrigger);
+
+  const ref1 = document.getElementById('ref1');
+  if(ref1) ref1.closest('section')?.classList.toggle('hidden', !showReflect);
+}
+
+function teacherRevealAll(){
+  ['tShowStats','tShowScene2','tShowModels','tShowTrigger','tShowReflect'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.checked=true;
+  });
+  teacherApplyVisibility();
+}
+
+function teacherResetReveal(){
+  // only Scene 1 + (optional) keep reflection off for class
+  const set = (id,val)=>{const el=document.getElementById(id); if(el) el.checked=val;}
+  set('tShowStats', false);
+  set('tShowScene2', false);
+  set('tShowModels', false);
+  set('tShowTrigger', false);
+  set('tShowReflect', false);
+  teacherApplyVisibility();
+}
+
+// hook checkbox changes
+window.addEventListener('DOMContentLoaded', ()=>{
+  // tag stats blocks for easy hide/show
+  const s1label = document.querySelector('#statsScene1')?.previousElementSibling;
+  const s2label = document.querySelector('#statsScene2')?.previousElementSibling;
+  [s1label, document.getElementById('statsScene1'), s2label, document.getElementById('statsScene2')]
+    .filter(Boolean)
+    .forEach(el=>el.setAttribute('data-teacher','stats'));
+
+  ['tShowStats','tShowScene2','tShowModels','tShowTrigger','tShowReflect'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('change', teacherApplyVisibility);
+  });
+
+  // default: keep everything shown (teacher can click reset)
+  teacherApplyVisibility();
+});
+
+</script>
+<script>
+  const SUPABASE_URL = "https://nbiylpyckbcargzvpael.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_SKcUTeg69UhmS2RpY3Rv1Q_P-5ngvrQ";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const DATA = {
+    scene1: {
+      text:
+`你在一場舞會中，音樂很大、燈光很暗。
+有人靠近你、想更親密，並低聲說：
+「我其實對你，比對其他人更有興趣。」
+
+（提醒：這不是 Tarasoff 本人的原始情節，而是用來引發「界線被誤讀」的教學情境。）`,
+      options: [
+        "A. 覺得被欣賞，開心接受",
+        "B. 覺得曖昧，但保持距離",
+        "C. 覺得不舒服，想離開",
+        "D. 感到困惑，不知道怎麼反應"
+      ]
+    },
+    scene2: {
+      text:
+`幾天後，你是護理人員／治療團隊成員。
+同一個人坐在你面前，語氣冷靜地說：
+「我最近一直在想一件事，停不下來。
+如果沒有人阻止，事情一定會發生。」
+
+你會怎麼做？（選最可能的「第一步」）`,
+      options: [
+        "A. 先安撫並維持保密，繼續談下去",
+        "B. 立即升級：通知主管/醫師/團隊並啟動機構流程",
+        "C. 先做風險評估（具體對象、計畫、時間、可近性），同時尋求團隊協助",
+        "D. 直接對外警告潛在受害者（不先走流程）"
+      ]
+    },
+    models: [
+      { name:"Jonsen 四項分析", focus:"先把問題拆清楚（醫療、病人偏好、生活品質、情境因素）。", use:"用來『分析結構』，不直接裁決價值。"},
+      { name:"Joseph 情境倫理", focus:"哪一個行動最有愛（Agape）？", use:"用來討論『價值判準』，不是法律工具。"},
+      { name:"Curtin 模式", focus:"能否對社會與法律交代？（責任/可交代性）", use:"用來處理 Duty to Warn / 法律與社會責任。"},
+      { name:"Aroskar 模式", focus:"時間拖不起：現在不做會更糟嗎？", use:"用來強調『不決定也是決定』與即時風險。"},
+      { name:"Thompson 模式", focus:"能否制度化：若每次都這樣做，公平嗎？", use:"用來思考一致標準、資源與制度正義。"},
+      { name:"Silva 模式", focus:"在組織中怎麼做：流程、團隊、事後評值。", use:"用來落地執行（資料→問題→方案→決策→評值）。"}
+    ],
+    triggers: [
+      { id:"t1", text:"「每天都在想，想到停不下來」＝持續性、侵入性想法" },
+      { id:"t2", text:"「有些事情不是等一等就會過去」＝否定等待與治療" },
+      { id:"t3", text:"「不是傷害誰，只是修正錯的地方」＝合理化行動" },
+      { id:"t4", text:"「如果沒有人阻止，事情一定會發生」＝必然性語言（高風險）" },
+      { id:"t5", text:"「你沒有站在我這邊」＝對立化、治療關係破裂" }
+    ]
+  };
+
+  const LS_KEY = "tarasoff_supabase_live_v1";
+  const state = loadState();
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : { answers:{}, triggers:{}, reflection:{}, room:"" };
+    }catch(e){
+      return { answers:{}, triggers:{}, reflection:{}, room:"" };
+    }
+  }
+  function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+  function getClientId(){
+    let id = localStorage.getItem("tarasoff_client_id_v1");
+    if(!id){
+      id = crypto.randomUUID();
+      localStorage.setItem("tarasoff_client_id_v1", id);
+    }
+    return id;
+  }
+  const CLIENT_ID = getClientId();
+
+  function mountButtons(containerId, sceneKey, options){
+    const el = document.getElementById(containerId);
+    el.innerHTML = "";
+    options.forEach(opt=>{
+      const b = document.createElement("button");
+      b.textContent = opt;
+      b.onclick = ()=>selectAnswer(sceneKey, opt);
+      el.appendChild(b);
+    });
+  }
+
+  function mountScenes(){
+    document.getElementById("scene1Text").textContent = DATA.scene1.text;
+    document.getElementById("scene2Text").textContent = DATA.scene2.text;
+    mountButtons("scene1Btns", "scene1", DATA.scene1.options);
+    mountButtons("scene2Btns", "scene2", DATA.scene2.options);
+    document.getElementById("scene1Mine").textContent = state.answers.scene1 ?? "尚未作答";
+    document.getElementById("scene2Mine").textContent = state.answers.scene2 ?? "尚未作答";
+    const roomEl = document.getElementById("roomCode");
+    if(roomEl) roomEl.value = state.room || "";
+  }
+
+  function mountModels(){
+    const wrap = document.getElementById("modelsWrap");
+    wrap.innerHTML = "";
+    DATA.models.forEach(m=>{
+      const d = document.createElement("details");
+      d.innerHTML = `
+        <summary>${m.name}</summary>
+        <div class="hint"><b class="accent-yellow">在乎：</b>${m.focus}</div>
+        <div class="hint"><b class="accent-blue">在本案例可用來：</b>${m.use}</div>
+      `;
+      wrap.appendChild(d);
+    });
+  }
+
+  function mountTriggers(){
+    const wrap = document.getElementById("triggerList");
+    wrap.innerHTML = "";
+    DATA.triggers.forEach(t=>{
+      const label = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state.triggers[t.id];
+      cb.onchange = ()=>{ state.triggers[t.id]=cb.checked; saveState(); };
+      const span = document.createElement("div");
+      span.textContent = t.text;
+      label.appendChild(cb);
+      label.appendChild(span);
+      wrap.appendChild(label);
+    });
+  }
+
+  function mountReflection(){
+    const r = state.reflection || {};
+    document.getElementById("ref1").value = r.ref1 || "";
+    document.getElementById("ref2").value = r.ref2 || "";
+    document.getElementById("ref3").value = r.ref3 || "";
+    document.getElementById("ref4").value = r.ref4 || "";
+  }
+
+  function saveReflection(){
+    state.reflection = {
+      ref1: document.getElementById("ref1").value.trim(),
+      ref2: document.getElementById("ref2").value.trim(),
+      ref3: document.getElementById("ref3").value.trim(),
+      ref4: document.getElementById("ref4").value.trim()
+    };
+    saveState();
+    const el = document.getElementById("saveMsg");
+    el.textContent = "已儲存（保存在此裝置瀏覽器）";
+    setTimeout(()=>el.textContent="", 1500);
+  }
+
+  async function selectAnswer(sceneKey, opt){
+    state.answers[sceneKey] = opt;
+    saveState();
+    document.getElementById(sceneKey+"Mine").textContent = opt;
+
+    if(!state.room){
+      alert("請先輸入房間碼（右側）並啟動即時更新，才能加入全班統計。");
+      return;
+    }
+
+    const payload = { room: state.room, scene: sceneKey, option: opt, client_id: CLIENT_ID };
+    const { error } = await supabase.from("poll_events").insert(payload);
+    if(error){
+      console.error(error);
+      alert("送出投票失敗。常見原因：未建立 poll_events / RLS 未開 / Realtime 未開 / Key 不是 anon 或 publishable。");
+    }
+  }
+
+  let realtimeChannel = null;
+
+  async function applyRoom(){
+    const room = (document.getElementById("roomCode")?.value || "").trim();
+    if(!room){ alert("請輸入房間碼，例如 ETHICS-2026-01"); return; }
+    state.room = room;
+    saveState();
+    document.getElementById("rtMsg").textContent = "載入統計並啟動即時更新…";
+    await refreshStats();
+    startRealtime(room);
+    document.getElementById("rtMsg").textContent = "即時更新已啟動 ✅";
+  }
+
+  function startRealtime(room){
+    if(realtimeChannel){
+      supabase.removeChannel(realtimeChannel);
+      realtimeChannel = null;
+    }
+    realtimeChannel = supabase
+      .channel("poll_events_room_" + room)
+      .on("postgres_changes",
+        { event: "INSERT", schema: "public", table: "poll_events", filter: `room=eq.${room}` },
+        () => refreshStats()
+      )
+      .subscribe();
+  }
+
+  async function refreshStats(){
+    if(!state.room) return;
+
+    const { data, error } = await supabase
+      .from("poll_events")
+      .select("scene, option, client_id")
+      .eq("room", state.room);
+
+    if(error){
+      console.error(error);
+      document.getElementById("rtMsg").textContent = "載入統計失敗（請檢查 poll_events/RLS/Key）";
+      return;
+    }
+
+    const lastVoteMap = new Map();
+    data.forEach(row=>{
+      lastVoteMap.set(`${row.scene}|${row.client_id}`, row.option);
+    });
+
+    const votes = { scene1: [], scene2: [] };
+    for(const [key, opt] of lastVoteMap.entries()){
+      const scene = key.split("|")[0];
+      votes[scene].push(opt);
+    }
+
+    renderStats("scene1", DATA.scene1.options, votes.scene1);
+    renderStats("scene2", DATA.scene2.options, votes.scene2);
+  }
+
+  function renderStats(sceneKey, options, votesArray){
+    const total = votesArray.length || 0;
+    const counts = Object.fromEntries(options.map(o=>[o,0]));
+    votesArray.forEach(v=>{ if(counts[v] !== undefined) counts[v]++; });
+
+    const wrapId = sceneKey === "scene1" ? "statsScene1" : "statsScene2";
+    const wrap = document.getElementById(wrapId);
+    if(!wrap) return;
+
+    wrap.innerHTML = "";
+    options.forEach(opt=>{
+      const c = counts[opt] || 0;
+      const pct = total ? Math.round((c/total)*100) : 0;
+
+      const row = document.createElement("div");
+      row.className = "statRow";
+      row.innerHTML = `
+        <div>
+          <div class="k">${opt}</div>
+          <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="right">
+          <span class="pill">${c} 人</span>
+          <span class="pill">${pct}%</span>
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+
+    const footer = document.createElement("div");
+    footer.className = "small";
+    footer.style.marginTop = "8px";
+    footer.textContent = `總投票人數：${total}`;
+    wrap.appendChild(footer);
+  }
+
+  function exportJSON(){
+    const payload = {
+      meta:{ version:"supabase-live-v1", exportedAt:new Date().toISOString() },
+      room: state.room,
+      answers: state.answers,
+      triggers: state.triggers,
+      reflection: state.reflection
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "tarasoff_learning_export.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetAll(){
+    if(!confirm("確定要清除本機作答與反思？")) return;
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  }
+
+  mountScenes();
+  mountModels();
+  mountTriggers();
+  mountReflection();
+
+  if(state.room){
+    const roomEl = document.getElementById("roomCode");
+    if(roomEl) roomEl.value = state.room;
+    applyRoom();
+  }
+</script>
+</body>
+</html>
