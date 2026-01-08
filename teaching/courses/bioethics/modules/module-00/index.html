@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醫護倫理四原則 - 完整互動式教學平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 導航列 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-learn { background: #667eea; color: white; }
+        .btn-quiz { background: #10b981; color: white; }
+        .btn-result { background: #f59e0b; color: white; }
+        .btn-top { background: #9ca3af; color: white; }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* 標題區 */
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* 進度條 */
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            z-index: 1;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: #10b981;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .progress-step {
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.completed { background: #10b981; }
+        .progress-step.active {
+            background: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 區域切換 */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 學習區：大卡片設計 */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .principle-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .principle-card.watched {
+            border: 3px solid #10b981;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .card-header.autonomy { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-header.beneficence { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-header.nonmaleficence { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .card-header.justice { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-content h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card-content p {
+            margin-bottom: 1rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .key-points {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .key-points h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #555;
+        }
+
+        .key-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .watch-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .watch-status.unwatched {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .watch-status.watched {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* 測驗區域 */
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-progress {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .question h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .question-type {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #ede9fe;
+        }
+
+        .option.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        .option-label {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option.correct .option-label { background: #10b981; }
+        .option.incorrect .option-label { background: #ef4444; }
+
+        .feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .quiz-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-prev { background: #9ca3af; color: white; }
+        .btn-check { background: #667eea; color: white; }
+        .btn-next { background: #10b981; color: white; }
+
+        .quiz-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 結果區域 */
+        .result-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 2rem 0;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .review-answers {
+            margin-top: 3rem;
+        }
+
+        .answer-review {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .answer-review h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .answer-review .correct-answer {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .answer-review .your-answer {
+            color: #667eea;
+        }
+
+        .answer-review .wrong-answer {
+            color: #ef4444;
+        }
+
+        /* 提示訊息 */
+        .video-tip {
+            background: #fff3cd;
+            padding: 1rem;
+            margin: 1rem 0 2rem 0;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        /* 煙火效果 */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            animation: confetti-fall 3s linear;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .principles-grid { grid-template-columns: 1fr; }
+            .quiz-container { padding: 1.5rem; }
+            .quiz-buttons { flex-direction: column; }
+            .navbar-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航列 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">🏥 醫護倫理互動教學平台</div>
+            <div class="nav-buttons">
+                <button class="nav-btn btn-learn" onclick="showSection('learn')">📚 學習影片</button>
+                <button class="nav-btn btn-quiz" onclick="showSection('quiz')" id="quizBtn" disabled>📝 開始測驗</button>
+                <button class="nav-btn btn-result" onclick="showSection('result')" id="resultBtn" style="display:none;">📊 查看成績</button>
+                <button class="nav-btn btn-top" onclick="scrollToTop()">⬆️ 回頂部</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 標題區 -->
+        <div class="hero">
+            <h1>🎬 醫護倫理四原則</h1>
+            <p>透過動畫學習，深入理解醫護專業的核心價值</p>
+        </div>
+
+        <!-- 進度條 -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-step active" id="step1">1</div>
+                <div class="progress-step" id="step2">2</div>
+                <div class="progress-step" id="step3">3</div>
+            </div>
+            <div class="progress-labels">
+                <span>觀看影片</span>
+                <span>完成測驗</span>
+                <span>查看成績</span>
+            </div>
+        </div>
+
+        <!-- 學習區域 -->
+        <div id="learnSection" class="section active">
+            <div class="video-tip">
+                <strong>💡 使用說明：</strong>
+                點擊影片即可播放。觀看完所有影片後，測驗按鈕將自動啟用。建議使用耳機以獲得最佳學習體驗。
+            </div>
+
+            <div class="principles-grid">
+                
+                <!-- 原則一：自主原則 -->
+                <div class="principle-card" data-video="1">
+                    <div class="card-header autonomy">
+                        1️⃣ 自主原則 Autonomy
+                    </div>
+                    <div class="video-container">
+                        <video id="video1" controls preload="metadata" onended="markVideoWatched(1)">
+                            <source src="01-who-decides.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <h3>🎭 故事：病患不想再治療，家屬卻堅持插管</h3>
+                        <p>
+                            <strong>場景：</strong>急診加護病房<br>
+                            <strong>案例：</strong>王伯伯是末期癌症患者，醫師詢問是否願意接受插管延命。
+                            王伯伯搖頭表示「想要有尊嚴地走」，但女兒堅持「不能放棄，一定要救！」並要求插管。
+                            護理師在場陷入兩難。
+                        </p>
+                        <div class="key-points">
+                            <h4>💬 關鍵對話</h4>
+                            <ul>
+                                <li><strong>醫師：</strong>「王先生，您的情況危急，我們建議插管處置，但我們會尊重您的選擇。」</li>
+                                <li><strong>王伯伯：</strong>「我已經受夠了，不想再痛苦下去……」</li>
+                                <li><strong>女兒：</strong>「爸爸怎麼可以說這種話？一定要救，求你們插管！」</li>
+                            </ul>
+                        </div>
+                        <div class="key-points" style="background: #fff3cd; margin-top: 1rem;">
+                            <h4>🤔 思考問題</h4>
+                            <ul>
+                                <li><strong>如果您是護理師，這時候該怎麼辦？</strong></li>
+                                <li>是尊重病患的意願，還是遵照家屬的意見？</li>
+                                <li>病人有沒有決定權？家屬的角色是什麼？</li>
+                                <li><strong>核心：</strong>【自主原則】──病患的自主決定權</li>
+                            </ul>
+                        </div>
+                        <span class="watch-status unwatched" id="status1">⏳ 尚未觀看</span>
+                    </div>
+                </div>
+
+                <!-- 原則二：行善原則 -->
+                <div class="principle-card" data-video="2">
+                    <div class="card-header beneficence">
+                        2️⃣ 行善原則 Beneficence
+                    </div>
+                    <div class="video-container">
+                        <video id="video2" controls preload="metadata" onended="markVideoWatched(2)">
+                            <source src="02-good-for-you.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <h3>❤️ 故事：隱瞞病情是為他好嗎？</h3>
+                        <p>
+                            <strong>場景：</strong>住院病房<br>
+                            <strong>案例：</strong>醫師發現李小姐的檢查結果為惡性腫瘤，正要向患者說明。
+                            母親衝出來攔住，說：「孩子心臟不好，不能讓她知道，她會嚇壞的！」
+                            醫師與護理師面面相覷。
+                        </p>
+                        <div class="key-points">
+                            <h4>💬 關鍵對話</h4>
+                            <ul>
+                                <li><strong>醫師（小聲對護理師）：</strong>「我們該說實話嗎？她有權知道，但也可能會崩潰……」</li>
+                                <li><strong>母親：</strong>「就拜託你們了，不要告訴她！」</li>
+                            </ul>
+                        </div>
+                        <div class="key-points" style="background: #ffe4e9; margin-top: 1rem;">
+                            <h4>🤔 思考問題</h4>
+                            <ul>
+                                <li><strong>不說，是為她好嗎？</strong></li>
+                                <li>還是剝奪她知情的權利？</li>
+                                <li>做什麼對病人最好？如何定義「好」？</li>
+                                <li><strong>核心：</strong>【行善原則】──醫療處置要以病人利益為優先</li>
+                            </ul>
+                        </div>
+                        <span class="watch-status unwatched" id="status2">⏳ 尚未觀看</span>
+                    </div>
+                </div>
+
+                <!-- 原則三：不傷害原則 -->
+                <div class="principle-card" data-video="3">
+                    <div class="card-header nonmaleficence">
+                        3️⃣ 不傷害原則 Non-maleficence
+                    </div>
+                    <div class="video-container">
+                        <video id="video3" controls preload="metadata" onended="markVideoWatched(3)">
+                            <source src="04-red-line.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <h3>🛡️ 故事：安寧病房的最後選擇</h3>
+                        <p>
+                            <strong>場景：</strong>安寧病房<br>
+                            <strong>案例：</strong>許阿姨是末期肺癌患者，出現劇烈疼痛，已無法進食。
+                            醫療團隊建議：「可以考慮用嗎啡緩解，可能會影響清醒程度。」
+                            兒子質疑：「那會不會加速死亡？」
+                        </p>
+                        <div class="key-points">
+                            <h4>💬 關鍵對話</h4>
+                            <ul>
+                                <li><strong>許阿姨：</strong>「我真的痛到受不了……但我不想昏過去死掉……」</li>
+                                <li><strong>護理師：</strong>「我們會很小心用藥，讓妳舒服，也保留意識。」</li>
+                            </ul>
+                        </div>
+                        <div class="key-points" style="background: #e0f7ff; margin-top: 1rem;">
+                            <h4>🤔 思考問題</h4>
+                            <ul>
+                                <li><strong>我們止痛，是在幫助還是造成另一種傷害？</strong></li>
+                                <li>如何在緩解痛苦與保持清醒之間取得平衡？</li>
+                                <li>醫療不能造成新的損害──但什麼算是「傷害」？</li>
+                                <li><strong>核心：</strong>【不傷害原則】──首要之務是不造成傷害</li>
+                            </ul>
+                        </div>
+                        <span class="watch-status unwatched" id="status3">⏳ 尚未觀看</span>
+                    </div>
+                </div>
+
+                <!-- 原則四：公平原則 -->
+                <div class="principle-card" data-video="4">
+                    <div class="card-header justice">
+                        4️⃣ 公平原則 Justice
+                    </div>
+                    <div class="video-container">
+                        <video id="video4" controls preload="metadata" onended="markVideoWatched(4)">
+                            <source src="03-justice-dilemma.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <h3>⚖️ 故事：一張加護病房床，兩個急重症病人</h3>
+                        <p>
+                            <strong>場景：</strong>急診候床區<br>
+                            <strong>案例：</strong>系統通知只剩下一張ICU病床。
+                            <strong>A病人：</strong>92歲老人敗血症，無意識。
+                            <strong>B病人：</strong>45歲男性心肌梗塞，有急救意願。
+                            家屬激動抗議：「我們也等很久了！」
+                        </p>
+                        <div class="key-points">
+                            <h4>💬 關鍵對話</h4>
+                            <ul>
+                                <li><strong>醫師：</strong>「兩位病患病情都危急，我們得根據整體病況與預後評估安排床位。」</li>
+                                <li><strong>家屬A：</strong>「你們是年齡歧視嗎？」</li>
+                                <li><strong>家屬B：</strong>「他比較年輕就能排前面嗎？」</li>
+                            </ul>
+                        </div>
+                        <div class="key-points" style="background: #e7ffe0; margin-top: 1rem;">
+                            <h4>🤔 思考問題</h4>
+                            <ul>
+                                <li><strong>如果你是醫護人員，會怎麼決定？</strong></li>
+                                <li>用什麼原則排？年齡？病情？先來後到？存活率？</li>
+                                <li>醫療資源要如何分配才公平？</li>
+                                <li><strong>核心：</strong>【公平原則】──公正合理地分配醫療資源</li>
+                            </ul>
+                        </div>
+                        <span class="watch-status unwatched" id="status4">⏳ 尚未觀看</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 測驗區域 -->
+        <div id="quizSection" class="section">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2>📝 醫護倫理互動測驗</h2>
+                    <div class="quiz-progress">
+                        題目 <span id="currentQuestion">1</span> / <span id="totalQuestions">10</span>
+                    </div>
+                </div>
+
+                <div id="quizContent"></div>
+
+                <div class="quiz-buttons">
+                    <button class="quiz-btn btn-prev" onclick="previousQuestion()" id="prevBtn" disabled>⬅️ 上一題</button>
+                    <button class="quiz-btn btn-check" onclick="checkAnswer()" id="checkBtn">✓ 確認答案</button>
+                    <button class="quiz-btn btn-next" onclick="nextQuestion()" id="nextBtn" disabled>下一題 ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結果區域 -->
+        <div id="resultSection" class="section">
+            <div class="result-container">
+                <h2 style="color: #667eea; font-size: 2.5rem;">🎉 測驗完成！</h2>
+                <div class="result-score" id="finalScore">0%</div>
+                <div class="result-message" id="resultMessage"></div>
+
+                <div class="result-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="correctCount">0</div>
+                        <div class="stat-label">答對題數</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="incorrectCount">0</div>
+                        <div class="stat-label">答錯題數</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">正確率</div>
+                    </div>
+                </div>
+
+                <div class="review-answers" id="reviewContent"></div>
+
+                <div style="margin-top: 3rem;">
+                    <button class="quiz-btn btn-check" onclick="retakeQuiz()" style="margin-right: 1rem;">🔄 重新測驗</button>
+                    <button class="quiz-btn btn-next" onclick="showSection('learn')">📚 回到影片</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 全域變數
+        let watchedVideos = new Set();
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizStarted = false;
+
+        // 測驗題目
+        const quizQuestions = [
+            {
+                id: 1,
+                type: "單選題",
+                question: "在自主原則的案例中，王伯伯表示不想再接受插管治療，但女兒堅持要救。身為護理師，最優先應該考慮什麼？",
+                options: [
+                    "家屬的意見，因為他們最了解病人",
+                    "病人的意願，因為這是他的身體和生命",
+                    "醫師的專業判斷",
+                    "醫院的標準作業流程"
+                ],
+                correct: 1,
+                explanation: "根據自主原則，病人有權決定自己的治療方案。即使家屬出於關心，也不應該取代病人的自主決定權。"
+            },
+            {
+                id: 2,
+                type: "單選題",
+                question: "李小姐的母親要求醫護人員隱瞞癌症診斷。這種做法主要違反了哪一個倫理原則？",
+                options: [
+                    "公平原則",
+                    "不傷害原則",
+                    "自主原則（知情同意）",
+                    "行善原則"
+                ],
+                correct: 2,
+                explanation: "隱瞞病情剝奪了病人的知情權，違反了自主原則中的知情同意要求。病人有權利知道自己的健康狀況。"
+            },
+            {
+                id: 3,
+                type: "單選題",
+                question: "許阿姨擔心使用嗎啡會「昏過去死掉」。護理師應該如何回應？",
+                options: [
+                    "直接告訴她嗎啡不會加速死亡",
+                    "解釋會小心用藥，在緩解疼痛和保持清醒間取得平衡",
+                    "建議她忍耐疼痛，不要用藥",
+                    "只說「這是醫師的決定」"
+                ],
+                correct: 1,
+                explanation: "護理師應該誠實說明用藥的目的和方式，同時尊重病人的擔憂，協助找到最適合的緩解方案。"
+            },
+            {
+                id: 4,
+                type: "單選題",
+                question: "在資源分配的案例中，92歲老人和45歲男性都需要ICU床位。最公平的決策依據應該是什麼？",
+                options: [
+                    "年齡越輕優先",
+                    "先到先得",
+                    "根據病情嚴重度和存活機會綜合評估",
+                    "由家屬談判決定"
+                ],
+                correct: 2,
+                explanation: "公平原則要求根據醫療需求和預後進行專業評估，而非單純以年齡或社經地位決定。"
+            },
+            {
+                id: 5,
+                type: "單選題",
+                question: "王伯伯的女兒說「爸爸怎麼可以說這種話？」這反映了什麼問題？",
+                options: [
+                    "家屬無法接受病人的死亡",
+                    "家屬不尊重病人的自主權",
+                    "家屬對醫療有誤解",
+                    "以上皆是"
+                ],
+                correct: 3,
+                explanation: "這句話反映了家屬在情感上難以接受、對病人自主權的不理解，以及可能對醫療決策的誤解。"
+            },
+            {
+                id: 6,
+                type: "單選題",
+                question: "「不說病情是為她好」這種想法屬於什麼倫理立場？",
+                options: [
+                    "家父長式主義（Paternalism）",
+                    "自主主義",
+                    "功利主義",
+                    "義務論"
+                ],
+                correct: 0,
+                explanation: "家父長式主義認為醫護或家屬比病人更知道什麼對病人好，因此可以替病人做決定。這與現代醫療倫理強調的自主權相衝突。"
+            },
+            {
+                id: 7,
+                type: "單選題",
+                question: "使用嗎啡止痛可能影響清醒度，這涉及哪兩個原則的平衡？",
+                options: [
+                    "自主原則 vs. 公平原則",
+                    "行善原則 vs. 不傷害原則",
+                    "公平原則 vs. 不傷害原則",
+                    "自主原則 vs. 行善原則"
+                ],
+                correct: 1,
+                explanation: "使用嗎啡是為了行善（緩解痛苦），但副作用可能造成傷害（影響意識）。醫療團隊需要在兩者間找到平衡。"
+            },
+            {
+                id: 8,
+                type: "單選題",
+                question: "如果醫療資源分配時考慮「社會貢獻」，會違反哪個原則？",
+                options: [
+                    "自主原則",
+                    "行善原則",
+                    "不傷害原則",
+                    "公平原則"
+                ],
+                correct: 3,
+                explanation: "公平原則要求每個人都應該得到公平的醫療待遇，不應因社會地位、財富或「社會貢獻」而有差別待遇。"
+            },
+            {
+                id: 9,
+                type: "單選題",
+                question: "醫護人員面對倫理困境時，最重要的是什麼？",
+                options: [
+                    "遵守醫院規定",
+                    "聽從醫師指示",
+                    "尊重病人權益並進行專業判斷",
+                    "滿足家屬要求"
+                ],
+                correct: 2,
+                explanation: "醫護人員應該以病人權益為中心，結合專業知識和倫理原則做出判斷，而非單純遵從權威或規定。"
+            },
+            {
+                id: 10,
+                type: "單選題",
+                question: "四個倫理原則中，哪一個被認為是「首要原則」？",
+                options: [
+                    "自主原則",
+                    "行善原則",
+                    "不傷害原則",
+                    "公平原則"
+                ],
+                correct: 2,
+                explanation: "傳統醫學倫理中，「不傷害原則」被視為首要原則（Primum non nocere - 首先不造成傷害）。但現代醫療倫理強調四個原則需要整體考量。"
+            }
+        ];
+
+        // 標記影片已觀看
+        function markVideoWatched(videoNum) {
+            watchedVideos.add(videoNum);
+            document.getElementById('status' + videoNum).textContent = '✅ 已觀看';
+            document.getElementById('status' + videoNum).className = 'watch-status watched';
+            document.querySelector(`[data-video="${videoNum}"]`).classList.add('watched');
+
+            if (watchedVideos.size === 4) {
+                enableQuiz();
+            }
+        }
+
+        // 啟用測驗
+        function enableQuiz() {
+            document.getElementById('quizBtn').disabled = false;
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('progressFill').style.width = '50%';
+            
+            const tip = document.querySelector('.video-tip');
+            tip.innerHTML = '<strong>🎉 太棒了！</strong>您已經看完所有影片！現在可以點擊「📝 開始測驗」按鈕來檢驗您的學習成果。';
+            tip.style.background = '#d1fae5';
+            tip.style.borderColor = '#10b981';
+            tip.style.color = '#065f46';
+        }
+
+        // 切換區域
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            if (section === 'learn') {
+                document.getElementById('learnSection').classList.add('active');
+            } else if (section === 'quiz') {
+                if (watchedVideos.size < 4) {
+                    alert('請先觀看完所有影片！');
+                    return;
+                }
+                document.getElementById('quizSection').classList.add('active');
+                if (!quizStarted) {
+                    startQuiz();
+                }
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('progressFill').style.width = '75%';
+            } else if (section === 'result') {
+                document.getElementById('resultSection').classList.add('active');
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('step3').classList.add('completed');
+                document.getElementById('progressFill').style.width = '100%';
+            }
+
+            scrollToTop();
+        }
+
+        // 回到頂部
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 開始測驗
+        function startQuiz() {
+            quizStarted = true;
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            loadQuestion();
+        }
+
+        // 載入題目
+        function loadQuestion() {
+            const question = quizQuestions[currentQuestionIndex];
+            const content = document.getElementById('quizContent');
+            
+            content.innerHTML = `
+                <div class="question-card active">
+                    <div class="question">
+                        <span class="question-type">${question.type}</span>
+                        <h3>${question.question}</h3>
+                    </div>
+                    <div class="options" id="options">
+                        ${question.options.map((opt, idx) => `
+                            <div class="option" onclick="selectOption(${idx})">
+                                <span class="option-label">${String.fromCharCode(65 + idx)}</span>
+                                <span>${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            `;
+
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = quizQuestions.length;
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('checkBtn').disabled = false;
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('checkBtn').style.display = 'block';
+        }
+
+        // 選擇選項
+        function selectOption(index) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.option')[index].classList.add('selected');
+            document.getElementById('checkBtn').disabled = false;
+        }
+
+        // 檢查答案
+        function checkAnswer() {
+            const selectedOption = document.querySelector('.option.selected');
+            if (!selectedOption) {
+                alert('請先選擇一個答案！');
+                return;
+            }
+
+            const selectedIndex = Array.from(document.querySelectorAll('.option')).indexOf(selectedOption);
+            const question = quizQuestions[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.correct;
+
+            userAnswers[currentQuestionIndex] = {
+                selected: selectedIndex,
+                correct: question.correct,
+                isCorrect: isCorrect
+            };
+
+            const feedback = document.getElementById('feedback');
+            const correctOption = document.querySelectorAll('.option')[question.correct];
+            
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `<strong>✅ 答對了！</strong><br>${question.explanation}`;
+            } else {
+                selectedOption.classList.add('incorrect');
+                correctOption.classList.add('correct');
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `
+                    <strong>❌ 答錯了</strong><br>
+                    正確答案是：<strong>${String.fromCharCode(65 + question.correct)}</strong><br>
+                    ${question.explanation}
+                `;
+            }
+
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            document.getElementById('checkBtn').style.display = 'none';
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        // 下一題
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        // 上一題
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+                
+                if (userAnswers[currentQuestionIndex]) {
+                    const answer = userAnswers[currentQuestionIndex];
+                    document.querySelectorAll('.option')[answer.selected].classList.add('selected');
+                }
+            }
+        }
+
+        // 完成測驗
+        function finishQuiz() {
+            const correctCount = userAnswers.filter(a => a.isCorrect).length;
+            const totalCount = quizQuestions.length;
+            const accuracy = Math.round((correctCount / totalCount) * 100);
+
+            document.getElementById('finalScore').textContent = accuracy + '%';
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('incorrectCount').textContent = totalCount - correctCount;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+
+            let message = '';
+            if (accuracy >= 90) {
+                message = '🌟 優秀！您對醫護倫理有深入的理解！';
+            } else if (accuracy >= 70) {
+                message = '👍 很好！繼續加強對倫理原則的掌握！';
+            } else if (accuracy >= 60) {
+                message = '💪 還不錯！建議再複習影片內容！';
+            } else {
+                message = '📚 需要加強！請重新觀看影片並理解案例！';
+            }
+            document.getElementById('resultMessage').textContent = message;
+
+            const reviewContent = document.getElementById('reviewContent');
+            reviewContent.innerHTML = '<h3 style="color: #333; margin-bottom: 1.5rem;">📋 答題回顧</h3>';
+            
+            quizQuestions.forEach((q, idx) => {
+                const answer = userAnswers[idx];
+                const reviewHTML = `
+                    <div class="answer-review">
+                        <h4>第 ${idx + 1} 題：${q.question}</h4>
+                        <p>
+                            ${answer.isCorrect ? 
+                                `<span class="correct-answer">✅ 答對了！您選擇：${String.fromCharCode(65 + answer.selected)}</span>` :
+                                `<span class="wrong-answer">❌ 您選擇：${String.fromCharCode(65 + answer.selected)}</span><br>
+                                <span class="correct-answer">正確答案：${String.fromCharCode(65 + answer.correct)}</span>`
+                            }
+                        </p>
+                        <p style="margin-top: 0.5rem; color: #666;">${q.explanation}</p>
+                    </div>
+                `;
+                reviewContent.innerHTML += reviewHTML;
+            });
+
+            showSection('result');
+            if (accuracy >= 80) {
+                launchConfetti();
+            }
+
+            document.getElementById('resultBtn').style.display = 'inline-block';
+        }
+
+        // 重新測驗
+        function retakeQuiz() {
+            quizStarted = false;
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            document.getElementById('step2').classList.remove('active', 'completed');
+            document.getElementById('step3').classList.remove('completed');
+            document.getElementById('progressFill').style.width = '50%';
+            showSection('quiz');
+        }
+
+        // 煙火效果
+        function launchConfetti() {
+            const colors = ['#667eea', '#764ba2', '#10b981', '#f59e0b', '#ef4444'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // 頁面載入
+        window.addEventListener('load', () => {
+            console.log('醫護倫理學習平台載入完成！');
+        });
+    </script>
+</body>
+</html>
