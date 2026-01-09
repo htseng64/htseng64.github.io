@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teaching Courses｜私用導覽</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.72);
+      --line:rgba(255,255,255,.14);
+      --accent:#7aa2ff;
+      --radius:16px;
+      --shadow:0 16px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;
+      background:
+        radial-gradient(1200px 700px at 15% 15%, rgba(122,162,255,.22), transparent 60%),
+        radial-gradient(900px 650px at 85% 25%, rgba(97,255,215,.12), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:26px 18px 60px}
+    header{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(18,26,51,.75);
+      box-shadow:var(--shadow);
+      padding:18px 18px 16px;
+    }
+    h1{margin:0 0 8px;font-size:26px}
+    p{margin:0;color:var(--muted)}
+    .pill{
+      display:inline-block;
+      margin-top:12px;
+      font-size:12px;
+      color:rgba(234,240,255,.85);
+      border:1px solid rgba(255,255,255,.18);
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.16);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
+      margin-top:16px;
+    }
+    .card{
+      grid-column:span 6;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(18,26,51,.62);
+      box-shadow:var(--shadow);
+      padding:16px;
+      transition:transform .15s ease,border-color .15s ease;
+    }
+    .card:hover{transform:translateY(-2px);border-color:rgba(122,162,255,.45)}
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      color:rgba(234,240,255,.85);
+      border:1px solid rgba(255,255,255,.18);
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.16);
+      margin-bottom:10px;
+    }
+    .title{margin:0 0 6px;font-size:18px}
+    .desc{margin:0;color:var(--muted);font-size:14px}
+    .row{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      display:inline-block;
+      padding:9px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.16);
+      font-size:14px;
+    }
+    .btn.primary{
+      border-color:rgba(122,162,255,.55);
+      background:linear-gradient(135deg, rgba(122,162,255,.22), rgba(97,255,215,.10));
+    }
+    .note{
+      margin-top:18px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:var(--radius);
+      padding:12px 14px;
+      color:var(--muted);
+      font-size:13px;
+      background:rgba(0,0,0,.12);
+    }
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;color:rgba(234,240,255,.85)}
+    @media(max-width:860px){.card{grid-column:span 12}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Teaching Courses｜私用導覽</h1>
+      <p>此頁為教師自用的快速入口（避免手打網址造成 404）。若要提供學生／評鑑，請使用各課程自己的入口頁。</p>
+      <div class="pill">Repo: <code>/teaching/courses/index.html</code></div>
+    </header>
+
+    <section class="grid" aria-label="courses">
+
+      <!-- Bioethics -->
+      <a class="card" href="./bioethics/">
+        <div class="tag">✅ 有正式入口</div>
+        <h2 class="title">Bioethics｜醫療與生命倫理</h2>
+        <p class="desc">含 Module-00（四原則）與 Escape Room（整合關卡）。</p>
+        <div class="row">
+          <span class="btn primary">進入課程入口</span>
+          <span class="btn" onclick="event.preventDefault(); location.href='./bioethics/modules/module-00/';">Module-00</span>
+          <span class="btn" onclick="event.preventDefault(); location.href='./bioethics/modules/escape-room/';">Escape Room</span>
+        </div>
+      </a>
+
+      <a class="card" href="./healthcare-ethics-law/">
+        <div class="tag">課程</div>
+        <h2 class="title">Healthcare Ethics & Law｜醫療倫理與法律</h2>
+        <p class="desc">課程教材與案例資源。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./intro-to-nursing/">
+        <div class="tag">課程</div>
+        <h2 class="title">Introduction to Nursing｜護理學導論</h2>
+        <p class="desc">導論、理念、發展與基礎概念。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./med-surg-nursing/">
+        <div class="tag">課程</div>
+        <h2 class="title">Medical-Surgical Nursing｜內外科護理學</h2>
+        <p class="desc">單元教材、病例與照護流程。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./clinical-symptom-nursing/">
+        <div class="tag">課程</div>
+        <h2 class="title">Clinical Symptom Nursing｜臨床症狀護理</h2>
+        <p class="desc">症狀評估與臨床案例。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./evidence-based-nursing/">
+        <div class="tag">課程</div>
+        <h2 class="title">Evidence-Based Nursing｜實證護理</h2>
+        <p class="desc">PICO、文獻查證、批判性閱讀。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./climate-health-nursing-practicum/">
+        <div class="tag">課程</div>
+        <h2 class="title">Climate Health Nursing Practicum｜氣候與健康護理實習</h2>
+        <p class="desc">實習教材與活動資源。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+      <a class="card" href="./professional-english-presentations/">
+        <div class="tag">課程</div>
+        <h2 class="title">Professional English Presentations｜專業英語簡報</h2>
+        <p class="desc">英語簡報技巧、表達與訓練。</p>
+        <div class="row"><span class="btn primary">進入</span></div>
+      </a>
+
+    </section>
+
+    <div class="note">
+      <strong>維護備忘：</strong><br>
+      • 任何資料夾網址要可開啟，該層需有 <code>index.html</code>。<br>
+      • 對外（TronClass / 成果報告）建議只貼「課程入口」，不要貼 <code>/teaching/courses/</code>。<br>
+      • 若某課程尚未做入口頁，點進去可能看到 404 或空白，屬正常，之後補該課程的 <code>index.html</code> 即可。
+    </div>
+  </div>
+</body>
+</html>

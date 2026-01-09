@@ -1,0 +1,440 @@
+
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scene 1｜靜態狀態：線索辨識</title>
+  <style>
+/* =========================================================
+   Classroom-first 顯示設定（後排可讀）
+   + Click-to-Focus 全螢幕放大（真正放大字）
+   ========================================================= */
+
+body{
+  font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  max-width: 1100px;
+  margin: 36px auto;
+  padding: 0 20px;
+  line-height: 1.75;
+  color: #222;
+  font-size: 20px;            /* ★ 教室基本字級 */
+}
+
+/* ===== 標題 ===== */
+h1{ font-size: 32px; }
+h2{ font-size: 26px; }
+h3{ font-size: 22px; }
+
+/* ===== 一般文字 ===== */
+p, li, label, span{
+  font-size: 20px;
+}
+
+/* ===== 輔助文字 ===== */
+.small{
+  font-size: 18px;
+}
+
+.muted{
+  color:#555;
+  font-size: 18px;
+}
+
+/* ===== 卡片樣式 ===== */
+.card{
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  background: #fff;
+}
+
+/* ===== Click-to-Focus：點擊放大全螢幕 ===== */
+.focusable{
+  cursor: zoom-in;
+}
+
+/* ★★★ 全螢幕聚焦狀態（重點）★★★ */
+.focusable.focused{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #ffffff;
+  padding: 48px;
+  overflow: auto;
+  cursor: zoom-out;
+  border-radius: 0;
+}
+
+/* ===== 聚焦時「真的放大字」===== */
+.focusable.focused h1{ font-size: 44px; }
+.focusable.focused h2{ font-size: 36px; }
+.focusable.focused h3{ font-size: 30px; }
+
+.focusable.focused p,
+.focusable.focused li,
+.focusable.focused label,
+.focusable.focused span,
+.focusable.focused div{
+  font-size: 28px !important;   /* ★ 後排清楚 */
+  line-height: 1.85;
+}
+
+.focusable.focused .small,
+.focusable.focused .muted{
+  font-size: 24px !important;
+}
+
+/* ===== 聚焦時背景變暗 ===== */
+body.focus-mode::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 9998;
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>Scene 1｜靜態狀態：線索辨識</h1>
+  <p class="muted">
+    目標：在病人「看似穩定」時，辨識紅旗線索、補齊必要評估，完成 Gate（是否可下床）。
+  </p>
+
+  <div class="card focusable">
+    <span class="tag">主線：綜合 C</span>
+    <span class="tag">氧合 × 循環 × 活動</span>
+    <span class="tag">任務：Recognize & Analyze Cues</span>
+    <div class="hr"></div>
+
+    <h2>情境資料（第一波揭露）</h2>
+    <div class="grid">
+      <div class="pill">
+        <h3>病人背景</h3>
+        <ul class="small">
+          <li>78 歲男性，意識清楚，可對答</li>
+          <li>既往史：COPD（多年）、高血壓、疑似心衰竭追蹤中（未規則回診）</li>
+          <li>兩週前因跌倒造成髖部骨折，已完成手術（關節/骨科術後）</li>
+          <li>目前住院第 2 天，護理站交班：<b>「怕喘、怕痛、不太敢動」</b></li>
+        </ul>
+      </div>
+
+      <div class="pill">
+        <h3>目前主訴</h3>
+        <ul class="small">
+          <li>靜躺時：覺得還好</li>
+          <li>一坐起或要下床：會覺得喘、心悸、頭暈</li>
+          <li>傷口疼痛 6/10（休息時 4/10）</li>
+          <li>說：「我怕站起來會跌倒。」</li>
+        </ul>
+      </div>
+
+      <div class="pill">
+        <h3>生命徵象（此刻）</h3>
+        <ul class="small">
+          <li>T 36.8°C</li>
+          <li>HR 96 次/分（靜息）</li>
+          <li>RR 20 次/分（靜息）</li>
+          <li>BP 146/86 mmHg</li>
+          <li>SpO₂ 93%（室內空氣）</li>
+        </ul>
+        <p class="muted small">
+          備註：護理紀錄提到「昨天晚上睡覺會墊高枕頭」。
+        </p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <p class="muted small">
+      提示：Scene 1 不要求你下診斷，而是要你能回答：
+      <b>「我現在需要擔心什麼？我需要補什麼評估？我能不能讓他下床？」</b>
+    </p>
+  </div>
+
+  <div class="card focusable">
+    <h2>任務 1｜辨識紅旗線索（多選）</h2>
+    <p class="muted small">請勾選你認為屬於「需要提高警覺」的線索（可複選）。</p>
+
+    <div class="q" data-qid="Q1">
+      <label><input type="checkbox" value="A"> A. 病人靜息 SpO₂ 93%（室內空氣）</label><br/>
+      <label><input type="checkbox" value="B"> B. 病人「一坐起就喘、心悸、頭暈」</label><br/>
+      <label><input type="checkbox" value="C"> C. 近期跌倒＋骨科術後，且自述「怕跌倒、不敢動」</label><br/>
+      <label><input type="checkbox" value="D"> D. 傷口疼痛 6/10，活動時更痛</label><br/>
+      <label><input type="checkbox" value="E"> E. 昨夜需要墊高枕頭才較好睡（端坐/呼吸不適線索）</label>
+    </div>
+
+    <button class="btn" id="checkQ1">提交 Q1</button>
+    <div class="pill small" id="fbQ1" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="card focusable">
+    <h2>任務 2｜你還需要哪些評估資訊？（選 3 項）</h2>
+    <p class="muted small">
+      你準備評估是否可下床，請選「最關鍵的 3 項」。
+      （重點是：氧合／循環／活動安全）
+    </p>
+
+    <div class="q" data-qid="Q2">
+      <label><input type="checkbox" value="A"> A. 站起/坐起前後的生命徵象趨勢（HR/RR/BP/SpO₂）</label><br/>
+      <label><input type="checkbox" value="B"> B. 末梢灌流與皮膚溫度、毛細血管回填</label><br/>
+      <label><input type="checkbox" value="C"> C. 呼吸型態、是否使用輔助肌、是否可完整說話</label><br/>
+      <label><input type="checkbox" value="D"> D. 今天早餐吃了什麼、食慾如何</label><br/>
+      <label><input type="checkbox" value="E"> E. 疼痛位置與性質、止痛使用狀況、活動時疼痛變化</label><br/>
+      <label><input type="checkbox" value="F"> F. 跌倒風險（頭暈、步態、輔具、環境）與下床前安全檢核</label>
+    </div>
+
+    <button class="btn" id="checkQ2">提交 Q2</button>
+    <div class="pill small" id="fbQ2" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="card focusable">
+    <h2>Gate｜此刻是否可以讓病人「直接下床」？（單選）</h2>
+    <p class="muted small">
+      請依目前資料判斷。注意：這題不是要你「永遠不能下床」，而是問你
+      <b>「此刻能不能直接下床」</b>。
+    </p>
+
+    <div class="q" data-qid="G1">
+      <label><input type="radio" name="gate" value="A"> A. 可以，生命徵象看起來穩定，直接下床走走</label><br/>
+      <label><input type="radio" name="gate" value="B"> B. 先不要直接下床；先做坐起/站立前後評估與安全準備，再決定是否可下床</label><br/>
+      <label><input type="radio" name="gate" value="C"> C. 完全禁止下床，直到出院</label>
+    </div>
+
+    <button class="btn" id="checkGate">提交 Gate</button>
+    <div class="pill small" id="fbGate" style="margin-top:12px;"></div>
+
+    <div class="card hidden" id="unlock">
+      <h3>✅ Gate 通過：解鎖下一波資料（Clue）</h3>
+      <div class="pill">
+        <b>解鎖資料：</b><br/>
+        你請病人先坐起床邊 1 分鐘後，病人說「有點喘、有點頭暈」。你測得：<br/>
+        <ul class="small">
+          <li>HR 112 次/分</li>
+          <li>RR 26 次/分</li>
+          <li>BP 128/78 mmHg</li>
+          <li>SpO₂ 89%（室內空氣）</li>
+        </ul>
+        <span class="muted small">
+          你注意到病人有使用輔助肌，且說話開始斷句。腳踝輕度凹陷性水腫（+1）。
+        </span>
+      </div>
+
+      <div class="hr"></div>
+      <p class="muted small">
+        下一步（Scene 2）你需要回答：<b>活動後惡化時，護理處置的優先順序是什麼？</b><br/>
+        COPD 的 micro-lecture（L6）會在 Scene 2 的 Gate 使用。
+      </p>
+
+      <p>
+        <a class="btn" href="./scene-02.html">前往：Scene 2（活動後惡化）</a>
+        <a class="btn secondary" href="../index.html" style="margin-left:10px;">回 Module 01 入口</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="card focusable">
+    <h2>進度追蹤（本機）</h2>
+    <p class="muted small">
+      目前先使用 <code>localStorage</code> 在瀏覽器記錄進度（之後再接 Supabase）。
+      若你要清除測試紀錄，可在瀏覽器清除本站資料。
+    </p>
+    <div class="pill small" id="progressBox"></div>
+  </div>
+
+<script>
+  /**********************
+   * 進度追蹤（localStorage 最小可用）
+   **********************/
+  const UNIT_ID = "unit-01-ox-circ-mob";
+  const SCENE_ID = "scene-01";
+
+  const progressKey = `${UNIT_ID}:${SCENE_ID}:status`;
+  const timeKey = `${UNIT_ID}:${SCENE_ID}:lastTime`;
+
+  function setStatus(status){
+    localStorage.setItem(progressKey, status);
+    localStorage.setItem(timeKey, new Date().toISOString());
+    renderProgress();
+  }
+  function getStatus(){
+    return localStorage.getItem(progressKey) || "not_started";
+  }
+  function renderProgress(){
+    const box = document.getElementById("progressBox");
+    const status = getStatus();
+    const last = localStorage.getItem(timeKey) || "-";
+    const map = {
+      not_started: "尚未完成任務",
+      q1_done: "已完成任務 1（紅旗線索）",
+      q2_done: "已完成任務 1–2（評估補齊）",
+      gate_passed: "已通過 Gate，已解鎖 Scene 2"
+    };
+    box.innerHTML = `<b>Scene 1 狀態：</b> ${map[status] || status}<br/><span class="muted">最後更新：</span> ${last}`;
+  }
+  renderProgress();
+
+  /**********************
+   * Q1：紅旗線索（多選）
+   * 教學邏輯：
+   * - B/C/D/E 是明顯紅旗（活動後症狀、跌倒風險、疼痛、端坐線索）
+   * - A 單獨不是紅旗（但要注意趨勢與活動後變化）
+   **********************/
+  document.getElementById("checkQ1").addEventListener("click", () => {
+    const q = document.querySelector('.q[data-qid="Q1"]');
+    const checked = Array.from(q.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value).sort();
+    const fb = document.getElementById("fbQ1");
+
+    const correctCore = ["B","C","D","E"];
+    const hasAllCore = correctCore.every(x => checked.includes(x));
+    const selectedA = checked.includes("A");
+
+    if(checked.length === 0){
+      fb.innerHTML = `<span class="bad">請至少選 1 個。</span>`;
+      return;
+    }
+
+    let msg = "";
+    if(hasAllCore){
+      msg += `<span class="ok">做得好 ✅</span> 你抓到主要紅旗：<b>${correctCore.join(", ")}</b>。<br/>`;
+    }else{
+      msg += `<span class="bad">再想一下 ❗</span> 建議至少包含：<b>${correctCore.join(", ")}</b>（活動相關症狀＋安全風險＋端坐線索）。<br/>`;
+    }
+
+    msg += `<div class="hr"></div>
+      <b>解析：</b><br/>
+      - <b>B</b>（坐起就喘/心悸/頭暈）＝活動耐受下降與循環/氧合可能惡化的線索<br/>
+      - <b>C</b>（跌倒＋術後＋怕跌倒）＝安全風險高，不能只看生命徵象就放下床<br/>
+      - <b>D</b>（疼痛）＝會限制活動與呼吸效率，增加耗氧與併發症風險<br/>
+      - <b>E</b>（墊高枕頭）＝可能與呼吸困難/循環負荷相關，需要追問與評估<br/>
+      - <b>A</b>（靜息 SpO₂ 93%）單獨不等於安全，<b>趨勢與活動後變化</b>更重要`;
+
+    if(selectedA){
+      msg += `<br/><span class="muted small">你有選 A：提醒你「數值不是錯」，但不要被單一數值安撫，後面一定要看活動後趨勢。</span>`;
+    }
+
+    fb.innerHTML = msg;
+    setStatus("q1_done");
+  });
+
+  /**********************
+   * Q2：選 3 項最關鍵評估
+   * 建議答案：A + C + F（趨勢、呼吸型態、跌倒/安全）
+   * E 也很重要，但在此題要訓練「最關鍵 3 項」
+   **********************/
+  document.getElementById("checkQ2").addEventListener("click", () => {
+    const q = document.querySelector('.q[data-qid="Q2"]');
+    const checked = Array.from(q.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value).sort();
+    const fb = document.getElementById("fbQ2");
+
+    if(checked.length !== 3){
+      fb.innerHTML = `<span class="bad">請選剛好 3 項（目前選了 ${checked.length} 項）。</span>`;
+      return;
+    }
+
+    const recommended = ["A","C","F"]; // 核心三項
+    const isGood = recommended.every(x => checked.includes(x));
+
+    let msg = "";
+    if(isGood){
+      msg = `<span class="ok">很棒 ✅</span> 你抓到「下床前最關鍵 3 項」：<b>${recommended.join(", ")}</b>。`;
+    }else{
+      msg = `<span class="bad">接近了 ❗</span> 建議你的 3 項至少包含：<b>${recommended.join(", ")}</b>。`;
+    }
+
+    msg += `<div class="hr"></div>
+      <b>解析（為什麼是 A/C/F）：</b><br/>
+      - <b>A</b>：站/坐前後生命徵象趨勢，才能辨識「活動後惡化」<br/>
+      - <b>C</b>：呼吸型態與說話能力比單一 SpO₂ 更能反映「喘的嚴重度」<br/>
+      - <b>F</b>：跌倒風險與安全檢核，是此案的高風險核心（術後＋頭暈＋怕跌倒）<br/>
+      <span class="muted small">補充：<b>E</b>（疼痛評估）也很重要，會在下床與復健計畫中納入，但本題先訓練你抓「最關鍵三項」。</span>`;
+
+    fb.innerHTML = msg;
+    setStatus("q2_done");
+  });
+
+  /**********************
+   * Gate：是否可直接下床？
+   * 正解：B（先評估與安全準備）
+   **********************/
+  document.getElementById("checkGate").addEventListener("click", () => {
+    const selected = document.querySelector('input[name="gate"]:checked');
+    const fb = document.getElementById("fbGate");
+    const unlock = document.getElementById("unlock");
+
+    if(!selected){
+      fb.innerHTML = `<span class="bad">請先選一個選項。</span>`;
+      return;
+    }
+
+    if(selected.value === "B"){
+      fb.innerHTML = `
+        <span class="ok">Gate 通過 ✅</span><br/>
+        你選擇先「坐起/站立前後評估＋安全準備」再決定是否下床，是最符合護理安全與臨床判斷的做法。<br/>
+        <div class="hr"></div>
+        <b>解析：</b><br/>
+        - 這位病人有「坐起就喘/心悸/頭暈」＋術後跌倒風險＋可能循環負荷線索<br/>
+        - 不能只看靜息生命徵象就直接下床<br/>
+        - 正確步驟是：先做「姿勢改變後趨勢」與安全措施，必要時再調整計畫
+      `;
+      unlock.classList.remove("hidden");
+      setStatus("gate_passed");
+    }else{
+      unlock.classList.add("hidden");
+      if(selected.value === "A"){
+        fb.innerHTML = `
+          <span class="bad">未通過 Gate ❌</span><br/>
+          直接下床的風險太高：病人已表達坐起就喘/頭暈，且術後跌倒風險高。<br/>
+          <div class="hr"></div>
+          <b>提示：</b>請回到任務 2，思考「你需要哪些姿勢改變後的趨勢資料」才能下決策。
+        `;
+      }else{
+        fb.innerHTML = `
+          <span class="bad">未通過 Gate ❌</span><br/>
+          「完全禁止下床直到出院」過度保守，反而可能造成制動併發症。<br/>
+          <div class="hr"></div>
+          <b>提示：</b>護理判斷是「先評估與安全準備，再進行安全活動」，不是一刀切。
+        `;
+      }
+    }
+  });
+</script>
+...
+<script>
+  document.addEventListener("click", function(e){
+    const box = e.target.closest(".focusable");
+    if(!box) return;
+
+    e.stopPropagation();
+
+    const isFocused = box.classList.contains("focused");
+
+    // 先清掉其他聚焦
+    document.querySelectorAll(".focusable.focused")
+      .forEach(el => el.classList.remove("focused"));
+
+    if(isFocused){
+      box.classList.remove("focused");
+      document.body.classList.remove("focus-mode");
+    }else{
+      box.classList.add("focused");
+      document.body.classList.add("focus-mode");
+    }
+  });
+
+  // ESC 鍵快速離開
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape"){
+      document.querySelectorAll(".focusable.focused")
+        .forEach(el => el.classList.remove("focused"));
+      document.body.classList.remove("focus-mode");
+    }
+  });
+</script>
+</body>
+</html>
+
+</body>
+</html>
