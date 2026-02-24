@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Nursing Practice Web</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a6b6b;
+    --teal-light: #2a9090;
+    --teal-pale: #e8f5f5;
+    --coral: #d95f3b;
+    --coral-light: #f4a07a;
+    --gold: #c9922b;
+    --gold-light: #f0c878;
+    --sage: #4a7c5e;
+    --sage-light: #7ab896;
+    --plum: #6b3f7a;
+    --plum-light: #a870c0;
+    --navy: #1e3a5f;
+    --slate: #4a5568;
+    --cream: #fafaf7;
+    --white: #ffffff;
+    --shadow: 0 8px 32px rgba(0,0,0,0.12);
+    --shadow-hover: 0 16px 48px rgba(0,0,0,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 60%, var(--sage) 100%);
+    color: white;
+    padding: 40px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 1rem;
+    opacity: 0.82;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px 48px;
+    background: white;
+    border-bottom: 1px solid #e8e8e0;
+    font-size: 0.82rem;
+  }
+  .legend-title {
+    font-weight: 600;
+    color: var(--slate);
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--slate);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .legend-item:hover { background: #f0f0ea; border-color: #ddd; }
+  .legend-item.active { border-color: currentColor; }
+  .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Main grid */
+  .main { padding: 36px 48px 60px; }
+  
+  .intro-text {
+    background: white;
+    border-left: 4px solid var(--teal);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 32px;
+    color: var(--slate);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .intro-text strong { color: var(--navy); }
+
+  /* Web / mind map section */
+  .web-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 48px;
+    aspect-ratio: 1 / 0.88;
+  }
+
+  svg#web-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .center-node {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--teal));
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 0 0 8px rgba(26,107,107,0.15), var(--shadow);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+    padding: 12px;
+  }
+  .center-node .icon { font-size: 1.6rem; margin-bottom: 4px; }
+
+  .branch-node {
+    position: absolute;
+    width: 108px; height: 108px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+    cursor: pointer;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: white;
+    padding: 10px;
+    line-height: 1.3;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.25s;
+    transform: translate(-50%, -50%);
+  }
+  .branch-node:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: var(--shadow-hover);
+  }
+  .branch-node.active {
+    transform: translate(-50%, -50%) scale(1.12);
+    box-shadow: var(--shadow-hover);
+    outline: 3px solid white;
+  }
+  .branch-node .b-icon { font-size: 1.4rem; margin-bottom: 3px; }
+
+  /* Scenario cards */
+  .scenarios-section { margin-top: 0; }
+  .scenarios-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .scenarios-subtitle {
+    color: var(--slate);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #ddd;
+    background: white;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: var(--slate);
+  }
+  .filter-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .filter-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border: 1px solid #eee;
+    transition: transform 0.25s, box-shadow 0.25s, opacity 0.3s;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.13);
+  }
+  .card.hidden { display: none; }
+
+  .card-header {
+    padding: 18px 20px 14px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header::after {
+    content: attr(data-icon);
+    position: absolute;
+    right: 14px; top: 10px;
+    font-size: 2rem;
+    opacity: 0.3;
+  }
+  .card-tag {
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 2px 10px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.4;
+    padding-right: 36px;
+  }
+
+  .card-body { padding: 18px 20px; }
+  .card-scenario {
+    font-size: 0.85rem;
+    color: var(--slate);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    border-left: 3px solid #e8e8e0;
+    padding-left: 12px;
+    font-style: italic;
+  }
+
+  .card-tasks {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 14px;
+  }
+  .card-tasks li {
+    font-size: 0.83rem;
+    color: #444;
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .card-tasks li::before {
+    content: '▸';
+    position: absolute;
+    left: 2px;
+    color: var(--teal);
+    font-size: 0.75rem;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0e8;
+  }
+  .difficulty {
+    display: flex;
+    gap: 3px;
+  }
+  .diff-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #e0e0d8;
+  }
+  .diff-dot.filled { background: var(--gold); }
+  .ethics-tag {
+    font-size: 0.72rem;
+    color: var(--plum);
+    background: #f5eef8;
+    border-radius: 10px;
+    padding: 2px 10px;
+    font-weight: 500;
+  }
+
+  /* Popup overlay */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,30,50,0.6);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .overlay.open { display: flex; }
+
+  .popup {
+    background: white;
+    border-radius: 18px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.92) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .popup-header {
+    padding: 24px 26px 18px;
+    color: white;
+    border-radius: 18px 18px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .popup-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .popup-close:hover { background: rgba(255,255,255,0.35); }
+  .popup-body { padding: 22px 26px 28px; }
+  .popup-body h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 18px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f0f0e8;
+  }
+  .popup-body h3:first-child { margin-top: 0; }
+  .popup-scenario {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #555;
+    font-style: italic;
+    background: #f8f8f3;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--gold);
+  }
+  .popup-list {
+    list-style: none;
+    padding: 0;
+  }
+  .popup-list li {
+    font-size: 0.88rem;
+    color: #444;
+    padding: 6px 0 6px 20px;
+    position: relative;
+    line-height: 1.6;
+    border-bottom: 1px solid #f5f5f0;
+  }
+  .popup-list li:last-child { border-bottom: none; }
+  .popup-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    font-size: 0.6rem;
+    color: var(--teal);
+    top: 8px;
+  }
+  .ethics-box {
+    background: #f5eef8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.86rem;
+    color: var(--plum);
+    line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .header, .main, .legend { padding-left: 20px; padding-right: 20px; }
+    .web-container { max-width: 340px; aspect-ratio: 1/1; }
+    .branch-node { width: 80px; height: 80px; font-size: 0.58rem; }
+    .center-node { width: 90px; height: 90px; font-size: 0.62rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Nursing Education</div>
+  <h1>Clinical Nursing Practice Web</h1>
+  <p>Interactive scenarios for ethics, communication & clinical decision-making</p>
+</div>
+
+<div class="legend">
+  <span class="legend-title">Categories:</span>
+  <span class="legend-item" style="color:var(--teal)"><span class="dot" style="background:var(--teal)"></span>Assessment</span>
+  <span class="legend-item" style="color:var(--coral)"><span class="dot" style="background:var(--coral)"></span>Communication</span>
+  <span class="legend-item" style="color:var(--gold)"><span class="dot" style="background:var(--gold)"></span>Ethics</span>
+  <span class="legend-item" style="color:var(--sage)"><span class="dot" style="background:var(--sage)"></span>Safety</span>
+  <span class="legend-item" style="color:var(--plum)"><span class="dot" style="background:var(--plum)"></span>Legal</span>
+  <span class="legend-item" style="color:#c06a4a"><span class="dot" style="background:#c06a4a"></span>Family Care</span>
+</div>
+
+<div class="main">
+  <div class="intro-text">
+    💡 <strong>How to use:</strong> Click any node in the concept web to filter scenarios, or use the filter buttons below. Click a card to expand the full case details. Scenarios are designed for <strong>undergraduate nursing students</strong> and cover foundational ethics, clinical judgment, and legal awareness.
+  </div>
+
+  <!-- WEB / MIND MAP -->
+  <div class="web-container" id="webContainer">
+    <svg id="web-svg" viewBox="0 0 900 790" preserveAspectRatio="xMidYMid meet"></svg>
+
+    <div class="center-node">
+      <div class="icon">🏥</div>
+      Clinical<br>Nursing<br>Practice
+    </div>
+
+    <!-- Branch nodes: positioned by JS -->
+    <div class="branch-node" id="bn-assess" style="background:linear-gradient(135deg,var(--teal),var(--teal-light));left:50%;top:12%">
+      <div class="b-icon">🔍</div>Patient<br>Assessment
+    </div>
+    <div class="branch-node" id="bn-comm" style="background:linear-gradient(135deg,var(--coral),var(--coral-light));left:85%;top:30%">
+      <div class="b-icon">💬</div>Therapeutic<br>Communication
+    </div>
+    <div class="branch-node" id="bn-ethics" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));left:80%;top:72%">
+      <div class="b-icon">⚖️</div>Nursing<br>Ethics
+    </div>
+    <div class="branch-node" id="bn-safety" style="background:linear-gradient(135deg,var(--sage),var(--sage-light));left:50%;top:88%">
+      <div class="b-icon">🛡️</div>Patient<br>Safety
+    </div>
+    <div class="branch-node" id="bn-legal" style="background:linear-gradient(135deg,var(--plum),var(--plum-light));left:20%;top:72%">
+      <div class="b-icon">📋</div>Legal &amp;<br>Documentation
+    </div>
+    <div class="branch-node" id="bn-family" style="background:linear-gradient(135deg,#c06a4a,#e09070);left:15%;top:30%">
+      <div class="b-icon">👨‍👩‍👧</div>Family &amp;<br>End-of-Life
+    </div>
+  </div>
+
+  <!-- SCENARIO CARDS -->
+  <div class="scenarios-section" id="scenariosSection">
+    <h2>Practice Scenarios</h2>
+    <p class="scenarios-subtitle">Click a card to open the full teaching case · 18 scenarios across 6 domains</p>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="assess">Assessment</button>
+      <button class="filter-btn" data-cat="comm">Communication</button>
+      <button class="filter-btn" data-cat="ethics">Ethics</button>
+      <button class="filter-btn" data-cat="safety">Safety</button>
+      <button class="filter-btn" data-cat="legal">Legal</button>
+      <button class="filter-btn" data-cat="family">Family Care</button>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</div>
+
+<!-- Popup -->
+<div class="overlay" id="overlay" onclick="closePopup(event)">
+  <div class="popup" id="popup">
+    <div class="popup-header" id="popupHeader">
+      <button class="popup-close" onclick="document.getElementById('overlay').classList.remove('open')">✕</button>
+      <div class="card-tag" id="popupTag"></div>
+      <div class="card-title" style="font-size:1.1rem;padding-right:44px" id="popupTitle"></div>
+    </div>
+    <div class="popup-body" id="popupBody"></div>
+  </div>
+</div>
+
+<script>
+const CATS = {
+  assess: { label:'Assessment', color:'var(--teal)', light:'var(--teal-pale)' },
+  comm:   { label:'Communication', color:'var(--coral)', light:'#fdf0eb' },
+  ethics: { label:'Ethics', color:'var(--gold)', light:'#fdf6e8' },
+  safety: { label:'Safety', color:'var(--sage)', light:'#edf5f0' },
+  legal:  { label:'Legal', color:'var(--plum)', light:'#f5eef8' },
+  family: { label:'Family Care', color:'#c06a4a', light:'#faf0eb' }
+};
+
+const SCENARIOS = [
+  // ASSESSMENT
+  {
+    id:1, cat:'assess', title:'The Silent Patient',
+    scenario:'Mr. Chen, 68, was admitted post-stroke. He can only blink and shows facial expressions but cannot speak. His family insists he is "fine." How do you accurately assess his pain and consciousness level?',
+    tasks:['Select appropriate pain assessment tool (e.g., CPOT, FLACC)', 'Document neurological baseline using GCS', 'Communicate findings to interdisciplinary team', 'Explain limitations of family-reported status'],
+    questions:['What non-verbal cues indicate pain in non-verbal patients?','How do you validate your assessment with the family respectfully?'],
+    ethics:'Respecting patient autonomy when the patient cannot speak — whose voice matters most?',
+    diff:2
+  },
+  {
+    id:2, cat:'assess', title:'Vital Signs Dilemma',
+    scenario:'You check on Ms. Lin, 45, post-op Day 1. Her BP is 88/52, HR 108, temp 38.8°C. She says she "feels okay." The surgeon has not yet done morning rounds. What do you do?',
+    tasks:['Reassess within 5 minutes using full SBAR format', 'Identify signs of early sepsis using qSOFA criteria', 'Know when to escalate without physician order', 'Initiate rapid response protocol if criteria met'],
+    questions:['What is the nurse\'s legal duty when a physician is unavailable?','How do you balance patient report vs. objective data?'],
+    ethics:'Advocacy — acting in the patient\'s best interest even when it may conflict with routine workflow.',
+    diff:2
+  },
+  {
+    id:3, cat:'assess', title:'The Confused Elder',
+    scenario:'Mrs. Wang, 78, is post-hip replacement. During night shift you notice she is restless, pulling at her IV, and saying "I need to go home." Her family left for the night. Is this normal aging or something else?',
+    tasks:['Use CAM tool to screen for delirium vs. dementia', 'Check medications for deliriogenic drugs', 'Implement non-pharmacological interventions first', 'Contact family and document communication'],
+    questions:['How do you distinguish delirium from dementia in an acute setting?','What environmental factors contribute to night-time confusion?'],
+    ethics:'Least-restrictive principle — when is physical restraint ethically justified?',
+    diff:1
+  },
+  // COMMUNICATION
+  {
+    id:4, cat:'comm', title:'Breaking Difficult News',
+    scenario:'A physician has just told Mr. Huang, 52, that his CT shows a likely malignancy. He was alone at the time. He approaches you immediately after and asks, "Nurse, am I going to die?"',
+    tasks:['Use therapeutic silence and NURSE mnemonic (Name, Understand, Respect, Support, Explore)', 'Avoid false reassurance — find honest, compassionate language', 'Assess understanding and emotional state', 'Coordinate with physician for formal disclosure meeting'],
+    questions:['What is your legal and ethical role in disclosure vs. the physician\'s?','How do you support a patient without overstepping your scope?'],
+    ethics:'Truth-telling (veracity) and the nurse\'s role in information disclosure.',
+    diff:2
+  },
+  {
+    id:5, cat:'comm', title:'The Demanding Family',
+    scenario:'The daughter of an ICU patient is calling for the 4th time in one hour, demanding updates, threatening to "call the director." Other patients need urgent care. How do you manage this professionally?',
+    tasks:['Use structured family communication script (SBAR-adapted)', 'Establish clear, agreed update schedule', 'Involve social worker or patient liaison if escalating', 'Document all communications accurately'],
+    questions:['Where is the boundary between family rights and care disruption?','How do you maintain composure under confrontational pressure?'],
+    ethics:'Balancing individual family needs with equitable care for all patients.',
+    diff:1
+  },
+  {
+    id:6, cat:'comm', title:'Language Barrier in Consent',
+    scenario:'A patient from Vietnam is scheduled for a procedure in 2 hours. He nods at everything said to him but cannot read the consent form. The interpreter service is "unavailable." The physician says "just get him to sign."',
+    tasks:['Recognize that nodding ≠ informed consent', 'Know hospital protocol for interpreter access (in-person vs. video)', 'Advocate for postponement if proper consent cannot be obtained', 'Document the situation and your actions clearly'],
+    questions:['Can a nurse witness a consent form when communication was inadequate?','What are your legal obligations in this situation?'],
+    ethics:'Informed consent requires comprehension — cultural and linguistic competence as ethical duty.',
+    diff:2
+  },
+  // ETHICS
+  {
+    id:7, cat:'ethics', title:'Patient Refuses Treatment',
+    scenario:'Mrs. Tsai, 60, is diabetic with a gangrenous foot. The surgical team recommends amputation. She is alert, oriented, and refuses: "I\'d rather die with my body whole." Her son is desperate for you to "make her change her mind."',
+    tasks:['Confirm patient decision-making capacity (use formal assessment)', 'Document patient\'s verbatim refusal and rationale', 'Ensure patient has received full information — risks of refusal', 'Support patient autonomy while providing emotional support to family'],
+    questions:['What is the difference between respecting autonomy and abandoning a patient?','How do you support a family who disagrees with the patient\'s choice?'],
+    ethics:'Autonomy vs. Beneficence — when patient choice conflicts with medical recommendation.',
+    diff:3
+  },
+  {
+    id:8, cat:'ethics', title:'Witnessing a Colleague\'s Error',
+    scenario:'You see a senior nurse administer a medication without checking patient ID or the "5 Rights." The patient is sleeping and nothing immediately happens. Your shift is ending in 20 minutes.',
+    tasks:['Complete incident report regardless of outcome', 'Speak with the colleague directly first (if safe to do so)', 'Follow hospital reporting chain — charge nurse, then management', 'Reflect on own ethical obligation to patient safety vs. collegial loyalty'],
+    questions:['What are the legal consequences of NOT reporting a near-miss?','How does nursing professional code govern this situation in Taiwan?'],
+    ethics:'Non-maleficence, professional accountability, and moral courage in reporting errors.',
+    diff:2
+  },
+  {
+    id:9, cat:'ethics', title:'Allocation of Limited Resources',
+    scenario:'Your unit has only one high-flow oxygen device. Two patients need it simultaneously: a 30-year-old trauma patient and an 80-year-old chronic COPD patient with a DNR order. The physician is unreachable.',
+    tasks:['Understand triage principles in resource-limited contexts', 'Know the role and weight of DNR orders in acute decisions', 'Escalate immediately — do not decide alone', 'Document every step of the escalation process'],
+    questions:['Is age alone an ethically justifiable criterion for resource allocation?','What is the nurse\'s role when physicians are unavailable in an emergency?'],
+    ethics:'Justice principle — fair and equitable distribution of scarce medical resources.',
+    diff:3
+  },
+  // SAFETY
+  {
+    id:10, cat:'safety', title:'High-Alert Medication Error Risk',
+    scenario:'You are preparing insulin for 3 different patients simultaneously. The unit is short-staffed. A new graduate asks you to "check" her insulin dose while you\'re preparing your own. What are your risks and responsibilities?',
+    tasks:['Never prepare medications for multiple patients simultaneously', 'Implement independent double-check for insulin per protocol', 'Report staffing concern using proper channels before harm occurs', 'Educate new graduate on 5+2 Rights of medication administration'],
+    questions:['What system factors contribute to medication errors?','How do you balance helping a colleague with maintaining your own safety standards?'],
+    ethics:'Creating a culture of safety vs. blame — systemic thinking in error prevention.',
+    diff:1
+  },
+  {
+    id:11, cat:'safety', title:'Fall Prevention in Practice',
+    scenario:'Mr. Lee, 72, a fall-risk patient (Morse Score 65), tells you he "doesn\'t need help" going to the bathroom at 2 AM. He refuses the call bell. 10 minutes later you hear a thud.',
+    tasks:['Implement hourly rounding on high-risk patients proactively', 'Document patient education and refusal of safety measures', 'Post-fall assessment protocol: ABC, neuro check, x-ray if indicated', 'Complete incident report and root-cause reflection'],
+    questions:['How do you balance patient autonomy with fall prevention?','What documentation protects you legally after a fall?'],
+    ethics:'Respecting patient independence vs. duty of care — where is the ethical line?',
+    diff:1
+  },
+  {
+    id:12, cat:'safety', title:'Handover Communication Failure',
+    scenario:'During shift handover, the outgoing nurse gives a brief, informal verbal report with no written documentation. She leaves quickly. You later discover the patient was showing signs of deterioration that were not mentioned.',
+    tasks:['Use standardized SBAR handover tool for every patient', 'Ask targeted questions: "What am I most worried about for this patient?"', 'Read last 4 hours of nursing notes independently before accepting patient', 'Report communication gaps as patient safety incidents'],
+    questions:['Who bears legal responsibility if a patient deteriorates after an incomplete handover?','How do hospitals create safer handover systems?'],
+    ethics:'Accountability and continuity of care as ethical professional obligations.',
+    diff:2
+  },
+  // LEGAL
+  {
+    id:13, cat:'legal', title:'Documenting Under Pressure',
+    scenario:'After a difficult resuscitation, the physician asks you to document that "CPR was performed correctly throughout." You have concerns about the timing and technique used. The physician is your supervisor.',
+    tasks:['Document only what you directly observed — objectively and factually', 'Know that altering or falsifying records is a criminal offense in Taiwan', 'Consult nursing supervisor or legal officer if pressured', 'Preserve your own notes independently after the event'],
+    questions:['What are the legal consequences of falsified medical records?','How do you professionally push back against a superior?'],
+    ethics:'Integrity and veracity in documentation — professional and legal obligation.',
+    diff:3
+  },
+  {
+    id:14, cat:'legal', title:'Scope of Practice Boundaries',
+    scenario:'You are working in a rural clinic. The physician is temporarily away. A patient arrives with chest pain, diaphoresis, and left arm numbness. A family member says "just give him the nitroglycerin from last time — the doctor always does this."',
+    tasks:['Know your jurisdiction\'s scope of practice for RN vs. advanced practice', 'Activate emergency services (119 in Taiwan) immediately', 'Do not administer prescription medications without a current order', 'Document everything — time of arrival, symptoms, actions taken'],
+    questions:['When can a nurse act outside normal scope during an emergency?','What is "standing order" and when does it apply?'],
+    ethics:'Balancing beneficence (acting to help) with legal scope constraints.',
+    diff:2
+  },
+  {
+    id:15, cat:'legal', title:'Social Media and Confidentiality',
+    scenario:'A nursing student posts a photo of a patient\'s surgical wound on a study group chat, with the caption "can anyone help me identify what type of incision this is?" No name is shown. Is this a privacy violation?',
+    tasks:['Understand HIPAA equivalents in Taiwan — Personal Data Protection Act', 'Recognize that no name does not mean no identification risk', 'Educate on proper channels for clinical questions (supervisor, textbooks)', 'Report incident to clinical instructor and hospital privacy officer'],
+    questions:['What makes information "identifiable" under privacy law?','What are the professional and criminal consequences?'],
+    ethics:'Confidentiality as a fundamental nursing duty — patient dignity and trust.',
+    diff:1
+  },
+  // FAMILY
+  {
+    id:16, cat:'family', title:'End-of-Life Disagreement',
+    scenario:'Mr. Kuo, 85, has advanced cancer and has verbally told nurses "no more aggressive treatment." He has no written advance directive. His three adult children are divided: two want palliative care; one insists on full resuscitation "to give him a chance."',
+    tasks:['Initiate family meeting with palliative care team', 'Explain legal weight of patient\'s verbal wishes without written directive', 'Support all family members emotionally — acknowledge grief and conflict', 'Facilitate advance care planning documentation while patient still has capacity'],
+    questions:['In Taiwan, who has legal decision-making authority for an incapacitated adult?','How do you advocate for a patient whose family disagrees?'],
+    ethics:'Autonomy vs. family-centred care — navigating power dynamics at end of life.',
+    diff:3
+  },
+  {
+    id:17, cat:'family', title:'Caregiver Burnout Observation',
+    scenario:'Mrs. Su, 60, is the sole caregiver for her husband with late-stage Parkinson\'s. During a home visit you notice she is tearful, has lost 5kg, and says "I just want it to be over." How do you respond?',
+    tasks:['Assess for depression and suicidal ideation using validated tool (PHQ-9)', 'Recognize caregiver burnout as a patient safety risk', 'Connect to respite care, social work, and community resources', 'Document findings and create a follow-up plan'],
+    questions:['Is caregiver wellbeing within the nursing scope of care?','What community resources exist for caregivers in Taiwan?'],
+    ethics:'Expanding the circle of care — family as both caregiver and patient.',
+    diff:2
+  },
+  {
+    id:18, cat:'family', title:'Paediatric Consent Conflict',
+    scenario:'A 14-year-old girl with leukemia tells you privately she wants to stop chemotherapy — she is "so tired." Her parents, present in the room, are committed to continuing all treatment. She asks you not to tell them she told you.',
+    tasks:['Understand adolescent assent vs. parental consent in Taiwan law', 'Maintain therapeutic relationship without making promises you cannot keep', 'Facilitate communication between patient and parents with clinical team support', 'Involve ethics committee or patient advocate if conflict continues'],
+    questions:['At what age can a minor\'s wishes override parental consent in Taiwan?','How do you hold confidentiality when the patient is a minor?'],
+    ethics:'Balancing parental authority, adolescent autonomy, and the child\'s best interest.',
+    diff:3
+  }
+];
+
+// Render cards
+function renderCards(filter) {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  SCENARIOS.filter(s => filter === 'all' || s.cat === filter).forEach(s => {
+    const cat = CATS[s.cat];
+    const diffs = [1,2,3].map(d => `<div class="diff-dot ${d<=s.diff?'filled':''}"></div>`).join('');
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-header" style="background:linear-gradient(135deg,${cat.color},${cat.color}99)" data-icon="${getIcon(s.cat)}">
+        <div class="card-tag">${cat.label}</div>
+        <div class="card-title">${s.title}</div>
+      </div>
+      <div class="card-body">
+        <p class="card-scenario">${s.scenario.substring(0,120)}…</p>
+        <ul class="card-tasks">${s.tasks.slice(0,2).map(t=>`<li>${t}</li>`).join('')}</ul>
+        <div class="card-footer">
+          <div class="difficulty" title="Difficulty">${diffs}</div>
+          <div class="ethics-tag">⚖️ Ethics link</div>
+        </div>
+      </div>`;
+    div.onclick = () => openPopup(s);
+    grid.appendChild(div);
+  });
+}
+
+function getIcon(cat) {
+  return {assess:'🔍',comm:'💬',ethics:'⚖️',safety:'🛡️',legal:'📋',family:'👨‍👩‍👧'}[cat]||'📌';
+}
+
+function openPopup(s) {
+  const cat = CATS[s.cat];
+  document.getElementById('popupTag').textContent = cat.label;
+  document.getElementById('popupTitle').textContent = s.title;
+  document.getElementById('popupHeader').style.background = `linear-gradient(135deg,${cat.color},${cat.color}99)`;
+  const qs = s.questions.map(q=>`<li>${q}</li>`).join('');
+  const ts = s.tasks.map(t=>`<li>${t}</li>`).join('');
+  document.getElementById('popupBody').innerHTML = `
+    <h3>📖 Clinical Scenario</h3>
+    <div class="popup-scenario">${s.scenario}</div>
+    <h3>✅ Learning Tasks</h3>
+    <ul class="popup-list">${ts}</ul>
+    <h3>🤔 Discussion Questions</h3>
+    <ul class="popup-list">${qs}</ul>
+    <h3>⚖️ Ethics Connection</h3>
+    <div class="ethics-box">${s.ethics}</div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closePopup(e) {
+  if (e.target === document.getElementById('overlay')) {
+    document.getElementById('overlay').classList.remove('open');
+  }
+}
+
+// Filter buttons
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(btn.dataset.cat);
+});
+
+// Draw SVG web lines
+function drawWeb() {
+  const svg = document.getElementById('web-svg');
+  const vw = 900, vh = 790;
+  const cx = vw/2, cy = vh/2;
+
+  const nodes = [
+    {id:'bn-assess', x:cx, y:cy*0.24},
+    {id:'bn-comm', x:cx*1.7, y:vh*0.3},
+    {id:'bn-ethics', x:cx*1.6, y:vh*0.72},
+    {id:'bn-safety', x:cx, y:vh*0.88},
+    {id:'bn-legal', x:cx*0.4, y:vh*0.72},
+    {id:'bn-family', x:cx*0.3, y:vh*0.3}
+  ];
+
+  const colors = ['var(--teal)','var(--coral)','var(--gold)','var(--sage)','var(--plum)','#c06a4a'];
+
+  // Center to branch
+  nodes.forEach((n, i) => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+    line.setAttribute('x2', n.x); line.setAttribute('y2', n.y);
+    line.setAttribute('stroke', colors[i]);
+    line.setAttribute('stroke-width', '2.5');
+    line.setAttribute('stroke-opacity', '0.4');
+    line.setAttribute('stroke-dasharray', '6 4');
+    svg.appendChild(line);
+  });
+
+  // Outer polygon connecting branches
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i], b = nodes[(i+1)%nodes.length];
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+    line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+    line.setAttribute('stroke', '#c0c0b0');
+    line.setAttribute('stroke-width', '1.5');
+    line.setAttribute('stroke-opacity', '0.35');
+    svg.appendChild(line);
+  }
+}
+
+// Branch node click → filter
+['assess','comm','ethics','safety','legal','family'].forEach(cat => {
+  const bn = document.getElementById('bn-'+cat);
+  if (bn) bn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.filter-btn[data-cat="${cat}"]`);
+    if (btn) btn.classList.add('active');
+    renderCards(cat);
+    document.getElementById('scenariosSection').scrollIntoView({behavior:'smooth', block:'start'});
+    document.querySelectorAll('.branch-node').forEach(n=>n.classList.remove('active'));
+    bn.classList.add('active');
+  });
+});
+
+// Init
+drawWeb();
+renderCards('all');
+</script>
+</body>
+</html>
