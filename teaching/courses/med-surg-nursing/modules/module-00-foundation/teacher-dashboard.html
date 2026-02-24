@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Module 00｜Teacher Dashboard</title>
+<style>
+body{
+  background:#081423;
+  color:#d9f1ff;
+  font-family:"Microsoft JhengHei";
+  padding:40px;
+}
+h1,h2{
+  color:#39c5ff;
+}
+.section{
+  background:#0f2744;
+  padding:20px;
+  margin-bottom:25px;
+  border-radius:8px;
+  border-left:5px solid #39c5ff;
+}
+code{
+  background:#123;
+  padding:5px 8px;
+  border-radius:4px;
+}
+</style>
+</head>
+<body>
+
+<h1>👩‍⚕️ Module 00｜Teacher Dashboard</h1>
+
+<div class="section">
+<h2>Week 1 教學流程（4 小時）</h2>
+<p><strong>前2小時：</strong>課程導入、規則說明、評量方式、NGN架構介紹</p>
+<p><strong>後2小時：</strong>全人評估示範案例、小組啟動</p>
+</div>
+
+<div class="section">
+<h2>固定三項課堂任務</h2>
+<ul>
+<li>每週 Exit Ticket（NGN題＋反思）</li>
+<li>小組進度紀錄</li>
+<li>期末小組互評</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Supabase 建議欄位</h2>
+<code>
+student_id, group_id, week, module, scene, ngn_step,
+answer, confidence, rationale_text, submitted_at
+</code>
+</div>
+
+<div class="section">
+<h2>PDCA 教學追蹤</h2>
+<p>P：本週學習目標</p>
+<p>D：案例演練</p>
+<p>C：Exit Ticket 分析</p>
+<p>A：下週補強講授</p>
+</div>
+
+<div class="section">
+<h2>TronClass 設定建議</h2>
+<ul>
+<li>建立每週小測驗</li>
+<li>建立作業里程碑繳交</li>
+<li>設定互評功能</li>
+</ul>
+</div>
+
+</body>
+</html>

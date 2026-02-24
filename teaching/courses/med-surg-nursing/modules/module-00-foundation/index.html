@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Module 00｜課程導覽與全人評估基礎</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111a33; --card:#0f1730; --line:#243055;
+      --text:#eaf0ff; --muted:#b8c4ff; --accent:#39FF14; --warn:#ffcc66;
+      --link:#7aa7ff;
+    }
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      margin:0; background:linear-gradient(180deg,var(--bg),#070b18 60%); color:var(--text);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 48px;}
+    .topbar{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding:12px 14px; border:1px solid var(--line); border-radius:16px; background:rgba(17,26,51,.7);
+      position:sticky; top:10px; backdrop-filter: blur(6px); z-index: 10;
+    }
+    .brand{display:flex; flex-direction:column; gap:2px;}
+    .brand b{font-size:16px; letter-spacing:.2px}
+    .brand span{font-size:12px; color:var(--muted)}
+    .nav{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+    .nav a{
+      text-decoration:none; color:var(--text);
+      border:1px solid var(--line); background:rgba(15,23,48,.7);
+      padding:8px 10px; border-radius:999px; font-size:12px;
+    }
+    .nav a:hover{border-color:var(--accent); box-shadow:0 0 0 2px rgba(57,255,20,.15) inset;}
+    h1{margin:18px 0 6px; font-size:28px}
+    .subtitle{color:var(--muted); margin:0 0 18px; line-height:1.7}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px;}
+    .card{
+      border:1px solid var(--line); border-radius:18px; background:rgba(15,23,48,.75);
+      padding:16px;
+    }
+    .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;
+      border:1px solid var(--line); background:rgba(17,26,51,.8); color:var(--muted); margin-right:6px;}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .btn{
+      display:inline-block; text-decoration:none; font-weight:800;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid var(--accent); color:var(--bg); background:var(--accent);
+    }
+    .btn.secondary{background:transparent; color:var(--text); border-color:var(--line);}
+    .btn.secondary:hover{border-color:var(--accent)}
+    ul{margin:10px 0 0; padding-left:20px; color:var(--muted); line-height:1.7}
+    .note{
+      margin-top:14px; border-left:4px solid var(--warn); padding:10px 12px; background:rgba(255,204,102,.08);
+      border-radius:12px; color:var(--text)
+    }
+    .small{font-size:12px; color:var(--muted)}
+    .hr{height:1px;background:var(--line);margin:16px 0;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- 全學期導航列 -->
+    <div class="topbar">
+      <div class="brand">
+        <b>內外科護理學綜論｜課程網站</b>
+        <span>Module-00｜課程導覽與全人評估基礎（Week 1–2 工具模組）</span>
+      </div>
+      <div class="nav" aria-label="全學期導航列">
+        <a href="../module-00-foundation/index.html">00 基礎</a>
+        <a href="../module-01-ox-circ-mob/index.html">01 氧合×循環×活動</a>
+        <a href="../module-02-nutrition-elimination/index.html">02 營養×排泄</a>
+        <a href="../module-03-psychological-care/index.html">03 心理照護</a>
+        <a href="../module-04-safety-protection/index.html">04 安全保護</a>
+        <a href="../module-05-family-cultural-care/index.html">05 家庭文化</a>
+        <a href="../module-06-sensory-perception/index.html">06 感覺知覺</a>
+        <a href="../module-07-oncology/index.html">07 腫瘤照護</a>
+        <a href="../module-08-spiritual-care/index.html">08 靈性照護</a>
+        <a href="../module-09-case-integration/index.html">09 案例整合</a>
+        <a href="../module-10-assessment/index.html">10 綜合評量</a>
+      </div>
+    </div>
+
+    <h1>Module 00｜課程導覽與全人評估基礎</h1>
+    <p class="subtitle">
+      這個模組是「整學期反覆使用的工具箱」：<br/>
+      ① 課程規範/作業要求（學生提醒頁）　② 教師課堂操作儀表板　③ 全人評估 Lecture（用同一個案例示範怎麼寫、怎麼報告、怎麼對應後續 Unfolding Case/NGN 任務）
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">學生入口</span><span class="tag">作業/規範</span>
+        <h2 style="margin:10px 0 6px;">Student Guide｜學生提醒頁</h2>
+        <p class="small">課程規則、分組、作業上傳、Exit Ticket、資料紀錄方式（TronClass/Notion/Supabase）。</p>
+        <div class="btnrow">
+          <a class="btn" href="./student-guide.html">開啟學生頁</a>
+          <a class="btn secondary" href="./lectures/holistic-assessment.html">全人評估 Lecture</a>
+        </div>
+        <div class="note">
+          <b>課堂使用建議：</b>每次進案例前，先請學生回到此頁確認「本週任務與上傳格式」。
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag">教師入口</span><span class="tag">PDCA</span>
+        <h2 style="margin:10px 0 6px;">Teacher Dashboard｜教師儀表板</h2>
+        <p class="small">本週教學流程、點名/分組、NGN 任務開關、Exit Ticket 檢核與下週 Act 修正提醒。</p>
+        <div class="btnrow">
+          <a class="btn" href="./teacher-dashboard.html">開啟教師頁</a>
+          <a class="btn secondary" href="./lectures/holistic-assessment.html">全人評估 Lecture</a>
+        </div>
+        <div class="note">
+          <b>資料回收建議：</b>Exit Ticket → TronClass；小組答案/過程 → Supabase（可追蹤迷思與改進）。
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Week 2</span><span class="tag">示範案例</span>
+        <h2 style="margin:10px 0 6px;">Holistic Assessment｜全人評估示範</h2>
+        <p class="small">用「五大層面」帶學生：蒐集資料 → 異常與臨床意義 → 跨層面關聯 → 優先問題。</p>
+        <div class="btnrow">
+          <a class="btn" href="./lectures/holistic-assessment.html">開啟 Lecture</a>
+        </div>
+        <div class="hr"></div>
+        <ul>
+          <li>用同一套結構，後面所有 unfolding case 都能套用。</li>
+          <li>把「怎麼寫、怎麼講、怎麼想」固定成模板，避免期中後學生又亂掉。</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:18px;">
+      建議檔案結構：<br/>
+      <code>module-00-foundation/</code> → <code>index.html</code>, <code>student-guide.html</code>, <code>teacher-dashboard.html</code>, <code>lectures/holistic-assessment.html</code>
+    </p>
+  </div>
+</body>
+</html>

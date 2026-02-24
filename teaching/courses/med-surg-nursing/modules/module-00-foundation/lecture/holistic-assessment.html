@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Lecture｜全人評估示範（五大層面）</title>
+  <style>
+    :root{
+      --bg:#070b18; --panel:#0f1730; --line:#243055;
+      --text:#eaf0ff; --muted:#b8c4ff; --accent:#39FF14; --link:#7aa7ff; --warn:#ffcc66;
+    }
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      margin:0; background:linear-gradient(180deg,#0b1020,var(--bg) 60%); color:var(--text);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 60px;}
+    .topbar{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding:12px 14px; border:1px solid var(--line); border-radius:16px; background:rgba(15,23,48,.75);
+      position:sticky; top:10px; backdrop-filter: blur(6px); z-index:10;
+    }
+    .nav{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
+    .nav a{
+      text-decoration:none; color:var(--text);
+      border:1px solid var(--line); background:rgba(17,26,51,.7);
+      padding:8px 10px; border-radius:999px; font-size:12px;
+    }
+    .nav a:hover{border-color:var(--accent);}
+    h1{margin:18px 0 6px; font-size:28px}
+    h2{margin:18px 0 8px; font-size:20px}
+    .muted{color:var(--muted); line-height:1.8}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:14px;}
+    .card{border:1px solid var(--line); background:rgba(15,23,48,.75); border-radius:18px; padding:16px;}
+    .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;
+      border:1px solid var(--line); background:rgba(17,26,51,.85); color:var(--muted); margin-right:6px;}
+    .callout{border-left:4px solid var(--warn); background:rgba(255,204,102,.08); padding:10px 12px; border-radius:12px;}
+    .steps{margin:0; padding-left:18px; color:var(--muted); line-height:1.8}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .btn{
+      display:inline-block; text-decoration:none; font-weight:800;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid var(--accent); color:#0b1020; background:var(--accent);
+    }
+    .btn.secondary{background:transparent; color:var(--text); border-color:var(--line);}
+    .btn.secondary:hover{border-color:var(--accent)}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px; padding:2px 6px; border:1px solid var(--line); border-radius:8px; background:rgba(17,26,51,.8)}
+    table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:14px; border:1px solid var(--line); margin-top:10px;}
+    th,td{padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+    th{background:rgba(17,26,51,.75); text-align:left}
+    tr:last-child td{border-bottom:none}
+    .small{font-size:12px; color:var(--muted)}
+    .hr{height:1px;background:var(--line);margin:14px 0;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- 全學期導航列 -->
+    <div class="topbar">
+      <div>
+        <div style="font-weight:900;">Lecture｜全人評估示範（五大層面）</div>
+        <div class="small">Module-00 工具頁｜用同一套結構，整學期所有案例都套用</div>
+      </div>
+      <div class="nav">
+        <a href="../index.html">回 Module-00</a>
+        <a href="../../module-01-ox-circ-mob/index.html">去 Module-01</a>
+        <a href="../../module-02-nutrition-elimination/index.html">去 Module-02</a>
+        <a href="../../module-10-assessment/index.html">評量</a>
+      </div>
+    </div>
+
+    <h1>全人評估：用「同一個案例」示範怎麼寫、怎麼講、怎麼做臨床推理</h1>
+    <p class="muted">
+      這堂課的目標不是「背資料」，而是把資料整理成能決策的臨床語言：<br/>
+      <b>蒐集 → 異常/臨床意義 → 跨層面關聯 → 優先問題 →（後續模組會接 NGN 任務）</b>
+    </p>
+
+    <div class="callout">
+      <b>教師操作提醒（2 小時版）</b><br/>
+      <span class="kbd">10 min</span> 案例背景 + 任務規則　
+      <span class="kbd">35 min</span> 五層面蒐集資料（小組）　
+      <span class="kbd">25 min</span> 異常/臨床意義　
+      <span class="kbd">25 min</span> 跨層面關聯 + 優先問題　
+      <span class="kbd">15 min</span> Exit Ticket（形成性檢核）
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">示範案例（可自行替換）</span>
+        <h2>Case：66 歲男性｜呼吸困難＋活動耐受差</h2>
+        <p class="muted">
+          主訴：近 3 天走路就喘、夜間咳嗽加劇、痰變稠；家屬說最近情緒煩躁。<br/>
+          你可以把此案例當作「後續 COPD unfolding case 的前導版本」。
+        </p>
+        <div class="hr"></div>
+        <ul class="steps">
+          <li>先不要給完整檢驗（刻意留白），訓練「主動蒐集」</li>
+          <li>每一層面都要寫：<b>S/O 資料</b>＋<b>異常/臨床意義</b></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="tag">學生產出</span><span class="tag">報告模板</span>
+        <h2>學生必交：一頁「全人評估摘要」</h2>
+        <ul class="steps">
+          <li>五層面重點（每層面 3–5 點）</li>
+          <li>異常發現與臨床意義（至少 5 點）</li>
+          <li>跨層面關聯（至少 2 條因果鏈）</li>
+          <li>優先護理問題（Top 3）＋理由</li>
+        </ul>
+        <div class="btnrow">
+          <a class="btn secondary" href="../student-guide.html">回學生提醒頁</a>
+          <a class="btn secondary" href="../teacher-dashboard.html">回教師儀表板</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">層面 1</span><span class="tag">生理</span>
+        <h2>生理層面：先抓「氧合/循環/神經感覺移動」</h2>
+        <table>
+          <tr>
+            <th style="width:28%;">子構面</th>
+            <th>你要問/要看/要量（提示）</th>
+          </tr>
+          <tr>
+            <td><b>氧合</b></td>
+            <td class="muted">
+              危險因子（暴露/抽菸史/感染史）、主訴（咳嗽、呼吸急促、胸痛等可用 PQRST）、呼吸相關疾病與用藥、影像或檢驗、胸腔理學檢查。<br/>
+              <span class="small">（之後接 Module-01：SpO₂、ABG、呼吸音、呼吸功）</span>
+            </td>
+          </tr>
+          <tr>
+            <td><b>循環</b></td>
+            <td class="muted">
+              心血管危險因子（抽菸、酒、運動、藥物）、胸痛 PQRST、相關用藥、活動耐受（活動前/中/後心跳脈搏血壓變化）、診斷檢查（EKG、心超、心導管、檢驗值）、心血管理學檢查。
+            </td>
+          </tr>
+          <tr>
+            <td><b>神經/感覺/移動</b></td>
+            <td class="muted">
+              教育程度/心智評估（JOMAC/GCS/MMSE）、住院/居家照護認知程度、健康危險因子與健康維持方式、感覺功能改變主訴、輔助器、腦神經評估等。
+            </td>
+          </tr>
+        </table>
+        <p class="small">提示：這張表就是你後續每個 unfolding case 的「固定骨架」。</p>
+      </div>
+
+      <div class="card">
+        <span class="tag">層面 2–5</span><span class="tag">完整全人</span>
+        <h2>心理/社會文化/發展與靈性：用句型固定住</h2>
+        <ul class="steps">
+          <li><b>心理：</b>自我概念/自尊（身體心像、情緒表現）、壓力處理（因應策略、壓力源）</li>
+          <li><b>社會文化：</b>家庭/角色（誰是決策者、經濟支柱）、照顧者負荷與照顧知識</li>
+          <li><b>發展：</b>對應年齡的發展任務達成情況</li>
+          <li><b>靈性：</b>價值信仰、生死觀、宗教物件/習俗禁忌、是否出現靈性困擾</li>
+        </ul>
+        <div class="hr"></div>
+        <div class="callout">
+          <b>老師一句話提問（示範）</b><br/>
+          「如果他呼吸變差（生理），會怎麼影響自尊與角色功能（心理/社會）？這會不會反過來讓他更不配合治療？」
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">臨床推理</span>
+        <h2>跨層面關聯（Cross-Domain Analysis）怎麼寫</h2>
+        <ol class="steps">
+          <li>先挑 2–3 個最重要的「異常線索」（例：SpO₂下降、活動耐受差、焦慮/煩躁）</li>
+          <li>用「因果鏈」寫：A → B → C（至少 2 條）</li>
+          <li>每條因果鏈最後要回到「需要被處理的護理問題」</li>
+        </ol>
+        <div class="hr"></div>
+        <p class="muted">
+          <b>範例句型：</b><br/>
+          「（生理）氧合不足導致活動即喘 →（心理）焦慮上升與睡眠受損 →（社會）角色功能下降、對治療配合變差 → 因此優先問題為……」
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="tag">優先問題</span><span class="tag">接 NGN</span>
+        <h2>優先護理問題 Top 3（先練排序）</h2>
+        <p class="muted">
+          先不要求寫完整護理計畫；Week 2 只要學生能說清楚「為什麼這個最優先」。
+        </p>
+        <ul class="steps">
+          <li>Top 1：立即風險（Airway/Breathing/Circulation）</li>
+          <li>Top 2：會導致快速惡化或併發症的因素</li>
+          <li>Top 3：影響配合治療或出院照護的關鍵障礙</li>
+        </ul>
+        <div class="callout">
+          <b>Exit Ticket（本堂課）</b><br/>
+          1) 你判定此病人目前「穩定/不穩定」？請用 2 個線索支持。<br/>
+          2) 你今天最不確定的評估項目是什麼？你需要什麼資料才能更確定？
+        </div>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:18px;">
+      本頁建議搭配：學生的「全人評估個案研究工作表單」完成（五層面＋跨層面關聯＋優先問題）。
+    </p>
+  </div>
+</body>
+</html>

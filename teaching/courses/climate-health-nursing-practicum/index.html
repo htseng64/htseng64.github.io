@@ -1,21 +1,215 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>護理視角下的氣候健康挑戰與調適（實作）</title>
-  <style>
-    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;max-width:860px;margin:40px auto;padding:0 16px;line-height:1.6}
-    .card{border:1px solid #ddd;border-radius:14px;padding:18px}
-    a{text-decoration:none}
-    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>氣候變遷與健康調適｜課程首頁</title>
+  <meta name="description" content="護理系二年級｜三模組×18週｜六組慢性病固定分組｜銜接第9–10週mHealth/AI App/Web Prototype" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
-  <h1>護理視角下的氣候健康挑戰與調適（實作）</h1>
-  <div class="card">
-    <p>Course slug：climate-health-nursing-practicum｜此頁將作為 Notion 的公開入口連結。</p>
-    <p>此頁為課程入口（Course）。之後會連到 <code>/teaching/modules/</code> 的單元與互動。</p>
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <span class="logo"></span>
+        <div>
+          <div><strong>氣候變遷與健康調適</strong>｜課程網站</div>
+          <div class="muted" style="font-size:12px;">三模組×18週｜六組慢性病固定分組｜mHealth/AI Prototype</div>
+        </div>
+      </div>
+      <span class="chip">COURSE HUB</span>
+      <nav class="nav" aria-label="頁面導覽">
+        <a href="#modules">三模組導覽</a>
+        <a href="#weeks">18週進度</a>
+        <a href="#teams">六組分組</a>
+        <a href="./modules/m01/index.html">模組一</a>
+        <a href="./modules/m02/index.html">模組二</a>
+        <a href="./modules/m03/index.html">模組三</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Hero -->
+    <header class="hero">
+      <h1>三模組導覽（18週）<br/>從第1週銜接到第9–10週 mHealth/AI 雛型</h1>
+      <p>
+        本課程以六組慢性病主題固定分組，從第一週開始逐步累積：族群卡 → 氣候風險因果鏈 → 分級規則 → 衛教模組 → UI草圖，
+        在第9–10週完成 App/Web Prototype，最後於模組三走入社區實作與倡議發表。
+      </p>
+      <div class="row">
+        <a class="btn primary" href="./modules/m01/index.html">立即開始：模組一（Week 1）</a>
+        <a class="btn" href="#modules">看三模組</a>
+        <a class="btn" href="#teams">看六組分組</a>
+      </div>
+    </header>
+
+    <!-- Modules -->
+    <section id="modules" class="grid cols-3">
+      <!-- Module 1 -->
+      <article class="card">
+        <div class="hd">
+          <div>
+            <h2 class="title">模組一｜氣候危機與災難護理</h2>
+            <p class="subtitle">Week 1–5｜風險辨識 × 脆弱族群 × 災難照護</p>
+          </div>
+          <span class="tag">M01</span>
+        </div>
+        <div class="bd">
+          <ul class="list">
+            <li>Week 1：啟動與前導導入（影片引導＋反思日誌＋分組啟動）</li>
+            <li>Week 2：氣候變遷與健康影響概論（個案導讀＋圖解報告）</li>
+            <li>Week 3–4：護理角色與災難照護（模擬/OSCE＋回饋）</li>
+            <li>Week 5：氣候正義與文化照護（講座＋角色扮演）</li>
+          </ul>
+          <div class="hr"></div>
+          <div class="callout">
+            <strong>模組成果：</strong>族群卡（Persona）＋氣候風險因果鏈＋照護痛點（1句）＋初步求助路徑
+          </div>
+          <div class="row">
+            <a class="btn primary" href="./modules/m01/index.html">進入模組一</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Module 2 -->
+      <article class="card">
+        <div class="hd">
+          <div>
+            <h2 class="title">模組二｜行星健康與數位創新</h2>
+            <p class="subtitle">Week 6–10｜SDGs × 行星健康倫理 × mHealth/AI 設計</p>
+          </div>
+          <span class="tag">M02</span>
+        </div>
+        <div class="bd">
+          <ul class="list">
+            <li>Week 6–7：SDGs與行星健康倫理（圖解練習＋繪本/工具設計）</li>
+            <li>Week 8：期中發表（整合前段成果）</li>
+            <li>Week 9–10：mHealth與數位照護設計（App/Web Prototype）</li>
+          </ul>
+          <div class="hr"></div>
+          <div class="callout">
+            <strong>模組成果：</strong>≥5畫面雛型＋使用者流程圖＋AI角色（提醒/分級/衛教）＋情境模擬（極端氣候日）
+          </div>
+          <div class="mini">
+提示：模組二是「把模組一的臨床邏輯」落地成可展示的 App/Web。
+          </div>
+          <div class="row">
+           <a class="btn primary" href="./modules/m02/index.html">進入模組二</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Module 3 -->
+      <article class="card">
+        <div class="hd">
+          <div>
+            <h2 class="title">模組三｜自然解方與社區倡議</h2>
+            <p class="subtitle">Week 11–18｜NbS × 社區參與 × 倡議提案與成果發表</p>
+          </div>
+          <span class="tag">M03</span>
+        </div>
+        <div class="bd">
+          <ul class="list">
+            <li>Week 11：NbS自然友善照護（校園綠地觀察＋導引牌）</li>
+            <li>Week 12–14：社區參訪與互動（實地訪談＋共創）</li>
+            <li>Week 15–16：倡議提案設計（行動方案＋數位工具整合）</li>
+            <li>Week 17：成果發表與交叉教學</li>
+            <li>Week 18：課程評值與學習歷程整理</li>
+          </ul>
+          <div class="hr"></div>
+          <div class="callout">
+            <strong>模組成果：</strong>社區參與紀錄/報告＋倡議提案＋成果展（含 App 雛型展示）
+          </div>
+	<div class="row">
+  	<a class="btn primary" href="./modules/m03/index.html">進入模組三</a>
+	</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Weeks Timeline -->
+    <section id="weeks" class="card">
+      <div class="hd">
+        <div>
+          <h2 class="title">18週進度表（以三模組呈現）</h2>
+          <p class="subtitle">一眼看懂：每週做什麼、成果如何累積到 Prototype 與社區倡議</p>
+        </div>
+        <span class="tag">W1–W18</span>
+      </div>
+      <div class="bd">
+        <table aria-label="18週進度表">
+          <thead>
+            <tr>
+              <th style="width:10%;">週次</th>
+              <th style="width:22%;">模組</th>
+              <th>單元主題</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>W1</td><td>模組一</td><td>啟動與前導導入</td></tr>
+            <tr><td>W2</td><td>模組一</td><td>氣候變遷與健康影響概論</td></tr>
+            <tr><td>W3</td><td>模組一</td><td>護理角色與災難照護（一）</td></tr>
+            <tr><td>W4</td><td>模組一</td><td>護理角色與災難照護（二）</td></tr>
+            <tr><td>W5</td><td>模組一</td><td>氣候正義與文化照護</td></tr>
+            <tr><td>W6</td><td>模組二</td><td>SDGs與行星健康倫理（一）</td></tr>
+            <tr><td>W7</td><td>模組二</td><td>SDGs與行星健康倫理（二）</td></tr>
+            <tr><td>W8</td><td>模組二</td><td>🌟 期中發表（Midterm）</td></tr>
+            <tr><td>W9</td><td>模組二</td><td>mHealth與數位照護設計（一）</td></tr>
+            <tr><td>W10</td><td>模組二</td><td>mHealth與數位照護設計（二）</td></tr>
+            <tr><td>W11</td><td>模組三</td><td>NbS自然友善照護</td></tr>
+            <tr><td>W12</td><td>模組三</td><td>社區參訪與互動（一）</td></tr>
+            <tr><td>W13</td><td>模組三</td><td>社區參訪與互動（二）</td></tr>
+            <tr><td>W14</td><td>模組三</td><td>社區參訪與互動（三）</td></tr>
+            <tr><td>W15</td><td>模組三</td><td>氣候健康倡議提案設計（一）</td></tr>
+            <tr><td>W16</td><td>模組三</td><td>氣候健康倡議提案設計（二）</td></tr>
+            <tr><td>W17</td><td>模組三</td><td>🌟 成果發表與交叉教學</td></tr>
+            <tr><td>W18</td><td>模組三</td><td>課程評值與學習歷程整理</td></tr>
+          </tbody>
+        </table>
+        <div class="hr"></div>
+        <div class="mini">
+銜接邏輯：
+W1–5 建立「臨床/災難思維」→ W6–10 落地成「mHealth/AI雛型」→ W11–18 擴展到「社區與倡議」。
+        </div>
+      </div>
+    </section>
+
+    <!-- Teams -->
+    <section id="teams" class="card">
+      <div class="hd">
+        <div>
+          <h2 class="title">六組固定分組（全課程貫穿）</h2>
+          <p class="subtitle">從第1週起固定分組，一路累積到第9–10週 Prototype 與第17週成果發表</p>
+        </div>
+        <span class="tag">6 TEAMS</span>
+      </div>
+      <div class="bd grid cols-2">
+        <div class="mini">
+① COPD × 空污預警智慧照護
+② 糖尿病 × 熱浪脫水風險管理
+③ 高血壓 × 氣候焦慮身心管理
+④ 失智症 × 熱浪居家安全守護
+⑤ 心衰竭 × 極端氣候症狀追蹤
+⑥ CKD × 飲水控制 × 永續健康教育
+        </div>
+        <div class="callout">
+          <strong>課程設計重點：</strong><br/>
+          每組主題固定 → 每週只「加一塊積木」：族群卡/因果鏈/分級規則/衛教/流程/畫面，
+          到 W9–10 自然完成雛型。
+        </div>
+      </div>
+      <div class="row" style="margin-top:14px;">
+        <a class="btn primary" href="./modules/m01/index.html">從 Week 1 開始（模組一）</a>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div>© 弘光科技大學 護理系｜氣候變遷與健康調適（u2ej/）</div>
+      <div class="small">提示：之後我會依同一風格逐步補齊 modules/m02、modules/m03…</div>
+    </div>
   </div>
 </body>
 </html>
