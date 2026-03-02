@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scene 02｜氧合初步評估：生命徵象揭露</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 32px; }
+    h2{ font-size: 26px; }
+    h3{ font-size: 22px; }
+    p, li, label, div, span{ font-size: 20px; }
+
+    .muted{ color:#555; font-size:18px; }
+    .small{ font-size:18px; }
+
+    .card{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:18px;
+      background:#fff;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+
+    .q{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:14px;
+      margin:12px 0;
+      background:#fafafa;
+    }
+
+    .ok{ color:#1b7f3a; font-weight:900; }
+    .bad{ color:#b00020; font-weight:900; }
+
+    /* Click-to-Focus */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 44px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused label,
+    .focusable.focused div,
+    .focusable.focused span{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .muted,
+    .focusable.focused .small{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Scene 02｜氧合初步評估：生命徵象揭露</h1>
+  <p class="muted">
+    <span class="tag">氧合</span>
+    <span class="tag">先評估</span>
+    <span class="tag">不急著下診斷</span>
+  </p>
+
+  <!-- 承接 -->
+  <div class="card focusable">
+    <h2>承接 Scene 01</h2>
+    <div class="pill">
+      <p>
+        你決定先評估病人的呼吸狀態與生命徵象。<br/>
+        病人仍坐在床邊，看起來有些焦躁。
+      </p>
+    </div>
+  </div>
+
+  <!-- 生命徵象 -->
+  <div class="card focusable">
+    <h2>你量測到的資料</h2>
+    <div class="pill">
+      <ul>
+        <li>呼吸速率：<b>28 次/分</b></li>
+        <li>SpO₂（室內空氣）：<b>88%</b></li>
+        <li>心跳：<b>102 次/分</b></li>
+        <li>血壓：<b>148 / 86 mmHg</b></li>
+        <li>體溫：<b>36.8°C</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 問題 -->
+  <div class="card focusable">
+    <h2>任務 2｜以下哪些是「氧合不佳」的線索？（可複選）</h2>
+    <p class="muted small">
+      請選出「直接或間接支持氧合問題」的線索。  
+      不是所有異常都屬於氧合。
+    </p>
+
+    <div class="q">
+      <label><input type="checkbox" value="RR"> 呼吸速率 28 次/分</label>
+    </div>
+    <div class="q">
+      <label><input type="checkbox" value="SpO2"> SpO₂ 88%</label>
+    </div>
+    <div class="q">
+      <label><input type="checkbox" value="HR"> 心跳 102 次/分</label>
+    </div>
+    <div class="q">
+      <label><input type="checkbox" value="BP"> 血壓 148/86 mmHg</label>
+    </div>
+    <div class="q">
+      <label><input type="checkbox" value="Speech"> 說話需要停下來喘氣</label>
+    </div>
+
+    <button class="btn" id="check">確認選擇</button>
+    <div class="pill small" id="fb" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- 解鎖 -->
+  <div class="card focusable" id="unlock" style="display:none;">
+    <h2>✅ 解鎖：進入下一幕</h2>
+    <div class="pill">
+      <p>
+        你已經能辨識出「氧合不佳」的線索，  
+        但你也注意到：<b>不是所有異常都只跟氧合有關。</b>
+      </p>
+      <p>
+        下一幕，你需要把線索分類，避免只盯著「喘」。
+      </p>
+      <p>
+        <a class="btn" href="./scene-03.html">進入 Scene 03｜線索分類：氧合 vs 循環 / 安全</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    document.getElementById("check").addEventListener("click", () => {
+      const checks = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                         .map(c => c.value);
+      const fb = document.getElementById("fb");
+
+      const correct = ["RR","SpO2","Speech"];
+      const hasAllCorrect = correct.every(c => checks.includes(c));
+      const hasWrong = checks.includes("BP");
+
+      if(checks.length === 0){
+        fb.innerHTML = "<span class='bad'>請至少選擇一項。</span>";
+        return;
+      }
+
+      if(hasAllCorrect && !hasWrong){
+        fb.innerHTML = "<span class='ok'>判斷合理。</span> 你選出了支持氧合不佳的線索，也沒有把血壓誤判為氧合問題。";
+        document.getElementById("unlock").style.display = "block";
+        localStorage.setItem("unit-01-ox-circ-mob:scene-02:status","gate_passed");
+      }else{
+        fb.innerHTML = "<span class='bad'>再想一下。</span> 請區分：哪些線索直接支持氧合問題，哪些可能屬於其他系統。";
+      }
+    });
+
+    /* Focus */
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+      if(e.target.closest("input, label, button, a")) return;
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+</body>
+</html>

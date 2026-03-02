@@ -1,75 +1,639 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>Module 00｜Teacher Dashboard</title>
-<style>
-body{
-  background:#081423;
-  color:#d9f1ff;
-  font-family:"Microsoft JhengHei";
-  padding:40px;
-}
-h1,h2{
-  color:#39c5ff;
-}
-.section{
-  background:#0f2744;
-  padding:20px;
-  margin-bottom:25px;
-  border-radius:8px;
-  border-left:5px solid #39c5ff;
-}
-code{
-  background:#123;
-  padding:5px 8px;
-  border-radius:4px;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Module-00｜Teacher Dashboard｜內外科護理學綜論</title>
+  <meta name="description" content="Module-00 教師備課頁：Week1 4小時流程、NGN/NCJMM、Exit Ticket、PDCA、TronClass/Supabase紀錄欄位" />
+
+  <style>
+    :root{
+      --bg:#050810;            /* 深藍 */
+      --panel:#0b1430;         /* 面板藍 */
+      --panel2:#0a1a3f;
+      --line:rgba(120,170,255,.18);
+      --text:#eaf2ff;
+      --muted:rgba(234,242,255,.72);
+      --accent:#39ff14;        /* HUD 綠 */
+      --cyan:#4be3ff;
+      --warn:#ffcc66;
+      --danger:#ff5c8a;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius:16px;
+      --max:1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(75,227,255,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 0%, rgba(57,255,20,.10), transparent 55%),
+        radial-gradient(1200px 800px at 50% 120%, rgba(75,227,255,.10), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:18px auto 48px; padding:0 18px}
+
+    /* ===== Top HUD Bar ===== */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(5,8,16,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:10px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; min-width: 220px;
+    }
+    .badge{
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(145deg, rgba(75,227,255,.22), rgba(57,255,20,.12));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      display:grid; place-items:center;
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-weight:700;
+      letter-spacing:.5px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:15px;
+      line-height:1.2;
+      letter-spacing:.3px;
+    }
+    .brand .sub{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .nav-actions{display:flex; align-items:center; gap:10px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius: 12px;
+      background: rgba(11,20,48,.65);
+      border:1px solid var(--line);
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+      font-size:13px;
+      cursor:pointer;
+      user-select:none;
+      transition:.15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(75,227,255,.30)}
+    .btn .dot{
+      width:8px;height:8px;border-radius:99px;background:var(--accent);
+      box-shadow: 0 0 14px rgba(57,255,20,.35);
+    }
+
+    /* ===== Nav Drawer (mobile) ===== */
+    .nav-toggle{display:none}
+    @media (max-width: 860px){
+      .nav-toggle{display:inline-flex}
+      .nav-actions .btn:not(.nav-toggle){display:none}
+    }
+
+    .drawer{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 0 14px 12px;
+      display:none;
+    }
+    .drawer.open{display:block}
+    .navgrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 520px){
+      .navgrid{grid-template-columns: 1fr}
+    }
+
+    .navcard{
+      padding:12px 12px;
+      border-radius:14px;
+      background: rgba(11,20,48,.55);
+      border:1px solid var(--line);
+      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+      display:flex; align-items:flex-start; gap:10px;
+      transition:.15s ease;
+    }
+    .navcard:hover{transform: translateY(-1px); border-color: rgba(75,227,255,.30)}
+    .navcard .tag{
+      font-family: var(--mono);
+      font-size:12px;
+      padding:4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(75,227,255,.28);
+      background: rgba(75,227,255,.08);
+      color: var(--cyan);
+      min-width: 54px;
+      text-align:center;
+    }
+    .navcard .title{margin:0; font-size:13px; font-weight:700}
+    .navcard .desc{margin:2px 0 0; font-size:12px; color:var(--muted)}
+    .navcard.active{
+      border-color: rgba(57,255,20,.45);
+      box-shadow: 0 0 0 2px rgba(57,255,20,.15), 0 18px 40px rgba(0,0,0,.35);
+      background: linear-gradient(180deg, rgba(57,255,20,.10), rgba(11,20,48,.55));
+    }
+    .navcard.active .tag{
+      border-color: rgba(57,255,20,.55);
+      background: rgba(57,255,20,.10);
+      color: var(--accent);
+    }
+
+    /* ===== Page Header ===== */
+    .hero{
+      margin-top:18px;
+      padding:18px 16px;
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(11,20,48,.78), rgba(10,26,63,.62));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 200px at 20% 0%, rgba(75,227,255,.20), transparent 60%),
+        radial-gradient(500px 220px at 85% 10%, rgba(57,255,20,.14), transparent 55%);
+      pointer-events:none;
+    }
+    .hero > *{position:relative}
+    .kicker{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      font-size:12px; color:var(--muted);
+      margin:0 0 8px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(5,8,16,.35);
+      font-family: var(--mono);
+      font-size:12px;
+    }
+    .pill b{color:var(--cyan)}
+    .hero h2{
+      margin:6px 0 6px;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .hero p{margin:0; color:var(--muted); font-size:14px}
+
+    /* ===== Layout ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      margin-top:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    .card{
+      border-radius: var(--radius);
+      background: rgba(11,20,48,.68);
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .card .hd h3{
+      margin:0; font-size:15px; letter-spacing:.2px;
+    }
+    .card .hd .meta{
+      font-size:12px;
+      color:var(--muted);
+      font-family: var(--mono);
+      text-align:right;
+      line-height:1.4;
+    }
+    .card .bd{padding:14px}
+
+    .note{
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px dashed rgba(75,227,255,.28);
+      background: rgba(75,227,255,.06);
+      color: var(--muted);
+      font-size:13px;
+    }
+    .note b{color:var(--text)}
+    .warn{border-color: rgba(255,204,102,.32); background: rgba(255,204,102,.08)}
+    .ok{border-color: rgba(57,255,20,.30); background: rgba(57,255,20,.08)}
+
+    .list{
+      margin:10px 0 0;
+      padding-left:18px;
+      color:var(--text);
+      font-size:14px;
+    }
+    .list li{margin:6px 0}
+    .muted{color:var(--muted)}
+    .mono{font-family: var(--mono)}
+
+    /* ===== Timeline ===== */
+    .timeline{
+      margin-top:10px;
+      display:grid;
+      gap:10px;
+    }
+    .titem{
+      display:grid;
+      grid-template-columns: 88px 1fr;
+      gap:10px;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(5,8,16,.25);
+    }
+    .titem .wk{
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-size:12px;
+      padding:6px 8px;
+      border-radius: 12px;
+      border:1px solid rgba(75,227,255,.25);
+      background: rgba(75,227,255,.06);
+      text-align:center;
+      height: fit-content;
+    }
+    .titem .txt{
+      font-size:13px;
+      color:var(--text);
+    }
+    .titem .txt .sub{
+      color:var(--muted);
+      margin-top:2px;
+      font-size:12px;
+    }
+
+    /* ===== Tables ===== */
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(5,8,16,.18);
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(120,170,255,.12);
+      vertical-align:top;
+      font-size:13px;
+    }
+    th{
+      text-align:left;
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-weight:700;
+      background: rgba(75,227,255,.06);
+    }
+    tr:last-child td{border-bottom:none}
+
+    /* ===== Collapsible Sections ===== */
+    details{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(5,8,16,.22);
+      padding:10px 10px;
+      margin-top:10px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      color: var(--text);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    details .inner{margin-top:10px; color:var(--muted); font-size:13px}
+    .callout{
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(57,255,20,.30);
+      background: rgba(57,255,20,.07);
+      margin-top:10px;
+      font-size:13px;
+      color: var(--text);
+    }
+    .callout .mono{color:var(--accent)}
+    .footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+    }
+  </style>
 </head>
+
 <body>
+  <!-- ===== Topbar ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="badge">M00</div>
+        <div>
+          <h1>內外科護理學綜論｜Module-00 Teacher Dashboard</h1>
+          <p class="sub">Week 1｜NGN × NCJMM × Exit Ticket × PDCA｜教師備課一頁走法</p>
+        </div>
+      </div>
 
-<h1>👩‍⚕️ Module 00｜Teacher Dashboard</h1>
+      <div class="nav-actions">
+        <a class="btn" href="./index.html" title="回 Module-00 入口">
+          <span class="dot"></span><span>Module-00 入口</span>
+        </a>
+        <a class="btn" href="./student-guide.html" title="學生提醒頁">
+          <span style="color:var(--cyan)">⟡</span><span>學生提醒頁</span>
+        </a>
+        <button class="btn nav-toggle" id="btnToggle">
+          <span style="color:var(--cyan)">☰</span><span>全學期導航</span>
+        </button>
+      </div>
+    </div>
 
-<div class="section">
-<h2>Week 1 教學流程（4 小時）</h2>
-<p><strong>前2小時：</strong>課程導入、規則說明、評量方式、NGN架構介紹</p>
-<p><strong>後2小時：</strong>全人評估示範案例、小組啟動</p>
-</div>
+    <!-- Drawer -->
+    <div class="drawer" id="drawer">
+      <div class="navgrid" id="navgrid"></div>
+    </div>
+  </header>
 
-<div class="section">
-<h2>固定三項課堂任務</h2>
-<ul>
-<li>每週 Exit Ticket（NGN題＋反思）</li>
-<li>小組進度紀錄</li>
-<li>期末小組互評</li>
-</ul>
-</div>
+  <main class="wrap">
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <p class="kicker">
+        <span class="pill"><b>目的</b>：用「演變型案例」把知識練成臨床判斷</span>
+        <span class="pill"><b>工具</b>：Exit Ticket（每週）＋資料回看做 PDCA</span>
+        <span class="pill"><b>班級</b>：全班 6 組｜組長＋小老師＋值日生制度</span>
+      </p>
+      <h2>Week 1（4 小時）兩段式流程：前 2 小時導入規則與評量｜後 2 小時示範「全人評估」與小組啟動</h2>
+      <p>
+        本頁讓你上課直接照著走：要講什麼、要做什麼、TronClass 要收什麼、Exit Ticket 怎麼做 Check/Act。
+        （教學計畫：推選小老師、值日生 2 名、避免飲食/手機震動、不遲到 15 分鐘、全班分 6 組、里程碑繳交與評分比例）:contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4}
+      </p>
+    </section>
 
-<div class="section">
-<h2>Supabase 建議欄位</h2>
-<code>
-student_id, group_id, week, module, scene, ngn_step,
-answer, confidence, rationale_text, submitted_at
-</code>
-</div>
+    <section class="grid">
+      <!-- ===== Left: Teaching Flow ===== -->
+      <div class="card">
+        <div class="hd">
+          <h3>① Week 1 教學流程（4 小時拆解）</h3>
+          <div class="meta">Teacher Runbook<br><span class="muted">建議照順序走</span></div>
+        </div>
+        <div class="bd">
 
-<div class="section">
-<h2>PDCA 教學追蹤</h2>
-<p>P：本週學習目標</p>
-<p>D：案例演練</p>
-<p>C：Exit Ticket 分析</p>
-<p>A：下週補強講授</p>
-</div>
+          <div class="note ok">
+            <b>本週核心一句話：</b>
+            「先把一整套學習系統建立好（規則＋角色＋繳交節點＋Exit Ticket），後面每個 Module 都可以沿用。」
+          </div>
 
-<div class="section">
-<h2>TronClass 設定建議</h2>
-<ul>
-<li>建立每週小測驗</li>
-<li>建立作業里程碑繳交</li>
-<li>設定互評功能</li>
-</ul>
-</div>
+          <h4 style="margin:14px 0 6px;font-size:14px;">A. 前 2 小時｜課程導入＋規則＋評量架構（NGN/Exit Ticket/PDCA）</h4>
+          <ol class="list">
+            <li><b>課程目標定位（3–5 分鐘）</b>：這門「綜論」不重講全部疾病，而是訓練「臨床判斷」與「決策優先順序」。</li>
+            <li><b>課堂運作規則（5 分鐘）</b>：
+              推選小老師 1 名、每次固定值日生 2 名、課程進行避免飲食（可飲水）、手機震動、15 分鐘後算遲到、不早退、積極參與討論。:contentReference[oaicite:5]{index=5}
+            </li>
+            <li><b>分組角色（3 分鐘）</b>：全班分 6 大組，每組組長 1 名負責與老師聯繫；課務可詢問授課/課程負責老師（line/email）。:contentReference[oaicite:6]{index=6}</li>
+            <li><b>成績比例（3 分鐘）</b>：期中 30%、期末 30%、作業 30%（書面 20%＋互評 10%）、出席依規定。:contentReference[oaicite:7]{index=7}</li>
+            <li><b>NGN × NCJMM 速講（10–12 分鐘）</b>（你講、學生先聽懂「之後每週 Exit Ticket 為何要做」）：
+              <ul class="list">
+                <li><span class="mono">Recognize Cues</span>：抓到「關鍵線索」</li>
+                <li><span class="mono">Analyze Cues</span>：把線索連起來（病態生理/風險）</li>
+                <li><span class="mono">Prioritize Hypotheses</span>：先處理哪個問題</li>
+                <li><span class="mono">Generate Solutions</span>：可能的處置選項</li>
+                <li><span class="mono">Take Action</span>：優先護理行動</li>
+                <li><span class="mono">Evaluate Outcomes</span>：結果評估與修正</li>
+              </ul>
+            </li>
+            <li><b>Exit Ticket 的位置（5 分鐘）</b>：
+              每週下課前 3–5 分鐘做 1 題 NGN 情境題＋1 題反思（迷思/困惑），你用它來做 PDCA 的 Check/Act。</li>
+          </ol>
 
+          <details>
+            <summary>（可直接照念）Week1 你要對學生說的「Exit Ticket 目的」短講稿</summary>
+            <div class="inner">
+              今天開始，我們每週都會做一張 Exit Ticket。它不是要為難你們，而是讓你們每週都練一次「臨床判斷」。
+              你們做完我就知道：哪一個 NCJMM 步驟最卡、哪一種線索最容易漏、哪一種優先順序最常判錯。
+              下週我會用 10 分鐘把最常見的迷思補起來，這就是 PDCA：用數據做檢核、用教學做修正。
+            </div>
+          </details>
+
+          <h4 style="margin:14px 0 6px;font-size:14px;">B. 後 2 小時｜全人評估示範＋小組啟動（用同一個示範個案）</h4>
+          <ol class="list">
+            <li><b>示範個案（10 分鐘）</b>：用「1 位XXXX病人」做全人評估骨架（你示範，不用太長）。</li>
+            <li><b>全人評估分段示範（30–35 分鐘）</b>：
+              主訴/病史 → 生命徵象 → 身體系統 → 檢驗/影像 → 用藥/處置 → 心理/家庭/社會 → 優先問題列表。</li>
+            <li><b>小組啟動（20 分鐘）</b>：6 組分工：組長/資料查證/病態生理/檢驗解讀/護理計畫/簡報統整。</li>
+            <li><b>宣布作業是「全人案例分析報告（口頭＋書面）」與結構（5 分鐘）</b>：
+              封面/摘要/前言/文獻查證/個案資料/全人分析/健康問題(PES)/護理計畫表/討論與結論/心得(每人)/APA7。:contentReference[oaicite:8]{index=8}
+            </li>
+            <li><b>下課前 Exit Ticket（3–5 分鐘）</b>：
+              本週先用「Recognize Cues」等級（簡單）＋反思題（最困惑的是什麼？）。</li>
+          </ol>
+
+          <div class="callout">
+            <b>教學提醒：</b>Week1 不求把內容講完，只求把「之後每週怎麼學」設定好。你今天把流程、規則、繳交節點講清楚，後面整學期會省非常多時間。
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Right: System / Tracking ===== -->
+      <aside class="card">
+        <div class="hd">
+          <h3>② 系統設定：TronClass × Supabase × PDCA</h3>
+          <div class="meta">Minimal viable<br><span class="muted">先做能跑的</span></div>
+        </div>
+        <div class="bd">
+
+          <div class="note warn">
+            <b>你最需要先完成的三件事：</b>
+            (1) TronClass 建立固定 3 個活動；(2) Exit Ticket 統一題型；(3) PDCA：下週開場 10 分鐘補強腳本。
+          </div>
+
+          <h4 style="margin:14px 0 6px;font-size:14px;">TronClass 固定 3 個作業/活動（全學期沿用）</h4>
+          <ol class="list">
+            <li><b>Exit Ticket（每週）</b>：1 題 NGN 情境題＋1 題後設反思。</li>
+            <li><b>小組討論紀錄（每 2–3 週）</b>：對齊里程碑（第 6/8/10/15/16/18 週）。:contentReference[oaicite:9]{index=9}</li>
+            <li><b>互評表（期末前）</b>：因作業含小組互評。:contentReference[oaicite:10]{index=10}</li>
+          </ol>
+
+          <h4 style="margin:14px 0 6px;font-size:14px;">作業里程碑（提醒你「什麼時候要收什麼」）</h4>
+          <div class="timeline">
+            <div class="titem">
+              <div class="wk">W6</div>
+              <div class="txt"><b>繳交書面案例分析資料</b>
+                <div class="sub">問題確立資料：導因＋症狀徵象（你可用「小組討論紀錄」收）</div>
+              </div>
+            </div>
+            <div class="titem">
+              <div class="wk">W8</div>
+              <div class="txt"><b>繳交護理計畫表＋訂出文獻查證方向</b></div>
+            </div>
+            <div class="titem">
+              <div class="wk">W10</div>
+              <div class="txt"><b>繳交文獻查證</b>
+                <div class="sub">實證文獻或治療指引</div>
+              </div>
+            </div>
+            <div class="titem">
+              <div class="wk">W15</div>
+              <div class="txt"><b>繳交摘要、前言、討論與結論</b></div>
+            </div>
+            <div class="titem">
+              <div class="wk">W16</div>
+              <div class="txt"><b>繳交完整作業初稿</b></div>
+            </div>
+            <div class="titem">
+              <div class="wk">W18</div>
+              <div class="txt"><b>口頭報告</b></div>
+            </div>
+          </div>
+          <div class="muted" style="margin-top:8px;font-size:12px;">
+            里程碑來源：教學計畫（W10/W15/W16/W18 明確列出）:contentReference[oaicite:11]{index=11}
+          </div>
+
+          <h4 style="margin:14px 0 6px;font-size:14px;">Supabase 建議紀錄欄位（最小可行版）</h4>
+          <div class="note">
+            建議你先只記「能做 PDCA」的欄位（之後要加再加）。
+            <div style="margin-top:8px" class="mono">
+              student_id, group_id, week, module, scene,<br>
+              ngn_step, answer, confidence, rationale_text, submitted_at
+            </div>
+            <div class="muted" style="margin-top:6px;font-size:12px;">
+              關鍵是：<b>ngn_step</b>（對齊 NCJMM/NGN 任務）、<b>confidence</b>、<b>rationale_text</b>（用來抓迷思）。
+            </div>
+          </div>
+
+          <details>
+            <summary>PDCA 一頁表（你每週要做的最小流程）</summary>
+            <div class="inner">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:90px;">PDCA</th>
+                    <th>你要做什麼（教師行動）</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>Plan</b></td>
+                    <td>本週要練的 NCJMM 步驟（例：Recognize Cues / Prioritize Actions）＋設計 1 題 NGN。</td>
+                  </tr>
+                  <tr>
+                    <td><b>Do</b></td>
+                    <td>上課跑情境/微講授→下課前 3–5 分鐘收 Exit Ticket。</td>
+                  </tr>
+                  <tr>
+                    <td><b>Check</b></td>
+                    <td>看 Exit Ticket：哪個 ngn_step 錯最多？常見錯因/迷思是什麼？信心高但答錯的有哪些？</td>
+                  </tr>
+                  <tr>
+                    <td><b>Act</b></td>
+                    <td>下週開場 10 分鐘：用 1 個「錯誤示例」＋ 1 個「正確推理路徑」補強（不重講整章）。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+
+          <details>
+            <summary>（可直接照念）下週開場 10 分鐘「Act 補強腳本」模板</summary>
+            <div class="inner">
+              <ol class="list">
+                <li><b>1 分鐘</b>：本週 Exit Ticket 最常見錯誤是：____（一句話）。</li>
+                <li><b>3 分鐘</b>：給一個「錯誤推理」示例（你把學生常見迷思說出來）。</li>
+                <li><b>4 分鐘</b>：把 NCJMM 正確步驟走一遍（線索→分析→優先→行動→評估）。</li>
+                <li><b>2 分鐘</b>：給一個「下週你們要避免的坑」＋「你們要抓的 3 個線索」。</li>
+              </ol>
+              <div class="note ok">
+                小技巧：用 <span class="mono">confidence</span> 找「自信但錯」的題目，最能打中迷思。
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </aside>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <div class="footer">
+      Module-00 Teacher Dashboard｜深藍 HUD 模板｜可複製到每個 module 的 teacher-dashboard.html
+    </div>
+  </main>
+
+  <script>
+    // ===== Module Nav Data =====
+    // 你目前的資料夾命名（照你的截圖）
+    const modules = [
+      { id:"module-00-foundation", tag:"M00", title:"Foundation / 全人評估", desc:"課程規則＋全人評估基礎", href:"../module-00-foundation/index.html" },
+      { id:"module-01-ox-circ-mob", tag:"M01", title:"氧合×循環×活動", desc:"COPD / HF / ABG / 優先行動", href:"../module-01-ox-circ-mob/index.html" },
+      { id:"module-02-nutrition-elimination", tag:"M02", title:"營養與排泄", desc:"GI bleeding / 肝硬化 / 出血", href:"../module-02-nutrition-elimination/index.html" },
+      { id:"module-03-psychological-care", tag:"M03", title:"心理照護", desc:"壓力調適 / 跨系統整合", href:"../module-03-psychological-care/index.html" },
+      { id:"module-04-safety-protection", tag:"M04", title:"安全與保護", desc:"感染風險 / 保護性隔離", href:"../module-04-safety-protection/index.html" },
+      { id:"module-05-family-cultural-care", tag:"M05", title:"家庭文化照護", desc:"文化溝通與決策衝突", href:"../module-05-family-cultural-care/index.html" },
+      { id:"module-06-sensory-perception", tag:"M06", title:"感覺知覺", desc:"腦傷 / 腦壓危象 / 解鎖式任務", href:"../module-06-sensory-perception/index.html" },
+      { id:"module-07-oncology", tag:"M07", title:"腫瘤照護", desc:"病程轉折 / 症狀緩解優先順序", href:"../module-07-oncology/index.html" },
+      { id:"module-08-spiritual-care", tag:"M08", title:"靈性照護", desc:"靈性評估 / 整合反思", href:"../module-08-spiritual-care/index.html" },
+      { id:"module-09-case-integration", tag:"M09", title:"案例整合演練", desc:"全人案例討論 / PDCA 檢討", href:"../module-09-case-integration/index.html" },
+      { id:"module-10-assessment", tag:"M10", title:"綜合評量", desc:"期中 / 期末 / 總結", href:"../module-10-assessment/index.html" },
+    ];
+
+    // Current module highlight
+    const CURRENT = "module-00-foundation";
+
+    // Build nav cards
+    const navgrid = document.getElementById("navgrid");
+    modules.forEach(m => {
+      const a = document.createElement("a");
+      a.href = m.href;
+      a.className = "navcard" + (m.id === CURRENT ? " active" : "");
+      a.innerHTML = `
+        <div class="tag">${m.tag}</div>
+        <div>
+          <p class="title">${m.title}</p>
+          <p class="desc">${m.desc}</p>
+        </div>
+      `;
+      navgrid.appendChild(a);
+    });
+
+    // Drawer toggle
+    const btnToggle = document.getElementById("btnToggle");
+    const drawer = document.getElementById("drawer");
+    btnToggle && btnToggle.addEventListener("click", () => {
+      drawer.classList.toggle("open");
+    });
+  </script>
 </body>
 </html>

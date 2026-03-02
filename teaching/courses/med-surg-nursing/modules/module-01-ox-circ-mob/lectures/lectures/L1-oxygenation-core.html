@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>L1｜氧合核心概念（Micro Lecture）</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 34px; }
+    h2{ font-size: 26px; margin-top: 28px; }
+    h3{ font-size: 22px; }
+    p, li, div, span{ font-size: 20px; }
+
+    .muted{ color:#555; font-size:18px; }
+    .small{ font-size:18px; }
+
+    .card{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:18px;
+      background:#fff;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    /* Click-to-Focus（投影放大） */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 46px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused div,
+    .focusable.focused span{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .muted,
+    .focusable.focused .small{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+
+<body>
+  <h1>L1｜氧合核心概念（給老師用）</h1>
+  <p class="muted">
+    <span class="tag">Micro Lecture</span>
+    <span class="tag">3–5 分鐘</span>
+    <span class="tag">Scene-02 後使用</span>
+  </p>
+
+  <!-- 為什麼現在要講 -->
+  <div class="card focusable">
+    <h2>為什麼現在要停下來講「氧合」？（30 秒）</h2>
+    <div class="pill">
+      <p>
+        你們剛剛已經看到數據了：RR、SpO₂、病人表現。  
+        但臨床上最常見的錯誤是：
+      </p>
+      <ul>
+        <li>看到一個數字，就直接下診斷</li>
+        <li>或只盯著 SpO₂，忽略整體呼吸表現</li>
+      </ul>
+      <p class="muted small">
+        所以現在我要用 3–5 分鐘，幫你們把「氧合怎麼想」整理成臨床版本。
+      </p>
+    </div>
+  </div>
+
+  <!-- 核心概念 -->
+  <div class="card focusable">
+    <h2>氧合不是一個數字，是一組表現</h2>
+    <div class="pill">
+      <p><b>在病房，氧合至少要同時看三件事：</b></p>
+      <ol>
+        <li><b>呼吸型態</b>：呼吸速率、是否費力、是否使用輔助肌</li>
+        <li><b>病人表現</b>：說話是否中斷、焦躁、疲倦</li>
+        <li><b>監測數據</b>：SpO₂、ABG（若有）</li>
+      </ol>
+      <p class="muted small">
+        如果你只看第三項，判斷一定會出錯。
+      </p>
+    </div>
+  </div>
+
+  <!-- COPD 特別提醒 -->
+  <div class="card focusable">
+    <h2>COPD 病人常見的氧合陷阱</h2>
+    <div class="pill">
+      <ul>
+        <li><b>喘 ≠ 一定低氧</b>（可能是呼吸工作量大）</li>
+        <li><b>SpO₂ 還可以 ≠ 呼吸是安全的</b></li>
+        <li>COPD 病人常用<strong>輔助肌</strong>來維持換氣</li>
+      </ul>
+      <p class="muted small">
+        所以你會看到：病人「看起來很累」，但數字沒有那麼糟。
+      </p>
+    </div>
+  </div>
+
+  <!-- 常見錯誤 -->
+  <div class="card focusable">
+    <h2>學生最常犯的 3 個錯誤</h2>
+    <div class="pill">
+      <ol>
+        <li>把「心跳快」直接當成氧合問題（可能是代償或循環）</li>
+        <li>看到 COPD 就不敢給氧</li>
+        <li>等數字掉很低才行動</li>
+      </ol>
+      <p class="muted small">
+        護理的專業是：<b>在惡化前看到線索</b>。
+      </p>
+    </div>
+  </div>
+
+  <!-- 回到案例 -->
+  <div class="card focusable">
+    <h2>回到這個案例，你現在應該怎麼想？</h2>
+    <div class="pill">
+      <p>
+        你不是在回答「他是不是 COPD」，而是在回答：
+      </p>
+      <ul>
+        <li>他的呼吸「現在」是不是吃力？</li>
+        <li>這些線索是不是支持「氧合不佳」？</li>
+        <li>有沒有其他系統的線索混在裡面？</li>
+      </ul>
+      <p class="muted small">
+        所以接下來，我們要做的是「線索分類」，而不是下診斷。
+      </p>
+    </div>
+  </div>
+
+  <!-- 返回 -->
+  <div class="card">
+    <p class="small">
+      <a class="btn" href="../scenes/scene-02.html">回 Scene-02</a>
+      <a class="btn secondary" href="../scenes/scene-03.html" style="margin-left:10px;">繼續 Scene-03</a>
+    </p>
+    <p class="muted small">
+      老師提醒：這一頁是你講給學生聽的，不是要他們自己讀。
+    </p>
+  </div>
+
+  <!-- Focus script -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+      if(e.target.closest("a, button")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+</body>
+</html>

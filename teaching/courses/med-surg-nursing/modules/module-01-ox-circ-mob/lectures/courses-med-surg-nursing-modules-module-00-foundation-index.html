@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Module 00｜Foundation｜課程導入與全人評估</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 34px; }
+    h2{ font-size: 26px; margin-top: 28px; }
+    h3{ font-size: 22px; }
+    p, li, div, span{ font-size: 20px; }
+
+    .muted{ color:#555; font-size:18px; }
+    .small{ font-size:18px; }
+
+    .card{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:18px;
+      background:#fff;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+
+    /* Click-to-Focus（投影放大） */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 46px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused div,
+    .focusable.focused span{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .muted,
+    .focusable.focused .small{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+
+<body>
+  <h1>Module 00｜Foundation</h1>
+  <p class="muted">
+    課程導入 × 全人評估 × 操作規則  
+    <span class="tag">必修</span>
+    <span class="tag">只上一次</span>
+    <span class="tag">後面模組都用同一套</span>
+  </p>
+
+  <!-- 課程怎麼運作 -->
+  <div class="card focusable">
+    <h2>這門課「怎麼上」</h2>
+    <div class="pill">
+      <ol>
+        <li><b>不是一直聽課</b>：你會一直被要求「判斷、選擇、排序」</li>
+        <li><b>每個單元是解謎</b>：Scene → Puzzle → Gate → 下一幕</li>
+        <li><b>老師不是一直講</b>：只在你卡關時給 30–90 秒重點</li>
+        <li><b>同一題會做兩次</b>：Pre-test（課前）＋Post-test（課後）</li>
+      </ol>
+      <p class="muted small">
+        這不是考你記憶力，是訓練你「臨床思考順序」。
+      </p>
+    </div>
+  </div>
+
+  <!-- 全人評估核心 -->
+  <div class="card focusable">
+    <h2>什麼是「全人評估」？</h2>
+    <div class="pill">
+      <p>
+        全人評估不是 checklist，而是回答三個問題：
+      </p>
+      <ol>
+        <li>這個病人<b>現在最不安全的是什麼？</b></li>
+        <li>問題來自哪一個系統（氧合／循環／活動／心理…）</li>
+        <li>我現在的護理行動，會不會讓他<b>更安全</b>？</li>
+      </ol>
+      <p class="muted small">
+        之後每一個 Scene，你都會被要求回到這三句。
+      </p>
+    </div>
+  </div>
+
+  <!-- 作答與評分 -->
+  <div class="card focusable">
+    <h2>作答方式與評分原則</h2>
+    <div class="pill">
+      <ul>
+        <li>✔ 可重做（重點是思考，不是一次對）</li>
+        <li>✔ 有理由比選項重要</li>
+        <li>✔ Pre/Post 比較「進步幅度」</li>
+        <li>✘ 只背答案、不看線索 → 分數會低</li>
+      </ul>
+      <p class="muted small">
+        老師會看你「怎麼想」，不是只看你「選什麼」。
+      </p>
+    </div>
+  </div>
+
+  <!-- 工具說明 -->
+  <div class="card focusable">
+    <h2>你會用到的工具</h2>
+    <div class="pill">
+      <ul>
+        <li><b>TronClass</b>：繳交、測驗、成績</li>
+        <li><b>GitHub / 網頁教材</b>：情境、解謎、互動</li>
+        <li><b>Notion</b>：補充資料、整理思考（老師提供）</li>
+      </ul>
+      <p class="muted small">
+        不需要寫程式，你只要「會點、會想、會回應」。
+      </p>
+    </div>
+  </div>
+
+  <!-- 返回 -->
+  <div class="card">
+    <h2>完成 Module-00 後</h2>
+    <p class="small">
+      <a class="btn" href="../../index.html">回課程入口</a>
+    </p>
+    <p class="muted small">
+      從 Module-01 開始，所有單元都會用「同一套規則」。
+    </p>
+  </div>
+
+  <!-- Focus script -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+      if(e.target.closest("a, button")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+</body>
+</html>

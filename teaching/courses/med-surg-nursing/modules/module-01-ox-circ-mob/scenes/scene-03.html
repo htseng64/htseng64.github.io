@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scene 3｜循環疑慮與安全下床決策</title>
+
+  <style>
+    /* =========================================================
+       Classroom-first 顯示設定（後排可讀）
+       + Click-to-Focus 全螢幕放大（真正放大字）
+       ========================================================= */
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+
+    h1{ font-size: 32px; }
+    h2{ font-size: 26px; }
+    h3{ font-size: 22px; }
+
+    p, li, label, span{ font-size: 20px; }
+    .small{ font-size: 18px; }
+    .muted{ color:#555; font-size: 18px; }
+
+    .card{
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+    }
+
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+    .btn:disabled{opacity:.5; cursor:not-allowed;}
+
+    .ok{color:#1b7f3a; font-weight:900;}
+    .bad{color:#b00020; font-weight:900;}
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+
+    /* ===== Click-to-Focus：點擊放大全螢幕 ===== */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 44px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused label,
+    .focusable.focused span,
+    .focusable.focused div{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .small,
+    .focusable.focused .muted{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    /* ===== details 提示區 ===== */
+    details{
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+    }
+    summary{ cursor: pointer; font-weight: 800; }
+
+    /* ===== 拖曳分類 UI ===== */
+    .dragWrap{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr .9fr .9fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .dragWrap{ grid-template-columns: 1fr; }
+    }
+
+    .bank, .zone{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      min-height: 180px;
+    }
+    .zoneTitle{
+      font-weight:900;
+      margin: 0 0 10px 0;
+    }
+    .item{
+      border:1px solid #ddd;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0;
+      background:#fafafa;
+      cursor: grab;
+      user-select: none;
+    }
+    .item:active{ cursor: grabbing; }
+    .item.dragging{ opacity: .55; }
+
+    .dropHint{
+      border: 2px dashed #9cc3ff;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+      background:#f0f7ff;
+    }
+
+    .hintRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      display:inline-block;
+      border:1px solid #d6d6d6;
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size: 16px;
+    }
+
+    .hidden{display:none;}
+
+    /* ===== Gate：二段式（卡片+單選） ===== */
+    .gateBox{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+    }
+    .optionCard{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:12px;
+      margin:10px 0;
+      background:#fafafa;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Scene 3｜循環疑慮與安全下床決策</h1>
+  <p class="muted">
+    目標：從「喘」擴展到「氧合＋循環＋安全」整合判斷。完成：<b>線索分類</b> → <b>先做什麼</b> → <b>能不能下床（條件式）</b>。
+  </p>
+
+  <!-- 承接 -->
+  <div class="card focusable">
+    <span class="tag">承接 Scene 2</span>
+    <span class="tag">主線：循環＋安全</span>
+    <div class="hr"></div>
+
+    <h2>情境資料（第三波揭露）</h2>
+    <p class="muted small">
+      你先協助高 Fowler、給予輕度氧支持後，病人主訴「喘稍改善」，SpO₂ 回到 92%。<br/>
+      但你注意到「循環與安全」線索仍存在。
+    </p>
+
+    <div class="grid">
+      <div class="pill">
+        <h3>氧合狀態</h3>
+        <ul>
+          <li>SpO₂ 92%（輕度氧支持）</li>
+          <li>仍可見呼吸費力，但較剛才改善</li>
+        </ul>
+      </div>
+      <div class="pill">
+        <h3>循環/灌流線索</h3>
+        <ul>
+          <li>HR 108–114 次/分（仍偏快）</li>
+          <li>主訴心悸、頭暈（坐起更明顯）</li>
+          <li>踝部凹陷性水腫（+1）仍在</li>
+        </ul>
+      </div>
+      <div class="pill">
+        <h3>安全線索</h3>
+        <ul>
+          <li>腳痛（擔心站起來會跌）</li>
+          <li>活動後惡化史（Scene 2）</li>
+          <li>頭暈＝跌倒風險警訊</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <p><b>本幕核心問句：</b>「氧合稍穩後，<b>循環夠不夠支持活動？</b>我們如何做<b>安全下床</b>決策？」</p>
+  </div>
+
+  <!-- Puzzle 1：拖曳分類 -->
+  <div class="card focusable">
+    <span class="tag">Puzzle 1</span>
+    <span class="tag">拖曳分類</span>
+    <div class="hr"></div>
+
+    <h2>任務 1｜把線索分類：氧合 / 循環 / 安全</h2>
+    <p class="muted small">
+      操作：把左側線索拖到右側三欄（氧合/循環/安全）。你可以在每一欄內重新排序。
+      <span class="chip">上課技巧：點這張卡可全螢幕放大</span>
+    </p>
+
+    <div class="dragWrap" style="margin-top:12px;">
+      <div class="bank zone" id="bank">
+        <div class="zoneTitle">線索卡片庫</div>
+        <div class="dropHint">把卡片拖到右側分類。</div>
+
+        <div class="item" draggable="true" data-id="O1">SpO₂ 89%（室內空氣）→ 92%（輕度氧支持）</div>
+        <div class="item" draggable="true" data-id="O2">說話斷句、輔助肌使用（較剛才改善）</div>
+
+        <div class="item" draggable="true" data-id="C1">HR 108–114 次/分（仍偏快）</div>
+        <div class="item" draggable="true" data-id="C2">主訴心悸</div>
+        <div class="item" draggable="true" data-id="C3">主訴頭暈（坐起更明顯）</div>
+        <div class="item" draggable="true" data-id="C4">踝部凹陷性水腫（+1）</div>
+
+        <div class="item" draggable="true" data-id="S1">腳痛，擔心站起來會跌</div>
+        <div class="item" draggable="true" data-id="S2">活動後惡化史（坐起後更喘、SpO₂ 掉）</div>
+        <div class="item" draggable="true" data-id="S3">頭暈＝跌倒風險警訊</div>
+      </div>
+
+      <div class="zone" id="zoneO">
+        <div class="zoneTitle">氧合（Oxygenation）</div>
+        <div class="dropHint">把「呼吸/SpO₂/通氣」相關線索放這裡。</div>
+      </div>
+
+      <div class="zone" id="zoneC">
+        <div class="zoneTitle">循環（Circulation/Perfusion）</div>
+        <div class="dropHint">把「HR/心悸/頭暈/水腫/灌流」相關線索放這裡。</div>
+      </div>
+
+      <div class="zone" id="zoneS">
+        <div class="zoneTitle">安全（Safety/Fall risk）</div>
+        <div class="dropHint">把「跌倒/疼痛/活動風險」相關線索放這裡。</div>
+      </div>
+    </div>
+
+    <div class="hintRow" style="margin-top:12px;">
+      <button class="btn" id="checkClassify">檢查分類</button>
+      <button class="btn secondary" id="resetClassify">重置分類</button>
+      <a class="btn secondary" href="../lectures/L7-circulation-micro.html" target="_blank" rel="noopener">預留：循環 Micro-Lecture（尚未建立）</a>
+    </div>
+
+    <div class="pill small" id="fbClassify" style="margin-top:12px;"></div>
+
+    <details id="microTeach" class="hidden" style="margin-top:12px;">
+      <summary>🔍 老師 2–3 分鐘補充（循環 3 句）</summary>
+      <div class="hr"></div>
+      <ol>
+        <li><b>活動需要心輸出量增加</b>；若跟不上，常見心悸、頭暈、疲憊。</li>
+        <li><b>水腫是循環負荷的線索</b>；不是皮膚問題，要想到體液與灌流狀態。</li>
+        <li><b>頭暈在此刻是安全警訊</b>：可能是灌流不足/節律/姿勢性低血壓 → 跌倒風險。</li>
+      </ol>
+      <p class="muted small">
+        可照念：<br/>
+        「氧合穩住只是『一半』，另一半是循環與安全。下床不是 Yes/No，是『在什麼條件下可以』。」
+      </p>
+    </details>
+  </div>
+
+  <!-- Gate：二段式 -->
+  <div class="card focusable">
+    <span class="tag">Gate</span>
+    <span class="tag">二段式決策</span>
+    <div class="hr"></div>
+
+    <h2>Gate A｜此刻你「先做什麼」？（單選）</h2>
+    <p class="muted small">請選最符合臨床優先順序的一項（不是考背誦，是考安全決策）。</p>
+
+    <div class="gateBox" id="gateABox">
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateA" value="A1">
+          A1. 立即下床走廊行走訓練，觀察耐受度再說
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateA" value="A2">
+          A2. 先做循環/灌流與安全評估（姿勢性變化、頭暈、疼痛、跌倒風險），再決定活動
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateA" value="A3">
+          A3. 先打電話請家屬來陪走，再做其他評估
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateA" value="A4">
+          A4. 先要求病人忍耐腳痛，因為活動對肺最好
+        </label>
+      </div>
+
+      <div class="hintRow" style="margin-top:12px;">
+        <button class="btn" id="checkGateA">檢查 Gate A</button>
+      </div>
+
+      <div class="pill small" id="fbGateA" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="hr"></div>
+
+    <h2>Gate B｜你會怎麼決定「能不能下床」？（條件式）</h2>
+    <p class="muted small">
+      先完成 Gate A 才能作答。請選「最專業的說法」：不是禁令，而是用條件確保安全。
+    </p>
+
+    <div class="gateBox" id="gateBBox">
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateB" value="B1" disabled>
+          B1. 只要 SpO₂ 92% 就可以下床，其他不用管
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateB" value="B2" disabled>
+          B2. 先做站立/姿勢變化評估、確認頭暈改善、疼痛控制、生命徵象趨勢穩定，必要時協助與輔具，再安排逐步活動
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateB" value="B3" disabled>
+          B3. 今天都不要下床，因為 COPD 一定不能活動
+        </label>
+      </div>
+      <div class="optionCard">
+        <label>
+          <input type="radio" name="gateB" value="B4" disabled>
+          B4. 只要病人說想走就走，尊重自主即可
+        </label>
+      </div>
+
+      <div class="hintRow" style="margin-top:12px;">
+        <button class="btn" id="checkGateB" disabled>檢查 Gate B</button>
+      </div>
+
+      <div class="pill small" id="fbGateB" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card hidden" id="unlock">
+      <h3>✅ Gate 通過：解鎖下一波線索（銜接 Scene 04）</h3>
+      <div class="pill">
+        <p>
+          你完成循環/安全評估後，病人站起來 30 秒即表現明顯頭暈，臉色變白。<br/>
+          你量測到站立後 BP 輕微下降（或脈搏更快），病人握住床緣保持平衡。<br/>
+          同時病人描述「胸口有點悶、心跳亂」。
+        </p>
+        <p><b>你此刻的下一個問題：</b>「這比較像心輸出量不足？還是節律問題？」</p>
+      </div>
+
+      <div class="hr"></div>
+      <p class="muted small">
+        Scene 04 將聚焦：循環主線分岔（心輸出量減少 vs 節律不整）與護理評估。
+      </p>
+
+      <p>
+        <a class="btn" href="./scene-04.html">前往：Scene 04（循環主線分岔）</a>
+        <a class="btn secondary" href="../index.html" style="margin-left:10px;">回 Module 01 入口</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 進度 -->
+  <div class="card">
+    <h2>進度追蹤（本機）</h2>
+    <p class="muted small">
+      目前先使用 <code>localStorage</code> 記錄進度（之後再接 Supabase/TronClass）。
+    </p>
+    <div class="pill small" id="progressBox"></div>
+    <p class="small">
+      <a class="btn secondary" href="./scene-02.html">回 Scene 2</a>
+      <a class="btn secondary" href="../index.html" style="margin-left:10px;">回 Module 01</a>
+    </p>
+  </div>
+
+  <!-- Focus script：點卡片全螢幕 -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+
+      // 不要干擾拖曳或表單選項/按鈕/連結
+      if(e.target.closest(".item, input, label, button, a, summary")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+
+      document.querySelectorAll(".focusable.focused")
+        .forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused")
+          .forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+
+  <script>
+    /**********************
+     * 進度追蹤（localStorage）
+     **********************/
+    const UNIT_ID = "unit-01-ox-circ-mob";
+    const SCENE_ID = "scene-03";
+    const progressKey = `${UNIT_ID}:${SCENE_ID}:status`;
+    const timeKey = `${UNIT_ID}:${SCENE_ID}:lastTime`;
+
+    function setStatus(status){
+      localStorage.setItem(progressKey, status);
+      localStorage.setItem(timeKey, new Date().toISOString());
+      renderProgress();
+    }
+    function getStatus(){
+      return localStorage.getItem(progressKey) || "not_started";
+    }
+    function renderProgress(){
+      const box = document.getElementById("progressBox");
+      const status = getStatus();
+      const last = localStorage.getItem(timeKey) || "-";
+      const map = {
+        not_started: "尚未完成任務",
+        classify_done: "已完成線索分類（解鎖循環 micro-teach）",
+        gateA_passed: "已通過 Gate A（先做什麼）",
+        gate_passed: "已通過 Gate A+B，已解鎖 Scene 04"
+      };
+      box.innerHTML = `<b>Scene 3 狀態：</b> ${map[status] || status}<br/><span class="muted">最後更新：</span> ${last}`;
+    }
+    renderProgress();
+
+    /**********************
+     * 拖曳：通用拖放
+     **********************/
+    const bank = document.getElementById("bank");
+    const zoneO = document.getElementById("zoneO");
+    const zoneC = document.getElementById("zoneC");
+    const zoneS = document.getElementById("zoneS");
+
+    function itemsIn(zone){
+      return Array.from(zone.querySelectorAll(".item"));
+    }
+
+    let dragged = null;
+
+    document.addEventListener("dragstart", (e) => {
+      const item = e.target.closest(".item");
+      if(!item) return;
+      dragged = item;
+      item.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    document.addEventListener("dragend", (e) => {
+      const item = e.target.closest(".item");
+      if(!item) return;
+      item.classList.remove("dragging");
+      dragged = null;
+    });
+
+    function enableDrop(zone){
+      zone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+      });
+      zone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if(!dragged) return;
+
+        const targetItem = e.target.closest(".item");
+        if(targetItem && targetItem.parentElement === zone){
+          zone.insertBefore(dragged, targetItem);
+        }else{
+          zone.appendChild(dragged);
+        }
+      });
+    }
+    [bank, zoneO, zoneC, zoneS].forEach(enableDrop);
+
+    /**********************
+     * 分類檢查
+     * 規則：依 data-id 首字母（O/C/S）判斷
+     **********************/
+    function zoneKeyForId(id){
+      return id?.charAt(0); // O/C/S
+    }
+
+    document.getElementById("checkClassify").addEventListener("click", () => {
+      const fb = document.getElementById("fbClassify");
+      const micro = document.getElementById("microTeach");
+
+      const allMoved = itemsIn(bank).length === 0;
+      if(!allMoved){
+        fb.innerHTML = `<span class="bad">請先把所有卡片都拖出「卡片庫」再檢查（目前還剩 ${itemsIn(bank).length} 張）。</span>`;
+        return;
+      }
+
+      const checks = [
+        {zone: zoneO, expect:"O"},
+        {zone: zoneC, expect:"C"},
+        {zone: zoneS, expect:"S"},
+      ];
+
+      let correct = 0;
+      let total = 0;
+      const wrong = [];
+
+      for(const c of checks){
+        for(const it of itemsIn(c.zone)){
+          total += 1;
+          const id = it.getAttribute("data-id");
+          if(zoneKeyForId(id) === c.expect) correct += 1;
+          else wrong.push(it.textContent.trim());
+        }
+      }
+
+      if(correct === total){
+        fb.innerHTML = `<span class="ok">分類正確 ✅</span><br/>你把線索分成「氧合/循環/安全」，已具備整合思考的第一步。`;
+      }else{
+        fb.innerHTML = `<span class="bad">還差一點 ❗</span><br/>
+          你的分類大多正確，但有 ${wrong.length} 張卡可能放錯類別。<br/>
+          <div class="hr"></div>
+          <b>提示：</b>「頭暈」多半屬於循環/安全交界；「頭暈＝跌倒風險」放在安全也合理，但請你說出理由（這就是臨床思考）。`;
+      }
+
+      micro.classList.remove("hidden");
+      setStatus("classify_done");
+    });
+
+    document.getElementById("resetClassify").addEventListener("click", () => {
+      // 將三區的 item 依原順序搬回 bank
+      const order = ["O1","O2","C1","C2","C3","C4","S1","S2","S3"];
+      const pool = [];
+      [zoneO, zoneC, zoneS].forEach(z => itemsIn(z).forEach(it => pool.push(it)));
+
+      // 清空三區
+      [zoneO, zoneC, zoneS].forEach(z => itemsIn(z).forEach(it => it.remove()));
+
+      // 依 order 放回 bank
+      for(const id of order){
+        const it = pool.find(x => x.getAttribute("data-id") === id);
+        if(it) bank.appendChild(it);
+      }
+
+      document.getElementById("fbClassify").innerHTML = "";
+      document.getElementById("microTeach").classList.add("hidden");
+      setStatus("not_started");
+    });
+
+    /**********************
+     * Gate A / Gate B
+     **********************/
+    const fbA = document.getElementById("fbGateA");
+    const fbB = document.getElementById("fbGateB");
+    const checkA = document.getElementById("checkGateA");
+    const checkB = document.getElementById("checkGateB");
+
+    function selected(name){
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : null;
+    }
+
+    function enableGateB(){
+      document.querySelectorAll('input[name="gateB"]').forEach(x => x.disabled = false);
+      checkB.disabled = false;
+    }
+
+    checkA.addEventListener("click", () => {
+      const v = selected("gateA");
+      if(!v){
+        fbA.innerHTML = `<span class="bad">請先選一項。</span>`;
+        return;
+      }
+
+      if(v === "A2"){
+        fbA.innerHTML = `<span class="ok">Gate A 通過 ✅</span><br/>
+          你先做循環/灌流與安全評估，符合「先看風險、再決定活動」的臨床邏輯。`;
+        enableGateB();
+        setStatus("gateA_passed");
+      }else{
+        fbA.innerHTML = `<span class="bad">未通過 ❌</span><br/>
+          本情境最危險的是「頭暈＋心悸＋水腫」提示循環/安全風險。應先評估灌流與跌倒風險，再談活動。`;
+      }
+    });
+
+    checkB.addEventListener("click", () => {
+      const v = selected("gateB");
+      if(!v){
+        fbB.innerHTML = `<span class="bad">請先選一項。</span>`;
+        return;
+      }
+
+      const unlock = document.getElementById("unlock");
+
+      if(v === "B2"){
+        fbB.innerHTML = `<span class="ok">Gate B 通過 ✅</span><br/>
+          你使用「條件式決策」：先評估站立/姿勢變化、確認頭暈改善、疼痛控制與趨勢穩定，再逐步活動，這是護理專業的安全版本。`;
+        unlock.classList.remove("hidden");
+        setStatus("gate_passed");
+      }else{
+        fbB.innerHTML = `<span class="bad">未通過 ❌</span><br/>
+          本題重點：下床不是單看 SpO₂、也不是一律禁止，而是「在什麼條件下可以」。請再選一次最專業的說法。`;
+        unlock.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scene 6｜整合小測（Pre/Post）氧合＋循環＋活動安全</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 32px; }
+    h2{ font-size: 26px; }
+    h3{ font-size: 22px; }
+    p, li, label, span, div{ font-size: 20px; }
+    .small{ font-size: 18px; }
+    .muted{ color:#555; font-size: 18px; }
+
+    .card{
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+    .btn.danger{ background:#b00020; border-color:#b00020; }
+    .btn:disabled{opacity:.5; cursor:not-allowed;}
+
+    .ok{color:#1b7f3a; font-weight:900;}
+    .bad{color:#b00020; font-weight:900;}
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+
+    /* Click-to-Focus */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 44px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused label,
+    .focusable.focused span,
+    .focusable.focused div{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .small,
+    .focusable.focused .muted{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    /* Q blocks */
+    .q{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      margin-top: 12px;
+    }
+    .qTitle{
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .opt{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:12px;
+      margin:10px 0;
+      background:#fafafa;
+    }
+
+    details{
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+      margin-top: 10px;
+    }
+    summary{ cursor: pointer; font-weight: 800; }
+
+    /* Drag sort */
+    .dragWrap{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .dragWrap{ grid-template-columns: 1fr; }
+    }
+    .bank, .zone{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      min-height: 210px;
+    }
+    .zoneTitle{ font-weight:900; margin: 0 0 10px 0; }
+    .item{
+      border:1px solid #ddd;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0;
+      background:#fafafa;
+      cursor: grab;
+      user-select: none;
+    }
+    .item:active{ cursor: grabbing; }
+    .item.dragging{ opacity: .55; }
+    .dropHint{
+      border: 2px dashed #9cc3ff;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+      background:#f0f7ff;
+    }
+
+    .hidden{display:none;}
+
+    .scoreBox{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .scoreBox{ grid-template-columns: 1fr; }
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    textarea{
+      width: 100%;
+      min-height: 140px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Scene 6｜整合小測（Pre / Post）</h1>
+  <p class="muted">
+    這份小測用同一案例整合：<b>氧合</b>＋<b>循環/灌流</b>＋<b>活動安全</b>＋<b>節律升級處置</b>。<br/>
+    <span class="tag">可當 Pre-test</span>
+    <span class="tag">可當 Post-test</span>
+    <span class="tag">自動計分</span>
+    <span class="tag">可複製結果</span>
+  </p>
+
+  <!-- 控制面板 -->
+  <div class="card focusable">
+    <h2>測驗模式與設定</h2>
+    <div class="pill">
+      <p class="small">
+        <b>Pre / Post 用法：</b>同一份題目，課前做一次（Pre），教學後再做一次（Post），比較進步幅度。<br/>
+        <b>老師小技巧：</b>上課投影時，你可以點整張卡片放大（Esc 退出）。
+      </p>
+
+      <div class="hr"></div>
+
+      <div class="scoreBox">
+        <div class="pill">
+          <h3>選擇模式</h3>
+          <label class="opt"><input type="radio" name="mode" value="pre" checked> Pre-test（課前）</label>
+          <label class="opt"><input type="radio" name="mode" value="post"> Post-test（課後）</label>
+          <p class="muted small">系統會分開記錄 Pre 與 Post 的結果。</p>
+        </div>
+
+        <div class="pill">
+          <h3>基本資料（可留空）</h3>
+          <label>組別/座號/暱稱（非必填）<br/>
+            <input id="who" type="text" placeholder="例如：第3組-07 或 Amy" style="width:100%;padding:10px;border-radius:12px;border:1px solid #ddd;font-size:18px;">
+          </label>
+          <p class="muted small">若你未來要接 Supabase，這欄可當匿名識別。</p>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <button class="btn" id="submitAll">送出並計分</button>
+      <button class="btn secondary" id="saveDraft">暫存作答</button>
+      <button class="btn secondary" id="loadDraft">載入暫存</button>
+      <button class="btn danger" id="resetThisMode">清除此模式作答</button>
+
+      <div class="pill small" id="status" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- 情境摘要 -->
+  <div class="card focusable">
+    <h2>案例摘要（所有題目都基於此）</h2>
+    <div class="pill">
+      <ul>
+        <li>病人：COPD（或慢性肺病）背景，出現呼吸費力、活動後更喘</li>
+        <li>已給氧支持後 SpO₂ 改善，但仍有：<b>心悸、頭暈、踝部水腫</b></li>
+        <li>站立後頭暈加劇、臉色蒼白，BP 偏低（姿勢性變化）</li>
+        <li>監視器顯示：<b>快速且不規則心律</b>，病人冒冷汗、近昏厥（不穩定訊號）</li>
+      </ul>
+      <p class="muted small">
+        你的任務：不要只看「喘」。請做整合：氧合＋循環/灌流＋安全＋節律升級處置。
+      </p>
+    </div>
+  </div>
+
+  <!-- Q1 單選：氧合先處置 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q1（單選）最優先：病人突然更喘、說話斷句、SpO₂ 89%（室內空氣）。你第一步做什麼？</div>
+
+      <label class="opt"><input type="radio" name="q1" value="A">A. 先讓病人躺平休息，避免耗氧</label>
+      <label class="opt"><input type="radio" name="q1" value="B">B. 高 Fowler/坐起、鼓勵縮唇呼吸、評估呼吸努力並給予合適氧支持</label>
+      <label class="opt"><input type="radio" name="q1" value="C">C. 先請家屬來安撫情緒再說</label>
+      <label class="opt"><input type="radio" name="q1" value="D">D. 先安排下床走動以改善肺擴張</label>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          正確概念：急性喘促先處理氧合與通氣效率。高 Fowler 有助呼吸、縮唇呼吸降低呼吸困難；並同步評估呼吸努力與 SpO₂ 趨勢。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q2 複選：線索分類 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q2（複選）以下哪些線索「比較偏向循環/灌流或安全風險」，而不是單純氧合？（可複選）</div>
+
+      <label class="opt"><input type="checkbox" name="q2" value="A">A. 心悸</label>
+      <label class="opt"><input type="checkbox" name="q2" value="B">B. 頭暈（坐起/站立更明顯）</label>
+      <label class="opt"><input type="checkbox" name="q2" value="C">C. 踝部凹陷性水腫（+1）</label>
+      <label class="opt"><input type="checkbox" name="q2" value="D">D. SpO₂ 下降</label>
+      <label class="opt"><input type="checkbox" name="q2" value="E">E. 「擔心站起來會跌」</label>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          循環/灌流與安全：心悸、頭暈、下肢水腫、跌倒風險。SpO₂ 下降屬於氧合線索。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q3 單選：下床決策 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q3（單選）氧合稍穩（SpO₂ 92%）後，病人仍心悸頭暈＋水腫。你最恰當的下床策略是？</div>
+
+      <label class="opt"><input type="radio" name="q3" value="A">A. 只要 SpO₂ 達標就可直接下床</label>
+      <label class="opt"><input type="radio" name="q3" value="B">B. 一律禁止下床，因為 COPD 不能活動</label>
+      <label class="opt"><input type="radio" name="q3" value="C">C. 先評估灌流與跌倒風險（姿勢性變化、頭暈、疼痛、生命徵象趨勢），設定「條件」後再逐步活動</label>
+      <label class="opt"><input type="radio" name="q3" value="D">D. 讓病人自行決定想不想走，尊重自主即可</label>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          下床不是 Yes/No，而是條件式決策：先把風險看見（頭暈＝跌倒風險；灌流/節律可能問題），再規劃逐步活動與陪同。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q4 拖曳排序：CO/灌流主線優先 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q4（排序）你判斷「灌流不足/心輸出量不足」可能性高。請把護理行動依優先順序排序（先→後）。</div>
+      <p class="muted small">操作：把左側拖到右側，右側可再調整順序。</p>
+
+      <div class="dragWrap" style="margin-top:12px;">
+        <div class="bank zone" id="q4bank">
+          <div class="zoneTitle">行動卡片庫</div>
+          <div class="dropHint">把所有卡片拖到右側排序區。</div>
+
+          <div class="item" draggable="true" data-id="1">先確保安全/防跌：坐回安全姿勢、呼叫支援、床欄/陪同</div>
+          <div class="item" draggable="true" data-id="2">快速評估灌流：皮膚顏色/溫度、CRT、脈搏品質、末梢循環</div>
+          <div class="item" draggable="true" data-id="3">重新量測生命徵象並看趨勢（必要時再確認姿勢性變化）</div>
+          <div class="item" draggable="true" data-id="4">補齊關鍵資料：尿量/I&O、體液負荷線索</div>
+          <div class="item" draggable="true" data-id="5">回報/溝通：站立誘發頭暈＋BP偏低＋HR偏快＋水腫，討論檢查（如 ECG/抽血）</div>
+          <div class="item" draggable="true" data-id="6">完成後衛教：避免自行下床、起身分段、症狀回報</div>
+        </div>
+
+        <div class="zone" id="q4zone">
+          <div class="zoneTitle">你的排序（先→後）</div>
+          <div class="dropHint">可拖曳重新排序。</div>
+        </div>
+      </div>
+
+      <button class="btn secondary" id="q4reset" style="margin-top:12px;">重置 Q4</button>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          概念順序：安全/防跌 → 灌流評估 → 生命徵象趨勢 → I&O/體液負荷 → 回報團隊/安排檢查 → 衛教。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q5 單選：穩定性判斷 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q5（單選）監視器顯示 HR 148、節律不規則；病人 BP 90/58、冒冷汗、近昏厥。此刻屬於？</div>
+
+      <label class="opt"><input type="radio" name="q5" value="A">A. 穩定（因為 SpO₂ 還可以）</label>
+      <label class="opt"><input type="radio" name="q5" value="B">B. 不穩定（節律已影響灌流：低血壓＋近昏厥）</label>
+      <label class="opt"><input type="radio" name="q5" value="C">C. 只要病人可說話就算穩定</label>
+      <label class="opt"><input type="radio" name="q5" value="D">D. 無法判斷，需要等完整心電圖才行</label>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          節律主線第一步是判斷穩定性：低血壓、意識改變、缺血性胸痛、休克、急性心衰等。此案已出現低血壓＋近昏厥＝不穩定訊號，需升級處置。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q6 排序：節律不穩定立即處置 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q6（排序）你判斷節律「不穩定」。請把立即處置依優先順序排序（先→後）。</div>
+      <p class="muted small">重點：不考藥名/電擊細節，考「護理決策節奏」。</p>
+
+      <div class="dragWrap" style="margin-top:12px;">
+        <div class="bank zone" id="q6bank">
+          <div class="zoneTitle">處置卡片庫</div>
+          <div class="dropHint">把所有卡片拖到右側排序區。</div>
+
+          <div class="item" draggable="true" data-id="1">先確保安全：平躺或半坐臥、評估意識、請同仁在場/呼叫支援</div>
+          <div class="item" draggable="true" data-id="2">快速評估穩定性指標：BP 趨勢、胸痛/呼吸窘迫、灌流（冷汗/皮膚/意識）</div>
+          <div class="item" draggable="true" data-id="3">持續監測並取得 12 導程 ECG，記錄節律與心率</div>
+          <div class="item" draggable="true" data-id="4">建立/確認 IV，備抽血與可能處置（依院內流程）</div>
+          <div class="item" draggable="true" data-id="5">立即回報醫師/啟動快速反應（依院內規範），清楚回報：不規則快速心律＋低血壓＋近昏厥</div>
+          <div class="item" draggable="true" data-id="6">完成後再衛教：避免自行下床、症狀回報、起身分段</div>
+        </div>
+
+        <div class="zone" id="q6zone">
+          <div class="zoneTitle">你的排序（先→後）</div>
+          <div class="dropHint">可拖曳重新排序。</div>
+        </div>
+      </div>
+
+      <button class="btn secondary" id="q6reset" style="margin-top:12px;">重置 Q6</button>
+
+      <details>
+        <summary>解析（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          概念：安全/支援＋穩定性評估（可同步）→ 監測/ECG → IV/準備 → 回報/啟動流程 → 最後衛教。
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Q7 短答：一句話臨床推理 -->
+  <div class="card focusable">
+    <div class="q">
+      <div class="qTitle">Q7（短答）請用一句話描述你這個案例的「整合推理」：你最擔心什麼？你怎麼避免最糟的結果？</div>
+      <p class="muted small">例如：「氧合穩住後仍…所以我先…以避免…」</p>
+
+      <textarea id="q7" placeholder="請輸入你的回答（可 1–3 句）"></textarea>
+
+      <details>
+        <summary>參考方向（展開）</summary>
+        <div class="hr"></div>
+        <p class="small">
+          可用模板：<br/>
+          「氧合改善不代表安全，因為仍有心悸/頭暈/水腫提示循環與跌倒風險；站立誘發低血壓更支持灌流不足。當出現快速不規則心律合併低血壓近昏厥，我視為不穩定節律並立即升級處置，以避免跌倒、休克或器官灌流不足。」
+        </p>
+      </details>
+    </div>
+  </div>
+
+  <!-- 成績與輸出 -->
+  <div class="card focusable">
+    <h2>成績與輸出</h2>
+    <div class="pill">
+      <div id="resultSummary" class="small muted">尚未計分。請按「送出並計分」。</div>
+      <div class="hr"></div>
+
+      <h3>可複製結果（貼到 TronClass / Notion）</h3>
+      <textarea id="exportBox" class="mono" readonly></textarea>
+
+      <button class="btn secondary" id="copyResult" style="margin-top:10px;">一鍵複製</button>
+      <p class="muted small">若你未來要接 Supabase，我可以把這份輸出改成 JSON 格式，直接 POST 入庫。</p>
+    </div>
+  </div>
+
+  <!-- 導航 -->
+  <div class="card">
+    <h2>導航</h2>
+    <p class="small">
+      <a class="btn secondary" href="./scene-05A-CO.html">回 Scene 05A（CO/灌流）</a>
+      <a class="btn secondary" href="./scene-05B-Rhythm.html" style="margin-left:10px;">回 Scene 05B（節律）</a>
+      <a class="btn secondary" href="../index.html" style="margin-left:10px;">回 Module 01</a>
+    </p>
+  </div>
+
+  <!-- Focus -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+
+      if(e.target.closest("input, label, button, a, summary, textarea, .item")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+
+  <script>
+    /**********************
+     * Keys
+     **********************/
+    const UNIT_ID = "unit-01-ox-circ-mob";
+    const SCENE_ID = "scene-06-integration";
+    const modeKey = () => document.querySelector('input[name="mode"]:checked')?.value || "pre";
+    const baseKey = (mode) => `${UNIT_ID}:${SCENE_ID}:${mode}`;
+    const nowISO = () => new Date().toISOString();
+
+    const statusEl = document.getElementById("status");
+    const whoEl = document.getElementById("who");
+
+    /**********************
+     * Drag & drop (Q4/Q6)
+     **********************/
+    function enableDnD(bankId, zoneId){
+      const bank = document.getElementById(bankId);
+      const zone = document.getElementById(zoneId);
+
+      function itemsIn(z){ return Array.from(z.querySelectorAll(".item")); }
+      let dragged = null;
+
+      document.addEventListener("dragstart", (e) => {
+        const item = e.target.closest(`#${bankId} .item, #${zoneId} .item`);
+        if(!item) return;
+        dragged = item;
+        item.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+
+      document.addEventListener("dragend", (e) => {
+        const item = e.target.closest(`#${bankId} .item, #${zoneId} .item`);
+        if(!item) return;
+        item.classList.remove("dragging");
+        dragged = null;
+      });
+
+      function enableDrop(container){
+        container.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+        });
+        container.addEventListener("drop", (e) => {
+          e.preventDefault();
+          if(!dragged) return;
+          const targetItem = e.target.closest(".item");
+          if(targetItem && targetItem.parentElement === container){
+            container.insertBefore(dragged, targetItem);
+          }else{
+            container.appendChild(dragged);
+          }
+        });
+      }
+
+      enableDrop(bank);
+      enableDrop(zone);
+
+      return {
+        getOrderIds: () => itemsIn(zone).map(it => it.getAttribute("data-id")),
+        resetToBank: (orderIds) => {
+          const pool = [...itemsIn(bank), ...itemsIn(zone)];
+          itemsIn(bank).forEach(it => it.remove());
+          itemsIn(zone).forEach(it => it.remove());
+
+          // rebuild: bank holds in provided order
+          for(const id of orderIds){
+            const it = pool.find(x => x.getAttribute("data-id") === id);
+            if(it) bank.appendChild(it);
+          }
+        },
+        isAllMoved: () => itemsIn(bank).length === 0
+      };
+    }
+
+    const q4 = enableDnD("q4bank","q4zone");
+    const q6 = enableDnD("q6bank","q6zone");
+
+    document.getElementById("q4reset").addEventListener("click", () => {
+      q4.resetToBank(["1","2","3","4","5","6"]);
+      toast("已重置 Q4。");
+    });
+    document.getElementById("q6reset").addEventListener("click", () => {
+      q6.resetToBank(["1","2","3","4","5","6"]);
+      toast("已重置 Q6。");
+    });
+
+    /**********************
+     * Helpers: read answers
+     **********************/
+    function getRadio(name){
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : null;
+    }
+    function getChecks(name){
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(x => x.value).sort();
+    }
+    function setRadio(name, val){
+      document.querySelectorAll(`input[name="${name}"]`).forEach(x => x.checked = (x.value === val));
+    }
+    function setChecks(name, vals){
+      const set = new Set(vals || []);
+      document.querySelectorAll(`input[name="${name}"]`).forEach(x => x.checked = set.has(x.value));
+    }
+
+    function toast(msg){
+      statusEl.innerHTML = `<span class="ok">✔</span> ${msg} <span class="muted">(${nowISO()})</span>`;
+    }
+
+    /**********************
+     * Scoring rules
+     **********************/
+    const ANSWERS = {
+      q1: "B",
+      q2: ["A","B","C","E"],  // 排除 D
+      q3: "C",
+      q5: "B",
+      // Q4/Q6: allow small tolerance.
+      // Q4: 1 first, 6 last, 2/3 can swap, 4 before 5, 5 before 6
+      // Q6: 6 last, 1&2 in first two (any order), 3 before 4 before 5 before 6
+    };
+
+    function scoreQ2(selected){
+      const correct = ANSWERS.q2;
+      const sel = selected || [];
+      const same = sel.length === correct.length && sel.every((v,i)=>v===correct[i]);
+      return {score: same ? 1 : 0, max: 1};
+    }
+
+    function scoreQ4(order){
+      // must have all 6
+      if(!order || order.length !== 6) return {score: 0, max: 2, note:"未完成排序"};
+      const ids = order;
+      const firstOk = ids[0] === "1";
+      const lastOk = ids[5] === "6";
+      const idx2 = ids.indexOf("2");
+      const idx3 = ids.indexOf("3");
+      const idx4 = ids.indexOf("4");
+      const idx5 = ids.indexOf("5");
+
+      const midOk =
+        Math.min(idx2, idx3) > 0 &&
+        Math.max(idx2, idx3) < idx4 &&
+        idx4 < idx5 &&
+        idx5 < 5;
+
+      // partial credit: 1 point if first+last ok, +1 if mid ok
+      let s = 0;
+      if(firstOk && lastOk) s += 1;
+      if(midOk) s += 1;
+      return {score: s, max: 2};
+    }
+
+    function scoreQ6(order){
+      if(!order || order.length !== 6) return {score: 0, max: 2, note:"未完成排序"};
+      const ids = order;
+
+      const idx1 = ids.indexOf("1");
+      const idx2 = ids.indexOf("2");
+      const idx3 = ids.indexOf("3");
+      const idx4 = ids.indexOf("4");
+      const idx5 = ids.indexOf("5");
+      const idx6 = ids.indexOf("6");
+
+      const lastOk = idx6 === 5;
+      const firstBlockOk = Math.max(idx1, idx2) <= 1; // 1&2 in first two
+      const midOk = idx3 < idx4 && idx4 < idx5 && idx5 < idx6;
+
+      let s = 0;
+      if(lastOk) s += 1;
+      if(firstBlockOk && midOk) s += 1;
+      return {score: s, max: 2};
+    }
+
+    /**********************
+     * Save/load
+     **********************/
+    function readAll(){
+      return {
+        who: whoEl.value.trim(),
+        mode: modeKey(),
+        at: nowISO(),
+        answers: {
+          q1: getRadio("q1"),
+          q2: getChecks("q2"),
+          q3: getRadio("q3"),
+          q4: q4.getOrderIds(),
+          q5: getRadio("q5"),
+          q6: q6.getOrderIds(),
+          q7: document.getElementById("q7").value
+        }
+      };
+    }
+
+    function applyAll(payload){
+      if(!payload) return;
+      whoEl.value = payload.who || "";
+
+      const m = payload.mode || "pre";
+      document.querySelectorAll('input[name="mode"]').forEach(x => x.checked = (x.value === m));
+
+      const a = payload.answers || {};
+      setRadio("q1", a.q1 || null);
+      setChecks("q2", a.q2 || []);
+      setRadio("q3", a.q3 || null);
+      if(Array.isArray(a.q4) && a.q4.length === 6) q4.resetToBank(a.q4); // resetToBank rebuilds bank; we need zone order.
+      // Better: reconstruct zone by moving all to zone in order
+      restoreSort("q4bank","q4zone", a.q4);
+
+      setRadio("q5", a.q5 || null);
+      restoreSort("q6bank","q6zone", a.q6);
+
+      document.getElementById("q7").value = a.q7 || "";
+    }
+
+    function restoreSort(bankId, zoneId, order){
+      // Move items to zone in given order (if valid), else keep current
+      if(!Array.isArray(order) || order.length !== 6) return;
+      const bank = document.getElementById(bankId);
+      const zone = document.getElementById(zoneId);
+
+      const all = Array.from(bank.querySelectorAll(".item")).concat(Array.from(zone.querySelectorAll(".item")));
+      // Clear both
+      Array.from(bank.querySelectorAll(".item")).forEach(it => it.remove());
+      Array.from(zone.querySelectorAll(".item")).forEach(it => it.remove());
+
+      // Put all into zone in order
+      for(const id of order){
+        const it = all.find(x => x.getAttribute("data-id") === id);
+        if(it) zone.appendChild(it);
+      }
+    }
+
+    function saveDraft(){
+      const p = readAll();
+      const k = `${baseKey(p.mode)}:draft`;
+      localStorage.setItem(k, JSON.stringify(p));
+      toast(`已暫存（${p.mode.toUpperCase()}）。`);
+    }
+
+    function loadDraft(){
+      const m = modeKey();
+      const k = `${baseKey(m)}:draft`;
+      const raw = localStorage.getItem(k);
+      if(!raw){
+        statusEl.innerHTML = `<span class="bad">✘</span> 找不到暫存（${m.toUpperCase()}）。`;
+        return;
+      }
+      applyAll(JSON.parse(raw));
+      toast(`已載入暫存（${m.toUpperCase()}）。`);
+    }
+
+    /**********************
+     * Scoring + export
+     **********************/
+    function scoreAll(p){
+      const a = p.answers;
+
+      const s = {
+        q1: (a.q1 === ANSWERS.q1) ? {score:1,max:1} : {score:0,max:1},
+        q2: scoreQ2((a.q2||[]).slice().sort()),
+        q3: (a.q3 === ANSWERS.q3) ? {score:1,max:1} : {score:0,max:1},
+        q4: scoreQ4(a.q4),
+        q5: (a.q5 === ANSWERS.q5) ? {score:1,max:1} : {score:0,max:1},
+        q6: scoreQ6(a.q6),
+        // q7 不自動計分（質性）
+        q7: {score:null,max:null}
+      };
+
+      const numeric = ["q1","q2","q3","q4","q5","q6"];
+      const total = numeric.reduce((acc,k)=>acc + s[k].score, 0);
+      const max = numeric.reduce((acc,k)=>acc + s[k].max, 0);
+
+      return {byQ:s, total, max};
+    }
+
+    function exportText(p, scoring){
+      const lines = [];
+      lines.push(`【Module-01 整合小測】模式：${p.mode.toUpperCase()}  時間：${p.at}`);
+      lines.push(`作答者：${p.who || "（未填）"}`);
+      lines.push(`總分：${scoring.total}/${scoring.max}`);
+      lines.push(`---`);
+
+      const a = p.answers;
+      lines.push(`Q1=${a.q1 || "-"}  (${scoring.byQ.q1.score}/${scoring.byQ.q1.max})`);
+      lines.push(`Q2=${(a.q2||[]).join("") || "-"}  (${scoring.byQ.q2.score}/${scoring.byQ.q2.max})`);
+      lines.push(`Q3=${a.q3 || "-"}  (${scoring.byQ.q3.score}/${scoring.byQ.q3.max})`);
+      lines.push(`Q4排序=${(a.q4||[]).join("→") || "-"}  (${scoring.byQ.q4.score}/${scoring.byQ.q4.max})`);
+      lines.push(`Q5=${a.q5 || "-"}  (${scoring.byQ.q5.score}/${scoring.byQ.q5.max})`);
+      lines.push(`Q6排序=${(a.q6||[]).join("→") || "-"}  (${scoring.byQ.q6.score}/${scoring.byQ.q6.max})`);
+      lines.push(`Q7短答：${(a.q7||"").replace(/\n/g," / ") || "（未填）"}`);
+      lines.push(`---`);
+      lines.push(`備註：Q7 建議老師以「是否提到氧合≠安全、灌流/跌倒、節律不穩定需升級」作為質性評分點。`);
+
+      return lines.join("\n");
+    }
+
+    function submitAll(){
+      const p = readAll();
+
+      // Basic completeness checks (lightweight, avoid blocking)
+      const missing = [];
+      if(!p.answers.q1) missing.push("Q1");
+      if((p.answers.q2||[]).length === 0) missing.push("Q2");
+      if(!p.answers.q3) missing.push("Q3");
+      if(!q4.isAllMoved()) missing.push("Q4(未排序完整)");
+      if(!p.answers.q5) missing.push("Q5");
+      if(!q6.isAllMoved()) missing.push("Q6(未排序完整)");
+
+      const scoring = scoreAll(p);
+
+      // Persist result
+      const k = `${baseKey(p.mode)}:result`;
+      const payload = { ...p, scoring, savedAt: nowISO() };
+      localStorage.setItem(k, JSON.stringify(payload));
+
+      // Render summary
+      const msg =
+        `已計分並保存（${p.mode.toUpperCase()}）。` +
+        (missing.length ? ` 但你仍有未完成：${missing.join("、")}` : "");
+      toast(msg);
+
+      document.getElementById("resultSummary").innerHTML =
+        `<b>模式：</b>${p.mode.toUpperCase()}　<b>總分：</b><span class="${scoring.total===scoring.max?'ok':''}">${scoring.total}/${scoring.max}</span>` +
+        (missing.length ? `<br/><span class="bad">未完成：</span>${missing.join("、")}` : `<br/><span class="ok">完成度：</span>已完成主要題型`);
+
+      // Fill export box
+      document.getElementById("exportBox").value = exportText(p, scoring);
+    }
+
+    function resetThisMode(){
+      const m = modeKey();
+      localStorage.removeItem(`${baseKey(m)}:draft`);
+      localStorage.removeItem(`${baseKey(m)}:result`);
+      toast(`已清除 ${m.toUpperCase()} 的暫存與成績。`);
+
+      // Clear UI answers (do not change mode)
+      setRadio("q1", null);
+      setChecks("q2", []);
+      setRadio("q3", null);
+      setRadio("q5", null);
+      document.getElementById("q7").value = "";
+      q4.resetToBank(["1","2","3","4","5","6"]);
+      q6.resetToBank(["1","2","3","4","5","6"]);
+      document.getElementById("resultSummary").innerText = "尚未計分。請按「送出並計分」。";
+      document.getElementById("exportBox").value = "";
+    }
+
+    function tryLoadResultIntoUI(){
+      const m = modeKey();
+      const raw = localStorage.getItem(`${baseKey(m)}:result`);
+      if(!raw){
+        statusEl.innerHTML = `<span class="muted">目前 ${m.toUpperCase()} 尚無成績紀錄。</span>`;
+        return;
+      }
+      const payload = JSON.parse(raw);
+      // Show a gentle banner (do not auto overwrite answers)
+      statusEl.innerHTML =
+        `<span class="ok">✔</span> 偵測到 ${m.toUpperCase()} 既有成績：<b>${payload.scoring.total}/${payload.scoring.max}</b>（${payload.savedAt}）。` +
+        ` 若要載入作答可按「載入暫存」或自行重做。`;
+    }
+
+    /**********************
+     * Buttons
+     **********************/
+    document.getElementById("saveDraft").addEventListener("click", saveDraft);
+    document.getElementById("loadDraft").addEventListener("click", loadDraft);
+    document.getElementById("submitAll").addEventListener("click", submitAll);
+    document.getElementById("resetThisMode").addEventListener("click", resetThisMode);
+
+    document.getElementById("copyResult").addEventListener("click", async () => {
+      const text = document.getElementById("exportBox").value;
+      if(!text){
+        statusEl.innerHTML = `<span class="bad">✘</span> 尚無可複製內容（請先計分）。`;
+        return;
+      }
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("已複製到剪貼簿。");
+      }catch(e){
+        statusEl.innerHTML = `<span class="bad">✘</span> 無法使用剪貼簿權限。你可以手動全選複製。`;
+      }
+    });
+
+    // mode switch: show existing result banner
+    document.querySelectorAll('input[name="mode"]').forEach(el => {
+      el.addEventListener("change", () => {
+        tryLoadResultIntoUI();
+      });
+    });
+
+    // initial
+    tryLoadResultIntoUI();
+    toast("已載入整合小測。你可先做 Pre，再做 Post。");
+  </script>
+</body>
+</html>

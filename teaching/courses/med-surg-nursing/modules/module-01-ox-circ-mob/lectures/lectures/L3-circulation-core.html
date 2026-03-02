@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>L3｜循環核心概念（Micro Lecture）</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 34px; }
+    h2{ font-size: 26px; margin-top: 28px; }
+    h3{ font-size: 22px; }
+    p, li, div, span{ font-size: 20px; }
+
+    .muted{ color:#555; font-size:18px; }
+    .small{ font-size:18px; }
+
+    .card{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:18px;
+      background:#fff;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+
+    /* Click-to-Focus */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 46px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused div,
+    .focusable.focused span{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .muted,
+    .focusable.focused .small{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>L3｜循環核心概念（給老師用）</h1>
+  <p class="muted">
+    <span class="tag">Micro Lecture</span>
+    <span class="tag">循環</span>
+    <span class="tag">Scene-03 使用</span>
+  </p>
+
+  <!-- 為什麼現在講循環 -->
+  <div class="card focusable">
+    <h2>為什麼現在要把焦點拉到「循環」？（30 秒）</h2>
+    <div class="pill">
+      <p>
+        你們現在可能會想：  
+        「病人喘，是不是就是氧合問題？」
+      </p>
+      <p>
+        但在臨床上，<b>很多病人是「氧氣有進去，但送不到組織」</b>。
+      </p>
+      <p class="muted small">
+        這 3–5 分鐘，我們只講一件事：  
+        <b>循環在臨床上到底在看什麼。</b>
+      </p>
+    </div>
+  </div>
+
+  <!-- 循環的臨床本質 -->
+  <div class="card focusable">
+    <h2>循環的核心只有一件事：灌流夠不夠</h2>
+    <div class="pill">
+      <p><b>在病房，循環不是數字，是組織反應：</b></p>
+      <ul>
+        <li>腦部灌流 → 意識、頭暈、反應</li>
+        <li>腎臟灌流 → 尿量</li>
+        <li>周邊灌流 → 皮膚溫度、顏色、水腫</li>
+      </ul>
+      <p class="muted small">
+        血壓正常，不代表灌流一定足夠。
+      </p>
+    </div>
+  </div>
+
+  <!-- 心輸出量 -->
+  <div class="card focusable">
+    <h2>心輸出量：不用背公式，也要會判斷</h2>
+    <div class="pill">
+      <p>
+        心輸出量來自兩件事：
+      </p>
+      <ul>
+        <li>心跳速率（HR）</li>
+        <li>每一下打出去的量（SV）</li>
+      </ul>
+      <p>
+        <b>臨床重點不是數字，是結果：</b>
+      </p>
+      <ul>
+        <li>病人會不會容易累？</li>
+        <li>活動後會不會更喘、更虛弱？</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 低心輸出量的線索 -->
+  <div class="card focusable">
+    <h2>哪些線索會讓你懷疑「心輸出量不足」？</h2>
+    <div class="pill">
+      <ul>
+        <li>疲倦、活動耐受度下降</li>
+        <li>頭暈、注意力不集中</li>
+        <li>尿量減少</li>
+        <li>下肢水腫、體重增加</li>
+      </ul>
+      <p class="muted small">
+        這些線索常常和「喘」一起出現，容易被誤會成純氧合問題。
+      </p>
+    </div>
+  </div>
+
+  <!-- 常見錯誤 -->
+  <div class="card focusable">
+    <h2>學生最常犯的循環思考錯誤</h2>
+    <div class="pill">
+      <ol>
+        <li>只看血壓，不看器官反應</li>
+        <li>把心跳快直接當成氧合問題</li>
+        <li>忽略活動後症狀變化</li>
+      </ol>
+      <p class="muted small">
+        護理師的價值，在於「看趨勢」。
+      </p>
+    </div>
+  </div>
+
+  <!-- 回到案例 -->
+  <div class="card focusable">
+    <h2>回到這個案例，你現在要多問一件事</h2>
+    <div class="pill">
+      <p>
+        除了「他會不會喘」，你現在要開始想：
+      </p>
+      <ul>
+        <li>他活動後是不是更累？</li>
+        <li>這些症狀有沒有可能來自循環負荷？</li>
+      </ul>
+      <p class="muted small">
+        下一步，我們會讓你在案例中選擇：  
+        你要先往「循環」還是「節律」方向深入。
+      </p>
+    </div>
+  </div>
+
+  <!-- 返回 -->
+  <div class="card">
+    <p class="small">
+      <a class="btn" href="../scenes/scene-03.html">回 Scene-03</a>
+    </p>
+    <p class="muted small">
+      老師提醒：這一頁是用來「拉回系統觀」，不是講心臟病種類。
+    </p>
+  </div>
+
+  <!-- Focus script -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+      if(e.target.closest("a, button")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+</body>
+</html>

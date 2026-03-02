@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Scene 5B｜節律不整：ECG 線索 → 穩定性判斷 → 立即處置</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 32px; }
+    h2{ font-size: 26px; }
+    h3{ font-size: 22px; }
+    p, li, label, span{ font-size: 20px; }
+    .small{ font-size: 18px; }
+    .muted{ color:#555; font-size: 18px; }
+
+    .card{
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+    .btn:disabled{opacity:.5; cursor:not-allowed;}
+
+    .ok{color:#1b7f3a; font-weight:900;}
+    .bad{color:#b00020; font-weight:900;}
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+
+    /* Click-to-Focus */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 44px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused label,
+    .focusable.focused span,
+    .focusable.focused div{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .small,
+    .focusable.focused .muted{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    /* NGN blocks */
+    .ngn{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+    }
+    .q{
+      border:1px solid #ddd;
+      border-radius:14px;
+      padding:12px;
+      margin:10px 0;
+      background:#fafafa;
+    }
+    .hidden{display:none;}
+
+    /* Drag sort */
+    .dragWrap{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .dragWrap{ grid-template-columns: 1fr; }
+    }
+    .bank, .zone{
+      border:1px solid #e2e2e2;
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      min-height: 210px;
+    }
+    .zoneTitle{ font-weight:900; margin: 0 0 10px 0; }
+    .item{
+      border:1px solid #ddd;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0;
+      background:#fafafa;
+      cursor: grab;
+      user-select: none;
+    }
+    .item:active{ cursor: grabbing; }
+    .item.dragging{ opacity: .55; }
+    .dropHint{
+      border: 2px dashed #9cc3ff;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+      background:#f0f7ff;
+    }
+
+    details{
+      border: 1px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+    }
+    summary{ cursor: pointer; font-weight: 800; }
+    .chip{
+      display:inline-block;
+      border:1px solid #d6d6d6;
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Scene 5B｜主線 B：節律不整（Rhythm）</h1>
+  <p class="muted">
+    目標：用 NGN 節奏完成「ECG/監測線索 → 穩定性判斷 → 立即處置優先順序」。<br/>
+    <span class="chip">提醒：本幕不考心電圖判讀細節，只考護理決策與升級處置。</span>
+  </p>
+
+  <!-- 情境 -->
+  <div class="card focusable">
+    <span class="tag">承接 Scene 4</span>
+    <span class="tag">主線：節律</span>
+    <div class="hr"></div>
+
+    <h2>情境資料（第五波揭露｜節律線索）</h2>
+    <p class="muted small">
+      病人說「心跳亂跳、胸口悶」。你讓他坐回床邊，接上監視器並觀察。
+      這裡的 ECG 用「文字化線索」呈現（符合綜論課定位）。
+    </p>
+
+    <div class="grid">
+      <div class="pill">
+        <h3>監視器/ECG 線索（文字化）</h3>
+        <ul>
+          <li>心跳：<b>148 次/分</b></li>
+          <li>節律：<b>不規則不等距</b>（irregularly irregular）</li>
+          <li>脈搏：觸診覺得<b>忽快忽慢、強弱不一</b></li>
+        </ul>
+      </div>
+
+      <div class="pill">
+        <h3>症狀</h3>
+        <ul>
+          <li>頭暈加劇、冒冷汗</li>
+          <li>胸悶（非劇烈撕裂痛）</li>
+          <li>主訴「好像要昏倒」</li>
+        </ul>
+      </div>
+
+      <div class="pill">
+        <h3>生命徵象（示意）</h3>
+        <ul>
+          <li>BP 90/58 mmHg（偏低）</li>
+          <li>SpO₂ 92%（氧支持）</li>
+          <li>RR 26 次/分</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <p><b>本幕核心問句：</b>「這個節律問題是否已造成<b>不穩定</b>？護理師此刻<b>先做什麼</b>？」</p>
+  </div>
+
+  <!-- NGN Step 1：穩定性判斷 -->
+  <div class="card focusable">
+    <span class="tag">NGN Step 1</span>
+    <span class="tag">穩定性判斷</span>
+    <div class="hr"></div>
+
+    <h2>任務 1｜判斷：此刻屬於「不穩定」嗎？（單選）</h2>
+    <p class="muted small">
+      判斷依據不是「看到節律就緊張」，而是看是否出現：低血壓、意識改變、缺血性胸痛、休克、急性心衰/肺水腫等。
+    </p>
+
+    <div class="ngn" id="q1">
+      <div class="q">
+        <label><input type="radio" name="stable" value="U"> U. 不穩定（有低血壓＋頭暈近昏厥）</label>
+      </div>
+      <div class="q">
+        <label><input type="radio" name="stable" value="S"> S. 穩定（因為 SpO₂ 還可以）</label>
+      </div>
+      <button class="btn" id="checkQ1">檢查判斷</button>
+      <div class="pill small" id="fbQ1" style="margin-top:12px;"></div>
+    </div>
+
+    <details id="teacherQ1" class="hidden" style="margin-top:12px;">
+      <summary>👩‍🏫 老師講稿（30 秒｜照念）</summary>
+      <div class="hr"></div>
+      <p class="small">
+        「節律問題的第一步不是猜是哪一種，而是看<b>穩定/不穩定</b>。<br/>
+        這個案子 BP 90/58、頭暈近昏厥、冒冷汗 → 已經是<b>不穩定訊號</b>，需要升級處置。」
+      </p>
+    </details>
+  </div>
+
+  <!-- NGN Step 2：立即處置排序（拖曳） -->
+  <div class="card focusable">
+    <span class="tag">NGN Step 2</span>
+    <span class="tag">立即處置排序</span>
+    <div class="hr"></div>
+
+    <h2>任務 2｜把「立即處置」依優先順序排序（先 → 後）</h2>
+    <p class="muted small">
+      先完成任務 1 才能進行排序。這裡重點是<b>護理決策與升級處置</b>，不是背藥物或 ACLS 細節。
+    </p>
+
+    <div class="dragWrap" style="margin-top:12px;">
+      <div class="bank zone" id="bank">
+        <div class="zoneTitle">處置卡片庫</div>
+        <div class="dropHint">完成任務 1 後才會解鎖拖曳。</div>
+
+        <div class="item" draggable="true" data-id="1">立即確保安全：讓病人平躺或半坐臥、評估意識、啟動防跌/呼叫支援（必要時請同仁在場）</div>
+        <div class="item" draggable="true" data-id="2">快速評估穩定性指標：BP 趨勢、胸痛/缺血症狀、呼吸窘迫、灌流（皮膚、冷汗、意識）</div>
+        <div class="item" draggable="true" data-id="3">持續監測＋取得 12 導程 ECG（或請求 ECG 支援），記錄節律與心率</div>
+        <div class="item" draggable="true" data-id="4">建立/確認靜脈路徑（IV），備抽血與可能用藥/處置（依院內流程）</div>
+        <div class="item" draggable="true" data-id="5">立即回報醫師/啟動急救/快速反應（依院內規範），清楚回報：不規則快速心律＋低血壓＋近昏厥</div>
+        <div class="item" draggable="true" data-id="6">完成後衛教：避免自行下床、症狀回報、起身分段（此刻不是第一優先）</div>
+      </div>
+
+      <div class="zone" id="zoneOrder">
+        <div class="zoneTitle">你的優先順序（先 → 後）</div>
+        <div class="dropHint">把卡片拖進來後可在此區內重新排序。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <button class="btn" id="checkOrder" disabled>檢查排序</button>
+      <button class="btn secondary" id="resetOrder" disabled>重置</button>
+    </div>
+
+    <div class="pill small" id="fbOrder" style="margin-top:12px;"></div>
+
+    <details id="teacherOrder" class="hidden" style="margin-top:12px;">
+      <summary>👩‍🏫 老師 mini-講稿（60–90 秒｜照念）</summary>
+      <div class="hr"></div>
+      <p class="small">
+        「節律主線先做兩件事：<b>先確保安全與穩定性</b>，同時<b>立刻升級處置</b>。<br/>
+        你可以把順序想成：安全/支援 → 穩定性評估 → 監測與 ECG → IV 與準備 → 回報/啟動流程 → 最後才衛教。<br/>
+        我們不要求你背藥或電擊細節，但要能說出：『他不穩定，所以我要升級處理。』」
+      </p>
+    </details>
+
+    <div class="card hidden" id="unlock">
+      <h3>✅ 任務完成：解鎖整合回圈（回到 CO 或進入整合小結）</h3>
+      <div class="pill">
+        <p>
+          你完成升級處置後，醫師評估可能為「心房顫動合併快速心室反應」或其他快速不規則心律（示意）。<br/>
+          團隊將同時追蹤灌流、體液負荷與呼吸狀態：這表示「CO/灌流」與「節律」需要整合。
+        </p>
+        <p><b>下一步選擇：</b></p>
+        <ul>
+          <li>回到 <b>Scene 05A（CO/灌流）</b>，完成整合回圈</li>
+          <li>或回到 <b>Scene 04</b> 重新選路徑，帶不同組別走不同線</li>
+        </ul>
+      </div>
+
+      <p>
+        <a class="btn" href="./scene-05A-CO.html">回 Scene 05A（CO/灌流）</a>
+        <a class="btn secondary" href="./scene-04.html" style="margin-left:10px;">回 Scene 04（分岔點）</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 進度 -->
+  <div class="card">
+    <h2>進度追蹤（本機）</h2>
+    <p class="muted small">
+      目前先使用 <code>localStorage</code> 記錄進度（之後再接 Supabase/TronClass）。
+    </p>
+    <div class="pill small" id="progressBox"></div>
+    <p class="small">
+      <a class="btn secondary" href="./scene-04.html">回 Scene 4</a>
+      <a class="btn secondary" href="../index.html" style="margin-left:10px;">回 Module 01</a>
+    </p>
+  </div>
+
+  <!-- Focus script -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+
+      if(e.target.closest(".item, input, label, button, a, summary")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+
+      document.querySelectorAll(".focusable.focused")
+        .forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused")
+          .forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+
+  <script>
+    /**********************
+     * 進度追蹤（localStorage）
+     **********************/
+    const UNIT_ID = "unit-01-ox-circ-mob";
+    const SCENE_ID = "scene-05B-Rhythm";
+    const progressKey = `${UNIT_ID}:${SCENE_ID}:status`;
+    const timeKey = `${UNIT_ID}:${SCENE_ID}:lastTime`;
+
+    function setStatus(status){
+      localStorage.setItem(progressKey, status);
+      localStorage.setItem(timeKey, new Date().toISOString());
+      renderProgress();
+    }
+    function getStatus(){
+      return localStorage.getItem(progressKey) || "not_started";
+    }
+    function renderProgress(){
+      const box = document.getElementById("progressBox");
+      const status = getStatus();
+      const last = localStorage.getItem(timeKey) || "-";
+      const map = {
+        not_started: "尚未完成任務",
+        q1_passed: "已完成穩定性判斷（解鎖排序）",
+        gate_passed: "已完成排序（已解鎖整合回圈）"
+      };
+      box.innerHTML = `<b>Scene 05B 狀態：</b> ${map[status] || status}<br/><span class="muted">最後更新：</span> ${last}`;
+    }
+    renderProgress();
+
+    /**********************
+     * NGN Step 1：穩定性判斷
+     **********************/
+    const fbQ1 = document.getElementById("fbQ1");
+    const teacherQ1 = document.getElementById("teacherQ1");
+    const checkQ1 = document.getElementById("checkQ1");
+
+    // 拖曳排序控件
+    const checkOrderBtn = document.getElementById("checkOrder");
+    const resetOrderBtn = document.getElementById("resetOrder");
+    const bank = document.getElementById("bank");
+    const zoneOrder = document.getElementById("zoneOrder");
+
+    function enableSorting(){
+      checkOrderBtn.disabled = false;
+      resetOrderBtn.disabled = false;
+      document.querySelectorAll(".item").forEach(it => it.setAttribute("draggable","true"));
+    }
+
+    checkQ1.addEventListener("click", () => {
+      const el = document.querySelector('input[name="stable"]:checked');
+      if(!el){
+        fbQ1.innerHTML = `<span class="bad">請先選一項。</span>`;
+        return;
+      }
+      if(el.value === "U"){
+        fbQ1.innerHTML = `<span class="ok">判斷正確 ✅</span><br/>
+          有低血壓（BP 90/58）＋頭暈近昏厥＋冒冷汗 → 代表節律已影響灌流，屬於不穩定訊號，需要升級處置。`;
+        teacherQ1.classList.remove("hidden");
+        enableSorting();
+        setStatus("q1_passed");
+      }else{
+        fbQ1.innerHTML = `<span class="bad">需要再想一下 ❗</span><br/>
+          SpO₂ 還可以不代表循環穩定。這個案子有低血壓＋近昏厥，應判為不穩定訊號。`;
+        teacherQ1.classList.remove("hidden");
+      }
+    });
+
+    /**********************
+     * 拖曳排序（通用）
+     **********************/
+    function itemsIn(zone){ return Array.from(zone.querySelectorAll(".item")); }
+    let dragged = null;
+
+    document.addEventListener("dragstart", (e) => {
+      const item = e.target.closest(".item");
+      if(!item) return;
+      if(checkOrderBtn.disabled) return; // 尚未解鎖
+      dragged = item;
+      item.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    document.addEventListener("dragend", (e) => {
+      const item = e.target.closest(".item");
+      if(!item) return;
+      item.classList.remove("dragging");
+      dragged = null;
+    });
+
+    function enableDrop(zone){
+      zone.addEventListener("dragover", (e) => {
+        if(checkOrderBtn.disabled) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+      });
+      zone.addEventListener("drop", (e) => {
+        if(checkOrderBtn.disabled) return;
+        e.preventDefault();
+        if(!dragged) return;
+
+        const targetItem = e.target.closest(".item");
+        if(targetItem && targetItem.parentElement === zone){
+          zone.insertBefore(dragged, targetItem);
+        }else{
+          zone.appendChild(dragged);
+        }
+      });
+    }
+    [bank, zoneOrder].forEach(enableDrop);
+
+    /**********************
+     * NGN Step 2：檢查排序
+     * 正確概念：安全/支援 → 穩定性快速評估 → 監測/ECG → IV/準備 → 回報/啟動流程 → 衛教
+     * 容錯：1/2 可互換（同步進行），但 6 必須最後
+     **********************/
+    const fbOrder = document.getElementById("fbOrder");
+    const teacherOrder = document.getElementById("teacherOrder");
+    const unlock = document.getElementById("unlock");
+
+    function orderIds(){
+      return itemsIn(zoneOrder).map(it => it.getAttribute("data-id"));
+    }
+
+    checkOrderBtn.addEventListener("click", () => {
+      if(itemsIn(bank).length > 0){
+        fbOrder.innerHTML = `<span class="bad">請先把所有卡片拖到右側排序區（剩 ${itemsIn(bank).length} 張）。</span>`;
+        unlock.classList.add("hidden");
+        teacherOrder.classList.remove("hidden");
+        return;
+      }
+
+      const ids = orderIds();
+      const lastOk = ids[ids.length - 1] === "6";
+
+      const idx1 = ids.indexOf("1");
+      const idx2 = ids.indexOf("2");
+      const idx3 = ids.indexOf("3");
+      const idx4 = ids.indexOf("4");
+      const idx5 = ids.indexOf("5");
+      const idx6 = ids.indexOf("6");
+
+      const firstBlockOk = Math.max(idx1, idx2) <= 1; // 1&2 應在前兩格（可互換）
+      const midOk = idx3 < idx4 && idx4 < idx5 && idx5 < idx6;
+
+      if(lastOk && firstBlockOk && midOk){
+        fbOrder.innerHTML = `<span class="ok">排序合理 ✅</span><br/>
+          你先確保安全與穩定性，再取得 ECG/監測資料，準備 IV 與處置，同時回報/啟動流程，最後才衛教。這是節律主線的護理決策節奏。`;
+        teacherOrder.classList.remove("hidden");
+        unlock.classList.remove("hidden");
+        setStatus("gate_passed");
+      }else{
+        fbOrder.innerHTML = `<span class="bad">還差一點 ❗</span><br/>
+          請抓住兩個原則：<br/>
+          1) <b>安全＋穩定性評估</b>要最前（可同步）<br/>
+          2) <b>衛教</b>通常最後（急性不穩定時先處置再說）`;
+        teacherOrder.classList.remove("hidden");
+        unlock.classList.add("hidden");
+      }
+    });
+
+    resetOrderBtn.addEventListener("click", () => {
+      // 全部搬回 bank（依原始順序）
+      const order = ["1","2","3","4","5","6"];
+      const pool = [];
+      itemsIn(zoneOrder).forEach(it => pool.push(it));
+      itemsIn(zoneOrder).forEach(it => it.remove());
+
+      for(const id of order){
+        const it = pool.find(x => x.getAttribute("data-id") === id);
+        if(it) bank.appendChild(it);
+      }
+
+      fbOrder.innerHTML = "";
+      teacherOrder.classList.add("hidden");
+      unlock.classList.add("hidden");
+      setStatus("q1_passed"); // 回到已解鎖排序的狀態
+    });
+  </script>
+</body>
+</html>

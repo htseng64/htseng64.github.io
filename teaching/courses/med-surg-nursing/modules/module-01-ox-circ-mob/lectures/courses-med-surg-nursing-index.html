@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>內外科護理學綜論｜課程入口（TronClass × GitHub × Notion）</title>
+
+  <style>
+    body{
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+      line-height: 1.75;
+      color: #222;
+      font-size: 20px;
+    }
+    h1{ font-size: 34px; margin-bottom: 6px; }
+    h2{ font-size: 26px; margin-top: 28px; }
+    h3{ font-size: 22px; }
+    p, li, label, span, div{ font-size: 20px; }
+
+    .muted{ color:#555; font-size: 18px; }
+    .small{ font-size: 18px; }
+
+    .card{
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+    .pill{
+      border:1px dashed #bcd;
+      background:#f7fbff;
+      border-radius:14px;
+      padding:14px;
+    }
+    .hr{height:1px; background:#eee; margin:14px 0;}
+
+    .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #0b5ed7;
+      background:#0b5ed7;
+      color:#fff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:#0b5ed7; }
+    .btn.danger{ background:#b00020; border-color:#b00020; }
+
+    .tag{
+      display:inline-block;
+      background:#eef3ff;
+      border:1px solid #cfd9ff;
+      color:#243a8f;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:14px;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .mod{
+      border:1px solid #e2e2e2;
+      border-radius: 14px;
+      padding: 14px;
+      background:#fff;
+    }
+    .modTitle{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      background:#fafafa;
+      white-space: nowrap;
+    }
+    .dot{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: #999;
+      display:inline-block;
+    }
+    .dot.ok{ background:#1b7f3a; }
+    .dot.mid{ background:#b8860b; }
+    .dot.bad{ background:#b00020; }
+
+    /* Click-to-Focus（投影放大） */
+    .focusable{ cursor: zoom-in; }
+    .focusable.focused{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #ffffff;
+      padding: 48px;
+      overflow: auto;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+    .focusable.focused h1{ font-size: 46px; }
+    .focusable.focused h2{ font-size: 36px; }
+    .focusable.focused h3{ font-size: 30px; }
+    .focusable.focused p,
+    .focusable.focused li,
+    .focusable.focused span,
+    .focusable.focused div{
+      font-size: 28px !important;
+      line-height: 1.85;
+    }
+    .focusable.focused .muted,
+    .focusable.focused .small{
+      font-size: 24px !important;
+    }
+    body.focus-mode::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9998;
+    }
+
+    code{background:#f5f5f5;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+
+<body>
+  <h1>內外科護理學綜論｜課程入口</h1>
+  <p class="muted">
+    這個入口頁用來：讓學生「不迷路」、讓老師「不忘記設計」。<br/>
+    <span class="tag">TronClass 任務/測驗</span>
+    <span class="tag">GitHub/Netlify 靜態教材</span>
+    <span class="tag">Notion 教學HQ</span>
+    <span class="tag">Supabase 記錄作答（下一步）</span>
+  </p>
+
+  <!-- 課程總覽 -->
+  <div class="card focusable">
+    <h2>課程運作模型（固定模板，之後可複製到各單元）</h2>
+    <div class="pill">
+      <ol>
+        <li><b>Pre（課前）</b>：短測（5–8題）＋看 1 個情境片段（Scene）</li>
+        <li><b>In-class（課中）</b>：Unfolding case（逐步揭露）＋Gate（拖曳/判讀/排序）＋老師 60–90 秒收斂</li>
+        <li><b>Post（課後）</b>：同題 Post-test（可比對 Pre/Post）＋反思一句話（短答）</li>
+      </ol>
+      <p class="muted small">
+        本站目前先用 <code>localStorage</code> 存進度；之後接 Supabase 才能跨裝置、跨教室統計。
+      </p>
+    </div>
+  </div>
+
+  <!-- 模組清單 -->
+  <div class="card focusable">
+    <h2>Modules（教材入口）</h2>
+    <p class="muted small">
+      徽章為「本機」進度概覽：綠＝已有完成紀錄；黃＝進行中；紅＝尚未開始。<br/>
+      投影時可點整張卡片放大（Esc 退出）。
+    </p>
+
+    <div class="grid" id="moduleGrid"></div>
+
+    <div class="hr"></div>
+
+    <button class="btn secondary" id="refreshBadges">更新進度徽章</button>
+    <button class="btn danger" id="clearCourse">清除此課程全部本機進度</button>
+
+    <div class="pill small" id="msg" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- 老師維護區 -->
+  <div class="card focusable">
+    <h2>老師維護（你之後只要改這裡）</h2>
+    <div class="pill">
+      <p class="small">
+        ✅ 新增一個章節/單元時，你只要在 JS 的 <code>MODULES</code> 陣列加一行：
+      </p>
+      <p class="small">
+        <code>{ slug:"module-02-xxx", title:"Module 02｜...", href:"./modules/module-02-xxx/index.html", unitPrefix:"unit-02-xxx" }</code>
+      </p>
+      <p class="muted small">
+        <b>slug</b>＝資料夾名稱（網址的一部分），建議：小寫英數＋連字號（例如 module-01-ox-circ-mob）。
+      </p>
+    </div>
+  </div>
+
+  <!-- Focus script -->
+  <script>
+    document.addEventListener("click", function(e){
+      const box = e.target.closest(".focusable");
+      if(!box) return;
+
+      if(e.target.closest("a, button")) return;
+
+      e.stopPropagation();
+
+      const isFocused = box.classList.contains("focused");
+      document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+
+      if(isFocused){
+        box.classList.remove("focused");
+        document.body.classList.remove("focus-mode");
+      }else{
+        box.classList.add("focused");
+        document.body.classList.add("focus-mode");
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        document.querySelectorAll(".focusable.focused").forEach(el => el.classList.remove("focused"));
+        document.body.classList.remove("focus-mode");
+      }
+    });
+  </script>
+
+  <script>
+    /************************************************************
+     * ✅ 你之後新增 module，只要在這裡加一行即可
+     ************************************************************/
+    const COURSE_PREFIX = "med-surg-nursing";
+
+    const MODULES = [
+      {
+        slug: "module-00-foundation",
+        title: "Module 00｜Foundation（課程導入/全人評估/工具操作）",
+        href: "./modules/module-00-foundation/index.html",
+        unitPrefix: "unit-00-foundation",
+        note: "建議放：規則、分組、全人評估示範、如何作答/回饋"
+      },
+      {
+        slug: "module-01-ox-circ-mob",
+        title: "Module 01｜氧合＋循環＋活動（Unfolding Case + Puzzle）",
+        href: "./modules/module-01-ox-circ-mob/index.html",
+        unitPrefix: "unit-01-ox-circ-mob",
+        note: "已完成：Scene 03–06（含 Pre/Post 整合小測）"
+      },
+
+      // 之後你可以這樣加：
+      // { slug:"module-02-nutrition-elim", title:"Module 02｜營養與排泄", href:"./modules/module-02-nutrition-elim/index.html", unitPrefix:"unit-02-nutrition-elim", note:"..." },
+    ];
+
+    /************************************************************
+     * 進度概覽（非常簡化版）：
+     * - 只要偵測到該 unitPrefix 的任何 localStorage key，就判定有活動
+     * - 若偵測到 gate_passed / post result 之類字樣則顯示更高完成度
+     ************************************************************/
+    function scanModuleProgress(unitPrefix){
+      let hasAny = false;
+      let hasGate = false;
+      let hasPost = false;
+
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(!k) continue;
+        if(k.startsWith(`${unitPrefix}:`)){
+          hasAny = true;
+          const v = localStorage.getItem(k) || "";
+          if(k.endsWith(":status") && v === "gate_passed") hasGate = true;
+          if(k.includes(":post:result")) hasPost = true;
+        }
+      }
+
+      if(hasPost) return {level:"ok", text:"完成（含 Post）", detail:"偵測到 Post 成績"};
+      if(hasGate) return {level:"mid", text:"進行中（已過 Gate）", detail:"偵測到 gate_passed"};
+      if(hasAny)  return {level:"mid", text:"進行中", detail:"有作答/進度紀錄"};
+      return {level:"bad", text:"未開始", detail:"尚無本機紀錄"};
+    }
+
+    function dotClass(level){
+      if(level === "ok") return "dot ok";
+      if(level === "mid") return "dot mid";
+      return "dot bad";
+    }
+
+    function render(){
+      const grid = document.getElementById("moduleGrid");
+      grid.innerHTML = "";
+
+      for(const m of MODULES){
+        const st = scanModuleProgress(m.unitPrefix);
+
+        const card = document.createElement("div");
+        card.className = "mod";
+        card.innerHTML = `
+          <div class="modTitle">
+            <div>
+              <div style="font-weight:900">${m.title}</div>
+              <div class="muted small">${m.note || ""}</div>
+            </div>
+
+            <div class="badge" title="${st.detail}">
+              <span class="${dotClass(st.level)}"></span>
+              <span>${st.text}</span>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="small">
+            <a class="btn" href="${m.href}">進入 Module</a>
+            <a class="btn secondary" href="${m.href}" style="margin-left:10px;">直接開啟（備用）</a>
+          </div>
+
+          <div class="muted small" style="margin-top:10px;">
+            slug：<code>${m.slug}</code>　unitPrefix：<code>${m.unitPrefix}</code>
+          </div>
+        `;
+        grid.appendChild(card);
+      }
+
+      msg(`已載入 ${MODULES.length} 個 Modules。`);
+    }
+
+    function msg(text){
+      document.getElementById("msg").innerHTML =
+        `<span class="ok">✔</span> ${text} <span class="muted">(${new Date().toISOString()})</span>`;
+    }
+
+    function clearCourseProgress(){
+      // 清除所有以 unit- 開頭的 keys（只清課程相關，不動其他網站資料）
+      const keysToRemove = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(!k) continue;
+        if(k.startsWith("unit-")){
+          keysToRemove.push(k);
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      msg(`已清除此課程本機進度（共 ${keysToRemove.length} 筆）。`);
+      render();
+    }
+
+    document.getElementById("refreshBadges").addEventListener("click", render);
+    document.getElementById("clearCourse").addEventListener("click", clearCourseProgress);
+
+    render();
+  </script>
+</body>
+</html>
