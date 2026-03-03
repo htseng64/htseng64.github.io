@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>氣候變遷與健康調適｜弘光科技大學護理系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --earth: #1a472a;
+  --ocean: #0d2b45;
+  --sky: #1e6091;
+  --leaf: #52b788;
+  --sun: #f4a261;
+  --coral: #e76f51;
+  --sand: #f8edeb;
+  --mist: #e8f4f8;
+  --gold: #e9c46a;
+  --text: #1a1a2e;
+  --light: #f0f7f4;
+  --white: #ffffff;
+  --shadow: rgba(13,43,69,0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--ocean);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* === LAYOUT === */
+.app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+/* === HEADER === */
+.site-header {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--earth) 0%, var(--ocean) 60%, #0a1628 100%);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-bg {
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2352b788' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.header-inner {
+  position: relative; z-index: 1;
+  padding: 28px 32px 22px;
+  display: flex; align-items: center; gap: 24px;
+}
+
+.header-globe {
+  font-size: 52px;
+  filter: drop-shadow(0 4px 12px rgba(82,183,136,0.4));
+  animation: globe-spin 20s linear infinite;
+}
+
+@keyframes globe-spin {
+  0%,100% { transform: rotateY(0deg); }
+  50% { transform: rotateY(15deg); }
+}
+
+.header-text h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(18px, 3vw, 28px);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.header-text .subtitle {
+  font-size: 13px;
+  color: var(--leaf);
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+
+.header-text .meta {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
+  font-family: 'Space Mono', monospace;
+}
+
+.header-badges {
+  margin-left: auto;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: flex-end;
+}
+
+.badge {
+  background: rgba(82,183,136,0.15);
+  border: 1px solid rgba(82,183,136,0.35);
+  color: var(--leaf);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* === TABS (TOP NAV) === */
+.top-tabs {
+  grid-column: 1 / -1;
+  background: rgba(10,22,40,0.9);
+  border-bottom: 1px solid rgba(82,183,136,0.2);
+  display: flex; overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky; top: 0; z-index: 100;
+}
+
+.top-tabs::-webkit-scrollbar { display: none; }
+
+.top-tab {
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.top-tab:hover { color: var(--leaf); }
+.top-tab.active {
+  color: var(--leaf);
+  border-bottom-color: var(--leaf);
+  background: rgba(82,183,136,0.08);
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  background: rgba(10,22,40,0.95);
+  border-right: 1px solid rgba(82,183,136,0.15);
+  overflow-y: auto;
+  position: sticky;
+  top: 45px;
+  height: calc(100vh - 45px);
+}
+
+.sidebar-section {
+  padding: 16px 12px 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.week-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+  border-radius: 6px;
+  margin: 2px 8px;
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+}
+
+.week-btn:hover { background: rgba(82,183,136,0.1); color: #fff; }
+
+.week-btn.active {
+  background: rgba(82,183,136,0.18);
+  color: var(--leaf);
+  font-weight: 500;
+}
+
+.week-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  background: rgba(255,255,255,0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.week-btn.active .week-num {
+  background: var(--leaf);
+  color: var(--ocean);
+}
+
+.week-tag {
+  font-size: 10px;
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+/* === MAIN CONTENT === */
+.main {
+  background: var(--light);
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* === PANELS === */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* === WEEK CONTENT === */
+.week-hero {
+  background: linear-gradient(135deg, var(--ocean) 0%, var(--earth) 100%);
+  padding: 32px 36px 28px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.week-hero::after {
+  content: '';
+  position: absolute; right: -20px; top: -20px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82,183,136,0.18) 0%, transparent 70%);
+}
+
+.week-hero .week-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--leaf);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.week-hero h2 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.week-hero .obj-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 10px;
+}
+
+.obj-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .content-grid { grid-template-columns: 1fr; }
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* === CARDS === */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.card-header {
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card-icon { font-size: 20px; }
+
+.card-body { padding: 18px; }
+
+.card.full { grid-column: 1 / -1; }
+
+/* Color themes */
+.card.green .card-header { background: #f0faf4; color: var(--earth); }
+.card.blue .card-header { background: #e8f4fd; color: var(--sky); }
+.card.orange .card-header { background: #fef3e8; color: #c9602a; }
+.card.purple .card-header { background: #f3eeff; color: #6b3fa0; }
+.card.teal .card-header { background: #e8faf6; color: #1a7a5e; }
+
+/* === AI PROMPT SECTION === */
+.prompt-builder {
+  background: linear-gradient(135deg, #f8f3ff 0%, #edf5ff 100%);
+  border: 1px solid rgba(107,63,160,0.15);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.prompt-row {
+  display: flex; gap: 8px; margin-bottom: 10px; align-items: center;
+}
+
+.prompt-label {
+  font-size: 12px;
+  color: #6b3fa0;
+  font-weight: 600;
+  min-width: 70px;
+}
+
+.prompt-select, .prompt-input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid rgba(107,63,160,0.25);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.prompt-select:focus, .prompt-input:focus {
+  border-color: #6b3fa0;
+  box-shadow: 0 0 0 3px rgba(107,63,160,0.1);
+}
+
+.prompt-output {
+  background: #1a1a2e;
+  color: #a8e6cf;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 14px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 10px 0;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.btn-primary { background: #6b3fa0; color: #fff; }
+.btn-primary:hover { background: #5a3489; }
+.btn-green { background: var(--leaf); color: #fff; }
+.btn-green:hover { background: #3da06e; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--sky);
+}
+.btn-copy { background: #e8f4fd; color: var(--sky); }
+.btn-copy:hover { background: #d0e8f8; }
+
+.btn-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* === DISCUSSION TOPICS === */
+.topic-item {
+  background: var(--mist);
+  border-left: 3px solid var(--sky);
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.topic-num {
+  font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  color: var(--sky);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tronclass-box {
+  background: #fff5ee;
+  border: 1px solid #f4a261;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  line-height: 1.8;
+  color: #5a3010;
+  max-height: 150px;
+  overflow-y: auto;
+  margin: 8px 0;
+}
+
+/* === STEP BY STEP === */
+.steps-container { counter-reset: step; }
+
+.step-item {
+  display: flex; gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+.step-item:last-child { border-bottom: none; }
+
+.step-num {
+  counter-increment: step;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--earth), var(--leaf));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'Space Mono', monospace;
+}
+
+.step-content h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--earth);
+  margin-bottom: 4px;
+}
+
+.step-content p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.step-tags {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.step-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f0faf4;
+  color: var(--earth);
+  border: 1px solid rgba(26,71,42,0.2);
+}
+
+/* === ASSESSMENT === */
+.assess-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.assess-pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--leaf);
+  min-width: 55px;
+}
+
+.assess-bar {
+  flex: 1;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.assess-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--leaf), var(--sky));
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+/* === CHRONIC DISEASE SECTION === */
+.chronic-hero {
+  background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);
+  padding: 40px 36px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.chronic-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/svg%3E");
+}
+
+.chronic-hero h2 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(20px, 3vw, 30px);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.chronic-hero p {
+  opacity: 0.85;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.8;
+  position: relative;
+}
+
+.chronic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 24px;
+}
+
+.chronic-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.chronic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.chronic-card-top {
+  padding: 20px;
+  color: #fff;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.chronic-icon { font-size: 32px; }
+
+.chronic-card-body { padding: 16px 20px 20px; }
+
+.chronic-card-body h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.chronic-card-body ul {
+  list-style: none;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.8;
+}
+
+.chronic-card-body li::before {
+  content: '✦ ';
+  color: var(--leaf);
+  font-size: 10px;
+}
+
+.project-wizard {
+  background: #fff;
+  border-radius: 12px;
+  margin: 0 24px 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.wizard-header {
+  background: linear-gradient(135deg, #2d1b69, #11998e);
+  color: #fff;
+  padding: 20px 24px;
+}
+
+.wizard-steps {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  background: #fafafa;
+}
+
+.wizard-step-tab {
+  padding: 12px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  color: #888;
+  transition: all 0.2s;
+}
+
+.wizard-step-tab.active {
+  color: #2d1b69;
+  border-bottom-color: #11998e;
+  font-weight: 600;
+}
+
+.wizard-content { padding: 24px; }
+
+.wizard-panel { display: none; }
+.wizard-panel.active { display: block; }
+
+/* === OVERALL PROGRESS === */
+.progress-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 24px;
+}
+
+.progress-stat {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.progress-stat .num {
+  font-family: 'Space Mono', monospace;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--leaf);
+  line-height: 1;
+}
+
+.progress-stat .label {
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* === UTILITY === */
+.divider {
+  height: 1px;
+  background: rgba(0,0,0,0.07);
+  margin: 12px 0;
+}
+
+.text-sm { font-size: 13px; }
+.text-xs { font-size: 11px; }
+.text-muted { color: #888; }
+.text-green { color: var(--leaf); }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+
+.info-box {
+  background: var(--mist);
+  border: 1px solid rgba(30,96,145,0.2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--sky);
+  margin-bottom: 12px;
+}
+
+.copy-success {
+  display: inline-block;
+  background: var(--leaf);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-left: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.copy-success.show { opacity: 1; }
+
+/* Week timeline */
+.timeline {
+  display: flex;
+  overflow-x: auto;
+  padding: 16px 24px;
+  gap: 0;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  scrollbar-width: thin;
+}
+
+.tl-item {
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 50px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tl-item::after {
+  content: '';
+  position: absolute;
+  top: 12px; left: 50%; right: -50%;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: 0;
+}
+
+.tl-item:last-child::after { display: none; }
+
+.tl-dot {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: #888;
+  z-index: 1;
+  transition: all 0.2s;
+  border: 2px solid #fff;
+}
+
+.tl-item.active .tl-dot, .tl-item:hover .tl-dot {
+  background: var(--leaf);
+  color: #fff;
+  transform: scale(1.2);
+}
+
+.tl-label {
+  font-size: 9px;
+  color: #aaa;
+  margin-top: 4px;
+  text-align: center;
+  max-width: 45px;
+  line-height: 1.3;
+}
+
+/* Notification */
+.notify {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  background: var(--earth);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transform: translateY(60px);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+}
+
+.notify.show { transform: translateY(0); opacity: 1; }
+
+/* Mobile nav */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--ocean);
+  border-top: 1px solid rgba(82,183,136,0.2);
+  padding: 8px;
+  z-index: 200;
+}
+
+@media (max-width: 700px) {
+  .mobile-nav { display: flex; }
+  .main { padding-bottom: 70px; }
+  .content-grid { padding: 14px; }
+  .week-hero { padding: 20px; }
+  .header-inner { padding: 16px; }
+  .header-globe { font-size: 36px; }
+}
+
+.mob-btn {
+  flex: 1;
+  padding: 8px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  transition: color 0.2s;
+}
+
+.mob-btn.active { color: var(--leaf); }
+.mob-btn span { font-size: 18px; }
+
+/* SDG tags */
+.sdg-row {
+  display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0;
+}
+
+.sdg-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+}
+
+.sdg3 { background: #4C9F38; color: #fff; }
+.sdg4 { background: #C5192D; color: #fff; }
+.sdg13 { background: #3F7E44; color: #fff; }
+
+/* Accordion */
+.accordion-item {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.accordion-head {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fafafa;
+  transition: background 0.2s;
+}
+
+.accordion-head:hover { background: #f0f7f4; }
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-body.open { max-height: 600px; }
+
+.accordion-inner { padding: 14px 16px; font-size: 13px; line-height: 1.8; }
+
+/* Scroll to top */
+.scroll-top {
+  position: fixed;
+  bottom: 80px; right: 20px;
+  width: 40px; height: 40px;
+  background: var(--leaf);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 150;
+  transition: all 0.2s;
+}
+
+.scroll-top:hover { background: var(--earth); }
+
+/* Mhealth section */
+.mhealth-prompt {
+  background: linear-gradient(135deg, #0d2b45, #1a472a);
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.mhealth-prompt h4 { color: var(--gold); margin-bottom: 8px; font-size: 14px; }
+.mhealth-prompt p { font-size: 13px; opacity: 0.85; line-height: 1.7; }
+
+.range-row {
+  display: flex; align-items: center; gap: 10px; margin: 8px 0;
+}
+
+.range-row input[type=range] { flex: 1; }
+.range-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  min-width: 40px;
+  color: var(--sky);
+  font-weight: 700;
+}
+
+textarea.custom-prompt {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid rgba(107,63,160,0.3);
+  border-radius: 6px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 13px;
+  resize: vertical;
+  background: #fafaff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+textarea.custom-prompt:focus { border-color: #6b3fa0; }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-bg"></div>
+  <div class="header-inner">
+    <div class="header-globe">🌍</div>
+    <div class="header-text">
+      <h1>氣候變遷與健康調適</h1>
+      <div class="subtitle">Climate Change and Health Adaptation</div>
+      <div class="meta">弘光科技大學 · 護理系 · 2學分 · 曾惠楨教授 · 1142學期</div>
+    </div>
+    <div class="header-badges">
+      <span class="badge">SDG 3</span>
+      <span class="badge">SDG 13</span>
+      <span class="badge">SDG 4</span>
+      <span class="badge">AI輔助學習</span>
+      <span class="badge">18 Weeks</span>
+    </div>
+  </div>
+</header>
+
+<!-- TOP TABS -->
+<nav class="top-tabs">
+  <div class="top-tab active" onclick="switchTab('weeks')">📅 週次進度</div>
+  <div class="top-tab" onclick="switchTab('project')">🎓 期末專案指引</div>
+  <div class="top-tab" onclick="switchTab('chronic')">🏥 慢性病族群專區</div>
+  <div class="top-tab" onclick="switchTab('overview')">📊 課程總覽</div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">第一階段・認識氣候健康</div>
+  <div class="week-btn active" onclick="showWeek(1)"><span class="week-num">W1</span> 啟動與前導 <span class="week-tag">🌱</span></div>
+  <div class="week-btn" onclick="showWeek(2)"><span class="week-num">W2</span> 氣候健康概論 <span class="week-tag">🌡️</span></div>
+
+  <div class="sidebar-section">第二階段・護理與災難</div>
+  <div class="week-btn" onclick="showWeek(3)"><span class="week-num">W3</span> 災難護理(一) <span class="week-tag">🚑</span></div>
+  <div class="week-btn" onclick="showWeek(4)"><span class="week-num">W4</span> 災難護理(二) <span class="week-tag">🏥</span></div>
+  <div class="week-btn" onclick="showWeek(5)"><span class="week-num">W5</span> 氣候正義文化照護 <span class="week-tag">⚖️</span></div>
+
+  <div class="sidebar-section">第三階段・永續行星健康</div>
+  <div class="week-btn" onclick="showWeek(6)"><span class="week-num">W6</span> SDGs行星健康(一) <span class="week-tag">🌿</span></div>
+  <div class="week-btn" onclick="showWeek(7)"><span class="week-num">W7</span> SDGs行星健康(二) <span class="week-tag">🌿</span></div>
+  <div class="week-btn" onclick="showWeek(8)"><span class="week-num">W8</span> 期中報告 <span class="week-tag">📋</span></div>
+
+  <div class="sidebar-section">第四階段・數位與自然療癒</div>
+  <div class="week-btn" onclick="showWeek(9)"><span class="week-num">W9</span> mHealth設計(一) <span class="week-tag">📱</span></div>
+  <div class="week-btn" onclick="showWeek(10)"><span class="week-num">W10</span> mHealth設計(二) <span class="week-tag">📱</span></div>
+  <div class="week-btn" onclick="showWeek(11)"><span class="week-num">W11</span> NbS自然照護 <span class="week-tag">🌳</span></div>
+
+  <div class="sidebar-section">第五階段・社區行動</div>
+  <div class="week-btn" onclick="showWeek(12)"><span class="week-num">W12</span> 社區參訪(一) <span class="week-tag">🏘️</span></div>
+  <div class="week-btn" onclick="showWeek(13)"><span class="week-num">W13</span> 社區參訪(二) <span class="week-tag">🏘️</span></div>
+  <div class="week-btn" onclick="showWeek(14)"><span class="week-num">W14</span> 社區參訪(三) <span class="week-tag">🏘️</span></div>
+
+  <div class="sidebar-section">第六階段・成果發表</div>
+  <div class="week-btn" onclick="showWeek(15)"><span class="week-num">W15</span> 倡議提案(一) <span class="week-tag">📢</span></div>
+  <div class="week-btn" onclick="showWeek(16)"><span class="week-num">W16</span> 倡議提案(二) <span class="week-tag">📢</span></div>
+  <div class="week-btn" onclick="showWeek(17)"><span class="week-num">W17</span> 成果發表 <span class="week-tag">🏆</span></div>
+  <div class="week-btn" onclick="showWeek(18)"><span class="week-num">W18</span> 課程評值 <span class="week-tag">📝</span></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main">
+
+  <!-- ===== TAB: WEEKS ===== -->
+  <div class="panel active" id="tab-weeks">
+
+    <!-- Timeline -->
+    <div class="timeline" id="timeline">
+    </div>
+
+    <!-- Week panels generated by JS -->
+    <div id="weeks-container"></div>
+  </div>
+
+  <!-- ===== TAB: FINAL PROJECT ===== -->
+  <div class="panel" id="tab-project">
+    <div class="week-hero">
+      <div class="week-label">🎓 FINAL PROJECT GUIDE</div>
+      <h2>氣候健康倡議行動提案<br>Step-by-Step 完成指引</h2>
+      <p class="text-sm mt-2" style="opacity:0.8">跟著以下步驟，運用AI工具，完成期末專案，並貼到Tronclass繳交。</p>
+    </div>
+
+    <div class="content-grid">
+
+      <!-- Project Overview -->
+      <div class="card green full">
+        <div class="card-header">
+          <span class="card-icon">🗺️</span> 專案全覽・六大階段
+        </div>
+        <div class="card-body">
+          <div class="steps-container">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>議題探索與聚焦（Week 1–5）</h4>
+                <p>選定一個氣候健康議題，鎖定一類脆弱族群（如長者、兒童、原住民、慢性病患）。透過文獻蒐集與AI輔助分析，建立議題背景。</p>
+                <div class="step-tags"><span class="step-tag">資料蒐集</span><span class="step-tag">AI文獻摘要</span><span class="step-tag">反思日誌</span></div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>問題分析框架建構（Week 6–7）</h4>
+                <p>以SDGs對應分析，運用「根本原因分析（Root Cause Analysis）」或「魚骨圖」工具，繪製問題結構圖，並完成護理診斷對應。</p>
+                <div class="step-tags"><span class="step-tag">SDG對應</span><span class="step-tag">根本原因分析</span><span class="step-tag">AI繪圖輔助</span></div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>中期報告呈現（Week 8）</h4>
+                <p>以圖解方式呈現前兩階段成果，包含：議題地圖、族群特性、現況數據。向班級簡報，並接受跨組回饋。</p>
+                <div class="step-tags"><span class="step-tag">Canva設計</span><span class="step-tag">AI簡報</span><span class="step-tag">同儕回饋</span></div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>行動方案設計（Week 9–14）</h4>
+                <p>設計一個具體的「氣候健康促進介入方案」，涵蓋：目標族群、介入策略、評估指標、資源清單、合作單位。可結合mHealth或NbS元素。</p>
+                <div class="step-tags"><span class="step-tag">方案設計</span><span class="step-tag">mHealth</span><span class="step-tag">NbS</span><span class="step-tag">社區合作</span></div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <h4>倡議提案書撰寫（Week 15–16）</h4>
+                <p>完成正式「氣候健康倡議行動提案書」，格式參考政策白皮書，包含：問題陳述、行動計畫、資源評估、風險與因應。</p>
+                <div class="step-tags"><span class="step-tag">政策文件</span><span class="step-tag">AI寫作輔助</span><span class="step-tag">Tronclass繳交</span></div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <h4>成果發表與教學（Week 17–18）</h4>
+                <p>以10分鐘向全班呈現成果，並帶領另一小組進行5分鐘引導討論。最後完成學習歷程自評反思報告。</p>
+                <div class="step-tags"><span class="step-tag">簡報發表</span><span class="step-tag">同儕教學</span><span class="step-tag">學習歷程</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Prompt for Project -->
+      <div class="card purple full">
+        <div class="card-header">
+          <span class="card-icon">🤖</span> AI Prompt 工具箱・期末專案專用
+        </div>
+        <div class="card-body">
+          <div class="info-box">
+            💡 選擇你目前的專案階段，系統將自動生成對應的AI Prompt，可直接複製使用！
+          </div>
+
+          <div class="prompt-builder">
+            <div class="prompt-row">
+              <span class="prompt-label">議題選擇</span>
+              <select class="prompt-select" id="proj-topic" onchange="buildProjectPrompt()">
+                <option value="熱浪與高溫">熱浪與高溫健康衝擊</option>
+                <option value="登革熱">氣候變遷與登革熱傳播</option>
+                <option value="空氣污染">空氣污染與呼吸道健康</option>
+                <option value="心理健康">極端氣候與心理健康</option>
+                <option value="食物安全">氣候變遷與食物安全</option>
+                <option value="水資源">水資源短缺與公衛</option>
+              </select>
+            </div>
+            <div class="prompt-row">
+              <span class="prompt-label">目標族群</span>
+              <select class="prompt-select" id="proj-group" onchange="buildProjectPrompt()">
+                <option value="老年人（65歲以上）">老年人（65歲以上）</option>
+                <option value="兒童（12歲以下）">兒童（12歲以下）</option>
+                <option value="原住民族">原住民族</option>
+                <option value="慢性病患者">慢性病患者（心臟病/糖尿病）</option>
+                <option value="孕婦">孕婦</option>
+                <option value="戶外工作者">戶外工作者</option>
+              </select>
+            </div>
+            <div class="prompt-row">
+              <span class="prompt-label">專案階段</span>
+              <select class="prompt-select" id="proj-phase" onchange="buildProjectPrompt()">
+                <option value="文獻回顧">①文獻回顧與摘要</option>
+                <option value="問題分析">②問題分析框架（魚骨圖）</option>
+                <option value="SDG對應">③ SDG對應分析</option>
+                <option value="方案設計">④護理介入方案設計</option>
+                <option value="提案書撰寫">⑤倡議提案書撰寫</option>
+                <option value="簡報大綱">⑥成果簡報大綱</option>
+                <option value="反思報告">⑦學習反思報告</option>
+              </select>
+            </div>
+            <div class="prompt-row">
+              <span class="prompt-label">自訂補充</span>
+              <input class="prompt-input" type="text" id="proj-custom" placeholder="加入特定需求（例如：需包含台灣本地數據）" oninput="buildProjectPrompt()">
+            </div>
+
+            <div class="prompt-output" id="project-prompt-output">點擊上方選項，自動生成 AI Prompt...</div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="buildProjectPrompt()">🔄 重新生成</button>
+              <button class="btn btn-copy" onclick="copyPrompt('project-prompt-output')">📋 複製Prompt</button>
+              <button class="btn btn-outline" onclick="openChatGPT('project-prompt-output')">🔗 開啟ChatGPT</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <h4 class="text-sm" style="margin-bottom:10px;font-weight:600">📬 Tronclass 繳交格式範例</h4>
+          <div class="tronclass-box" id="tronclass-project">
+【期末專案繳交】氣候健康倡議行動提案
+
+小組名稱：_______ 
+成員：_______
+議題：_______
+目標族群：_______
+
+請依以下連結上傳：
+① 提案書（PDF）
+② 簡報檔（PPTX/PDF）
+③ 學習歷程反思報告（Word）
+
+繳交截止：Week 17 課堂發表前
+          </div>
+          <button class="btn btn-copy mt-2" onclick="copyText('tronclass-project')">📋 複製Tronclass格式</button>
+        </div>
+      </div>
+
+      <!-- Project Template -->
+      <div class="card blue">
+        <div class="card-header">
+          <span class="card-icon">📄</span> 提案書結構範本
+        </div>
+        <div class="card-body">
+          <div class="steps-container">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content"><h4>封面頁</h4><p>小組名稱、議題、目標族群、指導老師</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content"><h4>問題陳述（200字）</h4><p>說明氣候變遷如何影響目標族群的健康，附數據支持</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content"><h4>SDG對應分析</h4><p>標示與SDG 3/13/其他目標的連結說明</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content"><h4>護理介入行動計畫</h4><p>目標、策略、執行步驟、評估指標</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content"><h4>資源與合作規劃</h4><p>所需人力、物資、合作單位（社區/衛生所/NGO）</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content"><h4>風險評估與因應</h4><p>預期障礙與對應策略</p></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">7</div>
+              <div class="step-content"><h4>參考文獻</h4><p>APA格式，至少5篇文獻（含1篇英文）</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grading Rubric -->
+      <div class="card orange">
+        <div class="card-header">
+          <span class="card-icon">📊</span> 評量配分說明
+        </div>
+        <div class="card-body">
+          <div class="assess-row">
+            <div class="assess-pct">20%</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">課堂參與與討論</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:20%"></div></div>
+              <div class="text-xs text-muted mt-2">小組討論、影片回饋、活動紀錄</div>
+            </div>
+          </div>
+          <div class="assess-row">
+            <div class="assess-pct">30%</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">任務作業與工具設計（第7周）</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:30%"></div></div>
+              <div class="text-xs text-muted mt-2">App雛型簡報、環境健康單張設計</div>
+            </div>
+          </div>
+          <div class="assess-row">
+            <div class="assess-pct">30%</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">行動實作與成果展（第17周）</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:30%"></div></div>
+              <div class="text-xs text-muted mt-2">社區參與活動記錄與報告書</div>
+            </div>
+          </div>
+          <div class="assess-row">
+            <div class="assess-pct">20%</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">學習歷程與自評反思</div>
+              <div class="assess-bar"><div class="assess-fill" style="width:20%"></div></div>
+              <div class="text-xs text-muted mt-2">線上學習板使用與最終反思報告</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== TAB: CHRONIC DISEASE ===== -->
+  <div class="panel" id="tab-chronic">
+    <div class="chronic-hero">
+      <div style="font-size:48px;margin-bottom:12px">💊🌍</div>
+      <h2>慢性病族群氣候健康調適<br>互動自學專區</h2>
+      <p>為糖尿病、心臟病、慢性阻塞性肺病（COPD）、高血壓等慢性病患者，量身設計氣候調適健康指引。學生可用此WEB進行社區衛教實作。</p>
+      <div class="sdg-row" style="justify-content:center;margin-top:16px">
+        <span class="sdg-tag sdg3">SDG 3</span>
+        <span class="sdg-tag sdg13">SDG 13</span>
+        <span class="sdg-tag sdg4">SDG 4</span>
+      </div>
+    </div>
+
+    <!-- Disease cards -->
+    <div class="chronic-grid">
+      <div class="chronic-card">
+        <div class="chronic-card-top" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">
+          <div class="chronic-icon">❤️</div>
+          <div><h3 style="font-size:16px;font-weight:700">心臟病患者</h3><div style="font-size:12px;opacity:0.85">氣候熱壓力因應</div></div>
+        </div>
+        <div class="chronic-card-body">
+          <h4>高溫天氣注意事項</h4>
+          <ul>
+            <li>氣溫超過35°C時，減少戶外活動（早9點後至下午5點前）</li>
+            <li>每小時補充200-250ml水分，避免含糖飲料</li>
+            <li>注意心悸、胸悶、頭暈等中暑前兆</li>
+            <li>隨身攜帶急救藥物，告知家人外出行程</li>
+            <li>使用電風扇或冷氣，維持室內26-28°C</li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn btn-green" style="width:100%;justify-content:center" onclick="loadChronicPrompt('心臟病','高溫熱壓力')">🤖 生成衛教AI Prompt</button>
+        </div>
+      </div>
+
+      <div class="chronic-card">
+        <div class="chronic-card-top" style="background:linear-gradient(135deg,#1a5276,#2980b9)">
+          <div class="chronic-icon">🩺</div>
+          <div><h3 style="font-size:16px;font-weight:700">糖尿病患者</h3><div style="font-size:12px;opacity:0.85">血糖管理與氣候調適</div></div>
+        </div>
+        <div class="chronic-card-body">
+          <h4>極端氣候中的血糖管理</h4>
+          <ul>
+            <li>高溫加速胰島素吸收，需更頻繁監測血糖</li>
+            <li>胰島素儲存：避免陽光直射，>30°C須冷藏</li>
+            <li>颱風/停電時備妥72小時備用藥物與食物</li>
+            <li>運動計畫在清晨或傍晚進行，避免正午戶外</li>
+            <li>低血糖急救包隨身攜帶，家屬需知緊急處理</li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn btn-green" style="width:100%;justify-content:center" onclick="loadChronicPrompt('糖尿病','血糖管理')">🤖 生成衛教AI Prompt</button>
+        </div>
+      </div>
+
+      <div class="chronic-card">
+        <div class="chronic-card-top" style="background:linear-gradient(135deg,#145a32,#27ae60)">
+          <div class="chronic-icon">🫁</div>
+          <div><h3 style="font-size:16px;font-weight:700">COPD患者</h3><div style="font-size:12px;opacity:0.85">空污與氣候因應</div></div>
+        </div>
+        <div class="chronic-card-body">
+          <h4>空氣污染日的呼吸保護</h4>
+          <ul>
+            <li>每日查看空氣品質指數（AQI），紅色以上留室內</li>
+            <li>備妥N95口罩，外出時正確佩戴</li>
+            <li>冬季冷空氣刺激：圍巾保護口鼻後再外出</li>
+            <li>定期回診，高溫季節需增加肺功能追蹤頻率</li>
+            <li>設置室內空氣清淨機，維持PM2.5 <15 μg/m³</li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn btn-green" style="width:100%;justify-content:center" onclick="loadChronicPrompt('COPD','空污因應')">🤖 生成衛教AI Prompt</button>
+        </div>
+      </div>
+
+      <div class="chronic-card">
+        <div class="chronic-card-top" style="background:linear-gradient(135deg,#6c3483,#9b59b6)">
+          <div class="chronic-icon">🧠</div>
+          <div><h3 style="font-size:16px;font-weight:700">慢性腎臟病患者</h3><div style="font-size:12px;opacity:0.85">脫水與電解質管理</div></div>
+        </div>
+        <div class="chronic-card-body">
+          <h4>高溫與脫水預防</h4>
+          <ul>
+            <li>依醫囑控制每日液體攝入量（透析患者尤其注意）</li>
+            <li>高溫期間觀察體重變化，單日增加>2kg須就醫</li>
+            <li>避免含鉀高食物（香蕉、柑橘）在高溫天增量食用</li>
+            <li>透析排程如遇颱風，事先與診所聯繫調整方案</li>
+            <li>尿量減少、下肢浮腫時立即就醫</li>
+          </ul>
+          <div class="divider"></div>
+          <button class="btn btn-green" style="width:100%;justify-content:center" onclick="loadChronicPrompt('慢性腎臟病','脫水預防')">🤖 生成衛教AI Prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Prompt for Chronic -->
+    <div class="project-wizard">
+      <div class="wizard-header">
+        <div style="font-size:18px;font-weight:700">🤖 慢性病衛教 AI Prompt 客製化工具</div>
+        <div style="font-size:13px;opacity:0.8;margin-top:4px">一步一步完成慢性病族群氣候調適衛教材料</div>
+      </div>
+
+      <div class="wizard-steps">
+        <div class="wizard-step-tab active" onclick="switchWizard(0)">Step 1 族群設定</div>
+        <div class="wizard-step-tab" onclick="switchWizard(1)">Step 2 氣候議題</div>
+        <div class="wizard-step-tab" onclick="switchWizard(2)">Step 3 生成Prompt</div>
+        <div class="wizard-step-tab" onclick="switchWizard(3)">Step 4 Tronclass發布</div>
+      </div>
+
+      <div class="wizard-content">
+        <div class="wizard-panel active" id="wizard-0">
+          <h4 style="font-size:15px;font-weight:600;margin-bottom:12px">選擇目標慢性病族群</h4>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="radio" name="chronic-grp" value="心臟病患者" checked onchange="updateWizardPrompt()"> ❤️ 心臟病患者
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="radio" name="chronic-grp" value="糖尿病患者" onchange="updateWizardPrompt()"> 🩺 糖尿病患者
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="radio" name="chronic-grp" value="COPD患者" onchange="updateWizardPrompt()"> 🫁 COPD患者
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="radio" name="chronic-grp" value="高血壓患者" onchange="updateWizardPrompt()"> 💉 高血壓患者
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="radio" name="chronic-grp" value="慢性腎臟病患者" onchange="updateWizardPrompt()"> 🧠 慢性腎臟病
+            </label>
+          </div>
+          <div style="margin-top:14px">
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">患者年齡層</label>
+            <select class="prompt-select" id="chronic-age" onchange="updateWizardPrompt()" style="max-width:300px">
+              <option>65歲以上長者</option>
+              <option>45-64歲中年人</option>
+              <option>混合年齡層</option>
+            </select>
+          </div>
+          <div style="margin-top:14px">
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">衛教對象</label>
+            <select class="prompt-select" id="chronic-audience" onchange="updateWizardPrompt()" style="max-width:300px">
+              <option>患者本人</option>
+              <option>家屬照顧者</option>
+              <option>患者與家屬</option>
+              <option>社區民眾（一般衛教）</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="margin-top:16px" onclick="switchWizard(1)">下一步 →</button>
+        </div>
+
+        <div class="wizard-panel" id="wizard-1">
+          <h4 style="font-size:15px;font-weight:600;margin-bottom:12px">選擇氣候健康議題</h4>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="高溫熱浪" checked onchange="updateWizardPrompt()"> 🌡️ 高溫熱浪
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="空氣污染" onchange="updateWizardPrompt()"> 🏭 空氣污染
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="颱風水災" onchange="updateWizardPrompt()"> 🌀 颱風水災
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="傳染病風險" onchange="updateWizardPrompt()"> 🦟 傳染病風險
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="心理壓力" onchange="updateWizardPrompt()"> 🧠 心理壓力
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" name="climate-issue" value="食物安全" onchange="updateWizardPrompt()"> 🥗 食物安全
+            </label>
+          </div>
+          <div style="margin-top:14px">
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">衛教格式</label>
+            <select class="prompt-select" id="edu-format" onchange="updateWizardPrompt()" style="max-width:300px">
+              <option>條列式衛教單張（宣傳頁）</option>
+              <option>問答式FAQ</option>
+              <option>故事情境式敘述</option>
+              <option>圖解說明文字</option>
+              <option>衛教影片腳本</option>
+            </select>
+          </div>
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn btn-outline" onclick="switchWizard(0)">← 上一步</button>
+            <button class="btn btn-primary" onclick="switchWizard(2)">下一步 →</button>
+          </div>
+        </div>
+
+        <div class="wizard-panel" id="wizard-2">
+          <h4 style="font-size:15px;font-weight:600;margin-bottom:12px">🤖 生成的 AI Prompt</h4>
+          <p style="font-size:13px;color:#888;margin-bottom:12px">以下Prompt已根據你的設定自動生成，可直接複製到ChatGPT / Claude使用：</p>
+          <div class="prompt-output" id="chronic-prompt-output" style="max-height:250px">點擊「更新Prompt」生成...</div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="updateWizardPrompt()">🔄 更新Prompt</button>
+            <button class="btn btn-copy" onclick="copyPrompt('chronic-prompt-output')">📋 複製</button>
+            <button class="btn btn-outline" onclick="openChatGPT('chronic-prompt-output')">🔗 開啟ChatGPT</button>
+          </div>
+          <div style="margin-top:16px">
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">✏️ 自行修改Prompt</label>
+            <textarea class="custom-prompt" id="custom-chronic-prompt" placeholder="在此貼上或修改你的Prompt..."></textarea>
+          </div>
+          <div class="btn-row" style="margin-top:8px">
+            <button class="btn btn-outline" onclick="switchWizard(1)">← 上一步</button>
+            <button class="btn btn-primary" onclick="switchWizard(3)">下一步 →</button>
+          </div>
+        </div>
+
+        <div class="wizard-panel" id="wizard-3">
+          <h4 style="font-size:15px;font-weight:600;margin-bottom:12px">📬 Tronclass 發布格式</h4>
+          <p style="font-size:13px;color:#888;margin-bottom:12px">以下是可直接Paste到Tronclass作業或討論區的格式：</p>
+          <div class="tronclass-box" id="tronclass-chronic">
+【慢性病族群氣候調適衛教作業】
+
+本週任務：
+1. 使用以下AI Prompt，生成一份慢性病患者的氣候調適衛教材料
+2. 將AI生成的內容修改為適合台灣在地情境的版本
+3. 製作成A4衛教單張（手繪或數位皆可）
+
+上傳格式：PDF或圖片檔
+截止時間：本週課堂結束前
+
+評分標準：
+- 內容正確性（30%）
+- 在地化適用性（30%）
+- 設計可讀性（20%）
+- AI使用說明（20%）
+
+AI Prompt 請見本週課程頁面。
+          </div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn btn-copy" onclick="copyText('tronclass-chronic')">📋 複製到Tronclass</button>
+            <button class="btn btn-outline" onclick="switchWizard(2)">← 上一步</button>
+          </div>
+          <div class="info-box" style="margin-top:16px">
+            ✅ 完成！你已完成慢性病衛教AI輔助學習的全流程。記得將AI生成的內容進行本地化修改後再使用。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: OVERVIEW ===== -->
+  <div class="panel" id="tab-overview">
+    <div class="week-hero">
+      <div class="week-label">📊 COURSE OVERVIEW</div>
+      <h2>課程總覽與學習地圖</h2>
+      <p class="text-sm mt-2" style="opacity:0.8">氣候變遷與健康調適・18週完整進度</p>
+    </div>
+
+    <div class="progress-overview">
+      <div class="progress-stat">
+        <div class="num">18</div>
+        <div class="label">週次</div>
+      </div>
+      <div class="progress-stat">
+        <div class="num">2</div>
+        <div class="label">學分</div>
+      </div>
+      <div class="progress-stat">
+        <div class="num">5</div>
+        <div class="label">主題單元</div>
+      </div>
+      <div class="progress-stat">
+        <div class="num">4</div>
+        <div class="label">學習目標</div>
+      </div>
+    </div>
+
+    <div class="content-grid" style="padding:0 24px 24px">
+      <!-- SDG connections -->
+      <div class="card green">
+        <div class="card-header"><span class="card-icon">🎯</span> SDGs 連結</div>
+        <div class="card-body">
+          <div class="accordion-item">
+            <div class="accordion-head" onclick="toggleAccordion(this)">
+              <span>🟢 SDG 3・健康與福祉</span><span>▾</span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-inner">確保健康及促進各年齡層的福祉。本課程強化學生對氣候敏感疾病（熱浪、登革熱、COPD惡化）的護理照護能力，特別關注脆弱族群。</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-head" onclick="toggleAccordion(this)">
+              <span>🌿 SDG 13・氣候行動</span><span>▾</span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-inner">採取緊急行動對抗氣候變遷及其影響。培養學生設計「氣候調適健康計畫」，學習公正轉型概念，整合碳盤查與NbS策略。</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-head" onclick="toggleAccordion(this)">
+              <span>📚 SDG 4・優質教育</span><span>▾</span>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-inner">確保包容性和公平的優質教育。採用翻轉教學、AI輔助學習、模擬演練等創新教學方法，培養21世紀護理人才的數位素養與批判思考。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teaching methods -->
+      <div class="card blue">
+        <div class="card-header"><span class="card-icon">🎨</span> 教學方式</div>
+        <div class="card-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🔄 翻轉教學</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🎭 角色扮演</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🏥 OSCE模擬</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🏘️ 實地訪查</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">📱 mHealth操作</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🤖 AI輔助學習</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">👥 小組企劃</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🌿 行動導向學習</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">📢 專家演講</span>
+            <span style="background:#e8f4fd;color:var(--sky);padding:6px 12px;border-radius:20px;font-size:12px">🤝 USR社區共創</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- All weeks table -->
+      <div class="card full">
+        <div class="card-header"><span class="card-icon">📅</span> 18週進度總表</div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead>
+              <tr style="background:#f0faf4">
+                <th style="padding:10px 14px;text-align:left;border-bottom:2px solid #ddd;white-space:nowrap">週次</th>
+                <th style="padding:10px 14px;text-align:left;border-bottom:2px solid #ddd">主題</th>
+                <th style="padding:10px 14px;text-align:left;border-bottom:2px solid #ddd">教學活動</th>
+                <th style="padding:10px 14px;text-align:left;border-bottom:2px solid #ddd;white-space:nowrap">評量</th>
+              </tr>
+            </thead>
+            <tbody id="overview-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav">
+  <button class="mob-btn active" onclick="switchTab('weeks');setMobActive(this)"><span>📅</span>週次</button>
+  <button class="mob-btn" onclick="switchTab('project');setMobActive(this)"><span>🎓</span>專案</button>
+  <button class="mob-btn" onclick="switchTab('chronic');setMobActive(this)"><span>🏥</span>慢性病</button>
+  <button class="mob-btn" onclick="switchTab('overview');setMobActive(this)"><span>📊</span>總覽</button>
+</nav>
+
+<!-- Notify -->
+<div class="notify" id="notify">✅ 已複製到剪貼簿！</div>
+
+<!-- Scroll top -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ===== DATA =====
+const weeks = [
+  { w:1, title:'啟動與前導導入', phase:'第一階段・認識氣候健康', icon:'🌱',
+    obj:['認識氣候與健康的連結','建立課程學習框架'],
+    content:'透過引人入勝的氣候健康影片（如熱浪紀錄片、登革熱蔓延紀錄），引發學生對課題的好奇心與關懷動機。進行學前知識測驗（KWL表），了解學生既有知識框架。',
+    activities:['觀看氣候健康影片','KWL表前測','問題導向反思日誌撰寫','小組自我介紹與議題投票'],
+    assessment:'問題導向反思日誌（300字）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'影片反思', text:'我剛觀看了一部關於氣候變遷對健康影響的紀錄片。請幫我分析：(1)影片中提到哪些健康風險？(2)台灣目前面臨的類似挑戰是什麼？(3)作為護理師，我可以採取哪些行動？請以條列式列出，並加入1-2個台灣本地的例子。' },
+      { label:'KWL深化', text:'請根據以下KWL表幫我深化學習：\n我知道的(K)：氣候變遷正在發生\n我想知道的(W)：它如何直接影響病人健康？\n請幫我設計3個可以在本學期探究的核心問題，並說明如何找到答案。' }
+    ],
+    tronclass:'【Week 1 反思日誌作業】\n\n完成以下三個問題，共300字以上，請貼在討論區分享：\n1. 看完今天的氣候健康影片，你最震驚的一個事實是什麼？\n2. 你認為氣候變遷對台灣護理工作帶來的最大挑戰是什麼？\n3. 這學期你最希望學到什麼？\n\n截止：本週日晚上11:59'
+  },
+  { w:2, title:'氣候變遷與健康影響概論', phase:'第一階段', icon:'🌡️',
+    obj:['了解氣候疾病的種類與機制','分析高溫、登革熱、空污案例'],
+    content:'系統性介紹氣候變遷直接與間接健康衝擊。透過真實案例個案導讀，學習如何識別氣候敏感疾病，並練習以「臨床護理思維」分析氣候健康事件。',
+    activities:['氣候疾病分類圖解','高溫/登革熱/空污案例分析','小組案例圖解報告','氣候健康地圖繪製'],
+    assessment:'小組案例圖解報告（海報格式）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'案例分析', text:'請幫我分析以下氣候健康案例：\n案例：台灣南部某65歲糖尿病患者，於氣溫38°C的夏日午後，在戶外工作3小時後出現頭暈、心悸、皮膚乾燥等症狀。\n請從護理角度：(1)評估這是什麼緊急情況？(2)立即的護理措施有哪些？(3)如何預防未來發生？(4)背後的氣候變遷因素是什麼？' },
+      { label:'圖解概念', text:'請幫我設計一個「氣候變遷→健康衝擊」的概念圖文字大綱，包含：直接影響（熱浪、洪水）和間接影響（傳染病、糧食）兩大類，各舉3個例子，並說明與台灣護理照護的關聯。格式適合製作成A3圖解海報。' }
+    ],
+    tronclass:'【Week 2 小組案例圖解作業】\n\n各組選擇以下一個氣候疾病案例深入分析：\nA. 高溫熱傷害（Heatstroke）\nB. 登革熱擴散（Dengue Fever）\nC. 空污相關呼吸道疾病（Air Pollution）\n\n製作圖解海報（A3格式，手繪或電腦製作皆可），包含：\n✓ 疾病機制圖\n✓ 護理評估重點\n✓ 預防措施\n✓ 台灣本地數據\n\n課堂發表時間：5分鐘/組'
+  },
+  { w:3, title:'護理角色與災難照護（一）', phase:'第二階段・護理與災難', icon:'🚑',
+    obj:['了解護理師在災難中的角色','學習氣候災難的初步護理評估'],
+    content:'介紹護理師在氣候災難（颱風、洪水、熱浪）中的核心角色。學習「事前準備、事中應變、事後復原」三階段框架，透過角色扮演演練初步災難護理技能。',
+    activities:['災難護理角色定位討論','熱浪災難情境角色扮演','護理評估流程模擬','角色回饋單撰寫'],
+    assessment:'模擬任務表現評分＋角色回饋單',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'角色情境', text:'請幫我模擬以下災難護理情境：\n「台灣某社區因颱風停電36小時，社區內有15位獨居老人，其中5位是糖尿病患者，3位使用呼吸器。」\n作為護理師，請告訴我：(1)優先評估順序（依緊急程度）(2)每位患者的即時護理需求(3)需要協調哪些資源？(4)如何進行傷亡分類（triage）？' },
+      { label:'倫理困境', text:'在以下氣候災難護理倫理困境中，請幫我分析應如何決策：\n情境：颱風來臨，醫院需要疏散，但ICU有3位無法自行移動的重症患者，救護車只能送2位，你是負責護理師，如何決定誰先撤離？請從護理倫理四原則（自主、不傷害、行善、公正）分析。' }
+    ],
+    tronclass:'【Week 3 角色回饋單】\n\n完成今天的角色扮演演練後，請填寫以下回饋單並上傳：\n\n我扮演的角色：________\n\n1. 在演練中，我做了哪些正確的護理決策？（至少2項）\n2. 我遇到的最大挑戰是什麼？如何克服？\n3. 如果重來一次，我會改變哪個決策？為什麼？\n4. 這個情境讓我對「氣候災難護理」有什麼新認識？\n\n字數：200-300字'
+  },
+  { w:4, title:'護理角色與災難照護（二）', phase:'第二階段', icon:'🏥',
+    obj:['完成OSCE氣候災難護理模擬','掌握高溫傷害的護理措施'],
+    content:'深化Week 3學習，進行OSCE（客觀結構式臨床考試）格式的氣候災難護理模擬演練。重點演練高溫傷害的護理評估與緊急處置。',
+    activities:['OSCE氣候護理站練習','高溫傷害急救程序演練','標準化病人互動模擬','同儕互評'],
+    assessment:'OSCE模擬評量表＋任務表現評分',
+    sdgs:['sdg3'],
+    prompts:[
+      { label:'OSCE備考', text:'請幫我備考氣候災難護理的OSCE考試。重點包含：\n(1) 熱衰竭（Heat Exhaustion）vs 中暑（Heat Stroke）的鑑別診斷\n(2) 中暑患者的緊急降溫護理措施（步驟順序）\n(3) 評估意識狀態的AVPU量表\n(4) 向家屬說明的重點\n請用情境題格式呈現，方便記憶。' },
+      { label:'護理計畫', text:'請幫我為以下患者撰寫護理計畫：\n患者：72歲男性，高血壓病史，因熱浪期間在戶外除草2小時後被送至急診，體溫40.2°C，意識混亂，皮膚乾燥無汗，脈搏快速微弱。\n請包含：護理診斷（至少3個）、護理目標、護理措施（每個診斷至少4項）、評值標準。' }
+    ],
+    tronclass:'【Week 4 OSCE後反思】\n\n完成今天的OSCE模擬後，請上傳以下內容：\n\n1. 你的OSCE表現自評（1-10分）\n2. 最成功的一個護理決策說明\n3. 需要加強的技能清單\n4. 如果你是真實的災難護理師，你最擔心什麼？\n\n同時，請用AI生成一個你自己的「高溫護理快速參考卡」，貼在回覆中分享！'
+  },
+  { w:5, title:'氣候正義與文化照護', phase:'第二階段', icon:'⚖️',
+    obj:['理解氣候正義的核心概念','了解原住民族的氣候調適需求'],
+    content:'邀請原住民族健康專家演講，探討氣候變遷對台灣原住民族健康的不平等影響。學習文化安全（Cultural Safety）在護理實踐中的應用，反思「公正轉型」在護理照護中的意義。',
+    activities:['原民健康專家演講','文化安全護理角色扮演','氣候正義案例討論','同儕回饋記錄表'],
+    assessment:'同儕回饋記錄表＋文化反思單',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'氣候正義', text:'請幫我深入了解「氣候正義（Climate Justice）」在護理照護中的意義。具體問題：\n(1) 哪些族群因氣候變遷承受更大的健康風險？為什麼？\n(2) 台灣原住民族面對的氣候健康挑戰有哪些具體例子？\n(3) 護理師在推動氣候正義上可以做什麼？\n請舉出3個護理實務上可以落實氣候正義的行動策略。' },
+      { label:'文化照護', text:'請幫我分析：在照護原住民族慢性病患者時，如果該患者居住的山地部落因氣候變遷（乾旱/強降雨）而面臨糧食短缺和交通中斷，作為護理師，如何結合「文化安全」原則提供適切的健康照護？請考慮語言、文化習俗、傳統療法的面向。' }
+    ],
+    tronclass:'【Week 5 文化照護反思單】\n\n今天的原住民族健康講座後，請完成以下反思：\n\n1. 今天最讓你震驚或感動的一個分享是什麼？\n2. 「氣候正義」對你的護理實踐意味著什麼？\n3. 如果你是社區護理師，服務一個受氣候影響的原住民部落，你會優先做什麼？\n4. 請用AI生成一個「文化安全護理氣候照護」的行動清單，貼在討論區分享。\n\n字數：300字以上'
+  },
+  { w:6, title:'SDGs與行星健康倫理（一）', phase:'第三階段・永續行星健康', icon:'🌿',
+    obj:['理解Planetary Health概念','分析SDGs與護理的連結'],
+    content:'介紹「行星健康（Planetary Health）」框架：地球生態系統的健全是人類健康的基礎。透過SDG圖解練習，建立護理師在永續發展目標中的角色認知。',
+    activities:['Planetary Health概念解析','SDG護理責任圖解練習','小組SDG對應分析','行星健康倫理案例討論'],
+    assessment:'SDG護理實踐繪本（初稿）',
+    sdgs:['sdg3','sdg4','sdg13'],
+    prompts:[
+      { label:'Planetary Health', text:'請幫我深入理解「行星健康（Planetary Health）」概念。我需要了解：\n(1) 行星健康與傳統公共衛生有何不同？\n(2) 台灣在行星健康指標上的現況如何？（請舉具體數據）\n(3) 護理師如何在日常實踐中融入行星健康觀點？\n(4) 設計一個「行星健康護理宣言」的草稿（100字內）' },
+      { label:'SDG對應', text:'請幫我完成護理專業與SDGs的對應分析表：\n我是護理系學生，正在學習「氣候變遷與健康調適」課程。請幫我分析：SDG 3（健康與福祉）、SDG 13（氣候行動）、SDG 10（減少不平等）各自如何與氣候護理實踐連結？請各舉2個台灣護理實務的例子，可以製成條列式對應表。' }
+    ],
+    tronclass:'【Week 6 SDG圖解作業】\n\n請完成「SDG護理實踐圖解」初稿：\n\n選擇一個你最有感的SDG目標，製作一張「護理師如何實踐這個SDG」的視覺圖解。\n格式：A4尺寸，手繪或電腦製作\n內容必須包含：目標說明、與氣候的連結、3個護理行動策略\n\nAI使用說明：請先用AI生成初步文字內容，再轉化成圖解，並說明你如何修改AI的輸出。\n\n上傳截止：Week 7課堂前'
+  },
+  { w:7, title:'SDGs與行星健康倫理（二）', phase:'第三階段', icon:'🌿',
+    obj:['完成SDG護理繪本','發表永續護理實踐方案'],
+    content:'延續Week 6，各組完成「SDG護理實踐繪本」，並進行班級發表。同時深化「碳盤查」概念在醫院護理場域的應用，討論護理在環境健康促進中的主動角色。',
+    activities:['SDG護理繪本完稿','班級發表與討論','碳盤查護理應用','護理師環境倡議案例'],
+    assessment:'SDG護理實踐繪本（定稿發表）',
+    sdgs:['sdg3','sdg4','sdg13'],
+    prompts:[
+      { label:'繪本故事', text:'請幫我為「SDG護理實踐繪本」創作故事腳本：\n主角：一位台灣護理師小美\n主題：氣候變遷下的護理行動\n格式：6頁繪本，每頁1個場景\n場景建議：\n頁1: 小美發現病患增加與高溫的關係\n頁2-6: 請幫我續寫，包含她如何採取行動改變社區健康\n語言：適合大眾閱讀，溫暖有希望感' },
+      { label:'碳盤查護理', text:'請幫我了解「碳盤查（Carbon Footprint Assessment）」在醫院護理實務的應用。具體問題：\n(1) 護理單位的主要碳排放來源有哪些？\n(2) 護理師可以做的減碳行動有哪些（日常工作中）？\n(3) 綠色護理（Green Nursing）的國際實例有哪些？\n(4) 台灣醫院的碳中和政策現況如何？' }
+    ],
+    tronclass:'【Week 7 繪本上傳＋任務作業】\n\n本週需上傳兩項作業：\n\n① SDG護理實踐繪本（必交）\n格式：PDF或圖片，6頁以上\n評分重點：創意性、護理專業融入、SDG連結度\n\n② AI使用說明（必交）\n說明你在繪本創作中如何使用AI，包含：\n- 使用了哪些AI工具\n- 你問了什麼問題（Prompt）\n- AI的回答哪裡有用、哪裡需要修正\n- 最終如何整合AI輸出與你自己的創意\n\n這兩份作業共佔期末成績10%'
+  },
+  { w:8, title:'期中報告・Midterm Presentation', phase:'第三階段', icon:'📋',
+    obj:['整合前7週學習成果','展現問題分析與方案構想'],
+    content:'各組彙報前半學期的學習成果，包含：議題地圖、族群分析、現況數據、初步行動構想。老師與同儕提供結構性回饋，作為後半學期期末專案的基礎。',
+    activities:['小組期中彙報（10分鐘）','同儕提問與回饋（5分鐘）','老師總評與指引','期末專案規劃討論'],
+    assessment:'中期發表評分表（老師＋同儕各50%）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'期中簡報', text:'請幫我準備期中報告簡報大綱（10分鐘報告）。\n我們組的主題是：[請填入你的主題]\n目標族群：[請填入]\n\n請幫我規劃：\n投影片1: 開場（問題鉤）\n投影片2-3: 議題說明與數據\n投影片4-5: 族群分析\n投影片6-7: 初步行動構想\n投影片8: 結論與問題\n\n每張投影片的重點內容提示是什麼？說話稿要點是什麼？' },
+      { label:'回饋整理', text:'請幫我整理今天期中報告收到的同儕和老師回饋，並提出改進計畫：\n[請貼上你收到的回饋]\n\n請幫我：(1) 分類回饋（優點/待改進）(2) 列出後半學期需要強化的3個重點 (3) 設計一個期末專案的改進行動計畫' }
+    ],
+    tronclass:'【Week 8 期中報告繳交】\n\n請在報告當天前上傳：\n① 簡報檔案（PPTX或PDF）\n② 一頁A4摘要（含問題、族群、初步方案）\n\n報告後：\n③ 填寫「同儕回饋表」（針對另外兩組）\n④ 撰寫「期中自評反思」（200字）：你學到什麼？期末要加強什麼？\n\n所有文件截止：Week 8當週五'
+  },
+  { w:9, title:'mHealth與數位照護設計（一）', phase:'第四階段・數位與自然療癒', icon:'📱',
+    obj:['認識mHealth在氣候健康的應用','設計App功能概念'],
+    content:'介紹mHealth（行動健康）的概念與台灣現有應用。學習如何設計針對氣候健康的數位照護工具，包含：熱浪預警App、AQI監測整合、糖尿病氣候管理App等概念設計。',
+    activities:['mHealth案例分析','台灣健康App現況調查','App功能需求訪談設計','App介面草圖初稿'],
+    assessment:'App介面草圖＋功能說明（期中後交）',
+    sdgs:['sdg3','sdg4'],
+    prompts:[
+      { label:'App設計', text:'請幫我為以下族群設計一個氣候健康mHealth App的概念：\n目標用戶：[慢性病患者/老年人/護理師]\n核心功能需求：\n1. 當地即時AQI＋熱浪預警\n2. 個人化健康建議\n3. 緊急聯絡功能\n\n請幫我設計：(1) App名稱與定位 (2) 5個核心功能說明 (3) 主介面的資訊架構 (4) 如何與護理師遠端溝通？ 格式：概念設計文件' },
+      { label:'使用者研究', text:'我要設計一個給慢性病老年人使用的氣候健康App，請幫我：\n(1) 設計一份使用者訪談問卷（10題以內）\n(2) 這個族群使用手機App的障礙有哪些？如何克服？\n(3) 什麼UI設計原則適合老年人？\n(4) 如何確保App在災難停電時仍有基本功能？' }
+    ],
+    tronclass:'【Week 9 mHealth案例分析作業】\n\nStep 1: 下載並試用以下其中一個App（或查找相關資料）：\n- 空氣盒子AirBox App\n- 台灣e院\n- 健保快易通\n\nStep 2: 分析這個App的「氣候健康功能」：\n- 它目前提供什麼氣候相關功能？\n- 缺少什麼功能？\n- 對慢性病患者友善嗎？\n\nStep 3: 用AI幫你設計一個改善版本的功能清單，貼在討論區分享。\n字數：200字以上，可附截圖'
+  },
+  { w:10, title:'mHealth與數位照護設計（二）', phase:'第四階段', icon:'📱',
+    obj:['完成App雛型設計','進行使用者測試概念'],
+    content:'深化Week 9的App設計，完成介面草圖（Wireframe），並進行同儕「概念測試」，模擬真實使用者反饋流程。學習如何將AI工具整合進護理數位解決方案。',
+    activities:['App Wireframe繪製工作坊','同儕概念測試模擬','AI在mHealth中的應用','期末專案整合討論'],
+    assessment:'App介面草圖＋簡報完成版',
+    sdgs:['sdg3','sdg4'],
+    prompts:[
+      { label:'Wireframe文字', text:'請幫我為氣候健康App設計主要頁面的文字說明（用於製作Wireframe）：\n\n頁面1：主畫面（Dashboard）\n- 顯示哪些資訊？\n- 有哪些快速按鈕？\n\n頁面2：個人健康記錄\n頁面3：氣候警報\n頁面4：護理師諮詢\n頁面5：緊急聯絡\n\n請為每個頁面描述3-5個UI元素，格式要清楚，方便我繪製草圖。' },
+      { label:'AI整合護理', text:'AI（人工智慧）如何整合進未來的氣候健康護理實務？請幫我分析：\n(1) AI在氣候健康預警中的應用（例如：預測熱浪發病率）\n(2) AI輔助護理師的決策支援系統\n(3) AI個人化健康建議的優點與倫理風險\n(4) 台灣現有的醫療AI應用例子\n\n同時，請說明護理師在AI時代的不可取代性是什麼？' }
+    ],
+    tronclass:'【Week 10 App設計完稿繳交】\n\n本週請上傳最終App設計作業（佔成績10%）：\n\n必交內容：\n① App介面草圖（至少5個頁面，手繪或用Figma/Canva）\n② App功能說明書（200字）：說明這個App如何幫助慢性病患者應對氣候健康挑戰\n③ AI Prompt記錄：你在設計過程中使用的3個AI Prompt及AI的回應摘要\n\n加分項目：\n- 進行至少1位真實使用者的訪談或概念測試（附記錄）\n- 考量65歲以上用戶的無障礙設計'
+  },
+  { w:11, title:'NbS自然友善照護', phase:'第四階段', icon:'🌳',
+    obj:['了解Nature-Based Solutions的概念','設計自然療癒護理環境'],
+    content:'Nature-Based Solutions（NbS）是以自然為核心的氣候適應策略。探索植栽療法、都市農園、綠色醫院空間設計如何改善慢性病患的心理與生理健康，並實地進行校園綠地觀察任務。',
+    activities:['NbS概念教學','校園綠地觀察任務','設計照護導引牌','自然療癒照護計畫設計'],
+    assessment:'團隊海報展示（NbS護理環境設計）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'NbS護理', text:'請幫我探索「Nature-Based Solutions（NbS）」在護理照護中的應用：\n(1) 植栽療法（Horticultural Therapy）對慢性病患者有哪些實證效果？\n(2) 「綠色醫院」設計如何降低患者壓力和焦慮？\n(3) 都市熱島效應對醫院周邊社區的健康影響，護理師如何倡議改善？\n(4) 請設計一個「NbS復健花園」的概念，適合台灣某醫院中庭。' },
+      { label:'導引牌設計', text:'我需要設計一個「自然療癒護理導引牌」，放置在醫院花園中，提供慢性病患者氣候調適的健康建議。請幫我撰寫3種版本的導引牌文字：\n版本A：心臟病患者（高溫警示+自然活動建議）\n版本B：糖尿病患者（戶外活動+血糖管理）\n版本C：焦慮/憂鬱患者（自然療癒引導語）\n每則文字：80字以內，溫暖易懂' }
+    ],
+    tronclass:'【Week 11 NbS海報作業】\n\n完成今天的校園綠地觀察後，各組製作「NbS護理環境設計」海報：\n\n海報必須包含：\n✓ 觀察地點：[填入校園地點]\n✓ 現有的自然元素盤點\n✓ 設計提案：如何改善為對慢性病患者友善的自然療癒空間\n✓ 可能的健康效益（附文獻支持）\n✓ 一張照護導引牌設計\n\nAI輔助任務：用AI生成「植栽療法對COPD患者的效果」的文獻摘要，貼在海報說明中，並標注AI來源。\n\n格式：A1海報尺寸，課堂展示'
+  },
+  { w:12, title:'社區參訪與互動（一）', phase:'第五階段・社區行動', icon:'🏘️',
+    obj:['實地了解社區氣候健康需求','進行社區訪談'],
+    content:'前往合作的社區衛生所或USR服務場域，進行第一次實地訪察。學習如何觀察社區環境、訪談居民與衛生所人員，收集社區氣候健康的現況資料。',
+    activities:['社區訪查前說明與分組','實地前往社區衛生所/社區中心','居民與工作人員訪談','環境觀察記錄'],
+    assessment:'現地紀錄表（即時填寫）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'訪談設計', text:'我要前往社區衛生所進行「氣候健康需求訪談」，請幫我設計訪談問卷：\n訪談對象：社區衛生所護理師\n主題：社區慢性病患者在氣候變遷下的健康挑戰\n\n請設計：\n(1) 開放式問題5題（了解現況）\n(2) 具體需求探索問題3題\n(3) 對護理介入方案的期待2題\n\n同時，幫我設計一個給社區居民的簡短問卷（5題以內），適合街頭訪問。' },
+      { label:'觀察記錄', text:'我正在進行社區氣候健康觀察，請幫我設計一個「社區氣候健康觀察清單（Checklist）」，涵蓋：\n1. 物理環境：綠化、遮陽、散熱空間\n2. 社會環境：弱勢族群的求助管道\n3. 健康資源：衛生所、藥局、緊急庇護所\n4. 氣候脆弱性：社區的主要風險\n\n格式：可列印的A4紀錄表，欄位清楚，方便現場填寫。' }
+    ],
+    tronclass:'【Week 12 社區訪查記錄上傳】\n\n參訪當天，請記錄以下內容並於48小時內上傳：\n\n① 環境觀察表（課堂提供的紙本表格，拍照上傳）\n② 訪談摘要（至少訪談2人，記錄關鍵內容）\n③ 3張以上具代表性的現場照片\n④ 初步發現：這個社區的氣候健康主要挑戰是什麼？（100字）\n\n注意：拍照前請徵得被拍攝者同意'
+  },
+  { w:13, title:'社區參訪與互動（二）', phase:'第五階段', icon:'🏘️',
+    obj:['深化社區需求分析','規劃共創活動'],
+    content:'第二次社區訪察，重點轉移到「共創（Co-creation）」：邀請社區居民參與討論護理介入方案，收集他們對氣候調適的期望與顧慮，並進行焦點團體討論。',
+    activities:['焦點團體討論主持','共創工作坊','居民氣候健康需求地圖繪製','社區觀察深化'],
+    assessment:'觀察報告（含焦點團體摘要）',
+    sdgs:['sdg3'],
+    prompts:[
+      { label:'焦點團體', text:'我要帶領一個社區焦點團體討論，主題是「如何幫助社區慢性病患者因應高溫天氣」，參與者是8-10位社區長者。請幫我設計：\n(1) 開場暖身問題（讓長者放鬆）\n(2) 核心討論問題（5個，從輕到重）\n(3) 結尾問題（收斂共識）\n(4) 主持人的注意事項（如何讓沉默者也能發言）\n\n時間規劃：共60分鐘' },
+      { label:'需求分析', text:'我已完成社區訪察，收集到以下資料：[請貼上你的訪察記錄]\n\n請幫我：\n(1) 分析社區的氣候健康「需求層次」（從最緊急到長期需求）\n(2) 找出現有資源與需求之間的缺口\n(3) 針對這個社區設計最適合的護理介入策略\n(4) 提出評估介入效果的指標' }
+    ],
+    tronclass:'【Week 13 共創活動記錄】\n\n完成今天的社區共創活動後，請上傳：\n① 焦點團體主持記錄（關鍵發言整理）\n② 社區居民的「氣候健康需求地圖」（手繪照片）\n③ 最重要的3個社區需求（依優先順序）\n④ 下週行動計畫：根據今天的發現，你的小組下一步要做什麼？\n\n思考題（選答）：如果你是社區護理師，每天要在這個社區工作，你最想改變的一件事是什麼？'
+  },
+  { w:14, title:'社區參訪與互動（三）', phase:'第五階段', icon:'🏘️',
+    obj:['整合三次社區訪察成果','完成社區需求評估報告'],
+    content:'第三次社區訪察重在整合與總結。完成「社區氣候健康需求評估報告」，同時開始將社區訪察洞見整合進期末「氣候健康倡議提案」中。',
+    activities:['社區報告統整','期末提案與社區需求的對接','社區報告撰寫','與衛生所的成果分享'],
+    assessment:'社區參訪觀察報告（完整版）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'報告撰寫', text:'請幫我撰寫「社區氣候健康需求評估報告」的大綱和各部分的重點提示：\n\n報告結構：\n1. 執行摘要（200字）\n2. 社區背景說明\n3. 訪察方法\n4. 氣候健康需求發現\n5. 現有資源盤點\n6. 需求缺口分析\n7. 護理建議\n8. 參考資料\n\n請幫我為每個部分提供：重點內容提示＋寫作注意事項' },
+      { label:'提案連結', text:'我完成了社區訪察，現在需要將發現整合進期末「氣候健康倡議提案」中。請幫我：\n\n根據社區訪察發現：[請填入3個主要發現]\n\n設計一個邏輯清楚的「問題→解決方案」論證框架：\n(1) 問題陳述（基於訪察數據）\n(2) 根本原因分析\n(3) 護理介入方案設計\n(4) 預期影響\n(5) 成功評估指標' }
+    ],
+    tronclass:'【Week 14 社區報告最終版繳交】\n\n本週是社區參訪階段的最後一次，請於本週內繳交：\n\n① 社區氣候健康需求評估報告（完整版，1000字以上）\n② 現場紀錄匯整（含照片集、訪談摘要）\n③ 對社區衛生所的建議書（一頁A4，提供給合作單位參考）\n\n本份報告將作為期末「氣候健康倡議提案」的重要基礎，請認真完成！\n佔期末成績15%'
+  },
+  { w:15, title:'氣候健康倡議提案設計（一）', phase:'第六階段・成果發表', icon:'📢',
+    obj:['完成提案書第一至四部分','進行中間進度報告'],
+    content:'正式進入期末專案最後衝刺。各組完成提案書的前半部分（問題陳述、SDG分析、方案設計），進行小組內部審核，並與指導老師進行個別諮詢。',
+    activities:['提案書撰寫工作坊','各組進度check-in','老師個別諮詢','跨組交叉審核'],
+    assessment:'提案書草稿（前半）進度確認',
+    sdgs:['sdg3','sdg4','sdg13'],
+    prompts:[
+      { label:'問題陳述', text:'請幫我撰寫期末提案書的「問題陳述」部分（約200字）：\n\n我的議題：[填入議題]\n目標族群：[填入族群]\n\n請幫我撰寫一個有說服力的問題陳述，包含：\n(1) 氣候變遷如何具體影響這個族群？\n(2) 台灣現況數據（請提供可能的數據方向）\n(3) 如果不採取行動，後果是什麼？\n(4) 提案的必要性與緊迫性\n\n語氣：具說服力、有數據支持、感情適度' },
+      { label:'方案細節', text:'請幫我設計提案書的「護理介入行動計畫」：\n\n方案目標：[填入]\n目標族群：[填入]\n\n請設計一個SMART格式的行動計畫：\n- 短期行動（1-3個月）：3項\n- 中期行動（3-6個月）：3項\n- 長期願景（1年以上）：2項\n\n每項行動包含：(1) 具體措施 (2) 負責人（護理師角色）(3) 評估指標 (4) 所需資源' }
+    ],
+    tronclass:'【Week 15 提案書進度上傳】\n\n請上傳提案書草稿（前半部分）：\n① 問題陳述（完整版）\n② SDG對應分析\n③ 行動計畫（草稿）\n\n老師將於本週五前提供書面回饋，請根據回饋修改後納入最終版本。\n\n同時，請在討論區回覆：你們組現在遇到的最大挑戰是什麼？'
+  },
+  { w:16, title:'氣候健康倡議提案設計（二）', phase:'第六階段', icon:'📢',
+    obj:['完成提案書全部內容','準備發表簡報'],
+    content:'完成提案書的後半部分（資源評估、風險因應、參考文獻），並製作Week 17發表用的簡報。進行全組最終彩排，確保10分鐘發表流暢有力。',
+    activities:['提案書後半完稿','發表簡報製作','全組彩排','同儕彩排回饋'],
+    assessment:'提案書完整版＋發表簡報（繳交期限）',
+    sdgs:['sdg3','sdg13'],
+    prompts:[
+      { label:'風險評估', text:'請幫我為提案書撰寫「風險評估與因應策略」（約150字）：\n\n我的提案是：[填入提案摘要]\n\n可能面臨的風險有：\n(1) 執行層面（資源不足、人力問題）\n(2) 政策層面（法規、行政阻力）\n(3) 社區層面（居民參與度）\n(4) 氣候層面（突發氣候事件）\n\n請為每個風險提供具體的「因應策略」，語氣要展現問題解決力，不是只列問題。' },
+      { label:'簡報腳本', text:'請幫我撰寫10分鐘發表的簡報腳本大綱：\n\n提案主題：[填入]\n目標族群：[填入]\n\n建議結構：\n0:00-1:00 開場（震撼數據或故事）\n1:00-3:00 問題說明\n3:00-5:00 SDG分析\n5:00-7:30 行動計畫\n7:30-9:00 預期影響\n9:00-10:00 呼籲行動\n\n請為每個段落提供：說話重點（2-3句）＋簡報要點（1-2個）' }
+    ],
+    tronclass:'【Week 16 最終版提案書繳交】\n\n⚠️ 這是本學期最重要的作業截止日\n\n必須上傳：\n① 氣候健康倡議行動提案書（完整版，PDF）\n② 發表簡報（PPTX或PDF）\n③ 小組貢獻聲明（每人寫2句，說明自己的貢獻）\n\n提案書最低頁數：8頁（含封面、參考文獻）\n參考文獻：至少5篇（含1篇英文）\n\n繳交截止：Week 16周日午夜12:00\n佔期末成績15%'
+  },
+  { w:17, title:'成果發表與交叉教學', phase:'第六階段', icon:'🏆',
+    obj:['發表期末成果','帶領同儕學習'],
+    content:'精彩的成果發表日！各組以10分鐘呈現期末提案，並帶領指定小組進行5分鐘互動式引導討論。這是展現你們整學期學習成果的高光時刻。',
+    activities:['各組期末發表（10分鐘）','引導跨組討論（5分鐘）','老師＋全班評分','課程感恩分享'],
+    assessment:'教學演示評分＋教學設計單',
+    sdgs:['sdg3','sdg4','sdg13'],
+    prompts:[
+      { label:'引導問題', text:'我即將帶領同學討論另一組的提案，主題是：[填入另一組主題]\n\n請幫我設計5個引導討論問題，讓討論有深度但不尖銳：\n(1) 開啟對話的問題（任何人都可以回答）\n(2) 深化思考的問題（引導更多分析）\n(3) 連結個人的問題（引發共鳴）\n(4) 批判反思的問題（溫和但有建設性）\n(5) 展望行動的問題（激勵改變）\n\n同時，提供我2-3個如果討論冷場時可以用的「破冰技巧」' },
+      { label:'發表開場', text:'幫我設計一個有震撼力的10分鐘發表開場（前60秒）：\n\n我的提案主題：[填入]\n\n我想要的效果：讓同學在第一分鐘就覺得這個議題很重要\n\n可以嘗試的開場方式：\nA. 震撼數據（「在台灣，每年有___人因高溫死亡...」）\nB. 故事開場（描述一個真實的患者故事）\nC. 反問問題（讓聽眾先思考）\nD. 情境代入（「想像你是一位...」）\n\n請幫我設計A+B的組合開場，約60-90秒' }
+    ],
+    tronclass:'【Week 17 教學設計單】\n\n發表後，請上傳「教學設計單」：\n\n① 你帶領的引導討論主題是什麼？\n② 你設計的5個討論問題（及設計理由）\n③ 討論過程中，最精彩的同學回應是什麼？\n④ 如果再做一次，你會如何調整引導方式？\n\n這份記錄展示你的「教學能力」，是護理師核心competency之一！\n截止：Week 17當週日'
+  },
+  { w:18, title:'課程評值與學習歷程整理', phase:'第六階段', icon:'📝',
+    obj:['完成學習歷程整理','進行課程評值'],
+    content:'本學期最後一週。學生整理並展示個人學習歷程檔案，撰寫深度自評反思報告，並完成課程意見調查。這是回顧成長、展望未來的重要時刻。',
+    activities:['個人學習歷程展示（5分鐘）','學習歷程自評反思撰寫','課程意見問卷','結業感恩時光'],
+    assessment:'自評表＋課程意見表（完成即得分）',
+    sdgs:['sdg4'],
+    prompts:[
+      { label:'學習反思', text:'請幫我撰寫本學期「氣候變遷與健康調適」課程的學習反思報告（500字），涵蓋：\n\n1. 學習旅程：這學期最重要的3個學習時刻是什麼？\n2. 能力成長：你在哪些能力上有顯著成長？（知識/技能/態度）\n3. 價值觀改變：這門課如何改變你對氣候健康、護理師角色的看法？\n4. 未來應用：你會如何將這學期學到的應用在未來的護理實習和職場？\n5. 給下一屆的建議：你最想告訴下一屆同學的一件事是什麼？\n\n語氣：真誠、具體、有個人反思深度' },
+      { label:'歷程展示', text:'請幫我設計一個「學習歷程展示」的口頭說明腳本（5分鐘）：\n\n我本學期的學習里程碑包含：\n[請填入你3-5個重要作業或活動]\n\n請幫我設計展示結構：\n- 開場（我是誰、我選了什麼議題）\n- 學習歷程（3個重要的轉折點）\n- 最自豪的作品（及原因）\n- 最大的挑戰（及如何克服）\n- 結語（我帶走了什麼）\n\n讓展示真誠感人，不要只是流水帳。' }
+    ],
+    tronclass:'【Week 18 學習歷程最終繳交】\n\n本學期最後一份作業：\n\n① 學習歷程自評反思報告（500字以上）\n② 學習歷程作品集（本學期所有作業的彙整，PDF）\n③ 課程意見調查（系統填寫，不記名）\n\n溫馨提醒：\n✨ 感謝你這學期的用心參與\n✨ 你們的作品已經讓這門課更豐富\n✨ 繼續在護理路上為地球健康而努力！\n\n繳交截止：期末週最後一天\n佔期末成績20%'
+  }
+];
+
+// ===== WEEK TABLE DATA =====
+const overviewData = [
+  {w:'W1', topic:'啟動與前導導入', activity:'氣候健康影片引導、KWL表', assess:'反思日誌'},
+  {w:'W2', topic:'氣候變遷與健康影響概論', activity:'個案導讀：高溫/登革熱/空污', assess:'案例圖解報告'},
+  {w:'W3', topic:'護理角色與災難照護（一）', activity:'角色扮演模擬', assess:'模擬任務評分'},
+  {w:'W4', topic:'護理角色與災難照護（二）', activity:'OSCE氣候護理模擬', assess:'OSCE評量表'},
+  {w:'W5', topic:'氣候正義與文化照護', activity:'原民健康講座＋文化角色扮演', assess:'同儕回饋記錄'},
+  {w:'W6', topic:'SDGs與行星健康倫理（一）', activity:'SDGs護理責任圖解練習', assess:'繪本初稿'},
+  {w:'W7', topic:'SDGs與行星健康倫理（二）', activity:'繪本完稿＋碳盤查討論', assess:'繪本定稿發表'},
+  {w:'W8', topic:'期中報告 Midterm', activity:'小組彙報階段成果', assess:'中期發表評分'},
+  {w:'W9', topic:'mHealth與數位照護設計（一）', activity:'mHealth案例分析＋App設計', assess:'App草圖初稿'},
+  {w:'W10', topic:'mHealth與數位照護設計（二）', activity:'App Wireframe＋同儕測試', assess:'App設計完稿'},
+  {w:'W11', topic:'NbS自然友善照護', activity:'校園綠地觀察＋導引牌設計', assess:'團隊海報展示'},
+  {w:'W12', topic:'社區參訪與互動（一）', activity:'社區訪察＋居民訪談', assess:'現地紀錄表'},
+  {w:'W13', topic:'社區參訪與互動（二）', activity:'焦點團體討論＋共創工作坊', assess:'觀察報告'},
+  {w:'W14', topic:'社區參訪與互動（三）', activity:'需求評估整合報告', assess:'完整觀察報告'},
+  {w:'W15', topic:'氣候健康倡議提案（一）', activity:'提案書前半撰寫工作坊', assess:'草稿進度確認'},
+  {w:'W16', topic:'氣候健康倡議提案（二）', activity:'提案書完稿＋發表彩排', assess:'提案書繳交'},
+  {w:'W17', topic:'成果發表與交叉教學', activity:'期末發表＋引導討論', assess:'教學演示評分'},
+  {w:'W18', topic:'課程評值與學習歷程', activity:'學習歷程展示＋課程評值', assess:'自評表完成'},
+];
+
+// ===== INIT =====
+let currentWeek = 1;
+let currentTab = 'weeks';
+let currentWizard = 0;
+
+function init() {
+  // Build timeline
+  const tl = document.getElementById('timeline');
+  weeks.forEach(w => {
+    const item = document.createElement('div');
+    item.className = 'tl-item' + (w.w === 1 ? ' active' : '');
+    item.id = 'tl-' + w.w;
+    item.onclick = () => showWeek(w.w);
+    item.innerHTML = `<div class="tl-dot">${w.w}</div><div class="tl-label">${w.icon}</div>`;
+    tl.appendChild(item);
+  });
+
+  // Build week content
+  const container = document.getElementById('weeks-container');
+  weeks.forEach(w => {
+    const div = document.createElement('div');
+    div.id = 'week-' + w.w;
+    div.style.display = w.w === 1 ? 'block' : 'none';
+    div.innerHTML = buildWeekHTML(w);
+    container.appendChild(div);
+  });
+
+  // Build overview table
+  const tbody = document.getElementById('overview-table');
+  overviewData.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.style.background = i % 2 === 0 ? '#fff' : '#f9f9f9';
+    tr.innerHTML = `
+      <td style="padding:10px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--sky);white-space:nowrap;font-weight:700">${row.w}</td>
+      <td style="padding:10px 14px;font-size:13px;font-weight:500">${row.topic}</td>
+      <td style="padding:10px 14px;font-size:13px;color:#666">${row.activity}</td>
+      <td style="padding:10px 14px;font-size:12px;color:#888">${row.assess}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  buildProjectPrompt();
+  updateWizardPrompt();
+}
+
+function buildWeekHTML(w) {
+  const sdgHtml = (w.sdgs || []).map(s => `<span class="sdg-tag ${s}">${s.toUpperCase().replace('SDG','SDG ')}</span>`).join('');
+
+  const promptsHtml = w.prompts.map((p, i) => `
+    <div class="accordion-item">
+      <div class="accordion-head" onclick="toggleAccordion(this)">
+        <span>🤖 ${p.label}</span><span>▾</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <div class="prompt-output" id="wp-${w.w}-${i}" style="max-height:140px">${p.text}</div>
+          <div class="btn-row" style="margin-top:8px">
+            <button class="btn btn-copy" onclick="copyPrompt('wp-${w.w}-${i}')">📋 複製</button>
+            <button class="btn btn-outline" onclick="openChatGPT('wp-${w.w}-${i}')">🔗 ChatGPT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const actHtml = (w.activities || []).map(a => `<li>${a}</li>`).join('');
+
+  return `
+    <div class="week-hero">
+      <div class="week-label">WEEK ${w.w} · ${w.phase || ''}</div>
+      <h2>${w.icon} ${w.title}</h2>
+      <div class="obj-tags">
+        ${(w.obj || []).map(o => `<span class="obj-tag">${o}</span>`).join('')}
+      </div>
+      <div class="sdg-row" style="margin-top:12px">${sdgHtml}</div>
+    </div>
+
+    <div class="content-grid">
+
+      <div class="card green">
+        <div class="card-header green"><span class="card-icon">📖</span> 本週學習內容</div>
+        <div class="card-body">
+          <p style="font-size:14px;line-height:1.8;color:#333">${w.content}</p>
+          <div class="divider"></div>
+          <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--earth)">🗓️ 教學活動</h4>
+          <ul style="list-style:none;font-size:13px;color:#555">
+            ${actHtml.replace(/<li>/g, '<li style="padding:3px 0">✦ ').replace(/<\/li>/g, '</li>')}
+          </ul>
+          <div class="divider"></div>
+          <div style="background:#f0faf4;padding:10px 12px;border-radius:8px;font-size:13px">
+            <strong style="color:var(--earth)">📊 評量方式：</strong>${w.assessment}
+          </div>
+        </div>
+      </div>
+
+      <div class="card purple">
+        <div class="card-header"><span class="card-icon">🤖</span> AI Prompt 學習工具</div>
+        <div class="card-body">
+          <div class="info-box">選擇以下Prompt，直接複製使用或客製化後貼至ChatGPT / Claude</div>
+          
+          <div style="margin-bottom:14px">
+            <label style="font-size:12px;font-weight:600;color:#6b3fa0;display:block;margin-bottom:6px">客製化補充（可選）</label>
+            <input class="prompt-input" type="text" id="custom-w${w.w}" placeholder="例如：加入台灣本地情境、針對長照場域..." style="border-color:rgba(107,63,160,0.3)">
+          </div>
+
+          ${promptsHtml}
+          
+          <div class="divider"></div>
+          <div style="font-size:12px;color:#888;line-height:1.6">
+            💡 <strong>AI使用提醒：</strong>AI生成的內容需要你進行批判性審查和在地化修改，請不要直接照單全收。
+          </div>
+        </div>
+      </div>
+
+      <div class="card blue">
+        <div class="card-header"><span class="card-icon">💬</span> Tronclass 討論議題</div>
+        <div class="card-body">
+          <div class="topic-item">
+            <div class="topic-num">討論議題 01</div>
+            ${getDiscussionTopic(w.w, 1)}
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">討論議題 02</div>
+            ${getDiscussionTopic(w.w, 2)}
+          </div>
+          <div class="divider"></div>
+          <h4 style="font-size:13px;font-weight:600;margin-bottom:8px">📬 Tronclass 貼文格式</h4>
+          <div class="tronclass-box" id="tc-w${w.w}">${w.tronclass}</div>
+          <div class="btn-row" style="margin-top:8px">
+            <button class="btn btn-copy" onclick="copyText('tc-w${w.w}')">📋 複製到Tronclass</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card teal">
+        <div class="card-header"><span class="card-icon">🎯</span> 自學任務清單</div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${getSelfStudyTasks(w.w).map((t,i) => `
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:8px;border-radius:6px;background:#f8f9fa;font-size:13px">
+                <input type="checkbox" onchange="this.parentElement.style.opacity=this.checked?'0.5':'1'" style="margin-top:2px;accent-color:var(--leaf)">
+                <span>${t}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div class="divider"></div>
+          <div style="font-size:12px;color:#888">
+            📚 建議自學資源：衛福部《因應氣候變遷之健康衝擊政策白皮書》（指定教材）
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `;
+}
+
+function getDiscussionTopic(w, n) {
+  const topics = {
+    1: ['你認為台灣目前最嚴重的氣候健康威脅是什麼？請說明理由，並思考護理師可以如何回應？', '如果你是一位在急診室工作的護理師，你希望在課程中學到哪些「氣候應變技能」？'],
+    2: ['登革熱、高溫傷害、空污加重：如果你只能優先處理其中一個，你會選哪個？為什麼？', '氣候變遷影響健康的「隱形受害者」是誰？你認為台灣哪個族群最脆弱，卻最少被關注？'],
+    3: ['在颱風災難中，護理師的「職責義務」和「個人安全」如何平衡？', '如果醫院資源不足，你如何決定誰優先獲得救援？這是純醫療判斷還是倫理決策？'],
+    4: ['OSCE評量能夠真實反映護理師的臨床能力嗎？你認為氣候災難護理還需要評估什麼？', '你在今天的模擬演練中，哪個決策最難做？為什麼？'],
+    5: ['氣候正義（Climate Justice）在台灣護理實踐中，最需要改變的一件事是什麼？', '面對原住民族群的氣候健康需求，「文化安全」護理具體應該怎麼做？'],
+    6: ['如果護理學院只能選一個SDG目標納入課程核心，你會選哪個？', '「行星健康」概念要求護理師關心地球生態，但護理師的核心職責不是照顧病人嗎？兩者如何平衡？'],
+    7: ['護理師在推動碳中和醫院上，有什麼具體可以做的行動？還是這不是護理師的責任？', '你的SDG護理繪本想傳達什麼核心訊息？這個訊息對你個人有什麼意義？'],
+    8: ['回顧前7週：你改變最多的一個想法或態度是什麼？', '在各組的期中報告中，你印象最深的一個洞見是什麼？為什麼？'],
+    9: ['如果你設計一個「氣候健康App」，最重要的3個功能是什麼？你為什麼這樣排序？', 'mHealth可以改善氣候健康嗎？還是只有有手機的人受益，反而加深健康不平等？'],
+    10: ['AI輔助診斷和護理決策的最大風險是什麼？護理師如何保持「人性關懷」不被AI取代？', '如果你是65歲的糖尿病患者，你希望使用什麼樣的氣候健康數位工具？'],
+    11: ['「自然療癒」在台灣的醫療體系中有正式位置嗎？你認為NbS應該納入護理實踐嗎？', '如果你要在弘光科大設計一個「氣候療癒花園」，你會設計什麼？它如何幫助病人？'],
+    12: ['你今天在社區看到的，和課堂上學的有什麼不同？這個差距說明了什麼？', '如果你是社區護理師，如何說服不想配合的社區長者做氣候健康調適？'],
+    13: ['社區居民對氣候健康的理解和護理師有何不同？這個落差如何影響衛教策略？', '共創（Co-creation）在社區護理中有什麼限制？居民的意見永遠是對的嗎？'],
+    14: ['你完成三次社區訪察後，對「社區護理」的看法有沒有改變？如何改變？', '你的社區訪察報告中，最重要的一個發現是什麼？這個發現如何影響你的期末提案？'],
+    15: ['寫提案書最困難的部分是什麼？你如何克服？AI幫了你什麼？還是讓你更困難？', '一個「好的氣候健康倡議提案」最重要的條件是什麼？執行性？創新性？還是倫理考量？'],
+    16: ['你最希望你們的倡議提案真的被誰看見？政府？醫院？社區？還是病人本身？', '如果你有機會真的執行這個提案，你最擔心的是什麼？'],
+    17: ['你覺得你們這學期做的最有意義的一件事是什麼？', '如果你要繼續深化這個議題，你下一步想做什麼？研究所？志工？倡議？'],
+    18: ['這門課改變了你對「護理師角色」的看法嗎？如果有，如何改變？', '你帶著什麼「看不見的收穫」離開這門課？（不是知識，而是態度或視角）'],
+  };
+  const wTopics = topics[w] || ['今天的課程內容對你的護理實踐有什麼啟發？', '你今天最想繼續探究的問題是什麼？'];
+  return wTopics[n-1] || wTopics[0];
+}
+
+function getSelfStudyTasks(w) {
+  const tasks = {
+    1: ['閱讀：衛福部氣候健康政策白皮書（第1章）', '觀看：WHO氣候變遷與健康影響短片', '完成：KWL前測學習單', '撰寫：300字反思日誌'],
+    2: ['研讀台灣登革熱流行病學數據（疾管署網站）', '蒐集1個台灣氣候疾病新聞報導並摘要', '完成小組案例圖解海報分工', '練習：SOAP護理記錄格式'],
+    3: ['閱讀：台灣災難護理指引', '觀看：紅十字會災難護理培訓影片', '複習OSCE基本評估流程', '撰寫角色扮演前心得（100字）'],
+    4: ['複習：熱衰竭vs中暑的鑑別診斷', '練習：AVPU意識評估量表', '完成OSCE自我評量表', '閱讀1篇氣候護理相關文獻'],
+    5: ['閱讀：台灣原住民族健康政策白皮書（摘要）', '了解：文化安全（Cultural Safety）概念', '撰寫文化照護反思單', '搜尋台灣原住民族氣候脆弱性資料'],
+    6: ['閱讀：UN SDG官網SDG 3、13說明', '完成SDG對應分析練習表', '選定繪本主題並蒐集素材', '用AI生成繪本故事草稿'],
+    7: ['完成SDG護理繪本最終版', '撰寫AI使用說明', '準備5分鐘繪本發表', '閱讀：碳盤查在醫院的應用案例'],
+    8: ['完成期中簡報檔案', '撰寫期中報告A4摘要', '完成同儕回饋表（另兩組）', '撰寫期中自評反思（200字）'],
+    9: ['下載試用一個台灣健康App（附說明）', '閱讀1篇mHealth文獻', '設計App功能需求清單', '繪製App主介面草圖（初版）'],
+    10: ['完成App Wireframe（至少5頁）', '進行至少1位使用者概念測試（可找家人）', '撰寫App功能說明書（200字）', '整理AI Prompt使用記錄'],
+    11: ['查詢植栽療法（Horticultural Therapy）的實證研究', '進行校園綠地觀察（填寫觀察表）', '設計1則照護導引牌文字', '準備NbS海報內容'],
+    12: ['完成社區訪察前準備（訪談問題）', '閱讀社區衛生護理相關資料', '填寫現地紀錄表', '訪察後48小時內上傳紀錄'],
+    13: ['準備焦點團體主持引導問題', '整理前次訪察記錄', '完成社區需求地圖（草稿）', '撰寫共創活動後反思'],
+    14: ['完成社區氣候健康需求評估報告', '整理三次訪察資料', '撰寫對衛生所的建議書', '開始整合社區發現進提案書'],
+    15: ['完成提案書前半部分', '閱讀「政策倡議」寫作技巧', '參考政策白皮書格式', '與組員討論行動計畫細節'],
+    16: ['完成提案書完整版', '製作發表簡報', '進行全組彩排', '撰寫個人貢獻聲明'],
+    17: ['準備10分鐘發表腳本', '設計5個引導討論問題', '觀看TED Talk學習發表技巧', '準備感謝詞'],
+    18: ['撰寫學習反思報告（500字）', '整理學習歷程作品集', '完成課程意見調查', '慶祝你的學習成就！🎉'],
+  };
+  return tasks[w] || ['閱讀本週指定教材', '完成課後反思日誌', '準備下週課程預習'];
+}
+
+// ===== SHOW WEEK =====
+function showWeek(n) {
+  currentWeek = n;
+  // Hide all weeks
+  weeks.forEach(w => {
+    const el = document.getElementById('week-' + w.w);
+    if (el) el.style.display = 'none';
+  });
+  // Show selected
+  const el = document.getElementById('week-' + n);
+  if (el) el.style.display = 'block';
+
+  // Update sidebar
+  document.querySelectorAll('.week-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === n - 1);
+  });
+
+  // Update timeline
+  document.querySelectorAll('.tl-item').forEach(item => item.classList.remove('active'));
+  const tlItem = document.getElementById('tl-' + n);
+  if (tlItem) {
+    tlItem.classList.add('active');
+    tlItem.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+
+  // Scroll to top of main
+  document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== TAB SWITCH =====
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.top-tab').forEach((t, i) => {
+    const tabs = ['weeks','project','chronic','overview'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+}
+
+// ===== WIZARD =====
+function switchWizard(n) {
+  currentWizard = n;
+  document.querySelectorAll('.wizard-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.wizard-step-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === n);
+  });
+  if (n === 2) updateWizardPrompt();
+}
+
+// ===== PROJECT PROMPT =====
+function buildProjectPrompt() {
+  const topic = document.getElementById('proj-topic')?.value || '';
+  const group = document.getElementById('proj-group')?.value || '';
+  const phase = document.getElementById('proj-phase')?.value || '';
+  const custom = document.getElementById('proj-custom')?.value || '';
+
+  const prompts = {
+    '文獻回顧': `你是一位護理系大學生，正在研究「${topic}」對「${group}」的健康影響。請幫我：
+1. 摘要這個議題的核心文獻（近5年，含台灣數據）
+2. 整理主要的健康風險和護理照護挑戰
+3. 找出文獻中最常引用的護理介入策略
+4. 推薦3個重要的關鍵字以便我繼續搜尋
+格式：條列式，適合作為期末報告的文獻回顧基礎
+${custom ? '特別需求：' + custom : ''}`,
+
+    '問題分析': `請幫我為以下護理議題繪製「魚骨圖（Ishikawa Diagram）」的文字版本：
+核心問題：「${topic}」如何影響「${group}」的健康？
+請分析以下六個面向的根本原因：
+1. 環境因素（氣候、地理）
+2. 社會因素（文化、經濟）
+3. 醫療系統因素
+4. 個人行為因素
+5. 政策因素
+6. 護理照護缺口
+請以清楚的條列格式呈現，方便製作成魚骨圖。${custom ? '\n特別需求：' + custom : ''}`,
+
+    'SDG對應': `請幫我完成「${topic}影響${group}健康」議題的SDG對應分析表：
+請分析此議題與以下SDG目標的連結：
+- SDG 3（健康與福祉）：具體連結說明＋1個護理行動
+- SDG 13（氣候行動）：具體連結說明＋1個護理行動
+- SDG 10（減少不平等）：與此族群的連結
+- SDG 17（全球夥伴）：跨專業合作面向
+台灣本地情境優先。${custom ? '\n特別需求：' + custom : ''}`,
+
+    '方案設計': `請幫我設計一個護理介入方案：
+議題：${topic}對${group}的健康影響
+請設計「SMART」格式的護理行動計畫：
+時間軸：
+- 短期（1-3個月）：3個具體護理措施
+- 中期（3-6個月）：2個延伸行動
+- 長期（1年+）：1個政策倡議方向
+每個措施需包含：
+① 具體做什麼？② 由誰執行？③ 評估指標？④ 需要哪些資源？
+${custom ? '特別需求：' + custom : ''}`,
+
+    '提案書撰寫': `請幫我撰寫「氣候健康倡議行動提案書」的各部分內容：
+議題：${topic}
+目標族群：${group}
+請依以下結構提供寫作指引和示例文字：
+1. 執行摘要（100字）
+2. 問題陳述（含數據）
+3. 目標族群分析
+4. SDG對應
+5. 護理介入計畫
+6. 資源與合作規劃
+7. 風險評估
+語氣：正式但不失溫度，具說服力。${custom ? '\n特別需求：' + custom : ''}`,
+
+    '簡報大綱': `請幫我設計10分鐘「氣候健康倡議提案」的發表簡報大綱：
+主題：${topic}對${group}的影響與護理行動
+投影片結構：
+1. 震撼開場（數據或故事，1分鐘）
+2. 問題說明（2分鐘）
+3. SDG連結（1分鐘）
+4. 護理行動方案（3分鐘）
+5. 預期影響（2分鐘）
+6. 呼籲行動（1分鐘）
+請為每張投影片提供：標題、3個重點、說話腳本要點。
+${custom ? '特別需求：' + custom : ''}`,
+
+    '反思報告': `請幫我撰寫這學期「氣候變遷與健康調適」課程的學習反思報告框架：
+我這學期的議題：${topic}（目標族群：${group}）
+請幫我生成以下部分的寫作引導問題：
+1. 學習旅程回顧（你學到了什麼？）
+2. 能力成長評估（知識、技能、態度）
+3. 價值觀與認同改變
+4. 對未來護理實踐的應用
+5. 給未來學生的建議
+每個部分請給我2個深度反思引導問題，幫助我寫出有深度的反思。
+${custom ? '特別需求：' + custom : ''}`
+  };
+
+  const output = prompts[phase] || '請選擇專案階段';
+  const el = document.getElementById('project-prompt-output');
+  if (el) el.textContent = output;
+}
+
+// ===== WIZARD PROMPT =====
+function updateWizardPrompt() {
+  const grpEl = document.querySelector('input[name="chronic-grp"]:checked');
+  const group = grpEl ? grpEl.value : '心臟病患者';
+  const age = document.getElementById('chronic-age')?.value || '65歲以上長者';
+  const audience = document.getElementById('chronic-audience')?.value || '患者本人';
+  const issues = Array.from(document.querySelectorAll('input[name="climate-issue"]:checked')).map(el => el.value);
+  const format = document.getElementById('edu-format')?.value || '條列式衛教單張';
+
+  const issueStr = issues.length > 0 ? issues.join('、') : '高溫熱浪';
+
+  const prompt = `你是一位專業的護理衛教師，正在為「${group}（${age}）」設計氣候健康調適的衛教材料。
+
+目標受眾：${audience}
+氣候健康議題：${issueStr}
+衛教格式：${format}
+
+請生成符合台灣在地情境的衛教內容，要求：
+1. 語言淺顯易懂，避免醫學術語（或術語後加括號解釋）
+2. 具體可執行，每項建議要說明「怎麼做」
+3. 考慮${age}族群的特殊需求（如認知能力、行動能力）
+4. 融入台灣本地的氣候特性（夏季高溫、颱風季、登革熱）
+5. 強調何時需要立即就醫的警示症狀
+6. 包含家屬或照顧者可以協助的方式
+
+衛教內容架構：
+- 標題（吸引人、簡短）
+- 開場說明（為什麼氣候健康對${group}很重要）
+- 主要建議事項（依議題：${issueStr}）
+- 警示症狀（何時需要就醫）
+- 家屬協助指引
+- 緊急聯絡資訊提醒
+
+請確保內容適合製作成${format}格式。`;
+
+  const el = document.getElementById('chronic-prompt-output');
+  if (el) el.textContent = prompt;
+
+  const customEl = document.getElementById('custom-chronic-prompt');
+  if (customEl && !customEl.value) customEl.value = prompt;
+}
+
+// ===== LOAD CHRONIC PROMPT =====
+function loadChronicPrompt(disease, issue) {
+  switchTab('chronic');
+  setTimeout(() => {
+    // Set radio
+    const radios = document.querySelectorAll('input[name="chronic-grp"]');
+    radios.forEach(r => { r.checked = r.value.includes(disease); });
+
+    // Set checkbox
+    const checks = document.querySelectorAll('input[name="climate-issue"]');
+    checks.forEach(c => { c.checked = c.value.includes(issue); });
+
+    updateWizardPrompt();
+    switchWizard(2);
+
+    // Scroll to wizard
+    document.querySelector('.project-wizard')?.scrollIntoView({ behavior: 'smooth' });
+  }, 300);
+}
+
+// ===== COPY =====
+function copyPrompt(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => showNotify('✅ Prompt已複製！貼到ChatGPT/Claude使用'));
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => showNotify('✅ 已複製！貼到Tronclass討論區'));
+}
+
+function showNotify(msg) {
+  const n = document.getElementById('notify');
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3000);
+}
+
+function openChatGPT(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text = encodeURIComponent(el.textContent);
+  window.open('https://chat.openai.com/?q=' + text, '_blank');
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(head) {
+  const body = head.nextElementSibling;
+  body.classList.toggle('open');
+  head.querySelector('span:last-child').textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+// ===== MOBILE NAV =====
+function setMobActive(btn) {
+  document.querySelectorAll('.mob-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ===== SCROLL TOP =====
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  window.addEventListener('scroll', () => {
+    document.getElementById('scrollTop').style.display =
+      window.scrollY > 400 ? 'flex' : 'none';
+  });
+});
+</script>
+</body>
+</html>
