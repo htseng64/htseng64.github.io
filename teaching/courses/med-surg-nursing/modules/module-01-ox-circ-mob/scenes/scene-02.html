@@ -6,11 +6,6 @@
   <title>Scene 2｜活動後惡化：氧合 × 循環整合</title>
 
   <style>
-    /* =========================================================
-       Classroom-first 顯示設定（後排可讀）
-       + Click-to-Focus 全螢幕放大（真正放大字）
-       ========================================================= */
-
     body{
       font-family: system-ui, -apple-system, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
       max-width: 1100px;
@@ -20,15 +15,12 @@
       color: #222;
       font-size: 20px;
     }
-
     h1{ font-size: 32px; }
     h2{ font-size: 26px; }
-    h3{ font-size: 22px; }
-
     p, li, label, span{ font-size: 20px; }
-
     .small{ font-size: 18px; }
     .muted{ color:#555; font-size: 18px; }
+    .hr{ height: 1px; background:#eee; margin: 12px 0; }
 
     .card{
       border: 1px solid #ddd;
@@ -38,7 +30,6 @@
       box-shadow: 0 10px 26px rgba(0,0,0,.06);
       margin: 16px 0;
     }
-
     .tag{
       display:inline-block;
       padding: 2px 10px;
@@ -51,73 +42,13 @@
       vertical-align: middle;
     }
 
-    .hr{ height: 1px; background:#eee; margin: 12px 0; }
-
-    /* =========================================================
-       Drag & Drop
-       ========================================================= */
-    .dragWrap{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      align-items: start;
-    }
-
-    @media (max-width: 900px){
-      .dragWrap{ grid-template-columns: 1fr; }
-    }
-
-    .bank, .order{
-      border: 2px dashed #cfd6e6;
-      border-radius: 14px;
-      padding: 12px;
-      min-height: 220px;
-      background: #fbfcff;
-    }
-
-    .zoneTitle{
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .item{
-      border: 1px solid #d9d9d9;
-      border-radius: 12px;
-      background: #fff;
-      padding: 12px 12px;
-      margin: 10px 0;
-      cursor: grab;
-      user-select: none;
-      box-shadow: 0 8px 18px rgba(0,0,0,.06);
-    }
-
-    .item:active{ cursor: grabbing; }
-
-    .item.dragging{
-      opacity: .55;
-      transform: scale(.99);
-    }
-
-    .dropHint{
-      font-size: 18px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #f7f8fb;
-      border: 1px solid #e8e8ef;
-      color: #555;
-      display: none;
-      margin: 10px 0 0;
-    }
-
-    .dropHint.show{ display: block; }
-
     .hintRow{
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
+      margin-top: 12px;
     }
-
     .btn{
       border: 0;
       border-radius: 12px;
@@ -129,7 +60,6 @@
       color: #fff;
       box-shadow: 0 10px 22px rgba(36,88,211,.20);
     }
-
     .btn.secondary{
       background: #eef2ff;
       color: #2458d3;
@@ -144,15 +74,12 @@
       border: 1px solid #ddd;
       background: #fff;
     }
-
     .good{ color: #0a7a2f; font-weight: 900; }
     .bad{ color: #b20d2c; font-weight: 900; }
-
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size: 18px;
     }
-
     .unlock{
       margin-top: 12px;
       border: 1px solid #cfe7d4;
@@ -160,105 +87,126 @@
       border-radius: 14px;
       padding: 14px 16px;
     }
-
     .hidden{ display:none; }
 
-    /* =========================================================
-       Click-to-Focus（點任何 .card 進入「投影放大」模式）
-       ========================================================= */
-    .focusOn body{ overflow: hidden; }
-
-    .focusOverlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.75);
-      display:none;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      z-index: 9999;
+    /* ===== Desktop drag UI ===== */
+    .dragWrap{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
     }
-
-    .focusOverlay.show{ display:flex; }
-
-    .focusBox{
-      background: #fff;
-      border-radius: 16px;
-      width: min(1200px, 96vw);
-      max-height: 92vh;
-      overflow: auto;
-      padding: 18px 18px 22px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      font-size: 28px; /* 真正放大 */
-      line-height: 1.55;
+    @media (max-width: 900px){
+      .dragWrap{ grid-template-columns: 1fr; }
     }
-
-    .focusBox h2{ font-size: 34px; margin-top: 0; }
-    .focusBox h3{ font-size: 30px; }
-    .focusBox p, .focusBox li{ font-size: 28px; }
-    .focusClose{
-      position: sticky;
-      top: 0;
-      display:flex;
-      justify-content: flex-end;
-      margin-bottom: 8px;
+    .bank, .order{
+      border: 2px dashed #cfd6e6;
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 220px;
+      background: #fbfcff;
     }
-    .focusClose button{
-      border: 0;
-      background: #111;
-      color: #fff;
-      padding: 10px 14px;
+    .zoneTitle{ font-weight: 800; margin-bottom: 10px; }
+    .item{
+      border: 1px solid #d9d9d9;
       border-radius: 12px;
-      cursor: pointer;
+      background: #fff;
+      padding: 12px 12px;
+      margin: 10px 0;
+      user-select: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    }
+    .draggable{
+      cursor: grab;
+    }
+    .draggable:active{ cursor: grabbing; }
+    .dragging{ opacity: .55; transform: scale(.99); }
+
+    .dropHint{
       font-size: 18px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f7f8fb;
+      border: 1px solid #e8e8ef;
+      color: #555;
+      display: none;
+      margin: 10px 0 0;
+    }
+    .dropHint.show{ display: block; }
+
+    /* ===== Mobile reorder UI ===== */
+    .mobileOnly{ display:none; }
+    .desktopOnly{ display:block; }
+
+    /* 在觸控裝置時，顯示 mobile UI、隱藏 drag UI */
+    .touch .mobileOnly{ display:block; }
+    .touch .desktopOnly{ display:none; }
+
+    .mList{
+      border: 1px solid #e6e6ef;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+    .mRow{
+      display:flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 10px 10px;
+      margin: 10px 0;
+      background:#fbfbff;
+    }
+    .mText{
+      flex: 1;
+      min-width: 0;
+    }
+    .mBtns{
+      display:flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .mBtn{
+      border: 1px solid #cbd7ff;
+      background: #eef2ff;
+      color: #2458d3;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-weight: 900;
+      cursor:pointer;
+      font-size: 16px;
     }
   </style>
 </head>
 
 <body>
-
   <h1>Scene 2｜活動後惡化：氧合 × 循環整合</h1>
-  <p class="muted">
-    <span class="tag">目標</span>用「優先順序」處理活動後呼吸惡化：先穩氧合，再評估循環，最後才規劃活動。
-  </p>
+  <p class="muted"><span class="tag">Gate</span>排序「護理優先行動」。桌機可拖曳；手機請用 ↑↓ 調整順序。</p>
 
-  <div class="card" data-focus="1">
+  <div class="card">
     <h2>情境摘要</h2>
     <ul>
       <li>活動後呼吸困難加劇、說話斷句</li>
-      <li>SpO₂ 約 89%（室內空氣）</li>
+      <li>SpO₂ 下降（示例：89% 室內空氣）</li>
       <li>HR、RR 上升，出現呼吸負荷增加徵象</li>
     </ul>
-    <div class="hr"></div>
-    <p class="small muted">請使用拖曳排序，建立「護理優先行動」。完成後按下 Gate 檢查。</p>
   </div>
 
-  <div class="card" data-focus="1">
-    <h2>Gate 任務：拖曳排序（由先到後）</h2>
-    <p>
-      操作：把左側卡片拖曳到右側「我的順序」。你可以在右側拖曳調整順序。完成後按「檢查答案」。
-    </p>
-
+  <!-- ===== Desktop: Drag & Drop ===== -->
+  <div class="card desktopOnly">
+    <h2>拖曳排序（桌機）</h2>
     <div class="dragWrap" style="margin-top:12px;">
       <div class="bank" id="bankZone">
         <div class="zoneTitle">卡片庫（拖到右邊）</div>
         <div class="dropHint show" id="bankHint">提示：把卡片拖到右側「我的順序」。</div>
 
-        <div class="item" draggable="true" data-id="1">
-          <b>(1)</b> 評估呼吸型態，並給予適當氧氣支持（依醫囑/流程）
-        </div>
-        <div class="item" draggable="true" data-id="2">
-          <b>(2)</b> 協助採取減輕呼吸負荷的姿勢（高 Fowler、前傾位等）
-        </div>
-        <div class="item" draggable="true" data-id="3">
-          <b>(3)</b> 立即讓病人下床行走訓練（先走再說）
-        </div>
-        <div class="item" draggable="true" data-id="4">
-          <b>(4)</b> 評估循環狀態（HR/BP、灌流、水腫、頭暈/心悸）
-        </div>
-        <div class="item" draggable="true" data-id="5">
-          <b>(5)</b> 處理疼痛，以改善呼吸效率與後續活動能力
-        </div>
+        <div class="item draggable" draggable="true" data-id="1"><b>(1)</b> 評估呼吸型態，並給予適當氧氣支持（依醫囑/流程）</div>
+        <div class="item draggable" draggable="true" data-id="2"><b>(2)</b> 協助採取減輕呼吸負荷的姿勢（高 Fowler、前傾位等）</div>
+        <div class="item draggable" draggable="true" data-id="3"><b>(3)</b> 立即讓病人下床行走訓練（先走再說）</div>
+        <div class="item draggable" draggable="true" data-id="4"><b>(4)</b> 評估循環狀態（HR/BP、灌流、水腫、頭暈/心悸）</div>
+        <div class="item draggable" draggable="true" data-id="5"><b>(5)</b> 處理疼痛，以改善呼吸效率與後續活動能力</div>
       </div>
 
       <div class="order" id="orderZone">
@@ -266,8 +214,18 @@
         <div class="dropHint show" id="orderHint">把卡片拖到這裡開始排序。</div>
       </div>
     </div>
+  </div>
 
-    <div class="hintRow" style="margin-top:12px;">
+  <!-- ===== Mobile: Up/Down reorder ===== -->
+  <div class="card mobileOnly">
+    <h2>排序（手機/平板）</h2>
+    <p class="small muted">點 ↑↓ 調整順序（由先到後）。</p>
+    <div class="mList" id="mobileList"></div>
+  </div>
+
+  <div class="card">
+    <h2>檢查 Gate</h2>
+    <div class="hintRow">
       <button class="btn" id="checkGate">檢查答案</button>
       <button class="btn secondary" id="resetGate">重置排序</button>
     </div>
@@ -278,29 +236,53 @@
 
     <div class="unlock hidden" id="unlockNext">
       <div class="good">Gate 通過 ✅</div>
-      <div class="small">
-        下一步請進入下一段情境（Scene 3）。  
-      </div>
+      <div class="small">下一步請進入 Scene 3。</div>
       <div style="margin-top:10px;">
         <a class="btn" href="./scene-03.html" style="text-decoration:none; display:inline-block;">前往 Scene 3</a>
       </div>
-    </div>
-
-  </div>
-
-  <!-- Focus Overlay -->
-  <div class="focusOverlay" id="focusOverlay" aria-hidden="true">
-    <div class="focusBox" id="focusBox">
-      <div class="focusClose"><button id="focusCloseBtn">關閉放大</button></div>
-      <div id="focusContent"></div>
     </div>
   </div>
 
 <script>
 /* =========================================================
-   Drag & Drop：允許 bank -> order，order 內可重排
+   Touch device detect: 啟用 mobile UI
    ========================================================= */
+(function(){
+  const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+  if(isTouch) document.documentElement.classList.add("touch");
+})();
 
+/* =========================================================
+   Shared data
+   ========================================================= */
+const CARD_DATA = [
+  {id:"1", text:"(1) 評估呼吸型態，並給予適當氧氣支持（依醫囑/流程）"},
+  {id:"2", text:"(2) 協助採取減輕呼吸負荷的姿勢（高 Fowler、前傾位等）"},
+  {id:"3", text:"(3) 立即讓病人下床行走訓練（先走再說）"},
+  {id:"4", text:"(4) 評估循環狀態（HR/BP、灌流、水腫、頭暈/心悸）"},
+  {id:"5", text:"(5) 處理疼痛，以改善呼吸效率與後續活動能力"},
+];
+
+function labelOf(id){
+  const map = {
+    "1":"(1) 氧氣/氧合支持",
+    "2":"(2) 姿勢減負荷",
+    "3":"(3) 立即下床行走（錯誤時機）",
+    "4":"(4) 循環評估",
+    "5":"(5) 疼痛處理"
+  };
+  return map[id] || id;
+}
+
+function sameOrder(a, b){
+  if(a.length !== b.length) return false;
+  for(let i=0;i<a.length;i++) if(a[i] !== b[i]) return false;
+  return true;
+}
+
+/* =========================================================
+   Desktop Drag & Drop (HTML5)
+   ========================================================= */
 let dragEl = null;
 
 function setDragging(el, on){
@@ -324,189 +306,198 @@ function enableDnD(container){
   });
 }
 
-function isDropZone(el){
-  return el && (el.id === "bankZone" || el.id === "orderZone");
-}
-
-function getDropContainer(target){
-  if(!target) return null;
-  const zone = target.closest("#bankZone, #orderZone");
-  return zone;
-}
-
-function getOrderIds(){
-  return Array.from(document.querySelectorAll("#orderZone .item")).map(el=>el.dataset.id);
-}
-
-function updateHints(){
-  const bank = document.querySelectorAll("#bankZone .item").length;
-  const order = document.querySelectorAll("#orderZone .item").length;
-  document.getElementById("bankHint").classList.toggle("show", bank > 0);
-  document.getElementById("orderHint").classList.toggle("show", order === 0);
-}
-
-const bankZone = document.getElementById("bankZone");
-const orderZone = document.getElementById("orderZone");
-
-enableDnD(bankZone);
-enableDnD(orderZone);
-
 function allowDrop(e){
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
 }
 
-bankZone.addEventListener("dragover", allowDrop);
-orderZone.addEventListener("dragover", allowDrop);
+function getOrderIdsDesktop(){
+  return Array.from(document.querySelectorAll("#orderZone .item")).map(el=>el.dataset.id);
+}
 
-orderZone.addEventListener("drop", (e)=>{
-  e.preventDefault();
-  const zone = getDropContainer(e.target) || orderZone;
-  if(!dragEl) return;
+function updateHintsDesktop(){
+  const bankHint = document.getElementById("bankHint");
+  const orderHint = document.getElementById("orderHint");
+  if(!bankHint || !orderHint) return;
 
-  // 目標若是另一張卡片，插入到該卡片前面
-  const beforeItem = e.target.closest(".item");
-  if(beforeItem && beforeItem.parentElement === orderZone){
-    orderZone.insertBefore(dragEl, beforeItem);
-  }else{
-    orderZone.appendChild(dragEl);
-  }
-  updateHints();
-});
+  const bank = document.querySelectorAll("#bankZone .item").length;
+  const order = document.querySelectorAll("#orderZone .item").length;
+  bankHint.classList.toggle("show", bank > 0);
+  orderHint.classList.toggle("show", order === 0);
+}
 
-bankZone.addEventListener("drop", (e)=>{
-  e.preventDefault();
-  if(!dragEl) return;
-  bankZone.appendChild(dragEl);
-  updateHints();
-});
+const bankZone = document.getElementById("bankZone");
+const orderZone = document.getElementById("orderZone");
 
-document.getElementById("resetGate").addEventListener("click", ()=>{
-  // 全部回收到 bank
-  const items = Array.from(document.querySelectorAll("#orderZone .item"));
-  items.forEach(it=>bankZone.appendChild(it));
-  document.getElementById("feedback").innerHTML =
-    `<b>狀態：</b>已重置。請重新排序後按「檢查答案」。`;
-  document.getElementById("unlockNext").classList.add("hidden");
-  updateHints();
-});
+if(bankZone && orderZone){
+  enableDnD(bankZone);
+  enableDnD(orderZone);
 
-updateHints();
+  bankZone.addEventListener("dragover", allowDrop);
+  orderZone.addEventListener("dragover", allowDrop);
+
+  orderZone.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    if(!dragEl) return;
+
+    const beforeItem = e.target.closest(".item");
+    if(beforeItem && beforeItem.parentElement === orderZone){
+      orderZone.insertBefore(dragEl, beforeItem);
+    }else{
+      orderZone.appendChild(dragEl);
+    }
+    updateHintsDesktop();
+    syncMobileFromDesktop(); // 讓兩套 UI 同步
+  });
+
+  bankZone.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    if(!dragEl) return;
+    bankZone.appendChild(dragEl);
+    updateHintsDesktop();
+    syncMobileFromDesktop();
+  });
+
+  updateHintsDesktop();
+}
 
 /* =========================================================
-   Gate 判定（重新規劃：可通過 + 臨床一致）
-   正確序列：
-   - 前兩步必須是 1 & 2（順序可互換）
-   - 3 必須最後（代表「現在不做下床走」）
-   - 4 必須在 5 前（先評估循環穩定度，再處理疼痛）
+   Mobile reorder (Up/Down)
    ========================================================= */
+const mobileList = document.getElementById("mobileList");
+// mobileState: 目前順序（預設先給一個亂序，讓學生真的要做）
+let mobileState = ["1","2","3","4","5"];
 
-function labelOf(id){
-  const map = {
-    "1":"(1) 氧合/氧氣支持",
-    "2":"(2) 減輕呼吸負荷姿勢",
-    "3":"(3) 立即下床行走（錯誤時機）",
-    "4":"(4) 循環評估",
-    "5":"(5) 疼痛處理"
-  };
-  return map[id] || id;
+function renderMobile(){
+  if(!mobileList) return;
+  mobileList.innerHTML = "";
+
+  mobileState.forEach((id, idx)=>{
+    const row = document.createElement("div");
+    row.className = "mRow";
+
+    const text = document.createElement("div");
+    text.className = "mText";
+    const data = CARD_DATA.find(x=>x.id===id);
+    text.innerHTML = `<b>${idx+1}.</b> ${data ? data.text : id}`;
+
+    const btns = document.createElement("div");
+    btns.className = "mBtns";
+
+    const up = document.createElement("button");
+    up.className = "mBtn";
+    up.textContent = "↑";
+    up.disabled = (idx===0);
+    up.addEventListener("click", ()=>{
+      if(idx===0) return;
+      [mobileState[idx-1], mobileState[idx]] = [mobileState[idx], mobileState[idx-1]];
+      renderMobile();
+      syncDesktopFromMobile();
+    });
+
+    const down = document.createElement("button");
+    down.className = "mBtn";
+    down.textContent = "↓";
+    down.disabled = (idx===mobileState.length-1);
+    down.addEventListener("click", ()=>{
+      if(idx===mobileState.length-1) return;
+      [mobileState[idx+1], mobileState[idx]] = [mobileState[idx], mobileState[idx+1]];
+      renderMobile();
+      syncDesktopFromMobile();
+    });
+
+    btns.appendChild(up);
+    btns.appendChild(down);
+
+    row.appendChild(text);
+    row.appendChild(btns);
+    mobileList.appendChild(row);
+  });
+}
+
+function syncDesktopFromMobile(){
+  // 如果桌機區存在：把 orderZone 依 mobileState 重排
+  if(!orderZone || !bankZone) return;
+
+  // 先把所有 item 全部移回 bank，再依序放入 order
+  const allItems = Array.from(document.querySelectorAll("#bankZone .item, #orderZone .item"));
+  allItems.forEach(it=>bankZone.appendChild(it));
+
+  mobileState.forEach(id=>{
+    const el = Array.from(document.querySelectorAll("#bankZone .item")).find(x=>x.dataset.id===id);
+    if(el) orderZone.appendChild(el);
+  });
+
+  updateHintsDesktop();
+}
+
+function syncMobileFromDesktop(){
+  // 若桌機區存在：從 orderZone 取目前順序同步回 mobileState
+  if(!orderZone) return;
+  const ord = getOrderIdsDesktop();
+  if(ord.length === 5){
+    mobileState = ord.slice();
+    renderMobile();
+  }
+}
+
+// 初次渲染 mobile
+renderMobile();
+
+/* =========================================================
+   Gate 判定：唯一標準答案
+   ========================================================= */
+function getCurrentOrder(){
+  // touch 裝置用 mobileState；非 touch 用桌機 orderZone 的順序
+  const isTouch = document.documentElement.classList.contains("touch");
+  if(isTouch) return mobileState.slice();
+  return getOrderIdsDesktop();
 }
 
 document.getElementById("checkGate").addEventListener("click", ()=>{
   const fb = document.getElementById("feedback");
   const unlock = document.getElementById("unlockNext");
+  const ord = getCurrentOrder();
 
-  const ord = getOrderIds();
-
-  // 必須 5 張
-  if(ord.length < 5){
+  // 桌機若還沒拖滿 5 張，ord 可能不是 5
+  if(ord.length !== 5){
     fb.innerHTML = `<span class="bad">未通過 Gate ❌</span><br/>
-                    你目前只排序了 <b>${ord.length}</b> 張卡片。<br/>
-                    請把 5 張卡都拖到右側再檢查。`;
+      請完成 5 張卡的完整排序後再檢查。`;
     unlock.classList.add("hidden");
     return;
   }
 
-  // 1&2 必須在前兩步（順序可換）
-  const first2 = ord.slice(0,2);
-  const firstTwoOk = (first2.includes("1") && first2.includes("2"));
+  const STANDARD = ["2","1","4","5","3"]; // 唯一標準答案
 
-  if(!firstTwoOk){
-    const shown = first2.map(labelOf).join(" → ");
-    fb.innerHTML = `<span class="bad">未通過 Gate ❌</span><br/>
-      你的前兩步是：<span class="mono">${shown}</span><br/>
-      <div class="hr"></div>
-      <b>臨床原則：</b>活動後 SpO₂ 下降與呼吸負荷增加時，必須先處理「氧合與減輕呼吸負荷」（(1)(2)）再進入其他處置。`;
-    unlock.classList.add("hidden");
+  if(sameOrder(ord, STANDARD)){
+    fb.innerHTML = `<span class="good">通過 Gate ✅（標準答案）</span><br/>
+      你的排序：<span class="mono">${ord.map(labelOf).join(" → ")}</span>`;
+    unlock.classList.remove("hidden");
     return;
   }
 
-  // (3) 必須最後
-  const pos3 = ord.indexOf("3");
-  const is3Last = (pos3 === 4);
-  if(!is3Last){
-    fb.innerHTML = `<span class="bad">未通過 Gate ❌</span><br/>
-      「(3) 立即下床行走訓練」目前位置是第 <b>${pos3+1}</b> 步。<br/>
-      <div class="hr"></div>
-      <b>臨床原則：</b>病人尚未穩定氧合/呼吸負荷前，不應安排立即下床走動；若要保留此選項，合理位置應為「最後」（代表現在不做）。`;
-    unlock.classList.add("hidden");
-    return;
-  }
-
-  // (4) 必須在 (5) 前
-  const pos4 = ord.indexOf("4");
-  const pos5 = ord.indexOf("5");
-  if(!(pos4 < pos5)){
-    fb.innerHTML = `<span class="bad">未通過 Gate ❌</span><br/>
-      目前 (4) 循環評估在第 <b>${pos4+1}</b> 步，(5) 疼痛處理在第 <b>${pos5+1}</b> 步。<br/>
-      <div class="hr"></div>
-      <b>臨床原則：</b>先確認循環/灌流穩定度（HR/BP、灌流、水腫、頭暈/心悸）再進行疼痛處理，以避免在不穩定狀態下做次要介入。`;
-    unlock.classList.add("hidden");
-    return;
-  }
-
-  // ✅ 通過
-  const pretty = ord.map(labelOf).join(" → ");
-  fb.innerHTML = `<span class="good">通過 Gate ✅</span><br/>
-    你的排序：<span class="mono">${pretty}</span><br/>
+  fb.innerHTML = `<span class="bad">未通過 Gate ❌</span><br/>
+    你的排序：<span class="mono">${ord.map(labelOf).join(" → ")}</span><br/>
     <div class="hr"></div>
-    <b>判定：</b>先穩氧合與呼吸負荷 → 再評估循環 → 疼痛介入 → 活動安排最後。`;
-  unlock.classList.remove("hidden");
+    <b>標準答案：</b><span class="mono">${STANDARD.map(labelOf).join(" → ")}</span>`;
+  unlock.classList.add("hidden");
 });
 
-/* =========================================================
-   Click-to-Focus：點 .card 放大投影
-   ========================================================= */
-const overlay = document.getElementById("focusOverlay");
-const focusBox = document.getElementById("focusContent");
-const closeBtn = document.getElementById("focusCloseBtn");
+document.getElementById("resetGate").addEventListener("click", ()=>{
+  // mobile reset
+  mobileState = ["1","2","3","4","5"];
+  renderMobile();
 
-function openFocus(html){
-  focusBox.innerHTML = html;
-  overlay.classList.add("show");
-  overlay.setAttribute("aria-hidden","false");
-}
+  // desktop reset
+  if(bankZone && orderZone){
+    const items = Array.from(document.querySelectorAll("#orderZone .item"));
+    items.forEach(it=>bankZone.appendChild(it));
+    updateHintsDesktop();
+  }
 
-function closeFocus(){
-  overlay.classList.remove("show");
-  overlay.setAttribute("aria-hidden","true");
-  focusBox.innerHTML = "";
-}
-
-document.querySelectorAll(".card").forEach(card=>{
-  card.addEventListener("click", (e)=>{
-    // 避免點到按鈕/連結時也觸發放大
-    if(e.target.closest("button") || e.target.closest("a") || e.target.closest("input") || e.target.closest("textarea")) return;
-    openFocus(card.innerHTML);
-  });
-});
-
-overlay.addEventListener("click", (e)=>{
-  if(e.target === overlay) closeFocus();
-});
-closeBtn.addEventListener("click", closeFocus);
-document.addEventListener("keydown", (e)=>{
-  if(e.key === "Escape") closeFocus();
+  document.getElementById("feedback").innerHTML =
+    `<b>狀態：</b>已重置。請重新排序後按「檢查答案」。`;
+  document.getElementById("unlockNext").classList.add("hidden");
 });
 </script>
 
