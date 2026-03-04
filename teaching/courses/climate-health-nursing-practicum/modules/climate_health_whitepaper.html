@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>因應氣候變遷之健康衝擊政策白皮書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --deep-blue: #0d2240;
+  --ocean: #1a3a5c;
+  --teal: #0e7490;
+  --teal-light: #22d3ee;
+  --emerald: #059669;
+  --emerald-light: #34d399;
+  --amber: #d97706;
+  --amber-light: #fbbf24;
+  --coral: #dc2626;
+  --coral-light: #f87171;
+  --cream: #f5f0e8;
+  --light-bg: #f0f4f8;
+  --text-dark: #0f172a;
+  --text-mid: #334155;
+  --text-light: #64748b;
+  --border: #e2e8f0;
+  --white: #ffffff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--light-bg);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.hero {
+  background: var(--navy);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 110%, rgba(14,116,144,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 20%, rgba(5,150,105,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 60% 80%, rgba(217,119,6,0.1) 0%, transparent 50%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(14,116,144,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,116,144,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid rgba(14,116,144,0.2);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-emblem {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.nav-title {
+  color: rgba(255,255,255,0.9);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.nav-subtitle {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.nav-links a:hover {
+  color: var(--teal-light);
+  border-color: rgba(14,116,144,0.4);
+  background: rgba(14,116,144,0.1);
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 5;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(14,116,144,0.2);
+  border: 1px solid rgba(14,116,144,0.4);
+  color: var(--teal-light);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+  animation: fadeDown 0.8s ease both;
+}
+
+.hero-badge::before { content: '📋'; }
+
+.hero-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  animation: fadeDown 0.8s ease 0.1s both;
+}
+
+.hero-title-sub {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  color: var(--teal-light);
+  margin-bottom: 2rem;
+  animation: fadeDown 0.8s ease 0.2s both;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  animation: fadeDown 0.8s ease 0.3s both;
+}
+
+.hero-meta-item {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+}
+
+.hero-meta-item strong {
+  display: block;
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 700px;
+  width: 100%;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  background: rgba(14,116,144,0.15);
+  border-color: rgba(14,116,144,0.4);
+  transform: translateY(-2px);
+}
+
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--teal-light);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.3;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.72rem;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.scroll-dot {
+  width: 28px;
+  height: 44px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 14px;
+  position: relative;
+}
+
+.scroll-dot::after {
+  content: '';
+  width: 5px;
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 3px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollAnim 1.5s infinite;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-alt {
+  background: var(--white);
+}
+
+.section-alt .section {
+  max-width: 100%;
+}
+
+.section-alt > .section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.section-tag::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--teal);
+}
+
+h2.section-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  max-width: 700px;
+}
+
+/* ===== NAV BAR (sticky) ===== */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(14,116,144,0.3);
+  padding: 0 2rem;
+}
+
+.sticky-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sticky-nav-inner::-webkit-scrollbar { display: none; }
+
+.snav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 0.78rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.snav-link:hover, .snav-link.active {
+  color: var(--teal-light);
+  border-bottom-color: var(--teal-light);
+}
+
+/* ===== OVERVIEW CARDS ===== */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.overview-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-color, var(--teal));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.overview-card:hover {
+  border-color: var(--card-color, var(--teal));
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.overview-card:hover::before { transform: scaleX(1); }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  background: var(--card-bg, rgba(14,116,144,0.1));
+}
+
+.card-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.8rem;
+}
+
+.card-text {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+}
+
+/* ===== IMPACT SECTION ===== */
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.impact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.impact-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--white);
+  border-radius: 12px;
+  border-left: 4px solid var(--item-color, var(--teal));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+
+.impact-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateX(4px);
+}
+
+.impact-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+.impact-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.impact-desc {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* ===== STATS / DATA BOX ===== */
+.data-box {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.data-box::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(14,116,144,0.3), transparent 70%);
+  pointer-events: none;
+}
+
+.data-box h3 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--teal-light);
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.data-row:last-child { border-bottom: none; }
+
+.data-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  flex: 1;
+  line-height: 1.4;
+}
+
+.data-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--teal-light);
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.data-unit {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  margin-left: 0.3rem;
+}
+
+/* ===== WARNING TABLE ===== */
+.warning-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.warning-table th {
+  background: var(--navy);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  text-align: left;
+}
+
+.warning-table td {
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-mid);
+  background: var(--white);
+}
+
+.warning-table tr:last-child td { border-bottom: none; }
+
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.level-yellow { background: #fef9c3; color: #854d0e; }
+.level-orange { background: #ffedd5; color: #9a3412; }
+.level-red { background: #fee2e2; color: #991b1b; }
+
+/* ===== DISEASE CARDS ===== */
+.disease-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.disease-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 1.8rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.disease-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  border-color: var(--teal);
+}
+
+.disease-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.disease-emoji { font-size: 2rem; }
+
+.disease-name {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+}
+
+.disease-category {
+  font-size: 0.72rem;
+  color: var(--teal);
+  background: rgba(14,116,144,0.08);
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+}
+
+.disease-facts {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.disease-facts li {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.disease-facts li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--teal);
+}
+
+/* ===== STRATEGY CARDS ===== */
+.strategy-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stab {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid var(--border);
+  background: var(--white);
+  color: var(--text-mid);
+}
+
+.stab.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
+
+.stab:hover:not(.active) {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.strategy-panel {
+  display: none;
+}
+
+.strategy-panel.active {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.strategy-item {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 1rem;
+}
+
+.strategy-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--border);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.strategy-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.strategy-text {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* ===== RESEARCH SECTION ===== */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.research-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.research-card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 4px 16px rgba(14,116,144,0.1);
+}
+
+.research-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.research-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.research-count {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--teal);
+  margin-bottom: 0.3rem;
+}
+
+.research-label {
+  font-size: 0.72rem;
+  color: var(--text-light);
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--teal), var(--emerald));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.87rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--teal);
+  border: 2px solid white;
+  box-shadow: 0 0 0 3px rgba(14,116,144,0.2);
+}
+
+.tl-date {
+  font-size: 0.72rem;
+  color: var(--teal);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+.tl-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.tl-text {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.6);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+footer .footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  color: var(--white);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.footer-info {
+  font-size: 0.8rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.footer-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 1.5rem 0;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ===== QUOTE BOX ===== */
+.quote-box {
+  background: linear-gradient(135deg, var(--navy), var(--ocean));
+  border-radius: 16px;
+  padding: 2.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.quote-box::before {
+  content: '"';
+  position: absolute;
+  top: -0.5rem;
+  left: 1.5rem;
+  font-family: 'DM Serif Display', serif;
+  font-size: 8rem;
+  color: rgba(255,255,255,0.07);
+  line-height: 1;
+}
+
+.quote-text {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.quote-source {
+  font-size: 0.8rem;
+  color: var(--teal-light);
+}
+
+/* ===== ACCORDION ===== */
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  background: var(--white);
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.accordion-header:hover { background: #f8fafc; }
+
+.accordion-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.accordion-arrow {
+  transition: transform 0.3s;
+  color: var(--teal);
+  font-size: 0.8rem;
+}
+
+.accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: #f8fafc;
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-body { max-height: 500px; }
+
+.accordion-content {
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+}
+
+/* ===== CHIP TAGS ===== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: rgba(14,116,144,0.08);
+  border: 1px solid rgba(14,116,144,0.2);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-row {
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  margin-bottom: 0.4rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--emerald));
+  transform-origin: left;
+  animation: growBar 1.5s ease both;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+@keyframes scrollAnim {
+  0% { top: 6px; opacity: 1; }
+  100% { top: 22px; opacity: 0; }
+}
+
+@keyframes growBar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ===== TWO-TONE SECTIONS ===== */
+.full-bleed {
+  background: var(--white);
+  padding: 5rem 2rem;
+}
+
+.full-bleed-dark {
+  background: var(--navy);
+  padding: 5rem 2rem;
+  color: white;
+}
+
+.full-bleed-dark h2.section-title { color: white; }
+.full-bleed-dark .section-desc { color: rgba(255,255,255,0.65); }
+.full-bleed-dark .section-tag { color: var(--teal-light); }
+.full-bleed-dark .section-tag::before { background: var(--teal-light); }
+
+.inner-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== INFO GRID ===== */
+.info-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ===== BANNER ===== */
+.banner-strip {
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  padding: 2rem;
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.banner-icon { font-size: 3rem; flex-shrink: 0; }
+
+.banner-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.banner-text { font-size: 0.85rem; opacity: 0.85; line-height: 1.6; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero-nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .info-2col { grid-template-columns: 1fr; }
+  .section { padding: 3rem 1.5rem; }
+  .full-bleed { padding: 3rem 1.5rem; }
+  .full-bleed-dark { padding: 3rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <nav class="hero-nav">
+    <div class="nav-logo">
+      <div class="nav-emblem">🏥</div>
+      <div>
+        <div class="nav-title">衛生福利部</div>
+        <div class="nav-subtitle">Ministry of Health and Welfare, R.O.C.</div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#overview">總覽</a></li>
+      <li><a href="#extreme">極端氣候</a></li>
+      <li><a href="#disease">傳染病</a></li>
+      <li><a href="#disaster">天然災害</a></li>
+      <li><a href="#food">食品安全</a></li>
+      <li><a href="#research">科技研究</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-content">
+    <div class="hero-badge">政策白皮書　二版　2018年5月</div>
+    <h1 class="hero-title">因應氣候變遷之</h1>
+    <h2 class="hero-title-sub">健康衝擊政策白皮書</h2>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <strong>衛生福利部</strong>
+        發行單位
+      </div>
+      <div class="hero-meta-item">
+        <strong>2018年5月</strong>
+        出版日期（二版）
+      </div>
+      <div class="hero-meta-item">
+        <strong>7大章節</strong>
+        完整涵蓋
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">1.4°C</div>
+        <div class="stat-label">臺灣百年<br>平均增溫</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">30×</div>
+        <div class="stat-label">登革熱50年<br>發生率增幅</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">25萬</div>
+        <div class="stat-label">預估年增<br>額外死亡人數</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3.5億</div>
+        <div class="stat-label">受天然災害<br>影響人口數</div>
+      </div>
+    </div>
+  </div>
+
+  <a class="hero-scroll" href="#nav">
+    <div class="scroll-dot"></div>
+    向下捲動
+  </a>
+</section>
+
+<!-- ===== STICKY NAV ===== -->
+<nav class="sticky-nav" id="nav">
+  <div class="sticky-nav-inner">
+    <a href="#overview" class="snav-link">📊 政策總覽</a>
+    <a href="#climate-now" class="snav-link">🌡️ 氣候現況</a>
+    <a href="#extreme" class="snav-link">🔥 極端氣候</a>
+    <a href="#disease" class="snav-link">🦟 傳染病</a>
+    <a href="#disaster" class="snav-link">🌊 天然災害</a>
+    <a href="#food" class="snav-link">🌾 食品安全</a>
+    <a href="#mitigation" class="snav-link">🌿 減緩措施</a>
+    <a href="#research" class="snav-link">🔬 科技研究</a>
+  </div>
+</nav>
+
+<!-- ===== OVERVIEW ===== -->
+<div class="full-bleed" id="overview">
+  <div class="inner-wrap">
+    <div class="section-header">
+      <div class="section-tag">白皮書總覽</div>
+      <h2 class="section-title">六大政策面向</h2>
+      <p class="section-desc">本白皮書針對氣候變遷對健康之衝擊，從極端氣候因應、傳染病防治、天然災害應變、食品安全、減緩措施至科技研究，提出全面性的國家調適策略，守護全體國民健康與福祉。</p>
+    </div>
+
+    <div class="overview-grid">
+      <div class="overview-card" style="--card-color:#0e7490; --card-bg:rgba(14,116,144,0.08)">
+        <div class="card-icon">🌡️</div>
+        <div class="card-title">極端氣候因應對策</div>
+        <div class="card-text">高溫、低溫三級警戒預警機制，以及脆弱族群（老人、兒童、身障者）保護措施，並結合社區資源強化公眾衛教溝通。</div>
+        <div class="chips">
+          <span class="chip">高溫預警</span>
+          <span class="chip">低溫關懷</span>
+          <span class="chip">脆弱族群</span>
+        </div>
+      </div>
+
+      <div class="overview-card" style="--card-color:#059669; --card-bg:rgba(5,150,105,0.08)">
+        <div class="card-icon">🦟</div>
+        <div class="card-title">氣候變遷與傳染病</div>
+        <div class="card-text">以登革熱為核心，建立病媒、水媒及食媒傳染病監測預警系統，同時因應新興傳染病，持續強化防疫量能。</div>
+        <div class="chips">
+          <span class="chip">登革熱防治</span>
+          <span class="chip">疫情監測</span>
+          <span class="chip">預警系統</span>
+        </div>
+      </div>
+
+      <div class="overview-card" style="--card-color:#d97706; --card-bg:rgba(217,119,6,0.08)">
+        <div class="card-icon">⛑️</div>
+        <div class="card-title">天然災害因應策略</div>
+        <div class="card-text">完善緊急醫療體系，強化醫院、長照、社福機構防災整備，並重視災民心理重建與安置收容機制。</div>
+        <div class="chips">
+          <span class="chip">緊急醫療</span>
+          <span class="chip">機構防災</span>
+          <span class="chip">心理重建</span>
+        </div>
+      </div>
+
+      <div class="overview-card" style="--card-color:#7c3aed; --card-bg:rgba(124,58,237,0.08)">
+        <div class="card-icon">🌾</div>
+        <div class="card-title">食品安全與營養</div>
+        <div class="card-text">農藥殘留監控、基因改造食品管理、食品中毒預防與民眾風險溝通，保障極端氣候下的飲食安全。</div>
+        <div class="chips">
+          <span class="chip">農藥監控</span>
+          <span class="chip">基改管理</span>
+          <span class="chip">食品中毒</span>
+        </div>
+      </div>
+
+      <div class="overview-card" style="--card-color:#dc2626; --card-bg:rgba(220,38,38,0.08)">
+        <div class="card-icon">🌿</div>
+        <div class="card-title">減緩氣候變遷措施</div>
+        <div class="card-text">推動低碳醫院節能減碳行動，倡議低碳飲食文化，積極參與國際環境友善醫院網絡，共同承擔減碳責任。</div>
+        <div class="chips">
+          <span class="chip">低碳醫院</span>
+          <span class="chip">低碳飲食</span>
+          <span class="chip">碳足跡</span>
+        </div>
+      </div>
+
+      <div class="overview-card" style="--card-color:#0ea5e9; --card-bg:rgba(14,165,233,0.08)">
+        <div class="card-icon">🔬</div>
+        <div class="card-title">健康衝擊科技研究</div>
+        <div class="card-text">早期預警、健康調適、醫療體系改善、減量效益評估四大面向，以實證科學為政策基礎，強化未來因應量能。</div>
+        <div class="chips">
+          <span class="chip">早期預警</span>
+          <span class="chip">健康調適</span>
+          <span class="chip">大數據分析</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CLIMATE NOW ===== -->
+<section class="section" id="climate-now">
+  <div class="section-header">
+    <div class="section-tag">第一章</div>
+    <h2 class="section-title">氣候變遷現況與健康衝擊</h2>
+    <p class="section-desc">根據IPCC第五次評估報告及臺灣氣候變遷科學報告，氣候變遷已對人類健康造成廣泛且深遠的影響。</p>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote-text">氣候變遷為 21 世紀對人類健康最大的威脅。</div>
+    <div class="quote-source">— Craig Patterson, The Lancet, 2009</div>
+  </div>
+
+  <div class="impact-grid">
+    <div class="impact-list">
+      <h3 style="font-family:'Noto Serif TC',serif; font-size:1rem; color:var(--navy); margin-bottom:0.5rem;">✦ 臺灣氣候變遷關鍵數據</h3>
+
+      <div class="impact-item" style="--item-color:#dc2626">
+        <div class="impact-icon">🌡️</div>
+        <div>
+          <div class="impact-title">平均氣溫上升</div>
+          <div class="impact-desc">1911–2009年間，臺灣年均溫上升 <strong>1.4°C</strong>，近30年（1980–2009）增溫速率加速，每10年上升0.29°C，幾乎是百年趨勢的兩倍。</div>
+        </div>
+      </div>
+
+      <div class="impact-item" style="--item-color:#d97706">
+        <div class="impact-icon">🌧️</div>
+        <div>
+          <div class="impact-title">降雨型態改變</div>
+          <div class="impact-desc">年總降雨日數呈明顯下降趨勢，但大豪雨日數（日雨量 &gt;200mm）近50年顯著增多，洪旱兩極化趨勢加劇。</div>
+        </div>
+      </div>
+
+      <div class="impact-item" style="--item-color:#0e7490">
+        <div class="impact-icon">🌀</div>
+        <div>
+          <div class="impact-title">強颱頻率增加</div>
+          <div class="impact-desc">2000–2009年極端強降雨颱風發生頻率（1.1次/年）較1970–1999年（0.2–3次/年）顯著上升，颱風降雨占年總雨量比率從15%升至30%。</div>
+        </div>
+      </div>
+
+      <div class="impact-item" style="--item-color:#059669">
+        <div class="impact-icon">🔮</div>
+        <div>
+          <div class="impact-title">未來情境推估</div>
+          <div class="impact-desc">2016–2035年臺灣年均溫預估再升溫0.3–0.9°C；熱浪天數將增加，強烈颱風比例及降雨強度將提高。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-box">
+      <h3>🔥 氣候變遷健康危害類型</h3>
+      <div class="data-row">
+        <div class="data-label">極端高溫／低溫<br><small>熱中暑、熱衰竭、心血管呼吸道疾病</small></div>
+        <div class="data-value">直接</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">空氣汙染惡化<br><small>臭氧、懸浮微粒增加，呼吸道、心血管疾病</small></div>
+        <div class="data-value">間接</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">水災洪患<br><small>腸道傳染病、鉤端螺旋體病、心理創傷</small></div>
+        <div class="data-value">直接</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">乾旱缺水<br><small>糧食不足、腹瀉、蚊蟲孳生</small></div>
+        <div class="data-value">間接</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">病媒傳染病<br><small>登革熱發生率50年增加30倍</small></div>
+        <div class="data-value">間接</div>
+      </div>
+
+      <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5); margin-bottom:0.8rem;">WHO估計2030–2050年氣候變遷年均額外死亡人數</div>
+        <div style="font-family:'DM Serif Display',serif; font-size:2.5rem; color:#22d3ee;">25萬人</div>
+        <div style="font-size:0.72rem; color:rgba(255,255,255,0.4);">含營養不良、瘧疾、腹瀉、熱危害（WHO, 2018）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXTREME CLIMATE ===== -->
+<div class="full-bleed" id="extreme">
+  <div class="inner-wrap">
+    <div class="section-header">
+      <div class="section-tag">第二章</div>
+      <h2 class="section-title">極端氣候之因應對策</h2>
+      <p class="section-desc">本部建立高溫、低溫三級警戒機制，並針對脆弱族群提供特別保護措施，結合社區資源提升民眾因應能力。</p>
+    </div>
+
+    <h3 style="font-family:'Noto Serif TC',serif; font-size:1rem; color:var(--navy); margin-bottom:1rem;">📊 高溫預警行動方案分級標準</h3>
+    <table class="warning-table" style="margin-bottom:2rem">
+      <thead>
+        <tr>
+          <th>警戒等級</th>
+          <th>溫度條件</th>
+          <th>因應重點</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="level-badge level-yellow">🟡 黃色警戒（預警期）</span></td>
+          <td>預測最高溫 ≥36°C</td>
+          <td>發布衛教資訊、提醒高風險族群、加強弱勢關懷訪視</td>
+        </tr>
+        <tr>
+          <td><span class="level-badge level-orange">🟠 橘色警戒（警戒期）</span></td>
+          <td>最高溫 ≥38°C，或 ≥36°C 持續3日</td>
+          <td>啟動弱勢關懷專案計畫、強化機構應變、開放避暑場所</td>
+        </tr>
+        <tr>
+          <td><span class="level-badge level-red">🔴 紅色警戒（應變期）</span></td>
+          <td>最高溫 ≥38°C 持續3日以上</td>
+          <td>全面動員應變機制、必要時設立臨時避暑安置收容處所</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Noto Serif TC',serif; font-size:1rem; color:var(--navy); margin-bottom:1rem;">❄️ 低溫三級警戒範圍</h3>
+    <table class="warning-table" style="margin-bottom:2rem">
+      <thead>
+        <tr>
+          <th>警戒等級</th>
+          <th>溫度條件</th>
+          <th>因應重點</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="level-badge level-yellow">🟡 黃色警戒</span></td>
+          <td>氣象預報 11–12°C</td>
+          <td>加強保暖宣導，預防低溫導致呼吸道及心血管疾病</td>
+        </tr>
+        <tr>
+          <td><span class="level-badge level-orange">🟠 橘色警戒</span></td>
+          <td>氣象預報 10°C</td>
+          <td>啟動低溫關懷措施，開設避寒場所，街頭遊民關懷服務</td>
+        </tr>
+        <tr>
+          <td><span class="level-badge level-red">🔴 紅色警戒</span></td>
+          <td>10°C以下持續3日以上</td>
+          <td>全面啟動緊急安置庇護，強化弱勢族群全面關懷</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-family:'Noto Serif TC',serif; font-size:1rem; color:var(--navy); margin-bottom:1rem;">🛡️ 脆弱族群保護措施</h3>
+    <div class="overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px,1fr))">
+      <div class="overview-card" style="--card-color:#0e7490; --card-bg:rgba(14,116,144,0.06)">
+        <div class="card-icon">👶</div>
+        <div class="card-title">兒童及少年</div>
+        <div class="card-text">高溫時避免戶外曝曬，活動選在蔭蔽處；低溫時加強保暖，確保頭、頸、手、腳溫暖，提高傳染性感冒警覺性。</div>
+      </div>
+      <div class="overview-card" style="--card-color:#059669; --card-bg:rgba(5,150,105,0.06)">
+        <div class="card-icon">♿</div>
+        <div class="card-title">身心障礙者</div>
+        <div class="card-text">高溫：提高對中暑、熱衰竭警覺性。低溫：注意高血壓、心血管病史，維持良好血液循環，補充熱飲。心智障礙者體溫調節功能薄弱，需特別關注。</div>
+      </div>
+      <div class="overview-card" style="--card-color:#d97706; --card-bg:rgba(217,119,6,0.06)">
+        <div class="card-icon">👴</div>
+        <div class="card-title">老人</div>
+        <div class="card-text">監測體溫及健康情形，加強飲食營養；維持機構適當溫度；獨居老人比例高之鄉鎮因極端溫度死亡風險較高，需定期關懷訪視。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DISEASE ===== -->
+<section class="section" id="disease">
+  <div class="section-header">
+    <div class="section-tag">第三章</div>
+    <h2 class="section-title">氣候變遷與傳染病</h2>
+    <p class="section-desc">溫度、雨量、濕度的改變影響病媒生態，使傳染病快速傳播、地理範圍擴大，對公共衛生帶來嚴峻挑戰。</p>
+  </div>
+
+  <div class="disease-grid">
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🦟</div>
+        <div>
+          <div class="disease-name">登革熱</div>
+          <div class="disease-category">病媒傳染病</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>過去50年全球發生率增加<strong>30倍</strong></li>
+        <li>全球39億人口面臨威脅，每年約3.9億人感染</li>
+        <li>2015年台南、高雄爆發4.3萬例二戰以來最嚴峻疫情</li>
+        <li>氣候變遷可能使埃及斑蚊分布北移，防治難度大增</li>
+        <li>WHO目標：2020年死亡率降50%、發生率降25%</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🌧️</div>
+        <div>
+          <div class="disease-name">類鼻疽</div>
+          <div class="disease-category">水媒傳染病</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>颱風災後1–3週為疫情高峰期</li>
+        <li>過去15年發現367例，發生3次群突發</li>
+        <li>病原菌普遍存在台灣中南部深層土壤</li>
+        <li>強風豪雨將土壤病原菌帶出地表，吸入懸浮水氣為主要感染途徑</li>
+        <li>南台灣為主要高風險地區</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🐀</div>
+        <div>
+          <div class="disease-name">鉤端螺旋體病</div>
+          <div class="disease-category">人畜共通傳染病</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>屬人畜共通傳染病，颱風後動物排洩物污染水源</li>
+        <li>2009年莫拉克風災後南部災區造成約<strong>130例</strong>群聚疫情</li>
+        <li>颱風災後淹水地區高風險</li>
+        <li>菲律賓等東南亞國家災後常見爆發</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🦠</div>
+        <div>
+          <div class="disease-name">新興傳染病</div>
+          <div class="disease-category">境外移入風險</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>茲卡病毒（2015–2016年全球爆發）</li>
+        <li>發熱伴血小板減少症候群（SFTS）</li>
+        <li>日本腦炎：前2個月均溫每升1°C，發生率增約19%</li>
+        <li>恙蟲病：前6週均溫每升1°C，發生率增1.5倍</li>
+        <li>國際交流頻繁使境外移入風險持續增加</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="banner-strip" style="margin-top:2rem">
+    <div class="banner-icon">📡</div>
+    <div>
+      <div class="banner-title">監測與預警系統建置</div>
+      <div class="banner-text">本部疾管署建置傳染病個案通報系統、疫情資料倉儲系統，建立登革熱、日本腦炎、桿菌性痢疾、鉤端螺旋體病與類鼻疽等氣候相關傳染病預警值，並於2016年於南台灣成立國家蚊媒傳染病防治研究中心。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DISASTER ===== -->
+<div class="full-bleed" id="disaster">
+  <div class="inner-wrap">
+    <div class="section-header">
+      <div class="section-tag">第四章</div>
+      <h2 class="section-title">天然災害因應策略</h2>
+      <p class="section-desc">完善全國緊急醫療體系，強化各類機構防災整備與應變量能，確保民眾於災害發生時能獲得及時救助。</p>
+    </div>
+
+    <div class="strategy-tabs">
+      <button class="stab active" onclick="showPanel('p1')">⛑️ 緊急應變體系</button>
+      <button class="stab" onclick="showPanel('p2')">🏥 機構防災整備</button>
+      <button class="stab" onclick="showPanel('p3')">🧠 心理重建</button>
+      <button class="stab" onclick="showPanel('p4')">🏘️ 安置與重建</button>
+    </div>
+
+    <div class="strategy-panel active" id="p1">
+      <div class="strategy-item">
+        <div class="strategy-num">01</div>
+        <div>
+          <div class="strategy-title">緊急醫療能力分級制度</div>
+          <div class="strategy-text">全國指定急救責任醫院199家（重度級39家、中度級81家），提供全年365天、全天候緊急傷病患醫療照護。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">02</div>
+        <div>
+          <div class="strategy-title">區域緊急醫療應變中心（REMOC）</div>
+          <div class="strategy-text">災害發生時即啟動應變機制，即時監控水電中斷、病患收治、道路狀況，必要時派遣國家級災難醫療救護隊（NDMAT）支援。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">03</div>
+        <div>
+          <div class="strategy-title">偏鄉及離島整備</div>
+          <div class="strategy-text">原住民族及離島共48個鄉，土地占台灣44%，長期強化緊急發電機、醫療視訊設備，與空中轉診中心24小時連線。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-panel" id="p2">
+      <div class="strategy-item">
+        <div class="strategy-num">01</div>
+        <div>
+          <div class="strategy-title">醫院防災計畫</div>
+          <div class="strategy-text">依法訂定緊急災害應變措施計畫，涵蓋減災預防、準備、應變、復原各階段；醫院評鑑含風險與危機管理基準。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">02</div>
+        <div>
+          <div class="strategy-title">護理機構防災（531家一般護理之家）</div>
+          <div class="strategy-text">以現場「災害應變情境演練」方式評鑑；建置災害潛勢圖（水災、土石流套疊），建立風險分級；制訂複合式災害緊急應變指引。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">03</div>
+        <div>
+          <div class="strategy-title">社福機構篩選整備</div>
+          <div class="strategy-text">與國家災害防救科技中心合作，篩選位於淹水、土石流、坡地潛勢區機構，建立跨局處公共安全及災害撤離機制。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-panel" id="p3">
+      <div class="strategy-item">
+        <div class="strategy-num">01</div>
+        <div>
+          <div class="strategy-title">災難心理衛生動員計畫</div>
+          <div class="strategy-text">由地方衛生局調度心理健康服務機關，超過負荷時透過精神醫療網支援；固定醫療團隊服務避免個案重複受創。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">02</div>
+        <div>
+          <div class="strategy-title">安心專線</div>
+          <div class="strategy-text">0800-788-995，24小時免付費心理諮詢，必要時轉介醫療院所進一步治療，防止急性壓力反應轉為創傷後壓力症候群（PTSD）。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">03</div>
+        <div>
+          <div class="strategy-title">長期追蹤關懷</div>
+          <div class="strategy-text">公衛護士定期關懷訪視，發現就學、就業、就養需求時轉介相關單位，確保災後心理重建持續推進。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-panel" id="p4">
+      <div class="strategy-item">
+        <div class="strategy-num">01</div>
+        <div>
+          <div class="strategy-title">全國災民收容處所</div>
+          <div class="strategy-text">2018年全國共5,963處收容所，可收容人數達253萬1,828人；並核查是否座落於水災、土石流等災害潛勢區域。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">02</div>
+        <div>
+          <div class="strategy-title">生活重建服務中心</div>
+          <div class="strategy-text">於各災區鄉鎮市設立，提供生活、心理、就學、就業、各項福利及轉介服務，協助災民回歸正常生活。</div>
+        </div>
+      </div>
+      <div class="strategy-item">
+        <div class="strategy-num">03</div>
+        <div>
+          <div class="strategy-title">社區組織與資源網絡</div>
+          <div class="strategy-text">以社區組織建構資源網絡，建立社區共識，主動發掘需求，提升服務輸送效能，強化社區共同體復原力。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOD ===== -->
+<section class="section" id="food">
+  <div class="section-header">
+    <div class="section-tag">第五章</div>
+    <h2 class="section-title">氣候變遷造成的食品安全與營養問題</h2>
+    <p class="section-desc">臺灣糧食自給率僅31%（2016年），氣候變遷引起的糧食波動、農藥使用變化及食品貯存環境改變，對食品安全帶來多重挑戰。</p>
+  </div>
+
+  <div class="info-2col">
+    <div>
+      <div class="accordion open">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">🌾 農畜產品食品衛生安全</div>
+          <div class="accordion-arrow">▼</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">訂定「農藥殘留容許量標準」及「動物用藥殘留標準」，持續與國際規範調和。針對高風險輸入肉品依食品安全衛生管理法實施系統性查核，肉類加工食品業需符合HACCP規定。</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">🧬 基因改造食品管理</div>
+          <div class="accordion-arrow">▼</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">採上市前查驗登記許可制度，由「基因改造食品審議小組」逐案嚴格審查。自2015年12月31日全面施行基改食品標示規定，非有意摻入超過3%即視為基因改造原料，須明確標示。</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">🍱 強化食品中毒預防</div>
+          <div class="accordion-arrow">▼</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">氣候變遷造成溫濕度環境改變，增加微生物增殖及食品中毒風險。加強民眾衛教宣導（冷藏加熱處理、避免生熟食交叉污染），並要求業者建立自主管理制度，維護飲食安全。</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">📣 民眾風險溝通與衛教</div>
+          <div class="accordion-arrow">▼</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">讓民眾了解不同食品安全事件之可能風險及降低風險的方法。透過有效宣導建立正確飲食衛生習慣，需民眾、政府及業者三方協力，持續精進風險溝通機制。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-box">
+      <h3>📋 臺灣食品安全風險重點</h3>
+      <div class="data-row">
+        <div class="data-label">綜合糧食自給率<br><small>2016年，其餘仰賴進口</small></div>
+        <div class="data-value">31%</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">家戶碳足跡來自食物比例</div>
+        <div class="data-value">20%</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">畜產溫室氣體占全球排放量</div>
+        <div class="data-value">18%</div>
+      </div>
+      <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:1rem;">主要食品安全風險因子</div>
+        <div class="progress-row">
+          <div class="progress-label" style="color:rgba(255,255,255,0.6)"><span>農藥殘留</span><span>高</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label" style="color:rgba(255,255,255,0.6)"><span>食品中毒（微生物）</span><span>中高</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label" style="color:rgba(255,255,255,0.6)"><span>基因改造食品管理</span><span>持續監控</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label" style="color:rgba(255,255,255,0.6)"><span>輸入肉品風險</span><span>中</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MITIGATION ===== -->
+<div class="full-bleed-dark" id="mitigation">
+  <div class="inner-wrap">
+    <div class="section-header">
+      <div class="section-tag">第六章</div>
+      <h2 class="section-title">減緩氣候變遷之措施與政策</h2>
+      <p class="section-desc">本部除擬定調適策略外，亦積極推動節能減碳、低碳醫院與低碳飲食政策，共同承擔減緩氣候變遷之責任。</p>
+    </div>
+
+    <div class="info-2col">
+      <div>
+        <h3 style="font-family:'Noto Serif TC',serif; font-size:1.1rem; color:var(--teal-light); margin-bottom:1.5rem;">🏥 減碳醫院推動成果</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="tl-date">2010年起</div>
+            <div class="tl-title">年度低碳醫院輔導工作坊</div>
+            <div class="tl-text" style="color:rgba(255,255,255,0.6)">提供醫院經驗交流平台，分區輔導團隊赴39家醫院實地診斷，輔導節能減碳措施。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-date">2010年</div>
+            <div class="tl-title">出版《綠色醫院推動經驗分享手冊》</div>
+            <div class="tl-text" style="color:rgba(255,255,255,0.6)">介紹國內外13家醫院推動節能減碳相關經驗，2012年增修。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-date">2016年</div>
+            <div class="tl-title">國際低碳醫院最佳案例獎</div>
+            <div class="tl-text" style="color:rgba(255,255,255,0.6)">雙和醫院、大里仁愛醫院獲獎，於維也納第25屆HPH國際研討會表揚。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-date">至2017年底</div>
+            <div class="tl-title">174家醫院響應節能減碳行動</div>
+            <div class="tl-text" style="color:rgba(255,255,255,0.6)">已將醫院推動節能減碳納入「健康醫院認證」基準，醫院占非製造業大用戶總能源消費14.7%。</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-family:'Noto Serif TC',serif; font-size:1.1rem; color:var(--teal-light); margin-bottom:1.5rem;">🌿 低碳飲食七大原則</h3>
+        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+          <div style="display:flex; align-items:flex-start; gap:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:1.4rem; flex-shrink:0">🌱</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem; color:rgba(255,255,255,0.9); margin-bottom:0.2rem">選當季食材</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.55)">當季生產能耗低、碳排少，風味最佳</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:1.4rem; flex-shrink:0">📍</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem; color:rgba(255,255,255,0.9); margin-bottom:0.2rem">選在地食材</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.55)">減少運輸碳排，支持在地農業</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:1.4rem; flex-shrink:0">📦</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem; color:rgba(255,255,255,0.9); margin-bottom:0.2rem">選精簡包裝、少加工食材</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.55)">減少製造與廢棄物處理的碳排</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:1.4rem; flex-shrink:0">⚖️</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem; color:rgba(255,255,255,0.9); margin-bottom:0.2rem">購買適當份量 ＋ 節能烹調</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.55)">減少食物浪費，採用節能方式烹調</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:1.4rem; flex-shrink:0">🚲</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem; color:rgba(255,255,255,0.9); margin-bottom:0.2rem">購物少用交通工具 ＋ 減少垃圾</div>
+              <div style="font-size:0.78rem; color:rgba(255,255,255,0.55)">步行、騎車或大眾運輸，自備容器</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESEARCH ===== -->
+<section class="section" id="research">
+  <div class="section-header">
+    <div class="section-tag">第七章</div>
+    <h2 class="section-title">氣候變遷對健康衝擊之科技研究</h2>
+    <p class="section-desc">以科學實證為政策基礎，本部規劃四大研究面向，強化因應氣候變遷健康衝擊之知識量能。</p>
+  </div>
+
+  <div class="research-grid" style="margin-bottom:3rem">
+    <div class="research-card">
+      <span class="research-icon">⚠️</span>
+      <div class="research-title">早期預警與健康促進</div>
+      <div class="research-count">16+</div>
+      <div class="research-label">已執行相關計畫</div>
+    </div>
+    <div class="research-card">
+      <span class="research-icon">🎓</span>
+      <div class="research-title">健康調適策略與教育</div>
+      <div class="research-count">13+</div>
+      <div class="research-label">已執行相關計畫</div>
+    </div>
+    <div class="research-card">
+      <span class="research-icon">🏥</span>
+      <div class="research-title">基本醫療服務改善</div>
+      <div class="research-count">5+</div>
+      <div class="research-label">推動策略方向</div>
+    </div>
+    <div class="research-card">
+      <span class="research-icon">♻️</span>
+      <div class="research-title">減量策略與健康效益</div>
+      <div class="research-count">6+</div>
+      <div class="research-label">未來研究規劃</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Noto Serif TC',serif; font-size:1.1rem; color:var(--navy); margin-bottom:1.5rem;">🔮 未來重點研究方向</h3>
+  <div class="disease-grid">
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🌡️</div>
+        <div>
+          <div class="disease-name">熱危害敏感族群</div>
+          <div class="disease-category">高溫健康研究</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>界定易受高溫影響之敏感族群</li>
+        <li>分析氣溫對懷孕婦女及學齡兒童健康之影響</li>
+        <li>評估新興污染物發生對健康衝擊</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🗺️</div>
+        <div>
+          <div class="disease-name">健康風險地圖建置</div>
+          <div class="disease-category">大數據 × GIS</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>建立大數據資料倉儲與GIS圖台</li>
+        <li>建立環境品質對健康關聯性，繪製健康風險地圖</li>
+        <li>強化氣候變遷研究平台分析功能</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🦟</div>
+        <div>
+          <div class="disease-name">病媒疾病預警系統</div>
+          <div class="disease-category">智慧防疫</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>模擬各種氣候條件下登革熱防治最佳時機</li>
+        <li>發展AI智能捕蚊器與深度學習影像辨識系統</li>
+        <li>追蹤病媒蚊活動動態範圍與分布密度</li>
+      </ul>
+    </div>
+
+    <div class="disease-card">
+      <div class="disease-header">
+        <div class="disease-emoji">🌐</div>
+        <div>
+          <div class="disease-name">跨部會國際合作</div>
+          <div class="disease-category">整合協作</div>
+        </div>
+      </div>
+      <ul class="disease-facts">
+        <li>落實衛生、農業、經濟、環保跨部會資源整合</li>
+        <li>建立食物安全健康調適策略</li>
+        <li>推動國際合作與接軌</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONCLUSION ===== -->
+<div class="full-bleed-dark">
+  <div class="inner-wrap">
+    <div class="section-header">
+      <div class="section-tag">總結</div>
+      <h2 class="section-title">持續調適・共同守護健康</h2>
+    </div>
+
+    <div class="quote-box" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1)">
+      <div class="quote-text" style="color:white;">氣候變遷對健康的影響甚鉅且迫在眉睫，本部以積極且審慎的態度面對各項挑戰，除持續提升民眾衛教知能外，並強化科學研究、整合各界資源，強化跨部會、公私部門、中央與地方之合作，持續檢討改進，以降低氣候變遷帶來的衝擊及挑戰。</div>
+      <div class="quote-source">— 衛生福利部，因應氣候變遷之健康衝擊政策白皮書（2018年二版）</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; margin-top:2rem">
+      <div style="text-align:center; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem">📊</div>
+        <div style="font-family:'Noto Serif TC',serif; font-weight:700; color:white; margin-bottom:0.3rem">科學實證</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5)">以本土研究數據<br>為政策依據</div>
+      </div>
+      <div style="text-align:center; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem">🤝</div>
+        <div style="font-family:'Noto Serif TC',serif; font-weight:700; color:white; margin-bottom:0.3rem">跨部會合作</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5)">整合衛生、農業、<br>環保、社福資源</div>
+      </div>
+      <div style="text-align:center; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem">🛡️</div>
+        <div style="font-family:'Noto Serif TC',serif; font-weight:700; color:white; margin-bottom:0.3rem">脆弱族群優先</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5)">老人、兒童、原住民、<br>身障者特別保護</div>
+      </div>
+      <div style="text-align:center; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem">🌱</div>
+        <div style="font-family:'Noto Serif TC',serif; font-weight:700; color:white; margin-bottom:0.3rem">減緩與調適並行</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5)">積極減碳同時<br>強化韌性調適</div>
+      </div>
+      <div style="text-align:center; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem">🌏</div>
+        <div style="font-family:'Noto Serif TC',serif; font-weight:700; color:white; margin-bottom:0.3rem">國際接軌</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.5)">與WHO、IPCC<br>及各國合作交流</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">衛生福利部</div>
+    <div style="font-size:0.78rem; color:rgba(255,255,255,0.4); margin-bottom:0.5rem">Ministry of Health and Welfare, Republic of China (Taiwan)</div>
+    <div class="footer-info">
+      地址：台北市南港區忠孝東路6段488號<br>
+      電話：(02)8590-6666　網址：https://www.mohw.gov.tw<br>
+      <br>
+      <strong style="color:rgba(255,255,255,0.7)">因應氣候變遷之健康衝擊政策白皮書</strong><br>
+      初版：2014年12月　二版：2018年5月<br>
+      ISBN：978-986-0561470　GPN：4710700874
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-copy">本網站為白皮書數位化呈現版本，內容依據衛生福利部2018年二版政策白皮書。</div>
+  </div>
+</footer>
+
+<script>
+// Strategy panel tabs
+function showPanel(id) {
+  document.querySelectorAll('.strategy-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Accordion
+function toggleAcc(header) {
+  const acc = header.closest('.accordion');
+  acc.classList.toggle('open');
+}
+
+// Sticky nav active state
+const sections = document.querySelectorAll('[id]');
+const snavLinks = document.querySelectorAll('.snav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      snavLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Animate numbers on scroll
+const counters = document.querySelectorAll('.stat-num');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeUp 0.6s ease both';
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+</script>
+</body>
+</html>
