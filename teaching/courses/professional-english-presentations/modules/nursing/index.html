@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>護理健康英文簡報課程</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.site-hero{
+  background:linear-gradient(135deg,#0e3025,#1a7a6a,#1e9a85);
+  padding:40px clamp(14px,4vw,36px) 32px;position:relative;overflow:hidden;
+}
+.site-hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.site-hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:#fff;margin-bottom:7px;letter-spacing:-.5px;}
+.site-hero p{color:rgba(255,255,255,.75);font-size:.88rem;line-height:1.65;max-width:520px;margin-bottom:18px;}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;}
+.htag{padding:5px 13px;border-radius:20px;font-size:.73rem;font-weight:700;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);color:#fff;}
+.pw{max-width:800px;margin:0 auto;padding:24px clamp(14px,4vw,36px) 60px;}
+.mod-sec{margin-bottom:32px;}
+.mod-hdr{margin-bottom:14px;}
+.mod-hdr h2{font-size:.95rem;font-weight:900;color:var(--teal);}
+.mod-hdr p{font-size:.76rem;color:var(--muted);margin-top:2px;}
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px;}
+.icard{
+  background:var(--white);border-radius:var(--radius);overflow:hidden;
+  border:1.5px solid var(--border);box-shadow:var(--shadow);
+  display:flex;flex-direction:column;
+  transition:transform .2s,box-shadow .2s;
+}
+.icard:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.1);}
+.icard-top{background:linear-gradient(135deg,var(--c1),var(--c2));padding:14px 13px 11px;}
+.icard-badge{font-size:.6rem;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.6);margin-bottom:4px;}
+.icard-zh{font-size:.88rem;font-weight:800;color:#fff;line-height:1.3;}
+.icard-en{font-size:.65rem;color:rgba(255,255,255,.65);margin-top:2px;}
+.icard-body{padding:11px 12px;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.icard-fns{font-size:.71rem;color:var(--slate);line-height:1.5;margin-bottom:7px;min-height:32px;}
+.icard-meta{display:flex;justify-content:space-between;font-size:.64rem;color:var(--muted);border-top:1px solid var(--teal-pale);padding-top:6px;}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing Students</span></div>
+  </div>
+  <div class="nav-right">
+    <a href="topics.html" class="nbtn pri">🌍 Choose Your Topic</a>
+  </div>
+</nav>
+
+<div class="site-hero">
+  <div class="hero-deco" style="width:280px;height:280px;right:-70px;top:-70px;"></div>
+  <div class="site-hero-inner">
+    <div style="font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:9px;">🏥 Nursing Department · University Course</div>
+    <h1>健康主題英文簡報</h1>
+    <p>English Health Presentation for Nursing Students · 15 Units · 13 Weeks<br>
+    <strong>Final Goal:</strong> A confident 5-minute evidence-based presentation on a health topic connected to the UN Sustainable Development Goals.</p>
+    <div class="hero-tags">
+      <span class="htag">⏱ 5-Min Final Exam</span>
+      <span class="htag">🏥 Health Topic</span>
+      <span class="htag">🌍 SDG Connected</span>
+      <span class="htag">✏️ Fill-in-Blank Worksheets</span>
+      <span class="htag">📄 Export to Word / PDF</span>
+      <span class="htag">🔤 Bilingual Toggle</span>
+    </div>
+  </div>
+</div>
+
+<div class="pw">
+        <div class="mod-sec">
+          <div class="mod-hdr">
+            <h2>🚀 Module 1 — Foundation</h2>
+            <p><strong>Week 1–6</strong> · Opening · Topic · Hook · Objective · Structure · Rhythm</p>
+          </div>
+          <div class="igrid">
+            <a href="unit1.html" class="icard" style="--c1:#1a5c8a;--c2:#2e85c8;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 1 · U1</div>
+                <div style="font-size:1.7rem;margin:5px 0;">👋</div>
+                <div class="icard-zh">自我介紹與課程導覽</div>
+                <div class="icard-en">Self-Introduction & Course Overview</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Greet Your Audience · Introduce Yourself · State Your Topic · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit2.html" class="icard" style="--c1:#2d7a4e;--c2:#3aaa68;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 2 · U2</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🌍</div>
+                <div class="icard-zh">介紹健康主題與SDG連結</div>
+                <div class="icard-en">Introducing Your Health Topic & SDG Connection</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Announce the Topic · Give Background & Context · Connect to an SDG Goal · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit3.html" class="icard" style="--c1:#b5341a;--c2:#e04a28;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 3 · U3</div>
+                <div style="font-size:1.7rem;margin:5px 0;">⚡</div>
+                <div class="icard-zh">吸引聽眾注意力</div>
+                <div class="icard-en">Attention Grabber for Health Topics</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Open with a Health Statistic · Tell a Brief Patient Story · Ask a Rhetorical Question · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit4.html" class="icard" style="--c1:#19486a;--c2:#2068a0;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 4 · U4</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🎯</div>
+                <div class="icard-zh">說明簡報目標</div>
+                <div class="icard-en">Stating Your Presentation Objective</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">State the Aim · Define the Scope · Explain the Relevance to Nursing · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit5.html" class="icard" style="--c1:#5a2d82;--c2:#8040c0;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 5 · U5</div>
+                <div style="font-size:1.7rem;margin:5px 0;">📋</div>
+                <div class="icard-zh">規劃5分鐘簡報架構</div>
+                <div class="icard-en">Outlining Your 5-Minute Structure</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Signal the Structure · Describe Each Section · Frame the Problem–Evidence–Solution Arc · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit6.html" class="icard" style="--c1:#7a1a5a;--c2:#b02888;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 6 · U6</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🎵</div>
+                <div class="icard-zh">醫護語調與語速</div>
+                <div class="icard-en">Rhythm, Stress & Intonation in Health English</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Stress Key Health Information · Use Pauses for Impact · Use Rising and Falling Intonation · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a></div>
+        </div>
+        <div class="mod-sec">
+          <div class="mod-hdr">
+            <h2>📊 Module 2 — Build the Body</h2>
+            <p><strong>Week 7–10</strong> · Data · Body Language · Examples · Signposts · Visuals</p>
+          </div>
+          <div class="igrid">
+            <a href="unit7.html" class="icard" style="--c1:#1a4a6b;--c2:#2a7aab;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 7 · U7</div>
+                <div style="font-size:1.7rem;margin:5px 0;">📊</div>
+                <div class="icard-zh">呈現健康數據與實證</div>
+                <div class="icard-en">Presenting Health Data & Evidence</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Cite Your Source · Describe a Trend · Compare and Contextualise Data · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>7 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit8.html" class="icard" style="--c1:#5a3a1a;--c2:#9a6a2a;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 8 · U8</div>
+                <div style="font-size:1.7rem;margin:5px 0;">👁️</div>
+                <div class="icard-zh">肢體語言與眼神接觸</div>
+                <div class="icard-en">Body Language & Eye Contact</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Maintain Eye Contact · Use Purposeful Gestures · Control Posture and Movement · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit9.html" class="icard" style="--c1:#c05010;--c2:#e87030;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 9 · U9</div>
+                <div style="font-size:1.7rem;margin:5px 0;">💡</div>
+                <div class="icard-zh">解釋與臨床案例舉例</div>
+                <div class="icard-en">Elaborating with Clinical Examples</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Introduce a Clinical Example · Develop the Example · Use a Health Analogy · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>7 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit10.html" class="icard" style="--c1:#2a4a8a;--c2:#4a6aca;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 10 · U10</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🧭</div>
+                <div class="icard-zh">簡報引導語言</div>
+                <div class="icard-en">Signpost Language for Health Presentations</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Open and Begin a New Section · Emphasise and Highlight · Refer Back and Link Forward · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>8 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit11.html" class="icard" style="--c1:#1a7a6a;--c2:#2aaa90;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 10 · U11</div>
+                <div style="font-size:1.7rem;margin:5px 0;">📈</div>
+                <div class="icard-zh">視覺輔助與健康圖表</div>
+                <div class="icard-en">Visual Aids & Health Data Visualisation</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Introduce a Visual · Describe a Trend or Pattern · Interpret the Visual for Nursing · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>6 sentences</span>
+                </div>
+              </div>
+            </a></div>
+        </div>
+        <div class="mod-sec">
+          <div class="mod-hdr">
+            <h2>🏁 Module 3 — Finish Strong</h2>
+            <p><strong>Week 11–13</strong> · Conclusion · Q&A · 5-Min Timing · Final Rehearsal</p>
+          </div>
+          <div class="igrid">
+            <a href="unit12.html" class="icard" style="--c1:#6a1a1a;--c2:#aa3030;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 11 · U12</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🏁</div>
+                <div class="icard-zh">結論與護理行動倡議</div>
+                <div class="icard-en">Conclusion & Nursing Action Advocacy</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Summarise Your Key Points · Restate the SDG Connection · Issue a Call to Nursing Action · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>7 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit13.html" class="icard" style="--c1:#3a1a6b;--c2:#6030aa;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 12 · U13</div>
+                <div style="font-size:1.7rem;margin:5px 0;">❓</div>
+                <div class="icard-zh">問題與專業回應</div>
+                <div class="icard-en">Inviting Questions & Professional Responses</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Invite Questions Professionally · Acknowledge and Repeat the Question · Answer the Question Using Evidence · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>5 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit14.html" class="icard" style="--c1:#1a4a6a;--c2:#2a7aaa;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 12 · U14</div>
+                <div style="font-size:1.7rem;margin:5px 0;">⏱️</div>
+                <div class="icard-zh">5分鐘時間控管</div>
+                <div class="icard-en">5-Minute Time Management</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Plan Your 5-Minute Allocation · Manage Overtime Gracefully · Manage Undertime Gracefully · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>7 sentences</span>
+                </div>
+              </div>
+            </a>
+            <a href="unit15.html" class="icard" style="--c1:#2e5a1a;--c2:#4a9a2e;">
+              <div class="icard-top">
+                <div class="icard-badge">Wk 13 · U15</div>
+                <div style="font-size:1.7rem;margin:5px 0;">🏆</div>
+                <div class="icard-zh">致謝、道別與最終演練</div>
+                <div class="icard-en">Closing, Thank You & Final Rehearsal</div>
+              </div>
+              <div class="icard-body">
+                <div class="icard-fns">Thank the Audience Sincerely · Restate Your Core Message · Issue a Final Call to Action · …</div>
+                <div class="icard-meta">
+                  <span>4 functions</span>
+                  <span>7 sentences</span>
+                </div>
+              </div>
+            </a></div>
+        </div></div>
+</body>
+</html>

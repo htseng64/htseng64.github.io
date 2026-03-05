@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>U7: 呈現健康數據與實證 | 護理健康英文簡報</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.hero{background:linear-gradient(135deg,#1a4a6b,#2a7aab);}
+.pill.on{background:#1a4a6b;border-color:#1a4a6b;}
+:root{--c1:#1a4a6b;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing</span></div>
+  </a>
+  <div class="nav-right">
+    <button id="langBtn" class="nbtn" onclick="toggleLang()">🔤 English Only</button>
+    <a href="topics.html" class="nbtn">🌍 Topics</a>
+    <a href="index.html" class="nbtn">← Home</a>
+  </div>
+</nav>
+
+<!-- PILL NAV -->
+<div class="pillnav">
+  <span class="plabel">UNITS:</span>
+  <a href="index.html" class="pill">🏠</a>
+  <a href="unit1.html" class="pill">U1</a><a href="unit2.html" class="pill">U2</a><a href="unit3.html" class="pill">U3</a><a href="unit4.html" class="pill">U4</a><a href="unit5.html" class="pill">U5</a><a href="unit6.html" class="pill">U6</a><a href="unit7.html" class="pill  on">U7</a><a href="unit8.html" class="pill">U8</a><a href="unit9.html" class="pill">U9</a><a href="unit10.html" class="pill">U10</a><a href="unit11.html" class="pill">U11</a><a href="unit12.html" class="pill">U12</a><a href="unit13.html" class="pill">U13</a><a href="unit14.html" class="pill">U14</a><a href="unit15.html" class="pill">U15</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco" style="width:220px;height:220px;right:-50px;top:-50px;"></div>
+  <div class="hero-deco" style="width:120px;height:120px;left:25%;bottom:-40px;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Week 7 · Unit 7 / 15 · 47% through course</div>
+    <div class="hero-icon">📊</div>
+    <h1>呈現健康數據與實證</h1>
+    <div class="hero-en">Presenting Health Data & Evidence</div>
+    <div class="hero-goal zh"><strong>🎯 </strong>Present health statistics, research findings, and epidemiological data clearly and credibly.</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-info">
+      ✏️ Fill in the blanks · Click <strong>word chips</strong> to auto-fill · Toggle <strong>Chinese</strong> anytime
+    </div>
+    <div class="toolbar-btns">
+      <button class="nbtn" onclick="clearAll()">↺ Clear All</button>
+      <button class="nbtn" id="copyBtn" onclick="copyText()">📋 Copy Text</button>
+      <button class="nbtn pri" onclick="exportWord()">📄 Export Word</button>
+      <button class="nbtn" onclick="window.print()">🖨 Print PDF</button>
+    </div>
+  </div>
+
+  <!-- FUNCTION BLOCKS -->
+  
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">1</div>
+            <div>
+              <div class="fn-title">Cite Your Source</div>
+              <div class="fn-title-zh zh">引用來源</div>
+              <div class="fn-purpose">Always attribute data to a credible, recent source before presenting it.</div>
+              <div class="fn-purpose-zh zh">呈現數據前，務必引用可信且近期的來源。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="According to ___ , published in ___ , ___ ."><div class="scard-en"><span>According to </span><span class="blank-wrap"><input class="blank" data-sid="u7s1" data-idx="0" placeholder="source" /></span><span> , published in </span><span class="blank-wrap"><input class="blank" data-sid="u7s1" data-idx="1" placeholder="year" /></span><span> , </span><span class="blank-wrap"><input class="blank" data-sid="u7s1" data-idx="2" placeholder="key finding" /></span><span> .</span></div><div class="scard-zh zh">根據___，發表於___，___。</div><div class="bank" data-sid="u7s1" data-idx="0"><span class="chip" onclick="fillBlank(this,'a systematic review in The Lancet');">a systematic review in The Lancet</span><span class="chip" onclick="fillBlank(this,'the WHO 2023 World Health Statistics');">the WHO 2023 World Health Statistics</span><span class="chip" onclick="fillBlank(this,'the Ministry of Health and Welfare annual report');">the Ministry of Health and Welfare annual report</span><span class="chip" onclick="fillBlank(this,'a study in the Journal of Nursing Research');">a study in the Journal of Nursing Research</span></div><div class="bank" data-sid="u7s1" data-idx="1"><span class="chip" onclick="fillBlank(this,'2023');">2023</span><span class="chip" onclick="fillBlank(this,'2022');">2022</span><span class="chip" onclick="fillBlank(this,'2021');">2021</span><span class="chip" onclick="fillBlank(this,'the past three years');">the past three years</span></div><div class="bank" data-sid="u7s1" data-idx="2"><span class="chip" onclick="fillBlank(this,'the prevalence of this condition has doubled in two decades');">the prevalence of this condition has doubled in two decades</span><span class="chip" onclick="fillBlank(this,'nursing interventions reduced hospitalisation by 35%');">nursing interventions reduced hospitalisation by 35%</span><span class="chip" onclick="fillBlank(this,'Taiwan ranks above the OECD average for this indicator');">Taiwan ranks above the OECD average for this indicator</span></div></div><div class="scard" data-template="The ___ reports that in Taiwan, ___ affects approximately ___ , which represents ___ ."><div class="scard-en"><span>The </span><span class="blank-wrap"><input class="blank" data-sid="u7s2" data-idx="0" placeholder="organisation" /></span><span> reports that in Taiwan, </span><span class="blank-wrap"><input class="blank" data-sid="u7s2" data-idx="1" placeholder="condition" /></span><span> affects approximately </span><span class="blank-wrap"><input class="blank" data-sid="u7s2" data-idx="2" placeholder="population figure" /></span><span> , which represents </span><span class="blank-wrap"><input class="blank" data-sid="u7s2" data-idx="3" placeholder="significance" /></span><span> .</span></div><div class="scard-zh zh">___報告指出，在台灣，___影響約___，這代表___。</div><div class="bank" data-sid="u7s2" data-idx="0"><span class="chip" onclick="fillBlank(this,'Ministry of Health and Welfare');">Ministry of Health and Welfare</span><span class="chip" onclick="fillBlank(this,'WHO');">WHO</span><span class="chip" onclick="fillBlank(this,'Taiwan Health Promotion Administration');">Taiwan Health Promotion Administration</span><span class="chip" onclick="fillBlank(this,'National Health Insurance Administration');">National Health Insurance Administration</span></div><div class="bank" data-sid="u7s2" data-idx="1"><span class="chip" onclick="fillBlank(this,'diabetes');">diabetes</span><span class="chip" onclick="fillBlank(this,'depression');">depression</span><span class="chip" onclick="fillBlank(this,'hypertension');">hypertension</span><span class="chip" onclick="fillBlank(this,'chronic obstructive pulmonary disease');">chronic obstructive pulmonary disease</span></div><div class="bank" data-sid="u7s2" data-idx="2"><span class="chip" onclick="fillBlank(this,'2.3 million adults');">2.3 million adults</span><span class="chip" onclick="fillBlank(this,'one in four elderly residents');">one in four elderly residents</span><span class="chip" onclick="fillBlank(this,'nearly 30% of the adult population');">nearly 30% of the adult population</span></div><div class="bank" data-sid="u7s2" data-idx="3"><span class="chip" onclick="fillBlank(this,'a 40% increase over ten years');">a 40% increase over ten years</span><span class="chip" onclick="fillBlank(this,'a significant public health burden');">a significant public health burden</span><span class="chip" onclick="fillBlank(this,'a major challenge for nursing workforce planning');">a major challenge for nursing workforce planning</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">2</div>
+            <div>
+              <div class="fn-title">Describe a Trend</div>
+              <div class="fn-title-zh zh">描述趨勢</div>
+              <div class="fn-purpose">Explain whether a health indicator is rising, falling, or staying the same.</div>
+              <div class="fn-purpose-zh zh">說明健康指標是上升、下降還是維持不變。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="Over the past ___ years, the rate of ___ in Taiwan has ___ by approximately ___ percent."><div class="scard-en"><span>Over the past </span><span class="blank-wrap"><input class="blank" data-sid="u7s3" data-idx="0" placeholder="years" /></span><span> years, the rate of </span><span class="blank-wrap"><input class="blank" data-sid="u7s3" data-idx="1" placeholder="condition" /></span><span> in Taiwan has </span><span class="blank-wrap"><input class="blank" data-sid="u7s3" data-idx="2" placeholder="direction" /></span><span> by approximately </span><span class="blank-wrap"><input class="blank" data-sid="u7s3" data-idx="3" placeholder="percentage" /></span><span> percent.</span></div><div class="scard-zh zh">在過去___年中，台灣___的比率___了約___%。</div><div class="bank" data-sid="u7s3" data-idx="0"><span class="chip" onclick="fillBlank(this,'five');">five</span><span class="chip" onclick="fillBlank(this,'ten');">ten</span><span class="chip" onclick="fillBlank(this,'fifteen');">fifteen</span><span class="chip" onclick="fillBlank(this,'two decades');">two decades</span></div><div class="bank" data-sid="u7s3" data-idx="1"><span class="chip" onclick="fillBlank(this,'Type 2 diabetes');">Type 2 diabetes</span><span class="chip" onclick="fillBlank(this,'adolescent depression');">adolescent depression</span><span class="chip" onclick="fillBlank(this,'elderly falls');">elderly falls</span><span class="chip" onclick="fillBlank(this,'hospital-acquired infection');">hospital-acquired infection</span></div><div class="bank" data-sid="u7s3" data-idx="2"><span class="chip" onclick="fillBlank(this,'increased');">increased</span><span class="chip" onclick="fillBlank(this,'decreased');">decreased</span><span class="chip" onclick="fillBlank(this,'risen sharply');">risen sharply</span><span class="chip" onclick="fillBlank(this,'declined steadily');">declined steadily</span><span class="chip" onclick="fillBlank(this,'nearly doubled');">nearly doubled</span></div><div class="bank" data-sid="u7s3" data-idx="3"><span class="chip" onclick="fillBlank(this,'25');">25</span><span class="chip" onclick="fillBlank(this,'40');">40</span><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'nearly 50');">nearly 50</span></div></div><div class="scard" data-template="This trend is particularly alarming because ___ , suggesting that ___ without ___ intervention."><div class="scard-en"><span>This trend is particularly alarming because </span><span class="blank-wrap"><input class="blank" data-sid="u7s4" data-idx="0" placeholder="context" /></span><span> , suggesting that </span><span class="blank-wrap"><input class="blank" data-sid="u7s4" data-idx="1" placeholder="prediction" /></span><span> without </span><span class="blank-wrap"><input class="blank" data-sid="u7s4" data-idx="2" placeholder="type of" /></span><span> intervention.</span></div><div class="scard-zh zh">這一趨勢尤為令人擔憂，因為___，表明___若無___介入。</div><div class="bank" data-sid="u7s4" data-idx="0"><span class="chip" onclick="fillBlank(this,'it affects the youngest and most vulnerable');">it affects the youngest and most vulnerable</span><span class="chip" onclick="fillBlank(this,'it is outpacing healthcare capacity');">it is outpacing healthcare capacity</span><span class="chip" onclick="fillBlank(this,'it is linked to ageing demographics');">it is linked to ageing demographics</span></div><div class="bank" data-sid="u7s4" data-idx="1"><span class="chip" onclick="fillBlank(this,'rates will continue to rise');">rates will continue to rise</span><span class="chip" onclick="fillBlank(this,'the burden on nursing staff will become unsustainable');">the burden on nursing staff will become unsustainable</span><span class="chip" onclick="fillBlank(this,'hospital admissions will increase by 20% within five years');">hospital admissions will increase by 20% within five years</span></div><div class="bank" data-sid="u7s4" data-idx="2"><span class="chip" onclick="fillBlank(this,'nursing');">nursing</span><span class="chip" onclick="fillBlank(this,'policy-level');">policy-level</span><span class="chip" onclick="fillBlank(this,'preventive');">preventive</span><span class="chip" onclick="fillBlank(this,'community health');">community health</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">3</div>
+            <div>
+              <div class="fn-title">Compare and Contextualise Data</div>
+              <div class="fn-title-zh zh">比較並脈絡化數據</div>
+              <div class="fn-purpose">Make statistics meaningful by comparing them to other groups or benchmarks.</div>
+              <div class="fn-purpose-zh zh">透過與其他族群或基準比較，使統計數據更有意義。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="Compared to ___ , Taiwan's rate of ___ is ___ times higher, indicating ___ ."><div class="scard-en"><span>Compared to </span><span class="blank-wrap"><input class="blank" data-sid="u7s5" data-idx="0" placeholder="benchmark" /></span><span> , Taiwan's rate of </span><span class="blank-wrap"><input class="blank" data-sid="u7s5" data-idx="1" placeholder="indicator" /></span><span> is </span><span class="blank-wrap"><input class="blank" data-sid="u7s5" data-idx="2" placeholder="multiplier" /></span><span> times higher, indicating </span><span class="blank-wrap"><input class="blank" data-sid="u7s5" data-idx="3" placeholder="implication" /></span><span> .</span></div><div class="scard-zh zh">與___相比，台灣___的比率高出___倍，顯示___。</div><div class="bank" data-sid="u7s5" data-idx="0"><span class="chip" onclick="fillBlank(this,'the OECD average');">the OECD average</span><span class="chip" onclick="fillBlank(this,'neighbouring Japan');">neighbouring Japan</span><span class="chip" onclick="fillBlank(this,'the global average');">the global average</span><span class="chip" onclick="fillBlank(this,'high-income countries');">high-income countries</span></div><div class="bank" data-sid="u7s5" data-idx="1"><span class="chip" onclick="fillBlank(this,'diabetes prevalence');">diabetes prevalence</span><span class="chip" onclick="fillBlank(this,'elderly fall hospitalisation');">elderly fall hospitalisation</span><span class="chip" onclick="fillBlank(this,'mental health service utilisation');">mental health service utilisation</span><span class="chip" onclick="fillBlank(this,'NCD mortality');">NCD mortality</span></div><div class="bank" data-sid="u7s5" data-idx="2"><span class="chip" onclick="fillBlank(this,'nearly two');">nearly two</span><span class="chip" onclick="fillBlank(this,'almost three');">almost three</span><span class="chip" onclick="fillBlank(this,'1.5');">1.5</span><span class="chip" onclick="fillBlank(this,'more than twice');">more than twice</span></div><div class="bank" data-sid="u7s5" data-idx="3"><span class="chip" onclick="fillBlank(this,'a significant gap in preventive care');">a significant gap in preventive care</span><span class="chip" onclick="fillBlank(this,'an urgent need for nursing-led interventions');">an urgent need for nursing-led interventions</span><span class="chip" onclick="fillBlank(this,'inadequate public health investment');">inadequate public health investment</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">4</div>
+            <div>
+              <div class="fn-title">Interpret the Data for Your Audience</div>
+              <div class="fn-title-zh zh">為聽眾詮釋數據</div>
+              <div class="fn-purpose">Tell the audience what the numbers actually mean — don't just list them.</div>
+              <div class="fn-purpose-zh zh">告訴聽眾數字實際上意味著什麼——不要只是列舉數字。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="These figures are not just statistics — they represent ___ real ___ who need better nursing care."><div class="scard-en"><span>These figures are not just statistics — they represent </span><span class="blank-wrap"><input class="blank" data-sid="u7s6" data-idx="0" placeholder="number" /></span><span> real </span><span class="blank-wrap"><input class="blank" data-sid="u7s6" data-idx="1" placeholder="people" /></span><span> who need better nursing care.</span></div><div class="scard-zh zh">這些數字不只是統計數據——它們代表著___位真實的___，需要更好的護理照護。</div><div class="bank" data-sid="u7s6" data-idx="0"><span class="chip" onclick="fillBlank(this,'hundreds of thousands of');">hundreds of thousands of</span><span class="chip" onclick="fillBlank(this,'millions of');">millions of</span><span class="chip" onclick="fillBlank(this,'nearly two million');">nearly two million</span></div><div class="bank" data-sid="u7s6" data-idx="1"><span class="chip" onclick="fillBlank(this,'patients');">patients</span><span class="chip" onclick="fillBlank(this,'elderly residents');">elderly residents</span><span class="chip" onclick="fillBlank(this,'young people');">young people</span><span class="chip" onclick="fillBlank(this,'community members');">community members</span></div></div><div class="scard" data-template="What this means for nursing practice is: ___ ."><div class="scard-en"><span>What this means for nursing practice is: </span><span class="blank-wrap"><input class="blank" data-sid="u7s7" data-idx="0" placeholder="nursing implication" /></span><span> .</span></div><div class="scard-zh zh">這對護理實踐意味著：___。</div><div class="bank" data-sid="u7s7" data-idx="0"><span class="chip" onclick="fillBlank(this,'we must prioritise early screening in every patient encounter');">we must prioritise early screening in every patient encounter</span><span class="chip" onclick="fillBlank(this,'health education must become a core nursing intervention');">health education must become a core nursing intervention</span><span class="chip" onclick="fillBlank(this,'community outreach programmes need significantly more nursing staff');">community outreach programmes need significantly more nursing staff</span><span class="chip" onclick="fillBlank(this,'discharge planning must address social determinants of health');">discharge planning must address social determinants of health</span></div></div></div>
+        </div>
+
+  <!-- MY SENTENCES PREVIEW -->
+  <div class="my-panel">
+    <div class="my-panel-header">
+      <div>
+        <div class="my-panel-title">📝 My Completed Sentences</div>
+        <div class="my-panel-sub zh">我完成的句子 — 自動從上方填空產生</div>
+        <div class="my-panel-sub">Auto-generated from your filled blanks above</div>
+      </div>
+      <button class="nbtn pri" onclick="exportWord()" style="flex-shrink:0;">📄 Export to Word</button>
+    </div>
+    <div id="myPreview">
+      <div class="empty-msg">Fill in the blanks above — your completed sentences will appear here.</div>
+    </div>
+  </div>
+
+  <!-- PREV / NEXT -->
+  <div style="display:flex;gap:12px;margin-top:4px;">
+    <a href="unit6.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;gap:10px;transition:all .2s;" onmouseover="this.style.borderColor='#1a4a6b'" onmouseout="this.style.borderColor='var(--border)'"><span style="font-size:1.2rem">←</span><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Previous</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U6: 醫護語調與語速</div></div></a>
+    <a href="unit8.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;justify-content:flex-end;gap:10px;text-align:right;transition:all .2s;" onmouseover="this.style.borderColor='#1a4a6b'" onmouseout="this.style.borderColor='var(--border)'"><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Next</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U8: 肢體語言與眼神接觸</div></div><span style="font-size:1.2rem">→</span></a>
+  </div>
+
+</div>
+<script>
+// ── LANG TOGGLE ──────────────────────────────────────────────────────────────
+const LANG_KEY = 'nursingLang';
+let langMode = localStorage.getItem(LANG_KEY) || 'bilingual';
+function applyLang(){
+  document.body.classList.toggle('en-only', langMode === 'english');
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = langMode === 'english' ? '🌐 Show Chinese' : '🔤 English Only';
+}
+function toggleLang(){
+  langMode = langMode === 'bilingual' ? 'english' : 'bilingual';
+  localStorage.setItem(LANG_KEY, langMode);
+  applyLang();
+}
+
+// ── CHIP CLICK → FILL BLANK ──────────────────────────────────────────────────
+function fillBlank(chipEl, suggestion){
+  const bank = chipEl.closest('.bank');
+  const idx  = bank.dataset.idx;
+  const sid  = bank.dataset.sid;
+  const inp  = document.querySelector(`.blank[data-sid="${sid}"][data-idx="${idx}"]`);
+  if(!inp) return;
+  inp.value = suggestion;
+  inp.classList.add('filled');
+  inp.dispatchEvent(new Event('input'));
+  // highlight active chip
+  bank.querySelectorAll('.chip').forEach(c => c.style.background = '');
+  chipEl.style.background = 'var(--teal)';
+  chipEl.style.color = '#fff';
+}
+
+// ── BUILD MY-SENTENCES PREVIEW ────────────────────────────────────────────────
+function rebuildPreview(){
+  const out = document.getElementById('myPreview');
+  if(!out) return;
+  const cards = document.querySelectorAll('.scard');
+  let html = '';
+  cards.forEach((card,ci) => {
+    const template = card.dataset.template;
+    const inputs   = card.querySelectorAll('.blank');
+    let sentence   = template;
+    inputs.forEach(inp => {
+      const val = inp.value.trim() || inp.placeholder;
+      sentence  = sentence.replace('___', `<strong>${val}</strong>`);
+    });
+    html += `<div class="my-sentence">${sentence}</div>`;
+  });
+  out.innerHTML = html || '<div class="empty-msg">Fill in the blanks above — your sentences will appear here.</div>';
+}
+
+// ── EXPORT TO WORD (.doc) ────────────────────────────────────────────────────
+function exportWord(){
+  const unitTitle = document.querySelector('.hero h1')?.textContent || 'Unit';
+  const unitEn    = document.querySelector('.hero-en')?.textContent  || '';
+  let rows = '';
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    const fname = fn.querySelector('.fn-title')?.textContent || `Function ${fi+1}`;
+    const fzh   = fn.querySelector('.fn-title-zh')?.textContent || '';
+    rows += `<tr><td colspan="2" style="background:#eaf7f4;padding:8pt;font-weight:bold;font-size:11pt">${fi+1}. ${fname} ${fzh}</td></tr>`;
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence = sentence.replace('___', val);
+      });
+      const zhEl = card.querySelector('.scard-zh');
+      const zh   = zhEl ? zhEl.textContent.replace('🇹🇼 ','') : '';
+      rows += `<tr>
+        <td style="padding:7pt 8pt;font-size:10.5pt;border-bottom:1pt solid #eee;width:55%">${sentence}</td>
+        <td style="padding:7pt 8pt;font-size:10pt;color:#556;border-bottom:1pt solid #eee;width:45%">${zh}</td>
+      </tr>`;
+    });
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="UTF-8">
+  <style>
+    body{font-family:'Noto Sans TC',Arial,sans-serif;margin:2cm;}
+    h1{font-size:16pt;color:#1a7a6a;margin-bottom:4pt;}
+    h2{font-size:11pt;color:#666;margin-bottom:12pt;font-weight:normal;}
+    table{width:100%;border-collapse:collapse;}
+    td{vertical-align:top;}
+  </style></head>
+  <body>
+  <h1>${unitTitle}</h1>
+  <h2>${unitEn} — My Weekly Practice Sheet</h2>
+  <table>${rows}</table>
+  </body></html>`;
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `${unitTitle.replace(/\s+/g,'-')}_worksheet.doc`;
+  a.click();
+}
+
+// ── COPY AS TEXT ──────────────────────────────────────────────────────────────
+function copyText(){
+  let lines = [`=== ${document.querySelector('.hero h1')?.textContent} ===\n`];
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    lines.push(`\n[${fi+1}] ${fn.querySelector('.fn-title')?.textContent}`);
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence  = sentence.replace('___', val);
+      });
+      lines.push('• ' + sentence);
+    });
+  });
+  navigator.clipboard.writeText(lines.join('\n')).catch(()=>{});
+  const btn = document.getElementById('copyBtn');
+  if(btn){ btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Text',1800); }
+}
+
+// ── CLEAR ALL BLANKS ──────────────────────────────────────────────────────────
+function clearAll(){
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.value=''; inp.classList.remove('filled');
+  });
+  document.querySelectorAll('.chip').forEach(c => {
+    c.style.background=''; c.style.color='';
+  });
+  rebuildPreview();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.classList.toggle('filled', inp.value.trim().length > 0);
+      rebuildPreview();
+    });
+  });
+  rebuildPreview();
+});
+</script>
+</body>
+</html>

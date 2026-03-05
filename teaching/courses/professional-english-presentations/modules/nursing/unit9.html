@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>U9: 解釋與臨床案例舉例 | 護理健康英文簡報</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.hero{background:linear-gradient(135deg,#c05010,#e87030);}
+.pill.on{background:#c05010;border-color:#c05010;}
+:root{--c1:#c05010;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing</span></div>
+  </a>
+  <div class="nav-right">
+    <button id="langBtn" class="nbtn" onclick="toggleLang()">🔤 English Only</button>
+    <a href="topics.html" class="nbtn">🌍 Topics</a>
+    <a href="index.html" class="nbtn">← Home</a>
+  </div>
+</nav>
+
+<!-- PILL NAV -->
+<div class="pillnav">
+  <span class="plabel">UNITS:</span>
+  <a href="index.html" class="pill">🏠</a>
+  <a href="unit1.html" class="pill">U1</a><a href="unit2.html" class="pill">U2</a><a href="unit3.html" class="pill">U3</a><a href="unit4.html" class="pill">U4</a><a href="unit5.html" class="pill">U5</a><a href="unit6.html" class="pill">U6</a><a href="unit7.html" class="pill">U7</a><a href="unit8.html" class="pill">U8</a><a href="unit9.html" class="pill  on">U9</a><a href="unit10.html" class="pill">U10</a><a href="unit11.html" class="pill">U11</a><a href="unit12.html" class="pill">U12</a><a href="unit13.html" class="pill">U13</a><a href="unit14.html" class="pill">U14</a><a href="unit15.html" class="pill">U15</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco" style="width:220px;height:220px;right:-50px;top:-50px;"></div>
+  <div class="hero-deco" style="width:120px;height:120px;left:25%;bottom:-40px;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Week 9 · Unit 9 / 15 · 60% through course</div>
+    <div class="hero-icon">💡</div>
+    <h1>解釋與臨床案例舉例</h1>
+    <div class="hero-en">Elaborating with Clinical Examples</div>
+    <div class="hero-goal zh"><strong>🎯 </strong>Use patient cases, clinical scenarios, and nursing analogies to elaborate on your main health points.</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-info">
+      ✏️ Fill in the blanks · Click <strong>word chips</strong> to auto-fill · Toggle <strong>Chinese</strong> anytime
+    </div>
+    <div class="toolbar-btns">
+      <button class="nbtn" onclick="clearAll()">↺ Clear All</button>
+      <button class="nbtn" id="copyBtn" onclick="copyText()">📋 Copy Text</button>
+      <button class="nbtn pri" onclick="exportWord()">📄 Export Word</button>
+      <button class="nbtn" onclick="window.print()">🖨 Print PDF</button>
+    </div>
+  </div>
+
+  <!-- FUNCTION BLOCKS -->
+  
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">1</div>
+            <div>
+              <div class="fn-title">Introduce a Clinical Example</div>
+              <div class="fn-title-zh zh">介紹臨床案例</div>
+              <div class="fn-purpose">Set up an anonymised patient case to illustrate your main health point.</div>
+              <div class="fn-purpose-zh zh">建立匿名的病人案例，以說明你的主要健康論點。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="To illustrate this point, consider a ___ -year-old patient I observed during my clinical placement at ___ ."><div class="scard-en"><span>To illustrate this point, consider a </span><span class="blank-wrap"><input class="blank" data-sid="u9s1" data-idx="0" placeholder="age" /></span><span> -year-old patient I observed during my clinical placement at </span><span class="blank-wrap"><input class="blank" data-sid="u9s1" data-idx="1" placeholder="setting" /></span><span> .</span></div><div class="scard-zh zh">為了說明這一點，請考慮我在___臨床實習期間觀察到的一位___歲病人。</div><div class="bank" data-sid="u9s1" data-idx="0"><span class="chip" onclick="fillBlank(this,'72');">72</span><span class="chip" onclick="fillBlank(this,'45');">45</span><span class="chip" onclick="fillBlank(this,'17');">17</span><span class="chip" onclick="fillBlank(this,'65');">65</span><span class="chip" onclick="fillBlank(this,'82');">82</span></div><div class="bank" data-sid="u9s1" data-idx="1"><span class="chip" onclick="fillBlank(this,'a regional hospital');">a regional hospital</span><span class="chip" onclick="fillBlank(this,'a community health centre');">a community health centre</span><span class="chip" onclick="fillBlank(this,'a long-term care facility');">a long-term care facility</span><span class="chip" onclick="fillBlank(this,'a geriatric ward');">a geriatric ward</span><span class="chip" onclick="fillBlank(this,'a psychiatric unit');">a psychiatric unit</span></div></div><div class="scard" data-template="Imagine a patient who ___ and who lacks ___ — a scenario that illustrates the gap between ___ and ___ ."><div class="scard-en"><span>Imagine a patient who </span><span class="blank-wrap"><input class="blank" data-sid="u9s2" data-idx="0" placeholder="patient situation" /></span><span> and who lacks </span><span class="blank-wrap"><input class="blank" data-sid="u9s2" data-idx="1" placeholder="lacking resource" /></span><span> — a scenario that illustrates the gap between </span><span class="blank-wrap"><input class="blank" data-sid="u9s2" data-idx="2" placeholder="ideal" /></span><span> and </span><span class="blank-wrap"><input class="blank" data-sid="u9s2" data-idx="3" placeholder="reality" /></span><span> .</span></div><div class="scard-zh zh">想像一位___且缺乏___的病人——這個情景說明了___與___之間的落差。</div><div class="bank" data-sid="u9s2" data-idx="0"><span class="chip" onclick="fillBlank(this,'has just been diagnosed with diabetes');">has just been diagnosed with diabetes</span><span class="chip" onclick="fillBlank(this,'has been hospitalised for a fall');">has been hospitalised for a fall</span><span class="chip" onclick="fillBlank(this,'is experiencing their first depressive episode');">is experiencing their first depressive episode</span><span class="chip" onclick="fillBlank(this,'has no family caregiver');">has no family caregiver</span></div><div class="bank" data-sid="u9s2" data-idx="1"><span class="chip" onclick="fillBlank(this,'health literacy');">health literacy</span><span class="chip" onclick="fillBlank(this,'community support');">community support</span><span class="chip" onclick="fillBlank(this,'access to mental health services');">access to mental health services</span><span class="chip" onclick="fillBlank(this,'financial resources for medication');">financial resources for medication</span></div><div class="bank" data-sid="u9s2" data-idx="2"><span class="chip" onclick="fillBlank(this,'policy');">policy</span><span class="chip" onclick="fillBlank(this,'evidence-based care');">evidence-based care</span><span class="chip" onclick="fillBlank(this,'nursing standards');">nursing standards</span></div><div class="bank" data-sid="u9s2" data-idx="3"><span class="chip" onclick="fillBlank(this,'clinical reality');">clinical reality</span><span class="chip" onclick="fillBlank(this,'available resources');">available resources</span><span class="chip" onclick="fillBlank(this,'current practice');">current practice</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">2</div>
+            <div>
+              <div class="fn-title">Develop the Example</div>
+              <div class="fn-title-zh zh">深化案例</div>
+              <div class="fn-purpose">Expand on the case to reveal the nursing challenge and its connection to the SDG.</div>
+              <div class="fn-purpose-zh zh">深入分析案例，揭示護理挑戰及其與永續發展目標的關聯。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="In this case, the core nursing challenge was ___ , which directly relates to SDG Goal ___ ."><div class="scard-en"><span>In this case, the core nursing challenge was </span><span class="blank-wrap"><input class="blank" data-sid="u9s3" data-idx="0" placeholder="challenge" /></span><span> , which directly relates to SDG Goal </span><span class="blank-wrap"><input class="blank" data-sid="u9s3" data-idx="1" placeholder="SDG" /></span><span> .</span></div><div class="scard-zh zh">在這個案例中，核心護理挑戰是___，這與永續發展目標第___項直接相關。</div><div class="bank" data-sid="u9s3" data-idx="0"><span class="chip" onclick="fillBlank(this,'inadequate discharge planning');">inadequate discharge planning</span><span class="chip" onclick="fillBlank(this,'a complete lack of social support');">a complete lack of social support</span><span class="chip" onclick="fillBlank(this,'the patient's inability to self-manage their condition');">the patient's inability to self-manage their condition</span><span class="chip" onclick="fillBlank(this,'systemic barriers to accessing care');">systemic barriers to accessing care</span></div><div class="bank" data-sid="u9s3" data-idx="1"><span class="chip" onclick="fillBlank(this,'3');">3</span><span class="chip" onclick="fillBlank(this,'10');">10</span><span class="chip" onclick="fillBlank(this,'6');">6</span><span class="chip" onclick="fillBlank(this,'17');">17</span></div></div><div class="scard" data-template="Had the nurse ___ earlier, the outcome for this patient might have been ___ ."><div class="scard-en"><span>Had the nurse </span><span class="blank-wrap"><input class="blank" data-sid="u9s4" data-idx="0" placeholder="nursing action" /></span><span> earlier, the outcome for this patient might have been </span><span class="blank-wrap"><input class="blank" data-sid="u9s4" data-idx="1" placeholder="better outcome" /></span><span> .</span></div><div class="scard-zh zh">如果護理師更早___，這位病人的結果可能是___。</div><div class="bank" data-sid="u9s4" data-idx="0"><span class="chip" onclick="fillBlank(this,'conducted a health literacy assessment');">conducted a health literacy assessment</span><span class="chip" onclick="fillBlank(this,'arranged a home visit');">arranged a home visit</span><span class="chip" onclick="fillBlank(this,'provided culturally sensitive education');">provided culturally sensitive education</span><span class="chip" onclick="fillBlank(this,'screened for depression');">screened for depression</span></div><div class="bank" data-sid="u9s4" data-idx="1"><span class="chip" onclick="fillBlank(this,'significantly better');">significantly better</span><span class="chip" onclick="fillBlank(this,'a successful discharge');">a successful discharge</span><span class="chip" onclick="fillBlank(this,'avoided rehospitalisation');">avoided rehospitalisation</span><span class="chip" onclick="fillBlank(this,'far less traumatic');">far less traumatic</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">3</div>
+            <div>
+              <div class="fn-title">Use a Health Analogy</div>
+              <div class="fn-title-zh zh">使用健康類比</div>
+              <div class="fn-purpose">Simplify a complex health concept using an everyday analogy.</div>
+              <div class="fn-purpose-zh zh">使用日常類比簡化複雜的健康概念。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="Think of ___ like a ___ : without ___ , the whole system ___ ."><div class="scard-en"><span>Think of </span><span class="blank-wrap"><input class="blank" data-sid="u9s5" data-idx="0" placeholder="health concept" /></span><span> like a </span><span class="blank-wrap"><input class="blank" data-sid="u9s5" data-idx="1" placeholder="everyday object" /></span><span> : without </span><span class="blank-wrap"><input class="blank" data-sid="u9s5" data-idx="2" placeholder="key component" /></span><span> , the whole system </span><span class="blank-wrap"><input class="blank" data-sid="u9s5" data-idx="3" placeholder="what happens" /></span><span> .</span></div><div class="scard-zh zh">把___想像成一個___：沒有___，整個系統___。</div><div class="bank" data-sid="u9s5" data-idx="0"><span class="chip" onclick="fillBlank(this,'preventive nursing');">preventive nursing</span><span class="chip" onclick="fillBlank(this,'health literacy');">health literacy</span><span class="chip" onclick="fillBlank(this,'community nursing');">community nursing</span><span class="chip" onclick="fillBlank(this,'vaccination programmes');">vaccination programmes</span></div><div class="bank" data-sid="u9s5" data-idx="1"><span class="chip" onclick="fillBlank(this,'maintenance schedule for a car');">maintenance schedule for a car</span><span class="chip" onclick="fillBlank(this,'smoke detector');">smoke detector</span><span class="chip" onclick="fillBlank(this,'regular service for an engine');">regular service for an engine</span><span class="chip" onclick="fillBlank(this,'strong foundation for a building');">strong foundation for a building</span></div><div class="bank" data-sid="u9s5" data-idx="2"><span class="chip" onclick="fillBlank(this,'regular check-ups');">regular check-ups</span><span class="chip" onclick="fillBlank(this,'early warning');">early warning</span><span class="chip" onclick="fillBlank(this,'ongoing maintenance');">ongoing maintenance</span><span class="chip" onclick="fillBlank(this,'proper patient education');">proper patient education</span></div><div class="bank" data-sid="u9s5" data-idx="3"><span class="chip" onclick="fillBlank(this,'breaks down');">breaks down</span><span class="chip" onclick="fillBlank(this,'fails');">fails</span><span class="chip" onclick="fillBlank(this,'becomes more costly to fix');">becomes more costly to fix</span><span class="chip" onclick="fillBlank(this,'collapses under pressure');">collapses under pressure</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">4</div>
+            <div>
+              <div class="fn-title">Link Back to the Main Argument</div>
+              <div class="fn-title-zh zh">連結回主要論點</div>
+              <div class="fn-purpose">After every example, explicitly state what it demonstrates about your health topic.</div>
+              <div class="fn-purpose-zh zh">每個案例之後，明確說明它對你的健康主題的示範意義。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="This example demonstrates that ___ and highlights why ___ nursing action is urgently needed."><div class="scard-en"><span>This example demonstrates that </span><span class="blank-wrap"><input class="blank" data-sid="u9s6" data-idx="0" placeholder="key lesson" /></span><span> and highlights why </span><span class="blank-wrap"><input class="blank" data-sid="u9s6" data-idx="1" placeholder="specific" /></span><span> nursing action is urgently needed.</span></div><div class="scard-zh zh">這個例子說明了___，並強調了為何緊迫需要___護理行動。</div><div class="bank" data-sid="u9s6" data-idx="0"><span class="chip" onclick="fillBlank(this,'health inequities have real human consequences');">health inequities have real human consequences</span><span class="chip" onclick="fillBlank(this,'preventive care is far more effective than crisis management');">preventive care is far more effective than crisis management</span><span class="chip" onclick="fillBlank(this,'nurses are often the only professional in contact with high-risk patients');">nurses are often the only professional in contact with high-risk patients</span><span class="chip" onclick="fillBlank(this,'health literacy directly affects patient outcomes');">health literacy directly affects patient outcomes</span></div><div class="bank" data-sid="u9s6" data-idx="1"><span class="chip" onclick="fillBlank(this,'proactive community');">proactive community</span><span class="chip" onclick="fillBlank(this,'evidence-based');">evidence-based</span><span class="chip" onclick="fillBlank(this,'culturally sensitive');">culturally sensitive</span><span class="chip" onclick="fillBlank(this,'policy-driven');">policy-driven</span></div></div><div class="scard" data-template="As nurses, this means we must ___ in every ___ encounter."><div class="scard-en"><span>As nurses, this means we must </span><span class="blank-wrap"><input class="blank" data-sid="u9s7" data-idx="0" placeholder="action" /></span><span> in every </span><span class="blank-wrap"><input class="blank" data-sid="u9s7" data-idx="1" placeholder="patient / clinical" /></span><span> encounter.</span></div><div class="scard-zh zh">身為護理師，這意味著我們必須在每次___接觸中___。</div><div class="bank" data-sid="u9s7" data-idx="0"><span class="chip" onclick="fillBlank(this,'screen for social determinants of health');">screen for social determinants of health</span><span class="chip" onclick="fillBlank(this,'assess the patient's support network');">assess the patient's support network</span><span class="chip" onclick="fillBlank(this,'provide clear and accessible health education');">provide clear and accessible health education</span><span class="chip" onclick="fillBlank(this,'consider the cultural context of care');">consider the cultural context of care</span></div><div class="bank" data-sid="u9s7" data-idx="1"><span class="chip" onclick="fillBlank(this,'patient');">patient</span><span class="chip" onclick="fillBlank(this,'clinical');">clinical</span><span class="chip" onclick="fillBlank(this,'community');">community</span><span class="chip" onclick="fillBlank(this,'nursing');">nursing</span></div></div></div>
+        </div>
+
+  <!-- MY SENTENCES PREVIEW -->
+  <div class="my-panel">
+    <div class="my-panel-header">
+      <div>
+        <div class="my-panel-title">📝 My Completed Sentences</div>
+        <div class="my-panel-sub zh">我完成的句子 — 自動從上方填空產生</div>
+        <div class="my-panel-sub">Auto-generated from your filled blanks above</div>
+      </div>
+      <button class="nbtn pri" onclick="exportWord()" style="flex-shrink:0;">📄 Export to Word</button>
+    </div>
+    <div id="myPreview">
+      <div class="empty-msg">Fill in the blanks above — your completed sentences will appear here.</div>
+    </div>
+  </div>
+
+  <!-- PREV / NEXT -->
+  <div style="display:flex;gap:12px;margin-top:4px;">
+    <a href="unit8.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;gap:10px;transition:all .2s;" onmouseover="this.style.borderColor='#c05010'" onmouseout="this.style.borderColor='var(--border)'"><span style="font-size:1.2rem">←</span><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Previous</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U8: 肢體語言與眼神接觸</div></div></a>
+    <a href="unit10.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;justify-content:flex-end;gap:10px;text-align:right;transition:all .2s;" onmouseover="this.style.borderColor='#c05010'" onmouseout="this.style.borderColor='var(--border)'"><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Next</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U10: 簡報引導語言</div></div><span style="font-size:1.2rem">→</span></a>
+  </div>
+
+</div>
+<script>
+// ── LANG TOGGLE ──────────────────────────────────────────────────────────────
+const LANG_KEY = 'nursingLang';
+let langMode = localStorage.getItem(LANG_KEY) || 'bilingual';
+function applyLang(){
+  document.body.classList.toggle('en-only', langMode === 'english');
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = langMode === 'english' ? '🌐 Show Chinese' : '🔤 English Only';
+}
+function toggleLang(){
+  langMode = langMode === 'bilingual' ? 'english' : 'bilingual';
+  localStorage.setItem(LANG_KEY, langMode);
+  applyLang();
+}
+
+// ── CHIP CLICK → FILL BLANK ──────────────────────────────────────────────────
+function fillBlank(chipEl, suggestion){
+  const bank = chipEl.closest('.bank');
+  const idx  = bank.dataset.idx;
+  const sid  = bank.dataset.sid;
+  const inp  = document.querySelector(`.blank[data-sid="${sid}"][data-idx="${idx}"]`);
+  if(!inp) return;
+  inp.value = suggestion;
+  inp.classList.add('filled');
+  inp.dispatchEvent(new Event('input'));
+  // highlight active chip
+  bank.querySelectorAll('.chip').forEach(c => c.style.background = '');
+  chipEl.style.background = 'var(--teal)';
+  chipEl.style.color = '#fff';
+}
+
+// ── BUILD MY-SENTENCES PREVIEW ────────────────────────────────────────────────
+function rebuildPreview(){
+  const out = document.getElementById('myPreview');
+  if(!out) return;
+  const cards = document.querySelectorAll('.scard');
+  let html = '';
+  cards.forEach((card,ci) => {
+    const template = card.dataset.template;
+    const inputs   = card.querySelectorAll('.blank');
+    let sentence   = template;
+    inputs.forEach(inp => {
+      const val = inp.value.trim() || inp.placeholder;
+      sentence  = sentence.replace('___', `<strong>${val}</strong>`);
+    });
+    html += `<div class="my-sentence">${sentence}</div>`;
+  });
+  out.innerHTML = html || '<div class="empty-msg">Fill in the blanks above — your sentences will appear here.</div>';
+}
+
+// ── EXPORT TO WORD (.doc) ────────────────────────────────────────────────────
+function exportWord(){
+  const unitTitle = document.querySelector('.hero h1')?.textContent || 'Unit';
+  const unitEn    = document.querySelector('.hero-en')?.textContent  || '';
+  let rows = '';
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    const fname = fn.querySelector('.fn-title')?.textContent || `Function ${fi+1}`;
+    const fzh   = fn.querySelector('.fn-title-zh')?.textContent || '';
+    rows += `<tr><td colspan="2" style="background:#eaf7f4;padding:8pt;font-weight:bold;font-size:11pt">${fi+1}. ${fname} ${fzh}</td></tr>`;
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence = sentence.replace('___', val);
+      });
+      const zhEl = card.querySelector('.scard-zh');
+      const zh   = zhEl ? zhEl.textContent.replace('🇹🇼 ','') : '';
+      rows += `<tr>
+        <td style="padding:7pt 8pt;font-size:10.5pt;border-bottom:1pt solid #eee;width:55%">${sentence}</td>
+        <td style="padding:7pt 8pt;font-size:10pt;color:#556;border-bottom:1pt solid #eee;width:45%">${zh}</td>
+      </tr>`;
+    });
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="UTF-8">
+  <style>
+    body{font-family:'Noto Sans TC',Arial,sans-serif;margin:2cm;}
+    h1{font-size:16pt;color:#1a7a6a;margin-bottom:4pt;}
+    h2{font-size:11pt;color:#666;margin-bottom:12pt;font-weight:normal;}
+    table{width:100%;border-collapse:collapse;}
+    td{vertical-align:top;}
+  </style></head>
+  <body>
+  <h1>${unitTitle}</h1>
+  <h2>${unitEn} — My Weekly Practice Sheet</h2>
+  <table>${rows}</table>
+  </body></html>`;
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `${unitTitle.replace(/\s+/g,'-')}_worksheet.doc`;
+  a.click();
+}
+
+// ── COPY AS TEXT ──────────────────────────────────────────────────────────────
+function copyText(){
+  let lines = [`=== ${document.querySelector('.hero h1')?.textContent} ===\n`];
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    lines.push(`\n[${fi+1}] ${fn.querySelector('.fn-title')?.textContent}`);
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence  = sentence.replace('___', val);
+      });
+      lines.push('• ' + sentence);
+    });
+  });
+  navigator.clipboard.writeText(lines.join('\n')).catch(()=>{});
+  const btn = document.getElementById('copyBtn');
+  if(btn){ btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Text',1800); }
+}
+
+// ── CLEAR ALL BLANKS ──────────────────────────────────────────────────────────
+function clearAll(){
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.value=''; inp.classList.remove('filled');
+  });
+  document.querySelectorAll('.chip').forEach(c => {
+    c.style.background=''; c.style.color='';
+  });
+  rebuildPreview();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.classList.toggle('filled', inp.value.trim().length > 0);
+      rebuildPreview();
+    });
+  });
+  rebuildPreview();
+});
+</script>
+</body>
+</html>

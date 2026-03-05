@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>U8: 肢體語言與眼神接觸 | 護理健康英文簡報</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.hero{background:linear-gradient(135deg,#5a3a1a,#9a6a2a);}
+.pill.on{background:#5a3a1a;border-color:#5a3a1a;}
+:root{--c1:#5a3a1a;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing</span></div>
+  </a>
+  <div class="nav-right">
+    <button id="langBtn" class="nbtn" onclick="toggleLang()">🔤 English Only</button>
+    <a href="topics.html" class="nbtn">🌍 Topics</a>
+    <a href="index.html" class="nbtn">← Home</a>
+  </div>
+</nav>
+
+<!-- PILL NAV -->
+<div class="pillnav">
+  <span class="plabel">UNITS:</span>
+  <a href="index.html" class="pill">🏠</a>
+  <a href="unit1.html" class="pill">U1</a><a href="unit2.html" class="pill">U2</a><a href="unit3.html" class="pill">U3</a><a href="unit4.html" class="pill">U4</a><a href="unit5.html" class="pill">U5</a><a href="unit6.html" class="pill">U6</a><a href="unit7.html" class="pill">U7</a><a href="unit8.html" class="pill  on">U8</a><a href="unit9.html" class="pill">U9</a><a href="unit10.html" class="pill">U10</a><a href="unit11.html" class="pill">U11</a><a href="unit12.html" class="pill">U12</a><a href="unit13.html" class="pill">U13</a><a href="unit14.html" class="pill">U14</a><a href="unit15.html" class="pill">U15</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco" style="width:220px;height:220px;right:-50px;top:-50px;"></div>
+  <div class="hero-deco" style="width:120px;height:120px;left:25%;bottom:-40px;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Week 8 · Unit 8 / 15 · 53% through course</div>
+    <div class="hero-icon">👁️</div>
+    <h1>肢體語言與眼神接觸</h1>
+    <div class="hero-en">Body Language & Eye Contact</div>
+    <div class="hero-goal zh"><strong>🎯 </strong>Use professional body language, eye contact, and posture to enhance your nursing presentation.</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-info">
+      ✏️ Fill in the blanks · Click <strong>word chips</strong> to auto-fill · Toggle <strong>Chinese</strong> anytime
+    </div>
+    <div class="toolbar-btns">
+      <button class="nbtn" onclick="clearAll()">↺ Clear All</button>
+      <button class="nbtn" id="copyBtn" onclick="copyText()">📋 Copy Text</button>
+      <button class="nbtn pri" onclick="exportWord()">📄 Export Word</button>
+      <button class="nbtn" onclick="window.print()">🖨 Print PDF</button>
+    </div>
+  </div>
+
+  <!-- FUNCTION BLOCKS -->
+  
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">1</div>
+            <div>
+              <div class="fn-title">Maintain Eye Contact</div>
+              <div class="fn-title-zh zh">保持眼神接觸</div>
+              <div class="fn-purpose">Distribute your gaze across the room to engage the whole audience.</div>
+              <div class="fn-purpose-zh zh">將目光分散到整個房間，讓全體聽眾都感受到參與。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="When I present ___ , I will make eye contact with the ___ section of the audience for approximately three seconds before moving on."><div class="scard-en"><span>When I present </span><span class="blank-wrap"><input class="blank" data-sid="u8s1" data-idx="0" placeholder="this section" /></span><span> , I will make eye contact with the </span><span class="blank-wrap"><input class="blank" data-sid="u8s1" data-idx="1" placeholder="part of room" /></span><span> section of the audience for approximately three seconds before moving on.</span></div><div class="scard-zh zh">當我報告___時，我將與聽眾的___區域保持約三秒的眼神接觸，然後再移向下一位。</div><div class="bank" data-sid="u8s1" data-idx="0"><span class="chip" onclick="fillBlank(this,'the statistical data');">the statistical data</span><span class="chip" onclick="fillBlank(this,'my key argument');">my key argument</span><span class="chip" onclick="fillBlank(this,'my call to action');">my call to action</span><span class="chip" onclick="fillBlank(this,'the SDG connection');">the SDG connection</span></div><div class="bank" data-sid="u8s1" data-idx="1"><span class="chip" onclick="fillBlank(this,'left');">left</span><span class="chip" onclick="fillBlank(this,'right');">right</span><span class="chip" onclick="fillBlank(this,'centre');">centre</span><span class="chip" onclick="fillBlank(this,'back');">back</span></div></div><div class="scard" data-template="I will avoid ___ and instead use eye contact to signal confidence and ___ ."><div class="scard-en"><span>I will avoid </span><span class="blank-wrap"><input class="blank" data-sid="u8s2" data-idx="0" placeholder="poor habit" /></span><span> and instead use eye contact to signal confidence and </span><span class="blank-wrap"><input class="blank" data-sid="u8s2" data-idx="1" placeholder="quality" /></span><span> .</span></div><div class="scard-zh zh">我將避免___，轉而使用眼神接觸來傳達自信和___。</div><div class="bank" data-sid="u8s2" data-idx="0"><span class="chip" onclick="fillBlank(this,'reading from my notes');">reading from my notes</span><span class="chip" onclick="fillBlank(this,'staring at the screen');">staring at the screen</span><span class="chip" onclick="fillBlank(this,'looking at the floor');">looking at the floor</span><span class="chip" onclick="fillBlank(this,'losing eye contact during transitions');">losing eye contact during transitions</span></div><div class="bank" data-sid="u8s2" data-idx="1"><span class="chip" onclick="fillBlank(this,'clinical authority');">clinical authority</span><span class="chip" onclick="fillBlank(this,'trustworthiness');">trustworthiness</span><span class="chip" onclick="fillBlank(this,'genuine engagement');">genuine engagement</span><span class="chip" onclick="fillBlank(this,'professional credibility');">professional credibility</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">2</div>
+            <div>
+              <div class="fn-title">Use Purposeful Gestures</div>
+              <div class="fn-title-zh zh">使用有目的的手勢</div>
+              <div class="fn-purpose">Reinforce key points with deliberate, open gestures.</div>
+              <div class="fn-purpose-zh zh">用刻意、開放的手勢強化關鍵論點。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="When I say 'there are THREE key factors', I will hold up ___ fingers to visually reinforce the number."><div class="scard-en"><span>When I say 'there are THREE key factors', I will hold up </span><span class="blank-wrap"><input class="blank" data-sid="u8s3" data-idx="0" placeholder="number" /></span><span> fingers to visually reinforce the number.</span></div><div class="scard-zh zh">當我說「有三個關鍵因素」時，我將舉起___根手指，以視覺方式強化這個數字。</div><div class="bank" data-sid="u8s3" data-idx="0"><span class="chip" onclick="fillBlank(this,'three');">three</span><span class="chip" onclick="fillBlank(this,'two');">two</span><span class="chip" onclick="fillBlank(this,'four');">four</span></div></div><div class="scard" data-template="I will use an ___ gesture when discussing ___ to signal openness and empathy."><div class="scard-en"><span>I will use an </span><span class="blank-wrap"><input class="blank" data-sid="u8s4" data-idx="0" placeholder="gesture type" /></span><span> gesture when discussing </span><span class="blank-wrap"><input class="blank" data-sid="u8s4" data-idx="1" placeholder="sensitive topic" /></span><span> to signal openness and empathy.</span></div><div class="scard-zh zh">在討論___時，我將使用___手勢，以傳達開放和同理心。</div><div class="bank" data-sid="u8s4" data-idx="0"><span class="chip" onclick="fillBlank(this,'open-palm');">open-palm</span><span class="chip" onclick="fillBlank(this,'outward-facing');">outward-facing</span><span class="chip" onclick="fillBlank(this,'forward-leaning');">forward-leaning</span><span class="chip" onclick="fillBlank(this,'arms-open');">arms-open</span></div><div class="bank" data-sid="u8s4" data-idx="1"><span class="chip" onclick="fillBlank(this,'patient suffering');">patient suffering</span><span class="chip" onclick="fillBlank(this,'health inequality');">health inequality</span><span class="chip" onclick="fillBlank(this,'mental health stigma');">mental health stigma</span><span class="chip" onclick="fillBlank(this,'the human cost of preventable disease');">the human cost of preventable disease</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">3</div>
+            <div>
+              <div class="fn-title">Control Posture and Movement</div>
+              <div class="fn-title-zh zh">控制姿勢與動作</div>
+              <div class="fn-purpose">Stand with intention and move with purpose — never pace or fidget.</div>
+              <div class="fn-purpose-zh zh">站立有目的，移動有意圖——絕不來回踱步或緊張擺動。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="I will stand with my feet ___ apart, weight evenly distributed, and avoid ___ throughout the presentation."><div class="scard-en"><span>I will stand with my feet </span><span class="blank-wrap"><input class="blank" data-sid="u8s5" data-idx="0" placeholder="stance" /></span><span> apart, weight evenly distributed, and avoid </span><span class="blank-wrap"><input class="blank" data-sid="u8s5" data-idx="1" placeholder="nervous habit" /></span><span> throughout the presentation.</span></div><div class="scard-zh zh">我將雙腳___距離站立，重心均勻分配，在整個報告過程中避免___。</div><div class="bank" data-sid="u8s5" data-idx="0"><span class="chip" onclick="fillBlank(this,'shoulder-width');">shoulder-width</span><span class="chip" onclick="fillBlank(this,'hip-width');">hip-width</span></div><div class="bank" data-sid="u8s5" data-idx="1"><span class="chip" onclick="fillBlank(this,'swaying');">swaying</span><span class="chip" onclick="fillBlank(this,'pacing back and forth');">pacing back and forth</span><span class="chip" onclick="fillBlank(this,'fidgeting with my notes');">fidgeting with my notes</span><span class="chip" onclick="fillBlank(this,'crossing my arms');">crossing my arms</span></div></div><div class="scard" data-template="When I transition from ___ to ___ , I will take one deliberate step forward to signal the change."><div class="scard-en"><span>When I transition from </span><span class="blank-wrap"><input class="blank" data-sid="u8s6" data-idx="0" placeholder="section 1" /></span><span> to </span><span class="blank-wrap"><input class="blank" data-sid="u8s6" data-idx="1" placeholder="section 2" /></span><span> , I will take one deliberate step forward to signal the change.</span></div><div class="scard-zh zh">當我從___過渡到___時，我將刻意向前邁出一步，以示轉換。</div><div class="bank" data-sid="u8s6" data-idx="0"><span class="chip" onclick="fillBlank(this,'the problem');">the problem</span><span class="chip" onclick="fillBlank(this,'the background');">the background</span><span class="chip" onclick="fillBlank(this,'the evidence');">the evidence</span></div><div class="bank" data-sid="u8s6" data-idx="1"><span class="chip" onclick="fillBlank(this,'the evidence');">the evidence</span><span class="chip" onclick="fillBlank(this,'the nursing implications');">the nursing implications</span><span class="chip" onclick="fillBlank(this,'the SDG connection');">the SDG connection</span><span class="chip" onclick="fillBlank(this,'the conclusion');">the conclusion</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">4</div>
+            <div>
+              <div class="fn-title">Match Non-Verbal to the Health Topic</div>
+              <div class="fn-title-zh zh">將非語言與健康主題配合</div>
+              <div class="fn-purpose">Adapt your body language to the tone of the health content you are presenting.</div>
+              <div class="fn-purpose-zh zh">根據你所報告的健康內容調整肢體語言。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="When describing ___ , I will slow my movement and ___ my voice to convey the seriousness of the issue."><div class="scard-en"><span>When describing </span><span class="blank-wrap"><input class="blank" data-sid="u8s7" data-idx="0" placeholder="serious topic" /></span><span> , I will slow my movement and </span><span class="blank-wrap"><input class="blank" data-sid="u8s7" data-idx="1" placeholder="voice adjustment" /></span><span> my voice to convey the seriousness of the issue.</span></div><div class="scard-zh zh">在描述___時，我將放慢動作並___聲音，以傳達問題的嚴重性。</div><div class="bank" data-sid="u8s7" data-idx="0"><span class="chip" onclick="fillBlank(this,'patient suffering');">patient suffering</span><span class="chip" onclick="fillBlank(this,'preventable death');">preventable death</span><span class="chip" onclick="fillBlank(this,'systemic health inequality');">systemic health inequality</span><span class="chip" onclick="fillBlank(this,'the human cost of this condition');">the human cost of this condition</span></div><div class="bank" data-sid="u8s7" data-idx="1"><span class="chip" onclick="fillBlank(this,'lower');">lower</span><span class="chip" onclick="fillBlank(this,'soften');">soften</span><span class="chip" onclick="fillBlank(this,'deepen');">deepen</span><span class="chip" onclick="fillBlank(this,'steady');">steady</span></div></div><div class="scard" data-template="For my call to action, I will ___ to project energy and commitment as I urge the audience to ___ ."><div class="scard-en"><span>For my call to action, I will </span><span class="blank-wrap"><input class="blank" data-sid="u8s8" data-idx="0" placeholder="physical action" /></span><span> to project energy and commitment as I urge the audience to </span><span class="blank-wrap"><input class="blank" data-sid="u8s8" data-idx="1" placeholder="action" /></span><span> .</span></div><div class="scard-zh zh">在行動呼籲部分，我將___，以展現活力和承諾，呼籲聽眾___。</div><div class="bank" data-sid="u8s8" data-idx="0"><span class="chip" onclick="fillBlank(this,'step forward');">step forward</span><span class="chip" onclick="fillBlank(this,'raise my gaze');">raise my gaze</span><span class="chip" onclick="fillBlank(this,'stand tall');">stand tall</span><span class="chip" onclick="fillBlank(this,'use a stronger vocal tone');">use a stronger vocal tone</span></div><div class="bank" data-sid="u8s8" data-idx="1"><span class="chip" onclick="fillBlank(this,'support nursing advocacy for this issue');">support nursing advocacy for this issue</span><span class="chip" onclick="fillBlank(this,'consider how they will apply this in clinical practice');">consider how they will apply this in clinical practice</span><span class="chip" onclick="fillBlank(this,'join efforts to achieve SDG Goal 3');">join efforts to achieve SDG Goal 3</span></div></div></div>
+        </div>
+
+  <!-- MY SENTENCES PREVIEW -->
+  <div class="my-panel">
+    <div class="my-panel-header">
+      <div>
+        <div class="my-panel-title">📝 My Completed Sentences</div>
+        <div class="my-panel-sub zh">我完成的句子 — 自動從上方填空產生</div>
+        <div class="my-panel-sub">Auto-generated from your filled blanks above</div>
+      </div>
+      <button class="nbtn pri" onclick="exportWord()" style="flex-shrink:0;">📄 Export to Word</button>
+    </div>
+    <div id="myPreview">
+      <div class="empty-msg">Fill in the blanks above — your completed sentences will appear here.</div>
+    </div>
+  </div>
+
+  <!-- PREV / NEXT -->
+  <div style="display:flex;gap:12px;margin-top:4px;">
+    <a href="unit7.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;gap:10px;transition:all .2s;" onmouseover="this.style.borderColor='#5a3a1a'" onmouseout="this.style.borderColor='var(--border)'"><span style="font-size:1.2rem">←</span><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Previous</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U7: 呈現健康數據與實證</div></div></a>
+    <a href="unit9.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;justify-content:flex-end;gap:10px;text-align:right;transition:all .2s;" onmouseover="this.style.borderColor='#5a3a1a'" onmouseout="this.style.borderColor='var(--border)'"><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Next</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U9: 解釋與臨床案例舉例</div></div><span style="font-size:1.2rem">→</span></a>
+  </div>
+
+</div>
+<script>
+// ── LANG TOGGLE ──────────────────────────────────────────────────────────────
+const LANG_KEY = 'nursingLang';
+let langMode = localStorage.getItem(LANG_KEY) || 'bilingual';
+function applyLang(){
+  document.body.classList.toggle('en-only', langMode === 'english');
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = langMode === 'english' ? '🌐 Show Chinese' : '🔤 English Only';
+}
+function toggleLang(){
+  langMode = langMode === 'bilingual' ? 'english' : 'bilingual';
+  localStorage.setItem(LANG_KEY, langMode);
+  applyLang();
+}
+
+// ── CHIP CLICK → FILL BLANK ──────────────────────────────────────────────────
+function fillBlank(chipEl, suggestion){
+  const bank = chipEl.closest('.bank');
+  const idx  = bank.dataset.idx;
+  const sid  = bank.dataset.sid;
+  const inp  = document.querySelector(`.blank[data-sid="${sid}"][data-idx="${idx}"]`);
+  if(!inp) return;
+  inp.value = suggestion;
+  inp.classList.add('filled');
+  inp.dispatchEvent(new Event('input'));
+  // highlight active chip
+  bank.querySelectorAll('.chip').forEach(c => c.style.background = '');
+  chipEl.style.background = 'var(--teal)';
+  chipEl.style.color = '#fff';
+}
+
+// ── BUILD MY-SENTENCES PREVIEW ────────────────────────────────────────────────
+function rebuildPreview(){
+  const out = document.getElementById('myPreview');
+  if(!out) return;
+  const cards = document.querySelectorAll('.scard');
+  let html = '';
+  cards.forEach((card,ci) => {
+    const template = card.dataset.template;
+    const inputs   = card.querySelectorAll('.blank');
+    let sentence   = template;
+    inputs.forEach(inp => {
+      const val = inp.value.trim() || inp.placeholder;
+      sentence  = sentence.replace('___', `<strong>${val}</strong>`);
+    });
+    html += `<div class="my-sentence">${sentence}</div>`;
+  });
+  out.innerHTML = html || '<div class="empty-msg">Fill in the blanks above — your sentences will appear here.</div>';
+}
+
+// ── EXPORT TO WORD (.doc) ────────────────────────────────────────────────────
+function exportWord(){
+  const unitTitle = document.querySelector('.hero h1')?.textContent || 'Unit';
+  const unitEn    = document.querySelector('.hero-en')?.textContent  || '';
+  let rows = '';
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    const fname = fn.querySelector('.fn-title')?.textContent || `Function ${fi+1}`;
+    const fzh   = fn.querySelector('.fn-title-zh')?.textContent || '';
+    rows += `<tr><td colspan="2" style="background:#eaf7f4;padding:8pt;font-weight:bold;font-size:11pt">${fi+1}. ${fname} ${fzh}</td></tr>`;
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence = sentence.replace('___', val);
+      });
+      const zhEl = card.querySelector('.scard-zh');
+      const zh   = zhEl ? zhEl.textContent.replace('🇹🇼 ','') : '';
+      rows += `<tr>
+        <td style="padding:7pt 8pt;font-size:10.5pt;border-bottom:1pt solid #eee;width:55%">${sentence}</td>
+        <td style="padding:7pt 8pt;font-size:10pt;color:#556;border-bottom:1pt solid #eee;width:45%">${zh}</td>
+      </tr>`;
+    });
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="UTF-8">
+  <style>
+    body{font-family:'Noto Sans TC',Arial,sans-serif;margin:2cm;}
+    h1{font-size:16pt;color:#1a7a6a;margin-bottom:4pt;}
+    h2{font-size:11pt;color:#666;margin-bottom:12pt;font-weight:normal;}
+    table{width:100%;border-collapse:collapse;}
+    td{vertical-align:top;}
+  </style></head>
+  <body>
+  <h1>${unitTitle}</h1>
+  <h2>${unitEn} — My Weekly Practice Sheet</h2>
+  <table>${rows}</table>
+  </body></html>`;
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `${unitTitle.replace(/\s+/g,'-')}_worksheet.doc`;
+  a.click();
+}
+
+// ── COPY AS TEXT ──────────────────────────────────────────────────────────────
+function copyText(){
+  let lines = [`=== ${document.querySelector('.hero h1')?.textContent} ===\n`];
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    lines.push(`\n[${fi+1}] ${fn.querySelector('.fn-title')?.textContent}`);
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence  = sentence.replace('___', val);
+      });
+      lines.push('• ' + sentence);
+    });
+  });
+  navigator.clipboard.writeText(lines.join('\n')).catch(()=>{});
+  const btn = document.getElementById('copyBtn');
+  if(btn){ btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Text',1800); }
+}
+
+// ── CLEAR ALL BLANKS ──────────────────────────────────────────────────────────
+function clearAll(){
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.value=''; inp.classList.remove('filled');
+  });
+  document.querySelectorAll('.chip').forEach(c => {
+    c.style.background=''; c.style.color='';
+  });
+  rebuildPreview();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.classList.toggle('filled', inp.value.trim().length > 0);
+      rebuildPreview();
+    });
+  });
+  rebuildPreview();
+});
+</script>
+</body>
+</html>

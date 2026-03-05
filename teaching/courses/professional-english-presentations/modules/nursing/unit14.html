@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>U14: 5分鐘時間控管 | 護理健康英文簡報</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.hero{background:linear-gradient(135deg,#1a4a6a,#2a7aaa);}
+.pill.on{background:#1a4a6a;border-color:#1a4a6a;}
+:root{--c1:#1a4a6a;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing</span></div>
+  </a>
+  <div class="nav-right">
+    <button id="langBtn" class="nbtn" onclick="toggleLang()">🔤 English Only</button>
+    <a href="topics.html" class="nbtn">🌍 Topics</a>
+    <a href="index.html" class="nbtn">← Home</a>
+  </div>
+</nav>
+
+<!-- PILL NAV -->
+<div class="pillnav">
+  <span class="plabel">UNITS:</span>
+  <a href="index.html" class="pill">🏠</a>
+  <a href="unit1.html" class="pill">U1</a><a href="unit2.html" class="pill">U2</a><a href="unit3.html" class="pill">U3</a><a href="unit4.html" class="pill">U4</a><a href="unit5.html" class="pill">U5</a><a href="unit6.html" class="pill">U6</a><a href="unit7.html" class="pill">U7</a><a href="unit8.html" class="pill">U8</a><a href="unit9.html" class="pill">U9</a><a href="unit10.html" class="pill">U10</a><a href="unit11.html" class="pill">U11</a><a href="unit12.html" class="pill">U12</a><a href="unit13.html" class="pill">U13</a><a href="unit14.html" class="pill  on">U14</a><a href="unit15.html" class="pill">U15</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco" style="width:220px;height:220px;right:-50px;top:-50px;"></div>
+  <div class="hero-deco" style="width:120px;height:120px;left:25%;bottom:-40px;"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Week 12 · Unit 14 / 15 · 93% through course</div>
+    <div class="hero-icon">⏱️</div>
+    <h1>5分鐘時間控管</h1>
+    <div class="hero-en">5-Minute Time Management</div>
+    <div class="hero-goal zh"><strong>🎯 </strong>Master the discipline of delivering a complete, well-paced presentation within exactly 5 minutes.</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-info">
+      ✏️ Fill in the blanks · Click <strong>word chips</strong> to auto-fill · Toggle <strong>Chinese</strong> anytime
+    </div>
+    <div class="toolbar-btns">
+      <button class="nbtn" onclick="clearAll()">↺ Clear All</button>
+      <button class="nbtn" id="copyBtn" onclick="copyText()">📋 Copy Text</button>
+      <button class="nbtn pri" onclick="exportWord()">📄 Export Word</button>
+      <button class="nbtn" onclick="window.print()">🖨 Print PDF</button>
+    </div>
+  </div>
+
+  <!-- FUNCTION BLOCKS -->
+  
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">1</div>
+            <div>
+              <div class="fn-title">Plan Your 5-Minute Allocation</div>
+              <div class="fn-title-zh zh">規劃5分鐘分配</div>
+              <div class="fn-purpose">Create an explicit time plan for each section of your presentation.</div>
+              <div class="fn-purpose-zh zh">為報告的每個部分制定明確的時間計劃。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="My 5-minute time plan: Hook ___ seconds; self-introduction and topic ___ seconds; objective and outline ___ seconds; main body point one ___ seconds; main body point two ___ seconds; SDG connection ___ seconds; conclusion ___ seconds; thank you and Q&A invitation ___ seconds."><div class="scard-en"><span>My 5-minute time plan: Hook </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="0" placeholder="hook" /></span><span> seconds; self-introduction and topic </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="1" placeholder="intro" /></span><span> seconds; objective and outline </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="2" placeholder="outline" /></span><span> seconds; main body point one </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="3" placeholder="body 1" /></span><span> seconds; main body point two </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="4" placeholder="body 2" /></span><span> seconds; SDG connection </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="5" placeholder="SDG" /></span><span> seconds; conclusion </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="6" placeholder="conclusion" /></span><span> seconds; thank you and Q&A invitation </span><span class="blank-wrap"><input class="blank" data-sid="u14s1" data-idx="7" placeholder="close" /></span><span> seconds.</span></div><div class="scard-zh zh">我的5分鐘時間計劃：鉤子___秒；自我介紹和主題___秒；目標和大綱___秒；主體論點一___秒；主體論點二___秒；永續發展目標連結___秒；結論___秒；致謝和問答邀請___秒。</div><div class="bank" data-sid="u14s1" data-idx="0"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'20');">20</span><span class="chip" onclick="fillBlank(this,'45');">45</span></div><div class="bank" data-sid="u14s1" data-idx="1"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'45');">45</span></div><div class="bank" data-sid="u14s1" data-idx="2"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'20');">20</span></div><div class="bank" data-sid="u14s1" data-idx="3"><span class="chip" onclick="fillBlank(this,'75');">75</span><span class="chip" onclick="fillBlank(this,'60');">60</span><span class="chip" onclick="fillBlank(this,'90');">90</span></div><div class="bank" data-sid="u14s1" data-idx="4"><span class="chip" onclick="fillBlank(this,'75');">75</span><span class="chip" onclick="fillBlank(this,'60');">60</span><span class="chip" onclick="fillBlank(this,'90');">90</span></div><div class="bank" data-sid="u14s1" data-idx="5"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'45');">45</span></div><div class="bank" data-sid="u14s1" data-idx="6"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'45');">45</span><span class="chip" onclick="fillBlank(this,'60');">60</span></div><div class="bank" data-sid="u14s1" data-idx="7"><span class="chip" onclick="fillBlank(this,'30');">30</span><span class="chip" onclick="fillBlank(this,'20');">20</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">2</div>
+            <div>
+              <div class="fn-title">Manage Overtime Gracefully</div>
+              <div class="fn-title-zh zh">優雅地管理超時</div>
+              <div class="fn-purpose">Have ready phrases for when you realise you are running over time.</div>
+              <div class="fn-purpose-zh zh">準備好在意識到超時時使用的短語。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="In the interest of time, I will briefly summarise ___ rather than going into full detail."><div class="scard-en"><span>In the interest of time, I will briefly summarise </span><span class="blank-wrap"><input class="blank" data-sid="u14s2" data-idx="0" placeholder="section to shorten" /></span><span> rather than going into full detail.</span></div><div class="scard-zh zh">為了節省時間，我將簡要總結___，而非深入詳述。</div><div class="bank" data-sid="u14s2" data-idx="0"><span class="chip" onclick="fillBlank(this,'the background data');">the background data</span><span class="chip" onclick="fillBlank(this,'the second case study');">the second case study</span><span class="chip" onclick="fillBlank(this,'the policy implications');">the policy implications</span><span class="chip" onclick="fillBlank(this,'the full evidence section');">the full evidence section</span></div></div><div class="scard" data-template="I am aware of my time, so let me focus on the most critical point: ___ ."><div class="scard-en"><span>I am aware of my time, so let me focus on the most critical point: </span><span class="blank-wrap"><input class="blank" data-sid="u14s3" data-idx="0" placeholder="priority point" /></span><span> .</span></div><div class="scard-zh zh">我注意到時間，所以讓我專注於最關鍵的論點：___。</div><div class="bank" data-sid="u14s3" data-idx="0"><span class="chip" onclick="fillBlank(this,'the nursing call to action');">the nursing call to action</span><span class="chip" onclick="fillBlank(this,'the SDG connection');">the SDG connection</span><span class="chip" onclick="fillBlank(this,'the key statistic that drives this issue');">the key statistic that drives this issue</span><span class="chip" onclick="fillBlank(this,'the single most impactful recommendation');">the single most impactful recommendation</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">3</div>
+            <div>
+              <div class="fn-title">Manage Undertime Gracefully</div>
+              <div class="fn-title-zh zh">優雅地管理時間不足</div>
+              <div class="fn-purpose">Have strategies ready if you finish too early.</div>
+              <div class="fn-purpose-zh zh">如果完成得太早，準備好應對策略。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="To elaborate on this point, let me add that ___ , which is an important nuance that nursing students should be aware of."><div class="scard-en"><span>To elaborate on this point, let me add that </span><span class="blank-wrap"><input class="blank" data-sid="u14s4" data-idx="0" placeholder="additional detail" /></span><span> , which is an important nuance that nursing students should be aware of.</span></div><div class="scard-zh zh">進一步說明這一點，讓我補充___，這是護理學生應該意識到的重要細節。</div><div class="bank" data-sid="u14s4" data-idx="0"><span class="chip" onclick="fillBlank(this,'the cultural context significantly affects how this condition is perceived and treated');">the cultural context significantly affects how this condition is perceived and treated</span><span class="chip" onclick="fillBlank(this,'male patients are statistically less likely to seek help for this condition');">male patients are statistically less likely to seek help for this condition</span><span class="chip" onclick="fillBlank(this,'community nurses can often reach patients who never attend hospital services');">community nurses can often reach patients who never attend hospital services</span></div></div><div class="scard" data-template="I would like to return briefly to the statistic I mentioned earlier — ___ — because I believe it deserves a moment of reflection."><div class="scard-en"><span>I would like to return briefly to the statistic I mentioned earlier — </span><span class="blank-wrap"><input class="blank" data-sid="u14s5" data-idx="0" placeholder="the statistic" /></span><span> — because I believe it deserves a moment of reflection.</span></div><div class="scard-zh zh">我想簡要回顧我之前提到的統計數據——___——因為我認為它值得一刻反思。</div><div class="bank" data-sid="u14s5" data-idx="0"><span class="chip" onclick="fillBlank(this,'one in four elderly Taiwanese residents is at high risk of a fall');">one in four elderly Taiwanese residents is at high risk of a fall</span><span class="chip" onclick="fillBlank(this,'Taiwan's rate of preventable NCD death is nearly twice the OECD average');">Taiwan's rate of preventable NCD death is nearly twice the OECD average</span><span class="chip" onclick="fillBlank(this,'30% of patients discharged from hospital lack adequate community support');">30% of patients discharged from hospital lack adequate community support</span></div></div></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-header">
+            <div class="fn-num">4</div>
+            <div>
+              <div class="fn-title">Use Time-Awareness Phrases</div>
+              <div class="fn-title-zh zh">使用時間意識短語</div>
+              <div class="fn-purpose">Signal to the audience and yourself that you are tracking time during the presentation.</div>
+              <div class="fn-purpose-zh zh">在報告過程中向聽眾和自己表明你正在追蹤時間。</div>
+            </div>
+          </div>
+          <div class="fn-body"><div class="scard" data-template="I am now at my midpoint, so let me transition from ___ to ___ ."><div class="scard-en"><span>I am now at my midpoint, so let me transition from </span><span class="blank-wrap"><input class="blank" data-sid="u14s6" data-idx="0" placeholder="previous section" /></span><span> to </span><span class="blank-wrap"><input class="blank" data-sid="u14s6" data-idx="1" placeholder="next section" /></span><span> .</span></div><div class="scard-zh zh">我現在到了中間點，讓我從___過渡到___。</div><div class="bank" data-sid="u14s6" data-idx="0"><span class="chip" onclick="fillBlank(this,'the problem background');">the problem background</span><span class="chip" onclick="fillBlank(this,'the statistical evidence');">the statistical evidence</span><span class="chip" onclick="fillBlank(this,'the patient case study');">the patient case study</span></div><div class="bank" data-sid="u14s6" data-idx="1"><span class="chip" onclick="fillBlank(this,'the nursing implications');">the nursing implications</span><span class="chip" onclick="fillBlank(this,'the SDG connection');">the SDG connection</span><span class="chip" onclick="fillBlank(this,'the recommended actions');">the recommended actions</span><span class="chip" onclick="fillBlank(this,'the conclusion');">the conclusion</span></div></div><div class="scard" data-template="With ___ remaining, I would like to use this time to ___ before closing."><div class="scard-en"><span>With </span><span class="blank-wrap"><input class="blank" data-sid="u14s7" data-idx="0" placeholder="time remaining" /></span><span> remaining, I would like to use this time to </span><span class="blank-wrap"><input class="blank" data-sid="u14s7" data-idx="1" placeholder="action" /></span><span> before closing.</span></div><div class="scard-zh zh">還有___剩餘時間，我想利用這段時間在結束前___。</div><div class="bank" data-sid="u14s7" data-idx="0"><span class="chip" onclick="fillBlank(this,'one minute');">one minute</span><span class="chip" onclick="fillBlank(this,'approximately 60 seconds');">approximately 60 seconds</span><span class="chip" onclick="fillBlank(this,'about 90 seconds');">about 90 seconds</span></div><div class="bank" data-sid="u14s7" data-idx="1"><span class="chip" onclick="fillBlank(this,'summarise my three key points');">summarise my three key points</span><span class="chip" onclick="fillBlank(this,'restate the SDG connection');">restate the SDG connection</span><span class="chip" onclick="fillBlank(this,'deliver my nursing call to action');">deliver my nursing call to action</span><span class="chip" onclick="fillBlank(this,'share one final thought');">share one final thought</span></div></div></div>
+        </div>
+
+  <!-- MY SENTENCES PREVIEW -->
+  <div class="my-panel">
+    <div class="my-panel-header">
+      <div>
+        <div class="my-panel-title">📝 My Completed Sentences</div>
+        <div class="my-panel-sub zh">我完成的句子 — 自動從上方填空產生</div>
+        <div class="my-panel-sub">Auto-generated from your filled blanks above</div>
+      </div>
+      <button class="nbtn pri" onclick="exportWord()" style="flex-shrink:0;">📄 Export to Word</button>
+    </div>
+    <div id="myPreview">
+      <div class="empty-msg">Fill in the blanks above — your completed sentences will appear here.</div>
+    </div>
+  </div>
+
+  <!-- PREV / NEXT -->
+  <div style="display:flex;gap:12px;margin-top:4px;">
+    <a href="unit13.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;gap:10px;transition:all .2s;" onmouseover="this.style.borderColor='#1a4a6a'" onmouseout="this.style.borderColor='var(--border)'"><span style="font-size:1.2rem">←</span><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Previous</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U13: 問題與專業回應</div></div></a>
+    <a href="unit15.html" style="flex:1;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;display:flex;align-items:center;justify-content:flex-end;gap:10px;text-align:right;transition:all .2s;" onmouseover="this.style.borderColor='#1a4a6a'" onmouseout="this.style.borderColor='var(--border)'"><div><div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Next</div><div style="font-size:.84rem;font-weight:800;color:var(--navy);margin-top:2px;">U15: 致謝、道別與最終演練</div></div><span style="font-size:1.2rem">→</span></a>
+  </div>
+
+</div>
+<script>
+// ── LANG TOGGLE ──────────────────────────────────────────────────────────────
+const LANG_KEY = 'nursingLang';
+let langMode = localStorage.getItem(LANG_KEY) || 'bilingual';
+function applyLang(){
+  document.body.classList.toggle('en-only', langMode === 'english');
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = langMode === 'english' ? '🌐 Show Chinese' : '🔤 English Only';
+}
+function toggleLang(){
+  langMode = langMode === 'bilingual' ? 'english' : 'bilingual';
+  localStorage.setItem(LANG_KEY, langMode);
+  applyLang();
+}
+
+// ── CHIP CLICK → FILL BLANK ──────────────────────────────────────────────────
+function fillBlank(chipEl, suggestion){
+  const bank = chipEl.closest('.bank');
+  const idx  = bank.dataset.idx;
+  const sid  = bank.dataset.sid;
+  const inp  = document.querySelector(`.blank[data-sid="${sid}"][data-idx="${idx}"]`);
+  if(!inp) return;
+  inp.value = suggestion;
+  inp.classList.add('filled');
+  inp.dispatchEvent(new Event('input'));
+  // highlight active chip
+  bank.querySelectorAll('.chip').forEach(c => c.style.background = '');
+  chipEl.style.background = 'var(--teal)';
+  chipEl.style.color = '#fff';
+}
+
+// ── BUILD MY-SENTENCES PREVIEW ────────────────────────────────────────────────
+function rebuildPreview(){
+  const out = document.getElementById('myPreview');
+  if(!out) return;
+  const cards = document.querySelectorAll('.scard');
+  let html = '';
+  cards.forEach((card,ci) => {
+    const template = card.dataset.template;
+    const inputs   = card.querySelectorAll('.blank');
+    let sentence   = template;
+    inputs.forEach(inp => {
+      const val = inp.value.trim() || inp.placeholder;
+      sentence  = sentence.replace('___', `<strong>${val}</strong>`);
+    });
+    html += `<div class="my-sentence">${sentence}</div>`;
+  });
+  out.innerHTML = html || '<div class="empty-msg">Fill in the blanks above — your sentences will appear here.</div>';
+}
+
+// ── EXPORT TO WORD (.doc) ────────────────────────────────────────────────────
+function exportWord(){
+  const unitTitle = document.querySelector('.hero h1')?.textContent || 'Unit';
+  const unitEn    = document.querySelector('.hero-en')?.textContent  || '';
+  let rows = '';
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    const fname = fn.querySelector('.fn-title')?.textContent || `Function ${fi+1}`;
+    const fzh   = fn.querySelector('.fn-title-zh')?.textContent || '';
+    rows += `<tr><td colspan="2" style="background:#eaf7f4;padding:8pt;font-weight:bold;font-size:11pt">${fi+1}. ${fname} ${fzh}</td></tr>`;
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence = sentence.replace('___', val);
+      });
+      const zhEl = card.querySelector('.scard-zh');
+      const zh   = zhEl ? zhEl.textContent.replace('🇹🇼 ','') : '';
+      rows += `<tr>
+        <td style="padding:7pt 8pt;font-size:10.5pt;border-bottom:1pt solid #eee;width:55%">${sentence}</td>
+        <td style="padding:7pt 8pt;font-size:10pt;color:#556;border-bottom:1pt solid #eee;width:45%">${zh}</td>
+      </tr>`;
+    });
+  });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="UTF-8">
+  <style>
+    body{font-family:'Noto Sans TC',Arial,sans-serif;margin:2cm;}
+    h1{font-size:16pt;color:#1a7a6a;margin-bottom:4pt;}
+    h2{font-size:11pt;color:#666;margin-bottom:12pt;font-weight:normal;}
+    table{width:100%;border-collapse:collapse;}
+    td{vertical-align:top;}
+  </style></head>
+  <body>
+  <h1>${unitTitle}</h1>
+  <h2>${unitEn} — My Weekly Practice Sheet</h2>
+  <table>${rows}</table>
+  </body></html>`;
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `${unitTitle.replace(/\s+/g,'-')}_worksheet.doc`;
+  a.click();
+}
+
+// ── COPY AS TEXT ──────────────────────────────────────────────────────────────
+function copyText(){
+  let lines = [`=== ${document.querySelector('.hero h1')?.textContent} ===\n`];
+  document.querySelectorAll('.fn-block').forEach((fn,fi) => {
+    lines.push(`\n[${fi+1}] ${fn.querySelector('.fn-title')?.textContent}`);
+    fn.querySelectorAll('.scard').forEach(card => {
+      const template = card.dataset.template;
+      const inputs   = card.querySelectorAll('.blank');
+      let sentence   = template;
+      inputs.forEach(inp => {
+        const val = inp.value.trim() || `[${inp.placeholder}]`;
+        sentence  = sentence.replace('___', val);
+      });
+      lines.push('• ' + sentence);
+    });
+  });
+  navigator.clipboard.writeText(lines.join('\n')).catch(()=>{});
+  const btn = document.getElementById('copyBtn');
+  if(btn){ btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Text',1800); }
+}
+
+// ── CLEAR ALL BLANKS ──────────────────────────────────────────────────────────
+function clearAll(){
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.value=''; inp.classList.remove('filled');
+  });
+  document.querySelectorAll('.chip').forEach(c => {
+    c.style.background=''; c.style.color='';
+  });
+  rebuildPreview();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  document.querySelectorAll('.blank').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.classList.toggle('filled', inp.value.trim().length > 0);
+      rebuildPreview();
+    });
+  });
+  rebuildPreview();
+});
+</script>
+</body>
+</html>

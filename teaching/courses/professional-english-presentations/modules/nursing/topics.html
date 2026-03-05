@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Choose Your Topic | 護理健康英文簡報</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#1a7a6a;--teal2:#2aaa90;--teal-pale:#eaf7f4;
+  --navy:#0e2430;--slate:#4a5e6e;--muted:#8899aa;
+  --bg:#f0f6f5;--white:#fff;--border:#d8ecea;
+  --radius:14px;--r8:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+.topnav{
+  background:var(--white);border-bottom:2px solid var(--border);
+  padding:0 clamp(14px,4vw,36px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-icon{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.nav-text{font-size:0.82rem;font-weight:800;color:var(--teal);line-height:1.25;}
+.nav-text span{display:block;font-size:0.6rem;color:var(--muted);font-weight:500;}
+.nav-right{display:flex;align-items:center;gap:7px;}
+.nbtn{
+  padding:6px 13px;border-radius:20px;font-size:0.73rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--slate);
+  cursor:pointer;font-family:inherit;transition:all .18s;white-space:nowrap;
+}
+.nbtn:hover{border-color:var(--teal);color:var(--teal);}
+.nbtn.pri{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nbtn.pri:hover{background:var(--teal2);}
+.nbtn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+/* PILL NAV */
+.pillnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:7px clamp(14px,4vw,36px);
+  display:flex;gap:4px;align-items:center;overflow-x:auto;
+  white-space:nowrap;scrollbar-width:none;
+}
+.pillnav::-webkit-scrollbar{display:none;}
+.plabel{font-size:0.62rem;color:var(--muted);font-weight:700;letter-spacing:1px;margin-right:4px;flex-shrink:0;}
+.pill{
+  padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--muted);
+  flex-shrink:0;transition:all .18s;
+}
+.pill:hover{border-color:var(--teal);color:var(--teal);}
+.pill.on{background:var(--c1,var(--teal));color:#fff;border-color:var(--c1,var(--teal));}
+
+/* HERO */
+.hero{padding:32px clamp(14px,4vw,36px) 24px;position:relative;overflow:hidden;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 11px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+  color:#fff;margin-bottom:10px;
+}
+.hero-icon{font-size:2.5rem;margin-bottom:7px;}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.hero-en{font-size:clamp(0.82rem,2vw,0.95rem);color:rgba(255,255,255,0.72);margin-bottom:12px;}
+.hero-goal{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r8);padding:10px 14px;
+  font-size:0.83rem;color:rgba(255,255,255,0.9);line-height:1.55;
+}
+.hero-deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
+
+/* LAYOUT */
+.page{max-width:800px;margin:0 auto;padding:20px clamp(14px,4vw,36px) 64px;}
+
+/* BILINGUAL TOGGLE — hide zh when in EN mode */
+body.en-only .zh{display:none!important;}
+body.en-only .nbtn[data-lang]::after{content:' | 切換中文';}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;
+}
+.toolbar-info{font-size:0.79rem;color:var(--slate);}
+.toolbar-info strong{color:var(--teal);}
+.toolbar-btns{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* FUNCTION BLOCK */
+.fn-block{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.fn-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--teal-pale);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.fn-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c1,var(--teal));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;flex-shrink:0;margin-top:1px;
+}
+.fn-title{font-size:1rem;font-weight:900;color:var(--navy);}
+.fn-title-zh{font-size:0.75rem;color:var(--teal);font-weight:600;margin-top:2px;}
+.fn-purpose{font-size:0.8rem;color:var(--slate);line-height:1.5;margin-top:3px;}
+.fn-purpose-zh{font-size:0.76rem;color:var(--muted);line-height:1.5;margin-top:2px;}
+.fn-body{padding:16px 18px;}
+
+/* SENTENCE CARD */
+.scard{
+  background:#fafef9;border:1.5px solid var(--teal-pale);
+  border-radius:var(--r8);padding:14px 16px;margin-bottom:12px;
+}
+.scard:last-child{margin-bottom:0;}
+.scard-en{
+  font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.7;
+  margin-bottom:8px;
+}
+.scard-zh{
+  font-size:0.8rem;color:var(--slate);line-height:1.6;
+  padding-top:7px;border-top:1px solid var(--teal-pale);
+  margin-bottom:10px;
+}
+.scard-zh::before{content:'🇹🇼 ';}
+
+/* BLANK INPUT */
+.blank-wrap{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 2px;}
+.blank{
+  display:inline-block;
+  min-width:120px;max-width:260px;
+  padding:3px 8px;
+  border:0;border-bottom:2px solid var(--teal);
+  background:transparent;
+  color:var(--navy);font-size:0.87rem;font-weight:600;font-family:inherit;
+  outline:none;text-align:center;
+  transition:border-color .18s,background .18s;
+}
+.blank:focus{border-bottom-color:var(--teal2);background:var(--teal-pale);}
+.blank::placeholder{color:#aabba8;font-weight:400;font-size:0.8rem;}
+.blank.filled{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* WORD BANK */
+.bank{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{
+  padding:3px 10px;border-radius:20px;
+  background:rgba(26,122,106,0.08);border:1px solid rgba(26,122,106,0.22);
+  color:var(--teal);font-size:0.73rem;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal);color:#fff;}
+
+/* MY SENTENCES PANEL */
+.my-panel{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.my-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--teal-pale);
+}
+.my-panel-title{font-size:0.95rem;font-weight:900;color:var(--navy);}
+.my-panel-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.my-sentence{
+  padding:9px 12px;border-radius:var(--r8);
+  background:var(--teal-pale);margin-bottom:7px;
+  font-size:0.84rem;color:var(--navy);line-height:1.6;
+}
+.my-sentence:last-child{margin-bottom:0;}
+.empty-msg{font-size:0.82rem;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* PRINT */
+@media print{
+  .topnav,.pillnav,.toolbar,.chip,.nbtn,.hero-deco{display:none!important;}
+  body{background:#fff;}
+  .hero{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .fn-block{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .blank{border-bottom:1px solid #999;min-width:80px;}
+  .my-panel{break-inside:avoid;}
+}
+@media(max-width:600px){
+  .two-col{grid-template-columns:1fr!important;}
+  .fn-title{font-size:0.92rem;}
+  .blank{min-width:80px;max-width:180px;}
+}
+
+.site-hero{background:linear-gradient(135deg,#0e3025,#1a7a6a);padding:32px clamp(14px,4vw,36px);}
+.site-hero h1{font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:900;color:#fff;margin-bottom:6px;}
+.site-hero p{color:rgba(255,255,255,.74);font-size:.86rem;line-height:1.6;max-width:520px;}
+.pw{max-width:800px;margin:0 auto;padding:22px clamp(14px,4vw,36px) 60px;}
+.sel-banner{
+  background:linear-gradient(135deg,#1a7a6a,#2aaa90);
+  border-radius:var(--radius);padding:14px 18px;margin-bottom:18px;
+  display:none;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.sel-banner.show{display:flex;}
+.sel-lbl{font-size:.65rem;color:rgba(255,255,255,.7);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.sel-topic{font-size:.95rem;font-weight:900;color:#fff;}
+.sel-zh{font-size:.78rem;color:rgba(255,255,255,.8);}
+.sel-acts{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap;}
+.sact{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.15);color:#fff;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;}
+.sact:hover{background:rgba(255,255,255,.25);}
+.sact.go{background:#fff;color:var(--teal);}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+.fb{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--white);font-size:.73rem;font-weight:700;color:var(--slate);
+  cursor:pointer;transition:all .18s;font-family:inherit;}
+.fb.on,.fb:hover{background:var(--teal);color:#fff;border-color:var(--teal);}
+.tgroup{margin-bottom:24px;}
+.tgroup-hdr{display:flex;align-items:center;gap:12px;background:var(--white);
+  border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;margin-bottom:10px;}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:9px;}
+.tcard{
+  background:var(--white);border-radius:var(--r8);border:1.5px solid var(--border);
+  padding:12px 14px;cursor:pointer;transition:all .18s;position:relative;
+}
+.tcard:hover,.tcard.sel{border-color:var(--teal);background:var(--teal-pale);}
+.tcard.sel{border-width:2px;}
+.tcard.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-size:.95rem;color:var(--teal);font-weight:900;}
+.tcard-en{font-size:.86rem;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.tcard-zh{font-size:.75rem;color:var(--slate);}
+.tcard-sel{font-size:.66rem;font-weight:800;color:var(--teal);margin-top:7px;opacity:0;transition:opacity .15s;}
+.tcard:hover .tcard-sel{opacity:1;}
+.tcard.sel .tcard-sel{opacity:1;}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🏥</div>
+    <div class="nav-text">護理健康英文簡報<span>Health Presentation · Nursing Students</span></div>
+  </a>
+  <div class="nav-right"><a href="index.html" class="nbtn">← Course Home</a></div>
+</nav>
+
+<div class="site-hero">
+  <div style="max-width:800px;margin:0 auto;">
+    <div style="font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px;">Final Presentation Preparation</div>
+    <h1>🌍 Choose Your Health Topic</h1>
+    <p>Select a health topic connected to a UN SDG Goal for your 5-minute final presentation. Click any card, then go to Unit 2 to develop your talk.</p>
+  </div>
+</div>
+
+<div class="pw">
+  <div class="sel-banner" id="selBanner">
+    <div>
+      <div class="sel-lbl">Your Selected Topic</div>
+      <div class="sel-topic" id="selEn">—</div>
+      <div class="sel-zh" id="selZh">—</div>
+    </div>
+    <div class="sel-acts">
+      <button class="sact" onclick="clearTopic()">✕ Clear</button>
+      <a href="unit2.html" class="sact go">→ Start Unit 2</a>
+    </div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="fb on" data-sdg="all">All SDGs</button>
+    <button class="fb" data-sdg="3">💚 SDG 3</button>
+    <button class="fb" data-sdg="6">💧 SDG 6</button>
+    <button class="fb" data-sdg="10">🔴 SDG 10</button>
+    <button class="fb" data-sdg="13">🌿 SDG 13</button>
+    <button class="fb" data-sdg="2">🌾 SDG 2</button>
+    <button class="fb" data-sdg="5">♀ SDG 5</button>
+  </div>
+
+  
+        <div class="tgroup" data-sdg="3">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">💚</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 3</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Good Health & Well-Being</div>
+              <div style="font-size:.74rem;color:var(--muted);">良好健康與福祉</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Mental Health Among Nursing Students','護理學生的心理健康')">
+          <div class="tcard-en">Mental Health Among Nursing Students</div>
+          <div class="tcard-zh">護理學生的心理健康</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Non-Communicable Diseases in Taiwan','台灣非傳染性疾病')">
+          <div class="tcard-en">Non-Communicable Diseases in Taiwan</div>
+          <div class="tcard-zh">台灣非傳染性疾病</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Maternal and Newborn Health','母嬰健康')">
+          <div class="tcard-en">Maternal and Newborn Health</div>
+          <div class="tcard-zh">母嬰健康</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Childhood Obesity Prevention','兒童肥胖預防')">
+          <div class="tcard-en">Childhood Obesity Prevention</div>
+          <div class="tcard-zh">兒童肥胖預防</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Ageing Population and Long-Term Care','高齡化社會與長期照護')">
+          <div class="tcard-en">Ageing Population and Long-Term Care</div>
+          <div class="tcard-zh">高齡化社會與長期照護</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Universal Health Coverage in Taiwan','台灣全民健康保障')">
+          <div class="tcard-en">Universal Health Coverage in Taiwan</div>
+          <div class="tcard-zh">台灣全民健康保障</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+        <div class="tgroup" data-sdg="6">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">💧</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 6</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Clean Water & Sanitation</div>
+              <div style="font-size:.74rem;color:var(--muted);">清潔飲水與衛生設施</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Hand Hygiene in Clinical Settings','臨床環境中的手部衛生')">
+          <div class="tcard-en">Hand Hygiene in Clinical Settings</div>
+          <div class="tcard-zh">臨床環境中的手部衛生</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Safe Water Access in Rural Communities','農村社區的安全飲水')">
+          <div class="tcard-en">Safe Water Access in Rural Communities</div>
+          <div class="tcard-zh">農村社區的安全飲水</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Hospital-Acquired Infections','醫院感染')">
+          <div class="tcard-en">Hospital-Acquired Infections</div>
+          <div class="tcard-zh">醫院感染</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'WASH in Nursing Practice','護理實踐中的水衛生')">
+          <div class="tcard-en">WASH in Nursing Practice</div>
+          <div class="tcard-zh">護理實踐中的水衛生</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+        <div class="tgroup" data-sdg="10">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">🔴</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 10</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Reduced Inequalities</div>
+              <div style="font-size:.74rem;color:var(--muted);">減少不平等</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Health Disparities in Indigenous Communities','原住民族社區的健康差距')">
+          <div class="tcard-en">Health Disparities in Indigenous Communities</div>
+          <div class="tcard-zh">原住民族社區的健康差距</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Gender and Health Inequality','性別與健康不平等')">
+          <div class="tcard-en">Gender and Health Inequality</div>
+          <div class="tcard-zh">性別與健康不平等</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Disability-Inclusive Nursing Care','身障包容性護理照護')">
+          <div class="tcard-en">Disability-Inclusive Nursing Care</div>
+          <div class="tcard-zh">身障包容性護理照護</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Health Literacy Gaps in Taiwan','台灣健康素養落差')">
+          <div class="tcard-en">Health Literacy Gaps in Taiwan</div>
+          <div class="tcard-zh">台灣健康素養落差</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+        <div class="tgroup" data-sdg="13">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">🌿</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 13</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Climate Action</div>
+              <div style="font-size:.74rem;color:var(--muted);">氣候行動</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Air Pollution and Respiratory Health','空氣污染與呼吸健康')">
+          <div class="tcard-en">Air Pollution and Respiratory Health</div>
+          <div class="tcard-zh">空氣污染與呼吸健康</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Heat Stroke Risk in the Elderly','老年人熱中暑風險')">
+          <div class="tcard-en">Heat Stroke Risk in the Elderly</div>
+          <div class="tcard-zh">老年人熱中暑風險</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Climate Change and Infectious Disease','氣候變遷與傳染病')">
+          <div class="tcard-en">Climate Change and Infectious Disease</div>
+          <div class="tcard-zh">氣候變遷與傳染病</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Environmental Nursing and Green Healthcare','環境護理與綠色醫療')">
+          <div class="tcard-en">Environmental Nursing and Green Healthcare</div>
+          <div class="tcard-zh">環境護理與綠色醫療</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+        <div class="tgroup" data-sdg="2">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">🌾</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 2</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Zero Hunger</div>
+              <div style="font-size:.74rem;color:var(--muted);">消除飢餓</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Malnutrition in Hospitalised Patients','住院病人的營養不良')">
+          <div class="tcard-en">Malnutrition in Hospitalised Patients</div>
+          <div class="tcard-zh">住院病人的營養不良</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Food Insecurity and Chronic Disease','食物不安全與慢性病')">
+          <div class="tcard-en">Food Insecurity and Chronic Disease</div>
+          <div class="tcard-zh">食物不安全與慢性病</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Eating Disorders and Nursing Care','飲食失調與護理照護')">
+          <div class="tcard-en">Eating Disorders and Nursing Care</div>
+          <div class="tcard-zh">飲食失調與護理照護</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+        <div class="tgroup" data-sdg="5">
+          <div class="tgroup-hdr">
+            <span style="font-size:1.8rem;flex-shrink:0;">♀</span>
+            <div>
+              <div style="font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);">SDG Goal 5</div>
+              <div style="font-size:.92rem;font-weight:900;color:var(--navy);">Gender Equality</div>
+              <div style="font-size:.74rem;color:var(--muted);">性別平等</div>
+            </div>
+          </div>
+          <div class="tgrid">
+        <div class="tcard" onclick="selectTopic(this,'Women's Reproductive Health in Taiwan','台灣女性生殖健康')">
+          <div class="tcard-en">Women's Reproductive Health in Taiwan</div>
+          <div class="tcard-zh">台灣女性生殖健康</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Domestic Violence and Nursing Advocacy','家庭暴力與護理倡議')">
+          <div class="tcard-en">Domestic Violence and Nursing Advocacy</div>
+          <div class="tcard-zh">家庭暴力與護理倡議</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div>
+        <div class="tcard" onclick="selectTopic(this,'Gender-Based Health Disparities','性別相關健康差距')">
+          <div class="tcard-en">Gender-Based Health Disparities</div>
+          <div class="tcard-zh">性別相關健康差距</div>
+          <div class="tcard-sel">Select ＋</div>
+        </div></div>
+        </div>
+</div>
+
+<script>
+const TK='nursingTopic';
+let chosen=null;
+try{chosen=JSON.parse(localStorage.getItem(TK));}catch{}
+function render(){
+  if(chosen){
+    document.getElementById('selEn').textContent=chosen.en;
+    document.getElementById('selZh').textContent=chosen.zh;
+    document.getElementById('selBanner').classList.add('show');
+    document.querySelectorAll('.tcard').forEach(c=>c.classList.toggle('sel',c.querySelector('.tcard-en').textContent===chosen.en));
+  }else{
+    document.getElementById('selBanner').classList.remove('show');
+    document.querySelectorAll('.tcard.sel').forEach(c=>c.classList.remove('sel'));
+  }
+}
+function selectTopic(el,en,zh){
+  chosen={en,zh};try{localStorage.setItem(TK,JSON.stringify(chosen));}catch{}render();
+}
+function clearTopic(){
+  chosen=null;try{localStorage.removeItem(TK);}catch{}render();
+}
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  const sdg=b.dataset.sdg;
+  document.querySelectorAll('.tgroup').forEach(g=>{
+    g.style.display=(sdg==='all'||g.dataset.sdg===sdg)?'':'none';
+  });
+});
+render();
+</script>
+</body>
+</html>
