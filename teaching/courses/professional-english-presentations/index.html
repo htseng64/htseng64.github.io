@@ -1,91 +1,302 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="robots" content="noindex">
-<title>Professional English Presentations</title>
-
-<style>
-
-body{
-font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;
-max-width:900px;
-margin:60px auto;
-padding:20px;
-text-align:center;
-}
-
-.container{
-display:flex;
-gap:30px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.card{
-border:1px solid #ddd;
-border-radius:16px;
-padding:28px;
-width:280px;
-transition:0.2s;
-}
-
-.card:hover{
-box-shadow:0 6px 18px rgba(0,0,0,0.15);
-transform:translateY(-4px);
-}
-
-a{
-text-decoration:none;
-font-size:18px;
-font-weight:600;
-color:#222;
-}
-
-.desc{
-font-size:14px;
-color:#666;
-margin-top:10px;
-}
-
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Professional English Presentations</title>
+  <style>
+    :root{
+      --bg:#fbf7ef;
+      --card:#ffffff;
+      --ink:#222;
+      --muted:#6b6b6b;
+      --line:#e7dfd2;
+      --shadow: 0 12px 28px rgba(0,0,0,.10);
+      --chip:#fff;
+      --chipActive:#b63a2b;
+      --chipActiveText:#fff;
+      --pill:#111;
+      --go:#f1c232;
+      --goText:#2a2100;
+      --radius:22px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      min-height:100vh;
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 44px;}
+    .topbar{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; margin-bottom:14px;
+    }
+    .title h1{margin:0;font-size:26px;letter-spacing:.2px;}
+    .title .sub{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.35;}
+    .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .search{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;
+      min-width:320px;
+    }
+    .search input{border:none;outline:none;width:100%;font-size:14px;background:transparent;}
+    .chip{
+      padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--chip);
+      font-size:13px;cursor:pointer;user-select:none;
+    }
+    .chip.active{background:var(--chipActive);border-color:var(--chipActive);color:var(--chipActiveText);font-weight:700;}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:12px;}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}.search{min-width:260px;}}
+    @media (max-width:560px){.grid{grid-template-columns:1fr;}.search{min-width:100%;}}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+      overflow:hidden;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+    .thumbWrap{position:relative;}
+    .thumb{
+      width:100%; aspect-ratio:16/9; display:block; object-fit:cover;
+      background:#0c1a3a;
+    }
+    .badge{
+      position:absolute;left:14px;top:14px;
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:9px 12px;border-radius:999px;background:var(--pill);
+      color:#fff;font-weight:900;letter-spacing:.8px;font-size:14px;min-width:92px;
+    }
+    .status{
+      position:absolute;right:14px;top:14px;
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      font-weight:800;font-size:13px;white-space:nowrap;
+    }
+    .status.doing{background:var(--go);color:var(--goText);}
+    .status.todo{background:#fff;border:1px solid var(--line);color:#444;}
+    .status.done{background:#e9f6ee;border:1px solid #bfe2cb;color:#1d5a34;}
+    .body{padding:14px 16px 16px;}
+    .h2{margin:0;font-size:18px;letter-spacing:.2px;}
+    .h3{margin:6px 0 0;color:var(--muted);font-size:13px;}
+    .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+    .tag{
+      padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);
+      font-size:12px;color:#333;
+    }
+    .metaRow{
+      margin-top:12px;display:flex;gap:14px;align-items:center;color:var(--muted);font-size:12px;
+    }
+    .metaItem{display:flex;align-items:center;gap:6px;}
+    .foot{margin-top:16px;color:var(--muted);font-size:12px;}
+    .kbd{border:1px solid var(--line);background:#fff;border-bottom-width:2px;padding:2px 8px;border-radius:8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;font-size:12px;color:#333;}
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Professional English Presentation</h1>
+        <div class="sub">
+          點選 Unit 直接開啟 <b>開始課程.html</b>（避免出現 Web Object 本機路徑文字）。
+          若剛更新仍顯示舊畫面，請用 <span class="kbd">Ctrl</span> + <span class="kbd">F5</span> 強制重新整理。
+        </div>
+      </div>
 
-<h1>Professional English Presentations</h1>
+      <div class="controls">
+        <div class="search" title="搜尋單元">
+          🔎 <input id="q" type="text" placeholder="Search unit (e.g., 01 / 1 / Unit 3 / opening)" />
+        </div>
+        <div id="chipAll" class="chip active">全部 All</div>
+        <div id="chipTodo" class="chip">未開始</div>
+        <div id="chipDoing" class="chip">進行中</div>
+        <div id="chipDone" class="chip">完成</div>
+      </div>
+    </div>
 
-<div class="container">
+    <div id="grid" class="grid"></div>
 
-<div class="card">
-<a href="modules/workplace/">
-Workplace Presentation
-</a>
-<div class="desc">
-職場英文簡報課程
-</div>
-</div>
+    <div class="foot">
+      ※ 狀態（未開始/進行中/完成）為<b>手動設定</b>（所有人一致）。
+    </div>
+  </div>
 
-<div class="card">
-<a href="modules/nursing/">
-Nursing Units
-</a>
-<div class="desc">
-護理主題英文簡報
-</div>
-</div>
+  <script>
+    // ========= 手動設定區：你只要改這裡 =========
+    // status: "todo" | "doing" | "done"
+    // minutes: 整數（顯示 45 min）
+    // slides: 整數（顯示 13 slides）
+    // tags: 陣列字串
+    // titleZh / titleEn：卡片標題
+    const UNITS = [
+      {n:1,  status:"doing", titleZh:"課程介紹與簡報基礎", titleEn:"Course Intro & Presentation Basics", minutes:45, slides:13, tags:["課程概覽","簡報基本結構","英文簡報心態"]},
+      {n:2,  status:"doing", titleZh:"開場白與自我介紹", titleEn:"Opening & Self Introduction", minutes:50, slides:15, tags:["破冰技巧","引發注意","專業自我介紹"]},
+      {n:3,  status:"doing", titleZh:"簡報架構與邏輯", titleEn:"Structure & Logical Flow", minutes:50, slides:16, tags:["金字塔原則","主題句","轉場語言"]},
+      {n:4,  status:"todo",  titleZh:"語氣、節奏與重點", titleEn:"Delivery: Tone, Pace & Emphasis", minutes:45, slides:14, tags:["語調","停頓","重點強調"]},
+      {n:5,  status:"todo",  titleZh:"視覺設計與投影片美感", titleEn:"Slide Design & Visual Clarity", minutes:45, slides:14, tags:["版面","字體","圖表"]},
+      {n:6,  status:"todo",  titleZh:"資料引用與學術誠信", titleEn:"Citing Sources & Academic Integrity", minutes:40, slides:12, tags:["引用格式","抄襲避免","可信度"]},
+      {n:7,  status:"todo",  titleZh:"臨床案例敘事與表達", titleEn:"Clinical Storytelling", minutes:50, slides:15, tags:["情境敘事","SBAR","重點摘要"]},
+      {n:8,  status:"todo",  titleZh:"互動式提問與聽眾參與", titleEn:"Audience Engagement", minutes:45, slides:13, tags:["提問","互動","回饋"]},
+      {n:9,  status:"todo",  titleZh:"Q&A 應對與臨場反應", titleEn:"Handling Q&A", minutes:40, slides:12, tags:["追問","澄清","橋接"]},
+      {n:10, status:"todo",  titleZh:"團隊簡報分工與銜接", titleEn:"Team Presentation", minutes:45, slides:13, tags:["分工","交接","一致性"]},
+      {n:11, status:"todo",  titleZh:"常見錯誤與快速修正", titleEn:"Common Mistakes & Fixes", minutes:35, slides:10, tags:["錯誤示例","修正策略"]},
+      {n:12, status:"todo",  titleZh:"口語表達：臨床英文", titleEn:"Spoken Clinical English", minutes:45, slides:13, tags:["常用句型","臨床用語"]},
+      {n:13, status:"todo",  titleZh:"簡報練習：個人版本", titleEn:"Practice: Individual", minutes:50, slides:16, tags:["演練","自評","同儕回饋"]},
+      {n:14, status:"todo",  titleZh:"簡報練習：團隊版本", titleEn:"Practice: Team", minutes:50, slides:16, tags:["團隊演練","時間控制"]},
+      {n:15, status:"todo",  titleZh:"總整與期末發表準備", titleEn:"Wrap-up & Final Prep", minutes:45, slides:14, tags:["總整","彩排","檢核表"]},
+    ];
+    // ============================================
 
-<div class="card">
-<a href="modules/nursing-clinical-web.html">
-Nursing Clinical Web
-</a>
-<div class="desc">
-護理臨床英文簡報網站
-</div>
-</div>
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
 
-</div>
+    const chips = {
+      all: document.getElementById("chipAll"),
+      todo: document.getElementById("chipTodo"),
+      doing: document.getElementById("chipDoing"),
+      done: document.getElementById("chipDone"),
+    };
 
+    let activeStatus = "all";
+
+    function pad2(x){ return String(x).padStart(2,"0"); }
+
+    function statusText(s){
+      if(s==="todo") return "未開始";
+      if(s==="doing") return "進行中";
+      if(s==="done") return "完成";
+      return "";
+    }
+    function statusClass(s){
+      if(s==="todo") return "status todo";
+      if(s==="doing") return "status doing";
+      if(s==="done") return "status done";
+      return "status";
+    }
+
+    function unitLink(n){
+      // ✅ 核心：一律開「開始課程.html」
+      return `modules/workplace/Unit${n}/開始課程.html`;
+    }
+
+    function unitCover(n){
+      // 你 repo 根目錄已有 cover_unit01.jpg ~ cover_unit15.jpg
+      return `cover_unit${pad2(n)}.jpg`;
+    }
+
+    function render(list){
+      grid.innerHTML = "";
+      list.forEach(u=>{
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const thumbWrap = document.createElement("div");
+        thumbWrap.className = "thumbWrap";
+
+        const img = document.createElement("img");
+        img.className = "thumb";
+        img.alt = `UNIT ${pad2(u.n)}`;
+        img.src = unitCover(u.n);
+        img.onerror = ()=>{ img.removeAttribute("src"); img.style.background="#0c1a3a"; };
+
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.textContent = `UNIT ${pad2(u.n)}`;
+
+        const st = document.createElement("div");
+        st.className = statusClass(u.status);
+        st.textContent = `▶ ${statusText(u.status)}`;
+
+        thumbWrap.appendChild(img);
+        thumbWrap.appendChild(badge);
+        thumbWrap.appendChild(st);
+
+        const body = document.createElement("div");
+        body.className = "body";
+
+        const h2 = document.createElement("h2");
+        h2.className = "h2";
+        h2.textContent = u.titleZh;
+
+        const h3 = document.createElement("div");
+        h3.className = "h3";
+        h3.textContent = u.titleEn;
+
+        const tags = document.createElement("div");
+        tags.className = "tags";
+        (u.tags || []).forEach(t=>{
+          const span = document.createElement("div");
+          span.className = "tag";
+          span.textContent = t;
+          tags.appendChild(span);
+        });
+
+        const meta = document.createElement("div");
+        meta.className = "metaRow";
+        const m1 = document.createElement("div");
+        m1.className = "metaItem";
+        m1.innerHTML = `⏱️ ${u.minutes || 0} min`;
+        const m2 = document.createElement("div");
+        m2.className = "metaItem";
+        m2.innerHTML = `📑 ${u.slides || 0} slides`;
+        meta.appendChild(m1);
+        meta.appendChild(m2);
+
+        body.appendChild(h2);
+        body.appendChild(h3);
+        body.appendChild(tags);
+        body.appendChild(meta);
+
+        card.appendChild(thumbWrap);
+        card.appendChild(body);
+
+        card.addEventListener("click", ()=>{
+          window.location.href = unitLink(u.n);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function setActiveChip(key){
+      Object.values(chips).forEach(c=>c.classList.remove("active"));
+      chips[key].classList.add("active");
+      activeStatus = key;
+      filter();
+    }
+
+    function filter(){
+      const kw = (q.value || "").trim().toLowerCase();
+      let list = UNITS.slice();
+
+      if(activeStatus !== "all"){
+        list = list.filter(u => u.status === activeStatus);
+      }
+
+      if(kw){
+        list = list.filter(u=>{
+          const n = String(u.n);
+          const n2 = pad2(u.n);
+          const hay = [
+            `unit ${n}`, `unit ${n2}`, n, n2,
+            (u.titleZh||""), (u.titleEn||""),
+            ...(u.tags||[])
+          ].join(" ").toLowerCase();
+          return hay.includes(kw);
+        });
+      }
+      render(list);
+    }
+
+    q.addEventListener("input", filter);
+    chips.all.addEventListener("click", ()=>setActiveChip("all"));
+    chips.todo.addEventListener("click", ()=>setActiveChip("todo"));
+    chips.doing.addEventListener("click", ()=>setActiveChip("doing"));
+    chips.done.addEventListener("click", ()=>setActiveChip("done"));
+
+    render(UNITS);
+  </script>
 </body>
 </html>
