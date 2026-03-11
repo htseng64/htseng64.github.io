@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 不讓搜尋引擎收錄 -->
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="googlebot" content="noindex,nofollow,noarchive" />
+  <meta name="bingbot" content="noindex,nofollow,noarchive" />
+
+  <title>職場專業英文簡報｜Workplace Modules</title>
+
+  <style>
+    :root{
+      --bg:#fbf7ef;
+      --card:#ffffff;
+      --ink:#1f1f1f;
+      --muted:#6b6b6b;
+      --line:#e8e1d6;
+      --shadow: 0 12px 28px rgba(0,0,0,.08);
+
+      --accent:#b63a2b; /* 你原先 All 的紅色感 */
+      --pill:#111;
+      --start:#f1c232;
+      --startInk:#2a2100;
+      --blue1:#0b1733; /* 卡片頂部底色 */
+      --blue2:#163a7a;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      min-height:100vh;
+    }
+
+    .wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 26px 18px 44px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    .title h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .title .sub{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .search{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background:#fff;
+      min-width: 280px;
+    }
+    .search input{
+      border:none;
+      outline:none;
+      width:100%;
+      font-size:14px;
+      background:transparent;
+    }
+
+    .chip{
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background:#fff;
+      font-size:13px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .chip.active{
+      background: var(--accent);
+      border-color: var(--accent);
+      color:#fff;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 560px){
+      .grid{ grid-template-columns: 1fr; }
+      .search{ min-width: 100%; }
+    }
+
+    .card{
+      background:var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow:hidden;
+      box-shadow:none;
+      transition: transform .15s ease, box-shadow .15s ease;
+      cursor:pointer;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .thumb{
+      width:100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--blue1), var(--blue2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    /* 這裡不放任何會出現 Web Object 的內容，只做視覺裝飾 */
+    .thumb::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient( circle at 30% 20%, rgba(255,255,255,.14), transparent 45%),
+                  radial-gradient( circle at 70% 70%, rgba(255,255,255,.10), transparent 45%);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    .thumb .unitBig{
+      position:relative;
+      z-index:1;
+      color:#fff;
+      font-weight:900;
+      letter-spacing: 1px;
+      font-size: 34px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+      backdrop-filter: blur(2px);
+    }
+
+    .meta{
+      padding: 14px 14px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--pill);
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.8px;
+      font-size: 14px;
+      min-width: 92px;
+    }
+
+    .start{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: var(--start);
+      color: var(--startInk);
+      font-weight:800;
+      font-size: 13px;
+      white-space:nowrap;
+    }
+
+    .desc{
+      padding: 0 14px 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.45;
+      min-height: 40px;
+    }
+
+    .footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.5;
+    }
+    .kbd{
+      border:1px solid var(--line);
+      background:#fff;
+      border-bottom-width:2px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color:#333;
+    }
+
+    .rowLinks{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .linkBtn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+    }
+    .linkBtn:hover{ box-shadow: var(--shadow); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>職場專業英文簡報｜Workplace Modules</h1>
+        <div class="sub">
+          直接點選 Unit 進入 <b>開始課程.html</b>（不使用 overlay / modal），避免出現「Web 對象 / 地址 / C:\Users…」提示。
+        </div>
+
+        <div class="rowLinks">
+          <!-- 可選：若你想從這裡跳到 nursing 的 index，可保留；不需要就刪掉 -->
+          <a class="linkBtn" href="../nursing/">🩺 Nursing Modules</a>
+          <!-- 若你有放 nursing-clinical-web.html 在 modules 目錄，也可加連結 -->
+          <a class="linkBtn" href="../nursing-clinical-web.html">📘 Nursing Clinical Web</a>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search" title="搜尋單元">
+          🔎 <input id="q" type="text" placeholder="Search unit (01 / 1 / Unit 3)" />
+        </div>
+        <div id="chipAll" class="chip active">全部 All</div>
+        <div id="chipNot" class="chip">未開始</div>
+        <div id="chipDoing" class="chip">進行中</div>
+        <div id="chipDone" class="chip">完成</div>
+      </div>
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <div class="footer">
+      若你已替換 Unit 縮圖但仍看到舊畫面，請用 <span class="kbd">Ctrl</span> + <span class="kbd">F5</span> 強制重新整理（清快取）。
+      <br/>
+      註：這頁面本身已設定 <code>noindex</code>，不會被搜尋引擎收錄；但只要知道網址仍可開啟（GitHub Pages 特性）。
+    </div>
+  </div>
+
+  <script>
+    // ===== 可調整區 =====
+    const TOTAL_UNITS = 15;
+
+    // 每個 Unit 的入口頁（你已確認各 Unit 內有「開始課程.html」）
+    // e.g. modules/workplace/Unit1/開始課程.html
+    const startPage = (n) => `Unit${n}/開始課程.html`;
+
+    // ===== 進度（可選）=====
+    // 目前用 localStorage 記錄：未開始 / 進行中 / 完成
+    // 你如果之後要接 TronClass / Supabase，再換成真正的雲端紀錄即可。
+    const STATUS_KEY = "workplace_unit_status_v1"; // 勿隨便改，除非你要重置
+
+    const Status = {
+      NOT: "未開始",
+      DOING: "進行中",
+      DONE: "完成",
+    };
+
+    function loadStatus(){
+      try{
+        const raw = localStorage.getItem(STATUS_KEY);
+        if(!raw) return {};
+        return JSON.parse(raw) || {};
+      }catch(e){
+        return {};
+      }
+    }
+
+    function saveStatus(map){
+      localStorage.setItem(STATUS_KEY, JSON.stringify(map || {}));
+    }
+
+    const statusMap = loadStatus();
+
+    function getUnitStatus(n){
+      return statusMap[String(n)] || Status.NOT;
+    }
+
+    function setUnitStatus(n, s){
+      statusMap[String(n)] = s;
+      saveStatus(statusMap);
+    }
+
+    // ===== UI =====
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+
+    const chipAll = document.getElementById("chipAll");
+    const chipNot = document.getElementById("chipNot");
+    const chipDoing = document.getElementById("chipDoing");
+    const chipDone = document.getElementById("chipDone");
+
+    let activeFilter = "ALL";
+
+    const pad2 = (x) => String(x).padStart(2,"0");
+
+    function makeCard(n){
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.unit = String(n);
+
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
+
+      const big = document.createElement("div");
+      big.className = "unitBig";
+      big.textContent = `UNIT ${pad2(n)}`;
+      thumb.appendChild(big);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const pill = document.createElement("div");
+      pill.className = "pill";
+      pill.textContent = `UNIT ${pad2(n)}`;
+
+      const status = getUnitStatus(n);
+      const start = document.createElement("div");
+      start.className = "start";
+      start.textContent = status === Status.DONE ? "✅ 完成" : (status === Status.DOING ? "▶ 進行中" : "▶ 開始");
+
+      meta.appendChild(pill);
+      meta.appendChild(start);
+
+      const desc = document.createElement("div");
+      desc.className = "desc";
+      desc.textContent = `點選開始課程（狀態：${status}）`;
+
+      card.appendChild(thumb);
+      card.appendChild(meta);
+      card.appendChild(desc);
+
+      // 點卡片：設為進行中 → 跳轉
+      card.addEventListener("click", () => {
+        if(getUnitStatus(n) === Status.NOT) setUnitStatus(n, Status.DOING);
+        window.location.href = startPage(n);
+      });
+
+      // 右鍵（或長按）快速標記完成：不影響教學，只是方便你測試
+      card.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        const curr = getUnitStatus(n);
+        const next = curr === Status.DONE ? Status.NOT : Status.DONE;
+        setUnitStatus(n, next);
+        render();
+      });
+
+      return card;
+    }
+
+    function passFilter(n){
+      const st = getUnitStatus(n);
+      if(activeFilter === "NOT") return st === Status.NOT;
+      if(activeFilter === "DOING") return st === Status.DOING;
+      if(activeFilter === "DONE") return st === Status.DONE;
+      return true;
+    }
+
+    function passSearch(n){
+      const kw = (q.value || "").trim().toLowerCase();
+      if(!kw) return true;
+      const a = String(n);
+      const b = pad2(n);
+      return kw.includes(a) || kw.includes(b) || (`unit ${a}`).includes(kw) || (`unit ${b}`).includes(kw) || a.includes(kw) || b.includes(kw);
+    }
+
+    function render(){
+      grid.innerHTML = "";
+      for(let n=1; n<=TOTAL_UNITS; n++){
+        if(passFilter(n) && passSearch(n)){
+          grid.appendChild(makeCard(n));
+        }
+      }
+    }
+
+    function setActiveChip(which){
+      activeFilter = which;
+      [chipAll, chipNot, chipDoing, chipDone].forEach(c => c.classList.remove("active"));
+      if(which==="ALL") chipAll.classList.add("active");
+      if(which==="NOT") chipNot.classList.add("active");
+      if(which==="DOING") chipDoing.classList.add("active");
+      if(which==="DONE") chipDone.classList.add("active");
+      render();
+    }
+
+    q.addEventListener("input", render);
+
+    chipAll.addEventListener("click", () => setActiveChip("ALL"));
+    chipNot.addEventListener("click", () => setActiveChip("NOT"));
+    chipDoing.addEventListener("click", () => setActiveChip("DOING"));
+    chipDone.addEventListener("click", () => setActiveChip("DONE"));
+
+    // 初始
+    render();
+  </script>
+</body>
+</html>
