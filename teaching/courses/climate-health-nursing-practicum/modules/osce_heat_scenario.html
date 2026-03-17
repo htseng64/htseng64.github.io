@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSCE 情境練習｜氣候災難護理 — 熱傷害緊急應變</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Code+Pro:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #060b17;
+    --bg-panel: #0d1526;
+    --bg-card: #111d35;
+    --bg-glass: rgba(17,29,53,0.85);
+    --accent-red: #ff3d3d;
+    --accent-orange: #ff7a1a;
+    --accent-amber: #ffb020;
+    --accent-green: #1ae87a;
+    --accent-blue: #2af4ff;
+    --accent-cyan: #00c8ff;
+    --text-primary: #e8f4ff;
+    --text-secondary: #7fa8cc;
+    --text-muted: #3d5f80;
+    --border: rgba(42,244,255,0.15);
+    --border-hot: rgba(255,122,26,0.3);
+    --glow-red: 0 0 20px rgba(255,61,61,0.4);
+    --glow-amber: 0 0 20px rgba(255,176,32,0.4);
+    --glow-green: 0 0 20px rgba(26,232,122,0.4);
+    --glow-blue: 0 0 20px rgba(42,244,255,0.3);
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'Source Code Pro', monospace;
+    --font-body: 'Noto Sans TC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(42,244,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,244,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Heatwave ambient */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -20%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(255,100,20,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: heatPulse 6s ease-in-out infinite;
+  }
+
+  @keyframes heatPulse {
+    0%,100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: relative;
+    z-index: 10;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(6,11,23,0.9);
+    backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .alert-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    box-shadow: var(--glow-red);
+    animation: blink 1s ease-in-out infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+  .header-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+  }
+
+  .header-title {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 3vw, 28px);
+    letter-spacing: 2px;
+    color: var(--text-primary);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .prog-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .prog-dot.active { background: var(--accent-cyan); box-shadow: var(--glow-blue); }
+  .prog-dot.done { background: var(--accent-green); }
+
+  .score-display {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent-amber);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(42,244,255,0.08);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 42px);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .section-sub {
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ── SCREEN SYSTEM ── */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+  /* ── SCENARIO CARD ── */
+  .scenario-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-hot);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scenario-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-red), var(--accent-orange), var(--accent-amber));
+  }
+
+  .scenario-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .scenario-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+  }
+
+  .scenario-text .highlight {
+    color: var(--accent-amber);
+    font-weight: 700;
+  }
+
+  /* ── VITALS DISPLAY ── */
+  .vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .vital-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    position: relative;
+  }
+
+  .vital-card.alarm {
+    border-color: rgba(255,61,61,0.4);
+    animation: alarmPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes alarmPulse {
+    0%,100%{ box-shadow: none; }
+    50%{ box-shadow: 0 0 15px rgba(255,61,61,0.3); }
+  }
+
+  .vital-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .vital-value {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--accent-amber);
+    line-height: 1;
+  }
+
+  .vital-value.critical { color: var(--accent-red); }
+  .vital-value.normal { color: var(--accent-green); }
+
+  .vital-unit {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, #0066cc 100%);
+    color: #fff;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-blue); }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--accent-red), #cc2200);
+    color: #fff;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--accent-green), #009944);
+    color: #000;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .btn-outline:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  @media(max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .compare-col {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .compare-col.heat-exhaustion { border-color: rgba(255,176,32,0.3); }
+  .compare-col.heat-stroke { border-color: rgba(255,61,61,0.4); }
+
+  .compare-header {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .heat-exhaustion .compare-header { color: var(--accent-amber); }
+  .heat-stroke .compare-header { color: var(--accent-red); }
+
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .compare-key {
+    color: var(--text-secondary);
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .compare-val {
+    color: var(--text-primary);
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .tag-red { color: var(--accent-red); font-weight: 700; }
+  .tag-amber { color: var(--accent-amber); font-weight: 700; }
+  .tag-green { color: var(--accent-green); font-weight: 700; }
+  .tag-cyan { color: var(--accent-cyan); font-weight: 700; }
+
+  /* ── MCQ OPTIONS ── */
+  .mcq-options {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .mcq-option {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .mcq-option:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(42,244,255,0.06);
+    transform: translateX(4px);
+  }
+
+  .mcq-option.correct {
+    border-color: var(--accent-green);
+    background: rgba(26,232,122,0.1);
+    box-shadow: var(--glow-green);
+  }
+
+  .mcq-option.wrong {
+    border-color: var(--accent-red);
+    background: rgba(255,61,61,0.1);
+  }
+
+  .mcq-option.reveal-correct {
+    border-color: var(--accent-green);
+    background: rgba(26,232,122,0.08);
+  }
+
+  .option-key {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-cyan);
+    background: rgba(42,244,255,0.1);
+    border-radius: 4px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .feedback-box {
+    background: var(--bg-panel);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    display: none;
+  }
+
+  .feedback-box.show { display: block; animation: fadeIn 0.3s ease; }
+  .feedback-box.correct { border-left: 3px solid var(--accent-green); }
+  .feedback-box.wrong { border-left: 3px solid var(--accent-red); }
+
+  /* ── AVPU SECTION ── */
+  .avpu-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  @media(max-width: 500px) { .avpu-grid { grid-template-columns: 1fr; } }
+
+  .avpu-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avpu-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .avpu-card:hover { transform: translateY(-3px); }
+  .avpu-card.selected { border-color: var(--accent-cyan); box-shadow: var(--glow-blue); }
+
+  .avpu-letter {
+    font-family: var(--font-display);
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .avpu-card:nth-child(1) .avpu-letter { color: var(--accent-green); }
+  .avpu-card:nth-child(2) .avpu-letter { color: var(--accent-amber); }
+  .avpu-card:nth-child(3) .avpu-letter { color: var(--accent-orange); }
+  .avpu-card:nth-child(4) .avpu-letter { color: var(--accent-red); }
+
+  .avpu-en {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .avpu-zh {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .avpu-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .avpu-nursing {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--accent-cyan);
+    line-height: 1.5;
+  }
+
+  .avpu-card.selected .avpu-nursing { display: block; }
+
+  /* ── COOLING STEPS ── */
+  .steps-container {
+    margin: 20px 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: grab;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .step-item:hover { border-color: var(--accent-cyan); transform: translateX(3px); }
+  .step-item.dragging { opacity: 0.5; border-color: var(--accent-cyan); }
+  .step-item.correct-place { border-color: var(--accent-green); background: rgba(26,232,122,0.08); }
+  .step-item.wrong-place { border-color: var(--accent-red); background: rgba(255,61,61,0.08); }
+
+  .step-number {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-cyan);
+    flex-shrink: 0;
+  }
+
+  .step-drag-icon {
+    font-size: 16px;
+    color: var(--text-muted);
+    cursor: grab;
+    padding-top: 4px;
+  }
+
+  .step-text { font-size: 14px; line-height: 1.6; flex: 1; }
+  .step-text strong { color: var(--accent-amber); }
+
+  /* ── ORDERING CHALLENGE ── */
+  .order-options {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .order-chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .order-chip:hover { border-color: var(--accent-cyan); background: rgba(42,244,255,0.05); }
+  .order-chip.selected-order { border-color: var(--accent-amber); background: rgba(255,176,32,0.1); }
+  .order-chip .chip-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-amber);
+    background: rgba(255,176,32,0.1);
+    border-radius: 4px;
+    padding: 1px 6px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* ── FAMILY COMM ── */
+  .comm-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .comm-role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .comm-role.nurse { color: var(--accent-cyan); }
+  .comm-role.family { color: var(--accent-amber); }
+
+  .comm-bubble {
+    background: var(--bg-panel);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    border-left: 3px solid transparent;
+  }
+
+  .comm-bubble.nurse-bubble { border-left-color: var(--accent-cyan); }
+  .comm-bubble.family-bubble { border-left-color: var(--accent-amber); }
+
+  .comm-tips {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(26,232,122,0.08);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--accent-green);
+    line-height: 1.6;
+  }
+
+  .comm-tips.show { display: block; }
+
+  /* ── SCORE SCREEN ── */
+  .score-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--bg-panel);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+  }
+
+  .score-ring .score-num {
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .score-ring .score-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+  }
+
+  .results-list {
+    display: grid;
+    gap: 8px;
+    margin: 20px 0;
+  }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .result-icon { font-size: 16px; }
+
+  /* ── CHEATSHEET PANEL ── */
+  .cheatsheet-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    z-index: 100;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--bg-deep);
+    box-shadow: var(--glow-blue);
+    transition: all 0.2s;
+  }
+
+  .cheatsheet-toggle:hover { transform: scale(1.1); }
+
+  .cheatsheet-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 99;
+    width: min(340px, calc(100vw - 40px));
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  .cheatsheet-panel.open { display: block; animation: fadeIn 0.3s ease; }
+
+  .cheatsheet-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .cheat-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .cheat-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── NAV CONTROLS ── */
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hint-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 768px) {
+    .site-header { padding: 12px 16px; }
+    main { padding: 16px 14px 60px; }
+    .scenario-box { padding: 18px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .vitals-grid { grid-template-columns: repeat(3, 1fr); }
+    .avpu-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media(max-width: 420px) {
+    .vitals-grid { grid-template-columns: repeat(2, 1fr); }
+    .avpu-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-track {
+    height: 3px;
+    background: var(--bg-panel);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* ── INTRO SCREEN ── */
+  .intro-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px;
+    text-align: center;
+    max-width: 680px;
+    margin: 40px auto;
+  }
+
+  .intro-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);}
+  }
+
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px,5vw,48px);
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--accent-amber), var(--accent-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .intro-sub {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .checklist {
+    text-align: left;
+    background: var(--bg-panel);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .check-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-cyan);
+    background: rgba(42,244,255,0.1);
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  .info-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 3px;
+  }
+
+  .tag-bg-red { background: rgba(255,61,61,0.15); color: var(--accent-red); }
+  .tag-bg-amber { background: rgba(255,176,32,0.15); color: var(--accent-amber); }
+  .tag-bg-cyan { background: rgba(42,244,255,0.15); color: var(--accent-cyan); }
+  .tag-bg-green { background: rgba(26,232,122,0.15); color: var(--accent-green); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-left">
+    <div class="alert-dot"></div>
+    <div>
+      <div class="header-tag">氣候災難護理 · OSCE</div>
+      <div class="header-title">熱傷害緊急應變情境</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="progress-track" id="progressDots"></div>
+    <div class="score-display">🏆 <span id="headerScore">0</span> / 100</div>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-track" style="margin:0;border-radius:0;">
+  <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+</div>
+
+<main>
+
+<!-- ═══ SCREEN 0: INTRO ═══ -->
+<div class="screen active" id="screen-0">
+  <div class="intro-card">
+    <span class="intro-icon">☀️</span>
+    <h1 class="intro-title">熱傷害緊急護理<br>OSCE 情境演練</h1>
+    <p class="intro-sub">
+      模擬真實臨床情境，透過互動問答鞏固熱衰竭與中暑的<br>
+      鑑別診斷、緊急降溫措施、意識評估與家屬溝通能力
+    </p>
+    <div class="checklist">
+      <div class="check-item">
+        <span class="check-num">01</span>
+        <span>熱衰竭 vs 中暑 鑑別診斷</span>
+      </div>
+      <div class="check-item">
+        <span class="check-num">02</span>
+        <span>中暑緊急降溫措施（步驟順序）</span>
+      </div>
+      <div class="check-item">
+        <span class="check-num">03</span>
+        <span>AVPU 意識狀態量表應用</span>
+      </div>
+      <div class="check-item">
+        <span class="check-num">04</span>
+        <span>向家屬說明重點（溝通演練）</span>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">
+      共 <strong style="color:var(--accent-cyan)">5 個關卡</strong>，總分 <strong style="color:var(--accent-amber)">100分</strong>｜建議搭配課堂討論使用
+    </p>
+    <button class="btn btn-primary" onclick="goTo(1)" style="width:100%;font-size:17px;padding:16px;">
+      🚨 開始情境演練
+    </button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 1: 情境描述 ═══ -->
+<div class="screen" id="screen-1">
+  <div class="section-badge">🌡 情境 · SCENARIO</div>
+  <h2 class="section-title">病人到達急診室</h2>
+  <p class="section-sub">請仔細閱讀以下情境，並根據資訊回答問題</p>
+
+  <div class="scenario-box">
+    <div class="scenario-label">📋 情境描述</div>
+    <p class="scenario-text">
+      今日下午 2 時，氣溫 <span class="highlight">38.5°C</span>，相對濕度 85%。
+      <br><br>
+      救護車送來一名 <span class="highlight">68歲男性，陳先生</span>，由家屬陪同。
+      家屬表示，陳先生在戶外農作約 <span class="highlight">4小時後</span>突然倒地，
+      無法自行站立，呼喊有反應但意識混亂，
+      皮膚摸起來<span class="highlight">燙熱且乾燥</span>，無出汗。
+      <br><br>
+      抵達急診時，護理師初步量測生命徵象如下：
+    </p>
+
+    <div class="vitals-grid">
+      <div class="vital-card alarm">
+        <div class="vital-label">BT 體溫</div>
+        <div class="vital-value critical">41.2</div>
+        <div class="vital-unit">°C</div>
+      </div>
+      <div class="vital-card">
+        <div class="vital-label">BP 血壓</div>
+        <div class="vital-value">90/58</div>
+        <div class="vital-unit">mmHg</div>
+      </div>
+      <div class="vital-card alarm">
+        <div class="vital-label">HR 心跳</div>
+        <div class="vital-value critical">128</div>
+        <div class="vital-unit">次/分</div>
+      </div>
+      <div class="vital-card">
+        <div class="vital-label">RR 呼吸</div>
+        <div class="vital-value">24</div>
+        <div class="vital-unit">次/分</div>
+      </div>
+      <div class="vital-card">
+        <div class="vital-label">SpO₂</div>
+        <div class="vital-value normal">96</div>
+        <div class="vital-unit">%</div>
+      </div>
+      <div class="vital-card">
+        <div class="vital-label">GCS</div>
+        <div class="vital-value">E3V4M5</div>
+        <div class="vital-unit">= 12分</div>
+      </div>
+    </div>
+
+    <p class="scenario-text" style="margin-top:12px;">
+      家屬焦急地問：「他是中暑還是熱衰竭？有危險嗎？要住院嗎？」
+    </p>
+  </div>
+
+  <div class="nav-bar">
+    <button class="btn btn-outline" onclick="goTo(0)">← 返回</button>
+    <span class="hint-text">請確認已閱讀所有生命徵象資料</span>
+    <button class="btn btn-primary" onclick="goTo(2)">進入關卡一 →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 2: 鑑別診斷 ═══ -->
+<div class="screen" id="screen-2">
+  <div class="section-badge">🔬 關卡一 · DIFFERENTIAL DX</div>
+  <h2 class="section-title">鑑別診斷</h2>
+  <p class="section-sub">比較熱衰竭與中暑的關鍵差異，並判斷陳先生的診斷</p>
+
+  <div class="compare-grid">
+    <div class="compare-col heat-exhaustion">
+      <div class="compare-header">熱衰竭 Heat Exhaustion</div>
+      <div class="compare-row">
+        <span class="compare-key">體溫</span>
+        <span class="compare-val tag-amber">&lt; 40°C</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">皮膚</span>
+        <span class="compare-val">濕冷、大量出汗</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">意識</span>
+        <span class="compare-val">清醒或輕度混亂</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">血壓</span>
+        <span class="compare-val">可能偏低</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">危險程度</span>
+        <span class="compare-val tag-amber">中等</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">主要機轉</span>
+        <span class="compare-val">脫水、鹽分流失</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">器官傷害</span>
+        <span class="compare-val tag-green">通常無</span>
+      </div>
+    </div>
+    <div class="compare-col heat-stroke">
+      <div class="compare-header">中暑 Heat Stroke</div>
+      <div class="compare-row">
+        <span class="compare-key">體溫</span>
+        <span class="compare-val tag-red">&gt; 40°C（常超過41°C）</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">皮膚</span>
+        <span class="compare-val tag-red">燙熱乾燥（無汗）</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">意識</span>
+        <span class="compare-val tag-red">明顯混亂/昏迷</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">血壓</span>
+        <span class="compare-val">偏低</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">危險程度</span>
+        <span class="compare-val tag-red">高度危險</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">主要機轉</span>
+        <span class="compare-val">體溫調節中樞失能</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-key">器官傷害</span>
+        <span class="compare-val tag-red">可能多重器官損傷</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-badge" style="margin-top:0">❓ 問題 1 · MCQ</div>
+  <p style="font-size:16px;font-weight:600;margin-bottom:16px;line-height:1.6;">
+    根據陳先生的生命徵象，護理師應初步判斷為下列哪一種情況？
+  </p>
+
+  <div class="mcq-options" id="q1-options">
+    <div class="mcq-option" onclick="answerQ1(this, false)">
+      <span class="option-key">A</span>
+      <span>熱衰竭（Heat Exhaustion）— 體溫偏高，需觀察</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ1(this, true)">
+      <span class="option-key">B</span>
+      <span>中暑（Heat Stroke）— 體溫 41.2°C，皮膚燙熱乾燥，意識混亂</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ1(this, false)">
+      <span class="option-key">C</span>
+      <span>熱痙攣（Heat Cramp）— 肌肉痙攣為主要表現</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ1(this, false)">
+      <span class="option-key">D</span>
+      <span>需進一步血液檢查才能判斷，暫不做初步判斷</span>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="q1-feedback"></div>
+
+  <div class="nav-bar">
+    <button class="btn btn-outline" onclick="goTo(1)">← 上一頁</button>
+    <button class="btn btn-primary" id="next2" onclick="goTo(3)" style="display:none;">進入關卡二 →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 3: AVPU ═══ -->
+<div class="screen" id="screen-3">
+  <div class="section-badge">🧠 關卡二 · AVPU ASSESSMENT</div>
+  <h2 class="section-title">AVPU 意識評估</h2>
+  <p class="section-sub">
+    AVPU 是快速意識評估工具，點擊每個等級了解詳細說明，<br>
+    並判斷陳先生目前的 AVPU 等級
+  </p>
+
+  <div class="avpu-grid">
+    <div class="avpu-card" onclick="selectAVPU(this,'A')">
+      <div class="avpu-letter">A</div>
+      <div class="avpu-en">ALERT</div>
+      <div class="avpu-zh">完全清醒</div>
+      <div class="avpu-desc">自發睜眼、定向感正常、能正確回答問題</div>
+      <div class="avpu-nursing">
+        <strong>護理重點：</strong>持續監測、預防性衛教、環境安全措施
+      </div>
+    </div>
+    <div class="avpu-card" onclick="selectAVPU(this,'V')">
+      <div class="avpu-letter">V</div>
+      <div class="avpu-en">VOICE</div>
+      <div class="avpu-zh">對聲音有反應</div>
+      <div class="avpu-desc">對口頭呼喚有反應，但無法自發反應</div>
+      <div class="avpu-nursing">
+        <strong>護理重點：</strong>加強呼喚評估、防跌措施、密切觀察進展
+      </div>
+    </div>
+    <div class="avpu-card" onclick="selectAVPU(this,'P')">
+      <div class="avpu-letter">P</div>
+      <div class="avpu-en">PAIN</div>
+      <div class="avpu-zh">對疼痛有反應</div>
+      <div class="avpu-desc">僅對疼痛刺激有反應（如按壓甲床），無法對聲音反應</div>
+      <div class="avpu-nursing">
+        <strong>護理重點：</strong>維持呼吸道暢通、側臥、立即通知醫師
+      </div>
+    </div>
+    <div class="avpu-card" onclick="selectAVPU(this,'U')">
+      <div class="avpu-letter">U</div>
+      <div class="avpu-en">UNRESPONSIVE</div>
+      <div class="avpu-zh">無反應</div>
+      <div class="avpu-desc">對任何刺激均無反應</div>
+      <div class="avpu-nursing">
+        <strong>護理重點：</strong>評估呼吸循環、啟動 CPR / 急救程序、備急救車
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-badge" style="margin-top:0">❓ 問題 2 · MCQ</div>
+  <p style="font-size:16px;font-weight:600;margin-bottom:16px;line-height:1.6;">
+    護理師呼叫「陳先生！」，他緩慢轉頭但說話含糊，且無法回答「今天幾號」。<br>
+    依 AVPU 量表，陳先生目前的意識等級為何？
+  </p>
+
+  <div class="mcq-options" id="q2-options">
+    <div class="mcq-option" onclick="answerQ2(this, false)">
+      <span class="option-key">A</span>
+      <span>A — Alert（完全清醒）</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ2(this, true)">
+      <span class="option-key">B</span>
+      <span>V — Voice（對聲音有反應，但定向感異常）</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ2(this, false)">
+      <span class="option-key">C</span>
+      <span>P — Pain（對疼痛有反應）</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ2(this, false)">
+      <span class="option-key">D</span>
+      <span>U — Unresponsive（無反應）</span>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="q2-feedback"></div>
+
+  <div class="nav-bar">
+    <button class="btn btn-outline" onclick="goTo(2)">← 上一頁</button>
+    <button class="btn btn-primary" id="next3" onclick="goTo(4)" style="display:none;">進入關卡三 →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 4: 降溫措施排序 ═══ -->
+<div class="screen" id="screen-4">
+  <div class="section-badge">❄️ 關卡三 · COOLING PROTOCOL</div>
+  <h2 class="section-title">緊急降溫護理措施</h2>
+  <p class="section-sub">中暑的緊急降溫必須「快速、有效、有序」。請選擇正確的措施執行順序</p>
+
+  <div class="section-badge" style="margin-bottom:12px">❓ 問題 3 · 步驟排序</div>
+  <p style="font-size:15px;margin-bottom:16px;color:var(--text-secondary);">
+    以下 6 項護理措施，請按正確執行的<span style="color:var(--accent-amber);font-weight:700">先後順序</span>點擊排列（先執行的先點）：
+  </p>
+
+  <div class="order-options" id="order-options">
+    <div class="order-chip" onclick="selectOrder(this, 'B')" data-id="B">
+      <span class="chip-num" id="chip-B">　</span>
+      移除多餘衣物，確保散熱
+    </div>
+    <div class="order-chip" onclick="selectOrder(this, 'A')" data-id="A">
+      <span class="chip-num" id="chip-A">　</span>
+      評估生命徵象、意識（AVPU/GCS）、通知醫師
+    </div>
+    <div class="order-chip" onclick="selectOrder(this, 'E')" data-id="E">
+      <span class="chip-num" id="chip-E">　</span>
+      監測降溫效果，目標 30 分鐘內降至 38.5°C
+    </div>
+    <div class="order-chip" onclick="selectOrder(this, 'C')" data-id="C">
+      <span class="chip-num" id="chip-C">　</span>
+      冰水/濕毛巾敷頸部、腋下、鼠蹊部（大血管處）
+    </div>
+    <div class="order-chip" onclick="selectOrder(this, 'F')" data-id="F">
+      <span class="chip-num" id="chip-F">　</span>
+      建立靜脈輸液（IV line）補充冷生理食鹽水
+    </div>
+    <div class="order-chip" onclick="selectOrder(this, 'D')" data-id="D">
+      <span class="chip-num" id="chip-D">　</span>
+      移至陰涼/空調環境，平躺抬高雙腿（若無禁忌）
+    </div>
+  </div>
+
+  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="btn btn-outline" onclick="resetOrder()">🔄 重置排序</button>
+    <button class="btn btn-primary" onclick="checkOrder()" id="checkOrderBtn" style="display:none;">✓ 確認排序</button>
+  </div>
+
+  <div class="feedback-box" id="q3-feedback"></div>
+
+  <!-- Full cooling steps reference (after answer) -->
+  <div id="cooling-ref" style="display:none;margin-top:20px;">
+    <div class="section-badge">📋 完整降溫措施步驟表</div>
+    <div class="steps-container">
+      <div class="step-item correct-place">
+        <div class="step-number">1</div>
+        <div class="step-text"><strong>初步評估 & 啟動緊急應變</strong><br>
+        量測 BT、BP、HR、RR、SpO₂；評估意識（AVPU）；立即通知醫師</div>
+      </div>
+      <div class="step-item correct-place">
+        <div class="step-number">2</div>
+        <div class="step-text"><strong>環境調整 & 體位</strong><br>
+        移至陰涼室內（空調＜25°C）；平躺、抬腿以改善低血壓；維持呼吸道</div>
+      </div>
+      <div class="step-item correct-place">
+        <div class="step-number">3</div>
+        <div class="step-text"><strong>脫衣 & 主動散熱</strong><br>
+        移除多餘衣物；以電扇加速空氣對流蒸發散熱</div>
+      </div>
+      <div class="step-item correct-place">
+        <div class="step-number">4</div>
+        <div class="step-text"><strong>外部降溫（大血管冰敷）</strong><br>
+        冰袋/冰水濕毛巾放置頸部兩側、腋下、鼠蹊部；可搭配冰水擦浴或浸浴（如設備允許）<br>
+        <span style="color:var(--text-secondary);font-size:12px;">⚠️ 注意：避免直接冰敷皮膚過長，注意寒顫（反而升溫）</span></div>
+      </div>
+      <div class="step-item correct-place">
+        <div class="step-number">5</div>
+        <div class="step-text"><strong>靜脈輸液</strong><br>
+        建立 IV line；依醫囑給予冷生理食鹽水（0.9% NaCl）；監測電解質</div>
+      </div>
+      <div class="step-item correct-place">
+        <div class="step-number">6</div>
+        <div class="step-text"><strong>持續監測 & 調整目標</strong><br>
+        目標：<strong>30分鐘內</strong>降至 38.5°C 以下；每 5 分鐘測體溫；記錄尿量；防止過度降溫（＜38°C停止強降溫）</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,61,61,0.08);border:1px solid rgba(255,61,61,0.3);border-radius:8px;padding:14px;margin-top:12px;font-size:14px;line-height:1.7;">
+      🚨 <strong style="color:var(--accent-red)">禁忌提醒：</strong>
+      勿使用退燒藥（Aspirin/Acetaminophen）—中暑為體溫調節失能，非感染發炎，退燒藥無效且可能傷肝腎
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="btn btn-outline" onclick="goTo(3)">← 上一頁</button>
+    <button class="btn btn-primary" id="next4" onclick="goTo(5)" style="display:none;">進入關卡四 →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 5: 家屬溝通 ═══ -->
+<div class="screen" id="screen-5">
+  <div class="section-badge">🗣 關卡四 · FAMILY COMMUNICATION</div>
+  <h2 class="section-title">向家屬說明</h2>
+  <p class="section-sub">
+    家屬急切詢問病情，護理師需以清楚、同理心的方式說明。<br>
+    點擊「💡顯示溝通技巧」查看每句話的護理重點
+  </p>
+
+  <div class="comm-card">
+    <div class="comm-role family">👨‍👩‍👦 家屬問</div>
+    <div class="comm-bubble family-bubble">「他到底是中暑還是熱衰竭？差很多嗎？」</div>
+  </div>
+
+  <div class="comm-card">
+    <div class="comm-role nurse">👩‍⚕️ 護理師說</div>
+    <div class="comm-bubble nurse-bubble">
+      「陳先生目前體溫高達 41.2 度，皮膚乾燥沒有流汗，意識有些混亂，
+      我們初步判斷是<strong>中暑</strong>。中暑比熱衰竭更嚴重，
+      是身體的散熱機制無法正常運作，如果不立即降溫，可能影響心臟、腎臟和腦部。
+      我們正在緊急處理，請您放心。」
+    </div>
+    <button class="btn btn-outline" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="toggleTip('tip1')">💡 溝通技巧</button>
+    <div class="comm-tips" id="tip1">
+      ✅ 說明<strong>具體數值</strong>讓家屬理解嚴重性<br>
+      ✅ 解釋差異但不過度恐嚇<br>
+      ✅ 結尾加上「我們正在處理」緩解焦慮
+    </div>
+  </div>
+
+  <div class="comm-card">
+    <div class="comm-role family">👨‍👩‍👦 家屬問</div>
+    <div class="comm-bubble family-bubble">「那你們現在要做什麼？要不要打退燒針？」</div>
+  </div>
+
+  <div class="comm-card">
+    <div class="comm-role nurse">👩‍⚕️ 護理師說</div>
+    <div class="comm-bubble nurse-bubble">
+      「我們現在馬上幫他降溫——先移到涼爽的環境，
+      用冰袋敷頸部和腋下等大血管位置，同時幫他打點滴補充水分。
+      中暑<strong>不能用退燒藥</strong>，因為他不是感染引起的發燒，
+      退燒藥對這種情況沒有效果。最重要的是快速讓體溫降下來。」
+    </div>
+    <button class="btn btn-outline" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="toggleTip('tip2')">💡 溝通技巧</button>
+    <div class="comm-tips" id="tip2">
+      ✅ 主動說明處理措施，讓家屬有參與感<br>
+      ✅ 釐清「退燒藥迷思」，預防家屬自行用藥<br>
+      ✅ 使用淺顯語言，避免過多醫學術語
+    </div>
+  </div>
+
+  <div class="comm-card">
+    <div class="comm-role family">👨‍👩‍👦 家屬問</div>
+    <div class="comm-bubble family-bubble">「要住院嗎？他年紀大了，會不會留下什麼後遺症？」</div>
+  </div>
+
+  <div class="comm-card">
+    <div class="comm-role nurse">👩‍⚕️ 護理師說</div>
+    <div class="comm-bubble nurse-bubble">
+      「需要住院觀察，醫師稍後會來跟您說明詳細情況。
+      中暑如果<strong>及時處理</strong>，大多數病人都能恢復，
+      但因為體溫曾經很高，我們會密切監測腎功能和腦部反應。
+      您是最了解他的人，如果有任何異常，歡迎隨時告知我們。」
+    </div>
+    <button class="btn btn-outline" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="toggleTip('tip3')">💡 溝通技巧</button>
+    <div class="comm-tips" id="tip3">
+      ✅ 誠實但給予<strong>希望</strong>（及時處理預後好）<br>
+      ✅ 說明後續監測重點（腎、腦），讓家屬知道嚴肅性<br>
+      ✅ 邀請家屬參與（「歡迎告知」）增加信任感<br>
+      ✅ 不做超出能力的保證
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MCQ about family comm -->
+  <div class="section-badge" style="margin-top:0">❓ 問題 4 · MCQ</div>
+  <p style="font-size:16px;font-weight:600;margin-bottom:16px;line-height:1.6;">
+    家屬從口袋拿出自備的普拿疼說：「我先給他吃退燒藥好了。」<br>
+    護理師最適切的回應是？
+  </p>
+
+  <div class="mcq-options" id="q4-options">
+    <div class="mcq-option" onclick="answerQ4(this, false)">
+      <span class="option-key">A</span>
+      <span>「好的，可以，這樣也有幫助。」</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ4(this, false)">
+      <span class="option-key">B</span>
+      <span>「不行！退燒藥很危險，不要亂給！」（語氣強硬）</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ4(this, true)">
+      <span class="option-key">C</span>
+      <span>「謝謝您的心意，但中暑不是感染造成的，退燒藥在這裡沒有效果，我們用物理降溫更有幫助。」</span>
+    </div>
+    <div class="mcq-option" onclick="answerQ4(this, false)">
+      <span class="option-key">D</span>
+      <span>「這個要先問醫師，我不知道可不可以。」</span>
+    </div>
+  </div>
+
+  <div class="feedback-box" id="q4-feedback"></div>
+
+  <div class="nav-bar">
+    <button class="btn btn-outline" onclick="goTo(4)">← 上一頁</button>
+    <button class="btn btn-primary" id="next5" onclick="goTo(6)" style="display:none;">查看成績 →</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 6: 成績 ═══ -->
+<div class="screen" id="screen-6">
+  <div class="section-badge">🏆 成績報告 · SCORE REPORT</div>
+  <h2 class="section-title">演練完成！</h2>
+
+  <div style="text-align:center;margin:28px 0;">
+    <div class="score-ring" id="finalRing" style="border-color:var(--accent-amber);">
+      <div class="score-num" id="finalScore" style="color:var(--accent-amber);">0</div>
+      <div class="score-lbl">/ 100 分</div>
+    </div>
+    <div id="scoreMessage" style="font-size:18px;margin-top:10px;"></div>
+  </div>
+
+  <div class="results-list" id="resultsList"></div>
+
+  <div class="divider"></div>
+
+  <div class="section-badge">📌 重點複習摘要</div>
+  <div style="display:grid;gap:10px;margin:16px 0;">
+    <div style="background:var(--bg-card);border-radius:8px;padding:16px;border:1px solid rgba(255,176,32,0.2);">
+      <div style="color:var(--accent-amber);font-weight:700;margin-bottom:8px;">🌡 鑑別診斷關鍵</div>
+      <div style="font-size:14px;line-height:1.7;color:var(--text-secondary);">
+        中暑：體溫 &gt;40°C＋皮膚燙熱乾燥（無汗）＋意識改變 → 立即緊急處理<br>
+        熱衰竭：體溫 &lt;40°C＋大量出汗＋輕度不適 → 環境調整+補水
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:8px;padding:16px;border:1px solid rgba(42,244,255,0.2);">
+      <div style="color:var(--accent-cyan);font-weight:700;margin-bottom:8px;">🧠 AVPU 速記口訣</div>
+      <div style="font-size:14px;line-height:1.7;color:var(--text-secondary);">
+        <strong style="color:var(--accent-green)">A</strong>lert 清醒 → 
+        <strong style="color:var(--accent-amber)">V</strong>oice 喊有反應 → 
+        <strong style="color:var(--accent-orange)">P</strong>ain 痛有反應 → 
+        <strong style="color:var(--accent-red)">U</strong>nresponsive 無反應
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:8px;padding:16px;border:1px solid rgba(26,232,122,0.2);">
+      <div style="color:var(--accent-green);font-weight:700;margin-bottom:8px;">❄️ 降溫 6 步驟</div>
+      <div style="font-size:14px;line-height:1.7;color:var(--text-secondary);">
+        評估通報 → 環境體位 → 脫衣散熱 → 冰敷大血管 → 靜脈補液 → 持續監測<br>
+        <span style="color:var(--accent-red)">🚫 禁：退燒藥（非感染性發熱，無效）</span>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:8px;padding:16px;border:1px solid rgba(255,61,61,0.2);">
+      <div style="color:var(--accent-red);font-weight:700;margin-bottom:8px;">🗣 家屬溝通三原則</div>
+      <div style="font-size:14px;line-height:1.7;color:var(--text-secondary);">
+        1. 用具體數值說明嚴重性（不誇大也不輕描淡寫）<br>
+        2. 釐清錯誤認知（如退燒藥迷思）要有同理心<br>
+        3. 給予希望但不做超出能力的保證
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="restart()">🔄 重新演練</button>
+    <button class="btn btn-outline" onclick="goTo(1)">📋 回顧情境</button>
+  </div>
+</div>
+
+</main><!-- /main -->
+
+<!-- CHEATSHEET BUTTON -->
+<button class="cheatsheet-toggle" onclick="toggleCheatsheet()" title="快速參考卡">📋</button>
+
+<div class="cheatsheet-panel" id="cheatsheet">
+  <div class="cheatsheet-title">⚡ Quick Reference</div>
+  <div class="cheat-item">
+    <div class="cheat-dot" style="background:var(--accent-red)"></div>
+    <div><strong style="color:var(--accent-red)">中暑</strong>：BT &gt;40°C、皮膚乾熱、意識改變、體溫調節失能</div>
+  </div>
+  <div class="cheat-item">
+    <div class="cheat-dot" style="background:var(--accent-amber)"></div>
+    <div><strong style="color:var(--accent-amber)">熱衰竭</strong>：BT &lt;40°C、大量出汗、輕度意識變化</div>
+  </div>
+  <div class="cheat-item">
+    <div class="cheat-dot" style="background:var(--accent-cyan)"></div>
+    <div><strong style="color:var(--accent-cyan)">AVPU</strong>：A清醒 → V喊反應 → P痛反應 → U無反應</div>
+  </div>
+  <div class="cheat-item">
+    <div class="cheat-dot" style="background:var(--accent-green)"></div>
+    <div><strong style="color:var(--accent-green)">降溫目標</strong>：30分鐘內降至38.5°C</div>
+  </div>
+  <div class="cheat-item">
+    <div class="cheat-dot" style="background:var(--text-muted)"></div>
+    <div style="color:var(--accent-red)">🚫 禁止：退燒藥（Aspirin/APAP）</div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let currentScreen = 0;
+const totalScreens = 7;
+let scores = { q1: 0, q2: 0, q3: 0, q4: 0 };
+let answered = { q1: false, q2: false, q3: false, q4: false };
+let orderSequence = [];
+const correctOrder = ['A','D','B','C','F','E'];
+const orderLabels = {
+  A: '評估生命徵象、意識，通知醫師',
+  D: '移至陰涼環境，平躺抬腿',
+  B: '移除多餘衣物，確保散熱',
+  C: '冰袋敷頸部、腋下、鼠蹊部',
+  F: '建立IV line，補充冷生理食鹽水',
+  E: '持續監測，目標30分鐘降至38.5°C'
+};
+
+// ── NAVIGATION ──
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + n).classList.add('active');
+  currentScreen = n;
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateProgress() {
+  const fill = document.getElementById('progressFill');
+  const pct = currentScreen === 0 ? 0 : Math.round((currentScreen / 6) * 100);
+  fill.style.width = pct + '%';
+
+  // Update header score
+  const total = scores.q1 + scores.q2 + scores.q3 + scores.q4;
+  document.getElementById('headerScore').textContent = total;
+
+  // Build dots
+  const dotsEl = document.getElementById('progressDots');
+  dotsEl.innerHTML = '';
+  const labels = ['開始','情境','診斷','AVPU','降溫','溝通','成績'];
+  for (let i = 0; i < 7; i++) {
+    const d = document.createElement('div');
+    d.className = 'prog-dot';
+    if (i < currentScreen) d.classList.add('done');
+    else if (i === currentScreen) d.classList.add('active');
+    d.title = labels[i];
+    d.onclick = () => { if(i <= currentScreen) goTo(i); };
+    dotsEl.appendChild(d);
+  }
+}
+
+// ── Q1 ──
+function answerQ1(el, correct) {
+  if (answered.q1) return;
+  answered.q1 = true;
+  const options = document.querySelectorAll('#q1-options .mcq-option');
+  options.forEach(o => o.onclick = null);
+  const fb = document.getElementById('q1-feedback');
+
+  if (correct) {
+    el.classList.add('correct');
+    scores.q1 = 25;
+    fb.className = 'feedback-box show correct';
+    fb.innerHTML = `✅ <strong>正確！+25分</strong><br>
+    體溫 41.2°C（＞40°C）、皮膚燙熱<strong>乾燥無汗</strong>、意識混亂——這三項是中暑的典型三聯症。
+    與熱衰竭最大差異：中暑時體溫調節中樞失能，不再出汗；熱衰竭則大量出汗且體溫通常低於40°C。`;
+  } else {
+    el.classList.add('wrong');
+    options.forEach(o => { if (o !== el) o.classList.add('reveal-correct'); });
+    // find correct option
+    document.querySelectorAll('#q1-options .mcq-option')[1].classList.remove('reveal-correct');
+    document.querySelectorAll('#q1-options .mcq-option')[1].classList.add('correct');
+    fb.className = 'feedback-box show wrong';
+    fb.innerHTML = `❌ <strong>答錯了！</strong><br>
+    正確答案是 <strong>B（中暑）</strong>。<br>
+    關鍵線索：①體溫 41.2°C ＞40°C ②皮膚「燙熱乾燥」無汗 ③明顯意識混亂。
+    若為熱衰竭，應見大量出汗、體溫通常低於40°C。`;
+  }
+  updateProgress();
+  document.getElementById('next2').style.display = 'inline-block';
+}
+
+// ── Q2 ──
+function selectAVPU(card, letter) {
+  document.querySelectorAll('.avpu-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+function answerQ2(el, correct) {
+  if (answered.q2) return;
+  answered.q2 = true;
+  const options = document.querySelectorAll('#q2-options .mcq-option');
+  options.forEach(o => o.onclick = null);
+  const fb = document.getElementById('q2-feedback');
+
+  if (correct) {
+    el.classList.add('correct');
+    scores.q2 = 25;
+    fb.className = 'feedback-box show correct';
+    fb.innerHTML = `✅ <strong>正確！+25分</strong><br>
+    「呼喚有轉頭反應 but 說話含糊、定向感異常」= <strong>V（Voice）</strong>。
+    V 等級代表對聲音刺激有反應，但品質不完整。需持續監測是否惡化至 P（Pain）等級。`;
+  } else {
+    el.classList.add('wrong');
+    document.querySelectorAll('#q2-options .mcq-option')[1].classList.add('correct');
+    fb.className = 'feedback-box show wrong';
+    fb.innerHTML = `❌ <strong>答錯了！正確答案：B（V — Voice）</strong><br>
+    雖有反應，但無法正確回答問題（定向感異常），不符合 A（Alert 完全清醒）的標準。
+    「呼喊有轉頭」代表對聲音有反應 = V 等級。`;
+  }
+  updateProgress();
+  document.getElementById('next3').style.display = 'inline-block';
+}
+
+// ── Q3 ORDERING ──
+function selectOrder(chip, id) {
+  if (orderSequence.includes(id)) {
+    // deselect
+    orderSequence = orderSequence.filter(x => x !== id);
+    chip.classList.remove('selected-order');
+    chip.querySelector('.chip-num').textContent = '　';
+    // re-number remaining
+    orderSequence.forEach((sid, idx) => {
+      document.querySelector(`[data-id="${sid}"] .chip-num`).textContent = idx + 1;
+    });
+  } else {
+    orderSequence.push(id);
+    chip.classList.add('selected-order');
+    chip.querySelector('.chip-num').textContent = orderSequence.length;
+  }
+  document.getElementById('checkOrderBtn').style.display =
+    orderSequence.length === 6 ? 'inline-block' : 'none';
+}
+
+function resetOrder() {
+  orderSequence = [];
+  document.querySelectorAll('.order-chip').forEach(c => {
+    c.classList.remove('selected-order');
+    c.querySelector('.chip-num').textContent = '　';
+    c.onclick = function() { selectOrder(this, this.dataset.id); };
+  });
+  document.getElementById('checkOrderBtn').style.display = 'none';
+  document.getElementById('q3-feedback').className = 'feedback-box';
+}
+
+function checkOrder() {
+  if (answered.q3) return;
+  answered.q3 = true;
+  document.querySelectorAll('.order-chip').forEach(c => c.onclick = null);
+  document.getElementById('resetOrder') && (document.getElementById('resetOrder').disabled = true);
+
+  const fb = document.getElementById('q3-feedback');
+  let correct = 0;
+  orderSequence.forEach((id, i) => {
+    if (correctOrder[i] === id) correct++;
+  });
+
+  scores.q3 = Math.round((correct / 6) * 25);
+
+  let resultHTML = `<strong>${correct === 6 ? '✅ 全部正確！' : `答對 ${correct}/6 項`} +${scores.q3}分</strong><br><br>`;
+  resultHTML += '<strong>正確順序：</strong><br>';
+  correctOrder.forEach((id, i) => {
+    const userIdx = orderSequence.indexOf(id);
+    const ok = userIdx === i;
+    resultHTML += `${ok ? '✅' : '⚠️'} <strong>第${i+1}步</strong>：${orderLabels[id]}<br>`;
+  });
+
+  fb.className = `feedback-box show ${correct >= 4 ? 'correct' : 'wrong'}`;
+  fb.innerHTML = resultHTML;
+
+  document.getElementById('cooling-ref').style.display = 'block';
+  updateProgress();
+  document.getElementById('next4').style.display = 'inline-block';
+}
+
+// ── Q4 ──
+function answerQ4(el, correct) {
+  if (answered.q4) return;
+  answered.q4 = true;
+  const options = document.querySelectorAll('#q4-options .mcq-option');
+  options.forEach(o => o.onclick = null);
+  const fb = document.getElementById('q4-feedback');
+
+  if (correct) {
+    el.classList.add('correct');
+    scores.q4 = 25;
+    fb.className = 'feedback-box show correct';
+    fb.innerHTML = `✅ <strong>正確！+25分</strong><br>
+    同理家屬關心（「謝謝您的心意」）→ 解釋原因（「中暑不是感染，退燒藥無效」）→ 提供替代方案（物理降溫）。
+    這是「SBAR-like」溝通的精神：先確認，再說明，再給方向。`;
+  } else {
+    el.classList.add('wrong');
+    document.querySelectorAll('#q4-options .mcq-option')[2].classList.add('correct');
+    fb.className = 'feedback-box show wrong';
+    fb.innerHTML = `❌ <strong>答錯了！正確答案：C</strong><br>
+    A（錯誤：退燒藥無效，不可同意）、B（語氣不當，傷害信任關係）、D（不作為，逃避責任）。
+    護理師應能主動解釋，不需所有問題都推給醫師。`;
+  }
+  updateProgress();
+  document.getElementById('next5').style.display = 'inline-block';
+}
+
+// ── FINAL SCORE ──
+function showFinalScore() {
+  const total = scores.q1 + scores.q2 + scores.q3 + scores.q4;
+  document.getElementById('finalScore').textContent = total;
+
+  const ring = document.getElementById('finalRing');
+  let msg = '', color = '';
+  if (total >= 90) { msg = '🎉 優秀！OSCE 滿分準備好了'; color = 'var(--accent-green)'; }
+  else if (total >= 70) { msg = '👍 良好！再複習降溫步驟'; color = 'var(--accent-cyan)'; }
+  else if (total >= 50) { msg = '📚 及格，建議重新複習'; color = 'var(--accent-amber)'; }
+  else { msg = '💪 繼續加油，多練習'; color = 'var(--accent-red)'; }
+
+  ring.style.borderColor = color;
+  document.getElementById('finalScore').style.color = color;
+  document.getElementById('scoreMessage').innerHTML = `<span style="color:${color}">${msg}</span>`;
+
+  const list = document.getElementById('resultsList');
+  const items = [
+    { label: '關卡一：鑑別診斷', score: scores.q1, max: 25 },
+    { label: '關卡二：AVPU 意識評估', score: scores.q2, max: 25 },
+    { label: '關卡三：緊急降溫排序', score: scores.q3, max: 25 },
+    { label: '關卡四：家屬溝通', score: scores.q4, max: 25 },
+  ];
+  list.innerHTML = items.map(item => `
+    <div class="result-row">
+      <span>${item.label}</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:80px;height:6px;background:var(--bg-panel);border-radius:3px;overflow:hidden;">
+          <div style="width:${(item.score/item.max)*100}%;height:100%;background:${item.score===item.max?'var(--accent-green)':item.score>0?'var(--accent-amber)':'var(--accent-red)'};border-radius:3px;transition:width 0.8s;"></div>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:13px;color:${item.score===item.max?'var(--accent-green)':'var(--text-primary)'};">${item.score}/${item.max}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── SCREEN 6 INTERCEPT ──
+const origGoTo = goTo;
+window.goTo = function(n) {
+  origGoTo(n);
+  if (n === 6) showFinalScore();
+}
+
+// ── UTILS ──
+function toggleTip(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+
+function toggleCheatsheet() {
+  document.getElementById('cheatsheet').classList.toggle('open');
+}
+
+function restart() {
+  scores = { q1: 0, q2: 0, q3: 0, q4: 0 };
+  answered = { q1: false, q2: false, q3: false, q4: false };
+  orderSequence = [];
+
+  // Reset Q1
+  document.querySelectorAll('#q1-options .mcq-option').forEach(o => {
+    o.className = 'mcq-option';
+    o.onclick = function() { answerQ1(this, o.textContent.includes('中暑（Heat Stroke）')); };
+  });
+  document.getElementById('q1-feedback').className = 'feedback-box';
+  document.getElementById('next2').style.display = 'none';
+
+  // Reset Q2
+  document.querySelectorAll('#q2-options .mcq-option').forEach((o,i) => {
+    o.className = 'mcq-option';
+    o.onclick = function() { answerQ2(this, i===1); };
+  });
+  document.getElementById('q2-feedback').className = 'feedback-box';
+  document.getElementById('next3').style.display = 'none';
+
+  // Reset Q3
+  resetOrder();
+  document.getElementById('q3-feedback').className = 'feedback-box';
+  document.getElementById('cooling-ref').style.display = 'none';
+  document.getElementById('next4').style.display = 'none';
+
+  // Reset Q4
+  document.querySelectorAll('#q4-options .mcq-option').forEach((o,i) => {
+    o.className = 'mcq-option';
+    o.onclick = function() { answerQ4(this, i===2); };
+  });
+  document.getElementById('q4-feedback').className = 'feedback-box';
+  document.getElementById('next5').style.display = 'none';
+
+  goTo(0);
+}
+
+// Re-bind MCQ clicks properly after restart
+function bindAllMCQ() {
+  document.querySelectorAll('#q1-options .mcq-option').forEach((o,i) => {
+    o.onclick = function() { answerQ1(this, i===1); };
+  });
+  document.querySelectorAll('#q2-options .mcq-option').forEach((o,i) => {
+    o.onclick = function() { answerQ2(this, i===1); };
+  });
+  document.querySelectorAll('#q4-options .mcq-option').forEach((o,i) => {
+    o.onclick = function() { answerQ4(this, i===2); };
+  });
+}
+bindAllMCQ();
+
+// Init
+updateProgress();
+</script>
+</body>
+</html>
