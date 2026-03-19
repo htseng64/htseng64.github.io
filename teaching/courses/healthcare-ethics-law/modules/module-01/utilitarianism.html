@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理倫理互動學習網：效益論專題</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #18bc9c;
+            --bentham: #e67e22;
+            --mill: #9b59b6;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; margin: 0; background: var(--bg); color: #333; scroll-behavior: smooth; }
+        
+        nav { background: var(--primary); color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        nav a:hover { color: var(--secondary); }
+
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 60px 20px; text-align: center; }
+        
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+
+        .section-card { background: var(--white); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { border-left: 6px solid var(--secondary); padding-left: 15px; color: var(--primary); margin-top: 0; }
+        h3 { color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+        /* PPT 導覽區塊 */
+        .ppt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .ppt-item { padding: 20px; border-radius: 10px; color: white; }
+        .bg-bentham { background-color: var(--bentham); }
+        .bg-mill { background-color: var(--mill); }
+
+        /* 問答區 */
+        .qa-box { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+        .qa-box:hover { border-color: var(--secondary); }
+        .qa-q { background: #f9f9f9; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .qa-a { padding: 20px; display: none; border-top: 1px solid #eee; background: white; color: #555; border-radius: 0 0 8px 8px; }
+
+        /* 測驗區 */
+        .quiz-item { background: #fff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .option-label { display: block; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .option-label:hover { background: #f0fffb; border-color: var(--secondary); }
+        input[type="radio"] { margin-right: 10px; }
+        
+        #score-display { display: none; text-align: center; padding: 30px; background: var(--primary); color: white; border-radius: 15px; margin-top: 20px; }
+
+        .btn-submit { background: var(--secondary); color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 18px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold; }
+        .btn-submit:hover { background: #128f76; }
+
+        @media (max-width: 768px) {
+            .ppt-grid { grid-template-columns: 1fr; }
+            nav a { display: inline-block; margin: 5px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#ppt">理論重點</a>
+    <a href="#guide">學習指南</a>
+    <a href="#qa">自我檢測</a>
+    <a href="#quiz">期末測驗</a>
+</nav>
+
+<header>
+    <h1>效益論與護理倫理實務</h1>
+    <p>整合邊沁與彌爾觀點：從緊急救治到全人照護</p>
+</header>
+
+<div class="container">
+
+    <section id="ppt" class="section-card">
+        <h2>代表人物重點對照 (PPT 精華)</h2>
+        <div class="ppt-grid">
+            <div class="ppt-item bg-bentham">
+                <h3>邊沁 (Jeremy Bentham)</h3>
+                <p><strong>核心：</strong>追求「量」的極大化</p>
+                <ul>
+                    <li>最大幸福原則：總體幸福的最大值。</li>
+                    <li>快樂計算尺：強度、持久性、確定性等維度。</li>
+                    <li>臨床應用：急診檢傷分類、資源最大化利用。</li>
+                </ul>
+            </div>
+            <div class="ppt-item bg-mill">
+                <h3>彌爾 (John Stuart Mill)</h3>
+                <p><strong>核心：</strong>追求「質」的提升</p>
+                <ul>
+                    <li>品質優先：精神層次（尊嚴、自由）高於感官。</li>
+                    <li>規則效益論：守誠實與隱私準則，維護長期利益。</li>
+                    <li>臨床應用：安寧療護、生活品質 (QoL) 評估。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="guide" class="section-card">
+        <h2>學習指南完整內容</h2>
+        <h3>指南目標</h3>
+        <p>本指南協助理解邊沁與彌爾觀點差異，及其在護理資源分配、生活品質評估與倫理決策中的應用。</p>
+        
+        <h3>核心整合建議</h3>
+        <p>以邊沁的量化觀點作為緊急醫療與資源分配的基礎；以彌爾的質化觀點與道德準則，作為提升照護品質與維護醫病信任的長期指引。</p>
+
+        <h3>申論導引題目</h3>
+        <ul>
+            <li>災難現場檢傷分類時，醫護人員面臨的倫理糾結。</li>
+            <li>「尊嚴與品質優先」如何影響對「無效醫療」的判斷。</li>
+            <li>行為效益論與準則效益論在醫病關係建立上的影響。</li>
+        </ul>
+    </section>
+
+    <section id="qa" class="section-card">
+        <h2>理解度檢測問答 (展開查看)</h2>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q1: 請解釋彌爾的名言「做一個不滿足的人，勝過做一頭滿足的豬」。 <span>▼</span></div>
+            <div class="qa-a">這句話對比了感官與精神快樂；「滿足的豬」代表僅追求生理需求的低階狀態，而「不滿足的人」則展現了追求高層次尊嚴與理想的精神境界。</div>
+        </div>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q2: 依據準則效益論，為什麼不能為了救五人而犧牲一個健康人的器官？ <span>▼</span></div>
+            <div class="qa-a">若隨意犧牲個體，會導致社會集體恐懼與對醫療體系的不信任。長期而言，這種破壞保障個人權利準則的行為，會大幅降低整體的社會效益。</div>
+        </div>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q3: 邊沁的「效益計算」在臨床中是如何轉化的？ <span>▼</span></div>
+            <div class="qa-a">臨床上將抽象的快樂總量轉化為客觀的臨床指標與生命跡象。透過數據進行快速傷病分級，以達到搶救最多生命的最高效率原則。</div>
+        </div>
+    </section>
+
+    <section id="quiz" class="section-card">
+        <h2>單選題自測 (10題)</h2>
+        <form id="quiz-form">
+            <div id="quiz-list"></div>
+            <button type="button" class="btn-submit" onclick="submitQuiz()">提交測驗並計算成績</button>
+        </form>
+        <div id="score-display"></div>
+    </section>
+
+</div>
+
+<footer>
+    <p style="text-align:center; color:#7f8c8d; padding:20px;">效益論與護理倫理實務數位教材 © 2026</p>
+</footer>
+
+<script>
+    function toggleQA(el) {
+        const a = el.querySelector('.qa-a');
+        const s = el.querySelector('span');
+        if (a.style.display === "block") {
+            a.style.display = "none";
+            s.innerText = "▼";
+        } else {
+            a.style.display = "block";
+            s.innerText = "▲";
+        }
+    }
+
+    const questions = [
+        { q: "效益論的核心目標是追求什麼？", a: 2, o: ["個人最大利益", "遵守絕對義務", "最大多數人的最大幸福", "病患絕對自主"] },
+        { q: "提出「快樂計算尺」，認為快樂可以量化計算的是？", a: 0, o: ["邊沁", "彌爾", "康德", "南丁格爾"] },
+        { q: "彌爾認為幸福的性質有高低之分，下列何者屬於高層次幸福？", a: 3, o: ["飽足感", "睡眠", "感官享受", "人格尊嚴與知識"] },
+        { q: "在大規模傷患現場進行「檢傷分類」，主要應用了誰的觀點？", a: 0, o: ["邊沁的量化效益", "彌爾的質化效益", "德行倫理學", "關懷倫理學"] },
+        { q: "「生活品質 (QoL)」的評估較符合哪位哲學家的思想？", a: 1, o: ["邊沁", "彌爾", "弗洛伊德", "以上皆非"] },
+        { q: "為了維持社會長期信任而遵守規則（如保護病人隱私），屬於？", a: 1, o: ["行為效益論", "準則效益論", "利己主義", "情境倫理"] },
+        { q: "彌爾名言中的「不滿足的人」是指追求什麼境界？", a: 2, o: ["物質財富", "生理需求", "精神境界與理想", "社會權力"] },
+        { q: "行為效益論的主要決策特徵為何？", a: 0, o: ["針對單一行為重新計算利益", "遵守長期社會規則", "不考慮行為後果", "重視醫療法律條文"] },
+        { q: "在有限資源下追求「救活最多的人」，展現了什麼原則？", a: 3, o: ["自主原則", "不傷害原則", "正義原則", "資源最大化利用原則"] },
+        { q: "整合全人照護時，邊沁與彌爾的觀點應如何安排？", a: 2, o: ["只選邊沁", "只選彌爾", "以邊沁為急救基礎，彌爾為品質指引", "兩者完全衝突無法整合"] }
+    ];
+
+    const quizList = document.getElementById('quiz-list');
+    questions.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `
+            <p><strong>${idx + 1}. ${item.q}</strong></p>
+            ${item.o.map((opt, oIdx) => `
+                <label class="option-label">
+                    <input type="radio" name="q${idx}" value="${oIdx}"> ${opt}
+                </label>
+            `).join('')}
+        `;
+        quizList.appendChild(div);
+    });
+
+    function submitQuiz() {
+        let score = 0;
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            if (selected && parseInt(selected.value) === item.a) {
+                score += 10;
+            }
+        });
+
+        const display = document.getElementById('score-display');
+        display.style.display = 'block';
+        display.innerHTML = `<h2>您的得分：${score} / 100</h2><p>${score >= 80 ? "優秀！您對效益論有深刻理解。" : "辛苦了！建議再複習一下指南內容。"}</p>`;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
