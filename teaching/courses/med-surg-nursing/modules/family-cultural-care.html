@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭文化照護 — Family & Cultural Care | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #0a1628;
+    --primary:   #f97316;
+    --primary-dk:#c2410c;
+    --primary-lt:#fdba74;
+    --rose:      #fb7185;
+    --rose-lt:   #fda4af;
+    --teal:      #2dd4bf;
+    --teal-lt:   #99f6e4;
+    --purple:    #a78bfa;
+    --purple-lt: #ddd6fe;
+    --gold:      #fbbf24;
+    --gold-lt:   #fde68a;
+    --green:     #34d399;
+    --text:      #e2e8f0;
+    --text-dim:  #8fa3be;
+    --border:    rgba(249,115,22,0.2);
+    --card:      rgba(17,34,64,0.8);
+    --card-hov:  rgba(17,34,64,0.95);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 12% 18%,rgba(194,65,12,.12) 0%,transparent 55%),
+      radial-gradient(ellipse at 86%  78%,rgba(45,212,191,.07) 0%,transparent 50%),
+      radial-gradient(ellipse at 50%  45%,rgba(167,139,250,.04) 0%,transparent 65%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:272px;height:100vh;background:rgba(10,22,40,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;backdrop-filter:blur(2px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:222px;width:38px;height:38px;border-radius:10px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(249,115,22,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.4;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(249,115,22,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:6px 20px 6px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:272px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:340px;display:flex;flex-direction:column;justify-content:center;padding:60px 0 40px;border-bottom:1px solid var(--border);margin-bottom:60px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:24px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-orange{background:rgba(249,115,22,.15);color:var(--primary);border:1px solid rgba(249,115,22,.3);}
+  .pill-teal{background:rgba(45,212,191,.15);color:var(--teal);border:1px solid rgba(45,212,191,.3);}
+  .pill-purple{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+  .pill-gold{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT GRID ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden;}
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.fam::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.cult::before{background:linear-gradient(90deg,var(--teal),var(--teal-lt));}
+  .concept-card.spirit::before{background:linear-gradient(90deg,var(--purple),var(--purple-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(249,115,22,.4);box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+  .concept-points{list-style:none;}
+  .concept-points li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'▸';color:var(--primary);flex-shrink:0;margin-top:1px;}
+  .value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px;}
+  .value-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:12px;padding:12px;text-align:center;}
+  .value-label{font-size:10px;color:var(--text-dim);}
+  .value-num{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--primary);margin:4px 0;}
+  .value-unit{font-size:10px;color:var(--text-dim);}
+
+  /* ── ASSESS GRID ── */
+  .assess-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .assess-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .assess-card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-orange{background:rgba(249,115,22,.15);color:var(--primary);}
+  .tag-teal{background:rgba(45,212,191,.15);color:var(--teal);}
+  .tag-purple{background:rgba(167,139,250,.15);color:var(--purple);}
+  .tag-gold{background:rgba(251,191,36,.15);color:var(--gold);}
+  .tag-rose{background:rgba(251,113,133,.15);color:var(--rose);}
+  .tag-green{background:rgba(52,211,153,.15);color:var(--green);}
+  .assess-list{list-style:none;}
+  .assess-list li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .assess-list li:last-child{border-bottom:none;}
+  .assess-list li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── TOPIC TABS ── */
+  .topic-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .topic-panel{display:none;animation:fadeIn .3s ease;}
+  .topic-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .topic-card-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .topic-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .topic-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .topic-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .ds-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .info-list{list-style:none;}
+  .info-list li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .info-list li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--teal-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--purple-lt);display:flex;gap:10px;}
+  .warn-box{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--gold-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(249,115,22,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(249,115,22,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:20px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .q-block{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);animation:fadeIn .3s ease;}
+  .answer-content.open{display:block;}
+
+  /* ── TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(249,115,22,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── FULL CARD / FLOW ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:120px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:12px;padding:14px 12px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 6px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── CULTURE GRID ── */
+  .cult-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+  .cult-card{border-radius:12px;padding:14px;}
+  .cult-card.c1{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);}
+  .cult-card.c2{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);}
+  .cult-card.c3{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);}
+  .cult-card.c4{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);}
+  .cult-card.c5{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.22);}
+  .cult-card.c6{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);}
+  .cult-head{font-size:13px;font-weight:700;margin-bottom:8px;}
+  .c1 .cult-head{color:var(--primary);}
+  .c2 .cult-head{color:var(--teal);}
+  .c3 .cult-head{color:var(--purple);}
+  .c4 .cult-head{color:var(--gold);}
+  .c5 .cult-head{color:var(--rose);}
+  .c6 .cult-head{color:var(--green);}
+  .cult-item{font-size:12px;color:var(--text-dim);line-height:1.6;padding:2px 0;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(249,115,22,.45);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-teal{font-style:normal;color:var(--teal);font-weight:600;}
+  em.hl-purple{font-style:normal;color:var(--purple);font-weight:600;}
+  em.hl-gold{font-style:normal;color:var(--gold);font-weight:600;}
+  em.hl-green{font-style:normal;color:var(--green);font-weight:600;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.cult-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.concept-grid,.assess-grid,.np-grid{grid-template-columns:1fr;}.topic-body{grid-template-columns:1fr;}.cult-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:272px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}.hero{padding-top:20px;}.hero h1{font-size:28px;}.topic-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:6px 12px;}.cult-grid{grid-template-columns:1fr;}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:60px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.case-panel{padding:16px;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">家庭文化照護<br>Family / Cultural Care</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts"   class="nav-item active"><span class="nav-icon">🏠</span><span class="nav-label"> 核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 家庭文化評估</span></a>
+  <a href="#topics"     class="nav-item"><span class="nav-icon">🌏</span><span class="nav-label"> 重要主題</span></a>
+  <a href="#topics" onclick="switchTab('family')"   class="nav-sub">→ 家庭照護與照顧者</a>
+  <a href="#topics" onclick="switchTab('culture')"  class="nav-sub">→ 跨文化護理</a>
+  <a href="#topics" onclick="switchTab('religion')" class="nav-sub">→ 宗教靈性與健康</a>
+  <a href="#topics" onclick="switchTab('elder')"    class="nav-sub">→ 老年照護與失智</a>
+  <a href="#topics" onclick="switchTab('chronic')"  class="nav-sub">→ 慢性病家庭照護</a>
+  <a href="#nursing"    class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#cases"      class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第八單元</div>
+    <h1>家庭文化照護<br><em>Family & Cultural Care</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Family Systems · Transcultural Nursing</div>
+    <div class="hero-pills">
+      <span class="pill pill-orange">🏠 家庭系統</span>
+      <span class="pill pill-teal">🌏 跨文化護理</span>
+      <span class="pill pill-purple">🙏 靈性照護</span>
+      <span class="pill pill-gold">👴 老年照護</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Family Systems · Transcultural Nursing · Holistic Spiritual Care</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <!-- FAMILY -->
+      <div class="concept-card fam">
+        <div class="concept-icon">🏠</div>
+        <div class="concept-title">家庭系統理論</div>
+        <div class="concept-en">Family as a Unit of Care</div>
+        <ul class="concept-points">
+          <li><em class="hl">家庭是護理的基本照護單元</em>——個案健康行為深受家庭影響</li>
+          <li>家庭結構類型：核心家庭、擴展家庭、單親家庭、重組家庭、隔代教養</li>
+          <li>家庭功能：情感支持、社會化、經濟、健康照護、繁衍</li>
+          <li>家庭壓力源（ABCX模型）：壓力事件(A) × 資源(B) × 認知(C) → 危機(X)</li>
+          <li>家庭照顧者（Caregiver）：台灣長照體系主力；女性多於男性；心身耗竭風險高</li>
+          <li>家庭週期（Family Life Cycle）：各階段有不同健康需求與壓力</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">台灣長照2.0</div><div class="value-num">4包錢</div><div class="value-unit">照顧補助</div></div>
+          <div class="value-box"><div class="value-label">照顧者</div><div class="value-num">女性佔</div><div class="value-num" style="font-size:14px;">~70%</div></div>
+        </div>
+      </div>
+
+      <!-- CULTURE -->
+      <div class="concept-card cult">
+        <div class="concept-icon">🌏</div>
+        <div class="concept-title">跨文化護理</div>
+        <div class="concept-en">Transcultural Nursing — Leininger's Theory</div>
+        <ul class="concept-points">
+          <li>Leininger文化照護多樣性與普同性理論（1991）：文化影響個人對健康、疾病、照護的詮釋</li>
+          <li>文化能力（Cultural Competence）：知識→態度→技巧三層面發展</li>
+          <li>文化安全（Cultural Safety）：消除文化歧視，讓病人感到被尊重</li>
+          <li>文化謙遜（Cultural Humility）：持續學習的態度；承認自身文化侷限</li>
+          <li>台灣多元文化：閩南、客家、原住民、新住民（東南亞）、新移民醫療需求各異</li>
+          <li>健康識能（Health Literacy）：閱讀、理解、應用健康資訊的能力</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">台灣新住民</div><div class="value-num">~56萬人</div></div>
+          <div class="value-box"><div class="value-label">原住民族</div><div class="value-num">16族</div></div>
+        </div>
+      </div>
+
+      <!-- SPIRITUALITY -->
+      <div class="concept-card spirit">
+        <div class="concept-icon">✨</div>
+        <div class="concept-title">靈性健康</div>
+        <div class="concept-en">Spiritual Well-being in Nursing Care</div>
+        <ul class="concept-points">
+          <li>靈性（Spirituality）≠宗教（Religion）；靈性是尋找生命意義與連結感</li>
+          <li>靈性健康四維度：生命意義感、希望感、愛與被愛、超越感</li>
+          <li>靈性痛苦（Spiritual Distress）：意義喪失、與信仰斷裂、孤立感</li>
+          <li>靈性評估工具：FICA（信仰/重要性/社群/照護）；HOPE</li>
+          <li>護理人員角色：傾聽、陪伴、連結資源；不強加自身信仰</li>
+          <li>台灣主要宗教：佛教、道教、基督教、天主教——各有死亡觀與儀式</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">靈性照護</div><div class="value-num">全人照護</div><div class="value-unit">不可缺</div></div>
+          <div class="value-box"><div class="value-label">末期病人</div><div class="value-num">靈性需求</div><div class="value-unit">最顯著</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family Lifecycle -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">📊 家庭週期各階段健康照護需求</div>
+      <div class="flow-container">
+        <div class="flow-step"><div class="flow-step-num">新婚期</div><div class="flow-step-text">性健康教育、計畫生育、伴侶溝通</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">育兒期</div><div class="flow-step-text">兒童發展、親職壓力、職業婦女支持</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">子女青春期</div><div class="flow-step-text">青少年健康、家庭界限重設、中年危機</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">空巢期</div><div class="flow-step-text">停經、退休調適、慢性病管理</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">老年期</div><div class="flow-step-text">長照需求、失智照護、臨終照顧角色</div></div>
+      </div>
+      <div class="tip-box" style="margin-top:12px;">
+        <span class="alert-icon">💡</span>
+        <span>護理評估應涵蓋<em class="hl-teal">整個家庭系統</em>，而非只看個別病人。一位成員患病 → 整個家庭功能受衝擊 → 照顧者也需要護理介入</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0d9488,#2dd4bf);">2</div>
+      <div>
+        <div class="section-title">家庭與文化評估</div>
+        <div class="section-en">Family Assessment · Cultural Assessment · Spiritual Assessment</div>
+      </div>
+    </div>
+
+    <div class="assess-grid">
+      <div class="assess-card">
+        <div class="assess-card-title">🏠 家庭評估工具 <span class="tag tag-orange">Family Assessment</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">家系圖（Genogram）</em>：三代家族圖；呈現關係、疾病遺傳、角色動態</li>
+          <li><em class="hl">家庭生態圖（Ecomap）</em>：家庭與外部資源（醫療、社區、朋友）的關係</li>
+          <li>APGAR家庭功能問卷：適應（A）、夥伴（P）、成長（G）、情感（A）、融合（R）；0–10分</li>
+          <li>家庭溝通型態：開放 vs 封閉；一致 vs 指責/電腦/打岔/討好</li>
+          <li>主要照顧者評估：Zarit照顧者負荷量表；身體健康；工作狀況；社會支持</li>
+          <li>家庭決策型態：誰是主要決策者？文化因素（父權/長者/集體決策）</li>
+          <li>財務狀況：照護費用壓力；是否了解社會福利資源</li>
+          <li>家庭生命週期階段：對應當前壓力與需求</li>
+        </ul>
+      </div>
+
+      <div class="assess-card">
+        <div class="assess-card-title">🌏 文化評估 <span class="tag tag-teal">Cultural Assessment</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">LEARN模式</em>：傾聽(L)、解釋(E)、承認差異(A)、建議(R)、協商(N)</li>
+          <li><em class="hl">Kleinman解釋模式（8問）</em>：病人如何解釋自己的疾病？期待什麼治療？</li>
+          <li>語言：主要語言、需要翻譯（使用正式翻譯，避免家屬翻譯敏感內容）</li>
+          <li>飲食禁忌：宗教（齋戒/清真/猶太飲食法）；文化偏好（熱食 vs 冷食）</li>
+          <li>身體接觸文化：有些文化對同性/異性觸診有限制</li>
+          <li>疾病歸因：鬼怪/命運/業力/食物不調 → 影響治療接受度</li>
+          <li>健康識能評估：REALM / Newest Vital Sign；教育程度；閱讀能力</li>
+          <li>傳統療法：草藥、推拿、針灸、巫術 → 需了解可能的交互作用</li>
+        </ul>
+      </div>
+
+      <div class="assess-card">
+        <div class="assess-card-title">✨ 靈性評估 <span class="tag tag-purple">Spiritual Assessment</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">FICA評估工具</em>：信仰(Faith)、重要性(Importance)、社群(Community)、照護(Address)</li>
+          <li>HOPE工具：希望來源(H)、有組織宗教(O)、個人靈修(P)、對照護的影響(E)</li>
+          <li>靈性需求指標：頻繁提問「為什麼是我？」、害怕死後；表達無意義感</li>
+          <li>靈性資源評估：宗教信仰強度；宗教社群支持；靈修實踐（禱告、打坐）</li>
+          <li>宗教習俗對照護的影響：宗教假期、飲食規定、特殊儀式需求</li>
+          <li>臨終靈性需求：四道（道謝、道愛、道別、道歉）；宗教人員探訪需求</li>
+          <li>護理師自我覺察：避免將自身信仰投射於病人</li>
+        </ul>
+      </div>
+
+      <div class="assess-card">
+        <div class="assess-card-title">📚 健康識能評估 <span class="tag tag-gold">Health Literacy</span></div>
+        <ul class="assess-list">
+          <li>定義：個人取得、理解、評估並使用健康資訊的能力</li>
+          <li>低健康識能指標：填表時說「忘了眼鏡」；要求帶回家再看；頻繁問同樣問題</li>
+          <li>台灣盛行率：約43%台灣成人健康識能不足</li>
+          <li>影響：藥物服用錯誤率高、住院率高、治療順從性差</li>
+          <li>評估技巧：「回示教學法（Teach-back）」：讓病人用自己的話重述</li>
+          <li>改善溝通：簡單語言（小學6年級程度）；圖片輔助；分段說明（3–5個重點）</li>
+          <li>Always Use Health Literacy Precautions：對所有病人皆適用（不假設識能高低）</li>
+          <li>書面資料：大字、圖示、雙語（視需要）；避免醫學術語</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- KLEINMAN'S 8 QUESTIONS -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="assess-card-title">💬 Kleinman文化解釋模式——8個關鍵問題</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;">
+        <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);margin-bottom:6px;">① 疾病命名</div>
+          <div style="font-size:12px;color:var(--text-dim);">「您怎麼稱呼您的病？」</div>
+        </div>
+        <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);margin-bottom:6px;">② 原因解釋</div>
+          <div style="font-size:12px;color:var(--text-dim);">「您認為是什麼造成這個病？」</div>
+        </div>
+        <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);margin-bottom:6px;">③ 開始時間</div>
+          <div style="font-size:12px;color:var(--text-dim);">「為什麼您認為它是從那時開始的？」</div>
+        </div>
+        <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);margin-bottom:6px;">④ 作用機轉</div>
+          <div style="font-size:12px;color:var(--text-dim);">「這個病在您身體裡是怎麼作用的？」</div>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px;">⑤ 嚴重程度</div>
+          <div style="font-size:12px;color:var(--text-dim);">「您覺得您的病有多嚴重？」</div>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px;">⑥ 主要問題</div>
+          <div style="font-size:12px;color:var(--text-dim);">「這個病對您造成的最大問題是什麼？」</div>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px;">⑦ 治療期待</div>
+          <div style="font-size:12px;color:var(--text-dim);">「您認為應該接受什麼樣的治療？」</div>
+        </div>
+        <div style="background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:6px;">⑧ 期望結果</div>
+          <div style="font-size:12px;color:var(--text-dim);">「治療後您希望達到什麼結果？」</div>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:14px;">
+        <span class="alert-icon">💡</span>
+        <span>這8個問題幫助護理師了解病人的<em class="hl-purple">文化疾病解釋模式</em>，避免文化衝突，促進治療協商。理解病人的觀點是文化照護的起點</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TOPICS -->
+  <section class="section" id="topics">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#c2410c,#f97316);">3</div>
+      <div>
+        <div class="section-title">重要主題</div>
+        <div class="section-en">Family Caregiving · Transcultural · Religion · Elder · Chronic Illness</div>
+      </div>
+    </div>
+
+    <div class="topic-tabs">
+      <button class="tab-btn active" onclick="switchTab('family')">👨‍👩‍👧 家庭照護</button>
+      <button class="tab-btn" onclick="switchTab('culture')">🌏 跨文化護理</button>
+      <button class="tab-btn" onclick="switchTab('religion')">🙏 宗教靈性</button>
+      <button class="tab-btn" onclick="switchTab('elder')">👴 老年 / 失智照護</button>
+      <button class="tab-btn" onclick="switchTab('chronic')">💊 慢性病家庭</button>
+    </div>
+
+    <!-- FAMILY CAREGIVING -->
+    <div class="topic-panel active" id="panel-family">
+      <div class="topic-card">
+        <div class="topic-card-header">
+          <div><div class="topic-name">家庭照護與照顧者支持</div><div class="topic-en">Family Caregiving & Caregiver Support</div></div>
+          <span class="tag tag-orange">家庭系統</span>
+        </div>
+        <div class="topic-body">
+          <div>
+            <div class="ds-title">台灣家庭照護現況</div>
+            <ul class="info-list">
+              <li>長期照護主力：<em class="hl">家庭照顧者（非正式照顧）+ 外籍看護工</em>構成台灣長照核心</li>
+              <li>台灣長照2.0（2017）：「找得到、看得見、用得起、有品質」四大目標</li>
+              <li>四包錢補助：照顧及專業服務、交通接送、輔具及居家無障礙、喘息服務</li>
+              <li>照顧者人口特徵：女性70%；平均年齡53歲；逾半數同時兼顧工作</li>
+              <li>「照顧假」法令：勞工得請家庭照顧假每年7天（不另計入病假）</li>
+              <li>外籍看護申請條件：依長照評量結果；需具一定失能程度</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">照顧者負荷（Caregiver Burden）</div>
+            <ul class="info-list">
+              <li>客觀負荷：體力消耗（搬移、清潔、照護技術）；時間限制（24小時待命）</li>
+              <li>主觀負荷：情緒耗竭、哀傷（anticipatory grief）、愧疚感、憤怒</li>
+              <li><em class="hl">照顧者憂鬱症盛行率：40–50%</em>（失智症照顧者更高）</li>
+              <li>Zarit照顧者負荷量表（22題）：評估負荷程度；&gt;46分需介入</li>
+              <li>健康影響：照顧者自身就醫延誤、免疫功能下降、心血管疾病風險↑</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理介入：照顧者支持</div>
+            <ul class="info-list">
+              <li><em class="hl">照顧者教育</em>：疾病知識、居家護理技術（翻身、管路護理、皮膚照護）</li>
+              <li>喘息服務（Respite Care）：日間照護中心、短期住院安置、居家喘息服務</li>
+              <li>社工轉介：連結長照資源；評估財務狀況；申請補助</li>
+              <li>情緒支持：定期評估照顧者心理狀態（PHQ-9）；支持團體</li>
+              <li>技能訓練：安全移位技術（防止照顧者腰背傷）；輔具使用；緊急狀況處理</li>
+              <li>自我照護衛教：<em class="hl">「先幫自己戴好氧氣面罩，才能幫別人」</em></li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">家庭溝通與衝突</div>
+            <ul class="info-list">
+              <li>醫療決策衝突：不同家庭成員對治療方向意見不一</li>
+              <li>護理師角色：協調者（非裁判）；確保病人意願被聽見；家庭會議</li>
+              <li>家庭秘密：部分家庭隱瞞病情（文化因素）→ 需以病人自主權為核心</li>
+              <li>病人自主權：台灣《病人自主權利法》（2019）：成人可預立醫療決定</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>照顧者同時也是護理師的服務對象。問候照顧者：「您自己最近還好嗎？」這句話比任何衛教材料都更重要</span></div>
+          </div>
+          <div>
+            <div class="ds-title">家庭照護技術衛教重點</div>
+            <ul class="info-list">
+              <li>安全移位：使用移位腰帶；床高調整至照顧者腰部；不拉扯患肢</li>
+              <li>翻身拍背：每2小時翻身；使用正確手勢（手掌弓起）；觀察皮膚</li>
+              <li>口腔護理：每餐後；使用海棉棒；觀察口腔黏膜</li>
+              <li>鼻胃管灌食：確認管路位置；半坐臥位；灌食後維持30分鐘</li>
+              <li>導尿管護理：保持管路通暢；引流袋低於膀胱；每日清潔會陰</li>
+              <li>壓傷預防：每2小時翻身記錄；氣墊床使用；皮膚評估</li>
+              <li>跌倒預防：居家環境改善（扶手、防滑、照明）；輔具使用</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">長照資源連結</div>
+            <ul class="info-list">
+              <li>長照專線 <em class="hl">1966</em>：需求評估、服務媒合</li>
+              <li>A-B-C三級體系：A（社區整合服務中心）→ B（複合型服務中心）→ C（巷弄長照站）</li>
+              <li>居家服務：沐浴、備餐、陪同就醫、喘息</li>
+              <li>日間照護：白天托護；減輕家屬工作影響</li>
+              <li>輔具補助：輪椅、助行器、床舖、防褥瘡氣墊</li>
+              <li>居家無障礙改善：扶手安裝、門檻移除（補助上限10萬元）</li>
+              <li>家庭照顧者支持專線 <em class="hl">0800-507272</em>：情緒支持、資源諮詢</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CULTURE -->
+    <div class="topic-panel" id="panel-culture">
+      <div class="topic-card">
+        <div class="topic-card-header">
+          <div><div class="topic-name">跨文化護理實務</div><div class="topic-en">Transcultural Nursing Practice</div></div>
+          <span class="tag tag-teal">文化照護</span>
+        </div>
+        <div class="topic-body">
+          <div>
+            <div class="ds-title">台灣多元文化族群健康需求</div>
+            <div class="cult-grid" style="margin-top:8px;">
+              <div class="cult-card c1">
+                <div class="cult-head">🇹🇼 原住民族</div>
+                <div class="cult-item">慢性病高盛行（糖尿病、高血壓）</div>
+                <div class="cult-item">尿酸/痛風盛行率高</div>
+                <div class="cult-item">酒精使用障礙（弱勢因素）</div>
+                <div class="cult-item">傳統療癒儀式重要</div>
+                <div class="cult-item">語言及地理障礙就醫</div>
+              </div>
+              <div class="cult-card c2">
+                <div class="cult-head">🌸 東南亞新住民</div>
+                <div class="cult-item">語言障礙（越南/印尼/泰國語）</div>
+                <div class="cult-item">飲食習慣差異（香料/食材）</div>
+                <div class="cult-item">文化衝擊與適應壓力</div>
+                <div class="cult-item">宗教飲食（伊斯蘭清真）</div>
+                <div class="cult-item">育兒文化差異</div>
+              </div>
+              <div class="cult-card c3">
+                <div class="cult-head">👴 客家族群</div>
+                <div class="cult-item">節儉性格→延遲就醫</div>
+                <div class="cult-item">語言偏好（客語環境）</div>
+                <div class="cult-item">傳統草藥使用常見</div>
+              </div>
+              <div class="cult-card c4">
+                <div class="cult-head">🌍 外籍勞工</div>
+                <div class="cult-item">職業傷害風險高</div>
+                <div class="cult-item">語言及文件障礙就醫</div>
+                <div class="cult-item">心理健康：思鄉、孤立</div>
+              </div>
+              <div class="cult-card c5">
+                <div class="cult-head">🔵 老年閩南族群</div>
+                <div class="cult-item">傳統觀念：民間療法並用</div>
+                <div class="cult-item">「命」與宿命論影響就醫行為</div>
+                <div class="cult-item">家族集體決策傾向</div>
+              </div>
+              <div class="cult-card c6">
+                <div class="cult-head">🌐 外籍配偶</div>
+                <div class="cult-item">孕產期文化差異（月子）</div>
+                <div class="cult-item">婆媳文化壓力</div>
+                <div class="cult-item">健康篩查障礙</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">文化照護常見衝突與解決</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>文化議題</th><th>可能衝突</th><th>護理師因應</th></tr>
+              <tr><td>疾病告知</td><td>家屬要求不告訴病人診斷（孝順/保護）</td><td>以病人自主為核心；探討病人自己的意願；協商</td></tr>
+              <tr><td>飲食禁忌</td><td>伊斯蘭清真/猶太Kosher/素食/齋戒</td><td>告知營養師；提供替代餐食；尊重宗教規定</td></tr>
+              <tr><td>性別敏感</td><td>要求同性別醫護人員（部分文化/宗教）</td><td>盡量配合；說明限制；全程陪伴</td></tr>
+              <tr><td>傳統療法</td><td>草藥與藥物交互作用風險</td><td>不批判；詢問使用情形；評估安全性；必要時告知禁忌</td></tr>
+              <tr><td>臨終儀式</td><td>需要在特定時間禱告/持咒/特殊環境</td><td>提前了解需求；協調病房安排；提供隱私空間</td></tr>
+              <tr><td>輸血禁忌</td><td>耶和華見證人拒絕輸血</td><td>知情同意；醫療倫理委員會；提供替代方案</td></tr>
+            </table>
+            <div class="alert-box" style="margin-top:14px;"><span class="alert-icon">⚠️</span><span><em class="hl-rose">文化偏見（Cultural Bias）陷阱</em>：不可因族裔或文化背景對病人做刻板印象假設。每個個體在文化中有個人差異——應以開放問題探索，而非假設</span></div>
+          </div>
+          <div>
+            <div class="ds-title">翻譯服務與溝通技巧</div>
+            <ul class="info-list">
+              <li>使用<em class="hl">正式醫療翻譯員</em>（非家屬，尤其非子女），以保護隱私及確保準確性</li>
+              <li>電話翻譯服務：新住民家庭服務中心；1955外勞諮詢；語言雲平台</li>
+              <li>說話對象：始終看著病人說話，翻譯員在旁，<em class="hl">不與翻譯員對話</em></li>
+              <li>說話節奏：短句；一次一個概念；停頓等翻譯完成</li>
+              <li>圖片教材：不依賴文字；圖示藥物、程序、症狀</li>
+              <li>Teach-back翻譯確認：請病人透過翻譯員用自己的話重述</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">月子文化（東亞傳統）護理應對</div>
+            <ul class="info-list">
+              <li>「月子」期間（產後30–42天）：傳統認為需避風、不洗澡/洗頭</li>
+              <li>飲食：麻油雞、豬腳花生、補品——高熱量高脂肪可能影響傷口癒合或哺乳</li>
+              <li>護理因應：<em class="hl">不直接否定</em>；評估哪些習俗無害可保留；針對可能有害的習俗提供科學根據</li>
+              <li>例：產後不洗澡→感染風險；溫和協商：溫水擦澡替代完全不清潔</li>
+              <li>尊重文化脈絡；提供文化調適的照護建議</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELIGION -->
+    <div class="topic-panel" id="panel-religion">
+      <div class="topic-card">
+        <div class="topic-card-header">
+          <div><div class="topic-name">宗教、靈性與健康照護</div><div class="topic-en">Religion, Spirituality & Healthcare</div></div>
+          <span class="tag tag-purple">靈性照護</span>
+        </div>
+        <div class="topic-body">
+          <div>
+            <div class="ds-title">台灣主要宗教與照護要點</div>
+            <table class="data-table">
+              <tr><th>宗教</th><th>死亡觀</th><th>臨終照護要點</th></tr>
+              <tr><td>佛教</td><td>輪迴轉世；業力；因果</td><td>臨終念佛號；不干擾（8小時內）；素食（部分）；往生後不急移動</td></tr>
+              <tr><td>道教</td><td>回歸自然；魂歸天庭</td><td>紙錢/祭品儀式；家屬在旁；特定吉時移靈</td></tr>
+              <tr><td>基督教</td><td>天國；靈魂永生；復活</td><td>禱告、讀聖經陪伴；牧師探訪；聖餐</td></tr>
+              <tr><td>天主教</td><td>天主教天國；煉獄</td><td>終傅聖事（病人傅油）；神父探訪；告解機會</td></tr>
+              <tr><td>伊斯蘭</td><td>阿拉判決；天堂地獄</td><td>面向麥加方向；清真飲食；同性別護理；清洗儀式</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="ds-title">靈性困擾的護理介入</div>
+            <ul class="info-list">
+              <li>識別靈性困擾：「為什麼是我？」「我這輩子有什麼意義？」「死了之後呢？」</li>
+              <li>護理師回應：<em class="hl">傾聽與陪伴</em>比給答案更重要</li>
+              <li>存在性問題的陪伴技巧：沉默也是支持；不急著解釋；「您說的讓我很有感觸……」</li>
+              <li>宗教人員轉介：院牧/神職人員/宗教探訪志工；主動詢問需求</li>
+              <li>「四道人生」：道謝、道愛、道別、道歉——協助完成人生未竟之事</li>
+              <li>意義重建：協助病人找到疾病經歷中的意義與學習</li>
+            </ul>
+            <div class="info-box"><span class="alert-icon">💡</span><span>護理師的靈性關懷：不需要是宗教人員，也不需要有同樣信仰。<em class="hl-purple">真誠的陪伴、不帶評判的傾聽</em>就是靈性護理的核心</span></div>
+          </div>
+          <div>
+            <div class="ds-title">特殊宗教照護情境</div>
+            <ul class="info-list">
+              <li><em class="hl">佛教臨終</em>：助念（念阿彌陀佛）非常重要；協助安排安靜環境；往生後8小時內避免觸碰（助念期間）</li>
+              <li><em class="hl">伊斯蘭飲食</em>：清真認證食物；禁豬肉/豬製品/酒精；齋月（Ramadan）期間日出至日落禁食——需評估能否配合治療（如藥物）</li>
+              <li><em class="hl">耶和華見證人輸血拒絕</em>：尊重成人知情拒絕權；評估血液替代方案；建立倫理委員會共識</li>
+              <li>安息日（基督教/猶太教）：特定時間不進行選擇性治療/程序；需提前告知排程</li>
+              <li>器官捐贈：不同宗教觀點不同；尊重個人決定；護理師不施加壓力</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理師靈性自我照護</div>
+            <ul class="info-list">
+              <li>護理人員同樣有靈性需求——尤其長期面對死亡與苦難</li>
+              <li>Compassion Fatigue（憐憫疲憊）：情感耗竭；去個人化；成就感降低</li>
+              <li>自我覺察：定期反思自身對死亡、苦難、靈性的態度</li>
+              <li>正念實踐；督導機制；同儕支持圈</li>
+              <li>界限設定：情感投入 vs 過度認同的平衡</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ELDER CARE -->
+    <div class="topic-panel" id="panel-elder">
+      <div class="topic-card">
+        <div class="topic-card-header">
+          <div><div class="topic-name">老年照護與失智症護理</div><div class="topic-en">Geriatric Care & Dementia Nursing</div></div>
+          <span class="tag tag-gold">老年護理</span>
+        </div>
+        <div class="topic-body">
+          <div>
+            <div class="ds-title">老年生理變化與護理意涵</div>
+            <ul class="info-list">
+              <li>台灣2025年超高齡社會（&gt;65歲佔20%）；失能長者長照需求快速增加</li>
+              <li>老年多重用藥（Polypharmacy）：&gt;5種藥物 → 交互作用↑；副作用難辨識</li>
+              <li>老年藥物動力學改變：腎清除率↓；肝代謝↓；藥物需減量（Renal dosing）</li>
+              <li>老年症候群（Geriatric Syndromes）：<em class="hl">5I</em>——Immobility（失動）、Instability（不穩）、Incontinence（失禁）、Intellectual impairment（智能）、Iatrogenesis（醫源性）</li>
+              <li>衰弱症（Frailty）：Fried標準——體重減輕、握力下降、疲憊、步速慢、活動量少；≥3項=衰弱</li>
+              <li>老年評估量表：巴氏量表（ADL）、IADL、MMSE、GDS（老年憂鬱）、MNA（營養）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">失智症（Dementia）護理</div>
+            <ul class="info-list">
+              <li>台灣失智人口：&gt;30萬（2023）；&gt;65歲每12人中有1人失智</li>
+              <li>類型：阿茲海默症（最常見65%）；血管性失智；路易體失智；額顳葉型</li>
+              <li>BPSD（行為及心理症狀）：遊走、激動、幻覺、日落症候群（sundowning）、拒食</li>
+              <li><em class="hl">以人為中心照護（Person-Centred Care）</em>：尊重個人歷史、偏好、身份認同</li>
+              <li>溝通技巧：簡短指令；維持眼神接觸；一次一件事；勿爭辯「你記錯了」</li>
+              <li>環境設計：簡單、一致、安全；走道標示；避免鏡子（幻覺誘發）</li>
+              <li>DICE方法（激動行為）：描述(D)→調查(I)→建立照護計畫(C)→評估(E)</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">老年住院護理特別注意</div>
+            <ul class="info-list">
+              <li><em class="hl-rose">住院後譫妄（Hospital-Acquired Delirium）</em>：老年住院最常見合併症；常被誤為失智惡化</li>
+              <li>譫妄三型：過動型（躁動）、低動型（嗜睡，最常漏診）、混合型</li>
+              <li>CAM評估：急性發作/病程波動 + 注意力障礙 + 思維混亂/意識改變</li>
+              <li>非藥物預防（Hospital Elder Life Program, HELP）：定向導引、早期活動、視/聽覺輔助、睡眠保護、脫水預防</li>
+              <li>約束（Restraints）：<em class="hl-rose">僅在危及安全時使用，需定期評估解除</em>；約束增加譫妄、壓傷、死亡率</li>
+              <li>老年用藥安全：Beers準則——高危老年不適用藥物（如苯二氮類、抗組織胺）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">失智照顧者護理支持</div>
+            <ul class="info-list">
+              <li>失智照顧者「三步曲」：否認（不是失智）→衝突（行為問題爆發）→承認（接受並尋求資源）</li>
+              <li>照顧者憂鬱症盛行率高達50%；自殺風險需評估</li>
+              <li><em class="hl">預期性哀傷</em>：病人雖在世但已「失去」——個性、記憶、關係；此哀傷需被承認</li>
+              <li>資源：台灣失智症協會1606；瑞智社區；政府日間照顧據點</li>
+              <li>法律支援：輔助宣告/監護宣告；預立遺囑；財務保護</li>
+            </ul>
+            <div class="warn-box"><span class="alert-icon">⚠️</span><span>老年病人拒食 ≠ 自殺意念。可能是：失智（忘了要吃）、憂鬱、口腔疼痛、吞嚥困難、藥物副作用、食物偏好問題。需系統性評估，非強迫灌食</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHRONIC ILLNESS -->
+    <div class="topic-panel" id="panel-chronic">
+      <div class="topic-card">
+        <div class="topic-card-header">
+          <div><div class="topic-name">慢性病家庭照護</div><div class="topic-en">Chronic Illness Family Care</div></div>
+          <span class="tag tag-rose">慢性病</span>
+        </div>
+        <div class="topic-body">
+          <div>
+            <div class="ds-title">慢性病對家庭的衝擊</div>
+            <ul class="info-list">
+              <li>慢性病軌跡模式（Trajectory Model）：病程有明確軌跡；介入時機影響結果</li>
+              <li>家庭角色重新分配：病人角色改變→照顧者角色出現→整體家庭功能重組</li>
+              <li>財務衝擊：醫療費用、照護費用、工作能力降低（病人與照顧者）</li>
+              <li>親密關係：性功能影響（心血管病、糖尿病、腫瘤）；身體意象；溝通改變</li>
+              <li>子女影響：青少年照顧者（Young Carers）——學業、社交受影響</li>
+              <li>社會功能：社交退縮；病恥感（stigma）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">疾病管理模式（Wagner Chronic Care Model）</div>
+            <ul class="info-list">
+              <li>自我管理支持（Self-Management Support）：賦能病人主動管理</li>
+              <li>服務提供系統設計；臨床資訊系統；社區資源連結</li>
+              <li><em class="hl">目標設定（Goal Setting）</em>：以病人為中心的目標；SMART原則</li>
+              <li>行動計畫（Action Plan）：具體可行的步驟；下次回診評估</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">居家護理（Home Care）</div>
+            <ul class="info-list">
+              <li>台灣居家護理適用：病人有醫療需求（傷口、管路）且行動不便就醫</li>
+              <li>健保給付：每月最多4次（特殊個案6次）</li>
+              <li>居家護理評估：環境安全、照顧者能力、病人狀況、社會支持</li>
+              <li>常見服務：傷口換藥、管路更換（鼻胃管、導尿管、氣切管）、採血、衛教</li>
+              <li>居家護理師角色：個案管理師；連結醫療與社區資源；衛教與技術指導</li>
+              <li>遠距護理（Telehealth）：視訊回診；遠程血糖/血壓監測；提升偏鄉照護可近性</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">慢性病自我管理衛教核心</div>
+            <ul class="info-list">
+              <li>五A模式：詢問（Ask）→建議（Advise）→評估（Assess）→協助（Assist）→追蹤（Arrange）</li>
+              <li>動機式晤談（Motivational Interviewing）：不說教；探索矛盾心理；強化改變動機</li>
+              <li>賦能（Empowerment）：病人是自身健康的專家；護理師是夥伴</li>
+              <li>社會支持：家人參與衛教；同儕支持團體；慢性病管理APP</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">糖尿病家庭照護特點</div>
+            <ul class="info-list">
+              <li>家庭飲食管理：全家共同改變飲食習慣效果最佳（非只病人一人改變）</li>
+              <li>低血糖緊急處置：家屬需學會識別徵兆及處理（15-15法則；昇糖素注射）</li>
+              <li>足部護理衛教：家屬每日幫助檢視（視力不佳的老年糖尿病人）</li>
+              <li>運動伴侶：家人共同運動→依從性↑</li>
+              <li>心理支持：糖尿病困擾（Diabetes Distress）；照顧者疲憊</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">心臟病家庭照護特點</div>
+            <ul class="info-list">
+              <li>心臟復健：家屬鼓勵參與；同行監督；共同飲食改變</li>
+              <li>心衰竭監測：每日體重記錄（家人提醒/協助）；症狀警示衛教</li>
+              <li>CPR訓練：家庭成員學習基礎急救；自動體外去顫器（AED）使用</li>
+              <li>藥物管理：藥盒管理；提醒服藥；避免自行停藥（β-blocker）</li>
+              <li>性生活：心肌梗塞後4–8週；能爬兩層樓不喘才安全；伴侶討論</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>慢性病管理成功關鍵：家庭支持 + 社區資源 + 個人賦能三足鼎立。缺一不可。護理師的衛教對象應是整個家庭，而非只有病人本人</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0d9488,#2dd4bf);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses (NANDA-I)</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(249,115,22,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">照顧者角色緊張</div><div class="np-cause">Caregiver Role Strain ／與長期照護負荷、社會支持不足有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>Zarit量表評估照顧者負荷；PHQ-9篩查憂鬱</li>
+          <li>連結長照資源：1966；喘息服務；日間照護</li>
+          <li>照顧技術訓練：移位、翻身、管路護理</li>
+          <li>鼓勵照顧者自我照護：充足睡眠、社交活動、定期健康檢查</li>
+          <li>支持性團體轉介；家庭照顧者支持專線0800-507272</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(45,212,191,.2);color:var(--teal);">2</div>
+          <div><div class="np-title">文化衝突風險</div><div class="np-cause">Risk for Cultural Conflict ／與文化信仰與醫療建議不一致有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>Kleinman 8問評估病人疾病解釋模式</li>
+          <li>不批判文化信仰；以開放態度探索</li>
+          <li>協商文化適應照護計畫（而非強迫服從醫療標準）</li>
+          <li>翻譯服務：提供正式翻譯員；圖示教材</li>
+          <li>Teach-back確認理解；文化能力自我反思</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--purple);">3</div>
+          <div><div class="np-title">靈性困擾</div><div class="np-cause">Spiritual Distress ／與疾病對生命意義的衝擊、與信仰斷裂有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>FICA靈性評估；識別靈性需求與困擾</li>
+          <li>傾聽與陪伴：不急著給答案；接受病人存在性問題</li>
+          <li>協助「四道」完成：道謝、道愛、道別、道歉</li>
+          <li>連結宗教人員/院牧師；尊重病人宗教儀式需求</li>
+          <li>提供安靜、隱私的靈修空間</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--gold);">4</div>
+          <div><div class="np-title">知識缺乏（健康識能不足）</div><div class="np-cause">Deficient Knowledge ／與低健康識能、語言障礙、文化信仰有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>衛教前評估健康識能；避免假設病人已理解</li>
+          <li>簡單語言；圖示、影片；避免醫學術語</li>
+          <li>分段說明（3–5個重點）；重複確認</li>
+          <li>回示教學法（Teach-back）：「請您告訴我，回家後怎麼做……」</li>
+          <li>書面資料：大字體；雙語（視需要）；帶回家參考</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">5</div>
+          <div><div class="np-title">慢性混亂</div><div class="np-cause">Chronic Confusion ／與失智症、阿茲海默症有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>MMSE/CDR評估認知功能；每次就診追蹤</li>
+          <li>以人為中心照護：了解病人人生故事、喜好、重要的人</li>
+          <li>溝通技巧：簡短指令；眼神接觸；不爭辯；轉移注意力</li>
+          <li>環境調整：安全、簡單、一致；標示清楚；減少刺激</li>
+          <li>BPSD非藥物介入：感官刺激、懷舊療法、音樂治療</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">6</div>
+          <div><div class="np-title">家庭因應歷程無效</div><div class="np-cause">Ineffective Family Coping ／與成員疾病負荷、溝通障礙有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估家庭溝通型態；APGAR家庭功能量表</li>
+          <li>協助家庭會議：讓所有成員表達意見；護理師擔任中立協調者</li>
+          <li>識別家庭優勢資源（strengths-based approach）</li>
+          <li>社工轉介：家庭衝突調解；財務資源</li>
+          <li>家庭治療轉介（嚴重功能失調）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(249,115,22,.2);color:var(--primary);">7</div>
+          <div><div class="np-title">預期性哀傷</div><div class="np-cause">Anticipatory Grieving ／與家人慢性病／失智症進展，預期失落有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>正常化預期性哀傷：讓家屬知道這是自然反應</li>
+          <li>積極傾聽：讓家屬述說感受；眼淚是允許的</li>
+          <li>協助準備：預立醫療討論；末期照護計畫；資源認識</li>
+          <li>連結哀傷支持服務；病友家屬團體</li>
+          <li>評估複雜性哀傷風險（持續&gt;6個月、嚴重功能障礙→轉介）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(45,212,191,.2);color:var(--teal);">8</div>
+          <div><div class="np-title">社交孤立</div><div class="np-cause">Social Isolation ／與疾病限制、照護角色、病恥感有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估社交功能及支持網絡；識別孤立程度</li>
+          <li>病恥感探索：「有沒有什麼讓您不想讓別人知道的？」</li>
+          <li>去汙名化衛教：疾病與個人價值無關</li>
+          <li>連結同儕支持：病友團體；失智家屬協會；腫瘤存活者支持</li>
+          <li>科技輔助：視訊通話維持社交；線上支持社群</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#c2410c,#f97316);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：照顧者耗竭</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：跨文化護理衝突</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：失智老人住院</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：末期慢性病靈性照護</button>
+      </div>
+
+      <!-- CASE 1: CAREGIVER BURDEN -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王女士，58歲，已獨自照顧<strong>中度失智（MMSE 14分）的丈夫（68歲）長達4年</strong>，兩個孩子均在外縣市工作。近月來王女士主訴「我好累，睡不好，有時候真的不知道能不能撐下去……」體重下降3kg，表示已一年多未就醫。今陪同丈夫門診時，護理師注意到她眼眶泛紅，手在發抖。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 評估此照顧者的健康狀況，識別主要護理問題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>照顧者健康評估：</strong><br><br>
+            <strong>客觀評估資料：</strong><br>
+            • 體重下降3kg（近期）→ 可能憂鬱/壓力相關<br>
+            • 1年未就醫 → 自身健康被忽視（典型照顧者現象）<br>
+            • 眼眶泛紅、手在發抖 → 情緒耗竭的生理表現<br><br>
+            <strong>主觀資料分析：</strong><br>
+            • 「好累」「睡不好」→ 疲憊（Fatigue）+ 睡眠障礙<br>
+            • 「不知道能不能撐下去」→ <em class="hl-rose">須評估是否有自殺/自傷意念</em><br>
+            • 獨自照顧4年、社會支持薄弱<br><br>
+            <strong>護理問題（優先順序）：</strong><br>
+            ① <em class="hl">照顧者角色緊張</em>（Caregiver Role Strain）——最主要<br>
+            ② 睡眠型態紊亂<br>
+            ③ 營養失衡：少於身體需要<br>
+            ④ 無效性因應<br><br>
+            <strong>立即評估：</strong> 請Zarit照顧者負荷量表評估（22題）；PHQ-9憂鬱篩查；詢問「不知道能不能撐下去」的進一步意涵
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師如何在門診短暫接觸中建立治療性關係，並連結資源？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>門診照顧者介入：</strong><br><br>
+            <strong>第一步：看見照顧者</strong><br>
+            → 主動關心：「您先生在等候時，我想跟您聊幾分鐘，好嗎？」<br>
+            → 私下空間（不在病人面前）：「您照顧他4年了，這段時間您自己還好嗎？」<br>
+            → 傾聽：允許她哭泣；不急著給建議；<em class="hl">先被聽見，再被幫助</em><br><br>
+            <strong>關鍵評估（溫和且直接）：</strong><br>
+            → 「您說不知道能不能撐下去，可以告訴我多一些嗎？有沒有想到傷害自己？」<br>
+            （不要因為怕引發自殺而不問）<br><br>
+            <strong>資源連結：</strong><br>
+            → 社工轉介（當場）：評估長照資源申請資格<br>
+            → <em class="hl">長照1966</em>：需求評估、喘息服務申請<br>
+            → 失智症協會：「銀髮族服務中心」；家屬支持團體<br>
+            → 建議她預約自己的健康檢查（強調：「您也需要被照顧」）<br>
+            → 家庭照顧者支持專線 <em class="hl">0800-507272</em>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 如何衛教照顧者「自我照護」的重要性？她回應「我哪裡有時間管自己」，如何處理？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>面對「沒有時間照顧自己」的回應：</strong><br><br>
+            <strong>不當回應（避免）：</strong><br>
+            ❌「您要學會放下」（空泛建議）<br>
+            ❌「您要先照顧好自己才能照顧他」（說了也知道，但怎麼做？）<br><br>
+            <strong>建議回應：</strong><br>
+            • 先承認困難：「您說的沒錯，4年下來幾乎沒有自己的時間，這真的非常不容易」<br>
+            • 飛機氧氣面罩比喻：<em class="hl">「先幫自己戴好面罩，才能幫旁邊的人——這是航空公司的安全守則，也是照顧的守則」</em><br>
+            • 探索可行小步驟：「如果每天只有30分鐘是屬於您自己的，您想做什麼？」<br>
+            • 提出具體方案：喘息服務（每週幾小時）→ 這段時間完全屬於她自己<br>
+            • 強化自我效能：「過去4年您做到了；我想幫您讓接下來的日子輕鬆一點」<br><br>
+            <strong>後續追蹤：</strong><br>
+            → 下次門診：主動詢問她的狀況；Zarit/PHQ-9追蹤；資源使用情形
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: CULTURAL CONFLICT -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>阮太太，34歲，越南籍新住民，來台10年，中文溝通尚可但有限。因<strong>腹痛入院，診斷為闌尾炎，需要手術</strong>。入院時，丈夫（台灣人）要求「不要跟她說太多，讓她簽手術同意書就好」。阮太太表示她怕手術，詢問護理師能否「吃草藥觀察幾天」。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此情境的文化及倫理議題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>情境分析：</strong><br><br>
+            <strong>倫理議題：</strong><br>
+            • <em class="hl-rose">病人自主 vs 家屬代理決策</em>：阮太太是有能力（competent）的成人，有自主決定權<br>
+            • 丈夫要求「不要說太多」→ 剝奪病人知情同意權 → <em class="hl-rose">不符合護理倫理</em><br>
+            • 強迫簽同意書而未充分告知 → 同意書無效且違反《醫療法》<br><br>
+            <strong>文化議題：</strong><br>
+            • 夫妻關係中的父權文化：台灣家庭決策文化 + 新住民弱勢地位<br>
+            • 草藥觀察偏好：越南民俗醫療傳統（可理解，但闌尾炎有穿孔風險）<br>
+            • 語言障礙：限制了她獲取完整資訊的能力<br><br>
+            <strong>護理師應採取的立場：</strong><br>
+            • 核心：<em class="hl">保護病人知情同意權</em>，而非配合家屬要求<br>
+            • 私下與阮太太進行翻譯輔助的溝通<br>
+            • 向丈夫說明：「手術同意書需要阮太太本人理解並簽署，這是醫療規定」
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師應如何與阮太太進行文化敏感的溝通，解釋手術必要性？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>文化敏感溝通步驟：</strong><br><br>
+            <strong>① 安排翻譯</strong><br>
+            → 請醫院越南語翻譯員（或電話翻譯）；<em class="hl">不依賴丈夫翻譯</em>（隱私及中立性問題）<br><br>
+            <strong>② LEARN模式應用</strong><br>
+            → <em class="hl">傾聽(L)</em>：「您說想用草藥，可以告訴我更多嗎？在越南您以前生病都怎麼處理？」<br>
+            → <em class="hl">解釋(E)</em>：用圖示解釋闌尾炎 → 如果穿孔 → 腹膜炎 → 危及生命<br>
+            → <em class="hl">承認差異(A)</em>：「我理解您對手術有顧慮，這是很自然的」<br>
+            → <em class="hl">建議(R)</em>：提供醫療建議（手術是最安全選擇）<br>
+            → <em class="hl">協商(N)</em>：探索她的擔心（麻醉？疼痛？費用？）；一一回應<br><br>
+            <strong>③ 草藥議題</strong><br>
+            → 不批判：「我理解草藥在越南是重要的傳統，而且很多時候有幫助」<br>
+            → 說明限制：「闌尾炎的問題是，發炎會在幾個小時內穿孔，草藥沒有辦法阻止這個過程——這會讓您非常危險」<br>
+            → 協商：「手術後如果您要用一些溫補的飲食幫助恢復，我們可以和醫師討論」
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 術後阮太太需要傷口照護衛教，但她說「我不識字，也不太懂中文」，如何有效衛教？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>低識能 + 語言障礙衛教策略：</strong><br><br>
+            <strong>多模式衛教（不依賴文字）：</strong><br>
+            → <em class="hl">圖片化說明</em>：傷口照護步驟圖示（清潔→消毒→覆蓋）；圖示比文字更跨越語言<br>
+            → <em class="hl">示範（Demonstration）</em>：護理師示範換藥步驟；讓她看一遍再模仿一遍<br>
+            → <em class="hl">影片</em>：醫院製作的越南語衛教影片（若有）；或用YouTube簡易示範影片<br><br>
+            <strong>翻譯輔助：</strong><br>
+            → 關鍵資訊（回診日期、警示症狀）用越南語書面提供<br>
+            → 翻譯員確認重點資訊的理解<br><br>
+            <strong>Teach-back（操作版）：</strong><br>
+            → 「現在換您做一次，我在旁邊看……」→ 確認技術的正確掌握<br><br>
+            <strong>衛教重點（三個最重要）：</strong><br>
+            ① 感染警示：發燒/傷口紅腫/流膿→立即回診（圖示）<br>
+            ② 換藥頻率：每天一次；3–5天複診<br>
+            ③ 沐浴限制：傷口乾燥前避免浸水
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: DEMENTIA -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳爺爺，82歲，阿茲海默症中度（MMSE 12分），因<strong>跌倒致右側股骨頸骨折入院手術</strong>。術後第2天夜間，陳爺爺開始<strong>激動、大喊「救命！我要回家！」反覆拉扯靜脈輸液管路，不認識家人，以為自己在「被關著」</strong>。白天相對平靜。日班護理師未注意到異常。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 評估此個案夜間症狀，診斷為何？如何與失智症惡化鑑別？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>診斷：<em class="hl">住院後急性譫妄（Hospital-Acquired Delirium）</em></strong><br><br>
+            <strong>CAM評估（Confusion Assessment Method）：</strong><br>
+            ① 急性發作且病程波動：<em class="hl">✓</em>（白天平靜，夜間激動）<br>
+            ② 注意力障礙：<em class="hl">✓</em>（無法集中注意力）<br>
+            ③ 思維混亂：<em class="hl">✓</em>（以為在「被關」）<br>
+            ④ 意識層次改變：✓（激動＝過動型譫妄）<br>
+            → CAM陽性 → <em class="hl">急性譫妄確認</em><br><br>
+            <strong>與失智症惡化鑑別：</strong><br>
+            | 特徵 | 譫妄 | 失智症惡化 |<br>
+            | 發作 | <em class="hl">急性（小時至天）</em> | 漸進（月至年）|<br>
+            | 病程 | 波動（時好時壞）| 持續下降 |<br>
+            | 意識 | 常有改變 | 通常清醒至晚期 |<br>
+            | 可逆性 | <em class="hl">通常可逆</em> | 不可逆 |<br>
+            | 誘因 | 有可找到的原因 | 無明確急性誘因 |<br><br>
+            <strong>尋找譫妄誘因（THINK）：</strong><br>
+            T（Toxic/Drug）：術後止痛藥（Opioid）？<br>
+            H（Hypoxia）：SpO₂？疼痛未控制？<br>
+            I（Infection）：UTI？肺炎？<br>
+            N（Non-pharmacological）：環境、睡眠剝奪？<br>
+            K（K⁺等電解質）：低血鈉？
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 夜間激動時，護理師應如何安全且有效地處理此情況？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>夜間激動處置（非藥物優先）：</strong><br><br>
+            <strong>立即安全措施：</strong><br>
+            → 保護管路（靜脈輸液）：使用彈性網套遮蓋；評估是否可移除（必要嗎？）<br>
+            → 降低跌倒風險：床旁護欄、床墊放低、床邊坐椅<br>
+            → <em class="hl-rose">避免身體約束</em>：約束加重激動、增加傷害<br><br>
+            <strong>非藥物安撫：</strong><br>
+            → 保持平靜語調、低聲說話：「陳爺爺，我是護理師小王，您在醫院，很安全的」<br>
+            → 使用熟悉的人：<em class="hl">請家人（特別是他信任的人）陪伴</em>——對失智病人效果最好<br>
+            → 定向導引：說明時間/地點；若無效不強迫（反而加劇激動）<br>
+            → 熟悉物品：家人帶來熟悉的毛毯、照片、音樂<br>
+            → 環境：開小夜燈（黑暗加重混亂）；降低噪音<br><br>
+            <strong>藥物（非藥物無效時）：</strong><br>
+            → 低劑量Haloperidol（最常用）；或非典型抗精神病藥<br>
+            → <em class="hl-rose">Benzodiazepine避免</em>（加重譫妄，老年人Beers準則禁）<br>
+            → 優先治療誘因（止痛、矯正電解質）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: SPIRITUAL -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>黃先生，74歲，末期肝癌（ECOG 4分），轉安寧病房已3週。虔誠佛教徒。近日個案主訴：<strong>「我這輩子對不起很多人，我不知道死了會去哪裡……」</strong>並詢問護理師：「你覺得人死了之後，還有嗎？」家屬告訴護理師：「他以前不信佛的，現在一直要我們播念佛機，但我們不知道怎麼配合他」
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析黃先生的靈性需求，識別護理問題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>靈性需求分析（FICA評估）：</strong><br><br>
+            • <em class="hl">信仰（Faith）</em>：佛教（末期後轉向；臨終前靈性轉化是常見現象）<br>
+            • <em class="hl">重要性（Importance）</em>：念佛機 → 對他非常重要；是他的心理支柱<br>
+            • <em class="hl">社群（Community）</em>：家人不熟悉佛教儀式 → 支持不足<br>
+            • <em class="hl">照護影響（Address）</em>：靈性困擾影響情緒和安寧感<br><br>
+            <strong>護理問題識別：</strong><br>
+            ① <em class="hl">靈性困擾（Spiritual Distress）</em>：「對不起很多人」→ 罪惡感/未竟之事；「死了去哪裡」→ 死亡焦慮；生命意義的重新尋找<br>
+            ② 家庭因應歷程無效：家屬不知如何支持病人靈性需求<br>
+            ③ 預期性哀傷（家屬）<br><br>
+            <strong>黃先生的「對不起很多人」提示什麼？</strong><br>
+            → 可能有未解決的關係/衝突<br>
+            → 需要「道歉」——四道人生的重要部分<br>
+            → 護理師角色：提供機會，協助連結
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師應如何回應「人死了之後，還有嗎？」這個問題？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>回應存在性靈性問題的技巧：</strong><br><br>
+            <strong>不當回應（避免）：</strong><br>
+            ❌「有啊，會去佛國的」（強加信仰，即使說的是佛教）<br>
+            ❌「我也不知道」然後轉移話題（迴避）<br>
+            ❌「您要有信心，會沒事的」（虛假保證）<br><br>
+            <strong>建議回應：</strong><br>
+            • <em class="hl">先回到他身上</em>：「這個問題您想了很久了嗎？」（探索背後的擔心）<br>
+            • 誠實而溫和：「這是個很深的問題，我沒有確定的答案——但我想聽聽您怎麼想」<br>
+            • 反映他的信仰資源：「您現在在念佛，佛教對這個問題有它的說法，您對這個有什麼感覺？」<br>
+            • 探索擔心根源：「您說對不起很多人……可以告訴我更多嗎？」<br>
+            • 陪伴不解答：「我不知道答案，但我可以陪著您一起思考這些問題」<br><br>
+            <strong>後續行動：</strong><br>
+            → 轉介院牧或佛教院牧（Buddhist chaplain/法師）<br>
+            → 詢問是否需要特定法師探訪<br>
+            → 協助「四道」機會：是否有想「道歉」的對象？能否協助安排？
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 如何衛教家屬，支持黃先生的靈性需求（念佛）？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>家屬靈性支持衛教：</strong><br><br>
+            <strong>理解家屬的困難：</strong><br>
+            → 「您們說不熟悉佛教，所以不確定怎麼配合他——這我完全理解，很多家屬都有同樣的困惑」<br><br>
+            <strong>具體可做的事（不需要是佛教徒）：</strong><br>
+            → <em class="hl">播念佛機</em>：這是他的精神支柱；如實持續播放（24小時/輕聲）<br>
+            → <em class="hl">不需要懂佛教</em>：安靜陪伴就是支持；不說「別這樣」、「迷信」等話<br>
+            → 協助佛教環境：佛像、蓮花（在安寧病房通常允許）<br>
+            → 法師/師父探訪：主動聯繫佛教團體；許多醫院有院牧佛教法師<br><br>
+            <strong>臨終佛教護理要點（提前告知家屬）：</strong><br>
+            → 往生後<em class="hl">8小時內盡量不觸碰</em>（助念期間）<br>
+            → 可以在旁輕念阿彌陀佛；不必哭泣喧嘩<br>
+            → 這些儀式對他的靈性安慰有重要意義，即使家屬不信仰，也是對他的愛的表達<br><br>
+            <strong>家屬情緒支持：</strong><br>
+            → 「看著您爸爸有這樣的轉變，您有什麼感覺？」<br>
+            → 接受家屬對宗教的困惑；不強迫家屬信仰
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:40px 0 20px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;">家庭文化照護 Family & Cultural Care</div>
+    <div style="margin-bottom:4px;color:var(--text-dim);">內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途</div>
+    <div style="margin-top:12px;font-size:13px;color:var(--text-dim);">
+      系列完整色彩：
+      <span style="color:#00b4d8;">■ 氧合</span> &nbsp;
+      <span style="color:#f59e0b;">■ 營養</span> &nbsp;
+      <span style="color:#a78bfa;">■ 感覺知覺</span> &nbsp;
+      <span style="color:#10b981;">■ 安全保護</span> &nbsp;
+      <span style="color:#e879f9;">■ 腫瘤</span> &nbsp;
+      <span style="color:#f97316;">■ 家庭文化</span>
+    </div>
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.topic-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={family:0,culture:1,religion:2,elder:3,chronic:4};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('topics').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('fc-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('fc-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

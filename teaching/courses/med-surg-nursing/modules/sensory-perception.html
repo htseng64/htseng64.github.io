@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>感覺知覺 — Sensory / Perception | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #0a1628;
+    --navy-lt:   #112240;
+    --primary:   #a78bfa;
+    --primary-dk:#7c3aed;
+    --primary-lt:#ddd6fe;
+    --rose:      #fb7185;
+    --rose-lt:   #fda4af;
+    --cyan:      #22d3ee;
+    --cyan-lt:   #a5f3fc;
+    --gold:      #fbbf24;
+    --green:     #34d399;
+    --text:      #e2e8f0;
+    --text-dim:  #8fa3be;
+    --border:    rgba(167,139,250,0.2);
+    --card:      rgba(17,34,64,0.8);
+    --card-hov:  rgba(17,34,64,0.95);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans TC',sans-serif;
+    background:var(--navy); color:var(--text);
+    min-height:100vh; overflow-x:hidden;
+  }
+  body::before{
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse at 15% 15%, rgba(124,58,237,.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 75%, rgba(34,211,238,.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(251,113,133,.04) 0%, transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar{
+    position:fixed; top:0; left:0; width:268px; height:100vh;
+    background:rgba(10,22,40,.97);
+    border-right:1px solid var(--border);
+    z-index:200; display:flex; flex-direction:column;
+    overflow-y:auto; overflow-x:hidden;
+    backdrop-filter:blur(20px);
+    transition:transform .3s cubic-bezier(.4,0,.2,1),
+               width .3s cubic-bezier(.4,0,.2,1);
+  }
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,
+  body.collapsed .sidebar-sub,
+  body.collapsed .nav-label,
+  body.collapsed .nav-section-label,
+  body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+
+  .sidebar-overlay{
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,.55); z-index:190;
+    backdrop-filter:blur(2px);
+  }
+  .sidebar-overlay.active{display:block;}
+
+  .tog{
+    position:fixed; top:14px; left:218px;
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(167,139,250,.15);
+    border:1px solid rgba(167,139,250,.35);
+    color:var(--primary); font-size:18px;
+    cursor:pointer; z-index:300;
+    display:flex; align-items:center; justify-content:center;
+    transition:left .3s cubic-bezier(.4,0,.2,1), background .2s;
+    line-height:1;
+  }
+  .tog:hover{background:rgba(167,139,250,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+
+  .sidebar-header{
+    padding:28px 20px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .sidebar-logo{
+    font-family:'Noto Serif TC',serif;
+    font-size:15px; font-weight:700;
+    color:var(--primary); letter-spacing:.05em; line-height:1.4;
+    transition:opacity .2s;
+  }
+  .sidebar-sub{
+    font-size:11px; color:var(--text-dim);
+    margin-top:4px; letter-spacing:.1em; text-transform:uppercase;
+    transition:opacity .2s;
+  }
+  .nav-section-label{
+    font-size:10px; font-weight:700; color:var(--text-dim);
+    letter-spacing:.15em; text-transform:uppercase;
+    padding:16px 20px 8px; transition:opacity .2s;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 20px; color:var(--text-dim);
+    cursor:pointer; text-decoration:none;
+    font-size:13px; font-weight:500;
+    transition:all .2s; border-left:3px solid transparent;
+    white-space:nowrap;
+  }
+  .nav-item:hover,.nav-item.active{
+    color:var(--primary); background:rgba(167,139,250,.08);
+    border-left-color:var(--primary);
+  }
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{
+    padding:6px 20px 6px 50px; color:var(--text-dim); font-size:12px;
+    cursor:pointer; text-decoration:none; display:block;
+    transition:all .2s; border-left:3px solid transparent; white-space:nowrap;
+  }
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{
+    margin-left:268px; padding:0 40px 60px;
+    position:relative; z-index:1;
+    transition:margin-left .3s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── HERO ── */
+  .hero{
+    min-height:340px; display:flex; flex-direction:column; justify-content:center;
+    padding:60px 0 40px; border-bottom:1px solid var(--border); margin-bottom:60px;
+  }
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3);
+    border-radius:100px; padding:6px 16px;
+    font-size:12px; color:var(--primary); letter-spacing:.1em;
+    margin-bottom:24px; width:fit-content;
+  }
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(135deg,var(--primary),var(--primary-lt));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-purple{background:rgba(167,139,250,.15);color:var(--primary);border:1px solid rgba(167,139,250,.3);}
+  .pill-rose{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+  .pill-cyan{background:rgba(34,211,238,.15);color:var(--cyan);border:1px solid rgba(34,211,238,.3);}
+  .pill-gold{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{
+    width:40px;height:40px;border-radius:12px;
+    background:linear-gradient(135deg,var(--primary-dk),var(--primary));
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:700;color:#fff;flex-shrink:0;
+  }
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:16px;padding:28px;
+    transition:all .3s;position:relative;overflow:hidden;
+  }
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.sense::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.percep::before{background:linear-gradient(90deg,var(--cyan),var(--cyan-lt));}
+  .concept-card.pain::before{background:linear-gradient(90deg,var(--rose),var(--rose-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(167,139,250,.4);box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+  .concept-points{list-style:none;margin-top:14px;}
+  .concept-points li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'▸';color:var(--primary);flex-shrink:0;margin-top:1px;}
+
+  /* ── VALUE BOX ── */
+  .value-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px;}
+  .value-box{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:14px;text-align:center;}
+  .value-label{font-size:11px;color:var(--text-dim);}
+  .value-num{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;color:var(--primary);margin:4px 0;}
+  .value-unit{font-size:10px;color:var(--text-dim);}
+
+  /* ── ASSESS GRID ── */
+  .assess-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .assess-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .assess-card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-purple{background:rgba(167,139,250,.15);color:var(--primary);}
+  .tag-rose{background:rgba(251,113,133,.15);color:var(--rose);}
+  .tag-cyan{background:rgba(34,211,238,.15);color:var(--cyan);}
+  .tag-gold{background:rgba(251,191,36,.15);color:var(--gold);}
+  .tag-green{background:rgba(52,211,153,.15);color:var(--green);}
+  .assess-list{list-style:none;}
+  .assess-list li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .assess-list li:last-child{border-bottom:none;}
+  .assess-list li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── SCALE TABLE ── */
+  .scale-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+  .scale-card{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.18);border-radius:12px;padding:14px;}
+  .scale-title{font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+  .scale-item{font-size:12px;color:var(--text-dim);line-height:1.6;padding:2px 0;}
+
+  /* ── DISEASE TABS ── */
+  .disease-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{
+    padding:8px 18px;border-radius:100px;
+    border:1px solid var(--border);background:transparent;
+    color:var(--text-dim);font-size:13px;font-weight:500;
+    font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;
+  }
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .disease-panel{display:none;animation:fadeIn .3s ease;}
+  .disease-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .disease-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .disease-card-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
+  .disease-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .disease-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .disease-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .ds-title{
+    font-size:13px;font-weight:700;color:var(--primary);
+    text-transform:uppercase;letter-spacing:.1em;
+    margin-bottom:12px;display:flex;align-items:center;gap:8px;
+  }
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .info-list{list-style:none;}
+  .info-list li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .info-list li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--green);display:flex;gap:10px;}
+  .info-box{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--cyan-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+  .drug-tag{display:inline-block;background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.4);color:#ddd6fe;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:6px;margin:2px;}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(167,139,250,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(167,139,250,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:24px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .vitals-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;}
+  .vital-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+  .vital-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+  .vital-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;margin:4px 0;}
+  .vital-unit{font-size:10px;color:var(--text-dim);}
+  .vital-abnormal{color:var(--rose);}
+  .vital-normal{color:var(--green);}
+  .vital-warn{color:var(--gold);}
+  .q-block{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);animation:fadeIn .3s ease;}
+  .answer-content.open{display:block;}
+
+  /* ── TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(167,139,250,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── FULL CARD ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+
+  /* ── FLOW ── */
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:110px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:14px 12px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 6px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(167,139,250,.4);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-cyan{font-style:normal;color:var(--cyan);font-weight:600;}
+  em.hl-gold{font-style:normal;color:var(--gold);font-weight:600;}
+  em.hl-green{font-style:normal;color:var(--green);font-weight:600;}
+
+  /* ── GCS GRID ── */
+  .gcs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+  .gcs-card{border-radius:12px;padding:14px 12px;}
+  .gcs-card.eye{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);}
+  .gcs-card.verb{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);}
+  .gcs-card.motor{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);}
+  .gcs-head{font-size:12px;font-weight:700;margin-bottom:8px;}
+  .gcs-card.eye .gcs-head{color:var(--cyan);}
+  .gcs-card.verb .gcs-head{color:var(--primary);}
+  .gcs-card.motor .gcs-head{color:var(--green);}
+  .gcs-item{font-size:12px;color:var(--text-dim);line-height:1.6;display:flex;justify-content:space-between;padding:2px 0;}
+  .gcs-score{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--text);}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.value-grid,.scale-grid,.gcs-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.concept-grid,.assess-grid,.np-grid{grid-template-columns:1fr;}.disease-body{grid-template-columns:1fr;}.vitals-row{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%);width:268px !important;}
+    .sidebar.open{transform:translateX(0);}
+    .main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}
+    .hero{padding-top:20px;} .hero h1{font-size:28px;}
+    .value-grid,.vitals-row{grid-template-columns:1fr 1fr;}
+    .gcs-grid,.scale-grid{grid-template-columns:1fr;}
+    .disease-tabs{flex-wrap:wrap;} .tab-btn{font-size:12px;padding:7px 12px;}
+  }
+  @media(max-width:480px){
+    .hero h1{font-size:22px;} .main{padding:0 12px 60px;padding-top:60px;}
+    .flow-container{flex-direction:column;}
+    .flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}
+    .case-panel{padding:16px;} .scenario-box{padding:14px 16px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">感覺知覺<br>Sensory / Perception</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts" class="nav-item active"><span class="nav-icon">🧠</span><span class="nav-label"> 核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 護理評估</span></a>
+  <a href="#diseases" class="nav-item"><span class="nav-icon">🏥</span><span class="nav-label"> 常見疾病</span></a>
+  <a href="#diseases" onclick="switchTab('cva')" class="nav-sub">→ 腦血管病變（CVA）</a>
+  <a href="#diseases" onclick="switchTab('hi')" class="nav-sub">→ 頭部損傷（HI）</a>
+  <a href="#diseases" onclick="switchTab('epilepsy')" class="nav-sub">→ 癲癇（Epilepsy）</a>
+  <a href="#diseases" onclick="switchTab('sci')" class="nav-sub">→ 脊髓損傷（SCI）</a>
+  <a href="#diseases" onclick="switchTab('hivd')" class="nav-sub">→ HIVD / 椎間盤突出</a>
+  <a href="#diseases" onclick="switchTab('mg')" class="nav-sub">→ 重症肌無力（MG）</a>
+  <a href="#diseases" onclick="switchTab('ms')" class="nav-sub">→ 多發性硬化症（MS）</a>
+  <a href="#diseases" onclick="switchTab('pd')" class="nav-sub">→ 帕金森氏症（PD）</a>
+  <a href="#nursing" class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#cases" class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第五單元</div>
+    <h1>感覺知覺<br><em>Sensory / Perception</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Neurological Nursing</div>
+    <div class="hero-pills">
+      <span class="pill pill-purple">🧠 神經系統</span>
+      <span class="pill pill-cyan">⚡ 感覺 Sensation</span>
+      <span class="pill pill-rose">🔥 疼痛 Pain</span>
+      <span class="pill pill-gold">📖 自學 Self-Learning</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Core Concepts: Sensation · Perception · Cognition · Pain</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card sense">
+        <div class="concept-icon">⚡</div>
+        <div class="concept-title">感覺 Sensation</div>
+        <div class="concept-en">感覺受器接收刺激，經神經傳入大腦的過程</div>
+        <ul class="concept-points">
+          <li>感覺受器種類：機械性（觸壓）、溫覺、痛覺、化學性、光感受器</li>
+          <li>傳入路徑：感覺神經→脊髓後角→視丘→大腦皮質感覺區</li>
+          <li>脊髓感覺傳導：脊髓丘腦徑（痛溫）交叉；後柱（本體/振動）同側</li>
+          <li>感覺障礙類型：感覺消失（anesthesia）、感覺異常（paresthesia）、感覺過敏（hyperalgesia）</li>
+          <li>皮節（dermatome）：每節脊髓控制特定皮膚感覺區域</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">顱神經數</div><div class="value-num">12</div><div class="value-unit">對</div></div>
+          <div class="value-box"><div class="value-label">脊神經數</div><div class="value-num">31</div><div class="value-unit">對</div></div>
+          <div class="value-box"><div class="value-label">腦脊髓液量</div><div class="value-num">150</div><div class="value-unit">mL</div></div>
+          <div class="value-box"><div class="value-label">顱內壓（ICP）</div><div class="value-num">5–15</div><div class="value-unit">mmHg</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card percep">
+        <div class="concept-icon">🧠</div>
+        <div class="concept-title">知覺與認知 Perception / Cognition</div>
+        <div class="concept-en">大腦對感覺訊息進行詮釋、整合、意識化的過程</div>
+        <ul class="concept-points">
+          <li>意識層次：清醒→嗜睡（drowsy）→昏沌（stupor）→半昏迷→昏迷</li>
+          <li>大腦皮質功能區：額葉（執行）、頂葉（感覺整合）、顳葉（語言/記憶）、枕葉（視覺）</li>
+          <li>認知功能評估：定向感（人/時/地）、記憶、判斷力、抽象思維</li>
+          <li>Glasgow Coma Scale（GCS）：E+V+M；最高15分，≤8需考慮插管</li>
+          <li>Monro-Kellie法則：顱腔容積固定；腦組織+血液+CSF三者總量恆定</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">GCS 正常</div><div class="value-num">15</div><div class="value-unit">分</div></div>
+          <div class="value-box"><div class="value-label">插管指標</div><div class="value-num">≤8</div><div class="value-unit">分</div></div>
+          <div class="value-box"><div class="value-label">ICP危急</div><div class="value-num">&gt;20</div><div class="value-unit">mmHg</div></div>
+          <div class="value-box"><div class="value-label">CPP正常</div><div class="value-num">60–100</div><div class="value-unit">mmHg</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card pain">
+        <div class="concept-icon">🔥</div>
+        <div class="concept-title">疼痛 Pain</div>
+        <div class="concept-en">不愉快的感覺與情緒體驗，與組織損傷有關</div>
+        <ul class="concept-points">
+          <li>疼痛閘門控制理論（Gate Control Theory）：粗神經纖維活化→「關閉閘門」→阻斷細纖維痛覺傳遞</li>
+          <li>急性痛（&lt;3個月）vs 慢性痛（&gt;3個月）</li>
+          <li>神經性疼痛（neuropathic）：灼熱、刺痛、電擊感；中樞/周邊神經損傷</li>
+          <li>疼痛評估：NRS/VAS（0–10分）；Wong-Baker臉譜量表（兒童）</li>
+          <li>疼痛是第五大生命徵象；每位病人皆需定期評估</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">輕度疼痛</div><div class="value-num">1–3</div><div class="value-unit">NRS</div></div>
+          <div class="value-box"><div class="value-label">中度疼痛</div><div class="value-num">4–6</div><div class="value-unit">NRS</div></div>
+          <div class="value-box"><div class="value-label">重度疼痛</div><div class="value-num">7–10</div><div class="value-unit">NRS</div></div>
+          <div class="value-box"><div class="value-label">WHO階梯</div><div class="value-num">3</div><div class="value-unit">階</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GCS Box -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">📊 Glasgow Coma Scale（GCS）完整說明</div>
+      <div class="gcs-grid">
+        <div class="gcs-card eye">
+          <div class="gcs-head">👁️ 眼睛睜開（E, max 4）</div>
+          <div class="gcs-item"><span>自動睜眼</span><span class="gcs-score">4</span></div>
+          <div class="gcs-item"><span>呼喚睜眼</span><span class="gcs-score">3</span></div>
+          <div class="gcs-item"><span>疼痛刺激睜眼</span><span class="gcs-score">2</span></div>
+          <div class="gcs-item"><span>無反應</span><span class="gcs-score">1</span></div>
+        </div>
+        <div class="gcs-card verb">
+          <div class="gcs-head">🗣️ 語言反應（V, max 5）</div>
+          <div class="gcs-item"><span>定向力完整</span><span class="gcs-score">5</span></div>
+          <div class="gcs-item"><span>混淆對話</span><span class="gcs-score">4</span></div>
+          <div class="gcs-item"><span>不適當言語</span><span class="gcs-score">3</span></div>
+          <div class="gcs-item"><span>不明聲音</span><span class="gcs-score">2</span></div>
+          <div class="gcs-item"><span>無反應</span><span class="gcs-score">1</span></div>
+        </div>
+        <div class="gcs-card motor">
+          <div class="gcs-head">✋ 運動反應（M, max 6）</div>
+          <div class="gcs-item"><span>依指令動作</span><span class="gcs-score">6</span></div>
+          <div class="gcs-item"><span>定位疼痛</span><span class="gcs-score">5</span></div>
+          <div class="gcs-item"><span>逃離疼痛</span><span class="gcs-score">4</span></div>
+          <div class="gcs-item"><span>去皮質姿勢（屈曲）</span><span class="gcs-score">3</span></div>
+          <div class="gcs-item"><span>去腦幹姿勢（伸展）</span><span class="gcs-score">2</span></div>
+          <div class="gcs-item"><span>無反應</span><span class="gcs-score">1</span></div>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:16px;">
+        <span class="alert-icon">💡</span>
+        <span>GCS <em class="hl-cyan">≤8</em> = 嚴重腦傷，需考慮插管保護呼吸道；<em class="hl-cyan">9–12</em> = 中度；<em class="hl-cyan">13–15</em> = 輕度。去皮質（屈曲）預後 &gt; 去腦幹（伸展）</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0e7490,#22d3ee);">2</div>
+      <div>
+        <div class="section-title">護理評估</div>
+        <div class="section-en">Neurological Nursing Assessment</div>
+      </div>
+    </div>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <div class="assess-card-title">🧠 神經系統評估 <span class="tag tag-purple">身體評估</span></div>
+        <ul class="assess-list">
+          <li>意識狀態：GCS評分；定向感（人、時、地）</li>
+          <li>瞳孔評估：大小（正常2–5mm）、形狀、對光反射（直接/間接）</li>
+          <li><em class="hl">PERRLA</em>：Pupils Equal Round Reactive to Light Accommodating</li>
+          <li>腦疝脫（herniation）早期：同側瞳孔散大固定（CN III壓迫）</li>
+          <li>運動功能：肌力0–5分；左右對稱性；握力測試</li>
+          <li>感覺功能：針刺覺、輕觸覺、振動覺、本體感覺</li>
+          <li>反射：深腱反射（DTR）0–4+；Babinski sign陽性=錐體束損傷</li>
+          <li>小腦功能：指鼻測試、跟膝脛測試、Romberg test</li>
+          <li>腦膜刺激徵：頸部僵硬、Kernig sign、Brudzinski sign</li>
+          <li>顱內壓升高三徵象（Cushing's Triad）：<em class="hl-rose">高血壓＋心跳減慢＋呼吸不規則</em></li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🔬 神經診斷檢查 <span class="tag tag-cyan">Lab & Imaging</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">頭部CT</em>：急診首選；快速判斷出血（高密度）vs 缺血（低密度）</li>
+          <li><em class="hl">頭部MRI</em>：解析度更高；早期缺血性腦中風（DWI序列）；MS病灶</li>
+          <li>腦血管攝影（DSA）：腦動脈瘤、血管畸形診斷金標準</li>
+          <li>腦波圖（EEG）：癲癇診斷、類型分類、術前評估</li>
+          <li>腰椎穿刺（LP）：CSF分析；懷疑腦膜炎、蜘蛛膜下腔出血（SAH）</li>
+          <li>神經傳導速度（NCV）/ 肌電圖（EMG）：周邊神經、神經肌肉疾病</li>
+          <li>ICP監測：正常&lt;15 mmHg；&gt;20 mmHg需治療</li>
+          <li>血液：CBC、電解質（Na⁺低→意識改變）、血糖、凝血功能</li>
+          <li>腦利鈉胜肽（BNP）鑑別：心因性 vs 神經性肺水腫</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">📐 ICP升高評估與護理 <span class="tag tag-rose">顱內壓</span></div>
+        <ul class="assess-list">
+          <li>ICP升高症狀：頭痛（早晨最重）、噁心嘔吐（噴射狀）、視乳頭水腫</li>
+          <li>Cushing's Triad（晚期）：血壓↑、心率↓、呼吸不規則</li>
+          <li>腦灌流壓：<em class="hl">CPP = MAP − ICP</em>；目標CPP &gt;60 mmHg</li>
+          <li>降ICP措施：床頭抬高<em class="hl">30–45度（正中位置）</em></li>
+          <li>Mannitol（甘露醇）：滲透性利尿；0.25–1 g/kg IV；監測電解質</li>
+          <li>高張鹽水（3% NaCl）：降ICP；監測血鈉勿過快升</li>
+          <li>過度換氣：PaCO₂降至35→腦血管收縮→ICP↓（短期緊急用）</li>
+          <li>避免：Valsalva、便祕、疼痛刺激（均使ICP↑）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🗣️ 語言與吞嚥評估 <span class="tag tag-gold">CNS功能</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">Broca區（前額葉）</em>：表達性失語症——說話困難，理解正常</li>
+          <li><em class="hl">Wernicke區（顳葉）</em>：接受性失語症——理解困難，說話流利但無意義</li>
+          <li>完全性失語症（Global）：說話＋理解均受損</li>
+          <li>構音障礙（Dysarthria）：肌肉問題→說話不清，語言理解正常</li>
+          <li>吞嚥困難評估：GUSS量表；改良式鋇劑吞嚥（VFSS）</li>
+          <li>吞嚥困難護理：半坐臥位進食；黏稠食物；小口緩慢進食；觀察嗆咳</li>
+          <li>溝通替代：圖卡、書寫板、眼球移動系統（重度病人）</li>
+          <li>語言治療師會診：評估並制定溝通/吞嚥復健計畫</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: DISEASES -->
+  <section class="section" id="diseases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">3</div>
+      <div>
+        <div class="section-title">常見疾病介紹</div>
+        <div class="section-en">CVA · HI · Epilepsy · SCI · HIVD · MG · MS · Parkinson's</div>
+      </div>
+    </div>
+
+    <div class="disease-tabs">
+      <button class="tab-btn active" onclick="switchTab('cva')">🧠 腦血管病變</button>
+      <button class="tab-btn" onclick="switchTab('hi')">🤕 頭部損傷</button>
+      <button class="tab-btn" onclick="switchTab('epilepsy')">⚡ 癲癇</button>
+      <button class="tab-btn" onclick="switchTab('sci')">🦾 脊髓損傷</button>
+      <button class="tab-btn" onclick="switchTab('hivd')">🦴 HIVD</button>
+      <button class="tab-btn" onclick="switchTab('mg')">💪 重症肌無力</button>
+      <button class="tab-btn" onclick="switchTab('ms')">🔵 多發性硬化症</button>
+      <button class="tab-btn" onclick="switchTab('pd')">🤝 帕金森氏症</button>
+    </div>
+
+    <!-- CVA -->
+    <div class="disease-panel active" id="panel-cva">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">腦血管病變（中風）</div><div class="disease-en">Cerebrovascular Accident (CVA / Stroke)</div></div>
+          <span class="tag tag-rose">神經急症</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">類型與病因</div>
+            <ul class="info-list">
+              <li><em class="hl">缺血性中風（85%）</em>：血栓性（血管粥樣硬化）、栓塞性（心房纖顫血栓）</li>
+              <li><em class="hl">出血性中風（15%）</em>：腦內出血（高血壓）、蜘蛛膜下腔出血（動脈瘤破裂）</li>
+              <li>TIA（短暫性腦缺血發作）：症狀&lt;24小時完全恢復；中風前兆</li>
+              <li>危險因子：高血壓（最重要）、糖尿病、心房纖顫、抽菸、高血脂</li>
+              <li><em class="hl">半暗帶（penumbra）</em>：缺血核心周圍存活但功能受損區域；溶栓治療的目標</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">快速辨識—FAST原則</div>
+            <div class="flow-container">
+              <div class="flow-step"><div class="flow-step-num" style="color:var(--rose);">F</div><div class="flow-step-text"><strong>Face</strong><br>臉部歪斜？</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-step-num" style="color:var(--rose);">A</div><div class="flow-step-text"><strong>Arm</strong><br>手臂無力？</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-step-num" style="color:var(--rose);">S</div><div class="flow-step-text"><strong>Speech</strong><br>說話不清？</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-step-num" style="color:var(--rose);">T</div><div class="flow-step-text"><strong>Time</strong><br>立即送醫！</div></div>
+            </div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">急性缺血性中風治療</div>
+            <ul class="info-list">
+              <li><em class="hl">靜脈溶栓（tPA / Alteplase）</em>：發作<em class="hl-rose">4.5小時內</em>給藥；Need to exclude hemorrhage first</li>
+              <li>機械取栓（Thrombectomy）：發作24小時內大血管阻塞；更高再通率</li>
+              <li>抗血小板：Aspirin 300mg（溶栓24小時後才給）</li>
+              <li>血糖控制：目標140–180 mg/dL；高血糖加重腦損傷</li>
+              <li>血壓管理：溶栓前需&lt;185/110 mmHg；勿過度降壓（灌流依賴）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">護理措施</div>
+            <ul class="info-list">
+              <li>急性期：A-B-C評估；GCS監測；床頭抬高0–30度（依醫囑）</li>
+              <li>吞嚥評估（NPO至評估通過）；預防吸入性肺炎</li>
+              <li>患側照護：床鋪靠患側；感覺刺激患側；ROM運動</li>
+              <li>二級預防：控制三高、抗凝治療（AF病人）、戒菸</li>
+              <li>復健：語言治療、職能治療、物理治療——<em class="hl">越早越好</em></li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>tPA溶栓24小時內禁用抗凝劑/抗血小板；監測出血徵兆：神經功能突然惡化、劇烈頭痛、血壓急升→停藥並立即CT</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">中風後護理問題與復健</div>
+            <ul class="info-list">
+              <li>偏癱護理：良好擺位（患肢功能位）；每2小時翻身；預防痙攣</li>
+              <li>失語症：言語治療；使用溝通板；耐心傾聽，勿催促</li>
+              <li>忽視症候群（Hemispatial Neglect）：提醒病人注意患側環境</li>
+              <li>情緒：中風後憂鬱（PSD）發生率30–40%；評估PHQ-9；必要時抗憂鬱藥</li>
+              <li>跌倒預防：扶手、防滑地板；使用輔具</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">出血性中風（SAH）特點</div>
+            <ul class="info-list">
+              <li>典型症狀：<em class="hl">「一生中最嚴重的頭痛」</em>（Thunderclap headache）</li>
+              <li>Hunt-Hess分級（I–V）：評估嚴重度與預後</li>
+              <li>合併症：血管痙攣（3–14天）→遲發性腦缺血；Nimodipine預防</li>
+              <li>再出血：最高風險前24–72小時；嚴格控制血壓、臥床</li>
+              <li>低血鈉（SIADH或腦性鹽消耗）：監測血鈉；限水或補鈉</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">tPA (Alteplase)</span><span class="drug-tag">Aspirin</span><span class="drug-tag">Nimodipine</span><span class="drug-tag">Mannitol</span><span class="drug-tag">Warfarin/NOAC（AF）</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEAD INJURY -->
+    <div class="disease-panel" id="panel-hi">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">頭部損傷</div><div class="disease-en">Head Injury (HI) / Traumatic Brain Injury (TBI)</div></div>
+          <span class="tag tag-rose">外傷急症</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">分類與機轉</div>
+            <ul class="info-list">
+              <li>原發性損傷：撞擊當下腦組織直接傷害（挫傷、撕裂、瀰漫性軸索損傷）</li>
+              <li>繼發性損傷：繼發缺血、水腫、ICP升高、代謝異常（可介入預防）</li>
+              <li>硬膜外血腫（EDH）：動脈出血（中腦膜動脈）；<em class="hl">清醒間隔（lucid interval）</em>→再惡化</li>
+              <li>硬膜下血腫（SDH）：靜脈出血；老年人常見；急性/慢性</li>
+              <li>腦挫傷（Contusion）：腦組織瘀傷；對衝（contrecoup）損傷</li>
+              <li>輕度TBI（腦震盪）：GCS 13–15；短暫意識喪失</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">嚴重度分級</div>
+            <table class="data-table">
+              <tr><th>等級</th><th>GCS</th><th>失憶時間</th><th>意識喪失</th></tr>
+              <tr><td>輕度（Mild）</td><td>13–15</td><td>&lt;24小時</td><td>&lt;30分鐘</td></tr>
+              <tr><td>中度（Moderate）</td><td>9–12</td><td>24小時–7天</td><td>30分鐘–24小時</td></tr>
+              <tr><td>重度（Severe）</td><td>≤8</td><td>&gt;7天</td><td>&gt;24小時</td></tr>
+            </table>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">ICP升高護理（核心重點）</div>
+            <ul class="info-list">
+              <li>體位：<em class="hl">床頭抬高30–45度，頭部正中線位置</em>（勿扭轉頸部）</li>
+              <li>每15–60分鐘神經學評估：GCS、瞳孔、生命徵象</li>
+              <li>避免ICP↑的刺激：過度吸痰、疼痛、便祕、Valsalva動作</li>
+              <li>吸痰前給予利多卡因（Lidocaine）預充；每次&lt;15秒</li>
+              <li>溫度管理：發燒→腦代謝↑→ICP↑；積極退燒（目標體溫36–37°C）</li>
+              <li>液體管理：正常血容量；避免低血壓（MAP &gt;80 mmHg）</li>
+              <li>Mannitol 0.25–1 g/kg IV；血鈉&gt;160 mEq/L時停用</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>Cushing's Triad = <em class="hl-rose">高血壓 + 心跳減慢 + 呼吸不規則</em> = 腦疝脫前兆！立即通知醫師，準備緊急手術</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">術後護理（開顱手術）</div>
+            <ul class="info-list">
+              <li>神經學評估：每小時GCS、瞳孔；建立基礎值比較</li>
+              <li>引流管護理（如EVD）：高度依醫囑調整；觀察CSF性質（清澈/血性/混濁）</li>
+              <li>傷口：觀察是否有CSF滲漏（β-2 transferrin檢測）</li>
+              <li>體液平衡：監測尿崩症（尿量&gt;200 mL/hr，比重&lt;1.005）→DDAVP</li>
+              <li>DVT預防：彈性襪、早期下床；術後24小時後考慮低分子肝素</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">腦震盪後症候群</div>
+            <ul class="info-list">
+              <li>症狀：頭痛、頭暈、記憶力下降、注意力不集中、睡眠障礙（可持續數週至數月）</li>
+              <li>管理：充分休息→漸進性回復活動（Return-to-Play Protocol）</li>
+              <li>避免第二次撞擊（Second Impact Syndrome）：症狀未完全恢復前禁止接觸性運動</li>
+              <li>心理支持：解釋症狀可恢復；追蹤神經心理測驗</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EPILEPSY -->
+    <div class="disease-panel" id="panel-epilepsy">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">癲癇</div><div class="disease-en">Epilepsy / Seizure Disorder</div></div>
+          <span class="tag tag-gold">神經疾病</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">分類</div>
+            <ul class="info-list">
+              <li><em class="hl">局灶性（Focal）</em>：源自單側腦部；局部意識保留或喪失；可擴展為全面性</li>
+              <li><em class="hl">全面性（Generalized）</em>：雙側腦部同時活化</li>
+              <li>強直陣攣發作（Tonic-Clonic, Grand Mal）：全身僵直→抽搐→恢復期</li>
+              <li>失神發作（Absence, Petit Mal）：短暫&lt;30秒意識喪失；凝視；兒童常見</li>
+              <li>肌陣攣（Myoclonic）：短暫肌肉抽動</li>
+              <li>癲癇重積狀態（Status Epilepticus）：發作&gt;5分鐘或連續發作無恢復→<em class="hl-rose">神經急症</em></li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">發作期護理（護理最重要）</div>
+            <ul class="info-list">
+              <li><em class="hl">保護安全</em>：清除周遭危險物；在地板或床邊保護</li>
+              <li><em class="hl-rose">不要強行限制抽搐</em>；不要強塞口腔（防咬斷舌頭的說法已過時）</li>
+              <li>側臥（防吸入）；給氧；鬆開衣領</li>
+              <li>計時發作時間；觀察發作型態（全身/局部）</li>
+              <li>發作後（postictal期）：嗜睡屬正常；評估GCS、神經學狀態</li>
+              <li>癲癇重積狀態：立即IV Lorazepam或Diazepam；無IV→Midazolam肌注/鼻腔</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>癲癇重積狀態處置：0–5分鐘→IV Lorazepam（首選）；5–20分鐘→IV Fosphenytoin或Valproate；20–40分鐘→第二線；&gt;40分鐘→麻醉（Propofol/Midazolam持續滴注）</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">抗癲癇藥物</div>
+            <ul class="info-list">
+              <li>苯妥英（Phenytoin/Dilantin）：速率&lt;50 mg/min IV（心律不整）；監測血中濃度10–20 μg/mL</li>
+              <li>丙戊酸（Valproate）：廣效；監測肝功能、血小板</li>
+              <li>卡馬西平（Carbamazepine）：局灶性癲癇首選；監測低血鈉</li>
+              <li>拉莫三嗪（Lamotrigine）：新型廣效；Stevens-Johnson症候群風險（緩慢加藥）</li>
+              <li>Levetiracetam（Keppra）：新型廣效；少藥物交互作用；情緒副作用</li>
+            </ul>
+            <div class="ds-title" style="margin-top:14px;">衛教重點</div>
+            <ul class="info-list">
+              <li><em class="hl">規律服藥</em>，勿自行停藥（停藥可誘發重積狀態）</li>
+              <li>發作控制良好2年以上才考慮減藥（需醫師評估）</li>
+              <li>安全注意：<em class="hl-rose">禁止獨自游泳、攀高、駕車</em>（未控制期）</li>
+              <li>女性：丙戊酸對胎兒有風險；孕期藥物調整需神經科醫師協助</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">誘發因子與居家安全</div>
+            <ul class="info-list">
+              <li>誘發因子：睡眠剝奪、壓力、飲酒、閃光（光敏性）、發燒、低血糖</li>
+              <li>居家：浴室勿上鎖；淋浴優於泡澡；避免高處工作</li>
+              <li>工作：與雇主說明；避免操作重型機械</li>
+              <li>戴醫療警示手環（Medical Alert Bracelet）</li>
+              <li>家屬衛教：發作應對方式；何時需要撥打急救電話（&gt;5分鐘）</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Lorazepam</span><span class="drug-tag">Phenytoin</span><span class="drug-tag">Valproate</span><span class="drug-tag">Carbamazepine</span><span class="drug-tag">Levetiracetam</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCI -->
+    <div class="disease-panel" id="panel-sci">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">脊髓損傷</div><div class="disease-en">Spinal Cord Injury (SCI)</div></div>
+          <span class="tag tag-cyan">外傷急症</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">分類與損傷程度</div>
+            <ul class="info-list">
+              <li>完全性損傷：損傷平面以下感覺運動<em class="hl">完全喪失</em></li>
+              <li>不完全性損傷：部分功能保留；預後較好</li>
+              <li>頸椎（C1–C4）：<em class="hl-rose">四肢癱（四肢麻痺 Tetraplegia）</em>；呼吸受影響</li>
+              <li>胸椎（T1–L2）：下半身癱（截癱 Paraplegia）</li>
+              <li>ASIA分級：A（完全）→B（感覺殘留）→C（運動無力）→D（有功能）→E（正常）</li>
+              <li>脊髓休克（Spinal Shock）：急性期弛緩性麻痺；反射消失；數週後恢復痙攣性</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">急性期護理</div>
+            <ul class="info-list">
+              <li><em class="hl">頸椎固定</em>：搬運使用硬頸圈（C-collar）＋脊板；<em class="hl-rose">Log-roll翻身</em></li>
+              <li>神經性休克：BP↓、HR↓（交感神經阻斷）；補液＋升壓藥</li>
+              <li>呼吸監測：C4以上損傷→呼吸肌麻痺→需機械通氣</li>
+              <li>高位頸椎損傷：24小時SpO₂監測；備好呼吸器</li>
+              <li>大劑量甲基類固醇：急性期8小時內給藥（現有爭議，依院方protocol）</li>
+              <li>皮膚：受傷當天開始每2小時翻身；氣墊床；壓瘡預防</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">自律神經反射異常（Autonomic Dysreflexia）</div>
+            <ul class="info-list">
+              <li>好發：<em class="hl">T6以上</em>損傷；損傷平面以下刺激→交感神經大量釋放</li>
+              <li>症狀：<em class="hl-rose">突然嚴重頭痛、血壓驟升（&gt;150/100）</em>、大量出汗（損傷平面以上）、皮膚潮紅、心跳減慢、鼻塞</li>
+              <li>常見誘因：膀胱過度充脹（最常見）、便祕、皮膚壓迫、疼痛</li>
+              <li>立即處置：<em class="hl">坐起（直立降血壓）→找並移除誘因→導尿或排便</em></li>
+              <li>藥物：Nifedipine舌下或Nitroglycerine降壓（緊急）</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>自律神經反射異常是<em class="hl-rose">危及生命的緊急狀況</em>！BP可升至300/200 mmHg→腦出血。立即坐起、解除膀胱壓迫是第一步</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">長期護理與復健</div>
+            <ul class="info-list">
+              <li><em class="hl">膀胱管理</em>：間歇性自行導尿（CIC）每4–6小時；預防UTI</li>
+              <li><em class="hl">腸道管理</em>：定時排便訓練；高纖飲食；足夠水分（2,000 mL）</li>
+              <li>壓力性損傷：每2小時翻身/減壓；坐輪椅每30分鐘撐起減壓15秒</li>
+              <li>DVT預防：彈性襪；低分子肝素；早期復健</li>
+              <li>性功能：鼓勵討論；性諮商轉介；輔助生殖技術（男性）</li>
+              <li>心理調適：失落與悲傷反應→接受→適應；同儕支持團體</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HIVD -->
+    <div class="disease-panel" id="panel-hivd">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">椎間盤突出症</div><div class="disease-en">Herniated Intervertebral Disc (HIVD)</div></div>
+          <span class="tag tag-purple">脊椎疾病</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與好發部位</div>
+            <ul class="info-list">
+              <li>椎間盤髓核（nucleus pulposus）突出壓迫神經根或脊髓</li>
+              <li>最常見：<em class="hl">腰椎L4–L5、L5–S1</em>（坐骨神經痛）；頸椎C5–C6、C6–C7</li>
+              <li>危險因子：搬重物、彎腰、長時間坐姿、肥胖、吸菸（椎間盤退化）</li>
+              <li>腰椎HIVD症狀：<em class="hl">下背痛→沿坐骨神經放射至臀部/腿部/腳趾</em></li>
+              <li>神經學症狀：麻木、無力、反射減弱</li>
+              <li>馬尾症候群（Cauda Equina Syndrome）：二便失禁＋鞍區麻木→<em class="hl-rose">外科急症</em></li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">診斷</div>
+            <ul class="info-list">
+              <li>直腿抬高試驗（SLR test）：陽性（&lt;60度引出放射痛）→腰椎HIVD</li>
+              <li>MRI：診斷金標準；顯示突出位置與神經壓迫程度</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">治療與護理</div>
+            <ul class="info-list">
+              <li>保守治療（6週）：臥床休息、NSAIDs、肌肉鬆弛劑、物理治療</li>
+              <li>脊椎注射：硬膜外類固醇注射（暫時緩解）</li>
+              <li>手術：椎間盤切除術（Discectomy）；保守治療無效或馬尾症候群</li>
+              <li>術後護理：<em class="hl">Log-roll翻身</em>（維持脊椎對齊）；觀察神經功能恢復</li>
+              <li>術後疼痛：依醫囑給止痛藥；冰敷傷口</li>
+              <li>觀察合併症：脊髓血腫（術後數小時新發神經症狀→立即報告）</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>背部護理衛教：搬重物前先<em class="hl-green">蹲下、保持背部直立、靠近物體、以腿力抬起</em>——保護腰椎的正確姿勢</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MG -->
+    <div class="disease-panel" id="panel-mg">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">重症肌無力</div><div class="disease-en">Myasthenia Gravis (MG)</div></div>
+          <span class="tag tag-rose">神經肌肉</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與臨床特徵</div>
+            <ul class="info-list">
+              <li>自體免疫疾病：抗AChR抗體（乙醯膽鹼受體抗體）→神經肌肉接合部傳遞障礙</li>
+              <li>與胸腺（thymus）相關：10–15%有胸腺瘤；胸腺切除有助改善</li>
+              <li><em class="hl">特徵：活動後肌肉無力加重，休息後改善（疲勞性肌無力）</em></li>
+              <li>常見首發症狀：<em class="hl">眼瞼下垂（ptosis）、複視（diplopia）</em></li>
+              <li>進展：臉部肌肉→吞嚥困難→四肢→呼吸肌（最嚴重）</li>
+              <li>Tensilon試驗（Edrophonium test）：短效AChE抑制劑→症狀短暫改善→陽性診斷</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">MG危象 vs 膽鹼能危象</div>
+            <table class="data-table">
+              <tr><th>特徵</th><th>MG危象（肌無力）</th><th>膽鹼能危象（藥物過量）</th></tr>
+              <tr><td>原因</td><td>疾病惡化/藥量不足</td><td>抗膽鹼酶藥物過量</td></tr>
+              <tr><td>呼吸</td><td>困難↑</td><td>困難↑（支氣管痙攣）</td></tr>
+              <tr><td>SLUDGE</td><td>無</td><td>有（分泌物↑、腹瀉）</td></tr>
+              <tr><td>Tensilon試驗</td><td>改善（短暫）</td><td>惡化</td></tr>
+              <tr><td>處置</td><td>增加抗膽鹼酶藥量</td><td>停藥＋Atropine</td></tr>
+            </table>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>MG危象出現<em class="hl-rose">呼吸肌無力</em>（呼吸淺快、無法抬頭）→立即評估肺活量（&lt;1L考慮插管）；備好呼吸器</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">治療</div>
+            <ul class="info-list">
+              <li><em class="hl">抗膽鹼酶藥（Pyridostigmine/Mestinon）</em>：症狀治療；餐前30–60分鐘（改善吞嚥）</li>
+              <li>免疫抑制：Prednisolone、Azathioprine（長期控制）</li>
+              <li>血漿置換（Plasmapheresis）：危象或術前快速清除抗體</li>
+              <li>靜脈注射免疫球蛋白（IVIG）：危象處置；起效3–5天</li>
+              <li>胸腺切除術（Thymectomy）：有胸腺瘤或18–50歲全身型MG</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>藥物在<em class="hl">體力最佳時段給予</em>（餐前）；監測吞嚥功能</li>
+              <li>保存體力：活動與休息交替；避免過熱（熱→症狀加重）</li>
+              <li>衛教：避免誘發惡化因素：感染、手術、壓力、某些藥物（MG禁用：Aminoglycosides、β-blocker、Mg²⁺）</li>
+              <li>眼瞼下垂護理：眼貼保護角膜；交替遮蓋（複視）</li>
+              <li>緊急醫療警示手環</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MS -->
+    <div class="disease-panel" id="panel-ms">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">多發性硬化症</div><div class="disease-en">Multiple Sclerosis (MS)</div></div>
+          <span class="tag tag-cyan">自體免疫</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與特徵</div>
+            <ul class="info-list">
+              <li>CNS白質髓鞘（myelin）發炎脫髓鞘→傳導障礙；形成硬化斑（plaque）</li>
+              <li>好發：<em class="hl">20–40歲女性</em>；溫帶地區（緯度越高盛行率越高）；自體免疫</li>
+              <li>病程型態：<em class="hl">復發-緩解型（RRMS，最常見85%）</em>；繼發進行型；原發進行型</li>
+              <li>病灶多發性：時間（不同時間出現）＋空間（不同部位）多發</li>
+              <li>MRI：特徵性「黑洞」及「活動性強化病灶」；白質斑</li>
+              <li><em class="hl">Uhthoff現象</em>：體溫升高→症狀暫時惡化（熱水澡、發燒、運動後）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">臨床症狀（多樣）</div>
+            <ul class="info-list">
+              <li>視神經炎（第一發作常見）：單眼視力模糊/疼痛</li>
+              <li>Lhermitte's sign：頸部前彎→電流感沿脊椎傳至四肢（後柱損傷）</li>
+              <li>感覺：麻木、感覺異常、刺痛</li>
+              <li>運動：痙攣性無力、步態不穩（小腦症狀）</li>
+              <li>膀胱：尿急、頻尿、尿失禁或尿瀦留</li>
+              <li>認知：記憶力下降、注意力不集中、憂鬱（50%病人）</li>
+              <li>疲勞（fatigue）：MS最常見且最困擾症狀</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">治療</div>
+            <ul class="info-list">
+              <li>急性發作：高劑量IV Methylprednisolone（縮短發作持續時間）</li>
+              <li>疾病修飾治療（DMT）：干擾素β（Interferon-β）、Glatiramer acetate（一線）</li>
+              <li>高效型：Natalizumab（Tysabri）、Alemtuzumab——PML風險需監測</li>
+              <li>症狀治療：Baclofen（肌肉痙攣）；Oxybutynin（膀胱過動）；Amantadine（疲勞）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>避免過熱：涼水浸泡、降溫背心；空調環境；發燒積極處理</li>
+              <li>疲勞管理：節省能量技巧；重要活動安排在精力最好時段（早晨）</li>
+              <li>膀胱護理：定時排尿計畫；間歇性導尿；UTI預防</li>
+              <li>痙攣護理：ROM運動；溫水浸泡（適溫）；Baclofen劑量調整</li>
+              <li>安全：防跌（步態不穩）；輔具使用；居家環境改善</li>
+              <li>心理：慢性不可預測病程→焦慮憂鬱；支持團體；轉介心理師</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARKINSON -->
+    <div class="disease-panel" id="panel-pd">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">帕金森氏症</div><div class="disease-en">Parkinson's Disease (PD)</div></div>
+          <span class="tag tag-gold">退化性疾病</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與病理</div>
+            <ul class="info-list">
+              <li>黑質（substantia nigra）多巴胺神經元進行性退化→多巴胺（dopamine）不足</li>
+              <li>好發：&gt;60歲；男多於女；特發性（原因不明占85%）</li>
+              <li>路易氏小體（Lewy bodies）：α-synuclein蛋白沉積→神經細胞死亡</li>
+              <li>多巴胺↓→乙醯膽鹼相對過多→運動症狀（TRAP）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">四大核心症狀（TRAP）</div>
+            <div class="scale-grid">
+              <div class="scale-card"><div class="scale-title">T — Tremor 靜止性震顫</div><div class="scale-item">「搓藥丸」樣震顫（pill-rolling）</div><div class="scale-item">靜止時出現，動作時消失</div></div>
+              <div class="scale-card"><div class="scale-title">R — Rigidity 肌肉僵硬</div><div class="scale-item">齒輪狀僵硬（cogwheel rigidity）</div><div class="scale-item">鉛管狀僵硬（leadpipe rigidity）</div></div>
+              <div class="scale-card"><div class="scale-title">A — Akinesia 運動遲緩</div><div class="scale-item">動作緩慢、啟動困難</div><div class="scale-item">臉部表情減少（面具臉）</div></div>
+            </div>
+            <div class="scale-card" style="margin-top:12px;"><div class="scale-title">P — Postural Instability 姿勢不穩</div><div class="scale-item">後期出現；前傾姿勢；慌張步態（festination）；易跌倒</div></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">藥物治療</div>
+            <ul class="info-list">
+              <li><em class="hl">Levodopa（L-dopa）+ Carbidopa</em>：最有效藥物；Carbidopa抑制周邊代謝→增加L-dopa入腦</li>
+              <li>長期副作用：Wearing-off效應（劑末藥效消失）；On-Off現象；異動症（dyskinesia）</li>
+              <li>多巴胺激動劑（Ropinirole, Pramipexole）：初期或作為L-dopa輔助</li>
+              <li>MAO-B抑制劑（Selegiline, Rasagiline）：減緩多巴胺分解</li>
+              <li>抗膽鹼藥（Benztropine）：改善震顫；老年人慎用（認知副作用）</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>L-dopa服藥時間嚴格執行！<em class="hl-rose">不可延遲或跳過</em>。高蛋白飲食競爭吸收→宜<em class="hl-rose">餐前1小時或餐後2小時</em>服藥（或全天均勻蛋白質攝取）</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>跌倒預防：居家扶手、防滑地板；鞋子合適；步態訓練</li>
+              <li>慌張步態：教導「凍結」時看地板線條踏步；數拍子1-2-1-2</li>
+              <li>吞嚥困難：軟食/半固體；小口進食；頸部稍前傾；進食後坐30分鐘</li>
+              <li>便祕：高纖飲食（30g/天）；足夠水分（2,000 mL）；規律活動</li>
+              <li>說話訓練（LSVT LOUD）：增加音量；語言治療師</li>
+              <li>穿衣：魔術貼取代扣子；彈性腰帶；穿衣棒</li>
+              <li>心理：認知評估；憂鬱常見；社交參與</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">非運動症狀護理</div>
+            <ul class="info-list">
+              <li>自律神經：姿位性低血壓（起身時緩慢）；便祕；膀胱過動</li>
+              <li>睡眠障礙：REM睡眠行為障礙（夢中打人）→床旁安全保護</li>
+              <li>認知：30%進展為帕金森氏失智症（PDD）；認知評估每年</li>
+              <li>嗅覺喪失（Anosmia）：常為早期症狀；衛教食物安全（無法聞到變質味）</li>
+              <li>照護者支持：長期照護負擔沉重；喘息服務；照護者身心健康評估</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Levodopa/Carbidopa</span><span class="drug-tag">Ropinirole</span><span class="drug-tag">Selegiline</span><span class="drug-tag">Benztropine</span><span class="drug-tag">Amantadine</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0891b2,#22d3ee);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses (NANDA-I)</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">急性/慢性疼痛</div><div class="np-cause">Acute/Chronic Pain ／與神經損傷、椎間盤壓迫、肌肉痙攣有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每班評估NRS；記錄疼痛性質（刀割/燒灼/刺痛）及放射路徑</li>
+          <li>依醫囑給予止痛藥（NSAIDs→Opioids→神經性疼痛藥）</li>
+          <li>非藥物：熱/冷敷、經皮電刺激（TENS）、放鬆技巧</li>
+          <li>HIVD：臥床休息、改變姿勢；Log-roll翻身</li>
+          <li>評估藥物效果及副作用；觀察呼吸抑制（Opioid）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">2</div>
+          <div><div class="np-title">身體活動功能障礙</div><div class="np-cause">Impaired Physical Mobility ／與偏癱、脊髓損傷、運動遲緩有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估肌力（0–5分）、ROM；制定漸進性復健計畫</li>
+          <li>每2小時翻身；正確擺位（功能位）；氣墊床</li>
+          <li>ROM運動：每班；患側主動輔助+健側主動</li>
+          <li>中風：早期復健（發病48小時後穩定即開始）</li>
+          <li>輔具：步行器、輪椅、支架；跌倒預防措施</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">3</div>
+          <div><div class="np-title">吞嚥障礙</div><div class="np-cause">Impaired Swallowing ／與顏面肌無力、腦神經損傷有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>吞嚥評估後決定進食方式（口服/鼻胃管）</li>
+          <li>進食體位：坐正或床頭&gt;60度；頸部稍前傾</li>
+          <li>食物調整：糊狀/半固體；避免稀薄液體；小口進食</li>
+          <li>觀察嗆咳、咳嗽反射；進食後保持坐姿30分鐘</li>
+          <li>口腔護理：飯後清潔；預防吸入性肺炎</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(34,211,238,.2);color:var(--cyan);">4</div>
+          <div><div class="np-title">言語溝通障礙</div><div class="np-cause">Impaired Verbal Communication ／與失語症、構音障礙、氣管插管有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估失語類型（表達性/接受性/完全性）；鼓勵嘗試表達</li>
+          <li>溝通替代：圖卡、寫字板、電子溝通裝置</li>
+          <li>說話緩慢、清晰；一次一個訊息；確認理解</li>
+          <li>勿催促；不代為說話；正向鼓勵每次嘗試</li>
+          <li>語言治療師介入：制定個別化溝通計畫</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--gold);">5</div>
+          <div><div class="np-title">跌倒傷害風險</div><div class="np-cause">Risk for Falls ／與肌無力、平衡障礙、步態不穩有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>Morse跌倒量表評估；高風險→加強措施</li>
+          <li>環境：床欄上升、呼叫鈴置手邊、防滑拖鞋</li>
+          <li>帕金森：固定走路路線；地板線條提示步伐</li>
+          <li>觀察姿位性低血壓：測坐/立血壓；緩慢改變姿勢</li>
+          <li>衛教家屬：居家環境改善；扶手安裝；移除障礙物</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--gold);">6</div>
+          <div><div class="np-title">排尿功能障礙</div><div class="np-cause">Impaired Urinary Elimination ／與脊髓損傷、神經性膀胱有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估排尿型態：頻率、量、尿急、失禁或尿瀦留</li>
+          <li>間歇性導尿（CIC）：每4–6小時；殘尿&lt;100 mL目標</li>
+          <li>定時排尿訓練（Timed Voiding）：每2–3小時排尿</li>
+          <li>預防UTI：足夠水分、無菌技術、觀察感染徵兆</li>
+          <li>自律神經反射異常：膀胱過脹為最常見誘因→優先導尿</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">7</div>
+          <div><div class="np-title">皮膚完整性受損風險</div><div class="np-cause">Risk for Pressure Injury ／與感覺喪失、移動障礙、失禁有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>Braden量表評估壓傷風險（≤18分高風險）</li>
+          <li>每2小時翻身；建立翻身時間表</li>
+          <li>骨突部位：足跟、薦尾骨、大轉子、肩胛骨</li>
+          <li>SCI病人：坐輪椅每30分鐘撐起減壓15秒</li>
+          <li>皮膚評估：每次翻身時觀察；發現發紅立即解除壓力</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">8</div>
+          <div><div class="np-title">無效性因應</div><div class="np-cause">Ineffective Coping ／與慢性疾病進展、功能喪失、自我形象改變有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估病人心理狀態：焦慮、憂鬱、悲傷反應階段</li>
+          <li>建立治療性關係；積極傾聽；避免過早給予建議</li>
+          <li>鼓勵表達感受；接受病人對失落的憤怒情緒</li>
+          <li>協助識別現有資源（家庭支持、社會福利）</li>
+          <li>轉介：社工、心理師、病友支持團體；帕金森/SCI病友會</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#be185d,#fb7185);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：急性缺血性中風</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：頭部損傷 / ICP升高</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：癲癇重積狀態</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：帕金森氏症</button>
+      </div>
+
+      <!-- CASE 1 -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>林先生，68歲，有<strong>高血壓、心房纖顫病史</strong>，規律服用降壓藥但未使用抗凝劑。今晨7:30起床時被家人發現<strong>右側臉部歪斜、右手無力、說話不清晰</strong>。8:10送達急診，家人確認症狀開始時間為7:30。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-abnormal">182/104</div><div class="vital-unit">mmHg ↑</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-warn">88不規則</div><div class="vital-unit">bpm（AF）</div></div>
+          <div class="vital-box"><div class="vital-label">血糖</div><div class="vital-val vital-warn">148</div><div class="vital-unit">mg/dL</div></div>
+          <div class="vital-box"><div class="vital-label">GCS</div><div class="vital-val vital-warn">13</div><div class="vital-unit">分（E3V4M6）</div></div>
+          <div class="vital-box"><div class="vital-label">NIHSS</div><div class="vital-val vital-abnormal">8</div><div class="vital-unit">分（中度）</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--rose);">
+          <strong>神經學評估：</strong>右側中樞性顏面神經麻痺；右上肢肌力 2/5，右下肢 3/5；輕度構音障礙；頭部CT：未見出血（缺血性中風）
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 判斷此個案是否符合靜脈tPA溶栓治療適應症？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>tPA適應症評估：</strong><br><br>
+            <strong>✅ 符合條件：</strong><br>
+            • <em class="hl">症狀開始至治療時間&lt;4.5小時</em>：7:30→急診8:10（尚在時窗）<br>
+            • 缺血性中風（CT排除出血）<br>
+            • 年齡≥18歲；有明確神經學缺損<br><br>
+            <strong>需確認的絕對禁忌症（此案需排除）：</strong><br>
+            • 近3個月內腦中風/頭部手術？ → 需詢問<br>
+            • 活動性出血？ → CT未見出血 ✓<br>
+            • 血壓控制：<em class="hl">需降至&lt;185/110 mmHg才能給tPA</em>（目前182/104，接近門檻，需密切監測或輕微降壓）<br>
+            • INR/血小板正常？ → 需快速送驗<br><br>
+            <strong>結論：</strong>需立即給tPA（Door-to-Needle時間目標&lt;60分鐘）；給藥同時處理血壓
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> tPA給藥後24小時的護理監測重點</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>tPA後24小時護理重點：</strong><br><br>
+            <strong>① 神經學評估</strong><br>
+            → 每15分鐘×2小時 → 每30分鐘×6小時 → 每小時×16小時<br>
+            → GCS、NIHSS、瞳孔；任何惡化立即報告<br><br>
+            <strong>② 出血監測（最重要合併症）</strong><br>
+            → 腦出血徵兆：<em class="hl-rose">神經功能突然惡化、劇烈頭痛、血壓急升、意識改變</em>→立即停tPA、緊急CT<br>
+            → 全身出血：穿刺部位、消化道、尿液<br><br>
+            <strong>③ 血壓管理</strong><br>
+            → tPA後24小時維持&lt;180/105 mmHg（Labetalol或Nicardipine IV）<br><br>
+            <strong>④ 24小時禁忌</strong><br>
+            → <em class="hl">禁用抗凝劑、抗血小板藥物</em>；避免NG/導尿（必要時謹慎操作）<br><br>
+            <strong>⑤ 臥床</strong>：床頭抬高0–30度；24小時後複查CT確認無出血再評估活動
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 評估此個案的語言功能，制定溝通護理計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>語言功能評估：</strong><br>
+            • 個案有<em class="hl">構音障礙（Dysarthria）</em>——說話不清晰但語言功能可能保留<br>
+            • 需進一步評估：理解力是否正常？（讓病人按指令做動作）<br>
+            • 左側大腦中動脈（MCA）梗塞 → 可能合併Broca（表達性）失語<br><br>
+            <strong>溝通護理計畫：</strong><br>
+            • 提供<em class="hl">紙筆、溝通板（含圖卡和常用字）</em><br>
+            • 對話環境：安靜、面對面、維持眼神接觸<br>
+            • 說話緩慢清晰；問是/否問題；給充分時間回答<br>
+            • <em class="hl-rose">不催促、不插嘴代替說話</em><br>
+            • 語言治療師會診：評估失語嚴重度；制定語言復健目標<br>
+            • 衛教家屬：溝通技巧；避免過度代勞（影響復原動機）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2 -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳先生，24歲，機車意外，<strong>頭部撞擊地面（未戴安全帽）</strong>，被送急診時GCS 10（E2V3M5）。頭部CT顯示<strong>右側硬膜外血腫（EDH）30 mL</strong>，急診開顱清除血腫。術後轉入NICU，目前插管中。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">148/90</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-warn">58</div><div class="vital-unit">bpm ↓</div></div>
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.4</div><div class="vital-unit">°C ↑</div></div>
+          <div class="vital-box"><div class="vital-label">ICP</div><div class="vital-val vital-abnormal">24</div><div class="vital-unit">mmHg ↑</div></div>
+          <div class="vital-box"><div class="vital-label">GCS</div><div class="vital-val vital-warn">8</div><div class="vital-unit">分（術後）</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析ICP升高的徵象，列出優先護理措施</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>ICP升高徵象分析：</strong><br>
+            • ICP 24 mmHg（正常&lt;15）→ 確認ICP升高<br>
+            • <em class="hl-rose">Cushing's Triad早期：BP 148/90（↑）＋HR 58（↓）</em>＋需觀察呼吸規律性<br>
+            • 發燒38.4°C → 代謝↑ → ICP↑（需積極退燒）<br><br>
+            <strong>優先護理措施（依優先順序）：</strong><br>
+            <em class="hl">① 體位</em>：床頭抬高30–45度；頭頸正中位置（勿側轉頸部）<br>
+            <em class="hl">② 退燒</em>：Acetaminophen；冰毯/降溫墊；目標體溫36–37°C<br>
+            <em class="hl">③ 給藥</em>：依醫囑給Mannitol（0.25–1g/kg IV 15–20分）；監測血鈉/滲透壓<br>
+            <em class="hl">④ 避免ICP↑刺激</em>：吸痰前給Lidocaine；每次吸痰&lt;15秒；鎮靜止痛充足<br>
+            <em class="hl">⑤ 維持CPP</em>：MAP目標&gt;80 mmHg；ICP目標&lt;20 mmHg；CPP&gt;60 mmHg
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 術後第3天，護理師觀察到右側瞳孔散大（6mm）、對光反射消失。代表什麼？應如何處置？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>瞳孔變化意義：</strong><br>
+            • 右側瞳孔單側散大、固定、對光反應消失<br>
+            • 提示：<em class="hl-rose">右側動眼神經（CN III）受壓迫</em>——腦疝脫（transtentorial herniation）警示！<br>
+            • 機轉：腦腫脹/再出血→腦組織向下移位→小腦幕缺口壓迫CN III（同側瞳孔散大）<br><br>
+            <strong>立即處置：</strong><br>
+            1. <em class="hl-rose">立即通知醫師（緊急）</em><br>
+            2. 確認ICP數值；CPP計算<br>
+            3. 過度換氣（呼吸器調整）：PaCO₂ → 30–35 mmHg → 腦血管收縮 → ICP↓（緊急暫時措施）<br>
+            4. Mannitol IV 快速給予（1g/kg）<br>
+            5. 準備緊急CT及可能的再次手術（再出血需清除）<br>
+            6. 每5–15分鐘神經學評估
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3 -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王女士，32歲，已知癲癇病史，規律服用Phenytoin。今天因「工作壓力大連續熬夜3天」後，在上班途中突然<strong>倒地、全身強直陣攣抽搐</strong>。同事撥打119，救護車到達時<strong>抽搐持續已8分鐘</strong>，尚未停止。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.1</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-abnormal">158/96</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">122</div><div class="vital-unit">bpm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">SpO₂</div><div class="vital-val vital-abnormal">88%</div><div class="vital-unit">↓</div></div>
+          <div class="vital-box"><div class="vital-label">血糖</div><div class="vital-val vital-normal">96</div><div class="vital-unit">mg/dL</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 到達急診後立即護理措施（按時間順序）</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>癲癇重積狀態急救處置（0–30分鐘）：</strong><br><br>
+            <strong>0–5分鐘（立即）：</strong><br>
+            • 安全擺位：<em class="hl">側臥</em>（防吸入）；保護頭部；移除危險物；鬆開衣領<br>
+            • 給氧（面罩100%）→ SpO₂目標&gt;94%<br>
+            • 計時；建立靜脈通路（IV access）<br>
+            • 快速血糖測定（排除低血糖性發作）<br><br>
+            <strong>5–20分鐘（一線藥物）：</strong><br>
+            → <em class="hl">IV Lorazepam 0.1 mg/kg（最多4mg）</em>緩慢推注<br>
+            → 或 IV Diazepam 0.15–0.2 mg/kg<br>
+            → 無IV通路：<em class="hl">Midazolam 肌注（IM）0.2 mg/kg</em><br><br>
+            <strong>20–40分鐘（二線）：</strong><br>
+            → IV Fosphenytoin 20 mg PE/kg；或IV Valproate；或IV Levetiracetam<br><br>
+            <strong>持續監測：</strong>EEG監測；氣管插管（必要時）；ICU收治
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 癲癇控制後，分析導致此次發作的誘因並制定出院衛教計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>誘因分析：</strong><br>
+            • <em class="hl-rose">睡眠剝奪（熬夜3天）</em>：最強烈的癲癇誘因；睡眠剝奪降低癲癇閾值<br>
+            • 工作壓力：壓力→自律神經活化→誘發<br>
+            • 可能：Phenytoin血中濃度在治療範圍外？（需抽血確認）<br><br>
+            <strong>出院衛教計畫：</strong><br>
+            <em class="hl">① 藥物</em>：強調規律服藥重要性；勿自行停藥；每日同時間服藥<br>
+            <em class="hl">② 睡眠</em>：每天7–8小時規律睡眠；避免夜班或熬夜<br>
+            <em class="hl">③ 誘因管理</em>：減少咖啡因/酒精；壓力管理技巧<br>
+            <em class="hl">④ 安全</em>：<br>
+            → 控制良好前禁止駕車（台灣法規：無發作滿2年方可申請駕照）<br>
+            → 禁止獨自游泳；避免高空作業<br>
+            → 浴室勿上鎖；淋浴（勿泡澡）<br>
+            <em class="hl">⑤ 緊急醫療警示手環</em><br>
+            <em class="hl">⑥</em> 發作記錄日誌：記錄日期、時間長度、型態
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4 -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>黃先生，72歲，帕金森氏症確診7年，目前使用Levodopa/Carbidopa（Sinemet）每日三次。本次因<strong>吞嚥困難加重、體重減輕5kg（3個月）、反覆嗆咳</strong>入院評估。家屬表示病人<strong>動作愈來愈慢、走路小碎步</strong>，3個月內跌倒2次。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體重</div><div class="vital-val vital-abnormal">52 kg</div><div class="vital-unit">↓（3月−5kg）</div></div>
+          <div class="vital-box"><div class="vital-label">BMI</div><div class="vital-val vital-abnormal">18.8</div><div class="vital-unit">偏低</div></div>
+          <div class="vital-box"><div class="vital-label">坐姿BP</div><div class="vital-val vital-normal">128/78</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">站姿BP</div><div class="vital-val vital-abnormal">102/64</div><div class="vital-unit">姿位性低BP</div></div>
+          <div class="vital-box"><div class="vital-label">MMSE</div><div class="vital-val vital-warn">22</div><div class="vital-unit">分（輕度認知↓）</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 評估此個案的吞嚥困難，制定進食護理計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>帕金森氏症吞嚥困難機轉：</strong><br>
+            • 咽喉肌肉協調障礙（多巴胺不足→肌肉控制↓）<br>
+            • 唾液分泌過多（流涎）；咀嚼無力<br><br>
+            <strong>評估：</strong><br>
+            • GUSS吞嚥篩查；必要時語言治療師評估及VFSS<br>
+            • 確認是否有<em class="hl">誤吸</em>（反覆嗆咳、肺部感染）<br><br>
+            <strong>進食護理計畫：</strong><br>
+            • <em class="hl">體位</em>：坐正90度；頭部稍前傾（chin tuck）；不可臥床進食<br>
+            • <em class="hl">食物調整</em>：糊狀或剁碎食物；避免稀薄液體（增稠劑）；避免容易嗆的食物（湯圓、麻糬）<br>
+            • <em class="hl">進食技巧</em>：小口（&lt;5mL/次）；充分咀嚼；兩次吞嚥（雙吞法）<br>
+            • 進食後保持坐姿30–60分鐘<br>
+            • <em class="hl">藥物時間</em>：Sinemet在進食前30–60分鐘服用（改善吞嚥功能在進食時最佳）<br>
+            • 監測：每週體重；記錄進食量；評估是否需要NGT補充
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 姿位性低血壓護理及跌倒預防計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>姿位性低血壓護理：</strong><br>
+            • 定義：坐→站BP下降&gt;20/10 mmHg（此個案128→102，下降26 mmHg ✓）<br>
+            • 帕金森氏症自律神經障礙：血管調節反射↓<br><br>
+            <strong>護理措施：</strong><br>
+            • <em class="hl">起身三步驟</em>：躺→坐（等30秒）→站在床邊（等30秒）→再走動<br>
+            • 床尾稍升高（頭低腳高）或穿彈性長筒襪（促靜脈回流）<br>
+            • 避免：大量進食後立即站立；長時間站立；熱水浴<br>
+            • 充足水分攝取（2,000 mL/天）<br>
+            • 藥物：Fludrocortisone或Midodrine（血壓↑藥）—依醫囑<br><br>
+            <strong>跌倒預防計畫：</strong><br>
+            • Morse量表評分：高風險（多重危險因子）<br>
+            • 環境：病床最低位；床欄上升；防滑拖鞋；呼叫鈴在手<br>
+            • <em class="hl">慌張步態指導</em>：地板貼線條提示步伐；數節拍；有意識地大步走<br>
+            • 轉介物理治療：平衡訓練；助行器評估<br>
+            • 衛教家屬：衛生間需陪同；夜間上廁所協助
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 家屬詢問：「Levodopa服藥是否需要注意什麼？為何有時候藥效很好，有時候又突然變很差？」</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>Levodopa服藥衛教：</strong><br><br>
+            <strong>服藥時間：</strong><br>
+            • <em class="hl">餐前1小時或餐後2小時服用</em><br>
+            • 高蛋白食物（肉類、蛋）中的大型中性胺基酸與L-dopa競爭腸道吸收→藥效↓<br>
+            • 建議：全天均勻攝取蛋白質，而非集中在某一餐<br><br>
+            <strong>On-Off現象解釋：</strong><br>
+            • <em class="hl">Wearing-off（劑末效應）</em>：下一次服藥前藥效消失→肌肉僵硬、動作困難<br>
+            • <em class="hl">On-Off現象</em>：藥效像開關一樣不可預測地切換<br>
+            • 處理：調整服藥間隔（更頻繁）；COMT抑制劑（延長L-dopa效果）<br><br>
+            <strong>其他注意事項：</strong><br>
+            • <em class="hl-rose">不可突然停藥</em>→惡性症候群（高燒、肌肉僵硬、意識改變）<br>
+            • 起身時注意姿位性低血壓<br>
+            • 副作用：噁心（服藥後進少量餅乾）；幻覺（回診告知醫師）<br>
+            • <em class="hl">按時服藥</em>最重要：不可因忙碌或嘔吐而自行跳過
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:40px 0 20px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;">感覺知覺 Sensory / Perception</div>
+    內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.disease-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('panel-'+id);
+  if(panel)panel.classList.add('active');
+  const m={cva:0,hi:1,epilepsy:2,sci:3,hivd:4,mg:5,ms:6,pd:7};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('diseases').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('cpanel-'+id);
+  if(panel)panel.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;
+  c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+const scrollBtn=document.getElementById('scrollTop');
+window.addEventListener('scroll',()=>scrollBtn.classList.toggle('visible',window.scrollY>400));
+
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+
+function toggleSidebar(){
+  if(isMobile()){
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+    togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';
+  } else {
+    document.body.classList.toggle('collapsed');
+    const c=document.body.classList.contains('collapsed');
+    togBtn.textContent=c?'»':'☰';
+    localStorage.setItem('sp-sb',c?'1':'0');
+  }
+}
+function closeDrawer(){
+  sidebar.classList.remove('open');
+  overlay.classList.remove('active');
+  togBtn.textContent='☰';
+}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{
+  if(!isMobile()&&localStorage.getItem('sp-sb')==='1'){
+    document.body.classList.add('collapsed');
+    togBtn.textContent='»';
+  }
+});
+window.addEventListener('resize',()=>{
+  if(!isMobile()){
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';
+  } else {
+    togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';
+  }
+});
+const navItems=document.querySelectorAll('.nav-item');
+const sections=document.querySelectorAll('section.section');
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navItems.forEach(n=>n.classList.remove('active'));
+      const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if(a)a.classList.add('active');
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'}).observe&&sections.forEach(s=>new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});
+},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

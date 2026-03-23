@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈性照護 — Spiritual Care | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #080c18;
+    --primary:   #818cf8;
+    --primary-dk:#4338ca;
+    --primary-lt:#c7d2fe;
+    --gold:      #fbbf24;
+    --gold-lt:   #fde68a;
+    --rose:      #fb7185;
+    --rose-lt:   #fda4af;
+    --teal:      #2dd4bf;
+    --teal-lt:   #99f6e4;
+    --sage:      #86efac;
+    --text:      #e2e8f0;
+    --text-dim:  #8892a8;
+    --border:    rgba(129,140,248,0.18);
+    --card:      rgba(14,18,40,0.82);
+    --card-hov:  rgba(14,18,40,0.97);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+  /* Starfield background */
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(67,56,202,.18) 0%,transparent 50%),
+      radial-gradient(ellipse at 80% 85%, rgba(129,140,248,.1) 0%,transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(251,191,36,.04) 0%,transparent 65%),
+      radial-gradient(ellipse at 10% 90%, rgba(45,212,191,.06) 0%,transparent 45%);
+    pointer-events:none;z-index:0;}
+
+  /* subtle star dots */
+  body::after{
+    content:'';position:fixed;inset:0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.35) 0%,transparent 100%),
+      radial-gradient(1px 1px at 34% 55%, rgba(255,255,255,.25) 0%,transparent 100%),
+      radial-gradient(1px 1px at 68% 22%, rgba(255,255,255,.3) 0%,transparent 100%),
+      radial-gradient(1px 1px at 82% 72%, rgba(255,255,255,.2) 0%,transparent 100%),
+      radial-gradient(1px 1px at 48% 88%, rgba(255,255,255,.25) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 90% 10%, rgba(255,255,255,.4) 0%,transparent 100%),
+      radial-gradient(1px 1px at 25% 78%, rgba(255,255,255,.2) 0%,transparent 100%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:272px;height:100vh;background:rgba(8,12,24,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(24px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;backdrop-filter:blur(3px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:222px;width:38px;height:38px;border-radius:10px;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(129,140,248,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.4;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(129,140,248,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:6px 20px 6px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:272px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:360px;display:flex;flex-direction:column;justify-content:center;padding:60px 0 44px;border-bottom:1px solid var(--border);margin-bottom:60px;position:relative;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:24px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(38px,5vw,64px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.06em;}
+  .hero-quote{margin-top:24px;font-family:'Noto Serif TC',serif;font-size:15px;color:rgba(199,210,254,.6);font-style:italic;border-left:2px solid rgba(129,140,248,.4);padding-left:16px;line-height:1.8;}
+  .hero-pills{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-indigo{background:rgba(129,140,248,.15);color:var(--primary);border:1px solid rgba(129,140,248,.3);}
+  .pill-gold{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3);}
+  .pill-rose{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+  .pill-teal{background:rgba(45,212,191,.15);color:var(--teal);border:1px solid rgba(45,212,191,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden;}
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.def::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.dim::before{background:linear-gradient(90deg,var(--gold),var(--gold-lt));}
+  .concept-card.model::before{background:linear-gradient(90deg,var(--teal),var(--teal-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(129,140,248,.4);box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+  .concept-points{list-style:none;}
+  .concept-points li{font-size:13px;line-height:1.75;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'✦';color:var(--primary);flex-shrink:0;font-size:10px;margin-top:3px;}
+
+  /* ── ASSESS / INFO ── */
+  .two-col{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-indigo{background:rgba(129,140,248,.15);color:var(--primary);}
+  .tag-gold{background:rgba(251,191,36,.15);color:var(--gold);}
+  .tag-rose{background:rgba(251,113,133,.15);color:var(--rose);}
+  .tag-teal{background:rgba(45,212,191,.15);color:var(--teal);}
+  .tag-sage{background:rgba(134,239,172,.15);color:var(--sage);}
+  .blist{list-style:none;}
+  .blist li{font-size:13px;line-height:1.75;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .blist li:last-child{border-bottom:none;}
+  .blist li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── ALERT/TIP/INFO BOXES ── */
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--teal-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--primary-lt);display:flex;gap:10px;}
+  .gold-box{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--gold-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+
+  /* ── TOPIC TABS ── */
+  .topic-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .topic-panel{display:none;animation:fadeIn .3s ease;}
+  .topic-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .tc-header{padding:22px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .tc-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .tc-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .tc-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  .ds-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .ilist{list-style:none;}
+  .ilist li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .ilist li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+
+  /* ── FOUR WAY GRID ── */
+  .fw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px;}
+  .fw-card{border-radius:12px;padding:16px;text-align:center;}
+  .fw-card.g{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);}
+  .fw-card.r{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);}
+  .fw-card.t{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25);}
+  .fw-card.i{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.25);}
+  .fw-icon{font-size:22px;margin-bottom:8px;}
+  .fw-label{font-size:12px;font-weight:700;margin-bottom:6px;}
+  .fw-card.g .fw-label{color:var(--gold);}
+  .fw-card.r .fw-label{color:var(--rose);}
+  .fw-card.t .fw-label{color:var(--teal);}
+  .fw-card.i .fw-label{color:var(--primary);}
+  .fw-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+
+  /* ── RELIGION TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(129,140,248,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(129,140,248,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(129,140,248,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:20px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .q-block{background:rgba(129,140,248,.06);border:1px solid rgba(129,140,248,.18);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.18);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.85;color:var(--text);}
+  .answer-content.open{display:block;}
+
+  /* ── FULL CARD / FLOW ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:100px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);border-radius:12px;padding:14px 10px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 5px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(129,140,248,.5);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-gold{font-style:normal;color:var(--gold);font-weight:600;}
+  em.hl-teal{font-style:normal;color:var(--teal);font-weight:600;}
+  em.hl-sage{font-style:normal;color:var(--sage);font-weight:600;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.fw-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.concept-grid,.two-col,.np-grid{grid-template-columns:1fr;}.tc-body{grid-template-columns:1fr;}.fw-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:272px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}.hero{padding-top:20px;}.hero h1{font-size:26px;}.topic-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:6px 12px;}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:60px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.case-panel{padding:16px;}.fw-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">靈性照護<br>Spiritual Care</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts"   class="nav-item active"><span class="nav-icon">✨</span><span class="nav-label"> 靈性核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 靈性評估工具</span></a>
+  <a href="#topics"     class="nav-item"><span class="nav-icon">🌿</span><span class="nav-label"> 靈性照護主題</span></a>
+  <a href="#topics" onclick="switchTab('distress')"   class="nav-sub">→ 靈性困擾識別與介入</a>
+  <a href="#topics" onclick="switchTab('religion')"   class="nav-sub">→ 宗教信仰與臨床照護</a>
+  <a href="#topics" onclick="switchTab('dying')"      class="nav-sub">→ 臨終靈性照護</a>
+  <a href="#topics" onclick="switchTab('nurse')"      class="nav-sub">→ 護理師靈性自我照護</a>
+  <a href="#nursing"    class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#cases"      class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第九單元</div>
+    <h1>靈性照護<br><em>Spiritual Care</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Spirituality · Meaning · End-of-Life</div>
+    <div class="hero-quote">「護理照護的本質，是陪伴一個人走過疾病的黑暗，直到他自己能看見微光。」<br><span style="font-size:13px;opacity:.7;">── 改寫自 Florence Nightingale</span></div>
+    <div class="hero-pills">
+      <span class="pill pill-indigo">✨ 靈性健康</span>
+      <span class="pill pill-gold">🕯️ 生命意義</span>
+      <span class="pill pill-rose">💫 臨終陪伴</span>
+      <span class="pill pill-teal">🌿 整體照護</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">靈性核心概念</div>
+        <div class="section-en">Definitions · Dimensions · Theoretical Frameworks</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+
+      <div class="concept-card def">
+        <div class="concept-icon">✨</div>
+        <div class="concept-title">靈性的定義</div>
+        <div class="concept-en">Defining Spirituality in Healthcare</div>
+        <ul class="concept-points">
+          <li><em class="hl">靈性</em>（Spirituality）：尋求生命意義、目的、與超越自我連結的內在驅力（WHO 1998）</li>
+          <li>靈性 ≠ 宗教（Religion）；有宗教信仰者有靈性，無信仰者也有靈性</li>
+          <li>靈性健康四維度：意義感（Meaning）、希望感（Hope）、愛與連結（Love & Connection）、超越感（Transcendence）</li>
+          <li>疾病是靈性危機的觸發點——打破個人對生命的假設與控制感</li>
+          <li>靈性照護是全人照護（Holistic Care）不可缺的第四個維度</li>
+          <li>全人照護：身體（Physical）+ 心理（Psychological）+ 社會（Social）+ <em class="hl">靈性（Spiritual）</em></li>
+        </ul>
+      </div>
+
+      <div class="concept-card dim">
+        <div class="concept-icon">🌿</div>
+        <div class="concept-title">靈性健康的維度</div>
+        <div class="concept-en">Dimensions of Spiritual Well-being</div>
+        <ul class="concept-points">
+          <li><em class="hl-gold">意義與目的（Meaning/Purpose）</em>：「我的生命有何意義？」「這場病告訴我什麼？」</li>
+          <li><em class="hl-teal">希望（Hope）</em>：未來導向的積極期待；末期病人希望可能從「痊癒」轉向「平靜離世」</li>
+          <li><em class="hl-rose">愛與被愛（Love & Belonging）</em>：與重要他人、社群、神聖存在的連結</li>
+          <li><em class="hl">超越（Transcendence）</em>：超越自我、疾病、甚至死亡的感受；與宇宙/神的連結</li>
+          <li><em class="hl-sage">和解（Reconciliation）</em>：與自己、他人、神和好；化解舊有怨恨與愧疚</li>
+          <li>靈性健康是動態的——在疾病過程中隨時變動，需要持續評估</li>
+        </ul>
+      </div>
+
+      <div class="concept-card model">
+        <div class="concept-icon">📖</div>
+        <div class="concept-title">理論框架與護理模式</div>
+        <div class="concept-en">Theoretical Frameworks for Spiritual Care Nursing</div>
+        <ul class="concept-points">
+          <li><em class="hl-teal">Watson人文關懷理論</em>（1979）：護理的本質是關懷（Caring）；照護是靈性行為</li>
+          <li><em class="hl">Travelbee人際關係理論</em>（1966）：護理透過治療性人際關係協助個案找到疾病意義</li>
+          <li><em class="hl-gold">Frankl意義治療</em>（Logotherapy）：即便在苦難中，人仍能選擇自己的態度並找到意義</li>
+          <li><em class="hl-rose">Kübler-Ross哀傷理論</em>：五階段（否認→憤怒→協議→憂鬱→接受）也是靈性歷程</li>
+          <li>護理師不需要是神職人員——真誠的存在（Authentic Presence）即是靈性護理的核心</li>
+          <li>靈性護理的三個層次：傾聽與陪伴、連結資源（院牧）、轉介靈性照顧專業人員</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Spiritual vs Religious -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="card-title">🕯️ 靈性 vs 宗教——關鍵區別</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:14px;">
+        <div style="background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.22);border-radius:12px;padding:20px;">
+          <div style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;">✨ 靈性（Spirituality）</div>
+          <ul class="blist">
+            <li>普世性——所有人皆有，無論是否有信仰</li>
+            <li>個人化——每人獨特的意義追尋之旅</li>
+            <li>不依附於特定宗教形式或機構</li>
+            <li>關注：意義、目的、連結、超越</li>
+            <li>可透過自然、藝術、音樂、人際關係獲得</li>
+            <li>臨終時往往更顯著——生命的核心問題浮現</li>
+          </ul>
+        </div>
+        <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:20px;">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px;">🙏 宗教（Religion）</div>
+          <ul class="blist">
+            <li>組織化的信仰系統——有特定教義、儀式、社群</li>
+            <li>提供靈性表達的框架與語言</li>
+            <li>宗教實踐是許多人靈性滋養的重要來源</li>
+            <li>有信仰不一定代表有靈性健康（可能有靈性困擾）</li>
+            <li>無信仰者也可能有深刻的靈性生活</li>
+            <li>護理師評估時應開放探詢，不預設立場</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:14px;">
+        <span class="alert-icon">💡</span>
+        <span>臨床要訣：問病人「<em class="hl">您有任何信仰或靈修實踐，對您生活有重要意義嗎？</em>」比直接問「您信什麼教？」更具包容性，也更能接觸到靈性需求的核心</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#b45309,#fbbf24);">2</div>
+      <div>
+        <div class="section-title">靈性評估工具</div>
+        <div class="section-en">Spiritual Assessment: FICA · HOPE · SPIRITual History · Signs of Distress</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-title">📋 FICA 靈性評估模式 <span class="tag tag-indigo">最廣泛使用</span></div>
+        <ul class="blist">
+          <li><em class="hl">F — Faith / Belief</em>：「您有宗教信仰或靈性方面的信念嗎？您如何稱呼它？」</li>
+          <li><em class="hl">I — Importance / Influence</em>：「這對您的生活有多重要？它如何影響您面對疾病的方式？」</li>
+          <li><em class="hl">C — Community</em>：「您有宗教或靈修社群嗎？這個社群對您提供支持嗎？」</li>
+          <li><em class="hl">A — Address</em>：「您希望我們在照護計畫中如何處理這些靈性需求？您需要院牧嗎？」</li>
+        </ul>
+        <div class="tip-box">
+          <span class="alert-icon">💡</span>
+          <span>FICA 不是要詢問病人「信什麼」，而是了解靈性信念如何<em class="hl-teal">影響病人的照護決策</em>，以及他們需要什麼支持</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="card-title">📋 HOPE 靈性評估模式 <span class="tag tag-gold">補充工具</span></div>
+        <ul class="blist">
+          <li><em class="hl-gold">H — Hope</em>：「在您的生命中，希望的來源是什麼？是什麼讓您撐下去？」</li>
+          <li><em class="hl-gold">O — Organised Religion</em>：「您屬於任何宗教或靈修組織嗎？它對您有幫助嗎？」</li>
+          <li><em class="hl-gold">P — Personal Practice</em>：「您有個人的靈修實踐嗎，例如禱告、靜坐、冥想？」</li>
+          <li><em class="hl-gold">E — Effects on Care</em>：「您的信仰或靈性觀點是否影響您的醫療決定？有沒有禁忌我需要知道？」</li>
+        </ul>
+        <div class="info-box">
+          <span class="alert-icon">💡</span>
+          <span>HOPE 特別適合在醫療諮商或入院評估時使用，能有效識別影響治療決策的靈性因素</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="card-title">🔍 靈性困擾識別指標 <span class="tag tag-rose">評估要點</span></div>
+        <ul class="blist">
+          <li><em class="hl-rose">語言線索</em>：「為什麼是我？」「我這輩子沒做壞事，憑什麼？」「活著還有什麼意義？」</li>
+          <li><em class="hl-rose">行為線索</em>：拒絕治療（「聽天由命」）；過度哭泣；社交退縮；拒絕宗教支持（過去依賴者）</li>
+          <li><em class="hl-rose">情緒線索</em>：深層存在性焦慮（不同於一般焦慮）；空虛感；絕望；憤怒指向神</li>
+          <li>關係切斷：感覺被神遺棄；感覺與過去所有意義脫節</li>
+          <li>道德/倫理困擾：「這是我的報應」；罪惡感；無法原諒自己</li>
+          <li>生命回顧困難：對過去充滿遺憾而無法和解</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <div class="card-title">🧭 靈性照護的護理師角色 <span class="tag tag-teal">實務指引</span></div>
+        <ul class="blist">
+          <li><em class="hl">Level 1 — 所有護理師</em>：傾聽、識別靈性需求、尊重信仰、連結資源</li>
+          <li><em class="hl">Level 2 — 進階護理師</em>：完整靈性評估、引導生命回顧、支持「四道」</li>
+          <li><em class="hl">Level 3 — 靈性照顧專業</em>：院牧（Chaplain）、靈性輔導師、宗教人員</li>
+          <li>護理師的核心靈性照護行為：<em class="hl-teal">存在性的陪伴</em>——只是在場、不急著解決、接納沉默</li>
+          <li>「治療性存在」（Therapeutic Presence）：帶著全然的注意力與同在感陪伴病人</li>
+          <li>文化謙遜：承認自身靈性與文化局限；持續學習</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FICA Flowchart -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="card-title">🔄 靈性評估到照護計畫的完整流程</div>
+      <div class="flow-container">
+        <div class="flow-step"><div class="flow-step-num">識別時機</div><div class="flow-step-text">入院、病情變化、術前、末期診斷後、病人主動提起</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">FICA評估</div><div class="flow-step-text">開放性問題；傾聽為主；不急著解決問題</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">識別需求</div><div class="flow-step-text">靈性資源？靈性困擾？特殊儀式需求？影響治療決策？</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">照護計畫</div><div class="flow-step-text">納入護理計畫；通知院牧；協調宗教儀式；告知全團隊</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">持續評估</div><div class="flow-step-text">靈性需求隨病程變化；定期重新評估；記錄於護理紀錄</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TOPICS -->
+  <section class="section" id="topics">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#4338ca,#818cf8);">3</div>
+      <div>
+        <div class="section-title">靈性照護主題</div>
+        <div class="section-en">Spiritual Distress · Religion · Dying · Nurse Self-Care</div>
+      </div>
+    </div>
+
+    <div class="topic-tabs">
+      <button class="tab-btn active" onclick="switchTab('distress')">💔 靈性困擾介入</button>
+      <button class="tab-btn" onclick="switchTab('religion')">🙏 宗教信仰與照護</button>
+      <button class="tab-btn" onclick="switchTab('dying')">🕊️ 臨終靈性照護</button>
+      <button class="tab-btn" onclick="switchTab('nurse')">🌿 護理師靈性自照</button>
+    </div>
+
+    <!-- DISTRESS -->
+    <div class="topic-panel active" id="panel-distress">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">靈性困擾：識別、評估與護理介入</div><div class="tc-en">Spiritual Distress: Assessment & Nursing Intervention</div></div>
+          <span class="tag tag-rose">NANDA 護理診斷</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">NANDA 靈性困擾定義與特徵</div>
+            <ul class="ilist">
+              <li>NANDA定義：無法在生活中整合意義與目的，或體驗超越感的受損狀態</li>
+              <li><em class="hl">主要特徵</em>：質疑生命意義（「活著為什麼？」）；表達空虛或絕望</li>
+              <li>對疾病或治療表達憤怒（對神/命運）：「為什麼神讓我生這個病？」</li>
+              <li>無法參與原本有意義的宗教儀式（病情限制或信仰動搖）</li>
+              <li>表達對死後世界的深度恐懼</li>
+              <li>表達愧疚感、自責、無法原諒自己</li>
+              <li>哭泣、呻吟、無法安靜</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">相關因素（Risk Factors）</div>
+            <ul class="ilist">
+              <li>末期診斷；癌症；慢性致殘疾病</li>
+              <li>重大失落：死亡、離婚、失業</li>
+              <li>與信仰社群失去連結</li>
+              <li>長期住院、孤立</li>
+              <li>未解決的道德/倫理困境</li>
+              <li>過去靈性創傷（宗教傷害/Religious Trauma）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理介入——陪伴的藝術</div>
+            <ul class="ilist">
+              <li><em class="hl">第一步：創造安全空間</em>——降低環境干擾、坐下來、保持眼神接觸、表明有時間</li>
+              <li>開放性引導：「您現在心裡最擔心的是什麼？」（而非直接問靈性問題）</li>
+              <li><em class="hl">積極傾聽（Active Listening）</em>：反映（Reflection）、摘要（Summary）、確認（Validation）</li>
+              <li>沉默的力量：允許沉默存在；不要急著填補空白</li>
+              <li>不急著給答案：靈性問題無標準答案；陪伴比答案更重要</li>
+              <li>存在性問題回應技巧：「這個問題您想了很久了嗎？」（重新聚焦在病人身上）</li>
+              <li>生命回顧（Life Review）：協助病人回顧並重新詮釋生命故事</li>
+              <li>意義再建構（Meaning-Making）：「在這段生病的過程中，您有什麼發現或學到的嗎？」</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span><em class="hl-rose">靈性困擾不等於憂鬱症</em>，但兩者常共存。若出現持續情緒低落、無法進食、失眠、自傷意念 → 同時需要精神科/心理師評估。靈性照護是輔助，非取代心理健康治療</span>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">四道人生的臨床應用</div>
+            <div class="fw-grid" style="margin-top:8px;">
+              <div class="fw-card g">
+                <div class="fw-icon">🙏</div>
+                <div class="fw-label">道謝</div>
+                <div class="fw-desc">「謝謝您這輩子對我的照顧」<br>對生命中恩人表達感謝</div>
+              </div>
+              <div class="fw-card r">
+                <div class="fw-icon">❤️</div>
+                <div class="fw-label">道愛</div>
+                <div class="fw-desc">「我愛你，你讓我的生命有了意義」<br>表達深層的愛與珍惜</div>
+              </div>
+              <div class="fw-card t">
+                <div class="fw-icon">🤝</div>
+                <div class="fw-label">道歉</div>
+                <div class="fw-desc">「我對不起你，請原諒我」<br>化解舊有遺憾與罪惡感</div>
+              </div>
+              <div class="fw-card i">
+                <div class="fw-icon">👋</div>
+                <div class="fw-label">道別</div>
+                <div class="fw-desc">「再見，放心去吧」<br>道別讓分離有完整的儀式感</div>
+              </div>
+            </div>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>護理師如何促進「四道」：<em class="hl-teal">詢問未竟之事</em>——「有沒有什麼話您想對某個人說，但還沒有機會說？」如病人意願，可協助安排會面或電話</span>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">特殊靈性困擾類型</div>
+            <ul class="ilist">
+              <li><em class="hl-gold">道德傷（Moral Injury）</em>：因違背個人道德價值觀的行為（自己或他人）造成的靈性創傷；常見於護理師、退伍軍人、ICU工作人員</li>
+              <li><em class="hl-rose">宗教創傷（Religious Trauma Syndrome）</em>：過去被宗教傷害的病人，對「靈性照護」有強烈抵拒 → 需以非宗教語言探索靈性</li>
+              <li><em class="hl">存在性孤寂（Existential Loneliness）</em>：感覺沒有人能真正理解自己的孤獨 → 治療性陪伴是唯一的藥</li>
+              <li>靈性急症（Spiritual Emergency）：急劇的靈性崩潰；需即時介入；轉介院牧</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELIGION -->
+    <div class="topic-panel" id="panel-religion">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">宗教信仰與臨床護理照護</div><div class="tc-en">Religious Beliefs & Clinical Nursing Care</div></div>
+          <span class="tag tag-gold">跨宗教照護</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">台灣主要宗教臨床照護要點</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>宗教</th><th>臨終觀</th><th>重要儀式/禁忌</th><th>護理配合</th></tr>
+              <tr>
+                <td><em class="hl-gold">佛教</em></td>
+                <td>輪迴轉世；臨終意識影響來世去向</td>
+                <td>助念（念阿彌陀佛）；往生後勿觸碰8小時（助念期間）；素食偏好</td>
+                <td>提供安靜環境；允許念佛機；協助法師探訪；告知家屬8小時請求</td>
+              </tr>
+              <tr>
+                <td><em class="hl-teal">道教</em></td>
+                <td>回歸自然；魂魄升天；神明庇佑</td>
+                <td>特定吉時移靈；燒香拜拜；紙錢祭品；不宜單數（四）</td>
+                <td>協調儀式空間；尊重吉時移靈需求；允許香（防火評估）</td>
+              </tr>
+              <tr>
+                <td><em class="hl">基督教</em></td>
+                <td>靈魂升天堂；復活；基督救贖</td>
+                <td>禱告（隨時）；讀聖經；牧師探訪；聖餐</td>
+                <td>允許探訪；提供隱私禱告空間；協調聖餐（禁食前確認）</td>
+              </tr>
+              <tr>
+                <td><em class="hl-rose">天主教</em></td>
+                <td>天堂/煉獄；復活；終傅聖事重要</td>
+                <td>病人傅油（終傅聖事，臨終重要）；告解；神父探訪；十字架/聖牌</td>
+                <td>緊急聯繫神父（終傅）；保持隨身聖物；週日望彌撒（若可能）</td>
+              </tr>
+              <tr>
+                <td><em class="hl-gold">伊斯蘭</em></td>
+                <td>阿拉的意志；天堂（Jannah）；末日審判</td>
+                <td>面向麥加祈禱（5次/天）；清真飲食（Halal）；同性護理偏好；往生後清洗儀式（Ghusl）</td>
+                <td>標示麥加方向；清真飲食申請；同性護理安排；快速往生儀式（24h內）</td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <div class="ds-title">宗教護理敏感情境處理</div>
+            <ul class="ilist">
+              <li><em class="hl-rose">輸血拒絕（耶和華見證人）</em>：尊重有決策能力成人的拒絕權；建立書面紀錄；探討無血手術選項；若為兒童 → 醫療倫理委員會</li>
+              <li><em class="hl-gold">飲食禁忌（齋戒月/清真/素食）</em>：提前與膳食部門溝通；評估能否配合用藥時間（Ramadan影響口服藥物）</li>
+              <li><em class="hl">禱告/儀式請求</em>：盡量不在手術/治療期間打斷；提前告知排程；提供隱私空間</li>
+              <li>拒絕屍體解剖（部分宗教）：尊重；與法醫/主治醫師協調</li>
+              <li>移植/器官捐贈不同宗教觀點各異：提供資訊但不施壓</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span><em class="hl-rose">文化刻板印象的陷阱</em>：同一宗教內個體差異極大。不要因為病人是佛教徒就假設他要吃素；因為是天主教徒就假設要終傅聖事。永遠先<em class="hl-rose">詢問個人</em>的需求與偏好</span>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">院牧服務（Chaplaincy）</div>
+            <ul class="ilist">
+              <li>院牧（Hospital Chaplain）：不代表特定宗教；服務所有信仰的病人及家屬</li>
+              <li>轉介時機：病人要求、末期診斷、靈性困擾、死亡後家屬、宗教儀式需求</li>
+              <li>院牧與護理師的協作：護理師是「第一接觸者」、識別需求者；院牧是「深度靈性照護」提供者</li>
+              <li>無宗教信仰病人也可以請院牧：院牧提供的是靈性陪伴，不一定是宗教服務</li>
+              <li>緊急院牧服務：24小時待命（許多醫院）；臨終前後立即需求</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">宗教實踐與醫療決策的交集</div>
+            <ul class="ilist">
+              <li>「命運/業力」觀點 → 可能延遲就醫（「這是命，沒辦法」）；護理師應探索而非直接挑戰</li>
+              <li>「神蹟信念」 → 拒絕化療等待神蹟；同理聆聽；連結支持；分享現實信息</li>
+              <li>臨終告知 → 部分文化/宗教認為告知診斷會「帶來不好」；以病人自主權為核心</li>
+              <li>禱告/冥想 → 補充療法；通常無害；有些有減壓實證；尊重並支持</li>
+              <li>安息日（禁止特定治療）：選擇性治療提前安排；緊急治療生命優先</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYING -->
+    <div class="topic-panel" id="panel-dying">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">臨終靈性照護</div><div class="tc-en">Spiritual Care at End of Life</div></div>
+          <span class="tag tag-teal">安寧靈性</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">臨終靈性需求</div>
+            <ul class="ilist">
+              <li><em class="hl">接近死亡時靈性需求最強烈</em>：WHO指出靈性痛苦是末期病人最被忽視的痛苦</li>
+              <li>整體疼痛（Total Pain）的靈性維度：再次強調——止痛藥只能處理身體痛，靈性痛苦需要靈性介入</li>
+              <li>臨終靈性需求類型：
+                <br>・尋求意義（「我這一生有什麼意義？」）
+                <br>・希望（尋找有別於「痊癒」的希望）
+                <br>・和解（與人、與神、與自己）
+                <br>・連結（不想孤獨死去）
+                <br>・超越（對「之後」的某種確信或接受）
+              </li>
+              <li>Byock「臨終的四件禮物」：原諒我（Forgive me）、我原諒你（I forgive you）、謝謝你（Thank you）、我愛你（I love you）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">臨終陪伴的護理實踐</div>
+            <ul class="ilist">
+              <li><em class="hl">治療性存在（Therapeutic Presence）</em>：全然在場；放下手中事物；坐下；有眼神接觸</li>
+              <li>允許沉默：末期病人有時只需要有人「在」，不需要說話</li>
+              <li>聽覺是最後消失的感官：<em class="hl">即使昏迷也繼續說話</em>——「您很安全，家人都在」</li>
+              <li>觸碰：握手、輕撫額頭（徵得同意後）——傳遞安全感與連結</li>
+              <li>不急著「解決」死亡恐懼：陪伴比解釋更有力量</li>
+              <li>告知家屬陪伴方式：播放喜歡的音樂；說熟悉的故事；讀宗教文本</li>
+            </ul>
+            <div class="gold-box">
+              <span class="alert-icon">✨</span>
+              <span>臨終護理中最深刻的靈性行動往往不是說什麼，而是<em class="hl-gold">如何存在</em>——帶著尊重、溫柔、和完整的注意力，陪伴另一個人走過生命的最後旅程</span>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">臨終徵象與靈性陪伴整合</div>
+            <ul class="ilist">
+              <li>陳施式呼吸（Cheyne-Stokes）：告知家屬這是臨終正常現象；讓家屬繼續說話</li>
+              <li>皮膚花斑（Mottling）：末梢循環減退；體溫降低 → 保暖毯子；繼續握手陪伴</li>
+              <li>意識減退：不代表聽不見；繼續靈性陪伴</li>
+              <li>「死前視見」（Nearing Death Awareness）：病人看見已故親人或描述旅程意象 → 不否認（「這只是幻覺」）；傾聽並給予肯定回應</li>
+              <li>臨終前的平靜：許多病人在臨終前有一段平靜期 → 珍貴的「四道」時機</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">往生後靈性照護（遺體照護與家屬）</div>
+            <ul class="ilist">
+              <li>遺體照護的靈性意涵：以尊嚴、溫柔對待遺體 → 這是對整個生命的最後敬意</li>
+              <li>告知家屬：溫和、清晰、有人陪伴地告知死亡 → 提供哀傷支持</li>
+              <li>宗教儀式配合：各宗教往生儀式（8小時不動/清洗儀式/最後祈禱）需及時配合</li>
+              <li>家屬告別時間：提供充足、隱私的空間讓家屬道別</li>
+              <li>護理師自我照護：在往生照護後，護理師也需要空間處理自己的情緒</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NURSE SELF CARE -->
+    <div class="topic-panel" id="panel-nurse">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">護理師靈性自我照護</div><div class="tc-en">Nurse Spiritual Self-Care & Compassion Fatigue Prevention</div></div>
+          <span class="tag tag-sage">自我照護</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">憐憫疲憊（Compassion Fatigue）</div>
+            <ul class="ilist">
+              <li>定義：長期暴露於他人的痛苦與創傷，導致護理師本身情感耗竭的狀態</li>
+              <li>與職業倦怠（Burnout）的差別：Burnout源於工作環境壓力；CF源於情感接觸的代價（Cost of Caring）</li>
+              <li><em class="hl-rose">症狀</em>：情緒麻木、去個人化（把病人視為「5床」而非人）、喪失同理心、職業成就感下降、身心症狀</li>
+              <li>高危護理情境：腫瘤科、安寧病房、ICU、急診、兒科——長期陪伴死亡與苦難</li>
+              <li>道德傷（Moral Injury）：因系統限制無法給予理想照護而產生的靈性創傷</li>
+              <li>評估工具：Compassion Fatigue Inventory（CFI）；ProQOL量表</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理師靈性健康自我照護策略</div>
+            <ul class="ilist">
+              <li><em class="hl-teal">正念（Mindfulness）</em>：臨床正念——在忙碌中保持覺察；不把工作的情緒帶回家</li>
+              <li><em class="hl">意義的定期再確認</em>：「我為什麼當護理師？」回到職業初衷</li>
+              <li><em class="hl-gold">儀式性分離</em>：下班前的過渡儀式（換衣服、深呼吸、簡短回顧）；象徵性地「放下」工作</li>
+              <li>同儕支持圈：定期討論困難個案的情緒影響；非批判性分享</li>
+              <li>督導（Clinical Supervision）：定期與資深護理師或心理師的專業督導</li>
+              <li>身體照護：規律睡眠、運動、飲食 → 身體健康是靈性健康的基礎</li>
+              <li>創意表達：藝術、音樂、寫作 → 處理照護中無法言說的情緒</li>
+              <li><em class="hl-rose">設定界限</em>：界限不是不在乎，而是可持續地在乎</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理師自身的靈性議題</div>
+            <ul class="ilist">
+              <li>護理師對死亡的個人觀點 → 影響臨終照護的品質（需自我覺察）</li>
+              <li>個人未處理的失落經驗 → 可能在照護臨終病人時被觸動 → 需要督導或諮商</li>
+              <li>護理師自己的靈性需求：問問自己——「我有什麼讓我的工作有意義的信念？」</li>
+              <li>護理是一種靈性召喚（Vocation/Calling）：不只是職業，而是意義的體現</li>
+              <li>護理師有權利在照護工作中尋找自己的意義與滿足——這不是軟弱</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>護理師的靈性健康不是奢侈品，而是維持優質病人照護的基本條件。一個<em class="hl-teal">靈性健康的護理師</em>才能持續給予病人真誠的靈性陪伴</span>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">陪伴死亡後的情緒處理</div>
+            <ul class="ilist">
+              <li>允許自己有情緒：護理師在病人往生後感到悲傷是正常的、人性的</li>
+              <li>簡短儀式：許多ICU/安寧病房有「往生儀式」（如默哀30秒）——有助護理師處理</li>
+              <li>避免壓抑：把情緒「藏著」最終造成憐憫疲憊</li>
+              <li>記錄儀式：有些護理師寫簡短的記憶便條 → 承認病人生命的意義</li>
+              <li>特別艱難的往生：兒童死亡、意外死亡、病人與護理師有深厚關係 → 需要更多支持</li>
+              <li>團隊討論（Debriefing）：困難個案的結構性討論；不只討論醫療過程，也討論情緒影響</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#b45309,#fbbf24);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">NANDA Nursing Diagnoses in Spiritual Care</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(129,140,248,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">靈性困擾</div><div class="np-cause">Spiritual Distress ／與疾病衝擊生命意義、宗教信仰受挑戰有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>FICA完整靈性評估；識別困擾來源（意義喪失/憤怒/罪惡感）</li>
+          <li>創造安全空間；傾聽不急著給答案；允許沉默與哭泣</li>
+          <li>支持生命回顧；意義再建構；「四道人生」促進</li>
+          <li>轉介院牧或宗教人員（依病人意願）</li>
+          <li>記錄並告知全照護團隊靈性需求與介入計畫</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--gold);">2</div>
+          <div><div class="np-title">靈性健康強化的意願</div><div class="np-cause">Readiness for Enhanced Spiritual Well-being ／病人主動尋求靈性成長</div></div>
+        </div>
+        <ul class="np-items">
+          <li>肯定病人的靈性追求；支持其靈修實踐（禱告/冥想/靜坐）</li>
+          <li>提供靈性成長資源（院牧服務、靈修讀物）</li>
+          <li>協助連結靈性社群；病人宗教/靈修社群探訪安排</li>
+          <li>疾病作為靈性成長機會的重新框架（Reframing）</li>
+          <li>支持病人分享靈性體驗；不批判、不評價</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">3</div>
+          <div><div class="np-title">死亡焦慮</div><div class="np-cause">Death Anxiety ／與末期診斷、對死後未知的恐懼有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>開放性探索死亡焦慮的具體內容（怕什麼？）；不假設</li>
+          <li>傾聽與同理；不提供虛假保證（「你不會死的」）</li>
+          <li>提供確定性：「不論如何，我們的目標是讓您舒適、有尊嚴」</li>
+          <li>靈性資源整合：宗教信仰、院牧、靈修實踐作為支持來源</li>
+          <li>預立醫療討論：未竟之事處理；道謝道愛道別道歉</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(45,212,191,.2);color:var(--teal);">4</div>
+          <div><div class="np-title">絕望感</div><div class="np-cause">Hopelessness ／與生命意義喪失、疾病預後差有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估絕望的具體表現（放棄治療、拒食、沉默退縮）</li>
+          <li>探索希望的不同形式：末期病人的希望可從「痊癒」轉向「平靜」「有尊嚴」「陪伴家人」</li>
+          <li>小希望的累積：每天找到一件有意義的事</li>
+          <li>生命回顧：重拾對過去成就的意義感</li>
+          <li>排除憂鬱症（PHQ-9）；必要時精神科/心理師合作介入</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(134,239,172,.2);color:var(--sage);">5</div>
+          <div><div class="np-title">存在性孤寂（社交孤立）</div><div class="np-cause">Social Isolation / Existential Loneliness ／與疾病、住院、靈性感連結喪失有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>識別存在性孤寂（不同於一般孤單）：「感覺沒有人能真正懂我」</li>
+          <li>治療性陪伴：定期且真誠的存在性接觸（不只技術性護理）</li>
+          <li>連結靈性社群；院牧服務；宗教探訪</li>
+          <li>家屬衛教：陪伴的方式（不需要說什麼，只要在）</li>
+          <li>藝術/音樂/寵物療法 → 非語言的連結方式</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(129,140,248,.2);color:var(--primary);">6</div>
+          <div><div class="np-title">道德困擾</div><div class="np-cause">Moral Distress ／與治療選擇的道德衝突、宗教信念與醫療建議不一致有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>傾聽道德困擾的具體內容；不批判病人的價值觀</li>
+          <li>澄清價值觀：「在這個情況下，對您最重要的是什麼？」</li>
+          <li>倫理諮詢：提請醫療倫理委員會（複雜決策）</li>
+          <li>協調靈性需求與醫療建議（協商，非強迫）</li>
+          <li>記錄病人的價值觀與決策過程；尊重知情拒絕</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--gold);">7</div>
+          <div><div class="np-title">哀傷（預期性/實際性）</div><div class="np-cause">Grieving ／與失落、疾病帶來的各種失去有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>正常化哀傷：讓病人/家屬知道哀傷是對失落的自然反應</li>
+          <li>允許哭泣；不轉移話題；提供紙巾（小動作傳遞接納）</li>
+          <li>複雜性哀傷評估：持續&gt;6個月，嚴重功能障礙→轉介</li>
+          <li>靈性框架支持哀傷：讓病人用自己的信仰語言處理失落</li>
+          <li>往生後家屬哀傷支持：30天/3個月/1年電話追蹤</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(45,212,191,.2);color:var(--teal);">8</div>
+          <div><div class="np-title">護理師憐憫疲憊風險</div><div class="np-cause">Risk for Compassion Fatigue ／與長期照護臨終病人、情感耗竭有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>ProQOL量表定期自我評估；識別早期警示徵象</li>
+          <li>正念練習整合進日常護理；臨床正念</li>
+          <li>困難個案後的結構性Debriefing；不孤軍奮戰</li>
+          <li>督導機制；資深護理師定期一對一督導</li>
+          <li>機構層面：充足人力配置；允許護理師表達情緒；建立支持文化</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#4338ca,#818cf8);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies in Spiritual Nursing</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：「為什麼是我？」</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：宗教拒絕輸血</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：臨終「死前視見」</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：護理師的憐憫疲憊</button>
+      </div>
+
+      <!-- CASE 1 -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>吳女士，46歲，乳癌第四期（骨轉移），已確認預後約3–6個月。今天回診後，吳女士坐在候診椅上沉默許久，護理師注意到她眼眶通紅。護理師坐下來問她：「您還好嗎？」吳女士說：<strong>「我從來沒有做過壞事，為什麼偏偏是我？我最小的孩子才11歲，我不能死……我不能接受這件事。」</strong>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 識別吳女士的靈性困擾類型，分析其內心正在面對的靈性議題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>靈性困擾類型分析：</strong><br><br>
+            <strong>① 生命意義的質疑（Questioning Life Meaning）</strong><br>
+            → 「從來沒有做過壞事，為什麼偏偏是我？」<br>
+            → 內在邏輯被打破：「好人應該有好報」的信念崩潰<br>
+            → 這是<em class="hl">存在性危機</em>（Existential Crisis）的核心<br><br>
+            <strong>② 憤怒與控訴（Anger）</strong><br>
+            → 憤怒指向命運、神、宇宙的不公<br>
+            → 憤怒是哀傷過程的正常一部分（Kübler-Ross第二階段）<br><br>
+            <strong>③ 與重要他人的連結（Connection）</strong><br>
+            → 「最小的孩子才11歲，我不能死」<br>
+            → 對離開孩子的恐懼；母親身份是她的意義核心<br>
+            → 無法接受 = 協議階段（Bargaining）嘗試<br><br>
+            <strong>NANDA護理診斷：</strong><br>
+            主要：<em class="hl">靈性困擾（Spiritual Distress）</em><br>
+            相關：死亡焦慮、預期性哀傷、絕望感風險
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師應如何當下回應？示範治療性溝通</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>治療性回應示範：</strong><br><br>
+            <strong>第一步：創造空間（非語言）</strong><br>
+            → 坐下（與她平視）；關掉手機；全然在場<br>
+            → 遞紙巾（接納她的眼淚，無須阻止）<br><br>
+            <strong>第二步：承認並反映情緒</strong><br>
+            → <em class="hl">「您說的讓我很有感觸。這樣的憤怒和不甘心，是很真實的——您一輩子努力做好事，卻要面對這件事，這真的不公平。」</em><br>
+            → 不說「我了解您的感受」（護理師沒有面對死亡，無法真正了解）<br>
+            → 不說「要振作」「要正向思考」<br><br>
+            <strong>第三步：探索最深的擔心</strong><br>
+            → 「您說到最小的孩子——您最擔心的是什麼？」<br>
+            → 讓她說；不急著「解決」<br><br>
+            <strong>第四步：陪伴而非解答</strong><br>
+            → 「這些問題沒有簡單的答案。但我想讓您知道，您不是一個人面對這些。」<br>
+            → 詢問是否需要院牧或心理師的支持<br><br>
+            <strong>不適當的回應：</strong><br>
+            ❌ 「您要想開一點」<br>
+            ❌ 「命運的事誰說得準呢？」<br>
+            ❌ 「您要為孩子堅強」（加重她的壓力）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 制定吳女士的靈性照護計畫，包含後續追蹤</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>靈性照護計畫：</strong><br><br>
+            <strong>短期目標（本次就診）：</strong><br>
+            → 感受到被接納與傾聽；不孤單<br>
+            → 確認是否需要即時危機資源<br><br>
+            <strong>護理介入：</strong><br>
+            ① <em class="hl">FICA評估</em>：「您有信仰或讓您感到支持的靈性實踐嗎？」<br>
+            ② 轉介社工：評估實際支持需求（孩子照顧安排）<br>
+            ③ 轉介院牧：詢問意願；探索存在性問題的深度陪伴<br>
+            ④ 轉介心理師：憂鬱篩查（PHQ-9）；哀傷輔導<br>
+            ⑤ 生命回顧計畫：整理對孩子的信/紀念冊等「意義遺產」<br><br>
+            <strong>長期目標（3–6個月）：</strong><br>
+            → 找到末期生命中可掌握的意義（陪伴孩子的每一天）<br>
+            → 完成對孩子的「禮物」（信件、影片、紀念物）<br>
+            → 四道的完成機會<br><br>
+            <strong>追蹤：</strong>每次回診評估心理靈性狀態；持續紀錄於護理計畫
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2 -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳先生，55歲，<strong>耶和華見證人信徒</strong>，因上消化道大出血急診。Hb 5.2 g/dL，血壓90/60 mmHg，HR 120 bpm，需要緊急輸血。<strong>陳先生清醒且有決策能力，明確表示：「我的信仰不允許我輸血，我拒絕輸血。」</strong>家屬（太太、兒子）在旁哭泣，要求醫療團隊「一定要救他，給他輸血」。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此情境的倫理與靈性議題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>倫理議題分析：</strong><br><br>
+            <strong>核心衝突：</strong><br>
+            → <em class="hl">自主原則</em>（Autonomy）vs 行善原則（Beneficence）vs 不傷害原則（Non-maleficence）<br><br>
+            <strong>病人自主（最高原則）：</strong><br>
+            → 陳先生<em class="hl">清醒且有決策能力</em>（Decisional Capacity）<br>
+            → 有能力的成人有<em class="hl">知情拒絕（Informed Refusal）</em>的權利<br>
+            → 台灣《醫療法》及《病人自主權利法》均保護此權利<br>
+            → <em class="hl-rose">家屬意見不能凌駕有能力病人的自身意願</em><br><br>
+            <strong>靈性議題：</strong><br>
+            → 輸血禁忌是耶和華見證人核心信仰（基於《聖經》解釋）<br>
+            → 強行輸血 = 靈性創傷 + 信仰背叛<br>
+            → 即便死亡，對信徒而言信仰純潔可能比生命更重要<br><br>
+            <strong>護理師的立場：</strong><br>
+            → 保護病人自主；確保知情同意；不批判其信仰<br>
+            → 支持家屬情緒；解釋法律現實
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師應採取哪些具體步驟？如何照顧家屬？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>護理師具體步驟：</strong><br><br>
+            <strong>① 確認決策能力</strong><br>
+            → 評估：陳先生是否了解拒絕輸血的後果（可能死亡）？是否出於信仰自願（非被脅迫）？<br>
+            → 確認後：<em class="hl">尊重其決定，記錄於病歷</em><br><br>
+            <strong>② 知情拒絕文件化</strong><br>
+            → 陳先生簽署拒絕輸血同意書（AMA/Against Medical Advice form）<br>
+            → 記錄溝通過程、病人的了解程度、自願性<br><br>
+            <strong>③ 探索替代方案</strong><br>
+            → 與醫師討論：Erythropoietin（EPO）、靜脈鐵劑、術中自體血回輸（Cell Saver）、凝血劑<br>
+            → 這些是許多耶和華見證人可接受的替代方案（需個別確認）<br><br>
+            <strong>④ 家屬照護</strong><br>
+            → 私下告知家屬：<em class="hl">「我理解您非常擔心，這對家人來說很痛苦。但法律上，一個清醒有能力的成人有權決定自己的醫療。我們正在盡一切可能提供替代治療。」</em><br>
+            → 提供情緒支持；院牧陪伴家屬<br><br>
+            <strong>⑤ 通知倫理委員會</strong><br>
+            → 有爭議時提請醫院倫理委員會（不是為了推翻病人決定，而是確保程序正當）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3 -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳奶奶，82歲，末期肺癌，安寧病房住院第5天，家屬已在身旁陪伴。今天下午陳奶奶突然從半昏睡中醒來，眼睛睜得很大，笑著看著床邊說：<strong>「媽媽，你來了！等一下，我就來了……」</strong>（她的母親已過世40年）。家屬非常驚慌，跑來問護理師：「她是不是神智不清了？這是幻覺嗎？要不要打鎮靜劑？」
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 解釋「死前視見」（Nearing Death Awareness）現象，並評估此情境</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>死前視見（Nearing Death Awareness, NDA）：</strong><br><br>
+            <strong>定義：</strong><br>
+            → 臨終前數天至數小時，病人描述看見或聽見已故親人、光、或對「旅程」的描述<br>
+            → 首先由 Callanan & Kelley 於1992年系統性記錄<br><br>
+            <strong>與譫妄的區別：</strong><br>
+            | | 死前視見 | 譫妄 |
+            |---|---|---|
+            | 情緒 | <em class="hl">平靜、喜悅、安慰</em> | 焦躁、恐懼、混亂 |
+            | 內容 | 已故親人、光、旅程 | 通常恐怖、無意義 |
+            | 反應 | 與「視見」互動，對家人友善 | 認不出家人、激動 |
+            | 清醒性 | 可能部分清醒 | 意識混亂 |<br><br>
+            <strong>此情境評估：</strong><br>
+            → 陳奶奶「眼睛睜得很大，笑著」——<em class="hl">安慰性的NDA</em>，非恐懼性譫妄<br>
+            → 不需要鎮靜劑（鎮靜可能剝奪她這個重要的靈性體驗）<br>
+            → 臨床意義：可能提示<em class="hl">死亡即將來臨</em>（數小時至數天）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師如何向家屬解釋此現象，並指導家屬陪伴方式？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>向家屬解釋死前視見：</strong><br><br>
+            <strong>先穩定家屬情緒：</strong><br>
+            → 「我知道您們剛才看到這一幕很驚嚇，請先深呼吸，我來告訴您們這是什麼。」<br><br>
+            <strong>解釋（溫和、去神秘化）：</strong><br>
+            → 「很多臨終的長輩會描述看見已故的家人，我們稱這為『死前視見』。醫療界已有許多記錄。」<br>
+            → <em class="hl">「請注意——她是笑著的，她看起來很平靜、很安慰。這不是痛苦，更不是可怕的幻覺。」</em><br>
+            → 「這通常代表她正在準備離開，而她媽媽似乎來接她了。」（若家屬有宗教信仰可用此框架）<br><br>
+            <strong>關於鎮靜劑：</strong><br>
+            → 「她現在不需要鎮靜劑。她沒有在痛苦，給她鎮靜反而可能讓她錯過這個重要的時刻。」<br><br>
+            <strong>指導家屬陪伴：</strong><br>
+            → <em class="hl">「不要說『那只是幻覺，媽媽不在』——這樣會讓她困擾。」</em><br>
+            → 可以說：「好，媽媽，我們知道了，您去吧，我們放心您。」<br>
+            → 繼續輕聲說話：「阿嬤，我們都在，您辛苦了，您可以放心去了。」<br>
+            → 這可能是<em class="hl">四道的最後機會</em>：鼓勵家屬趁她清醒表達愛
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4 -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>護理師自身情境：</strong>張護理師，30歲，腫瘤科工作4年。最近兩個月連續有三位她照顧多年的病人往生，其中包括一位她特別有感情的38歲乳癌媽媽。張護理師開始覺得：<strong>「去上班好沉重，病人都只是一張床號，反正遲早都會死……我已經沒有辦法感受到什麼了。」</strong>她開始頻繁請病假，對同事冷漠，且在工作中犯了幾個小失誤。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 識別張護理師目前的狀態，分析其症狀</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>症狀分析：</strong><br><br>
+            <strong>診斷：<em class="hl">憐憫疲憊（Compassion Fatigue）</em>，合併職業倦怠早期徵象</strong><br><br>
+            <strong>CF三大特徵（ProQOL框架）：</strong><br>
+            ① <em class="hl-rose">次級創傷壓力（Secondary Traumatic Stress）</em>：因照護創傷病人而內化其痛苦 → 三個往生個案的衝擊累積<br>
+            ② <em class="hl-rose">職業倦怠（Burnout）</em>：「病人只是一張床號」= 去個人化（Depersonalisation）；工作沉重感<br>
+            ③ <em class="hl">同理心滿足度下降（Compassion Satisfaction↓）</em>：無法從照護中獲得意義感<br><br>
+            <strong>警示徵象（此案具備多項）：</strong><br>
+            → 情緒麻木（「沒有辦法感受」）<br>
+            → 去個人化（床號思維）<br>
+            → 功能下降（請假增加、失誤）<br>
+            → 社交退縮（對同事冷漠）<br><br>
+            <strong>需排除：憂鬱症（PHQ-9評估）；PTSD（特別是往生38歲媽媽的影響）</strong>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 作為護理長或同事，應如何介入協助張護理師？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>介入策略（護理長/同事角色）：</strong><br><br>
+            <strong>① 私下且非評判的接觸</strong><br>
+            → 護理長：「張護理師，我注意到你最近狀況不太一樣，我想找個時間好好聊聊——你還好嗎？」<br>
+            → 重要：<em class="hl">不是要批評失誤，是真誠關心</em><br><br>
+            <strong>② 承認工作的重量</strong><br>
+            → 「這兩個月你送走三個病人，包括那位38歲的媽媽——這對任何護理師都是很沉重的。」<br>
+            → 正常化：「你現在的感受是很多護理師都會有的，不代表你不適合這份工作」<br><br>
+            <strong>③ 短期支持措施</strong><br>
+            → 安排困難個案Debriefing（團體討論）<br>
+            → 暫時調整班別（減少高強度暴露）<br>
+            → 確認是否需要心理師轉介<br><br>
+            <strong>④ 中長期介入</strong><br>
+            → 督導機制建立；每月一對一護理長督導<br>
+            → 正念課程；機構層面的自我照護文化<br>
+            → 恢復「意義感」：讓她分享她記得的那位媽媽的故事（意義重建）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 張護理師可以採取什麼個人靈性自我照護策略？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>個人靈性自我照護策略：</strong><br><br>
+            <strong>① 儀式性分離（下班過渡儀式）</strong><br>
+            → 換衣服前：在更衣室做三次深呼吸，在心裡說「今天的工作結束了」<br>
+            → 出醫院門時：有意識地「放下」工作——不是遺忘，而是「這份情感我帶回家，但明天再說」<br><br>
+            <strong>② 意義的主動尋找</strong><br>
+            → 每週寫下一件這份工作讓你有意義的事（哪怕很小）<br>
+            → 「那位38歲的媽媽，因為有你的陪伴，走得比較有尊嚴」<em class="hl">——這是真的</em><br><br>
+            <strong>③ 哀傷的正當化</strong><br>
+            → 允許自己為逝去的病人感到悲傷；這是健康的，不是軟弱<br>
+            → 可以寫一封短信給那位媽媽（給自己的情緒出口）<br><br>
+            <strong>④ 身體基礎</strong><br>
+            → 規律睡眠（最優先）；每天15分鐘戶外走路<br>
+            → 社交：與不在醫療圈的朋友保持聯繫<br><br>
+            <strong>⑤ 心理資源</strong><br>
+            → 主動申請員工協助方案（EAP）；與心理師晤談<br>
+            → 記住：<em class="hl-teal">尋求幫助是強大的表現，不是弱點</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:50px 0 24px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:10px;font-size:15px;color:var(--primary);font-weight:600;font-family:'Noto Serif TC',serif;">靈性照護 Spiritual Care</div>
+    <div style="margin-bottom:16px;">內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途</div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">── 系列完整單元 ──</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;font-size:12px;">
+      <span style="color:#00b4d8;">■ 氧合與活動</span>
+      <span style="color:#f59e0b;">■ 營養與排泄</span>
+      <span style="color:#a78bfa;">■ 感覺知覺</span>
+      <span style="color:#10b981;">■ 安全保護</span>
+      <span style="color:#e879f9;">■ 腫瘤全人照護</span>
+      <span style="color:#f97316;">■ 家庭文化照護</span>
+      <span style="color:#818cf8;">■ 靈性照護</span>
+    </div>
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.topic-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={distress:0,religion:1,dying:2,nurse:3};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('topics').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('spirit-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('spirit-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

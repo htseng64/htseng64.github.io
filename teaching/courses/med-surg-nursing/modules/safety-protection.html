@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安全保護 — Safety & Protection | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #0a1628;
+    --primary:   #10b981;
+    --primary-dk:#059669;
+    --primary-lt:#6ee7b7;
+    --amber:     #f59e0b;
+    --amber-lt:  #fcd34d;
+    --rose:      #fb7185;
+    --rose-lt:   #fda4af;
+    --sky:       #38bdf8;
+    --sky-lt:    #bae6fd;
+    --purple:    #a78bfa;
+    --text:      #e2e8f0;
+    --text-dim:  #8fa3be;
+    --border:    rgba(16,185,129,0.2);
+    --card:      rgba(17,34,64,0.8);
+    --card-hov:  rgba(17,34,64,0.95);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 15% 20%,rgba(16,185,129,.11) 0%,transparent 55%),
+               radial-gradient(ellipse at 85% 75%,rgba(56,189,248,.07) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 45%,rgba(251,113,133,.04) 0%,transparent 65%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:268px;height:100vh;background:rgba(10,22,40,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;backdrop-filter:blur(2px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:218px;width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(16,185,129,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.4;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(16,185,129,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:6px 20px 6px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:268px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:340px;display:flex;flex-direction:column;justify-content:center;padding:60px 0 40px;border-bottom:1px solid var(--border);margin-bottom:60px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:24px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-green{background:rgba(16,185,129,.15);color:var(--primary);border:1px solid rgba(16,185,129,.3);}
+  .pill-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+  .pill-rose{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+  .pill-sky{background:rgba(56,189,248,.15);color:var(--sky);border:1px solid rgba(56,189,248,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden;}
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.safe::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.infect::before{background:linear-gradient(90deg,var(--amber),var(--amber-lt));}
+  .concept-card.immune::before{background:linear-gradient(90deg,var(--sky),var(--sky-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(16,185,129,.4);box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+  .concept-points{list-style:none;margin-top:14px;}
+  .concept-points li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'▸';color:var(--primary);flex-shrink:0;margin-top:1px;}
+  .value-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px;}
+  .value-box{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:14px;text-align:center;}
+  .value-label{font-size:11px;color:var(--text-dim);}
+  .value-num{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;color:var(--primary);margin:4px 0;}
+  .value-unit{font-size:10px;color:var(--text-dim);}
+
+  /* ── ASSESS GRID ── */
+  .assess-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .assess-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .assess-card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-green{background:rgba(16,185,129,.15);color:var(--primary);}
+  .tag-amber{background:rgba(245,158,11,.15);color:var(--amber);}
+  .tag-rose{background:rgba(251,113,133,.15);color:var(--rose);}
+  .tag-sky{background:rgba(56,189,248,.15);color:var(--sky);}
+  .tag-purple{background:rgba(167,139,250,.15);color:var(--purple);}
+  .assess-list{list-style:none;}
+  .assess-list li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .assess-list li:last-child{border-bottom:none;}
+  .assess-list li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── DISEASE TABS ── */
+  .disease-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .disease-panel{display:none;animation:fadeIn .3s ease;}
+  .disease-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .disease-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .disease-card-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
+  .disease-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .disease-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .disease-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .ds-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .info-list{list-style:none;}
+  .info-list li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .info-list li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--primary-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--sky-lt);display:flex;gap:10px;}
+  .warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--amber-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+  .drug-tag{display:inline-block;background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.4);color:#ddd6fe;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:6px;margin:2px;}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(16,185,129,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(16,185,129,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:24px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .vitals-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;}
+  .vital-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+  .vital-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+  .vital-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;margin:4px 0;}
+  .vital-unit{font-size:10px;color:var(--text-dim);}
+  .vital-abnormal{color:var(--rose);}
+  .vital-normal{color:var(--primary);}
+  .vital-warn{color:var(--amber);}
+  .q-block{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);animation:fadeIn .3s ease;}
+  .answer-content.open{display:block;}
+
+  /* ── TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(16,185,129,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── FULL CARD / FLOW ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:110px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:14px 12px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 6px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── INFECTION CHAIN ── */
+  .chain-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px;}
+  .chain-card{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.18);border-radius:10px;padding:12px 8px;text-align:center;}
+  .chain-num{font-size:18px;font-weight:700;color:var(--primary);font-family:'JetBrains Mono',monospace;}
+  .chain-title{font-size:11px;font-weight:700;color:var(--text);margin:4px 0 4px;}
+  .chain-desc{font-size:10px;color:var(--text-dim);line-height:1.4;}
+
+  /* ── PPE GRID ── */
+  .ppe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+  .ppe-card{border-radius:12px;padding:14px;}
+  .ppe-card.contact{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);}
+  .ppe-card.droplet{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);}
+  .ppe-card.airborne{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);}
+  .ppe-head{font-size:13px;font-weight:700;margin-bottom:8px;}
+  .ppe-card.contact .ppe-head{color:var(--sky);}
+  .ppe-card.droplet .ppe-head{color:var(--amber);}
+  .ppe-card.airborne .ppe-head{color:var(--rose);}
+  .ppe-item{font-size:12px;color:var(--text-dim);line-height:1.6;padding:2px 0;display:flex;gap:6px;}
+  .ppe-item::before{content:'•';flex-shrink:0;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(16,185,129,.4);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-amber{font-style:normal;color:var(--amber);font-weight:600;}
+  em.hl-sky{font-style:normal;color:var(--sky);font-weight:600;}
+  em.hl-purple{font-style:normal;color:var(--purple);font-weight:600;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.value-grid{grid-template-columns:repeat(2,1fr);}.chain-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:900px){.concept-grid,.assess-grid,.np-grid{grid-template-columns:1fr;}.disease-body{grid-template-columns:1fr;}.vitals-row{grid-template-columns:repeat(3,1fr);}.ppe-grid{grid-template-columns:1fr;}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:268px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}.hero{padding-top:20px;}.hero h1{font-size:28px;}.vitals-row{grid-template-columns:1fr 1fr;}.chain-grid{grid-template-columns:repeat(2,1fr);}.disease-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:7px 12px;}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:60px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.case-panel{padding:16px;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">安全保護<br>Safety & Protection</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts" class="nav-item active"><span class="nav-icon">🛡️</span><span class="nav-label"> 核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 護理評估</span></a>
+  <a href="#diseases" class="nav-item"><span class="nav-icon">🏥</span><span class="nav-label"> 常見疾病</span></a>
+  <a href="#diseases" onclick="switchTab('hai')" class="nav-sub">→ 院內感染（HAI）</a>
+  <a href="#diseases" onclick="switchTab('sle')" class="nav-sub">→ 紅斑性狼瘡（SLE）</a>
+  <a href="#diseases" onclick="switchTab('ra')" class="nav-sub">→ 類風濕性關節炎（RA）</a>
+  <a href="#diseases" onclick="switchTab('aids')" class="nav-sub">→ 愛滋病（HIV/AIDS）</a>
+  <a href="#diseases" onclick="switchTab('transplant')" class="nav-sub">→ 器官 / 骨髓移植</a>
+  <a href="#nursing" class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#cases" class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第六單元</div>
+    <h1>安全保護<br><em>Safety & Protection</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Infection Control · Immunology</div>
+    <div class="hero-pills">
+      <span class="pill pill-green">🛡️ 安全 Safety</span>
+      <span class="pill pill-amber">🦠 感染管控 Infection Control</span>
+      <span class="pill pill-rose">🔬 免疫 Immunity</span>
+      <span class="pill pill-sky">📖 自學 Self-Learning</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Safety · Infection Process · Immunity</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card safe">
+        <div class="concept-icon">🛡️</div>
+        <div class="concept-title">安全與保護 Safety</div>
+        <div class="concept-en">保護個案免於身體傷害與環境危害的整體概念</div>
+        <ul class="concept-points">
+          <li>病人安全目標（IPSG）：正確辨識、有效溝通、用藥安全、手術安全、感染預防、跌倒預防</li>
+          <li>Joint Commission 醫療錯誤六大原因：溝通失誤、技術失誤、知識不足、評估失誤、監測失誤、系統缺陷</li>
+          <li>Swiss Cheese Model：每層防護均有漏洞；多層漏洞對齊時發生傷害</li>
+          <li>Root Cause Analysis（RCA）：發生後回溯根本原因分析</li>
+          <li>不良事件通報制度：無懲罰文化；學習改善</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">手部衛生六步驟</div><div class="value-num">20秒</div><div class="value-unit">最低時間</div></div>
+          <div class="value-box"><div class="value-label">手術安全核對</div><div class="value-num">3次</div><div class="value-unit">Time-out</div></div>
+          <div class="value-box"><div class="value-label">藥物五對</div><div class="value-num">5R</div></div>
+          <div class="value-box"><div class="value-label">高警訊藥物</div><div class="value-num">LASA</div><div class="value-unit">看似聽似</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card infect">
+        <div class="concept-icon">🦠</div>
+        <div class="concept-title">感染過程 Infection Process</div>
+        <div class="concept-en">病原體在宿主體內建立、繁殖並引發疾病的過程</div>
+        <ul class="concept-points">
+          <li>感染鏈六環節：病原體→感染源→離開途徑→傳播方式→進入途徑→易感宿主</li>
+          <li>感染期（Incubation）→前驅期（Prodromal）→症狀期→恢復期</li>
+          <li>傳播途徑：接觸（直接/間接）、飛沫（&gt;5μm）、空氣（&lt;5μm）、媒介物、病媒</li>
+          <li>宿主防禦：非特異性（皮膚黏膜、發炎反應、吞噬作用）vs 特異性（B/T細胞免疫）</li>
+          <li>感染指標：發燒、WBC↑、CRP/PCT↑、局部紅腫熱痛</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">WBC 正常</div><div class="value-num">4,500–11,000</div><div class="value-unit">/mm³</div></div>
+          <div class="value-box"><div class="value-label">CRP 正常</div><div class="value-num">&lt;1.0</div><div class="value-unit">mg/dL</div></div>
+          <div class="value-box"><div class="value-label">PCT 正常</div><div class="value-num">&lt;0.1</div><div class="value-unit">ng/mL</div></div>
+          <div class="value-box"><div class="value-label">發燒定義</div><div class="value-num">&gt;38.0</div><div class="value-unit">°C</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card immune">
+        <div class="concept-icon">🔬</div>
+        <div class="concept-title">免疫系統 Immunity</div>
+        <div class="concept-en">身體辨識並消滅外來抗原及異常細胞的防禦系統</div>
+        <ul class="concept-points">
+          <li>先天免疫（非特異性）：物理屏障→發炎反應→自然殺手細胞（NK cell）</li>
+          <li>後天免疫（特異性）：B細胞→抗體（體液免疫）；T細胞→細胞媒介免疫</li>
+          <li>CD4（T輔助細胞）正常值 500–1,500/μL；HIV感染時下降</li>
+          <li>自體免疫：免疫系統攻擊自身組織（SLE、RA、MS）</li>
+          <li>免疫缺乏：先天性 vs 後天性（HIV、化療、類固醇）→機會性感染</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">CD4正常</div><div class="value-num">500–1,500</div><div class="value-unit">/μL</div></div>
+          <div class="value-box"><div class="value-label">AIDS定義</div><div class="value-num">CD4&lt;200</div><div class="value-unit">/μL</div></div>
+          <div class="value-box"><div class="value-label">IgG 正常</div><div class="value-num">700–1,600</div><div class="value-unit">mg/dL</div></div>
+          <div class="value-box"><div class="value-label">補體C3</div><div class="value-num">90–180</div><div class="value-unit">mg/dL</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Infection Chain -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">🔗 感染鏈六環節——每個環節都是護理介入點</div>
+      <div class="chain-grid">
+        <div class="chain-card"><div class="chain-num">①</div><div class="chain-title">病原體</div><div class="chain-desc">細菌、病毒、黴菌、寄生蟲<br>→ 抗生素、抗病毒藥物</div></div>
+        <div class="chain-card"><div class="chain-num">②</div><div class="chain-title">感染源</div><div class="chain-desc">人、動物、物品、土壤<br>→ 隔離、消毒感染源</div></div>
+        <div class="chain-card"><div class="chain-num">③</div><div class="chain-title">離開途徑</div><div class="chain-desc">呼吸道、消化道、皮膚、血液<br>→ 傷口敷料、口罩</div></div>
+        <div class="chain-card"><div class="chain-num">④</div><div class="chain-title">傳播方式</div><div class="chain-desc">接觸、飛沫、空氣、媒介<br>→ <strong>手部衛生（最重要）</strong></div></div>
+        <div class="chain-card"><div class="chain-num">⑤</div><div class="chain-title">進入途徑</div><div class="chain-desc">口、鼻、皮膚傷口、注射<br>→ 無菌技術、PPE</div></div>
+        <div class="chain-card"><div class="chain-num">⑥</div><div class="chain-title">易感宿主</div><div class="chain-desc">免疫低下、老年、慢性病<br>→ 疫苗、營養、充足休息</div></div>
+      </div>
+      <div class="tip-box" style="margin-top:16px;">
+        <span class="alert-icon">💡</span>
+        <span><em class="hl">手部衛生</em>是阻斷感染鏈最有效、最便宜的措施。WHO五個時機：接觸病人前、進行無菌操作前、接觸體液後、接觸病人後、接觸病人環境後</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#b45309,#f59e0b);">2</div>
+      <div>
+        <div class="section-title">護理評估</div>
+        <div class="section-en">Infection · Immune Function · Patient Safety Assessment</div>
+      </div>
+    </div>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <div class="assess-card-title">🌡️ 感染評估 <span class="tag tag-amber">全身/局部</span></div>
+        <ul class="assess-list">
+          <li>全身感染徵象：發燒（&gt;38°C）、心搏過速、呼吸過速、白血球↑或↓</li>
+          <li>敗血症（Sepsis）：SIRS＋確定或疑似感染；SOFA評分</li>
+          <li>qSOFA：呼吸&gt;22次/分、GCS&lt;15、收縮壓≤100 mmHg；≥2分懷疑敗血症</li>
+          <li>局部感染：紅腫熱痛（rubor、tumor、calor、dolor）、功能喪失</li>
+          <li>傷口評估：PUSH量表（大小、滲出液、組織型態）</li>
+          <li>培養採集：血培養（發燒時盡早抽，給抗生素前）、尿液、痰、傷口</li>
+          <li>血液檢查：CBC、CRP、Procalcitonin（PCT）、血培養×2套</li>
+          <li>影像：胸部X光（肺炎）；CT（腹腔感染）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🔬 免疫功能評估 <span class="tag tag-sky">免疫指標</span></div>
+        <ul class="assess-list">
+          <li>白血球分類計數（Differential）：嗜中性球↑＝細菌感染；淋巴球↑＝病毒</li>
+          <li>嗜中性球絕對值（ANC）：&lt;500/μL＝嚴重嗜中性球低下→最高感染風險</li>
+          <li>CD4/CD8比值：正常&gt;1；HIV感染時反轉（CD4↓、CD8↑）</li>
+          <li>免疫球蛋白（IgG/IgM/IgA/IgE）：IgE↑＝過敏；IgM↑＝急性感染</li>
+          <li>補體C3/C4：SLE活動期↓（消耗增加）</li>
+          <li>自體抗體：ANA（狼瘡）、Anti-dsDNA（SLE特異）、RF（RA）、ANCA（血管炎）</li>
+          <li>皮膚試驗：結核菌素（PPD/Mantoux）；陽性≥10mm硬結（免疫正常者）</li>
+          <li>HIV篩檢：ELISA→確認Western Blot；HIV RNA（病毒量）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🏥 隔離防護評估 <span class="tag tag-green">感染管控</span></div>
+        <ul class="assess-list">
+          <li>標準防護措施（Standard Precautions）：所有病人均適用</li>
+          <li>接觸隔離（Contact Precautions）：MRSA、VRE、艱難梭菌（C. diff）</li>
+          <li>飛沫隔離（Droplet）：流感、百日咳、腦膜炎球菌、RSV；外科口罩</li>
+          <li>空氣隔離（Airborne）：肺結核、水痘、麻疹；N95口罩、負壓單人房</li>
+          <li>保護性隔離（Protective/Reverse）：嚴重免疫低下病人；正壓病房</li>
+          <li>個人防護裝備（PPE）穿脫順序：穿（手套最後）；脫（手套最先）</li>
+          <li>環境消毒：10:1漂白水溶液（1000 ppm）處理C. diff環境</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">💉 疫苗與預防 <span class="tag tag-purple">免疫預防</span></div>
+        <ul class="assess-list">
+          <li>主動免疫：接種疫苗，身體自行產生抗體（長效）</li>
+          <li>被動免疫：注射免疫球蛋白（如IVIG、HBIg）；即效但短暫</li>
+          <li>免疫低下病人：<em class="hl">禁用活性減毒疫苗</em>（如BCG、麻疹、水痘）</li>
+          <li>SLE病人建議接種：流感（每年）、肺炎鏈球菌（每5年）</li>
+          <li>HIV病人：可接種非活性疫苗；CD4&gt;200/μL才可考慮部分活性疫苗</li>
+          <li>器官移植後：移植前完成疫苗接種；移植後6–12個月再評估</li>
+          <li>職業曝露後預防（PEP）：HIV針扎後2小時內開始抗病毒藥（28天）</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PPE Types -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="assess-card-title">🧤 隔離類型與防護裝備（PPE）一覽</div>
+      <div class="ppe-grid">
+        <div class="ppe-card contact">
+          <div class="ppe-head">🔵 接觸隔離 Contact</div>
+          <div class="ppe-item">手套（進入病室即戴）</div>
+          <div class="ppe-item">隔離衣（接觸病人或環境）</div>
+          <div class="ppe-item">適應症：MRSA、VRE、C. diff、疥瘡、諾羅病毒</div>
+          <div class="ppe-item" style="margin-top:6px;color:#7dd3fc;">C. diff：酒精無效→肥皂洗手</div>
+        </div>
+        <div class="ppe-card droplet">
+          <div class="ppe-head">🟡 飛沫隔離 Droplet</div>
+          <div class="ppe-item">外科口罩（進入病室前戴）</div>
+          <div class="ppe-item">手套＋隔離衣（接觸時）</div>
+          <div class="ppe-item">適應症：流感、百日咳、腦膜炎球菌、RSV、COVID-19</div>
+          <div class="ppe-item" style="margin-top:6px;color:#fcd34d;">病人外出需戴口罩</div>
+        </div>
+        <div class="ppe-card airborne">
+          <div class="ppe-head">🔴 空氣隔離 Airborne</div>
+          <div class="ppe-item">N95（或更高等級）口罩</div>
+          <div class="ppe-item">負壓單人病室（&gt;6–12換氣次數/小時）</div>
+          <div class="ppe-item">適應症：開放性肺結核、水痘、麻疹、SARS/MERS</div>
+          <div class="ppe-item" style="margin-top:6px;color:#fda4af;">進入前先戴好N95</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: DISEASES -->
+  <section class="section" id="diseases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#059669,#10b981);">3</div>
+      <div>
+        <div class="section-title">常見疾病介紹</div>
+        <div class="section-en">HAI · SLE · RA · HIV/AIDS · Organ Transplant</div>
+      </div>
+    </div>
+
+    <div class="disease-tabs">
+      <button class="tab-btn active" onclick="switchTab('hai')">🦠 院內感染</button>
+      <button class="tab-btn" onclick="switchTab('sle')">🔴 紅斑性狼瘡</button>
+      <button class="tab-btn" onclick="switchTab('ra')">🦴 類風濕性關節炎</button>
+      <button class="tab-btn" onclick="switchTab('aids')">🎗️ HIV / AIDS</button>
+      <button class="tab-btn" onclick="switchTab('transplant')">💚 器官 / 骨髓移植</button>
+    </div>
+
+    <!-- HAI -->
+    <div class="disease-panel active" id="panel-hai">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">院內感染（醫療照護相關感染）</div><div class="disease-en">Healthcare-Associated Infections (HAI)</div></div>
+          <span class="tag tag-amber">感染管控</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">四大院內感染類型</div>
+            <table class="data-table">
+              <tr><th>類型</th><th>縮寫</th><th>主要病原</th><th>預防核心</th></tr>
+              <tr><td>導管相關泌尿道感染</td><td><em class="hl">CAUTI</em></td><td>E. coli、Klebsiella</td><td>減少不必要導尿；無菌插管；每日評估移除</td></tr>
+              <tr><td>中央靜脈導管相關血流感染</td><td><em class="hl">CLABSI</em></td><td>CoNS、金黃葡萄球菌</td><td>最大無菌屏障；CHX消毒；每日評估移除</td></tr>
+              <tr><td>呼吸器相關肺炎</td><td><em class="hl">VAP</em></td><td>Pseudomonas、MRSA</td><td>VAP bundle（見下）</td></tr>
+              <tr><td>手術部位感染</td><td><em class="hl">SSI</em></td><td>金黃葡萄球菌</td><td>預防性抗生素（切皮前1小時）</td></tr>
+            </table>
+            <div class="ds-title" style="margin-top:18px;">VAP Bundle（呼吸器護理套組）</div>
+            <ul class="info-list">
+              <li><em class="hl">床頭抬高30–45度</em>（避免胃內容物逆流吸入）</li>
+              <li>每日鎮靜中斷評估（Daily Sedation Vacation）</li>
+              <li>每日評估脫離呼吸器可能性（Spontaneous Breathing Trial）</li>
+              <li>消化性潰瘍預防（PPI/H₂ blocker）</li>
+              <li>DVT預防（彈性襪＋低分子肝素）</li>
+              <li><em class="hl">每2–4小時口腔護理</em>（CHX漱口液）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">多重抗藥性菌（MDRO）</div>
+            <ul class="info-list">
+              <li><em class="hl">MRSA</em>（甲氧苯青黴素抗藥性金黃葡萄球菌）：皮膚軟組織、肺炎；治療：Vancomycin / Daptomycin</li>
+              <li><em class="hl">VRE</em>（萬古黴素抗藥性腸球菌）：UTI、菌血症；治療：Linezolid</li>
+              <li><em class="hl">CRE</em>（碳青黴烯抗藥性腸桿菌科）：預後差；治療選項有限</li>
+              <li><em class="hl">艱難梭菌（C. difficile）</em>：抗生素使用後偽膜性大腸炎；水樣腹瀉；治療：Metronidazole / Vancomycin口服 / Fidaxomicin</li>
+              <li>MDRO護理：接觸隔離；專用器具；嚴格手部衛生（C. diff需肥皂水洗手，酒精無效）</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>C. diff 感染：<em class="hl-rose">酒精乾洗手無效！</em>必須用肥皂水洗手（至少20秒）；使用稀釋漂白水（1:10）消毒環境；停用不必要的抗生素</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">敗血症 Sepsis</div>
+            <ul class="info-list">
+              <li>定義：感染引起的<em class="hl">威脅生命的器官功能障礙</em>（SOFA≥2分）</li>
+              <li>敗血性休克：需血管加壓素維持MAP≥65 mmHg＋乳酸&gt;2 mmol/L</li>
+              <li><em class="hl">Hour-1 Bundle（第一小時集束治療）</em>：
+                <br>・測乳酸（Lactate）
+                <br>・血培養（抗生素前）
+                <br>・廣效抗生素給予
+                <br>・低血壓或乳酸≥4者：<em class="hl">30 mL/kg 晶體液快速輸注</em>
+                <br>・血管加壓素（若液體反應不佳）
+              </li>
+              <li>目標：MAP≥65 mmHg；尿量≥0.5 mL/kg/hr；乳酸清除</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">CAUTI與CLABSI預防護理</div>
+            <ul class="info-list">
+              <li>CAUTI預防：每日評估導尿管必要性（最有效措施）；保持集尿袋低於膀胱；勿讓尿管折疊；更換時無菌技術</li>
+              <li>CLABSI預防（插管時）：手部衛生→戴帽子口罩手套隔離衣→<em class="hl">最大無菌屏障（Maximal Barrier Precautions）</em>→CHX消毒皮膚→使用無菌覆蓋布</li>
+              <li>CLABSI預防（維護時）：每日CHX棉片消毒接頭；更換輸液組每72–96小時；觀察插入部位發紅腫脹</li>
+              <li>洗手五大時機：接觸病人前、無菌操作前、接觸體液後、接觸病人後、接觸病人環境後</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Vancomycin</span><span class="drug-tag">Meropenem</span><span class="drug-tag">Metronidazole</span><span class="drug-tag">Piperacillin/Tazobactam</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLE -->
+    <div class="disease-panel" id="panel-sle">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">全身性紅斑性狼瘡</div><div class="disease-en">Systemic Lupus Erythematosus (SLE)</div></div>
+          <span class="tag tag-rose">自體免疫</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與流行病學</div>
+            <ul class="info-list">
+              <li>自體免疫疾病：免疫複合體沉積→多器官損傷；抗雙股DNA抗體（Anti-dsDNA）為特異性指標</li>
+              <li>好發：<em class="hl">15–45歲育齡女性</em>；女：男 ＝ 9：1；亞裔盛行率高</li>
+              <li>誘發因素：紫外線、感染、壓力、藥物（hydralazine、procainamide→藥物性狼瘡）</li>
+              <li>病程特點：緩解（remission）與惡化（flare）交替出現</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">診斷標準（ACR/EULAR 2019）</div>
+            <ul class="info-list">
+              <li>ANA（抗核抗體）陽性為入選條件（篩檢靈敏度99%）</li>
+              <li>特異性指標：<em class="hl">Anti-dsDNA ↑（活動期）、Anti-Sm（高特異）</em></li>
+              <li>補體（C3/C4/CH50）活動期↓（被消耗）；ESR↑；CRP可正常</li>
+              <li>累積分數≥10分可確診</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">臨床表徵（多系統）</div>
+            <ul class="info-list">
+              <li>皮膚：<em class="hl">蝴蝶形紅疹（butterfly rash / malar rash）</em>——鼻樑橫跨兩頰；光敏性；盤狀紅疹；脫髮</li>
+              <li>關節：多關節疼痛、晨間僵硬；通常不造成變形（不同於RA）</li>
+              <li>腎臟：<em class="hl">狼瘡性腎炎（Lupus Nephritis）</em>——蛋白尿、血尿；最嚴重合併症之一</li>
+              <li>血液：白血球↓（&lt;4,000）、血小板↓（&lt;100,000）、溶血性貧血</li>
+              <li>心血管：心包炎、心肌炎；加速性動脈硬化（心血管死亡主因）</li>
+              <li>神經：神經精神性狼瘡（NP-SLE）——頭痛、癲癇、精神症狀</li>
+              <li>漿膜炎：胸膜炎、心包炎（胸痛）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">治療</div>
+            <ul class="info-list">
+              <li><em class="hl">Hydroxychloroquine（HCQ，奎寧）</em>：所有SLE病人基礎用藥；減少惡化頻率；眼底定期追蹤（視網膜毒性）</li>
+              <li>輕度：NSAIDs（關節痛）；低劑量類固醇</li>
+              <li>中重度：高劑量類固醇（Prednisolone）；甲基類固醇衝擊（IV MP）</li>
+              <li>免疫抑制劑：Mycophenolate（MMF）、Azathioprine、Cyclophosphamide（重度腎炎）</li>
+              <li>生物製劑：Belimumab（B淋巴細胞刺激因子抑制劑）</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span><em class="hl-rose">避免陽光照射</em>：紫外線是SLE最重要誘發因子。外出：防曬係數SPF≥50、長袖衣物、帽子。避免午間11點–3點日照高峰</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施與衛教</div>
+            <ul class="info-list">
+              <li>活動期：充分休息；減少日曬（紫外線→誘發惡化）；防曬衣物</li>
+              <li>皮膚護理：觀察皮疹變化；溫和清潔劑；避免含香料產品</li>
+              <li>腎功能監測：每日體重、血壓、I&O；尿蛋白定期追蹤</li>
+              <li>感染預防：類固醇/免疫抑制劑使用→感染風險↑；接種流感/肺炎疫苗（活性減毒疫苗禁用）</li>
+              <li>情緒支持：慢性病、外觀改變（脫髮/皮疹）→自我形象；焦慮憂鬱評估</li>
+              <li>孕前諮詢：疾病穩定&gt;6個月才可考慮懷孕；停用致畸胎藥物</li>
+              <li>惡化警示：發燒（感染？惡化？）；新發蛋白尿；頭痛癲癇→立即就醫</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Hydroxychloroquine</span><span class="drug-tag">Prednisolone</span><span class="drug-tag">Mycophenolate</span><span class="drug-tag">Cyclophosphamide</span><span class="drug-tag">Belimumab</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RA -->
+    <div class="disease-panel" id="panel-ra">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">類風濕性關節炎</div><div class="disease-en">Rheumatoid Arthritis (RA)</div></div>
+          <span class="tag tag-amber">自體免疫</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與臨床特徵</div>
+            <ul class="info-list">
+              <li>慢性、全身性、對稱性炎症性關節疾病；滑膜增生→血管翳（pannus）→侵蝕軟骨骨頭</li>
+              <li>好發：<em class="hl">30–60歲女性</em>（女：男 = 3：1）；HLA-DR4基因關聯</li>
+              <li>診斷標誌：類風濕因子（RF）陽性；<em class="hl">Anti-CCP（抗環瓜氨酸抗體）</em>——特異性&gt;95%、早期診斷</li>
+              <li>對稱性關節炎：<em class="hl">近端指間關節（PIP）、掌指關節（MCP）、腕關節</em>最常受犯（遠端指間關節通常不侵犯←與退化性不同）</li>
+              <li><em class="hl">晨間僵硬&gt;60分鐘</em>（退化性&lt;30分鐘）是RA特徵</li>
+              <li>關節外表徵：類風濕結節、乾眼/乾口（Sjögren's）、心肺病變、血管炎</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">特徵性關節變形</div>
+            <ul class="info-list">
+              <li><em class="hl">天鵝頸畸形（Swan Neck Deformity）</em>：PIP過伸展 + DIP屈曲</li>
+              <li><em class="hl">鈕扣孔畸形（Boutonnière Deformity）</em>：PIP屈曲 + DIP過伸展</li>
+              <li>尺側偏移（Ulnar Deviation）：掌指關節向尺側偏斜</li>
+              <li>槌狀指（Mallet Finger）：DIP屈曲固定</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">治療（DMARD為核心）</div>
+            <ul class="info-list">
+              <li><em class="hl">Methotrexate（MTX）</em>：RA治療錨定藥（anchor drug）；每週一次；需補充葉酸</li>
+              <li>Hydroxychloroquine、Sulfasalazine（傳統DMARDs）</li>
+              <li>生物製劑：<em class="hl">抗TNF</em>（Etanercept、Adalimumab）；<em class="hl">IL-6抑制劑</em>（Tocilizumab）</li>
+              <li>JAK抑制劑：Tofacitinib（口服）；小分子靶向治療</li>
+              <li>類固醇：橋接治療（Bridge）；局部注射關節腔</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>疼痛與僵硬：<em class="hl">晨間熱敷</em>（減輕僵硬）；急性發作冰敷</li>
+              <li>關節保護原則（Joint Protection）：使用大關節替代小關節；輔具使用</li>
+              <li>ROM運動：急性期被動，緩解期漸進主動；水中運動（減少負重）</li>
+              <li>平衡休息與活動：過度活動加劇炎症；完全不動→肌肉萎縮</li>
+              <li>MTX副作用監測：噁心嘔吐、口腔炎、肝毒性（定期肝功能）、骨髓抑制</li>
+              <li>生物製劑前篩檢：TB篩查（PPD/IGRA）；HBsAg；排除感染</li>
+              <li>感染預防：生物製劑使用→免疫抑制；避免感染人群；疫苗（非活性）</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>RA vs SLE關節比較：RA = <em class="hl-green">對稱 + 近端指間/掌指關節 + 晨僵&gt;60分 + 造成變形</em>；SLE = 多關節痛 + 晨僵較短 + 通常不造成永久變形</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">日常生活適應衛教</div>
+            <ul class="info-list">
+              <li>關節保護：開瓶使用輔助器；用肘部而非手指關關門</li>
+              <li>工作改良：每工作20–30分鐘讓關節休息5分鐘</li>
+              <li>居家環境：防滑浴墊、扶手、加高馬桶坐墊</li>
+              <li>運動建議：游泳（水中關節負擔最輕）、太極拳、水中有氧</li>
+              <li>體重控制：減輕負重關節負擔</li>
+              <li>情緒：慢性疼痛→憂鬱高盛行率；評估PHQ-9</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HIV/AIDS -->
+    <div class="disease-panel" id="panel-aids">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">人類免疫缺陷病毒感染 / 愛滋病</div><div class="disease-en">HIV Infection / Acquired Immunodeficiency Syndrome (AIDS)</div></div>
+          <span class="tag tag-sky">免疫缺乏</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">傳播與預防</div>
+            <ul class="info-list">
+              <li>傳播途徑：<em class="hl">血液、精液/陰道分泌物（性行為）、母嬰（垂直）</em></li>
+              <li><em class="hl-rose">不傳播途徑</em>：握手、擁抱、共用餐具、咳嗽、唾液、蚊蟲叮咬</li>
+              <li>針扎感染率：HIV約0.3%；HBV約30%；HCV約3%</li>
+              <li>暴露後預防（PEP）：<em class="hl">2小時內</em>開始三合一抗病毒藥（28天）</li>
+              <li>暴露前預防（PrEP）：高風險族群每日服用（Tenofovir/Emtricitabine）</li>
+              <li>安全性行為：正確使用保險套（每次）；避免共用針具</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">病程分期</div>
+            <ul class="info-list">
+              <li>急性HIV感染（2–4週）：流感樣症狀（發燒、淋巴腺腫、皮疹）；病毒量極高</li>
+              <li>無症狀期（數年）：CD4緩慢下降；病毒持續複製</li>
+              <li><em class="hl">AIDS定義</em>：CD4&lt;200/μL 或出現AIDS定義疾病</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">機會性感染（CD4依程度）</div>
+            <table class="data-table">
+              <tr><th>CD4計數</th><th>常見機會性感染</th></tr>
+              <tr><td>&lt;500/μL</td><td>復發性細菌性肺炎、帶狀疱疹</td></tr>
+              <tr><td>&lt;200/μL</td><td><em class="hl">肺囊蟲肺炎（PCP）</em>——最常見機會性感染</td></tr>
+              <tr><td>&lt;100/μL</td><td>弓漿蟲腦炎（Toxoplasmosis）、隱球菌腦膜炎</td></tr>
+              <tr><td>&lt;50/μL</td><td>巨細胞病毒（CMV）視網膜炎、非結核分枝桿菌（MAC）</td></tr>
+            </table>
+            <div class="ds-title" style="margin-top:16px;">治療（ART）</div>
+            <ul class="info-list">
+              <li><em class="hl">抗病毒治療（ART）</em>：所有HIV病人均應治療；越早越好</li>
+              <li>一線方案（Single Tablet Regimen）：整合酶抑制劑（如Dolutegravir）＋兩種核苷類似物</li>
+              <li>治療目標：病毒量（HIV RNA）&lt;50 copies/mL（偵測不到）；CD4恢復</li>
+              <li><em class="hl">U=U原則</em>：Undetectable = Untransmittable（病毒量測不到＝不傳染）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>標準防護措施：所有病人均適用；無需特殊隔離（除合併空氣傳播疾病如肺結核）</li>
+              <li>口腔黏膜評估：鵝口瘡（Candida）常見；每班口腔護理</li>
+              <li>皮膚評估：卡波西氏肉瘤（紫色病灶）；帶狀疱疹；皮膚乾燥</li>
+              <li>ART服藥順從性：<em class="hl">每天同時間服藥</em>；漏服率&gt;5%→病毒突破及抗藥性</li>
+              <li>營養：高熱量高蛋白；記錄體重；評估消耗症候群</li>
+              <li>感染預防：避免生食（沙門氏菌）；避免接觸家禽糞便（隱球菌）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">心理社會支持</div>
+            <ul class="info-list">
+              <li>反汙名化：HIV是慢性可治療疾病；保護病人隱私（最高機密）</li>
+              <li>告知議題：性伴侶告知法律規定；衛教不傳染行為</li>
+              <li>情緒：確診後常見否認→憤怒→憂鬱；高自殺風險評估</li>
+              <li>社會資源：愛之希望協會；疾管署HIV個管師制度</li>
+              <li>職業曝露後護理人員支持：心理創傷支持；結果追蹤（6個月）</li>
+            </ul>
+            <div class="info-box"><span class="alert-icon">💡</span><span>HIV病人<em class="hl-sky">不需特殊隔離</em>（因HIV不透過空氣/接觸傳播）。若合併活動性肺結核→需空氣隔離。過度隔離反而造成汙名化與心理傷害</span></div>
+            <div style="margin-top:10px;"><span class="drug-tag">Dolutegravir</span><span class="drug-tag">Tenofovir</span><span class="drug-tag">Emtricitabine</span><span class="drug-tag">TMP-SMX（PCP預防）</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSPLANT -->
+    <div class="disease-panel" id="panel-transplant">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">器官移植 / 骨髓移植護理</div><div class="disease-en">Organ Transplantation / Hematopoietic Stem Cell Transplantation</div></div>
+          <span class="tag tag-green">移植護理</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">排斥反應分類</div>
+            <table class="data-table">
+              <tr><th>類型</th><th>時間</th><th>機轉</th><th>特徵</th></tr>
+              <tr><td>超急性排斥</td><td>分鐘至小時</td><td>預先形成抗體</td><td>術中/術後即刻壞死；無法救治</td></tr>
+              <tr><td><em class="hl">急性排斥</em></td><td>術後數天至3個月</td><td>T細胞媒介</td><td>發燒、器官功能↓；可治療</td></tr>
+              <tr><td>慢性排斥</td><td>數月至數年</td><td>免疫複合體/纖維化</td><td>漸進性器官功能衰退；難治療</td></tr>
+            </table>
+            <div class="ds-title" style="margin-top:16px;">器官移植術後監測</div>
+            <ul class="info-list">
+              <li>腎臟移植：每小時尿量（目標&gt;1 mL/kg/hr）；血清肌酸酐趨勢；移植腎超音波</li>
+              <li>肝臟移植：肝功能（AST/ALT/Bili）；膽汁引流管顏色（金黃＝正常）</li>
+              <li>心臟移植：心電圖；心臟超音波（EF）；心內膜切片排斥評估</li>
+              <li><em class="hl">排斥徵兆</em>：發燒、器官功能惡化、移植部位疼痛腫脹→立即報告</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">免疫抑制治療</div>
+            <ul class="info-list">
+              <li><em class="hl">三聯療法</em>（標準）：鈣調磷酸酶抑制劑（Tacrolimus or Cyclosporine）＋抗代謝藥（MMF）＋類固醇</li>
+              <li>Tacrolimus（他克莫司）：治療範圍窄；需監測血中濃度（谷值5–15 ng/mL）；腎毒性；高血壓；新發糖尿病</li>
+              <li>Cyclosporine：同樣腎毒性；牙齦增生；多毛症（hypertrichosis）</li>
+              <li>Mycophenolate（MMF）：抑制淋巴球增殖；腸胃不適；骨髓抑制</li>
+              <li>mTOR抑制劑（Sirolimus）：抗排斥＋抗腫瘤</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>Tacrolimus <em class="hl-rose">葡萄柚汁禁用！</em>葡萄柚抑制CYP3A4→藥物濃度急升→毒性（腎毒性、神經毒性）。同理：Cyclosporine + 葡萄柚也禁忌</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">造血幹細胞移植（HSCT）</div>
+            <ul class="info-list">
+              <li>適應症：白血病、多發性骨髓瘤、再生不良性貧血、重度地中海型貧血</li>
+              <li>自體（Autologous）：自身幹細胞回輸；無排斥；復發率較高</li>
+              <li>同種異體（Allogeneic）：供體（HLA配對）；排斥問題；移植物對抗白血病效應（GVL）</li>
+              <li><em class="hl">移植物對抗宿主病（GvHD）</em>：供體T細胞攻擊受者組織；急性（&lt;100天）vs 慢性</li>
+              <li>急性GvHD靶器官：皮膚（皮疹）→肝臟（黃疸）→腸胃道（嚴重腹瀉）</li>
+              <li>植入成功指標：WBC上升（通常移植後10–14天）；ANC&gt;500持續3天</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">保護性隔離護理（移植後）</div>
+            <ul class="info-list">
+              <li><em class="hl">保護性隔離（正壓病房）</em>：ANC&lt;500/μL 嚴重免疫低下期</li>
+              <li>訪客限制：感冒/感染者禁止探視；探視前洗手戴口罩</li>
+              <li>飲食：無菌低菌飲食（熟食為主）；禁止生食、未洗蔬果、乳製品</li>
+              <li>環境：新鮮花卉禁止（黴菌來源）；每日環境消毒</li>
+              <li>口腔護理：每4小時一次（黏膜炎預防）；CHX漱口液</li>
+              <li>皮膚護理：保濕；觀察GvHD皮疹（麻疹樣→融合→水泡）</li>
+              <li>感染監測：每日體溫；ANC趨勢；培養；廣效預防性抗生素/抗黴菌</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Tacrolimus</span><span class="drug-tag">Mycophenolate</span><span class="drug-tag">Prednisolone</span><span class="drug-tag">Fluconazole（預防黴菌）</span><span class="drug-tag">Acyclovir（預防HSV）</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0e7490,#38bdf8);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses (NANDA-I)</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(16,185,129,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">感染風險</div><div class="np-cause">Risk for Infection ／與免疫抑制、侵入性管路、中性球低下有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>手部衛生：接觸病人前後（WHO五時機）</li>
+          <li>侵入性管路：每日評估必要性；無菌換藥；觀察感染徵兆</li>
+          <li>ANC監測：&lt;500/μL啟動保護性隔離；觀察發燒（&gt;38°C即需培養並使用抗生素）</li>
+          <li>避免感染源：生食禁止；訪客篩查；新鮮花卉禁止</li>
+          <li>疫苗接種（非活性疫苗）；口腔衛生；皮膚完整性維護</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">2</div>
+          <div><div class="np-title">急性/慢性疼痛</div><div class="np-cause">Pain ／與關節炎症、漿膜炎、GvHD有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每班NRS評估；記錄疼痛型態（早晨僵硬、活動後加劇）</li>
+          <li>RA晨間：熱敷10–20分鐘緩解僵硬；SLE漿膜炎→止痛藥</li>
+          <li>關節保護技術；輔具使用；改良日常活動方式</li>
+          <li>非藥物：水中運動（減少負重）；TENS；放鬆技巧</li>
+          <li>藥物：NSAIDs（監測胃腸/腎）；類固醇關節注射</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">3</div>
+          <div><div class="np-title">疲憊</div><div class="np-cause">Fatigue ／與貧血、慢性炎症、藥物副作用、疾病活動有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估疲勞程度（VAS/BFI量表）；找出加重因素</li>
+          <li>節省能量技術（Energy Conservation）：重要活動安排在精力好時段</li>
+          <li>休息與活動交替：每活動30分鐘休息10分鐘</li>
+          <li>貧血矯正：EPO、鐵劑、輸血依醫囑；監測Hb</li>
+          <li>睡眠衛教：規律作息；疼痛控制好→睡眠品質↑</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(245,158,11,.2);color:var(--amber);">4</div>
+          <div><div class="np-title">皮膚完整性受損</div><div class="np-cause">Impaired Skin Integrity ／與狼瘡皮疹、GvHD、免疫低下有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>SLE：每日觀察皮疹分布與變化；日曬後皮膚評估</li>
+          <li>防曬：SPF≥50；避免午間高峰；長袖/帽子</li>
+          <li>皮膚清潔：溫和無香料產品；溫水（勿熱水）</li>
+          <li>GvHD皮疹：觀察進展（點狀→融合→水泡）；保濕</li>
+          <li>黏膜護理：口腔、眼睛（乾燥症）；人工淚液</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">5</div>
+          <div><div class="np-title">知識缺乏</div><div class="np-cause">Deficient Knowledge ／與疾病自我照護、藥物、預防感染有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>SLE衛教：日曬預防；識別惡化徵兆（關節腫、蛋白尿、神經症狀）</li>
+          <li>RA衛教：關節保護技術；規律服用DMARDs；副作用監測</li>
+          <li>HIV衛教：U=U原則；服藥順從性；安全性行為</li>
+          <li>移植衛教：服藥不中斷（排斥預防）；感染警示徵兆；飲食限制</li>
+          <li>評估學習準備度；書面資料補充；家屬同步衛教</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">6</div>
+          <div><div class="np-title">體液容積不足風險</div><div class="np-cause">Risk for Deficient Fluid Volume ／與GvHD腸道、腎臟損傷、發燒有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每日體重（發燒期每班）；嚴密I&O記錄</li>
+          <li>GvHD腸道型：記錄腹瀉量（每次）；電解質監測；靜脈補液</li>
+          <li>發燒：每升高1°C不顯性失水增加約200 mL/day；增加補液</li>
+          <li>腎臟移植術後：每小時尿量&lt;30 mL/hr→立即通知；排除排斥或血栓</li>
+          <li>皮膚彈性評估；口腔黏膜；血壓趨勢</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--purple);">7</div>
+          <div><div class="np-title">身體意象紊亂</div><div class="np-cause">Disturbed Body Image ／與皮疹脫髮、類固醇副作用、器官移植有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>SLE：脫髮（暫時性）、蝴蝶形皮疹→外觀改變；衛教通常可逆</li>
+          <li>類固醇：月亮臉、水牛肩、妊娠紋、體重增加</li>
+          <li>積極傾聽；接受病人負面情緒；不批評外觀</li>
+          <li>遮蓋技巧：假髮、帽子、防曬化妝品（不含香料）</li>
+          <li>心理轉介；病友支持團體（狼瘡病友協會）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--purple);">8</div>
+          <div><div class="np-title">社交孤立</div><div class="np-cause">Social Isolation ／與長期隔離、HIV汙名化、疾病限制社交有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估隔離期間情緒；提供充足資訊（解釋為何隔離）</li>
+          <li>移植病人：隔離必要性衛教；鼓勵視訊與家人保持聯繫</li>
+          <li>HIV：保護隱私；去汙名化；告知不傳染途徑</li>
+          <li>安排社工、心理師會談；宗教/靈性支持</li>
+          <li>出院計畫：社區資源、病友支持團體、返診計畫</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#065f46,#10b981);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：敗血症（CLABSI）</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：SLE活動性惡化</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：骨髓移植後GvHD</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：HIV / 機會性感染</button>
+      </div>
+
+      <!-- CASE 1: CLABSI/SEPSIS -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>張先生，65歲，因<strong>大腸癌接受化療</strong>，留置右側頸內靜脈中心靜脈導管（CVC）第7天。今晨出現<strong>突發高燒39.8°C、寒顫、心跳加速</strong>，且導管插入部位局部發紅有少量膿性滲出物。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">39.8</div><div class="vital-unit">°C ↑↑</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">118</div><div class="vital-unit">bpm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">94/60</div><div class="vital-unit">mmHg ↓</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-abnormal">24</div><div class="vital-unit">次/分 ↑</div></div>
+          <div class="vital-box"><div class="vital-label">乳酸</div><div class="vital-val vital-abnormal">3.8</div><div class="vital-unit">mmol/L ↑</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--rose);">
+          <strong>實驗室：</strong>WBC 1,200/mm³（嚴重骨髓抑制，ANC&lt;100）| PCT 18.6 ng/mL↑↑ | CRP 22.4 mg/dL↑ | 導管尖端培養：金黃葡萄球菌（MRSA）
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 此個案符合敗血症診斷嗎？計算qSOFA並分析</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>qSOFA評分：</strong><br>
+            • 呼吸&gt;22次/分：<em class="hl">✓（24次）</em> = 1分<br>
+            • 收縮壓≤100 mmHg：<em class="hl">✓（94 mmHg）</em> = 1分<br>
+            • GCS&lt;15：需評估（資料未提及，假設清醒）= 0分<br>
+            • <em class="hl">qSOFA ≥ 2</em> → 懷疑敗血症<br><br>
+            <strong>敗血症確認：</strong><br>
+            • 確定感染來源：CLABSI（MRSA導管相關菌血症）<br>
+            • 乳酸 3.8 mmol/L（&gt;2）+ 需升壓藥 → <em class="hl-rose">敗血性休克</em><br><br>
+            <strong>Hour-1 Bundle立即啟動：</strong><br>
+            ① 已測乳酸（3.8 mmol/L）✓<br>
+            ② <em class="hl">血培養兩套（立即，抗生素前）</em><br>
+            ③ 廣效抗生素（考慮MRSA：Vancomycin IV）<br>
+            ④ <em class="hl">30 mL/kg晶體液快速輸注</em>（30kg×30=900 mL，15–30分鐘內）<br>
+            ⑤ 血管加壓素（Norepinephrine）：維持MAP≥65 mmHg
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 分析此次CLABSI的可能原因，制定預防護理計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>CLABSI危險因素分析：</strong><br>
+            • 化療→嚴重骨髓抑制（ANC&lt;100）→免疫防禦力極低<br>
+            • 導管留置<em class="hl">第7天</em>→時間越長風險越高<br>
+            • 導管部位感染徵兆（發紅、膿性滲出）→局部感染已發生<br>
+            • 可能護理缺失：更換接頭未完全無菌；皮膚消毒不確實<br><br>
+            <strong>處置：</strong>立即移除感染導管（明確感染源時）；另建新的血管通路<br><br>
+            <strong>CLABSI預防護理計畫：</strong><br>
+            <em class="hl">插管時（Insertion Bundle）：</em><br>
+            → 最大無菌屏障（帽子＋口罩＋無菌手套＋隔離衣＋大型無菌覆蓋布）<br>
+            → CHX葡萄糖酸（2%）消毒皮膚，乾燥後再插管<br>
+            → 鎖骨下靜脈優先（感染率最低）<br><br>
+            <em class="hl">維護時（Maintenance Bundle）：</em><br>
+            → 每日CHX棉片消毒接頭端（Scrub the Hub，15秒）<br>
+            → 每日評估導管必要性並記錄→不需要立即移除<br>
+            → 觀察插入部位每班；透明敷料每7天或潮溼時更換<br>
+            → 更換輸液組：一般72–96小時；血製品/脂肪乳劑24小時
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 個案ANC &lt; 100/mm³，需要採取哪些特殊護理措施？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>嚴重嗜中性球低下護理（ANC &lt; 500/μL，尤其 &lt;100/μL）：</strong><br><br>
+            <strong>隔離環境（保護性隔離）：</strong><br>
+            • 安置於<em class="hl">正壓單人病室</em>（過濾空氣，防外界感染進入）<br>
+            • 訪客限制：感冒/感染者禁入；進入需戴外科口罩＋洗手<br>
+            • 植栽、生鮮花卉禁止（黴菌來源）<br><br>
+            <strong>感染監測：</strong><br>
+            • <em class="hl">發燒（&gt;38°C）即為緊急</em>：立即血培養（至少兩套）＋廣效抗生素，無須等培養結果<br>
+            • 注意：ANC&lt;500時，典型感染徵兆（膿、炎症）可能缺席！<br>
+            • 每日ANC；PCT/CRP趨勢<br><br>
+            <strong>飲食：</strong>低菌飲食（熟食；不生食；水果去皮或煮熟）<br>
+            <strong>口腔護理：</strong>每4小時一次；觀察鵝口瘡、黏膜潰瘍<br>
+            <strong>皮膚：</strong>溫和清潔；避免肛溫測量（肛門黏膜損傷→菌血症）；避免肛門指診<br>
+            <strong>預防性藥物：</strong>TMP-SMX（PCP）；Fluconazole（黴菌）；Acyclovir（HSV）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: SLE -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>林小姐，28歲，SLE確診3年，規律服用Hydroxychloroquine及低劑量Prednisolone。近2週因工作壓力大且<strong>多次在午間陽光下步行</strong>，出現<strong>蝴蝶形皮疹加重、關節腫痛、發燒（38.2°C）、全身疲憊、下肢水腫</strong>。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.2</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">148/96</div><div class="vital-unit">mmHg ↑</div></div>
+          <div class="vital-box"><div class="vital-label">尿蛋白</div><div class="vital-val vital-abnormal">3+</div><div class="vital-unit">（定性）</div></div>
+          <div class="vital-box"><div class="vital-label">Anti-dsDNA</div><div class="vital-val vital-abnormal">↑↑高</div><div class="vital-unit">活動期</div></div>
+          <div class="vital-box"><div class="vital-label">C3/C4</div><div class="vital-val vital-abnormal">↓↓低</div><div class="vital-unit">補體消耗</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--amber);">
+          <strong>實驗室：</strong>Hb 8.2 g/dL↓（溶血性貧血）| 血小板 68,000/μL↓ | Cr 1.6 mg/dL↑ | 24小時尿蛋白 3.2g（狼瘡性腎炎）| ANA 1:1280 | Anti-dsDNA↑
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此個案SLE惡化的誘因及目前活動性指標</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>誘因分析：</strong><br>
+            • <em class="hl-rose">紫外線暴露（午間日曬）</em>——SLE最重要誘發因子；UV→DNA損傷→自體抗原暴露→免疫活化<br>
+            • 工作壓力→皮質醇↑→免疫調節失衡<br><br>
+            <strong>SLE活動性指標分析：</strong><br>
+            • <em class="hl">Anti-dsDNA↑</em>：活動期特異性標誌（可追蹤疾病活動度）<br>
+            • <em class="hl">補體C3/C4↓</em>：被免疫複合體消耗→活動指標<br>
+            • 尿蛋白3+、Cr↑→<em class="hl-rose">狼瘡性腎炎</em>活動（最嚴重器官損傷）<br>
+            • 溶血性貧血（Hb↓）、血小板↓<br>
+            • 多器官受累：皮膚＋關節＋腎臟＋血液→<em class="hl">重度SLE惡化（flare）</em>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 制定此個案的護理措施，包含狼瘡性腎炎的監測重點</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>急性護理措施：</strong><br><br>
+            <strong>① 皮膚護理</strong><br>
+            → 絕對臥床休息（急性期）；<em class="hl">避免任何光照</em><br>
+            → 蝴蝶形皮疹：溫和無香料清潔劑；避免抓癢；評估進展<br><br>
+            <strong>② 狼瘡性腎炎監測</strong><br>
+            → 每日體重（早晨空腹）；每班I&O；下肢水腫分級<br>
+            → 血壓嚴格監控（目標&lt;130/80）→腎臟保護<br>
+            → 24小時尿蛋白定期追蹤；GFR計算（Cr趨勢）<br>
+            → 限鈉（&lt;2g/天）；液體依腎功能調整<br><br>
+            <strong>③ 貧血/血小板低下</strong><br>
+            → 監測Hb/Plt趨勢；活動安全（避免跌倒出血）<br>
+            → 嚴重血小板低下（&lt;50,000）：避免肌肉注射；軟毛牙刷<br><br>
+            <strong>④ 藥物護理</strong><br>
+            → 依醫囑增加類固醇（活動期）；監測血糖、血壓（類固醇副作用）<br>
+            → 免疫抑制劑（Mycophenolate / Cyclophosphamide for 腎炎）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 此個案為育齡女性，如何提供孕前諮詢及長期衛教？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>SLE育齡女性衛教：</strong><br><br>
+            <strong>懷孕諮詢：</strong><br>
+            • <em class="hl">疾病需穩定≥6個月</em>（無器官惡化、低劑量維持藥物）才可考慮懷孕<br>
+            • 目前狀況（活動性腎炎）：<em class="hl-rose">不宜懷孕</em>；控制疾病後再討論<br>
+            • 懷孕期SLE：高風險（子癲前症、流產、早產）；需高危妊娠追蹤<br>
+            • 藥物調整：Hydroxychloroquine可繼續（安全）；Mycophenolate必須停用（致畸胎）；改Azathioprine<br><br>
+            <strong>長期自我管理衛教：</strong><br>
+            → <em class="hl">防曬</em>：每天外出SPF≥50、帽子、長袖（最重要！）<br>
+            → 識別惡化徵兆：蛋白尿增加、新發皮疹、關節腫、發燒→立即就醫<br>
+            → 規律追蹤：每3–6個月Anti-dsDNA、補體、腎功能<br>
+            → 壓力管理：瑜伽、冥想；充足睡眠<br>
+            → 感染預防：免疫低下時避免人群；接種流感/肺炎疫苗（非活性）<br>
+            → <em class="hl-rose">切勿自行停藥</em>（緩解期仍需維持基礎藥物）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: GvHD -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王先生，34歲，急性骨髓性白血病（AML），接受異體造血幹細胞移植（骨髓移植）第25天。目前ANC已恢復至650/μL。近3天出現<strong>全身皮膚紅疹（軀幹為主）、黃疸加重、每日水樣腹瀉5–8次，量達1,500 mL</strong>。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-warn">38.0</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">體重</div><div class="vital-val vital-abnormal">63→59 kg</div><div class="vital-unit">3天−4 kg</div></div>
+          <div class="vital-box"><div class="vital-label">Total Bilirubin</div><div class="vital-val vital-abnormal">4.2</div><div class="vital-unit">mg/dL ↑</div></div>
+          <div class="vital-box"><div class="vital-label">腹瀉量</div><div class="vital-val vital-abnormal">1,500</div><div class="vital-unit">mL/day</div></div>
+          <div class="vital-box"><div class="vital-label">ANC</div><div class="vital-val vital-normal">650</div><div class="vital-unit">/μL（植入✓）</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此個案的臨床表徵，診斷為何？嚴重度如何？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>診斷：急性移植物對抗宿主病（Acute GvHD）</strong><br><br>
+            <strong>機轉：</strong>供體T細胞識別受者抗原→攻擊宿主組織→三大靶器官（皮膚→肝臟→腸胃道）<br><br>
+            <strong>三大器官評估（Glucksberg分期）：</strong><br>
+            • <em class="hl">皮膚</em>：軀幹紅疹→評估體表面積（BSA）受累% → Grade定義<br>
+            • <em class="hl">肝臟</em>：Total Bilirubin 4.2 mg/dL → Grade II（2–3 mg/dL = GrI，3–6 = GrII）<br>
+            • <em class="hl">腸胃道</em>：腹瀉1,500 mL/day → Grade III（500–1000=GrI，1000-1500=GrII，&gt;1500=GrIII）<br><br>
+            <strong>整體分期：</strong>多器官受累，<em class="hl-rose">Grade III急性GvHD</em>（重度；死亡率高）<br><br>
+            <strong>治療：</strong>高劑量Methylprednisolone（2 mg/kg/day）為一線；Tacrolimus優化
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 腸胃道GvHD護理：如何處理嚴重腹瀉及液體流失？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>腸胃道GvHD腹瀉護理：</strong><br><br>
+            <strong>① 液體補充（最優先）</strong><br>
+            → 腹瀉1,500 mL/day + 發燒不顯性失水 → 嚴重脫水風險<br>
+            → <em class="hl">精確記錄每次腹瀉量</em>（量杯測量，非主觀估計）<br>
+            → 靜脈補液：依I&O補充；電解質（K⁺、Na⁺、Mg²⁺）監測每日<br>
+            → 體重每日（最敏感液體狀態指標）<br><br>
+            <strong>② 腸道休息（NPO或低殘渣飲食）</strong><br>
+            → 重度GvHD（Grade III）：<em class="hl">NPO</em>；完全靜脈營養（TPN）<br>
+            → 逐漸緩解後：清流質→低纖低乳糖→漸進正常<br><br>
+            <strong>③ 肛周皮膚護理</strong><br>
+            → 每次腹瀉後溫水清潔；皮膚保護霜（Zinc oxide）<br>
+            → 評估失禁相關性皮膚炎（IAD）；防水敷料保護<br><br>
+            <strong>④ 感染排除</strong><br>
+            → 大便培養排除C. diff等感染（GvHD與感染腹瀉需鑑別）<br>
+            → CMV病毒血症（移植後常見）：PCR監測
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: HIV -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳先生，42歲，<strong>HIV陽性確診5年，因個人因素已中斷抗病毒藥物（ART）約8個月</strong>。本次因<strong>持續發燒2週（38–39°C）、乾咳、活動後喘氣加重、體重減輕8kg</strong>入院。胸部X光：雙側瀰漫性間質性浸潤（蝙蝠翼形）。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.6</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">SpO₂</div><div class="vital-val vital-abnormal">82%</div><div class="vital-unit">↓↓危急</div></div>
+          <div class="vital-box"><div class="vital-label">CD4</div><div class="vital-val vital-abnormal">56</div><div class="vital-unit">/μL↓↓</div></div>
+          <div class="vital-box"><div class="vital-label">HIV RNA</div><div class="vital-val vital-abnormal">85萬</div><div class="vital-unit">copies/mL↑</div></div>
+          <div class="vital-box"><div class="vital-label">LDH</div><div class="vital-val vital-abnormal">480</div><div class="vital-unit">U/L ↑</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--rose);">
+          <strong>診斷：</strong>肺囊蟲肺炎（Pneumocystis Pneumonia, PCP）— CD4&lt;200/μL + 典型影像 + LDH↑ + SpO₂↓
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 說明PCP的護理重點，此個案為何停藥？如何處理</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>PCP（肺囊蟲肺炎）護理：</strong><br>
+            • 治療：TMP-SMX（Bactrim）高劑量×21天；PaO₂&lt;70→加Prednisolone減輕炎症<br>
+            • 呼吸護理：高流量氧氣（面罩）；SpO₂目標&gt;92%；必要時HFNC或機械通氣<br>
+            • 監測：呼吸功能趨勢（RR、SpO₂）；每日胸部X光進展；LDH（治療反應指標）<br><br>
+            <strong>停藥原因探索：</strong><br>
+            面對ART中斷，護理師應不帶評判地探索原因：<br>
+            → 藥物副作用難以忍受？（可更換方案）<br>
+            → <em class="hl">汙名化恐懼</em>（他人發現服藥）？<br>
+            → 憂鬱、否認疾病？<br>
+            → 經濟困難？（台灣HIV藥物全部由健保/疾管署全額補助）<br>
+            → 遺忘或生活作息改變？<br><br>
+            <strong>重啟ART時機：</strong><br>
+            • PCP治療<em class="hl">2週後</em>重啟ART（過早→免疫重建炎症症候群IRIS）<br>
+            • 衛教：<em class="hl">規律服藥的重要性</em>；U=U原則；HIV個管師資源
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 針對此個案制定衛教計畫，協助其重建服藥順從性</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>ART服藥順從性衛教計畫：</strong><br><br>
+            <strong>為什麼重要（說明後果）：</strong><br>
+            → 停藥→病毒量↑→CD4↓→免疫崩潰→機會性感染（如此次PCP）→可能死亡<br>
+            → 不規律服藥→病毒突破→抗藥性產生→未來選擇減少<br><br>
+            <strong>現代ART的好消息（去汙名化）：</strong><br>
+            → 每天一顆（Single Tablet Regimen）；副作用已大幅減少<br>
+            → <em class="hl">U=U：病毒量測不到→不傳染</em>（重要動力）<br>
+            → 台灣HIV藥物<em class="hl">全額補助</em>，不需自費<br><br>
+            <strong>提升順從性策略：</strong><br>
+            → 找出障礙並個別化解決（副作用→換藥；遺忘→鬧鐘/藥盒）<br>
+            → <em class="hl">HIV個管師</em>：長期追蹤、心理支持、協助解決問題<br>
+            → Peer support（同儕支持）：已治療成功的HIV病友分享<br>
+            → 每次回診：「沒有評判的問診環境」<br><br>
+            <strong>護理師態度：</strong><br>
+            → <em class="hl-green">不批評、不評判停藥行為</em>；以好奇心問「是什麼讓服藥變得困難？」<br>
+            → 保護絕對隱私；創造安全說話環境
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 護理師在為此個案進行侵入性操作時，針扎風險的標準處置流程是什麼？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>針扎後處理流程：</strong><br><br>
+            <strong>① 立即傷口處理</strong><br>
+            → <em class="hl">立即用肥皂水沖洗至少5分鐘</em>；自然擠出少許血液（勿用嘴吸）<br>
+            → 消毒劑塗抹（70%酒精或碘伏）<br><br>
+            <strong>② 立即報告</strong><br>
+            → 通知主管；填寫針扎事件報告；記錄時間、部位、操作類型<br><br>
+            <strong>③ 評估風險（此案高風險）</strong><br>
+            → 來源：HIV陽性＋病毒量85萬 copies/mL（高傳染性）→高風險暴露<br>
+            → 傷口類型（深刺？空心針？）<br><br>
+            <strong>④ 暴露後預防（PEP）</strong><br>
+            → <em class="hl">2小時內開始PEP</em>（最晚72小時內）<br>
+            → 三合一ART藥物（如TDF/FTC + RAL或DTG）連續<em class="hl">28天</em><br>
+            → HIV傳染率：0.3%（針扎）→PEP可降低約80%<br><br>
+            <strong>⑤ 追蹤</strong><br>
+            → HIV篩檢：基線（立即）、4週、8週、12週、6個月<br>
+            → 心理支持：提供焦慮諮詢；維護隱私<br><br>
+            <strong>預防勝於治療：</strong>使用安全針具、雙層手套、操作後立即丟棄針頭（勿回套）
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:40px 0 20px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;">安全保護 Safety & Protection</div>
+    內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.disease-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={hai:0,sle:1,ra:2,aids:3,transplant:4};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('diseases').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;
+  c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('sp-sb6',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('sp-sb6')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

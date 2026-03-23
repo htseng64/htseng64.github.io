@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>內外護理學綜論 — 自學教材系列 | 弘光科技大學護理系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #080c1a;
+    --navy-lt:#0f1628;
+    --text:   #e2e8f0;
+    --dim:    #8892a8;
+    --border: rgba(255,255,255,0.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans TC',sans-serif;
+    background:var(--navy);
+    color:var(--text);
+    min-height:100vh;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(0,180,216,.08) 0%,transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(167,139,250,.07) 0%,transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(45,212,191,.03) 0%,transparent 65%);
+    pointer-events:none;z-index:0;
+  }
+
+  /* ── HERO ── */
+  .hero{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:72px 24px 56px;
+    border-bottom:1px solid var(--border);
+  }
+  .hero-label{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);
+    border-radius:100px;padding:6px 18px;
+    font-size:12px;color:#2dd4bf;letter-spacing:.12em;
+    margin-bottom:28px;
+  }
+  .hero-label span{width:5px;height:5px;background:#2dd4bf;border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  .hero h1{
+    font-family:'Noto Serif TC',serif;
+    font-size:clamp(32px,5vw,58px);
+    font-weight:700;line-height:1.2;color:#fff;
+    margin-bottom:12px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(135deg,#2dd4bf,#99f6e4);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .hero-en{font-size:17px;color:var(--dim);letter-spacing:.05em;margin-bottom:10px;}
+  .hero-info{
+    display:flex;align-items:center;justify-content:center;gap:20px;
+    font-size:13px;color:var(--dim);margin-top:20px;flex-wrap:wrap;
+  }
+  .hero-info span{display:flex;align-items:center;gap:6px;}
+  .hero-info span::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--dim);}
+  .hero-info span:first-child::before{display:none;}
+
+  /* ── MAIN GRID ── */
+  .container{
+    position:relative;z-index:1;
+    max-width:1200px;margin:0 auto;
+    padding:56px 24px 80px;
+  }
+
+  .grid-label{
+    font-size:11px;font-weight:700;color:var(--dim);
+    letter-spacing:.2em;text-transform:uppercase;
+    margin-bottom:24px;display:flex;align-items:center;gap:12px;
+  }
+  .grid-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  .units-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:48px;
+  }
+
+  /* ── UNIT CARD ── */
+  .unit-card{
+    background:rgba(15,22,40,.8);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:0;
+    overflow:hidden;
+    text-decoration:none;
+    color:inherit;
+    transition:all .28s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+  .unit-card::before{
+    content:'';
+    position:absolute;top:0;left:0;right:0;height:3px;
+  }
+  /* Per-unit accent colors */
+  .unit-card[data-n="1"]::before{background:linear-gradient(90deg,#00b4d8,#90e0ef);}
+  .unit-card[data-n="2"]::before{background:linear-gradient(90deg,#f59e0b,#fcd34d);}
+  .unit-card[data-n="3"]::before{background:linear-gradient(90deg,#a78bfa,#ddd6fe);}
+  .unit-card[data-n="4"]::before{background:linear-gradient(90deg,#10b981,#6ee7b7);}
+  .unit-card[data-n="5"]::before{background:linear-gradient(90deg,#e879f9,#f5d0fe);}
+  .unit-card[data-n="6"]::before{background:linear-gradient(90deg,#f97316,#fdba74);}
+  .unit-card[data-n="7"]::before{background:linear-gradient(90deg,#818cf8,#c7d2fe);}
+  .unit-card[data-n="8"]::before{background:linear-gradient(90deg,#f472b6,#fbcfe8);}
+  .unit-card[data-n="9"]::before{background:linear-gradient(90deg,#2dd4bf,#99f6e4);}
+
+  .unit-card:hover{
+    background:rgba(20,30,56,.95);
+    transform:translateY(-5px);
+    box-shadow:0 24px 60px rgba(0,0,0,.4);
+  }
+  .unit-card:hover .card-arrow{opacity:1;transform:translateX(0);}
+
+  .card-body{padding:22px 22px 18px;flex:1;}
+  .card-num{
+    font-size:11px;font-weight:700;letter-spacing:.15em;
+    text-transform:uppercase;margin-bottom:10px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .unit-card[data-n="1"] .card-num{color:#00b4d8;}
+  .unit-card[data-n="2"] .card-num{color:#f59e0b;}
+  .unit-card[data-n="3"] .card-num{color:#a78bfa;}
+  .unit-card[data-n="4"] .card-num{color:#10b981;}
+  .unit-card[data-n="5"] .card-num{color:#e879f9;}
+  .unit-card[data-n="6"] .card-num{color:#f97316;}
+  .unit-card[data-n="7"] .card-num{color:#818cf8;}
+  .unit-card[data-n="8"] .card-num{color:#f472b6;}
+  .unit-card[data-n="9"] .card-num{color:#2dd4bf;}
+
+  .card-title{
+    font-family:'Noto Serif TC',serif;
+    font-size:18px;font-weight:700;color:#fff;
+    margin-bottom:4px;line-height:1.3;
+  }
+  .card-en{font-size:12px;color:var(--dim);margin-bottom:14px;letter-spacing:.04em;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .card-tag{
+    font-size:10px;font-weight:600;padding:3px 9px;
+    border-radius:100px;
+    background:rgba(255,255,255,.06);
+    color:var(--dim);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .card-desc{font-size:12.5px;color:var(--dim);line-height:1.7;}
+
+  .card-footer{
+    padding:12px 22px 16px;
+    border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .card-fname{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:rgba(255,255,255,.25);
+  }
+  .card-arrow{
+    font-size:16px;
+    opacity:0;transform:translateX(-6px);
+    transition:all .2s;
+  }
+  .unit-card[data-n="1"] .card-arrow{color:#00b4d8;}
+  .unit-card[data-n="2"] .card-arrow{color:#f59e0b;}
+  .unit-card[data-n="3"] .card-arrow{color:#a78bfa;}
+  .unit-card[data-n="4"] .card-arrow{color:#10b981;}
+  .unit-card[data-n="5"] .card-arrow{color:#e879f9;}
+  .unit-card[data-n="6"] .card-arrow{color:#f97316;}
+  .unit-card[data-n="7"] .card-arrow{color:#818cf8;}
+  .unit-card[data-n="8"] .card-arrow{color:#f472b6;}
+  .unit-card[data-n="9"] .card-arrow{color:#2dd4bf;}
+
+  /* ── CAPSTONE CARD (full width) ── */
+  .capstone-card{
+    background:rgba(15,22,40,.8);
+    border:1px solid rgba(45,212,191,.28);
+    border-radius:18px;overflow:hidden;
+    text-decoration:none;color:inherit;
+    display:flex;gap:0;
+    transition:all .28s;
+    position:relative;
+  }
+  .capstone-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#2dd4bf,#818cf8,#f472b6,#f97316);
+  }
+  .capstone-card:hover{
+    background:rgba(20,30,56,.95);
+    transform:translateY(-4px);
+    box-shadow:0 28px 70px rgba(0,0,0,.45);
+    border-color:rgba(45,212,191,.5);
+  }
+  .capstone-left{
+    padding:32px 36px;flex:1;
+  }
+  .capstone-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.3);
+    border-radius:100px;padding:5px 14px;font-size:11px;color:#2dd4bf;
+    letter-spacing:.1em;font-weight:700;margin-bottom:16px;
+  }
+  .capstone-title{
+    font-family:'Noto Serif TC',serif;
+    font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;
+  }
+  .capstone-en{font-size:13px;color:var(--dim);margin-bottom:16px;}
+  .capstone-desc{font-size:13px;color:var(--dim);line-height:1.8;max-width:600px;}
+  .capstone-right{
+    padding:32px 36px;
+    background:rgba(45,212,191,.04);
+    border-left:1px solid rgba(45,212,191,.15);
+    min-width:260px;display:flex;flex-direction:column;justify-content:center;gap:10px;
+  }
+  .cap-case{
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;padding:10px 14px;
+  }
+  .cap-case-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px;}
+  .cap-case-sub{font-size:11px;color:var(--dim);}
+  .cap-arrow{
+    color:#2dd4bf;font-size:22px;margin-top:8px;
+    transition:transform .2s;
+  }
+  .capstone-card:hover .cap-arrow{transform:translateX(6px);}
+
+  /* ── ABOUT SECTION ── */
+  .about-section{
+    display:grid;grid-template-columns:1fr 1fr;gap:18px;
+    margin-top:12px;
+  }
+  .about-card{
+    background:rgba(15,22,40,.6);
+    border:1px solid var(--border);
+    border-radius:14px;padding:22px 24px;
+  }
+  .about-title{
+    font-size:13px;font-weight:700;color:#fff;
+    margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  }
+  .about-list{list-style:none;}
+  .about-list li{
+    font-size:12.5px;color:var(--dim);
+    line-height:1.75;padding:4px 0;
+    display:flex;gap:8px;
+    border-bottom:1px solid rgba(255,255,255,.04);
+  }
+  .about-list li:last-child{border-bottom:none;}
+  .about-list li::before{content:'→';color:#2dd4bf;flex-shrink:0;font-size:11px;margin-top:2px;}
+
+  /* ── SERIES STRIP ── */
+  .series-strip{
+    display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+    margin-top:48px;padding-top:32px;
+    border-top:1px solid var(--border);
+  }
+  .ss-badge{
+    padding:5px 14px;border-radius:100px;
+    font-size:11px;font-weight:600;
+    text-decoration:none;transition:all .2s;
+  }
+  .ss-badge:hover{transform:translateY(-2px);filter:brightness(1.2);}
+
+  /* ── FOOTER ── */
+  .footer{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:32px 24px 40px;
+    border-top:1px solid var(--border);
+    color:var(--dim);font-size:12px;
+    line-height:1.8;
+  }
+  .footer strong{color:rgba(255,255,255,.5);}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px){.units-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:768px){
+    .units-grid{grid-template-columns:1fr;}
+    .capstone-card{flex-direction:column;}
+    .capstone-right{border-left:none;border-top:1px solid rgba(45,212,191,.15);min-width:unset;}
+    .about-section{grid-template-columns:1fr;}
+    .hero{padding:48px 20px 40px;}
+  }
+  @media(max-width:480px){
+    .hero h1{font-size:26px;}
+    .container{padding:36px 16px 60px;}
+    .capstone-left{padding:24px 20px;}
+    .capstone-right{padding:20px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-label"><span></span> 114學年第2學期 · 進二技一年級</div>
+  <h1>內外護理學綜論<br><em>Comprehensive Medical-Surgical Nursing</em></h1>
+  <div class="hero-en">弘光科技大學 護理系 · Self-Learning Materials</div>
+  <div class="hero-info">
+    <span>共 9 個教學單元</span>
+    <span>涵蓋全人照護框架</span>
+    <span>含臨床案例演練</span>
+    <span>側欄收合 · 響應式設計</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- UNITS 1-8 -->
+  <div class="grid-label">單元導覽 Course Units</div>
+  <div class="units-grid">
+
+    <a class="unit-card" data-n="1" href="oxygenation-mobility.html">
+      <div class="card-body">
+        <div class="card-num">Unit 01</div>
+        <div class="card-title">氧合與活動</div>
+        <div class="card-en">Oxygenation & Mobility</div>
+        <div class="card-tags">
+          <span class="card-tag">COPD</span>
+          <span class="card-tag">心臟衰竭</span>
+          <span class="card-tag">關節置換</span>
+          <span class="card-tag">骨質疏鬆</span>
+          <span class="card-tag">ABG判讀</span>
+        </div>
+        <div class="card-desc">氧合、循環、活動三大核心概念；COPD給氧原則；心血管疾病；關節炎護理；術後復健計畫。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">oxygenation-mobility.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="2" href="nutrition-elimination.html">
+      <div class="card-body">
+        <div class="card-num">Unit 02</div>
+        <div class="card-title">營養與排泄</div>
+        <div class="card-en">Nutrition & Elimination</div>
+        <div class="card-tags">
+          <span class="card-tag">消化性潰瘍</span>
+          <span class="card-tag">肝硬化</span>
+          <span class="card-tag">胰臟炎</span>
+          <span class="card-tag">膽結石</span>
+          <span class="card-tag">腸胃道手術</span>
+        </div>
+        <div class="card-desc">攝食、消化、吸收、代謝、水化；肝性腦病變；傾食症候群；造口護理；TPN管理。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">nutrition-elimination.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="3" href="sensory-perception.html">
+      <div class="card-body">
+        <div class="card-num">Unit 03</div>
+        <div class="card-title">感覺知覺</div>
+        <div class="card-en">Sensory / Perception</div>
+        <div class="card-tags">
+          <span class="card-tag">腦中風</span>
+          <span class="card-tag">頭部損傷</span>
+          <span class="card-tag">癲癇</span>
+          <span class="card-tag">脊髓損傷</span>
+          <span class="card-tag">帕金森氏症</span>
+        </div>
+        <div class="card-desc">GCS評估；ICP護理；FAST中風辨識；癲癇重積狀態；自律神經反射異常；HIVD；MG危象鑑別。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">sensory-perception.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="4" href="safety-protection.html">
+      <div class="card-body">
+        <div class="card-num">Unit 04</div>
+        <div class="card-title">安全保護</div>
+        <div class="card-en">Safety & Protection</div>
+        <div class="card-tags">
+          <span class="card-tag">院內感染</span>
+          <span class="card-tag">SLE</span>
+          <span class="card-tag">類風濕性關節炎</span>
+          <span class="card-tag">HIV/AIDS</span>
+          <span class="card-tag">器官移植</span>
+        </div>
+        <div class="card-desc">感染鏈六環節；CLABSI/CAUTI/VAP防護；隔離類型；MDRO護理；自體免疫疾病；GvHD管理。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">safety-protection.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="5" href="oncology-care.html">
+      <div class="card-body">
+        <div class="card-num">Unit 05</div>
+        <div class="card-title">腫瘤全人照護</div>
+        <div class="card-en">Oncology Care</div>
+        <div class="card-tags">
+          <span class="card-tag">化療護理</span>
+          <span class="card-tag">放射治療</span>
+          <span class="card-tag">標靶免疫</span>
+          <span class="card-tag">安寧緩和</span>
+          <span class="card-tag">irAE</span>
+        </div>
+        <div class="card-desc">TNM分期；化療副作用（FN/外漏/黏膜炎）；irAE識別；Total Pain概念；WHO三階梯；臨終護理。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">oncology-care.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="6" href="family-cultural-care.html">
+      <div class="card-body">
+        <div class="card-num">Unit 06</div>
+        <div class="card-title">家庭文化照護</div>
+        <div class="card-en">Family & Cultural Care</div>
+        <div class="card-tags">
+          <span class="card-tag">家系圖</span>
+          <span class="card-tag">照顧者負荷</span>
+          <span class="card-tag">跨文化護理</span>
+          <span class="card-tag">失智照護</span>
+          <span class="card-tag">長照2.0</span>
+        </div>
+        <div class="card-desc">Leininger理論；Kleinman 8問；APGAR家庭評估；台灣多元文化族群；老年5I；譫妄 vs 失智鑑別。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">family-cultural-care.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="7" href="spiritual-care.html">
+      <div class="card-body">
+        <div class="card-num">Unit 07</div>
+        <div class="card-title">靈性照護</div>
+        <div class="card-en">Spiritual Care</div>
+        <div class="card-tags">
+          <span class="card-tag">FICA評估</span>
+          <span class="card-tag">靈性困擾</span>
+          <span class="card-tag">四道人生</span>
+          <span class="card-tag">死前視見</span>
+          <span class="card-tag">宗教照護</span>
+        </div>
+        <div class="card-desc">靈性 vs 宗教；HOPE/FICA評估工具；五大宗教臨終照護要點；憐憫疲憊；護理師靈性自我照護。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">spiritual-care.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="unit-card" data-n="8" href="psychological-care.html">
+      <div class="card-body">
+        <div class="card-num">Unit 08</div>
+        <div class="card-title">心理照護</div>
+        <div class="card-en">Psychological Care</div>
+        <div class="card-tags">
+          <span class="card-tag">PHQ-9</span>
+          <span class="card-tag">焦慮護理</span>
+          <span class="card-tag">自殺防護</span>
+          <span class="card-tag">身體意象</span>
+          <span class="card-tag">危機介入</span>
+        </div>
+        <div class="card-desc">Lazarus壓力因應模式；Peplau焦慮四級；Columbia自殺評估；Roberts七階段危機介入；動機式晤談。</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-fname">psychological-care.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div><!-- /units-grid -->
+
+  <!-- CAPSTONE CARD -->
+  <div class="grid-label">系列總結 Capstone</div>
+  <a class="capstone-card" href="holistic-case-practice.html">
+    <div class="capstone-left">
+      <div class="capstone-badge">✦ 整合演練</div>
+      <div class="capstone-title">全人案例演練</div>
+      <div class="capstone-en">Holistic Case Practice — Integrative Clinical Reasoning</div>
+      <div class="capstone-desc">整合全系列八大主題，透過四個完整臨床案例，練習從<strong style="color:#2dd4bf">身體・心理・社會・靈性</strong>四個維度的全人評估與護理計畫。每個案例均橫跨多個系列單元，展現護理的整合思維。</div>
+    </div>
+    <div class="capstone-right">
+      <div class="cap-case">
+        <div class="cap-case-title">案例一：COPD老年病人 + 失智</div>
+        <div class="cap-case-sub">氧合 · 家庭 · 照顧者支持</div>
+      </div>
+      <div class="cap-case">
+        <div class="cap-case-title">案例二：乳癌化療 + 穆斯林新住民</div>
+        <div class="cap-case-sub">腫瘤 · 跨文化 · 心理</div>
+      </div>
+      <div class="cap-case">
+        <div class="cap-case-title">案例三：中風後復健 + 家庭危機</div>
+        <div class="cap-case-sub">感覺知覺 · 心理 · 社會資源</div>
+      </div>
+      <div class="cap-case">
+        <div class="cap-case-title">案例四：末期安寧 + 四道人生</div>
+        <div class="cap-case-sub">安寧 · 靈性 · 家庭會議</div>
+      </div>
+      <div class="cap-arrow">→</div>
+    </div>
+  </a>
+
+  <!-- ABOUT / HOW TO USE -->
+  <div class="grid-label" style="margin-top:48px;">使用說明 How to Use</div>
+  <div class="about-section">
+    <div class="about-card">
+      <div class="about-title">📱 網頁功能</div>
+      <ul class="about-list">
+        <li>左側導覽列可點擊「☰」按鈕收合/展開</li>
+        <li>桌機模式：收合後主內容自動撐滿；狀態自動記憶</li>
+        <li>手機模式：側欄變為滑入式抽屜，點空白處關閉</li>
+        <li>各疾病/主題分頁點擊即切換，無需重新載入</li>
+        <li>案例解析按鈕逐題展開，適合課前自學與課後複習</li>
+        <li>右下角「↑」按鈕可快速回到頁頂</li>
+      </ul>
+    </div>
+    <div class="about-card">
+      <div class="about-title">📚 學習建議</div>
+      <ul class="about-list">
+        <li>建議依序閱讀：先核心概念 → 護理評估 → 疾病介紹 → 護理問題 → 案例分析</li>
+        <li>案例分析建議先自行作答，再展開解析對照</li>
+        <li>搭配教科書使用：黑底網頁為精要整理，細節請參照原文</li>
+        <li>全人案例演練建議最後閱讀，整合所有單元概念</li>
+        <li>本教材以自學為目標，每單元估計需要2–3小時</li>
+        <li>內容僅供學術教育用途，臨床決策請遵循醫院規範</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SERIES COLOR STRIP -->
+  <div class="series-strip">
+    <a class="ss-badge" href="oxygenation-mobility.html"   style="background:rgba(0,180,216,.15);color:#00b4d8;border:1px solid rgba(0,180,216,.3);">氧合與活動</a>
+    <a class="ss-badge" href="nutrition-elimination.html"  style="background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3);">營養與排泄</a>
+    <a class="ss-badge" href="sensory-perception.html"     style="background:rgba(167,139,250,.15);color:#a78bfa;border:1px solid rgba(167,139,250,.3);">感覺知覺</a>
+    <a class="ss-badge" href="safety-protection.html"      style="background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3);">安全保護</a>
+    <a class="ss-badge" href="oncology-care.html"          style="background:rgba(232,121,249,.15);color:#e879f9;border:1px solid rgba(232,121,249,.3);">腫瘤全人照護</a>
+    <a class="ss-badge" href="family-cultural-care.html"   style="background:rgba(249,115,22,.15);color:#f97316;border:1px solid rgba(249,115,22,.3);">家庭文化照護</a>
+    <a class="ss-badge" href="spiritual-care.html"         style="background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3);">靈性照護</a>
+    <a class="ss-badge" href="psychological-care.html"     style="background:rgba(244,114,182,.15);color:#f472b6;border:1px solid rgba(244,114,182,.3);">心理照護</a>
+    <a class="ss-badge" href="holistic-case-practice.html" style="background:rgba(45,212,191,.15);color:#2dd4bf;border:1px solid rgba(45,212,191,.35);font-weight:700;">全人案例演練 ✦</a>
+    <a class="ss-badge" href="escape-game.html"   style="background:rgba(0,160,216,.15);color:#00b4d8;border:1px solid rgba(0,180,216,.3);">密室逃脫</a>
+  </div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div style="margin-bottom:6px;font-size:14px;color:rgba(255,255,255,.6);font-family:'Noto Serif TC',serif;">內外護理學綜論自學教材</div>
+  <strong>弘光科技大學 護理系</strong> · 114學年第2學期 · 進二技一年級<br>
+  Comprehensive Concepts of Medical-Surgical Nursing<br>
+  <span style="margin-top:8px;display:block;">本教材僅供學術教育用途 · For Academic Use Only</span>
+</footer>
+
+</body>
+</html>

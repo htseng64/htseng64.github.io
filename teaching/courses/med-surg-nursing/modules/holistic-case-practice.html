@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全人案例演練 — Holistic Case Practice | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #080b18;
+    --primary:    #2dd4bf;
+    --primary-dk: #0d9488;
+    --primary-lt: #99f6e4;
+    --gold:       #fbbf24;
+    --gold-lt:    #fde68a;
+    --rose:       #fb7185;
+    --rose-lt:    #fda4af;
+    --purple:     #a78bfa;
+    --purple-lt:  #ddd6fe;
+    --orange:     #f97316;
+    --sky:        #38bdf8;
+    --green:      #34d399;
+    --pink:       #f472b6;
+    --indigo:     #818cf8;
+    --text:       #e2e8f0;
+    --text-dim:   #8892a8;
+    --border:     rgba(45,212,191,0.18);
+    --card:       rgba(12,16,34,0.85);
+    --card-hov:   rgba(12,16,34,0.97);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 10% 10%, rgba(13,148,136,.14) 0%,transparent 52%),
+      radial-gradient(ellipse at 90% 90%, rgba(45,212,191,.08) 0%,transparent 48%),
+      radial-gradient(ellipse at 50% 50%, rgba(251,191,36,.03) 0%,transparent 60%),
+      radial-gradient(ellipse at 80% 15%, rgba(167,139,250,.06) 0%,transparent 40%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:272px;height:100vh;background:rgba(8,11,24,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(24px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;backdrop-filter:blur(3px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:222px;width:38px;height:38px;border-radius:10px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(45,212,191,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:26px 20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.5;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:14px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(45,212,191,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:5px 20px 5px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── SERIES BADGES in sidebar ── */
+  .series-grid{display:flex;flex-wrap:wrap;gap:6px;padding:12px 20px 16px;}
+  .sbadge{font-size:10px;padding:3px 8px;border-radius:100px;font-weight:600;cursor:default;}
+
+  /* ── MAIN ── */
+  .main{margin-left:272px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:320px;display:flex;flex-direction:column;justify-content:center;padding:56px 0 38px;border-bottom:1px solid var(--border);margin-bottom:56px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:22px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(34px,4.5vw,58px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:17px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-desc{font-size:14px;color:var(--text-dim);margin-top:14px;line-height:1.8;max-width:720px;}
+  .hero-pills{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}
+  .pill{padding:5px 13px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.04em;}
+  .pill-teal{background:rgba(45,212,191,.15);color:var(--primary);border:1px solid rgba(45,212,191,.3);}
+  .pill-gold{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3);}
+  .pill-rose{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+  .pill-purple{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CASE SELECTOR ── */
+  .case-selector{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px;}
+  .case-select-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+  .case-select-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .case-select-card.c1::before{background:linear-gradient(90deg,var(--rose),var(--rose-lt));}
+  .case-select-card.c2::before{background:linear-gradient(90deg,var(--gold),var(--gold-lt));}
+  .case-select-card.c3::before{background:linear-gradient(90deg,var(--purple),var(--purple-lt));}
+  .case-select-card.c4::before{background:linear-gradient(90deg,var(--green),#a7f3d0);}
+  .case-select-card:hover,.case-select-card.active{background:var(--card-hov);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.35);}
+  .case-select-card.active{border-color:var(--primary);}
+  .csc-num{font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+  .csc-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .csc-sub{font-size:12px;color:var(--text-dim);line-height:1.5;margin-bottom:14px;}
+  .csc-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .csc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;}
+
+  /* ── CASE CONTENT ── */
+  .case-content{display:none;animation:fadeIn .3s ease;}
+  .case-content.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── PATIENT PROFILE ── */
+  .profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px;}
+  .profile-header{padding:22px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .profile-avatar{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .profile-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .profile-basic{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .profile-body{padding:20px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .pb-section{} 
+  .pb-title{font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;}
+  .pb-list{list-style:none;}
+  .pb-list li{font-size:13px;color:var(--text-dim);line-height:1.75;padding:2px 0;display:flex;gap:6px;}
+  .pb-list li::before{content:'·';color:var(--primary);flex-shrink:0;}
+
+  /* ── VITALS ROW ── */
+  .vitals-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;}
+  .vital-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:11px;text-align:center;}
+  .vital-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+  .vital-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin:4px 0;}
+  .vital-unit{font-size:9px;color:var(--text-dim);}
+  .v-ab{color:var(--rose);}
+  .v-ok{color:var(--green);}
+  .v-wn{color:var(--gold);}
+
+  /* ── HOLISTIC WHEEL ── */
+  .holistic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .hol-card{border-radius:14px;padding:18px;}
+  .hol-card.phys{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);}
+  .hol-card.psych{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.25);}
+  .hol-card.soc{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);}
+  .hol-card.spirit{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.25);}
+  .hol-icon{font-size:22px;margin-bottom:8px;}
+  .hol-title{font-size:13px;font-weight:700;margin-bottom:8px;}
+  .hol-card.phys .hol-title{color:var(--rose);}
+  .hol-card.psych .hol-title{color:var(--pink);}
+  .hol-card.soc .hol-title{color:var(--sky);}
+  .hol-card.spirit .hol-title{color:var(--indigo);}
+  .hol-item{font-size:12px;color:var(--text-dim);line-height:1.6;padding:2px 0;}
+
+  /* ── LAB TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(45,212,191,.12);color:var(--primary);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:9px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+  .ab{color:var(--rose);font-weight:600;}
+
+  /* ── QUESTION BLOCKS ── */
+  .q-section{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px;}
+  .q-section-header{padding:16px 22px;background:rgba(45,212,191,.06);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .q-section-icon{font-size:18px;}
+  .q-section-title{font-size:14px;font-weight:700;color:var(--primary);}
+  .q-section-sub{font-size:12px;color:var(--text-dim);margin-left:auto;}
+  .q-body{padding:20px 22px;}
+  .q-block{background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.16);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:5px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:10px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.85;color:var(--text);}
+  .answer-content.open{display:block;animation:fadeIn .25s ease;}
+
+  /* ── NP PLAN ── */
+  .np-plan{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px;}
+  .np-item{background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.15);border-radius:12px;padding:14px 16px;}
+  .np-dx{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:4px;}
+  .np-rel{font-size:11px;color:var(--text-dim);margin-bottom:8px;}
+  .np-goals{list-style:none;}
+  .np-goals li{font-size:12px;color:var(--text-dim);line-height:1.65;padding:2px 0;display:flex;gap:6px;}
+  .np-goals li::before{content:'→';color:var(--primary);flex-shrink:0;font-size:11px;margin-top:1px;}
+
+  /* ── BOXES ── */
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:13px 16px;margin-top:12px;font-size:13px;line-height:1.75;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);border-radius:12px;padding:13px 16px;margin-top:12px;font-size:13px;line-height:1.75;color:var(--primary-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);border-radius:12px;padding:13px 16px;margin-top:12px;font-size:13px;line-height:1.75;color:var(--primary-lt);display:flex;gap:10px;}
+  .gold-box{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:13px 16px;margin-top:12px;font-size:13px;line-height:1.75;color:var(--gold-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:15px;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(45,212,191,.45);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-gold{font-style:normal;color:var(--gold);font-weight:600;}
+  em.hl-purple{font-style:normal;color:var(--purple);font-weight:600;}
+  em.hl-sky{font-style:normal;color:var(--sky);font-weight:600;}
+  em.hl-green{font-style:normal;color:var(--green);font-weight:600;}
+  em.hl-pink{font-style:normal;color:var(--pink);font-weight:600;}
+  em.hl-orange{font-style:normal;color:var(--orange);font-weight:600;}
+
+  /* ── FULL CARD ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:18px;}
+
+  /* ── FRAMEWORK OVERVIEW ── */
+  .fw-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px;}
+  .fw-unit{border-radius:12px;padding:14px;text-align:center;}
+  .fw-unit:nth-child(1){background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.22);}
+  .fw-unit:nth-child(2){background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);}
+  .fw-unit:nth-child(3){background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);}
+  .fw-unit:nth-child(4){background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.22);}
+  .fw-unit:nth-child(5){background:rgba(232,121,249,.08);border:1px solid rgba(232,121,249,.22);}
+  .fw-unit:nth-child(6){background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);}
+  .fw-unit:nth-child(7){background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.22);}
+  .fw-unit:nth-child(8){background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.22);}
+  .fw-icon{font-size:20px;margin-bottom:6px;}
+  .fw-label{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .fw-desc{font-size:10px;color:var(--text-dim);line-height:1.4;}
+
+  /* ── TIMELINE ── */
+  .timeline{position:relative;padding-left:28px;margin-top:14px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(--border);}
+  .tl-item{position:relative;margin-bottom:20px;}
+  .tl-dot{position:absolute;left:-24px;top:3px;width:12px;height:12px;border-radius:50%;border:2px solid var(--primary);background:var(--navy);}
+  .tl-date{font-size:11px;color:var(--primary);font-weight:700;letter-spacing:.08em;margin-bottom:4px;}
+  .tl-content{font-size:13px;color:var(--text-dim);line-height:1.75;}
+  .tl-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;margin-left:6px;vertical-align:middle;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){
+    .case-selector{grid-template-columns:1fr;}
+    .profile-body{grid-template-columns:repeat(2,1fr);}
+    .holistic-grid{grid-template-columns:repeat(2,1fr);}
+    .vitals-row{grid-template-columns:repeat(3,1fr);}
+    .fw-overview{grid-template-columns:repeat(4,1fr);}
+    .np-plan{grid-template-columns:1fr;}
+  }
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%);width:272px !important;}
+    .sidebar.open{transform:translateX(0);}
+    .main{margin-left:0 !important;padding:0 16px 60px;padding-top:58px;}
+    .hero{padding-top:16px;} .hero h1{font-size:24px;}
+    .holistic-grid{grid-template-columns:1fr 1fr;}
+    .vitals-row{grid-template-columns:1fr 1fr 1fr;}
+    .fw-overview{grid-template-columns:repeat(2,1fr);}
+    .profile-body{grid-template-columns:1fr;}
+  }
+  @media(max-width:480px){
+    .hero h1{font-size:20px;}
+    .main{padding:0 12px 60px;padding-top:58px;}
+    .holistic-grid{grid-template-columns:1fr;}
+    .vitals-row{grid-template-columns:1fr 1fr;}
+    .case-panel{padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">全人案例演練<br>Holistic Case Practice</div>
+      <div class="sidebar-sub">內外護理學 · 系列總結</div>
+    </div>
+  </div>
+
+  <div class="nav-section-label">案例導覽</div>
+  <a href="#framework" class="nav-item active"><span class="nav-icon">🗺️</span><span class="nav-label"> 全人照護框架</span></a>
+  <a href="#cases"     class="nav-item"><span class="nav-icon">📂</span><span class="nav-label"> 四大案例演練</span></a>
+  <a href="#cases" onclick="selectCase('c1')" class="nav-sub">→ 案例一：COPD老年病人</a>
+  <a href="#cases" onclick="selectCase('c2')" class="nav-sub">→ 案例二：乳癌化療中</a>
+  <a href="#cases" onclick="selectCase('c3')" class="nav-sub">→ 案例三：腦中風復健期</a>
+  <a href="#cases" onclick="selectCase('c4')" class="nav-sub">→ 案例四：末期照護</a>
+
+  <div class="nav-section-label">系列回顧</div>
+  <div class="series-grid">
+    <span class="sbadge" style="background:rgba(0,180,216,.15);color:#00b4d8;">氧合</span>
+    <span class="sbadge" style="background:rgba(245,158,11,.15);color:#f59e0b;">營養</span>
+    <span class="sbadge" style="background:rgba(167,139,250,.15);color:#a78bfa;">感覺</span>
+    <span class="sbadge" style="background:rgba(16,185,129,.15);color:#10b981;">安全</span>
+    <span class="sbadge" style="background:rgba(232,121,249,.15);color:#e879f9;">腫瘤</span>
+    <span class="sbadge" style="background:rgba(249,115,22,.15);color:#f97316;">家庭</span>
+    <span class="sbadge" style="background:rgba(129,140,248,.15);color:#818cf8;">靈性</span>
+    <span class="sbadge" style="background:rgba(244,114,182,.15);color:#f472b6;">心理</span>
+    <span class="sbadge" style="background:rgba(45,212,191,.15);color:#2dd4bf;">全人</span>
+  </div>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 系列總結單元</div>
+    <h1>全人案例演練<br><em>Holistic Case Practice</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Integrative Clinical Reasoning</div>
+    <div class="hero-desc">本單元整合系列所有主題，透過四個完整的臨床案例，練習從<strong style="color:var(--primary)">全人視角（身體・心理・社會・靈性）</strong>評估、診斷、計畫與評值護理照護。每個案例均橫跨多個系列單元的核心概念，展現護理的整合思維。</div>
+    <div class="hero-pills">
+      <span class="pill pill-teal">🫁 氧合 · 循環 · 活動</span>
+      <span class="pill pill-gold">🍽️ 營養 · 代謝</span>
+      <span class="pill pill-rose">❤️ 疼痛 · 安全</span>
+      <span class="pill pill-purple">🧠 心理 · 靈性 · 家庭</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: FRAMEWORK -->
+  <section class="section" id="framework">
+    <div class="section-header">
+      <div class="section-number">導</div>
+      <div>
+        <div class="section-title">全人照護框架回顧</div>
+        <div class="section-en">Holistic Care Framework — Integrating All Series Units</div>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <div style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;">📚 系列八大主題與全人照護的對應</div>
+      <div class="fw-overview">
+        <div class="fw-unit"><div class="fw-icon">🫁</div><div class="fw-label">氧合與活動</div><div class="fw-desc">生理基礎：呼吸、循環、移動能力</div></div>
+        <div class="fw-unit"><div class="fw-icon">🍽️</div><div class="fw-label">營養與排泄</div><div class="fw-desc">代謝支持：消化、吸收、廢物排除</div></div>
+        <div class="fw-unit"><div class="fw-icon">🧠</div><div class="fw-label">感覺知覺</div><div class="fw-desc">神經整合：感覺、意識、疼痛管理</div></div>
+        <div class="fw-unit"><div class="fw-icon">🛡️</div><div class="fw-label">安全保護</div><div class="fw-desc">防禦系統：感染管控、免疫、安全</div></div>
+        <div class="fw-unit"><div class="fw-icon">🎗️</div><div class="fw-label">腫瘤全人照護</div><div class="fw-desc">疾病挑戰：治療毒性、全人支持</div></div>
+        <div class="fw-unit"><div class="fw-icon">🏠</div><div class="fw-label">家庭文化照護</div><div class="fw-desc">社會脈絡：照顧者、文化、資源</div></div>
+        <div class="fw-unit"><div class="fw-icon">✨</div><div class="fw-label">靈性照護</div><div class="fw-desc">意義追尋：信仰、臨終、四道人生</div></div>
+        <div class="fw-unit"><div class="fw-icon">🧩</div><div class="fw-label">心理照護</div><div class="fw-desc">情緒適應：焦慮、憂鬱、身體意象</div></div>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <div style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;">🔄 全人護理評估框架（BIOPSYCHOSOCIAL-SPIRITUAL）</div>
+      <div class="holistic-grid" style="margin-bottom:0;">
+        <div class="hol-card phys">
+          <div class="hol-icon">🔴</div>
+          <div class="hol-title">身體 Physical</div>
+          <div class="hol-item">• 生命徵象、實驗室數值</div>
+          <div class="hol-item">• 疾病症狀與功能狀態</div>
+          <div class="hol-item">• 疼痛、睡眠、營養</div>
+          <div class="hol-item">• 用藥安全、治療副作用</div>
+        </div>
+        <div class="hol-card psych">
+          <div class="hol-icon">🩷</div>
+          <div class="hol-title">心理 Psychological</div>
+          <div class="hol-item">• 焦慮程度（GAD-7）</div>
+          <div class="hol-item">• 憂鬱篩查（PHQ-9）</div>
+          <div class="hol-item">• 身體意象、自我概念</div>
+          <div class="hol-item">• 因應策略、自我效能</div>
+        </div>
+        <div class="hol-card soc">
+          <div class="hol-icon">🔵</div>
+          <div class="hol-title">社會 Social</div>
+          <div class="hol-item">• 家庭支持與照顧者</div>
+          <div class="hol-item">• 文化信仰與健康識能</div>
+          <div class="hol-item">• 財務壓力、工作能力</div>
+          <div class="hol-item">• 社區資源連結</div>
+        </div>
+        <div class="hol-card spirit">
+          <div class="hol-icon">💫</div>
+          <div class="hol-title">靈性 Spiritual</div>
+          <div class="hol-item">• 生命意義與希望感</div>
+          <div class="hol-item">• 宗教信仰（FICA評估）</div>
+          <div class="hol-item">• 未竟之事、四道人生</div>
+          <div class="hol-item">• 存在性問題、死亡焦慮</div>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:14px;">
+        <span class="alert-icon">💡</span>
+        <span>全人照護的核心原則：<em class="hl">身體問題不是孤立存在的</em>。一位COPD病人的呼吸困難，同時影響他的焦慮程度（心理）、家庭互動（社會）、對生命意義的思考（靈性）。護理師必須在四個維度同時評估與介入</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number">案</div>
+      <div>
+        <div class="section-title">四大全人案例演練</div>
+        <div class="section-en">Four Integrative Clinical Cases — Holistic Nursing Practice</div>
+      </div>
+    </div>
+
+    <!-- CASE SELECTOR -->
+    <div class="case-selector">
+      <div class="case-select-card c1 active" id="sel-c1" onclick="selectCase('c1')">
+        <div class="csc-num">案例一</div>
+        <div class="csc-title">王阿伯的漫長病程</div>
+        <div class="csc-sub">72歲，COPD急性惡化 + 心臟衰竭 + 失智初期，長期照護者為女兒（獨自照顧）</div>
+        <div class="csc-tags">
+          <span class="csc-tag" style="background:rgba(56,189,248,.15);color:var(--sky);">氧合</span>
+          <span class="csc-tag" style="background:rgba(16,185,129,.15);color:#10b981;">安全</span>
+          <span class="csc-tag" style="background:rgba(249,115,22,.15);color:var(--orange);">家庭</span>
+          <span class="csc-tag" style="background:rgba(244,114,182,.15);color:var(--pink);">心理</span>
+        </div>
+      </div>
+      <div class="case-select-card c2" id="sel-c2" onclick="selectCase('c2')">
+        <div class="csc-num">案例二</div>
+        <div class="csc-title">林太太的治療歷程</div>
+        <div class="csc-sub">45歲，乳癌第三期，AC-T化療第四週期，馬來西亞新住民，丈夫在台工作</div>
+        <div class="csc-tags">
+          <span class="csc-tag" style="background:rgba(232,121,249,.15);color:#e879f9;">腫瘤</span>
+          <span class="csc-tag" style="background:rgba(249,115,22,.15);color:var(--orange);">文化</span>
+          <span class="csc-tag" style="background:rgba(244,114,182,.15);color:var(--pink);">心理</span>
+          <span class="csc-tag" style="background:rgba(129,140,248,.15);color:var(--indigo);">靈性</span>
+        </div>
+      </div>
+      <div class="case-select-card c3" id="sel-c3" onclick="selectCase('c3')">
+        <div class="csc-num">案例三</div>
+        <div class="csc-title">陳先生的重建之路</div>
+        <div class="csc-sub">58歲，腦中風後偏癱（左側），語言治療中，妻子全職照顧，青春期子女在家</div>
+        <div class="csc-tags">
+          <span class="csc-tag" style="background:rgba(167,139,250,.15);color:var(--purple);">感覺知覺</span>
+          <span class="csc-tag" style="background:rgba(244,114,182,.15);color:var(--pink);">心理</span>
+          <span class="csc-tag" style="background:rgba(249,115,22,.15);color:var(--orange);">家庭</span>
+          <span class="csc-tag" style="background:rgba(245,158,11,.15);color:var(--gold);">營養</span>
+        </div>
+      </div>
+      <div class="case-select-card c4" id="sel-c4" onclick="selectCase('c4')">
+        <div class="csc-num">案例四</div>
+        <div class="csc-title">黃奶奶的最後旅程</div>
+        <div class="csc-sub">78歲，大腸癌末期（肝肺轉移），ECOG 4分，安寧病房，虔誠佛教徒，三名子女</div>
+        <div class="csc-tags">
+          <span class="csc-tag" style="background:rgba(45,212,191,.15);color:var(--primary);">安寧</span>
+          <span class="csc-tag" style="background:rgba(129,140,248,.15);color:var(--indigo);">靈性</span>
+          <span class="csc-tag" style="background:rgba(251,113,133,.15);color:var(--rose);">疼痛</span>
+          <span class="csc-tag" style="background:rgba(249,115,22,.15);color:var(--orange);">家庭</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CASE 1 ============ -->
+    <div class="case-content active" id="content-c1">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" style="background:rgba(56,189,248,.15);">👴</div>
+          <div>
+            <div class="profile-name">王阿伯（匿名）</div>
+            <div class="profile-basic">72歲 · 男性 · 退休工廠作業員 · 國小學歷</div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="pb-section">
+            <div class="pb-title">主要診斷</div>
+            <ul class="pb-list">
+              <li>COPD 急性惡化（GOLD IV）</li>
+              <li>慢性心臟衰竭（EF 38%）</li>
+              <li>輕度認知障礙（MMSE 22分）</li>
+              <li>高血壓、第二型糖尿病</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">現況（入院第3天）</div>
+            <ul class="pb-list">
+              <li>鼻套管氧氣 2 L/min</li>
+              <li>BiPAP 夜間使用中</li>
+              <li>右腳踝凹陷性水腫 2+</li>
+              <li>夜間躁動，頻繁拔管路</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">家庭背景</div>
+            <ul class="pb-list">
+              <li>女兒（46歲）獨自照顧4年</li>
+              <li>女婿在工廠上班（無法請假）</li>
+              <li>兩個外孫仍在就學</li>
+              <li>目前未申請長照服務</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitals-row">
+        <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val v-wn">37.8</div><div class="vital-unit">°C</div></div>
+        <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val v-ab">26</div><div class="vital-unit">次/分</div></div>
+        <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val v-wn">158/94</div><div class="vital-unit">mmHg</div></div>
+        <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val v-ab">108</div><div class="vital-unit">bpm（不規則）</div></div>
+        <div class="vital-box"><div class="vital-label">SpO₂</div><div class="vital-val v-ab">88%</div><div class="vital-unit">（給氧中）</div></div>
+        <div class="vital-box"><div class="vital-label">PHQ-9（女兒）</div><div class="vital-val v-ab">14</div><div class="vital-unit">中度憂鬱</div></div>
+      </div>
+
+      <div class="holistic-grid">
+        <div class="hol-card phys">
+          <div class="hol-icon">🔴</div><div class="hol-title">身體評估</div>
+          <div class="hol-item">• SpO₂ 88%（低氧血症）</div>
+          <div class="hol-item">• 桶狀胸；雙下肺囉音</div>
+          <div class="hol-item">• 心律不整（AF可能）</div>
+          <div class="hol-item">• 下肢水腫 2+；體重增 2kg/週</div>
+          <div class="hol-item">• 食慾差，近週進食約30%</div>
+        </div>
+        <div class="hol-card psych">
+          <div class="hol-icon">🩷</div><div class="hol-title">心理評估</div>
+          <div class="hol-item">• 夜間躁動、拔管路（認知退化）</div>
+          <div class="hol-item">• 白天嗜睡，夜晚清醒</div>
+          <div class="hol-item">• 對病情表示「無所謂」</div>
+          <div class="hol-item">• 有時認不出女兒</div>
+          <div class="hol-item">• 憂鬱症候難評估（認知干擾）</div>
+        </div>
+        <div class="hol-card soc">
+          <div class="hol-icon">🔵</div><div class="hol-title">社會評估</div>
+          <div class="hol-item">• 女兒PHQ-9 14分（中度憂鬱）</div>
+          <div class="hol-item">• 女兒無喘息服務，幾乎24h照顧</div>
+          <div class="hol-item">• 尚未申請長照2.0</div>
+          <div class="hol-item">• 有外籍看護需求但不知如何申請</div>
+          <div class="hol-item">• 財務壓力：女婿薪水養全家</div>
+        </div>
+        <div class="hol-card spirit">
+          <div class="hol-icon">💫</div><div class="hol-title">靈性評估</div>
+          <div class="hol-item">• 病人：道教信仰，偶而燒香</div>
+          <div class="hol-item">• 「活夠了，不用為我費心」</div>
+          <div class="hol-item">• 女兒：不知道父親有何心願</div>
+          <div class="hol-item">• 從未討論過末期意願</div>
+          <div class="hol-item">• 無預立醫療決定</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🫁</span>
+          <span class="q-section-title">Part A：氧合與循環護理</span>
+          <span class="q-section-sub">整合氧合・安全・感覺知覺</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">1</div> 王阿伯夜間拔除BiPAP面罩及點滴管路，應如何安全介入？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>評估：可能的夜間躁動原因（THINK框架）</strong><br>
+              → 低氧血症（SpO₂↓）→ 大腦缺氧 → 躁動<br>
+              → 夜間日落症候群（Sundowning）：失智症特徵<br>
+              → BiPAP面罩不適（幽閉恐懼感）<br>
+              → 疼痛未被表達（失智者疼痛評估困難）<br>
+              → 譫妄（ICU/住院環境誘發）<br><br>
+              <strong>非藥物優先介入（失智/譫妄第一線）：</strong><br>
+              • <em class="hl">先排查低氧</em>：確認SpO₂；調整BiPAP參數；是否有CO₂滯留<br>
+              • <em class="hl">熟悉的陪伴</em>：請女兒在場；熟悉的聲音/氣味（家的感覺）<br>
+              • 定向導引：燈光充足；時鐘/日曆可見；簡單重複告知「阿伯，你在醫院，女兒在旁邊」<br>
+              • 減少夜間護理操作干擾；集中操作<br>
+              • 舒適：確認是否因管路不適 → 評估是否需要管路<br><br>
+              <strong>管路安全：</strong><br>
+              • <em class="hl-rose">不使用身體約束</em>（加重躁動、增加傷害）；使用防抓手套（軟性）需短暫評估<br>
+              • BiPAP更換為鼻罩式（較不易拔除）<br>
+              • 評估每條管路的必要性：能撤除的盡早撤除<br><br>
+              <strong>藥物（非藥物無效時）：</strong><br>
+              低劑量Haloperidol 0.25–0.5mg；<em class="hl-rose">避免苯二氮類</em>（加重失智/譫妄）
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">2</div> COPD合併心衰竭的氧氣給予有何特殊考量？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>COPD + 心衰竭的氧療衝突：</strong><br><br>
+              <strong>COPD考量（限制性氧療）：</strong><br>
+              → 慢性CO₂滯留病人以低血氧驅動呼吸<br>
+              → 給太高氧濃度 → 抑制缺氧驅力 → CO₂麻醉<br>
+              → <em class="hl">目標 SaO₂ 88–92%</em>，PaO₂ 50–60 mmHg<br><br>
+              <strong>心衰竭考量：</strong><br>
+              → 嚴重肺水腫需要更高氧（目標 SaO₂ &gt;94%）<br>
+              → 矛盾！<br><br>
+              <strong>臨床決策：</strong><br>
+              → 優先以<em class="hl">ABG（動脈血液氣體分析）</em>指導：若PaCO₂已升高（&gt;45）→ COPD考量優先<br>
+              → 若ABG正常或PaCO₂正常 → 心衰竭處理，可稍高氧療<br>
+              → <em class="hl">Venturi Mask（文丘里面罩）</em>：精準控制FiO₂（24%、28%、31%）<br>
+              → 嚴重呼衰：BiPAP同時解決兩者（支援通氣 + 改善心臟後負荷）<br>
+              → 監測：每4–6小時ABG；氧療調整依數值
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🏠</span>
+          <span class="q-section-title">Part B：家庭系統與照顧者照護</span>
+          <span class="q-section-sub">整合家庭文化・心理</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">3</div> 女兒PHQ-9 14分，您將如何介入？如何連結出院後資源？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>女兒的照顧者護理計畫：</strong><br><br>
+              <strong>即時心理支持：</strong><br>
+              → 找私下空間：「您照顧阿伯4年了，今天我想了解一下您自己的狀況……」<br>
+              → 承認其負荷：「您一個人扛起這麼多，真的很不容易」<br>
+              → PHQ-9評估：關注第9題（自傷意念）<br>
+              → 轉介心理師或精神科門診評估（PHQ-9 14分，中度）<br><br>
+              <strong>實際資源連結：</strong><br>
+              → <em class="hl">社工轉介</em>（住院期間即可開始）<br>
+              → 長照1966評估申請：王阿伯符合長照資格（COPD+心衰+輕度失智）<br>
+              → 日間照護中心：女兒白天有喘息時間<br>
+              → 外籍看護申請：符合條件時的補充選項<br>
+              → 喘息服務：每個月固定天數的替代照護<br><br>
+              <strong>衛教：</strong><br>
+              → 「您先照顧好自己，才能繼續照顧阿伯」（飛機氧氣面罩比喻）<br>
+              → 家庭照顧者支持專線：<em class="hl">0800-507272</em>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">4</div> 王阿伯說「活夠了」，如何評估並進行預立醫療討論？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>「活夠了」的多層意涵評估：</strong><br><br>
+              → 可能是：疲憊感（不等於自殺意念）、接受生命有限、對照護負擔的顧慮（不想拖累女兒）<br>
+              → 需要進一步探索：「阿伯，您說活夠了，可以告訴我，您最擔心的是什麼嗎？」<br><br>
+              <strong>認知障礙與決策能力評估：</strong><br>
+              → MMSE 22分（輕度）：目前大多數時候仍有決策能力<br>
+              → 趁清醒時進行預立醫療討論<br><br>
+              <strong>ACP（預立照護計畫）討論方向：</strong><br>
+              → 「如果呼吸又變很差，您希望我們怎麼做？」<br>
+              → 了解對急救（CPR）、插管、人工呼吸器的意願<br>
+              → 台灣《病人自主權利法》：本人可預立醫療決定（AD）<br>
+              → 若無法完成AD：ACP家庭會議——讓家人了解病人已表達的偏好<br><br>
+              <strong>靈性評估（FICA）：</strong><br>
+              → 了解道教信仰對死亡的觀點；有無特定儀式需求<br>
+              → 有無未竟之事、想見的人
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">📝</span>
+          <span class="q-section-title">Part C：整合護理計畫</span>
+          <span class="q-section-sub">優先護理問題與出院準備</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">5</div> 為王阿伯列出前五個優先護理問題（含理由）</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <div class="np-plan">
+                <div class="np-item">
+                  <div class="np-dx">① 氣體交換受損（最優先）</div>
+                  <div class="np-rel">與COPD急性惡化、心衰肺水腫有關</div>
+                  <ul class="np-goals"><li>維持SpO₂ 88–92%（COPD目標）</li><li>低流量氧療；BiPAP夜間使用</li><li>每4–6h ABG監測；半坐臥位</li></ul>
+                </div>
+                <div class="np-item">
+                  <div class="np-dx">② 急性混亂（夜間）</div>
+                  <div class="np-rel">與輕度認知障礙、低氧、住院環境有關</div>
+                  <ul class="np-goals"><li>CAM評估；排除低氧誘因</li><li>非藥物：熟悉陪伴；定向導引</li><li>不使用身體約束；環境優化</li></ul>
+                </div>
+                <div class="np-item">
+                  <div class="np-dx">③ 體液容積過多</div>
+                  <div class="np-rel">與心衰竭、低白蛋白有關</div>
+                  <ul class="np-goals"><li>每日體重；每班I&O記錄</li><li>利尿劑依醫囑；監測電解質</li><li>限鈉飲食（&lt;2g/天）</li></ul>
+                </div>
+                <div class="np-item">
+                  <div class="np-dx">④ 照顧者角色緊張</div>
+                  <div class="np-rel">與女兒獨自長期照護、社會支持不足有關</div>
+                  <ul class="np-goals"><li>社工轉介；長照1966評估</li><li>PHQ-9追蹤；心理師轉介</li><li>喘息服務連結</li></ul>
+                </div>
+                <div class="np-item">
+                  <div class="np-dx">⑤ 知識缺乏（出院準備）</div>
+                  <div class="np-rel">與COPD自我管理、居家BiPAP使用、長照申請有關</div>
+                  <ul class="np-goals"><li>居家氧療衛教；BiPAP使用訓練</li><li>COPD急性惡化警示教育</li><li>協助完成長照申請文件</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CASE 2 ============ -->
+    <div class="case-content" id="content-c2">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" style="background:rgba(232,121,249,.15);">👩</div>
+          <div>
+            <div class="profile-name">林太太（匿名）</div>
+            <div class="profile-basic">45歲 · 女性 · 馬來西亞籍新住民（來台18年）· 國中學歷 · 從事家庭幫傭</div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="pb-section">
+            <div class="pb-title">主要診斷與治療</div>
+            <ul class="pb-list">
+              <li>左側乳癌第三期（T3N2M0）</li>
+              <li>HER-2陽性；ER陰性</li>
+              <li>AC-T化療第四週期（ADM+CTX→PTX）</li>
+              <li>本次入院：FN + 黏膜炎Grade III</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">現況（入院第1天）</div>
+            <ul class="pb-list">
+              <li>體溫 38.9°C；ANC 180/μL</li>
+              <li>口腔黏膜炎 Grade III（無法進食）</li>
+              <li>體重自化療開始減輕 8kg</li>
+              <li>PORT-A 插入部位紅腫</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">家庭背景</div>
+            <ul class="pb-list">
+              <li>丈夫（台灣人）工廠夜班工作</li>
+              <li>兩個孩子13歲、10歲</li>
+              <li>丈夫白天接送、晚上上班</li>
+              <li>馬來西亞家人無法來台</li>
+              <li>伊斯蘭教信仰</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitals-row">
+        <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val v-ab">38.9</div><div class="vital-unit">°C</div></div>
+        <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val v-ab">112</div><div class="vital-unit">bpm</div></div>
+        <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val v-wn">102/68</div><div class="vital-unit">mmHg</div></div>
+        <div class="vital-box"><div class="vital-label">ANC</div><div class="vital-val v-ab">180</div><div class="vital-unit">/μL ↓↓</div></div>
+        <div class="vital-box"><div class="vital-label">Hb</div><div class="vital-val v-ab">7.6</div><div class="vital-unit">g/dL ↓</div></div>
+        <div class="vital-box"><div class="vital-label">PHQ-9</div><div class="vital-val v-ab">12</div><div class="vital-unit">中度憂鬱</div></div>
+      </div>
+
+      <div class="holistic-grid">
+        <div class="hol-card phys">
+          <div class="hol-icon">🔴</div><div class="hol-title">身體評估</div>
+          <div class="hol-item">• FN：38.9°C + ANC 180/μL</div>
+          <div class="hol-item">• CLABSI懷疑（PORT-A紅腫）</div>
+          <div class="hol-item">• 黏膜炎III：口咽多處潰瘍，無法進食</div>
+          <div class="hol-item">• 體重↓8kg；白蛋白 2.4 g/dL</div>
+          <div class="hol-item">• 貧血（Hb 7.6）；疲憊重度</div>
+        </div>
+        <div class="hol-card psych">
+          <div class="hol-icon">🩷</div><div class="hol-title">心理評估</div>
+          <div class="hol-item">• PHQ-9 12分（中度憂鬱）</div>
+          <div class="hol-item">• 「化療快撐不下去了」</div>
+          <div class="hol-item">• 落髮造成身體意象改變</div>
+          <div class="hol-item">• 擔心孩子沒有媽媽照顧</div>
+          <div class="hol-item">• 復發恐懼高（離開馬來西亞後才確診）</div>
+        </div>
+        <div class="hol-card soc">
+          <div class="hol-icon">🔵</div><div class="hol-title">社會評估</div>
+          <div class="hol-item">• 中文溝通尚可但有限（醫療術語困難）</div>
+          <div class="hol-item">• 馬來西亞家人在遠端，無法支持</div>
+          <div class="hol-item">• 丈夫照顧壓力大（工作+照護+育兒）</div>
+          <div class="hol-item">• 健保部分負擔；申請重大傷病</div>
+          <div class="hol-item">• 無友人社會網絡（來台後孤立）</div>
+        </div>
+        <div class="hol-card spirit">
+          <div class="hol-icon">💫</div><div class="hol-title">靈性評估</div>
+          <div class="hol-item">• 伊斯蘭信仰：禱告5次/天</div>
+          <div class="hol-item">• 「阿拉試煉我，我要撐過去」</div>
+          <div class="hol-item">• 清真飲食禁忌（豬肉/酒精）</div>
+          <div class="hol-item">• 住院無法進行禱告儀式困擾</div>
+          <div class="hol-item">• 希望有穆斯林院牧陪伴</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🦠</span>
+          <span class="q-section-title">Part A：FN緊急處置與感染管控</span>
+          <span class="q-section-sub">整合腫瘤・安全・感染</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">1</div> 懷疑CLABSI，1小時內的緊急護理處置步驟</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>FN + 疑似CLABSI 緊急處置（Hour-1 Bundle）：</strong><br><br>
+              <strong>① 立即血培養（抗生素前）：</strong><br>
+              → <em class="hl">PORT-A blood culture（1套）+ 周邊靜脈（1套）</em><br>
+              → 同步送：CBC diff、CMP、乳酸、尿液培養、PORT-A局部分泌物培養<br><br>
+              <strong>② 抗生素（1小時內給）：</strong><br>
+              → 廣效抗生素覆蓋MRSA：<em class="hl">Vancomycin IV + Piperacillin/Tazobactam</em><br>
+              → PORT-A紅腫懷疑CLABSI → Vancomycin是必要的<br><br>
+              <strong>③ PORT-A評估：</strong><br>
+              → 觀察插入部位：紅腫範圍、滲出物<br>
+              → 是否需要移除：明確CLABSI時，需移除PORT-A<br>
+              → 移除前先確保建立其他靜脈通路<br><br>
+              <strong>④ 靜脈液體（低血壓處理）：</strong><br>
+              → BP 102/68 + 心率112 → 補液晶體液 500–1000 mL評估反應<br><br>
+              <strong>⑤ 保護性隔離（ANC 180/μL）：</strong><br>
+              → 正壓單人病室；訪客限制；低菌飲食
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🌏</span>
+          <span class="q-section-title">Part B：跨文化護理與靈性照護</span>
+          <span class="q-section-sub">整合文化照護・靈性・心理</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">2</div> 林太太是穆斯林，住院期間如何配合其宗教需求？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>穆斯林住院照護配合：</strong><br><br>
+              <strong>禱告需求（5次/天）：</strong><br>
+              → 確認麥加方向（標示在病房）：台灣方向約西南偏西<br>
+              → 提供潔淨水（Wudu淨禮用水）；病情嚴重時可用簡化儀式<br>
+              → <em class="hl">護理操作避開禱告時間</em>（如可能；急救除外）<br>
+              → 提供禱告墊（家人帶來或院方準備）<br><br>
+              <strong>清真飲食：</strong><br>
+              → 告知膳食部門：清真（Halal）飲食申請<br>
+              → 口腔黏膜炎III：NPO或TPN → 清真考量暫時不適用<br>
+              → 口服藥物：確認無豬明膠來源膠囊（若有顧慮，換劑型）<br><br>
+              <strong>同性護理：</strong><br>
+              → 詢問林太太偏好：「您希望由女性護理師照護嗎？」<br>
+              → 盡量安排；無法100%時提前說明<br><br>
+              <strong>院牧/靈性支持：</strong><br>
+              → 詢問是否需要穆斯林院牧或伊斯蘭教會訪視<br>
+              → 馬來西亞駐台辦事處社服資源連結
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">3</div> 林太太說「化療快撐不下去了」，如何進行治療性溝通與心理評估？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>治療性溝通（語言限制的特殊考量）：</strong><br><br>
+              <strong>溝通策略（中文有限）：</strong><br>
+              → 使用簡單、清晰的中文；一次一個概念<br>
+              → 若需要：申請馬來語/英語電話翻譯<br>
+              → 圖示輔助（疼痛臉譜；症狀圖示）<br><br>
+              <strong>回應「撐不下去了」（NURSE模式）：</strong><br>
+              → N（命名）：「我聽到您說很累，這段時間真的太辛苦了」<br>
+              → U（理解）：「8kg沒了，又一直進不了食，還在擔心孩子……」<br>
+              → R（尊重）：「您撐到第四週期，真的很勇敢」<br>
+              → S（支持）：「我們現在的目標是先讓您舒服一些，再一起想辦法」<br>
+              → E（探索）：「您說撐不下去——您最擔心的是什麼？是身體的痛苦，還是擔心治療繼續？」<br><br>
+              <strong>PHQ-9 12分的後續：</strong><br>
+              → 第9題評估（自傷意念）<br>
+              → 轉介心理師（中文溝通可行時）<br>
+              → 告知腫瘤科醫師：評估是否調整化療方案（症狀管理優先）
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CASE 3 ============ -->
+    <div class="case-content" id="content-c3">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" style="background:rgba(167,139,250,.15);">🧑</div>
+          <div>
+            <div class="profile-name">陳先生（匿名）</div>
+            <div class="profile-basic">58歲 · 男性 · 電子業工程師（病前）· 高中學歷 · 中風後3個月</div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="pb-section">
+            <div class="pb-title">診斷與現況</div>
+            <ul class="pb-list">
+              <li>左側中大腦動脈梗塞（MCA）</li>
+              <li>右側偏癱（上肢2/5；下肢3/5）</li>
+              <li>表達性失語症（Broca's）</li>
+              <li>吞嚥困難（GUSS 13分/20）</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">復健狀況</div>
+            <ul class="pb-list">
+              <li>物理治療：每天1次</li>
+              <li>職能治療：每天1次</li>
+              <li>語言治療：每週3次</li>
+              <li>目標：能輔具行走、部分ADL自理</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">家庭背景</div>
+            <ul class="pb-list">
+              <li>妻子全職主婦（已辭工作照顧）</li>
+              <li>16歲兒子、14歲女兒</li>
+              <li>家庭財務全靠陳先生薪水（已中斷）</li>
+              <li>無法與父母同住（老家在南部）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="holistic-grid">
+        <div class="hol-card phys">
+          <div class="hol-icon">🔴</div><div class="hol-title">身體評估</div>
+          <div class="hol-item">• 右側肌力2/5（上）3/5（下）</div>
+          <div class="hol-item">• 吞嚥困難：鼻胃管灌食中</div>
+          <div class="hol-item">• 便秘（活動減少+阿片類）</div>
+          <div class="hol-item">• 右側肩關節半脫位</div>
+          <div class="hol-item">• 體重↓6kg（3個月）；Hb 10.2</div>
+        </div>
+        <div class="hol-card psych">
+          <div class="hol-icon">🩷</div><div class="hol-title">心理評估</div>
+          <div class="hol-item">• PHQ-9 18分（重度憂鬱傾向）</div>
+          <div class="hol-item">• 「我廢了，沒用了」（溝通板）</div>
+          <div class="hol-item">• 拒絕參加下午的職能治療</div>
+          <div class="hol-item">• 身體意象：工程師身份喪失</div>
+          <div class="hol-item">• 家庭角色（養家者）喪失感</div>
+        </div>
+        <div class="hol-card soc">
+          <div class="hol-icon">🔵</div><div class="hol-title">社會評估</div>
+          <div class="hol-item">• 妻子身心俱疲；亦有憂鬱症狀</div>
+          <div class="hol-item">• 兩個青少年子女：課業+心理衝擊</div>
+          <div class="hol-item">• 財務危機：薪水中斷；積蓄有限</div>
+          <div class="hol-item">• 未申請身心障礙手冊</div>
+          <div class="hol-item">• 職業重建：可能性未被討論</div>
+        </div>
+        <div class="hol-card spirit">
+          <div class="hol-icon">💫</div><div class="hol-title">靈性評估</div>
+          <div class="hol-item">• 「憑什麼是我？工作順利才中風」</div>
+          <div class="hol-item">• 認同危機：「工程師」是核心身份</div>
+          <div class="hol-item">• 對未來喪失希望感</div>
+          <div class="hol-item">• 無特定宗教信仰</div>
+          <div class="hol-item">• 未接觸過靈性支持資源</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🧠</span>
+          <span class="q-section-title">Part A：神經復健與溝通護理</span>
+          <span class="q-section-sub">整合感覺知覺・營養・心理</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">1</div> 表達性失語症病人（陳先生）的溝通護理計畫</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>表達性失語症溝通護理：</strong><br><br>
+              <strong>評估：</strong><br>
+              → 表達性（Broca's）失語：理解能力相對保留；說話困難但懂你說的<br>
+              → 核心原則：<em class="hl">不急、不代為說話、尊重其嘗試</em><br><br>
+              <strong>溝通輔助工具：</strong><br>
+              → 溝通板（Communication Board）：圖卡＋文字；是/否卡<br>
+              → 書寫板（健側左手，若有訓練）<br>
+              → AAC（擴大替代溝通）：評估智慧型溝通APP（語言治療師建議）<br><br>
+              <strong>護理師溝通技巧：</strong><br>
+              → <em class="hl">面對面；眼神接觸；一次一個訊息</em><br>
+              → 是/否問題：「您痛嗎？（點頭=是）」<br>
+              → 給充分時間：不催促；填補空白讓他嘗試<br>
+              → 正確做法：「我知道您在努力說，請繼續……」<br>
+              → 錯誤做法：「我知道你要說什麼！是這個嗎？」（不讓他練習）<br><br>
+              <strong>家屬衛教：</strong><br>
+              → 教家屬溝通技巧；避免「他就是不努力」的誤解<br>
+              → 語言治療師會議：家屬一起學習居家溝通策略
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">2</div> 陳先生拒絕職能治療，如何評估並介入？（動機式晤談）</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>拒絕治療的心理分析：</strong><br><br>
+              → PHQ-9 18分 → 重度憂鬱 → <em class="hl">動機/精力不足是憂鬱的核心症狀</em>，非不合作<br>
+              → 「我廢了」 → 習得無助感（Learned Helplessness）<br>
+              → 工程師身份喪失 → 「復健有什麼用？」的虛無感<br><br>
+              <strong>動機式晤談（MI）溝通策略：</strong><br>
+              （注意：失語症病人需配合溝通板/書寫）<br>
+              → <em class="hl">開放性探索</em>（溝通板）：「您不想去OT，是因為覺得太累？還是覺得沒有意義？」<br>
+              → <em class="hl">肯定（Affirm）</em>：「您在這麼艱難的情況下，還願意告訴我您的感受，這需要很大的勇氣」<br>
+              → <em class="hl">探索矛盾心理</em>：「您說覺得沒用了——但您也一直在用溝通板回答我。這需要努力的」<br>
+              → <em class="hl">強化改變對話</em>：「如果情況進步一點點，對您最重要的是什麼？（溝通板）能陪孩子？回到工作？」<br><br>
+              <strong>憂鬱治療同步介入：</strong><br>
+              → 精神科會診（PHQ-9 18分，重度）<br>
+              → SSRI考慮（中風後憂鬱治療有實證）<br>
+              → 心理師：CBT適應版（失語症病人）
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🏠</span>
+          <span class="q-section-title">Part B：家庭系統整合照護</span>
+          <span class="q-section-sub">整合家庭・社會資源・青少年照護</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">3</div> 陳先生家庭面臨多重危機，如何制定家庭照護計畫？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>家庭多重危機評估：</strong><br>
+              → 財務危機 + 妻子心理健康 + 青少年子女影響 + 照護技能需求<br><br>
+              <strong>① 社工轉介（立即）：</strong><br>
+              → 身心障礙鑑定申請（中風後3個月可申請）<br>
+              → 身障補助、就業服務、住宅補貼<br>
+              → 重大傷病卡（醫療費用減免）<br>
+              → 評估職業重建可能性（陳先生）<br><br>
+              <strong>② 妻子照顧者支持：</strong><br>
+              → PHQ-9評估妻子（她自己有憂鬱症狀）<br>
+              → 喘息服務；長照1966評估<br>
+              → 中風病友家屬支持團體（台灣腦中風學會）<br><br>
+              <strong>③ 青少年子女：</strong><br>
+              → 16歲/14歲：學校輔導老師通知（Young Carers問題）<br>
+              → 評估是否有「成人化」（被迫承擔成人照護責任）<br>
+              → 提供家庭心理諮商資源<br><br>
+              <strong>④ 照護技能訓練（出院前）：</strong><br>
+              → 妻子：移位技術（防傷）；吞嚥困難飲食準備；復健運動指導<br>
+              → 家庭復健計畫：居家物理治療（長照給付）
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CASE 4 ============ -->
+    <div class="case-content" id="content-c4">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" style="background:rgba(45,212,191,.15);">👵</div>
+          <div>
+            <div class="profile-name">黃奶奶（匿名）</div>
+            <div class="profile-basic">78歲 · 女性 · 家庭主婦（退休）· 台語為主 · 安寧病房住院第8天</div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="pb-section">
+            <div class="pb-title">診斷與現況</div>
+            <ul class="pb-list">
+              <li>大腸癌第四期（肝、肺多發轉移）</li>
+              <li>ECOG PS 4分（完全臥床）</li>
+              <li>預後：週至月</li>
+              <li>已簽署DNR及安寧同意書</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">症狀控制</div>
+            <ul class="pb-list">
+              <li>疼痛 NRS 7分（腹部＋骨骼）</li>
+              <li>噁心嘔吐（每日3–4次）</li>
+              <li>停止進食已5天（拒食）</li>
+              <li>意識時好時壞（低血鈉120）</li>
+            </ul>
+          </div>
+          <div class="pb-section">
+            <div class="pb-title">家庭背景</div>
+            <ul class="pb-list">
+              <li>長子（51歲）：堅持要積極治療</li>
+              <li>次子（49歲）：尊重媽媽意願</li>
+              <li>女兒（45歲）：24小時陪伴</li>
+              <li>三個孩子意見分歧</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitals-row">
+        <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val v-wn">37.6</div><div class="vital-unit">°C</div></div>
+        <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val v-ab">92/58</div><div class="vital-unit">mmHg</div></div>
+        <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val v-wn">96</div><div class="vital-unit">bpm（弱）</div></div>
+        <div class="vital-box"><div class="vital-label">疼痛</div><div class="vital-val v-ab">NRS 7</div><div class="vital-unit">重度</div></div>
+        <div class="vital-box"><div class="vital-label">SpO₂</div><div class="vital-val v-wn">93%</div><div class="vital-unit">室內空氣</div></div>
+        <div class="vital-box"><div class="vital-label">血鈉</div><div class="vital-val v-ab">120</div><div class="vital-unit">mEq/L ↓↓</div></div>
+      </div>
+
+      <div class="holistic-grid">
+        <div class="hol-card phys">
+          <div class="hol-icon">🔴</div><div class="hol-title">身體症狀</div>
+          <div class="hol-item">• 重度疼痛（NRS 7）：腹部腫瘤壓迫+骨轉移</div>
+          <div class="hol-item">• 嚴重噁心嘔吐</div>
+          <div class="hol-item">• 停止進食（臨終自然現象）</div>
+          <div class="hol-item">• 低血鈉（120）：意識波動</div>
+          <div class="hol-item">• 皮膚出現輕微花斑（下肢）</div>
+        </div>
+        <div class="hol-card psych">
+          <div class="hol-icon">🩷</div><div class="hol-title">心理評估</div>
+          <div class="hol-item">• 清醒時平靜，無恐懼表現</div>
+          <div class="hol-item">• 「我累了，想休息了」</div>
+          <div class="hol-item">• 對長子仍有牽掛（不願其傷心）</div>
+          <div class="hol-item">• 意識波動：時而清醒時而混沌</div>
+          <div class="hol-item">• 曾說看到「已故先生來接我」</div>
+        </div>
+        <div class="hol-card soc">
+          <div class="hol-icon">🔵</div><div class="hol-title">家庭動態</div>
+          <div class="hol-item">• 長子：「為什麼不打點滴？餓死媽媽？」</div>
+          <div class="hol-item">• 次子：支持安寧方向</div>
+          <div class="hol-item">• 女兒：精疲力竭；需要支持</div>
+          <div class="hol-item">• 需要家庭會議協調</div>
+          <div class="hol-item">• 往生後儀式安排尚未討論</div>
+        </div>
+        <div class="hol-card spirit">
+          <div class="hol-icon">💫</div><div class="hol-title">靈性評估</div>
+          <div class="hol-item">• 虔誠佛教徒；每天念佛</div>
+          <div class="hol-item">• 希望往生後助念</div>
+          <div class="hol-item">• 說看到先生（死前視見？）</div>
+          <div class="hol-item">• 未完成「四道」——心掛長子</div>
+          <div class="hol-item">• 法師探訪意願強烈</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🌿</span>
+          <span class="q-section-title">Part A：安寧疼痛管理與症狀控制</span>
+          <span class="q-section-sub">整合腫瘤・靈性・安寧照護</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">1</div> 制定黃奶奶的安寧疼痛管理計畫（WHO三階梯 + 末期特殊考量）</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>末期疼痛管理計畫：</strong><br><br>
+              <strong>現況評估：</strong>NRS 7（重度）→ 直接第三階梯（強鴉片類）<br><br>
+              <strong>基礎用藥：</strong><br>
+              → 口服困難（嘔吐、意識波動）→ <em class="hl">皮下或靜脈Morphine持續輸注</em><br>
+              → 起始：Morphine 2–5mg/h IV；每4小時評估；依效果滴定<br>
+              → 爆發性疼痛救援：Morphine bolus = 基礎小時劑量的50–100%<br><br>
+              <strong>疼痛類型的輔助藥物：</strong><br>
+              → 腫瘤壓迫/骨轉移：<em class="hl">Dexamethasone 4–8mg</em>（減少水腫）<br>
+              → 噁心嘔吐：Haloperidol 0.5–1mg/day（安寧常用）<br><br>
+              <strong>末期特殊考量：</strong><br>
+              → 意識波動時：<em class="hl">觀察非語言疼痛徵兆</em>（皺眉、肢體緊繃、呻吟）<br>
+              → 使用PAINAD量表（失認知者疼痛評估）<br>
+              → 家屬衛教：<em class="hl">嗎啡是控制痛苦，不是加速死亡</em><br><br>
+              <strong>停止進食的回應：</strong><br>
+              → 告知家屬：停止進食是臨終自然過程，強行點滴灌食反而增加不適<br>
+              → 口腔護理：棉棒保濕；無需大量補液
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-header">
+          <span class="q-section-icon">🏠</span>
+          <span class="q-section-title">Part B：家庭會議與四道人生</span>
+          <span class="q-section-sub">整合家庭・靈性・溝通</span>
+        </div>
+        <div class="q-body">
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">2</div> 長子要求積極治療，如何進行家庭會議並處理衝突？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>家庭會議設計：</strong><br><br>
+              <strong>目的：</strong>不是說服長子「同意安寧」，而是協助家庭在尊重奶奶意願的基礎上達成共識<br><br>
+              <strong>參與者：</strong>三位子女（共同在場）+ 醫師 + 護理師 + 社工<br><br>
+              <strong>護理師角色：</strong>中立協調者；確保奶奶的聲音被聽見<br><br>
+              <strong>議程結構：</strong><br>
+              ① 告知目前病況（醫師說明預後）<br>
+              ② <em class="hl">回到奶奶的意願</em>：「媽媽已簽署DNR和安寧同意書，這是她自己的決定」<br>
+              ③ 探索長子的擔憂：「您說不點滴是餓死媽媽——我想了解您的顧慮……」<br>
+              → 可能的深層恐懼：愧疚感（不孝？）；對醫療放棄的誤解<br>
+              ④ 重新定義「積極」：「積極照顧不一定是積極治療——現在積極控制疼痛就是積極的照顧」<br>
+              ⑤ 達成共識：焦點轉向「如何讓媽媽最後的時間有尊嚴、不痛苦」<br><br>
+              <div class="alert-box">
+                <span class="alert-icon">⚠️</span>
+                <span>若長子仍堅持，可邀請醫療倫理委員會介入。核心原則：有決策能力時簽署的DNR/安寧同意書，子女不能推翻</span>
+              </div>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">3</div> 奶奶說看到「先生來接我」——如何回應？並如何協助四道人生？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>死前視見（Nearing Death Awareness）護理回應：</strong><br><br>
+              <strong>對奶奶：</strong><br>
+              → 不否認：<em class="hl">不說「那是幻覺，公公不在」</em><br>
+              → 溫和回應（台語）：「奶奶，公公來接您了，您先生還是那麼疼您」<br>
+              → 傾聽她描述；允許她與「視見」互動<br>
+              → 這是珍貴的靈性時刻；創造安靜的陪伴空間<br><br>
+              <strong>對家屬（提前衛教）：</strong><br>
+              → 「這是臨終正常現象，研究已記錄許多案例。她看到的是安慰的——不是痛苦的」<br>
+              → 「這可能代表她快要離開了。這是珍貴的四道時機」<br><br>
+              <strong>四道人生的協助：</strong><br><br>
+              <strong>道謝：</strong>協助子女對奶奶說「媽媽，謝謝您養育我們」<br>
+              <strong>道愛：</strong>「媽媽，我們愛您，您一輩子都是好媽媽」<br>
+              <strong>道歉：</strong>長子可以說「媽媽，我知道我之前太堅持了，我對不起您」→ 這個化解對雙方都有療癒作用<br>
+              <strong>道別：</strong>「媽媽，您可以放心去了，我們會照顧好彼此。公公在等您」<br><br>
+              <strong>佛教靈性支持：</strong><br>
+              → 安排法師/院牧探訪（奶奶意願）<br>
+              → 助念機（輕聲播放）<br>
+              → 家屬一同加入助念（即使不是佛教徒）——是對奶奶的愛
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-title"><div class="q-num">4</div> 護理師在長期照顧這類末期病人後，如何照顧自己的心理健康？</div>
+            <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+            <div class="answer-content">
+              <strong>護理師靈性自我照護（Nurse Self-Care）：</strong><br><br>
+              <strong>承認並接受情緒：</strong><br>
+              → 奶奶這樣的病人，護理師會產生情感連結 → 往生後感到悲傷是<em class="hl-green">正常且健康的</em><br>
+              → 不要說「我是護理師，不應該哭」<br><br>
+              <strong>往生後的情緒處理：</strong><br>
+              → 與同事短暫分享：「奶奶今天走了，她走得很平靜」<br>
+              → 儀式感：默哀；在護理記錄上寫下一句對奶奶的送別<br>
+              → 若與病人有深度情感連結：安排正式的同儕Debriefing<br><br>
+              <strong>自我照護日常實踐：</strong><br>
+              → 下班儀式：換衣→深呼吸→有意識地「換角色」<br>
+              → 正念：把情緒帶回家 vs 讓情緒在家中消化<br>
+              → 社交：與非醫療圈朋友的「正常生活」接觸<br><br>
+              <strong>機構支持：</strong><br>
+              → 督導機制；安寧病房定期Debriefing<br>
+              → 若出現憐憫疲憊徵兆（麻木、去個人化）→ 員工協助方案（EAP）
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:52px 0 28px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:10px;font-size:16px;color:var(--primary);font-weight:600;font-family:'Noto Serif TC',serif;">全人案例演練 · 系列完結</div>
+    <div style="margin-bottom:6px;font-size:13px;">內外護理學 · 全人照護自學教材系列 · 114學年第2學期</div>
+    <div style="margin-bottom:20px;font-size:12px;color:var(--text-dim);">共11個單元 · 橫跨氧合、營養、感覺、安全、腫瘤、家庭、靈性、心理與全人整合</div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;">── 完整系列 ──</div>
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;font-size:11px;max-width:700px;margin:0 auto;">
+      <span style="background:rgba(0,180,216,.15);color:#00b4d8;padding:3px 10px;border-radius:100px;font-weight:600;">氧合與活動</span>
+      <span style="background:rgba(245,158,11,.15);color:#f59e0b;padding:3px 10px;border-radius:100px;font-weight:600;">營養與排泄</span>
+      <span style="background:rgba(167,139,250,.15);color:#a78bfa;padding:3px 10px;border-radius:100px;font-weight:600;">感覺知覺</span>
+      <span style="background:rgba(16,185,129,.15);color:#10b981;padding:3px 10px;border-radius:100px;font-weight:600;">安全保護</span>
+      <span style="background:rgba(232,121,249,.15);color:#e879f9;padding:3px 10px;border-radius:100px;font-weight:600;">腫瘤全人照護</span>
+      <span style="background:rgba(249,115,22,.15);color:#f97316;padding:3px 10px;border-radius:100px;font-weight:600;">家庭文化照護</span>
+      <span style="background:rgba(129,140,248,.15);color:#818cf8;padding:3px 10px;border-radius:100px;font-weight:600;">靈性照護</span>
+      <span style="background:rgba(244,114,182,.15);color:#f472b6;padding:3px 10px;border-radius:100px;font-weight:600;">心理照護</span>
+      <span style="background:rgba(45,212,191,.2);color:#2dd4bf;padding:3px 10px;border-radius:100px;font-weight:700;border:1px solid rgba(45,212,191,.4);">全人案例演練 ✦</span>
+    </div>
+    <div style="margin-top:20px;font-size:12px;color:rgba(255,255,255,.2);">僅供學術教育用途</div>
+  </div>
+</main>
+
+<script>
+function selectCase(id){
+  // Update selector cards
+  document.querySelectorAll('.case-select-card').forEach(c=>c.classList.remove('active'));
+  const sel=document.getElementById('sel-'+id);
+  if(sel)sel.classList.add('active');
+  // Update content
+  document.querySelectorAll('.case-content').forEach(c=>c.classList.remove('active'));
+  const content=document.getElementById('content-'+id);
+  if(content)content.classList.add('active');
+  // Scroll to cases section
+  document.getElementById('cases').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('case-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('case-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

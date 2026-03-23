@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>氧合與活動 — Oxygenation & Mobility | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-light: #112240;
+    --teal: #00b4d8;
+    --teal-dark: #0077b6;
+    --cyan: #90e0ef;
+    --coral: #ff6b6b;
+    --amber: #ffd166;
+    --green: #06d6a0;
+    --purple: #7c3aed;
+    --text: #e2e8f0;
+    --text-dim: #8fa3be;
+    --border: rgba(0,180,216,0.2);
+    --card: rgba(17,34,64,0.8);
+    --card-hover: rgba(17,34,64,0.95);
+    --glass: rgba(255,255,255,0.04);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family:'Noto Sans TC', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* === BACKGROUND === */
+  body::before {
+    content:'';
+    position:fixed; top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(0,119,182,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(0,180,216,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(6,214,160,0.05) 0%, transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    position:fixed; top:0; left:0; width:260px; height:100vh;
+    background: rgba(10,22,40,0.97);
+    border-right: 1px solid var(--border);
+    z-index:200;
+    display:flex; flex-direction:column;
+    overflow-y:auto; overflow-x:hidden;
+    backdrop-filter: blur(20px);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+  }
+
+  /* Desktop collapsed state */
+  body.sidebar-collapsed .sidebar {
+    width: 60px;
+  }
+  body.sidebar-collapsed .sidebar-logo,
+  body.sidebar-collapsed .sidebar-sub,
+  body.sidebar-collapsed .nav-section-label,
+  body.sidebar-collapsed .nav-label,
+  body.sidebar-collapsed .nav-sub {
+    opacity:0; pointer-events:none; width:0; overflow:hidden; white-space:nowrap;
+  }
+  body.sidebar-collapsed .nav-item {
+    justify-content:center; padding:12px 0;
+  }
+  body.sidebar-collapsed .nav-icon {
+    margin:0;
+  }
+  body.sidebar-collapsed .sidebar-header {
+    justify-content:center; padding:16px 0;
+  }
+  body.sidebar-collapsed .main {
+    margin-left:60px;
+  }
+
+  /* Overlay for mobile */
+  .sidebar-overlay {
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.55);
+    z-index:190;
+    backdrop-filter:blur(2px);
+  }
+  .sidebar-overlay.active { display:block; }
+
+  /* Toggle button */
+  .sidebar-toggle {
+    position:fixed; top:14px; left:210px;
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(0,180,216,0.15);
+    border:1px solid rgba(0,180,216,0.3);
+    color:var(--teal); font-size:18px;
+    cursor:pointer; z-index:300;
+    display:flex; align-items:center; justify-content:center;
+    transition:left 0.3s cubic-bezier(0.4,0,0.2,1), background 0.2s;
+    line-height:1;
+  }
+  .sidebar-toggle:hover { background:rgba(0,180,216,0.3); }
+
+  body.sidebar-collapsed .sidebar-toggle {
+    left: 12px;
+  }
+
+  @media (max-width:768px) {
+    .sidebar-toggle {
+      left: 14px;
+      top: 14px;
+    }
+  }
+
+  .sidebar-header {
+    padding:28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+
+  .sidebar-logo {
+    font-family:'Noto Serif TC', serif;
+    font-size:15px; font-weight:700;
+    color: var(--teal);
+    letter-spacing:0.05em;
+    line-height:1.4;
+    transition:opacity 0.2s;
+  }
+
+  .sidebar-sub {
+    font-size:11px; color:var(--text-dim);
+    margin-top:4px; letter-spacing:0.1em;
+    text-transform:uppercase;
+    transition:opacity 0.2s;
+  }
+
+  .nav-section-label {
+    font-size:10px; font-weight:700;
+    color:var(--text-dim); letter-spacing:0.15em;
+    text-transform:uppercase;
+    padding:16px 20px 8px;
+    transition:opacity 0.2s;
+  }
+
+  .nav-item {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 20px;
+    color:var(--text-dim);
+    cursor:pointer; text-decoration:none;
+    font-size:13px; font-weight:500;
+    transition:all 0.2s;
+    border-left:3px solid transparent;
+    white-space:nowrap;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color:var(--teal); background:rgba(0,180,216,0.08);
+    border-left-color:var(--teal);
+  }
+
+  .nav-icon {
+    width:22px; height:22px;
+    flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+  }
+
+  .nav-label { transition:opacity 0.2s; }
+
+  .nav-sub {
+    padding: 6px 20px 6px 50px;
+    color:var(--text-dim); font-size:12px;
+    cursor:pointer; text-decoration:none;
+    display:block; transition:all 0.2s;
+    border-left:3px solid transparent;
+    white-space:nowrap;
+  }
+  .nav-sub:hover { color:var(--cyan); }
+
+  /* === MAIN === */
+  .main {
+    margin-left:260px;
+    padding:0 40px 60px;
+    position:relative; z-index:1;
+    transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height:340px;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:60px 0 40px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:60px;
+  }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(0,180,216,0.1); border:1px solid rgba(0,180,216,0.3);
+    border-radius:100px; padding:6px 16px;
+    font-size:12px; color:var(--teal); letter-spacing:0.1em;
+    margin-bottom:24px; width:fit-content;
+  }
+
+  .hero-badge span { width:6px; height:6px; background:var(--teal); border-radius:50%; animation:pulse 2s infinite; }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family:'Noto Serif TC', serif;
+    font-size:clamp(36px,5vw,60px);
+    font-weight:700;
+    line-height:1.2;
+    color:#fff;
+  }
+
+  .hero h1 em {
+    font-style:normal;
+    background: linear-gradient(135deg, var(--teal), var(--cyan));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+
+  .hero-en {
+    font-size:18px; color:var(--text-dim); margin-top:8px;
+    font-weight:300; letter-spacing:0.05em;
+  }
+
+  .hero-pills {
+    display:flex; gap:10px; margin-top:28px; flex-wrap:wrap;
+  }
+
+  .pill {
+    padding:6px 14px; border-radius:100px;
+    font-size:12px; font-weight:600; letter-spacing:0.05em;
+  }
+
+  .pill-teal { background:rgba(0,180,216,0.15); color:var(--teal); border:1px solid rgba(0,180,216,0.3); }
+  .pill-coral { background:rgba(255,107,107,0.15); color:var(--coral); border:1px solid rgba(255,107,107,0.3); }
+  .pill-green { background:rgba(6,214,160,0.15); color:var(--green); border:1px solid rgba(6,214,160,0.3); }
+  .pill-amber { background:rgba(255,209,102,0.15); color:var(--amber); border:1px solid rgba(255,209,102,0.3); }
+
+  /* === SECTION === */
+  .section {
+    margin-bottom:80px;
+    scroll-margin-top:30px;
+  }
+
+  .section-header {
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:32px;
+  }
+
+  .section-number {
+    width:40px; height:40px; border-radius:12px;
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:700; color:#fff; flex-shrink:0;
+  }
+
+  .section-title {
+    font-family:'Noto Serif TC', serif;
+    font-size:28px; font-weight:700; color:#fff;
+  }
+
+  .section-en {
+    font-size:13px; color:var(--text-dim); margin-top:2px; letter-spacing:0.05em;
+  }
+
+  /* === CONCEPT CARDS === */
+  .concept-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+
+  .concept-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px; padding:28px;
+    transition:all 0.3s;
+    position:relative; overflow:hidden;
+  }
+
+  .concept-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  }
+
+  .concept-card.oxygen::before { background:linear-gradient(90deg,var(--teal),var(--cyan)); }
+  .concept-card.circulation::before { background:linear-gradient(90deg,var(--coral),#ff9f9f); }
+  .concept-card.mobility::before { background:linear-gradient(90deg,var(--green),#7fffd4); }
+
+  .concept-card:hover {
+    background:var(--card-hover);
+    transform:translateY(-4px);
+    border-color:rgba(0,180,216,0.4);
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .concept-icon {
+    font-size:36px; margin-bottom:16px;
+  }
+
+  .concept-title {
+    font-size:18px; font-weight:700; color:#fff; margin-bottom:6px;
+  }
+
+  .concept-en { font-size:12px; color:var(--text-dim); margin-bottom:16px; }
+
+  .concept-desc {
+    font-size:13px; line-height:1.8; color:var(--text-dim);
+  }
+
+  .concept-points {
+    list-style:none; margin-top:14px;
+  }
+
+  .concept-points li {
+    font-size:13px; line-height:1.7; color:var(--text-dim);
+    padding:4px 0; display:flex; gap:8px; align-items:flex-start;
+  }
+
+  .concept-points li::before {
+    content:'▸'; color:var(--teal); flex-shrink:0; margin-top:1px;
+  }
+
+  /* === ASSESSMENT === */
+  .assess-grid {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+  }
+
+  .assess-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px; padding:24px;
+  }
+
+  .assess-card-title {
+    font-size:15px; font-weight:700; color:var(--teal);
+    margin-bottom:16px; display:flex; align-items:center; gap:10px;
+  }
+
+  .tag {
+    display:inline-block; padding:3px 10px; border-radius:100px;
+    font-size:11px; font-weight:600;
+  }
+
+  .tag-teal { background:rgba(0,180,216,0.15); color:var(--teal); }
+  .tag-coral { background:rgba(255,107,107,0.15); color:var(--coral); }
+  .tag-green { background:rgba(6,214,160,0.15); color:var(--green); }
+  .tag-amber { background:rgba(255,209,102,0.15); color:var(--amber); }
+
+  .assess-list {
+    list-style:none;
+  }
+
+  .assess-list li {
+    font-size:13px; line-height:1.7; color:var(--text-dim);
+    padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+    display:flex; gap:8px;
+  }
+
+  .assess-list li:last-child { border-bottom:none; }
+
+  .assess-list li::before {
+    content:'◦'; color:var(--text-dim); flex-shrink:0;
+  }
+
+  /* === VALUE INDICATOR === */
+  .value-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px;
+  }
+
+  .value-box {
+    background:rgba(0,180,216,0.08);
+    border:1px solid rgba(0,180,216,0.2);
+    border-radius:12px; padding:14px; text-align:center;
+  }
+
+  .value-label { font-size:11px; color:var(--text-dim); }
+  .value-num { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:600; color:var(--teal); margin:4px 0; }
+  .value-unit { font-size:10px; color:var(--text-dim); }
+
+  /* === DISEASE TABS === */
+  .disease-tabs {
+    display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap;
+  }
+
+  .tab-btn {
+    padding:8px 18px; border-radius:100px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--text-dim); font-size:13px; font-weight:500;
+    font-family:'Noto Sans TC', sans-serif;
+    cursor:pointer; transition:all 0.2s;
+  }
+
+  .tab-btn:hover { color:var(--text); border-color:var(--teal); }
+  .tab-btn.active {
+    background:var(--teal); border-color:var(--teal);
+    color:var(--navy); font-weight:700;
+  }
+
+  .disease-panel { display:none; animation:fadeIn 0.3s ease; }
+  .disease-panel.active { display:block; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .disease-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px; overflow:hidden;
+  }
+
+  .disease-card-header {
+    padding:24px 28px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+  }
+
+  .disease-name {
+    font-family:'Noto Serif TC', serif;
+    font-size:22px; font-weight:700; color:#fff;
+  }
+
+  .disease-en { font-size:13px; color:var(--text-dim); margin-top:4px; }
+
+  .disease-body {
+    padding:24px 28px;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+  }
+
+  .disease-section { }
+
+  .ds-title {
+    font-size:13px; font-weight:700; color:var(--teal);
+    text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  }
+
+  .ds-title::before { content:''; display:block; width:3px; height:14px; background:var(--teal); border-radius:2px; }
+
+  .info-list {
+    list-style:none;
+  }
+
+  .info-list li {
+    font-size:13px; line-height:1.8; color:var(--text-dim);
+    padding:3px 0; padding-left:14px;
+    position:relative;
+  }
+
+  .info-list li::before {
+    content:'·'; position:absolute; left:0; color:var(--teal);
+    font-size:18px; line-height:1.3;
+  }
+
+  .alert-box {
+    background:rgba(255,107,107,0.08);
+    border:1px solid rgba(255,107,107,0.25);
+    border-radius:12px; padding:14px 16px;
+    margin-top:14px;
+    font-size:13px; line-height:1.7; color:#ffaaaa;
+    display:flex; gap:10px;
+  }
+
+  .alert-icon { flex-shrink:0; font-size:16px; }
+
+  .tip-box {
+    background:rgba(6,214,160,0.08);
+    border:1px solid rgba(6,214,160,0.25);
+    border-radius:12px; padding:14px 16px;
+    margin-top:14px;
+    font-size:13px; line-height:1.7; color:#7fffd4;
+    display:flex; gap:10px;
+  }
+
+  .drug-tag {
+    display:inline-block; background:rgba(124,58,237,0.2); border:1px solid rgba(124,58,237,0.4);
+    color:#c4b5fd; font-size:12px; font-weight:600; font-family:'JetBrains Mono',monospace;
+    padding:2px 8px; border-radius:6px; margin:2px;
+  }
+
+  /* === NURSING PROBLEMS === */
+  .np-grid {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:16px;
+  }
+
+  .np-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px; padding:20px;
+    transition:all 0.2s;
+    cursor:pointer;
+  }
+
+  .np-card:hover {
+    background:var(--card-hover);
+    border-color:rgba(0,180,216,0.3);
+  }
+
+  .np-head {
+    display:flex; align-items:flex-start; gap:12px; margin-bottom:12px;
+  }
+
+  .np-num {
+    width:28px; height:28px; border-radius:8px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700;
+  }
+
+  .np-title { font-size:14px; font-weight:700; color:#fff; line-height:1.4; }
+  .np-cause { font-size:12px; color:var(--text-dim); margin-top:3px; }
+
+  .np-items {
+    list-style:none;
+  }
+
+  .np-items li {
+    font-size:12px; color:var(--text-dim); line-height:1.7;
+    padding:3px 0; display:flex; gap:8px;
+  }
+
+  .np-items li::before { content:'→'; color:var(--teal); flex-shrink:0; }
+
+  /* === CASE STUDY === */
+  .case-container {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px; overflow:hidden;
+  }
+
+  .case-tabs {
+    display:flex; border-bottom:1px solid var(--border);
+    overflow-x:auto;
+  }
+
+  .case-tab {
+    padding:14px 22px;
+    font-size:13px; font-weight:600;
+    color:var(--text-dim);
+    cursor:pointer; white-space:nowrap;
+    border-bottom:2px solid transparent;
+    transition:all 0.2s;
+    background:none; border-top:none; border-left:none; border-right:none;
+    font-family:'Noto Sans TC', sans-serif;
+  }
+
+  .case-tab:hover { color:var(--teal); }
+  .case-tab.active {
+    color:var(--teal);
+    border-bottom-color:var(--teal);
+    background:rgba(0,180,216,0.05);
+  }
+
+  .case-panel { display:none; padding:28px; }
+  .case-panel.active { display:block; animation:fadeIn 0.3s ease; }
+
+  .scenario-box {
+    background:rgba(255,255,255,0.03);
+    border-left:3px solid var(--teal);
+    border-radius:0 12px 12px 0;
+    padding:20px 24px;
+    margin-bottom:24px;
+    font-size:14px; line-height:1.9; color:var(--text);
+  }
+
+  .scenario-box strong { color:var(--teal); }
+
+  .vitals-row {
+    display:grid; grid-template-columns:repeat(5,1fr); gap:12px;
+    margin:20px 0;
+  }
+
+  .vital-box {
+    background:rgba(0,0,0,0.3);
+    border:1px solid var(--border);
+    border-radius:12px; padding:12px;
+    text-align:center;
+  }
+
+  .vital-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; }
+  .vital-val { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:600; margin:4px 0; }
+  .vital-unit { font-size:10px; color:var(--text-dim); }
+  .vital-abnormal { color:var(--coral); }
+  .vital-normal { color:var(--green); }
+
+  .q-block {
+    background:rgba(0,180,216,0.06);
+    border:1px solid rgba(0,180,216,0.2);
+    border-radius:12px; padding:18px 20px;
+    margin-bottom:12px;
+  }
+
+  .q-title {
+    font-size:13px; font-weight:700; color:var(--teal);
+    margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+
+  .q-num {
+    width:22px; height:22px; border-radius:50%;
+    background:var(--teal); color:var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; flex-shrink:0;
+  }
+
+  .answer-toggle {
+    background:none; border:1px solid var(--border);
+    color:var(--text-dim); font-size:12px;
+    padding:6px 14px; border-radius:100px;
+    cursor:pointer; font-family:'Noto Sans TC',sans-serif;
+    margin-top:12px; transition:all 0.2s;
+  }
+
+  .answer-toggle:hover { border-color:var(--teal); color:var(--teal); }
+
+  .answer-content {
+    display:none; margin-top:12px;
+    background:rgba(6,214,160,0.05);
+    border:1px solid rgba(6,214,160,0.2);
+    border-radius:10px; padding:14px 16px;
+    font-size:13px; line-height:1.8; color:var(--text);
+    animation:fadeIn 0.3s ease;
+  }
+
+  .answer-content.open { display:block; }
+
+  /* === TABLE === */
+  .data-table {
+    width:100%; border-collapse:collapse; font-size:13px;
+  }
+
+  .data-table th {
+    background:rgba(0,180,216,0.12);
+    color:var(--teal); font-weight:600;
+    padding:10px 14px; text-align:left;
+    border-bottom:1px solid var(--border);
+  }
+
+  .data-table td {
+    padding:10px 14px; color:var(--text-dim);
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+
+  .data-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+  /* === PROGRESS === */
+  .progress-bar {
+    height:6px; background:rgba(255,255,255,0.08);
+    border-radius:100px; overflow:hidden; margin-top:6px;
+  }
+
+  .progress-fill {
+    height:100%; border-radius:100px;
+    background:linear-gradient(90deg,var(--teal-dark),var(--teal));
+    transition:width 1s ease;
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    height:1px; background:var(--border); margin:32px 0;
+  }
+
+  /* === FULL WIDTH CARDS === */
+  .full-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:24px 28px; margin-bottom:20px;
+  }
+
+  /* === COPD STAGES === */
+  .stage-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+  }
+
+  .stage-card {
+    border-radius:12px; padding:16px;
+    text-align:center;
+  }
+
+  .stage-card.s1 { background:rgba(6,214,160,0.1); border:1px solid rgba(6,214,160,0.3); }
+  .stage-card.s2 { background:rgba(255,209,102,0.1); border:1px solid rgba(255,209,102,0.3); }
+  .stage-card.s3 { background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.3); }
+  .stage-card.s4 { background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.3); }
+
+  .stage-roman { font-size:24px; font-weight:700; margin-bottom:6px; }
+  .s1 .stage-roman { color:var(--green); }
+  .s2 .stage-roman { color:var(--amber); }
+  .s3 .stage-roman { color:var(--coral); }
+  .s4 .stage-roman { color:#c4b5fd; }
+
+  .stage-name { font-size:12px; font-weight:700; color:#fff; }
+  .stage-desc { font-size:11px; color:var(--text-dim); margin-top:4px; }
+
+  /* === RESPONSIVE === */
+  @media (max-width:1100px) {
+    .concept-grid { grid-template-columns:repeat(2,1fr); }
+    .value-grid { grid-template-columns:repeat(2,1fr); }
+    .stage-grid { grid-template-columns:repeat(2,1fr); }
+  }
+
+  @media (max-width:900px) {
+    .concept-grid, .assess-grid, .np-grid { grid-template-columns:1fr; }
+    .disease-body { grid-template-columns:1fr; }
+    .vitals-row { grid-template-columns:repeat(3,1fr); }
+  }
+
+  /* Tablet: sidebar becomes overlay drawer */
+  @media (max-width:768px) {
+    .sidebar {
+      transform: translateX(-100%);
+      width: 260px !important;
+    }
+    .sidebar.mobile-open {
+      transform: translateX(0);
+    }
+    .main {
+      margin-left:0 !important;
+      padding:0 16px 60px;
+      padding-top:60px;
+    }
+    .hero { padding-top:20px; }
+    .hero h1 { font-size:28px; }
+    .value-grid { grid-template-columns:1fr 1fr; }
+    .vitals-row { grid-template-columns:repeat(2,1fr); }
+    .stage-grid { grid-template-columns:1fr 1fr; }
+    .disease-tabs { flex-wrap:wrap; }
+    .tab-btn { font-size:12px; padding:7px 13px; }
+  }
+
+  @media (max-width:480px) {
+    .hero h1 { font-size:22px; }
+    .hero-pills { gap:6px; }
+    .pill { font-size:11px; padding:5px 10px; }
+    .section-title { font-size:22px; }
+    .main { padding:0 12px 60px; padding-top:60px; }
+    .full-card { padding:16px; }
+    .assess-card, .np-card { padding:16px; }
+    .vitals-row { grid-template-columns:1fr 1fr; }
+    .value-grid { grid-template-columns:1fr 1fr; }
+    .flow-container { flex-direction:column; }
+    .flow-arrow { transform:rotate(90deg); align-self:center; padding:2px 0; }
+    .case-panel { padding:16px; }
+    .scenario-box { padding:14px 16px; font-size:13px; }
+  }
+
+  /* === SCROLL INDICATOR === */
+  .scroll-top {
+    position:fixed; bottom:28px; right:28px;
+    width:44px; height:44px; border-radius:50%;
+    background:var(--teal); color:var(--navy);
+    border:none; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(0,180,216,0.4);
+    z-index:200; transition:all 0.2s; opacity:0;
+  }
+
+  .scroll-top.visible { opacity:1; }
+  .scroll-top:hover { transform:scale(1.1); }
+
+  /* === FLOW CHART === */
+  .flow-container {
+    display:flex; align-items:stretch; gap:0;
+    margin:16px 0; flex-wrap:wrap;
+  }
+
+  .flow-step {
+    flex:1; min-width:120px;
+    background:rgba(0,180,216,0.08);
+    border:1px solid rgba(0,180,216,0.2);
+    border-radius:12px;
+    padding:14px 12px;
+    text-align:center;
+    position:relative;
+  }
+
+  .flow-arrow {
+    display:flex; align-items:center;
+    color:var(--teal); font-size:20px;
+    padding:0 6px; flex-shrink:0;
+  }
+
+  .flow-step-num {
+    font-size:11px; color:var(--teal); font-weight:700; text-transform:uppercase;
+    letter-spacing:0.1em; margin-bottom:6px;
+  }
+
+  .flow-step-text { font-size:12px; color:var(--text); line-height:1.5; }
+
+  /* Sticky nav highlight */
+  .nav-item { transition:all 0.15s; }
+
+  em.hl { font-style:normal; color:var(--teal); font-weight:600; }
+  em.hl-coral { font-style:normal; color:var(--coral); font-weight:600; }
+  em.hl-green { font-style:normal; color:var(--green); font-weight:600; }
+  em.hl-amber { font-style:normal; color:var(--amber); font-weight:600; }
+</style>
+</head>
+<body>
+
+<!-- TOGGLE BUTTON -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="開關側欄">☰</button>
+
+<!-- OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">氧合與活動<br>Oxygenation / Mobility</div>
+    <div class="sidebar-sub">內外護理學 · 自學教材</div>
+  </div>
+
+  <div class="nav-section-label">課程大綱</div>
+
+  <a href="#concepts" class="nav-item active">
+    <span class="nav-icon">🫁</span><span class="nav-label"> 核心概念</span>
+  </a>
+  <a href="#assessment" class="nav-item">
+    <span class="nav-icon">📋</span><span class="nav-label"> 護理評估</span>
+  </a>
+  <a href="#diseases" class="nav-item">
+    <span class="nav-icon">🏥</span><span class="nav-label"> 常見疾病</span>
+  </a>
+  <a href="#diseases" onclick="switchTab('copd')" class="nav-sub">→ COPD（氧合）</a>
+  <a href="#diseases" onclick="switchTab('cardio')" class="nav-sub">→ 心血管疾病（循環）</a>
+  <a href="#diseases" onclick="switchTab('joint')" class="nav-sub">→ 關節置換（活動）</a>
+  <a href="#diseases" onclick="switchTab('osteo')" class="nav-sub">→ 骨質疏鬆（活動）</a>
+  <a href="#diseases" onclick="switchTab('arthritis')" class="nav-sub">→ 關節炎（活動）</a>
+
+  <a href="#nursing" class="nav-item">
+    <span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span>
+  </a>
+  <a href="#cases" class="nav-item">
+    <span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span>
+  </a>
+</nav>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第三單元</div>
+    <h1>氧合與活動<br><em>Oxygenation & Mobility</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Adult Health Nursing</div>
+    <div class="hero-pills">
+      <span class="pill pill-teal">🫁 氧合 Oxygenation</span>
+      <span class="pill pill-coral">❤️ 循環 Circulation</span>
+      <span class="pill pill-green">🦵 活動 Mobility</span>
+      <span class="pill pill-amber">📖 自學 Self-Learning</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Core Concepts: Oxygenation · Circulation · Mobility</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <!-- OXYGEN -->
+      <div class="concept-card oxygen">
+        <div class="concept-icon">🫁</div>
+        <div class="concept-title">氧合 Oxygenation</div>
+        <div class="concept-en">維持組織獲得足夠氧氣的生理過程</div>
+        <ul class="concept-points">
+          <li>肺泡通氣：空氣進出肺泡，完成氣體交換（O₂↑ CO₂↓）</li>
+          <li>通氣/灌流（V/Q）比值正常約 0.8，失衡導致低血氧</li>
+          <li>肺功能指標：FEV₁、FVC、FEV₁/FVC、SaO₂、PaO₂</li>
+          <li>血液氣體分析（ABG）：pH 7.35–7.45，PaO₂ 80–100 mmHg，PaCO₂ 35–45 mmHg</li>
+          <li>缺氧類型：低血氧型（PaO₂↓）vs 高碳酸血症型（PaCO₂↑）</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box">
+            <div class="value-label">pH 正常值</div>
+            <div class="value-num">7.35~7.45</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">PaO₂</div>
+            <div class="value-num">80~100</div>
+            <div class="value-unit">mmHg</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">PaCO₂</div>
+            <div class="value-num">35~45</div>
+            <div class="value-unit">mmHg</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">SaO₂</div>
+            <div class="value-num">&gt;95%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIRCULATION -->
+      <div class="concept-card circulation">
+        <div class="concept-icon">🩺</div>
+        <div class="concept-title">循環 Circulation</div>
+        <div class="concept-en">血液循環系統維持組織灌流的功能</div>
+        <ul class="concept-points">
+          <li>心輸出量（CO）= 心搏量（SV）× 心率（HR），正常4–8 L/min</li>
+          <li>前負荷（Preload）、後負荷（Afterload）、心肌收縮力共同影響CO</li>
+          <li>節律異常：心室頻脈、心房纖維顫動、心搏停止、心室纖維顫動</li>
+          <li>心血管疾病常見：高血壓、冠心病、心臟衰竭</li>
+          <li>評估：血壓、脈搏、心電圖、心臟酵素、超音波心動圖</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box">
+            <div class="value-label">心輸出量</div>
+            <div class="value-num">4–8</div>
+            <div class="value-unit">L/min</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">BP 正常</div>
+            <div class="value-num">&lt;120/80</div>
+            <div class="value-unit">mmHg</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">心率</div>
+            <div class="value-num">60–100</div>
+            <div class="value-unit">bpm</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">射出分率</div>
+            <div class="value-num">&gt;55%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILITY -->
+      <div class="concept-card mobility">
+        <div class="concept-icon">🦴</div>
+        <div class="concept-title">活動 Mobility</div>
+        <div class="concept-en">骨骼肌肉系統支持身體移動與功能的能力</div>
+        <ul class="concept-points">
+          <li>肌肉骨骼系統：骨骼、關節、肌肉、韌帶、肌腱互相協作</li>
+          <li>活動的重要性：維持心肺功能、預防靜脈血栓、促進腸胃蠕動</li>
+          <li>活動障礙：疼痛、炎症、骨折、神經損傷、骨質疏鬆</li>
+          <li>關節活動度（ROM）：全範圍關節運動維持功能</li>
+          <li>復健目標：增強肌力、恢復關節活動度、重建日常生活功能</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box">
+            <div class="value-label">骨密度T值</div>
+            <div class="value-num">≥ –1</div>
+            <div class="value-unit">正常</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">骨質疏鬆</div>
+            <div class="value-num">≤ –2.5</div>
+            <div class="value-unit">T值</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">BMI 正常</div>
+            <div class="value-num">18.5–24</div>
+          </div>
+          <div class="value-box">
+            <div class="value-label">血清鈣</div>
+            <div class="value-num">8.5–10.5</div>
+            <div class="value-unit">mg/dL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABG Flowchart -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">🔬 動脈血液氣體分析（ABG）判讀步驟</div>
+      <div class="flow-container">
+        <div class="flow-step">
+          <div class="flow-step-num">Step 1</div>
+          <div class="flow-step-text">看 pH<br>7.35–7.45 = 正常<br>&lt;7.35 = 酸<br>&gt;7.45 = 鹼</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 2</div>
+          <div class="flow-step-text">看 PaCO₂<br>35–45 = 正常<br>&gt;45 = 呼酸<br>&lt;35 = 呼鹼</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 3</div>
+          <div class="flow-step-text">看 HCO₃⁻<br>22–26 = 正常<br>&lt;22 = 代酸<br>&gt;26 = 代鹼</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 4</div>
+          <div class="flow-step-text">判斷代償<br>pH 正常但CO₂/HCO₃異常<br>= 已代償</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 5</div>
+          <div class="flow-step-text">看 PaO₂/SaO₂<br>&lt;60 mmHg / &lt;88%<br>= 嚴重缺氧</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#ff6b6b,#ff9f9f);">2</div>
+      <div>
+        <div class="section-title">護理評估</div>
+        <div class="section-en">Nursing Assessment Framework</div>
+      </div>
+    </div>
+
+    <div class="assess-grid">
+      <!-- Respiratory Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">🫁 呼吸系統評估 <span class="tag tag-teal">氧合</span></div>
+        <ul class="assess-list">
+          <li>呼吸頻率、深度、型態（正常12–20次/分）</li>
+          <li>呼吸音：清晰、羅音（Crackles）、喘鳴音（Wheezes）</li>
+          <li>胸廓形狀：桶狀胸（barrel chest）為COPD典型</li>
+          <li>輔助呼吸肌使用：鎖骨上及肋間凹陷</li>
+          <li>發紺（Cyanosis）：指甲床、嘴唇、耳垂</li>
+          <li>咳嗽性質與痰液：量、顏色、黏稠度</li>
+          <li>指夾血氧濃度（SpO₂）：&lt;90% 需介入</li>
+          <li>動脈血液氣體分析（ABG）</li>
+          <li>肺功能測試（PFT）：FEV₁/FVC</li>
+          <li>胸部X光：過度充氣、橫膈位置</li>
+        </ul>
+      </div>
+
+      <!-- Cardiovascular Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">🩺 心血管系統評估 <span class="tag tag-coral">循環</span></div>
+        <ul class="assess-list">
+          <li>血壓（雙側測量）、脈搏（速率、規律性、強度）</li>
+          <li>心音：S1/S2正常音；S3（心衰竭）；S4（心肌病變）</li>
+          <li>頸靜脈怒張（JVD）：右心衰竭指標</li>
+          <li>末梢脈搏：橈動脈、股動脈、足背動脈</li>
+          <li>肢端水腫：凹陷性（pitting）程度分級</li>
+          <li>皮膚：顏色、溫度、毛細血管充填時間（&lt;2秒正常）</li>
+          <li>尿量監測：&lt;0.5 mL/kg/hr 表示灌流不足</li>
+          <li>12導程心電圖：節律、ST段變化</li>
+          <li>心臟酵素：troponin、CK-MB</li>
+          <li>超音波心動圖：射出分率（EF）</li>
+        </ul>
+      </div>
+
+      <!-- Musculoskeletal Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">🦴 肌肉骨骼系統評估 <span class="tag tag-green">活動</span></div>
+        <ul class="assess-list">
+          <li>疼痛評估：VAS/NRS 0–10分，性質、部位、誘因</li>
+          <li>關節活動度（ROM）：主動與被動</li>
+          <li>肌肉力量：0–5分量表評估</li>
+          <li>肢端神經血管評估 CTMS：循環(C)、溫度(T)、活動(M)、感覺(S)</li>
+          <li>步態分析：跛行、使用輔具情形</li>
+          <li>骨密度：雙能量X光吸光儀（DXA）</li>
+          <li>實驗室：鈣、磷、鹼性磷酸酶（ALP）、尿酸</li>
+          <li>影像學：X光（骨刺、關節間隙）、MRI、CT</li>
+          <li>關節鏡：直接觀察關節腔</li>
+          <li>跌倒風險評估：Morse量表</li>
+        </ul>
+      </div>
+
+      <!-- Functional Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">📊 功能性評估與生活品質</div>
+        <ul class="assess-list">
+          <li>日常生活活動（ADL）：巴氏量表（Barthel Index）</li>
+          <li>工具性日常活動（IADL）：烹飪、購物、服藥能力</li>
+          <li>活動耐力：6分鐘步行測試</li>
+          <li>跌倒史、環境危險因子評估</li>
+          <li>社會支持系統：家庭、社區資源</li>
+          <li>心理狀態：焦慮、憂鬱、身體意象</li>
+          <li>疾病知識：藥物、飲食、自我照護</li>
+          <li>呼吸困難分級（MRC量表）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: DISEASES -->
+  <section class="section" id="diseases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#06d6a0,#00b4d8);">3</div>
+      <div>
+        <div class="section-title">常見疾病介紹</div>
+        <div class="section-en">Common Diseases: COPD · Cardiovascular · Joint Disorders</div>
+      </div>
+    </div>
+
+    <div class="disease-tabs">
+      <button class="tab-btn active" onclick="switchTab('copd')">🫁 COPD（氧合）</button>
+      <button class="tab-btn" onclick="switchTab('cardio')">❤️ 心血管疾病（循環）</button>
+      <button class="tab-btn" onclick="switchTab('joint')">🦴 關節置換（活動）</button>
+      <button class="tab-btn" onclick="switchTab('osteo')">💊 骨質疏鬆（活動）</button>
+      <button class="tab-btn" onclick="switchTab('arthritis')">🔴 關節炎（活動）</button>
+    </div>
+
+    <!-- COPD -->
+    <div class="disease-panel active" id="panel-copd">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">慢性阻塞性肺病</div>
+            <div class="disease-en">Chronic Obstructive Pulmonary Disease (COPD)</div>
+          </div>
+          <span class="tag tag-teal">氧合障礙</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">病因與危險因子</div>
+            <ul class="info-list">
+              <li><em class="hl">吸菸</em>為最主要危險因子（80–90% 病例）</li>
+              <li>空氣汙染：粉塵、化學物質、廚房油煙長期暴露</li>
+              <li>基因因素：α₁-抗胰蛋白酶（ATT）缺乏 → 肺氣腫</li>
+              <li>反覆呼吸道感染、童年呼吸道疾病</li>
+              <li>包含：<em class="hl-coral">慢性支氣管炎</em>（Blue Bloater）+ <em class="hl">肺氣腫</em>（Pink Puffer）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">嚴重度分期（GOLD）</div>
+            <div class="stage-grid">
+              <div class="stage-card s1">
+                <div class="stage-roman">I</div>
+                <div class="stage-name">輕度</div>
+                <div class="stage-desc">FEV₁ ≥80%</div>
+              </div>
+              <div class="stage-card s2">
+                <div class="stage-roman">II</div>
+                <div class="stage-name">中度</div>
+                <div class="stage-desc">FEV₁ 50–79%</div>
+              </div>
+              <div class="stage-card s3">
+                <div class="stage-roman">III</div>
+                <div class="stage-name">重度</div>
+                <div class="stage-desc">FEV₁ 30–49%</div>
+              </div>
+              <div class="stage-card s4">
+                <div class="stage-roman">IV</div>
+                <div class="stage-name">極重度</div>
+                <div class="stage-desc">FEV₁ &lt;30%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">臨床徵象</div>
+            <ul class="info-list">
+              <li>主要症狀：<em class="hl">慢性咳嗽</em>、多痰、<em class="hl">漸進性呼吸困難</em></li>
+              <li>桶狀胸（barrel chest）：前後徑增大</li>
+              <li>聽診：呼吸音減弱、吐氣延長、喘鳴音</li>
+              <li>呼吸衰竭徵兆：使用輔助呼吸肌、發紺、嗜睡</li>
+              <li>肺心症（cor pulmonale）：右心衰竭</li>
+            </ul>
+
+            <div class="ds-title" style="margin-top:20px;">診斷標準</div>
+            <ul class="info-list">
+              <li>肺功能測試：吸入支氣管擴張劑後 <em class="hl">FEV₁/FVC &lt; 70%</em></li>
+              <li>胸部X光：肺過度充氣、橫膈扁平、前後徑加大</li>
+              <li>ABG：晚期出現低血氧（PaO₂↓）+ 高碳酸血症（PaCO₂↑）</li>
+              <li>α₁-ATT 濃度（年輕患者）</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">醫療處置</div>
+            <ul class="info-list">
+              <li>穩定期目標：緩解症狀、增進活動耐力、預防惡化</li>
+              <li>急性期目標：改善低血氧、維持pH正常範圍</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <span class="drug-tag">LABA</span>
+              <span class="drug-tag">LAMA</span>
+              <span class="drug-tag">ICS</span>
+              <span class="drug-tag">SABA（急救）</span>
+              <span class="drug-tag">全身性類固醇</span>
+              <span class="drug-tag">抗生素（感染時）</span>
+            </div>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>COPD 病人給氧原則：<em class="hl-coral">低流量氧氣（1–2 L/min）</em>，維持 SaO₂ 88–92%。過高氧氣濃度會抑制缺氧驅力（hypoxic drive），導致 CO₂ 滯留、昏迷！</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li><em class="hl">半坐臥位</em>（High Fowler's）：改善通氣</li>
+              <li>教導<em class="hl">噘嘴呼吸</em>（pursed-lip breathing）：防止小氣道塌陷</li>
+              <li>腹式呼吸（橫膈呼吸）：提升潮氣容積</li>
+              <li>胸部物理治療：姿位引流、震顫、叩擊、有效咳嗽</li>
+              <li>飲食：<em class="hl">高脂低醣飲食</em>（減少CO₂產生）、少量多餐</li>
+              <li>鈣質、維生素A/C/E 補充；適度補充水分稀釋痰液</li>
+              <li>肺部復健計畫；漸進性活動訓練</li>
+              <li>急性惡化（AE）：增加支氣管擴張劑、BiPAP、必要時插管</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>呼吸衰竭判斷：滿足以下任<em class="hl-green">2項</em>即警示：PaO₂ &lt;50 mmHg / PaCO₂ &gt;50 mmHg / pH &lt;7.30 / 急性呼吸困難</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDIO -->
+    <div class="disease-panel" id="panel-cardio">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">心血管功能不良與循環障礙</div>
+            <div class="disease-en">Cardiovascular Dysfunction · Dysrhythmia · Decreased Cardiac Output</div>
+          </div>
+          <span class="tag tag-coral">循環障礙</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">心輸出量減少（Decreased CO）</div>
+            <ul class="info-list">
+              <li><em class="hl">心輸出量（CO）= SV × HR</em>，正常 4–8 L/min</li>
+              <li>前負荷↓（脫水）、後負荷↑（高血壓）、收縮力↓（心肌梗塞）均可導致</li>
+              <li>臨床表現：低血壓、心跳加速、端坐呼吸、頸靜脈怒張、水腫</li>
+              <li>尿量減少（&lt;0.5 mL/kg/hr）：腎灌流不足</li>
+              <li>EF（射出分率）：&lt;40% = 收縮性心衰竭</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>心衰竭徵兆：<em class="hl-coral">S3 gallop</em>、頸靜脈怒張（JVD）、肺囉音、下肢凹陷性水腫。需嚴格記錄 I&O 及每日體重。</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">節律不良（Dysrhythmia）</div>
+            <ul class="info-list">
+              <li>心房纖維顫動（AF）：不規則P波→腦中風高風險，需抗凝治療</li>
+              <li>心室頻脈（VT）：&gt;3個連續心室波，HR &gt;100，可能無脈搏</li>
+              <li>心室纖維顫動（VF）：立即<em class="hl-coral">電擊除顫</em> + CPR</li>
+              <li>心搏過緩（Bradycardia）：HR &lt;60，症狀性者需 Atropine 或心律調整器</li>
+              <li>房室傳導阻斷（AV Block）：一、二、三度分類</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <span class="drug-tag">Amiodarone</span>
+              <span class="drug-tag">Atropine</span>
+              <span class="drug-tag">Digoxin</span>
+              <span class="drug-tag">β-blocker</span>
+              <span class="drug-tag">抗凝劑</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">心血管功能不良護理重點</div>
+            <ul class="info-list">
+              <li>持續心電圖監測，識別危險心律</li>
+              <li>嚴格限制水分（1,000–1,500 mL/天）及<em class="hl">低鈉飲食</em></li>
+              <li>半坐臥位：降低心臟前負荷、改善呼吸</li>
+              <li>每日同一時間<em class="hl">測量體重</em>：體重增加 &gt;1 kg/天需警示</li>
+              <li>氧氣治療：維持 SaO₂ &gt;94%</li>
+              <li>記錄 I&O：每小時尿量監測</li>
+              <li>活動：漸進性、避免 Valsalva 動作</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>心肌梗塞後性生活恢復：AMI 後<em class="hl-green">4–8週</em>後可恢復，應在爬兩層樓梯無不適後才考慮</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">心臟衰竭藥物治療</div>
+            <ul class="info-list">
+              <li><em class="hl">利尿劑</em>（Furosemide）：減輕液體滯留</li>
+              <li>ACE抑制劑/ARB：降低後負荷，保護腎臟</li>
+              <li>β-blocker：減慢心率，改善長期預後</li>
+              <li>Digoxin：增強心肌收縮力、控制心室率</li>
+              <li>注意洋地黃中毒：噁心、心律不整、視力改變（黃綠視）</li>
+              <li>Spironolactone：保鉀利尿劑，對抗醛固酮</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>給 Digoxin 前：<em class="hl-coral">測脈搏 1 分鐘</em>，若 HR &lt;60 bpm 或心律不整，需暫停給藥並通知醫師</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOINT REPLACEMENT -->
+    <div class="disease-panel" id="panel-joint">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">關節置換術護理</div>
+            <div class="disease-en">Total Hip Replacement (THR) / Total Knee Replacement (TKR)</div>
+          </div>
+          <span class="tag tag-green">活動障礙</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">全髖關節置換（THR）術後護理</div>
+            <ul class="info-list">
+              <li>術後保持<em class="hl">外展姿勢</em>：兩膝間置枕頭，維持髖關節外展</li>
+              <li>髖關節屈曲<em class="hl-coral">不可超過 90 度</em>（預防脫位）</li>
+              <li>手術後 3 個月：不交叉雙腿、不蹲下</li>
+              <li>坐椅選擇：椅背平直、堅硬、較高且有扶手</li>
+              <li>使用增高馬桶座墊；翻身時雙腿夾枕頭</li>
+              <li>脫位徵兆：患肢縮短、內外旋、疼痛加劇、喀喀聲</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">復健運動時程</div>
+            <table class="data-table">
+              <tr><th>術後天數</th><th>運動內容</th></tr>
+              <tr><td>第 1 天</td><td>足踝全範圍關節運動、翻身運動、手臂肌力訓練</td></tr>
+              <tr><td>第 2–3 天</td><td>股四頭肌/臀肌等長收縮、協助坐於椅子</td></tr>
+              <tr><td>第 4–5 天</td><td>膝髖關節屈曲外展半主動運動、拐杖行走</td></tr>
+              <tr><td>第 5–6 天</td><td>主動關節運動</td></tr>
+              <tr><td>第 7–8 天</td><td>腿部伸直抬高、便盆運動</td></tr>
+            </table>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">全膝關節置換（TKR）術後護理</div>
+            <ul class="info-list">
+              <li>術後患肢<em class="hl">抬高 48 小時</em>：促進血循、消腫</li>
+              <li>48 小時後<em class="hl-coral">勿在膝窩放枕頭</em>（防屈曲攣縮）</li>
+              <li>引流管拔除後：使用<em class="hl">持續被動運動（CPM）機</em>器</li>
+              <li>CPM：由 40–50 度屈曲開始，每天增加 5–10 度</li>
+              <li>腫脹時：CPM 後加壓冰敷 15 分鐘，<em class="hl-coral">勿停止 CPM</em></li>
+              <li>彈性繃帶固定膝關節防脫位</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">出院護理指導</div>
+            <ul class="info-list">
+              <li>術後 2–3 個月：膝關節暫不負重，需拐杖/助行器</li>
+              <li>術後 6 個月：可游泳、騎腳踏車</li>
+              <li>避免：爬山、蹲馬步、上下樓梯、跑步、提重物</li>
+              <li>保持<em class="hl">理想體重</em>，減輕關節負擔</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>THR 注意合併症：<em class="hl-coral">深部靜脈血栓（DVT）</em>（穿彈性襪、早期下床）、感染、脂肪栓塞、腓神經麻痺</span>
+            </div>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>THR 術後性生活：深部組織 6 週癒合，<em class="hl-green">6週後</em>恢復較安全。術後 3 個月回復正常生活。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OSTEOPOROSIS -->
+    <div class="disease-panel" id="panel-osteo">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">骨質疏鬆症</div>
+            <div class="disease-en">Osteoporosis — "Silent Disease"</div>
+          </div>
+          <span class="tag tag-amber">活動障礙</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">定義與分類</div>
+            <ul class="info-list">
+              <li>35歲後骨耗損＞骨形成，骨密度下降，易發生<em class="hl">自發性骨折</em></li>
+              <li><em class="hl">第一型（停經後）</em>：停經後15–20年；動情素↓→骨量快速流失；脊椎、髖部、腕部骨折</li>
+              <li><em class="hl">第二型（老年性）</em>：70歲以上女性、80歲以上男性；造骨細胞功能衰退</li>
+              <li><em class="hl-coral">續發型</em>：長期類固醇（最常見）、副甲狀腺亢進、腎衰竭、類風溼性關節炎</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">危險因子</div>
+            <ul class="info-list">
+              <li>女性、停經、亞裔、家族史</li>
+              <li>低鈣/低維生素D攝取、少晒陽光</li>
+              <li>抽菸、酗酒、嗜咖啡、久坐不動</li>
+              <li>長期類固醇、肝素、抗癲癇藥物</li>
+              <li>低BMI（&lt;18.5）：體重過輕</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">臨床表徵（沉靜疾病）</div>
+            <ul class="info-list">
+              <li>往往<em class="hl-coral">骨折前無症狀</em>，以骨折才被診斷</li>
+              <li><em class="hl">背痛</em>：下胸椎/腰椎區，活動加劇，休息緩解</li>
+              <li><em class="hl">駝背</em>（Dowager's kyphosis）：脊柱漸進塌陷</li>
+              <li>身高減少（目前比年輕時矮 &gt;3 cm 需警覺）</li>
+              <li>骨折：脊椎（最常見）、髖部、腕部橈骨、肱骨</li>
+              <li>便祕、呼吸問題（脊椎不動）</li>
+              <li>泌尿道結石（血鈣↑）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">診斷檢查</div>
+            <ul class="info-list">
+              <li><em class="hl">DXA（雙能量X光）T值</em>：正常≥-1；骨質缺乏-1~-2.5；骨質疏鬆≤-2.5</li>
+              <li>X光：骨質流失達25–40%才有明顯改變</li>
+              <li>牆枕距離（WOD）&gt;3 cm 需注意</li>
+              <li>肋骨骨盆距離（RPD）&lt;2 cm 需注意</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">治療</div>
+            <ul class="info-list">
+              <li><em class="hl">荷爾蒙補充</em>：動情素（停經後3–5年內開始）</li>
+              <li><em class="hl">雙磷酸鹽</em>（Alendronate/Fosamax）：<em class="hl-coral">早餐前30分鐘服用</em>，服藥後直立30分鐘</li>
+              <li>抑鈣素（Calcitonin）：鼻噴劑或注射</li>
+              <li>鈣製劑：停經後女性每日1,500 mg</li>
+              <li>維生素D：每日400–800 IU，促進鈣吸收</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">護理措施</div>
+            <ul class="info-list">
+              <li>飲食：鈣質≥1,500 mg/天、維生素D、避免咖啡/酒</li>
+              <li>負重運動：步行、爬樓梯</li>
+              <li>跌倒預防：環境改善、穿防滑鞋</li>
+              <li>疼痛控制：熱敷、止痛藥</li>
+              <li>手術：椎體成形術（vertebroplasty）、椎體後凸矯正術</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>每日鈣質來源：牛奶240mL≈300mg；起司30g≈200mg；豆腐100g≈150mg；小魚乾30g≈300mg</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">接受骨密度檢查建議對象</div>
+            <ul class="info-list">
+              <li>65歲以上婦女 / 70歲以上男性</li>
+              <li>65歲以下有危險因子的停經婦女</li>
+              <li>50–70歲有骨折危險因子男性</li>
+              <li>50歲以上低衝擊性骨折者</li>
+              <li>長期使用高風險藥物（類固醇等）</li>
+              <li>接受骨質疏鬆治療中：監測療效</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTHRITIS -->
+    <div class="disease-panel" id="panel-arthritis">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">關節炎</div>
+            <div class="disease-en">Arthritis: Gout · Degenerative · Rheumatoid</div>
+          </div>
+          <span class="tag tag-coral">活動障礙</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">痛風性關節炎</div>
+            <ul class="info-list">
+              <li>病因：<em class="hl">高尿酸血症</em>→尿酸結晶沉積於關節</li>
+              <li>血尿酸 &gt;7 mg/dL（男女皆同）</li>
+              <li><em class="hl">最常侵犯：腳大拇趾第一關節</em></li>
+              <li>急性期：劇烈疼痛、紅腫熱痛、無法活動</li>
+              <li>誘因：啤酒、飢餓、壓力、Thiazide利尿劑、Aspirin</li>
+              <li>痛風石（tophi）：尿酸結節於皮下、拇趾、耳垂</li>
+              <li>診斷：關節穿刺→<em class="hl">白血球吞噬尿酸結晶</em>（最確定診斷）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">治療（痛風）</div>
+            <ul class="info-list">
+              <li><em class="hl">秋水仙素（Colchicine）</em>：急性發作最效，副作用：腸胃不適</li>
+              <li>Allopurinol：抑制尿酸生成（黃嘌呤氧化酶抑制劑）</li>
+              <li>NSAIDs（Indomethacin）：抑制炎症</li>
+              <li><em class="hl-coral">禁用 Aspirin 及 Thiazide</em>（會升高尿酸）</li>
+              <li>飲食：<em class="hl">低嘌呤飲食</em>（100–150 mg/天）、大量飲水3,000 mL</li>
+              <li>避免：啤酒、海鮮、動物內臟、肉汁</li>
+              <li>多攝取鹼性食物：柑橘類，使尿液鹼化</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">退化性關節炎（骨性關節炎）</div>
+            <ul class="info-list">
+              <li><em class="hl">漸進性、退化性</em>關節軟骨喪失，病因不明</li>
+              <li>危險因子：老化、肥胖、荷爾蒙、長期負重</li>
+              <li>45歲後女性多見，最易受侵犯：<em class="hl">負重關節（膝/髖）、脊椎、手部</em></li>
+              <li>關節疼痛：運動後/負重時加劇，有輾軋音</li>
+              <li>骨刺（osteophyte）形成</li>
+              <li>遠端指關節結節：<em class="hl">Heberden's node</em></li>
+              <li>近端指關節結節：<em class="hl">Bouchard's node</em></li>
+              <li>晨間僵硬：&lt;30分鐘（類風溼性 &gt;30分鐘）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">治療（退化性）</div>
+            <ul class="info-list">
+              <li>止痛藥、NSAIDs</li>
+              <li>關節內注射皮質類固醇</li>
+              <li>葡萄糖胺（Glucosamine/維骨力）：促進軟骨再生</li>
+              <li>軟骨膠（Chondroitin Sulfate）：滋養軟骨</li>
+              <li>嚴重者：關節置換術</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>痛風護理：急性期使用<em class="hl-coral">支架（護架）支托蓋被</em>，避免直接壓迫患部；冰敷；制動受犯關節</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses (NANDA-I)</div>
+      </div>
+    </div>
+
+    <div class="np-grid">
+      <!-- NP 1 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(0,180,216,0.2);color:var(--teal);">1</div>
+          <div>
+            <div class="np-title">氣體交換受損</div>
+            <div class="np-cause">Impaired Gas Exchange ／與肺泡通氣功能下降有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>監測ABG、SpO₂，維持SaO₂ 88–92%（COPD）</li>
+          <li>低流量氧療（1–2 L/min），防止缺氧驅力抑制</li>
+          <li>半坐臥位；教導噘嘴呼吸及腹式呼吸</li>
+          <li>胸部物理治療：姿位引流、叩擊、震顫</li>
+          <li>評估發紺、意識變化、使用輔助呼吸肌</li>
+        </ul>
+      </div>
+
+      <!-- NP 2 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,107,107,0.2);color:var(--coral);">2</div>
+          <div>
+            <div class="np-title">清除呼吸道分泌物無效</div>
+            <div class="np-cause">Ineffective Airway Clearance ／與分泌物過多、黏稠有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>鼓勵每日攝取水分2,000–2,500 mL（稀釋痰液）</li>
+          <li>教導有效咳嗽技巧（分段咳嗽、腹肌輔助）</li>
+          <li>霧化吸入治療；支氣管擴張劑使用</li>
+          <li>姿位引流：餐前1小時或餐後2小時進行</li>
+          <li>觀察痰液性質、顏色變化（感染徵兆）</li>
+        </ul>
+      </div>
+
+      <!-- NP 3 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,107,107,0.2);color:var(--coral);">3</div>
+          <div>
+            <div class="np-title">心輸出量減少</div>
+            <div class="np-cause">Decreased Cardiac Output ／與心肌收縮力下降有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>持續監測生命徵象、心電圖、心律</li>
+          <li>記錄每日體重（同時間、同衣著）及I&O</li>
+          <li>嚴格限水限鈉；評估水腫程度</li>
+          <li>給藥前測脈搏（Digoxin：&lt;60 bpm暫停）</li>
+          <li>半坐臥位；漸進性活動；避免Valsalva動作</li>
+        </ul>
+      </div>
+
+      <!-- NP 4 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(6,214,160,0.2);color:var(--green);">4</div>
+          <div>
+            <div class="np-title">活動耐力減少</div>
+            <div class="np-cause">Activity Intolerance ／與氧氣供應和需求不平衡有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>評估活動前後的心率、血壓、SpO₂變化</li>
+          <li>制定漸進性活動計畫，活動後充分休息</li>
+          <li>教導活動時配合呼吸（吐氣時做費力動作）</li>
+          <li>心悸/喘/盜汗/蒼白：立即停止活動</li>
+          <li>活動時可使用低流量氧氣輔助</li>
+        </ul>
+      </div>
+
+      <!-- NP 5 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,209,102,0.2);color:var(--amber);">5</div>
+          <div>
+            <div class="np-title">急性/慢性疼痛</div>
+            <div class="np-cause">Acute/Chronic Pain ／與骨骼關節炎症、手術傷口有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>每2–4小時評估疼痛（NRS/VAS），記錄性質、部位</li>
+          <li>依醫囑給予止痛藥，評估效果及副作用</li>
+          <li>非藥物措施：熱/冰敷、擺位、分散注意力</li>
+          <li>痛風急性期：冰敷、護架支托、制動患肢</li>
+          <li>運動前20–30分鐘可預防性給止痛劑</li>
+        </ul>
+      </div>
+
+      <!-- NP 6 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,209,102,0.2);color:var(--amber);">6</div>
+          <div>
+            <div class="np-title">身體活動功能障礙</div>
+            <div class="np-cause">Impaired Physical Mobility ／與疼痛、關節功能受損有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>評估關節ROM、肌力，協助床上運動</li>
+          <li>教導並督促規律全範圍關節運動（ROM exercises）</li>
+          <li>正確使用輔具（拐杖、助行器、輪椅）</li>
+          <li>關節置換術後：遵循正確姿勢限制</li>
+          <li>跌倒預防措施：床欄、防滑鞋、環境清潔</li>
+        </ul>
+      </div>
+
+      <!-- NP 7 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(124,58,237,0.2);color:#c4b5fd;">7</div>
+          <div>
+            <div class="np-title">跌倒風險</div>
+            <div class="np-cause">Risk for Falls ／與骨質疏鬆、行動不穩、環境危險因子有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>Morse跌倒量表評估高風險患者</li>
+          <li>環境改善：充足照明、去除門檻、加裝扶手</li>
+          <li>穿防滑鞋；使用輔具；床欄上升</li>
+          <li>骨質疏鬆：加強鈣/維D補充，負重運動</li>
+          <li>衛教：慢慢改變姿勢，預防姿位性低血壓</li>
+        </ul>
+      </div>
+
+      <!-- NP 8 -->
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(6,214,160,0.2);color:var(--green);">8</div>
+          <div>
+            <div class="np-title">營養失衡：少於身體需要</div>
+            <div class="np-cause">Imbalanced Nutrition ／與食慾不振、喘氣無力進食有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>COPD：少量多餐；用餐前30分鐘休息</li>
+          <li>高脂低醣飲食（減少CO₂產生）、高蛋白1.2–1.5 g/kg/day</li>
+          <li>避免易產氣食物；進食時給予低流量氧氣</li>
+          <li>骨質疏鬆：每日鈣≥1,500 mg + 維生素D 400–800 IU</li>
+          <li>每週監測體重；口腔護理促進食慾</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASE STUDIES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#ffd166,#ff6b6b);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('case1')">案例一：COPD急性惡化</button>
+        <button class="case-tab" onclick="switchCase('case2')">案例二：全髖關節置換術</button>
+        <button class="case-tab" onclick="switchCase('case3')">案例三：骨質疏鬆骨折</button>
+        <button class="case-tab" onclick="switchCase('case4')">案例四：心臟衰竭</button>
+      </div>
+
+      <!-- CASE 1: COPD -->
+      <div class="case-panel active" id="cpanel-case1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王先生，68歲，男性，<strong>有30年吸菸史（2包/天）</strong>，確診COPD 10年。本次因<strong>感冒後喘氣加重、痰增多（黃綠色）、發燒38.5°C</strong>，由家人送急診。
+        </div>
+
+        <div class="vitals-row">
+          <div class="vital-box">
+            <div class="vital-label">體溫</div>
+            <div class="vital-val vital-abnormal">38.5</div>
+            <div class="vital-unit">°C ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">呼吸</div>
+            <div class="vital-val vital-abnormal">28</div>
+            <div class="vital-unit">次/分 ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">血壓</div>
+            <div class="vital-val vital-normal">138/88</div>
+            <div class="vital-unit">mmHg</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">心率</div>
+            <div class="vital-val vital-abnormal">108</div>
+            <div class="vital-unit">bpm ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">SpO₂</div>
+            <div class="vital-val vital-abnormal">82%</div>
+            <div class="vital-unit">↓危急</div>
+          </div>
+        </div>
+
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--coral);">
+          <strong>ABG 結果：</strong>pH 7.30（↓酸中毒）| PaCO₂ 62 mmHg（↑高碳酸血症）| PaO₂ 48 mmHg（↓嚴重缺氧）| HCO₃⁻ 28 mEq/L（代償性升高）
+          <br><br><strong>身體評估：</strong>桶狀胸明顯、使用輔助呼吸肌、雙側呼吸音減弱並有喘鳴音、嘴唇發紺
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 依據ABG結果，判斷此個案的酸鹼狀態？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>判斷：呼吸性酸中毒（代償中）</strong><br>
+            • pH 7.30 &lt; 7.35 → 酸中毒<br>
+            • PaCO₂ 62 mmHg &gt; 45 mmHg → 呼吸性（高碳酸血症）<br>
+            • HCO₃⁻ 28 mEq/L &gt; 26（代償性升高，腎臟嘗試代償）<br>
+            • 但pH仍低，代償未完全 → <em class="hl">急性呼吸性酸中毒合併代謝代償</em><br>
+            • PaO₂ 48 mmHg → 嚴重低血氧（正常 80–100 mmHg）
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 給予氧氣治療時，護理人員應注意什麼？目標值為何？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>COPD 給氧重要原則：</strong><br>
+            • 給予<em class="hl">低流量氧氣 1–2 L/min（鼻套管）</em>，FiO₂ 25–35%<br>
+            • 目標：維持 <em class="hl">SaO₂ 88–92%</em>，PaO₂ 50–60 mmHg<br>
+            • 原因：COPD慢性病人呼吸驅動來自<em class="hl-coral">缺氧驅力（hypoxic drive）</em>，給太高濃度氧氣→CO₂滯留→呼吸抑制→昏迷！<br>
+            • 若SpO₂ ≤88%仍無改善，考慮 <em class="hl">BiPAP</em>（非侵入性正壓呼吸）<br>
+            • 必要時：氣管插管 + 機械通氣
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 列出此個案前三項優先護理問題及主要護理措施</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>優先護理問題（依優先順序）：</strong><br><br>
+            <strong>① 氣體交換受損</strong>／與阻塞性肺病急性惡化有關<br>
+            → 低流量氧療、監測ABG/SpO₂、半坐臥位、噘嘴呼吸、必要時BiPAP<br><br>
+            <strong>② 清除呼吸道分泌物無效</strong>／與痰液增多黏稠有關<br>
+            → 鼓勵飲水（2,000 mL以上）、霧化吸入、有效咳嗽、姿位引流（餐後2小時）<br><br>
+            <strong>③ 活動耐力減少</strong>／與低血氧、喘氣有關<br>
+            → 床頭抬高、計畫漸進性活動、活動前後評估生命徵象、活動時給低流量氧
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q4</div> 出院時，護理人員應提供哪些衛教重點？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>COPD 出院衛教重點：</strong><br>
+            • <em class="hl">戒菸</em>：最重要的修正危險因子，可轉介戒菸門診<br>
+            • 疫苗接種：流感疫苗（每年）、肺炎鏈球菌疫苗<br>
+            • 居家氧療：SpO₂≤88%→每天使用&gt;15小時<br>
+            • 吸入劑使用技巧：LABA/LAMA每天規律使用，SABA為急救用<br>
+            • 飲食：高脂低醣、少量多餐、補充水分稀釋痰液<br>
+            • 肺部復健計畫：漸進性有氧運動<br>
+            • 急性惡化徵兆：痰變黃/增多、喘加重、發燒→立即就醫<br>
+            • 避免誘因：感染人群、空氣汙染環境
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: THR -->
+      <div class="case-panel" id="cpanel-case2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>林太太，72歲，女性，患有<strong>退化性髖關節炎10年</strong>，因疼痛嚴重影響行走，接受<strong>右側全髖關節置換術（THR）</strong>。術後第一天，生命徵象穩定，患肢引流管在位，管內可見血性液體。
+        </div>
+
+        <div class="vitals-row">
+          <div class="vital-box">
+            <div class="vital-label">體溫</div>
+            <div class="vital-val vital-normal">37.2</div>
+            <div class="vital-unit">°C</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">呼吸</div>
+            <div class="vital-val vital-normal">18</div>
+            <div class="vital-unit">次/分</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">血壓</div>
+            <div class="vital-val vital-normal">128/76</div>
+            <div class="vital-unit">mmHg</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">心率</div>
+            <div class="vital-val vital-normal">82</div>
+            <div class="vital-unit">bpm</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">SpO₂</div>
+            <div class="vital-val vital-normal">96%</div>
+            <div class="vital-unit">正常</div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 術後第一天，護理人員如何擺位及護理患肢？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>THR 術後擺位重點：</strong><br>
+            • 患肢維持<em class="hl">外展姿勢</em>：兩膝間放置枕頭（維持髖關節外展，預防脫位）<br>
+            • 髖關節屈曲<em class="hl-coral">不超過90度</em><br>
+            • <em class="hl-coral">禁止</em>兩腿交叉<br>
+            • 翻身：雙腿夾枕頭後再翻身<br>
+            • 患肢評估：循環(C)、溫度(T)、活動(M)、感覺(S)<br>
+            • 脫位警示：患肢縮短、異常旋轉、疼痛加劇、喀喀聲→立即通知醫師
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 術後如何預防深部靜脈血栓（DVT）？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>DVT 預防措施：</strong><br>
+            • 術後第一天即開始：<em class="hl">足踝全範圍關節運動</em>（促進血循）<br>
+            • 穿著<em class="hl">彈性抗栓塞襪（TED stockings）</em><br>
+            • 鼓勵<em class="hl">早期下床</em>（引流管拔除後）<br>
+            • 依醫囑給予<em class="hl">低分子量肝素（LMWH）</em>預防性抗凝<br>
+            • 觀察DVT徵兆：小腿疼痛腫脹、Homans sign（背屈腳踝疼痛）<br>
+            • 鼓勵充足水分攝取（預防血液黏稠）
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 擬定出院護理計畫，說明日常活動注意事項</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>THR 出院護理計畫：</strong><br>
+            • <em class="hl">術後3個月內</em>：不交叉雙腿、不蹲下、不盤腿<br>
+            • 坐椅選擇：高椅、硬椅、有扶手；使用加高馬桶座墊<br>
+            • 穿鞋：不要彎腰，使用鞋拔或穿無鞋帶鞋<br>
+            • 輔具使用：拐杖/助行器直到醫師指示（約1–2個月）<br>
+            • 性生活：<em class="hl">6週後</em>較安全，注意姿勢避免髖關節屈曲超過90度<br>
+            • 開車：<em class="hl">6週內禁止開車</em><br>
+            • 運動：可游泳、散步、騎腳踏車；<em class="hl-coral">不可</em>滑雪、打網球<br>
+            • 回診警示：患肢縮短、異常旋轉、疼痛加劇、傷口發炎分泌物
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: Osteoporosis -->
+      <div class="case-panel" id="cpanel-case3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳女士，76歲，停經25年，身高曾為158cm現量為151cm（減少7cm），體重46kg（BMI 19.2）。昨日在家中<strong>彎腰撿物時突然感覺下背部劇烈疼痛</strong>，X光顯示<strong>第三腰椎壓迫性骨折</strong>。DXA T值：-3.2。有長期使用類固醇（氣喘治療）10年病史。
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此個案的骨質疏鬆危險因子</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>危險因子分析：</strong><br>
+            • <em class="hl">停經後25年</em>：動情素缺乏，骨量長期流失（第一型）<br>
+            • <em class="hl">76歲老年</em>：造骨細胞功能衰退（第二型）<br>
+            • <em class="hl-coral">長期類固醇</em>使用：續發型骨質疏鬆最常見原因<br>
+            • <em class="hl">體重過輕</em>（46 kg，BMI 19.2）：前負荷少，骨骼受力少<br>
+            • 身高減少7cm：脊椎已有塌陷<br>
+            • T值 -3.2 ≤ -2.5：已確診骨質疏鬆症<br>
+            • 此為<em class="hl">低衝擊性骨折</em>（日常動作即發生）→最高風險族群
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 針對此個案，列出護理問題及主要措施</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>主要護理問題：</strong><br><br>
+            <strong>① 急性疼痛</strong>／與脊椎壓迫性骨折有關<br>
+            → 依醫囑給予止痛藥；臥床休息；熱敷緩解肌肉痙攣<br>
+            → 翻身時保持脊椎軸向（log roll）；使用背架支撐<br><br>
+            <strong>② 跌倒風險</strong>／與骨質疏鬆、移動障礙有關<br>
+            → 環境改善：充足照明、防滑墊、浴室扶手<br>
+            → 穿防滑鞋；使用輔具；慢慢改變姿勢<br><br>
+            <strong>③ 知識缺乏</strong>／與骨質疏鬆自我照護有關<br>
+            → 衛教飲食：鈣≥1,500 mg/天，維D 400–800 IU/天<br>
+            → 負重運動：步行、太極拳<br>
+            → 藥物：雙磷酸鹽早餐前30分鐘，直立30分鐘
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 衛教個案如何預防再次骨折</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>預防再次骨折衛教：</strong><br>
+            • <em class="hl">飲食補鈣</em>：每日牛奶2杯、豆腐、小魚乾、深綠色蔬菜<br>
+            • 鈣補充劑：碳酸鈣（隨餐服用）或檸檬酸鈣<br>
+            • 每日曬太陽15–20分鐘（促進維生素D合成）<br>
+            • <em class="hl">負重運動</em>：步行、爬樓梯（非游泳，游泳無負重效果）<br>
+            • 避免：彎腰、扭轉、提重物等壓迫脊椎動作<br>
+            • 家庭環境：移除地毯/門檻、浴室加防滑貼、夜燈<br>
+            • 戒菸戒酒、減少咖啡攝取<br>
+            • 按時服藥：雙磷酸鹽每週一次，<em class="hl-coral">空腹</em>服，服後直立&gt;30分鐘
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: Heart Failure -->
+      <div class="case-panel" id="cpanel-case4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>李先生，65歲，有高血壓、糖尿病病史，10年前曾有心肌梗塞。本次因<strong>端坐呼吸（orthopnea）、雙側下肢水腫、活動後喘氣加重、夜間陣發性呼吸困難</strong>急診就醫。入院時：體重80kg（2週前74kg，增加6kg）。
+        </div>
+
+        <div class="vitals-row">
+          <div class="vital-box">
+            <div class="vital-label">體溫</div>
+            <div class="vital-val vital-normal">36.8</div>
+            <div class="vital-unit">°C</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">呼吸</div>
+            <div class="vital-val vital-abnormal">26</div>
+            <div class="vital-unit">次/分 ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">血壓</div>
+            <div class="vital-val vital-abnormal">158/96</div>
+            <div class="vital-unit">mmHg ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">心率</div>
+            <div class="vital-val vital-abnormal">112</div>
+            <div class="vital-unit">bpm ↑</div>
+          </div>
+          <div class="vital-box">
+            <div class="vital-label">SpO₂</div>
+            <div class="vital-val vital-abnormal">88%</div>
+            <div class="vital-unit">↓異常</div>
+          </div>
+        </div>
+
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--coral);">
+          <strong>身體評估：</strong>頸靜脈怒張（JVD+）、雙側肺底部可聽到細囉音（crackles）、第三心音（S3 gallop）、雙側足踝至膝蓋凹陷性水腫（pitting edema 3+）
+          <br><strong>心臟超音波：</strong>射出分率（EF）= 32%（嚴重減低）
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 依據評估資料，分析此個案心臟衰竭的類型及嚴重度</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>分析：</strong><br>
+            • EF 32% &lt; 40% → <em class="hl">收縮性心衰竭（HFrEF）</em><br>
+            • JVD、下肢水腫、S3 gallop → 右心衰竭徵兆<br>
+            • 肺底囉音、端坐呼吸、夜間陣發呼吸困難 → 左心衰竭徵兆（肺水腫）<br>
+            • 2週體重增加 6 kg → 嚴重液體滯留<br>
+            • NYHA 分級：<em class="hl">Class III–IV</em>（輕微/休息時即有症狀）<br>
+            • 病因：高血壓+糖尿病+陳舊性心肌梗塞 → 缺血性心肌病變
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 說明急性心臟衰竭的優先護理措施</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>急性期優先護理措施：</strong><br>
+            • 立即：<em class="hl">高坐臥位（High Fowler's）</em>，改善呼吸困難<br>
+            • 氧氣治療：面罩給氧，維持 SpO₂ &gt;94%<br>
+            • <em class="hl">靜脈利尿劑</em>（Furosemide）：快速排除多餘液體<br>
+            • 持續心電圖監測，評估心律<br>
+            • 嚴格記錄 I&O（每小時尿量 &gt;0.5 mL/kg/hr = 有效）<br>
+            • 限水：每日 1,000–1,500 mL<br>
+            • 每日同時間測體重<br>
+            • 靜脈注射管路建立；血液檢查（BNP、troponin）<br>
+            • 評估下肢水腫消退情形
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 制定出院衛教計畫，協助個案長期自我照護</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>心臟衰竭出院衛教計畫：</strong><br>
+            <em class="hl">每日監測自己的身體：</em><br>
+            • 每天同時間測量體重（早起解尿後）：增加 &gt;1 kg/天 或 &gt;2 kg/週 → 立即回診<br>
+            • 監測下肢水腫程度<br><br>
+            <em class="hl">飲食：</em><br>
+            • <em class="hl-coral">低鈉飲食</em>：每日 &lt;2,000 mg（約1茶匙鹽）<br>
+            • 限制液體：1,000–1,500 mL/天<br>
+            • 避免：醃製品、罐頭、速食、含鈉飲料<br><br>
+            <em class="hl">藥物服藥順從性：</em><br>
+            • 利尿劑（Furosemide）：早晨服用，監測電解質<br>
+            • 給Digoxin前：自測脈搏，&lt;60 bpm 暫停<br>
+            • β-blocker/ACEI：規律服用，不可自行停藥<br><br>
+            <em class="hl">活動：</em><br>
+            • 漸進性活動，出現喘氣/心悸→休息<br>
+            • 避免劇烈運動；可做心臟復健計畫
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER NOTE -->
+  <div style="text-align:center; padding:40px 0 20px; color:var(--text-dim); font-size:12px; border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px; font-size:14px; color:var(--teal); font-weight:600;">氧合與活動 Oxygenation & Mobility</div>
+    內外護理學自學教材 | 僅供學術教育用途
+  </div>
+
+</main>
+
+<script>
+// DISEASE TABS
+function switchTab(id) {
+  document.querySelectorAll('.disease-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const tabs = document.querySelectorAll('.tab-btn');
+  const mapping = { copd:0, cardio:1, joint:2, osteo:3, arthritis:4 };
+  if (mapping[id] !== undefined && tabs[mapping[id]]) {
+    tabs[mapping[id]].classList.add('active');
+  }
+  const ds = document.getElementById('diseases');
+  if (ds) ds.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// CASE TABS
+function switchCase(id) {
+  document.querySelectorAll('.case-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('cpanel-' + id);
+  if (panel) panel.classList.add('active');
+  const mapping = { case1:0, case2:1, case3:2, case4:3 };
+  const tabs = document.querySelectorAll('.case-tab');
+  if (mapping[id] !== undefined && tabs[mapping[id]]) {
+    tabs[mapping[id]].classList.add('active');
+  }
+}
+
+// ANSWER TOGGLE
+function toggleAnswer(btn) {
+  const content = btn.nextElementSibling;
+  if (content.classList.contains('open')) {
+    content.classList.remove('open');
+    btn.textContent = '💡 顯示解析';
+  } else {
+    content.classList.add('open');
+    btn.textContent = '▲ 收起解析';
+  }
+}
+
+// SCROLL TOP
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ====== SIDEBAR TOGGLE ======
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+const toggleBtn = document.getElementById('sidebarToggle');
+const isMobile = () => window.innerWidth <= 768;
+
+function toggleSidebar() {
+  if (isMobile()) {
+    // Mobile: slide in/out as overlay
+    sidebar.classList.toggle('mobile-open');
+    overlay.classList.toggle('active');
+    toggleBtn.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+  } else {
+    // Desktop: collapse/expand
+    document.body.classList.toggle('sidebar-collapsed');
+    const collapsed = document.body.classList.contains('sidebar-collapsed');
+    toggleBtn.textContent = collapsed ? '»' : '☰';
+    // Persist preference
+    localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0');
+  }
+}
+
+function closeMobileSidebar() {
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('active');
+  toggleBtn.textContent = '☰';
+}
+
+// Close mobile sidebar when a nav link is clicked
+sidebar.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (isMobile()) closeMobileSidebar();
+  });
+});
+
+// Restore desktop collapsed state
+window.addEventListener('DOMContentLoaded', () => {
+  if (!isMobile() && localStorage.getItem('sidebarCollapsed') === '1') {
+    document.body.classList.add('sidebar-collapsed');
+    toggleBtn.textContent = '»';
+  }
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    // Clean up mobile state
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('active');
+    const collapsed = document.body.classList.contains('sidebar-collapsed');
+    toggleBtn.textContent = collapsed ? '»' : '☰';
+  } else {
+    toggleBtn.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+  }
+});
+
+// ACTIVE NAV HIGHLIGHT
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('section.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const id = entry.target.id;
+      const active = document.querySelector(`.nav-item[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

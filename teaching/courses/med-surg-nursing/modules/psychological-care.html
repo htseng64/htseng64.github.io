@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理照護 — Psychological Care | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #090c1a;
+    --primary:   #f472b6;
+    --primary-dk:#be185d;
+    --primary-lt:#fbcfe8;
+    --sky:       #38bdf8;
+    --sky-lt:    #bae6fd;
+    --amber:     #fbbf24;
+    --amber-lt:  #fde68a;
+    --green:     #34d399;
+    --green-lt:  #a7f3d0;
+    --purple:    #a78bfa;
+    --purple-lt: #ddd6fe;
+    --text:      #e2e8f0;
+    --text-dim:  #8892a8;
+    --border:    rgba(244,114,182,0.18);
+    --card:      rgba(14,16,36,0.82);
+    --card-hov:  rgba(14,16,36,0.97);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 18% 12%,rgba(190,24,93,.15) 0%,transparent 52%),
+      radial-gradient(ellipse at 82% 82%,rgba(244,114,182,.08) 0%,transparent 48%),
+      radial-gradient(ellipse at 50% 50%,rgba(56,189,248,.04) 0%,transparent 60%),
+      radial-gradient(ellipse at 5%  70%,rgba(167,139,250,.05) 0%,transparent 40%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:272px;height:100vh;background:rgba(9,12,26,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(24px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;backdrop-filter:blur(3px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:222px;width:38px;height:38px;border-radius:10px;background:rgba(244,114,182,.15);border:1px solid rgba(244,114,182,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(244,114,182,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.4;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(244,114,182,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:6px 20px 6px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:272px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:340px;display:flex;flex-direction:column;justify-content:center;padding:60px 0 42px;border-bottom:1px solid var(--border);margin-bottom:60px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:24px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,5vw,62px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-pink{background:rgba(244,114,182,.15);color:var(--primary);border:1px solid rgba(244,114,182,.3);}
+  .pill-sky{background:rgba(56,189,248,.15);color:var(--sky);border:1px solid rgba(56,189,248,.3);}
+  .pill-amber{background:rgba(251,191,36,.15);color:var(--amber);border:1px solid rgba(251,191,36,.3);}
+  .pill-purple{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden;}
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.psych::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.stress::before{background:linear-gradient(90deg,var(--sky),var(--sky-lt));}
+  .concept-card.adapt::before{background:linear-gradient(90deg,var(--amber),var(--amber-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(244,114,182,.4);box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+  .concept-points{list-style:none;}
+  .concept-points li{font-size:13px;line-height:1.75;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'▸';color:var(--primary);flex-shrink:0;margin-top:1px;}
+  .value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px;}
+  .value-box{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);border-radius:12px;padding:12px;text-align:center;}
+  .value-label{font-size:10px;color:var(--text-dim);}
+  .value-num{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--primary);margin:4px 0;}
+  .value-unit{font-size:10px;color:var(--text-dim);}
+
+  /* ── TWO COL ── */
+  .two-col{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-pink{background:rgba(244,114,182,.15);color:var(--primary);}
+  .tag-sky{background:rgba(56,189,248,.15);color:var(--sky);}
+  .tag-amber{background:rgba(251,191,36,.15);color:var(--amber);}
+  .tag-purple{background:rgba(167,139,250,.15);color:var(--purple);}
+  .tag-green{background:rgba(52,211,153,.15);color:var(--green);}
+  .blist{list-style:none;}
+  .blist li{font-size:13px;line-height:1.75;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .blist li:last-child{border-bottom:none;}
+  .blist li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── BOXES ── */
+  .alert-box{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--primary-lt);display:flex;gap:10px;}
+  .tip-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--green-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--sky-lt);display:flex;gap:10px;}
+  .warn-box{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--amber-lt);display:flex;gap:10px;}
+  .purple-box{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--purple-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+
+  /* ── TOPIC TABS ── */
+  .topic-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .topic-panel{display:none;animation:fadeIn .3s ease;}
+  .topic-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .tc-header{padding:22px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .tc-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .tc-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .tc-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  .ds-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .ilist{list-style:none;}
+  .ilist li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .ilist li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+
+  /* ── SCALE CARDS ── */
+  .scale-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+  .scale-card{border-radius:12px;padding:14px;}
+  .scale-card.a{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);}
+  .scale-card.b{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.25);}
+  .scale-card.c{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);}
+  .scale-card.d{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);}
+  .scale-card.e{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);}
+  .scale-card.f{background:rgba(244,114,182,.05);border:1px solid rgba(244,114,182,.18);}
+  .scale-head{font-size:12px;font-weight:700;margin-bottom:8px;}
+  .scale-card.a .scale-head{color:var(--sky);}
+  .scale-card.b .scale-head{color:var(--primary);}
+  .scale-card.c .scale-head{color:var(--amber);}
+  .scale-card.d .scale-head{color:var(--purple);}
+  .scale-card.e .scale-head{color:var(--green);}
+  .scale-card.f .scale-head{color:var(--primary-lt);}
+  .scale-item{font-size:12px;color:var(--text-dim);line-height:1.6;padding:2px 0;}
+
+  /* ── DATA TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(244,114,182,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(244,114,182,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(244,114,182,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:20px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .vitals-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;}
+  .vital-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+  .vital-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+  .vital-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;margin:4px 0;}
+  .vital-unit{font-size:10px;color:var(--text-dim);}
+  .vital-abnormal{color:var(--primary);}
+  .vital-normal{color:var(--green);}
+  .vital-warn{color:var(--amber);}
+  .q-block{background:rgba(244,114,182,.06);border:1px solid rgba(244,114,182,.18);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.85;color:var(--text);}
+  .answer-content.open{display:block;}
+
+  /* ── FULL CARD / FLOW ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:14px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:100px;background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);border-radius:12px;padding:14px 10px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 5px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(244,114,182,.5);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-sky{font-style:normal;color:var(--sky);font-weight:600;}
+  em.hl-amber{font-style:normal;color:var(--amber);font-weight:600;}
+  em.hl-green{font-style:normal;color:var(--green);font-weight:600;}
+  em.hl-purple{font-style:normal;color:var(--purple);font-weight:600;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.scale-row{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.concept-grid,.two-col,.np-grid{grid-template-columns:1fr;}.tc-body{grid-template-columns:1fr;}.scale-row{grid-template-columns:1fr 1fr;}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:272px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}.hero{padding-top:20px;}.hero h1{font-size:26px;}.topic-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:6px 12px;}.vitals-row{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:60px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.case-panel{padding:16px;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">心理照護<br>Psychological Care</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts"   class="nav-item active"><span class="nav-icon">🧩</span><span class="nav-label"> 核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 心理評估工具</span></a>
+  <a href="#topics"     class="nav-item"><span class="nav-icon">💬</span><span class="nav-label"> 心理照護主題</span></a>
+  <a href="#topics" onclick="switchTab('anxiety')"  class="nav-sub">→ 焦慮與恐懼</a>
+  <a href="#topics" onclick="switchTab('depress')"  class="nav-sub">→ 憂鬱與自傷</a>
+  <a href="#topics" onclick="switchTab('crisis')"   class="nav-sub">→ 危機介入</a>
+  <a href="#topics" onclick="switchTab('bodyimg')"  class="nav-sub">→ 身體意象與適應</a>
+  <a href="#topics" onclick="switchTab('chronic')"  class="nav-sub">→ 慢性病心理調適</a>
+  <a href="#nursing"    class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#cases"      class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第十單元</div>
+    <h1>心理照護<br><em>Psychological Care</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Mental Health · Coping · Crisis Intervention</div>
+    <div class="hero-pills">
+      <span class="pill pill-pink">🧩 心理健康</span>
+      <span class="pill pill-sky">💬 治療性溝通</span>
+      <span class="pill pill-amber">⚡ 危機介入</span>
+      <span class="pill pill-purple">🌱 調適因應</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Mental Health · Stress & Coping · Psychological Adaptation</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card psych">
+        <div class="concept-icon">🧩</div>
+        <div class="concept-title">心理健康</div>
+        <div class="concept-en">Mental Health in Medical-Surgical Nursing</div>
+        <ul class="concept-points">
+          <li>WHO定義：心理健康是一種安適狀態（well-being），個人能發揮潛能、應對日常壓力、有效工作、對社群有貢獻</li>
+          <li>心身醫學（Psychosomatic Medicine）：身體疾病與心理狀態互為影響</li>
+          <li>內外科病人的心理健康問題：焦慮、憂鬱、創傷後壓力、適應障礙、身體意象改變</li>
+          <li>住院期間心理需求：安全感、資訊需求、掌控感、尊嚴、社會連結</li>
+          <li>心理健康是全人照護（Holistic Care）的基礎維度</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">住院病人憂鬱盛行</div><div class="value-num">20–30%</div></div>
+          <div class="value-box"><div class="value-label">未識別率</div><div class="value-num">&gt;50%</div><div class="value-unit">被低估</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card stress">
+        <div class="concept-icon">⚡</div>
+        <div class="concept-title">壓力與因應</div>
+        <div class="concept-en">Stress, Coping & Adaptation Models</div>
+        <ul class="concept-points">
+          <li>Selye壓力反應（GAS）：警覺→抵抗→耗竭三階段；長期壓力傷害免疫、心血管、內分泌</li>
+          <li>Lazarus認知評估模式：壓力＝個人評估威脅 &gt; 因應資源；認知評估是關鍵</li>
+          <li>因應策略：<em class="hl">問題焦點因應</em>（解決問題）vs <em class="hl">情緒焦點因應</em>（調節情緒）</li>
+          <li>適應性因應 vs 非適應性因應：否認、物質濫用、攻擊屬非適應性</li>
+          <li>Roy調適模式：護理目標是促進個案在四個模式的適應（生理、自我概念、角色功能、相互依存）</li>
+          <li>社會支持是重要的壓力緩衝因子</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">問題因應</div><div class="value-num">改變情境</div></div>
+          <div class="value-box"><div class="value-label">情緒因應</div><div class="value-num">調節感受</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card adapt">
+        <div class="concept-icon">🌱</div>
+        <div class="concept-title">心理調適與復原力</div>
+        <div class="concept-en">Psychological Adaptation & Resilience</div>
+        <ul class="concept-points">
+          <li>調適（Adaptation）：個人修改行為與認知以因應新情境（疾病/失能）</li>
+          <li>復原力（Resilience）：在逆境後恢復或更強大的能力；可學習、可強化</li>
+          <li>創傷後成長（PTG）：苦難後可能出現正向改變（新視角、關係深化、感恩）</li>
+          <li>正念（Mindfulness）：有實證支持減少焦慮、憂鬱、疼痛感知的干預</li>
+          <li>心理韌性保護因子：社會支持、自我效能感、意義感、靈性信念</li>
+          <li>護理師角色：識別、支持因應優勢；不僅關注病理而忽視優勢</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">復原力</div><div class="value-num">可培養</div></div>
+          <div class="value-box"><div class="value-label">正念介入</div><div class="value-num">MBSR</div><div class="value-unit">8週方案</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stress-Coping Model -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="card-title">🔄 Lazarus 壓力與因應交流模式（Transactional Model）</div>
+      <div class="flow-container">
+        <div class="flow-step"><div class="flow-step-num">壓力源</div><div class="flow-step-text">疾病診斷、手術、住院、疼痛、失能</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">初級評估</div><div class="flow-step-text">「這件事對我重要嗎？有威脅嗎？」</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">次級評估</div><div class="flow-step-text">「我有能力/資源應對嗎？」</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">因應反應</div><div class="flow-step-text">問題焦點 / 情緒焦點 / 尋求支持</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">適應結果</div><div class="flow-step-text">調適良好 vs 焦慮/憂鬱/身心症狀</div></div>
+      </div>
+      <div class="info-box" style="margin-top:12px;">
+        <span class="alert-icon">💡</span>
+        <span>護理介入的切入點：<em class="hl-sky">次級評估</em>——「增強病人對自身資源與能力的信心」是降低心理困擾最有效的護理策略之一（提升自我效能感）</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0e7490,#38bdf8);">2</div>
+      <div>
+        <div class="section-title">心理評估工具</div>
+        <div class="section-en">Psychological Assessment Tools in Clinical Nursing</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-title">📊 常用心理篩查工具 <span class="tag tag-pink">臨床適用</span></div>
+        <div class="scale-row">
+          <div class="scale-card a">
+            <div class="scale-head">PHQ-9 憂鬱</div>
+            <div class="scale-item">Patient Health Questionnaire</div>
+            <div class="scale-item">0–27分；≥10中度以上</div>
+            <div class="scale-item">第9題（自傷/死念）需特別評估</div>
+          </div>
+          <div class="scale-card b">
+            <div class="scale-head">GAD-7 焦慮</div>
+            <div class="scale-item">Generalized Anxiety Disorder</div>
+            <div class="scale-item">0–21分；≥10中度以上</div>
+            <div class="scale-item">可用於篩查廣泛性焦慮</div>
+          </div>
+          <div class="scale-card c">
+            <div class="scale-head">心理困擾溫度計</div>
+            <div class="scale-item">Distress Thermometer（DT）</div>
+            <div class="scale-item">0–10分；≥4需轉介</div>
+            <div class="scale-item">腫瘤科快速篩查工具</div>
+          </div>
+          <div class="scale-card d">
+            <div class="scale-head">HADS 住院焦慮憂鬱</div>
+            <div class="scale-item">Hospital Anxiety &amp; Depression Scale</div>
+            <div class="scale-item">各7題；≥8為臨界值</div>
+            <div class="scale-item">排除身體症狀干擾</div>
+          </div>
+          <div class="scale-card e">
+            <div class="scale-head">MMSE 認知功能</div>
+            <div class="scale-item">Mini-Mental State Examination</div>
+            <div class="scale-item">0–30分；&lt;24懷疑認知障礙</div>
+            <div class="scale-item">住院老年病人常規評估</div>
+          </div>
+          <div class="scale-card f">
+            <div class="scale-head">Columbia 自殺評估</div>
+            <div class="scale-item">Columbia Suicide Severity Rating Scale</div>
+            <div class="scale-item">評估自殺意念強度與計畫</div>
+            <div class="scale-item">有自傷意念時需用</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="card-title">💬 治療性溝通核心技巧 <span class="tag tag-sky">Communication</span></div>
+        <ul class="blist">
+          <li><em class="hl">積極傾聽（Active Listening）</em>：全神貫注；點頭；保持眼神；不打斷</li>
+          <li><em class="hl">反映（Reflection）</em>：重述病人的情緒內容——「您說的讓我感覺到您非常害怕……」</li>
+          <li><em class="hl">澄清（Clarification）</em>：「您說的『不好過』，可以多說一點嗎？」</li>
+          <li><em class="hl">摘要（Summary）</em>：整合病人說的重點，確認理解</li>
+          <li><em class="hl">確認（Validation）</em>：「這種感受完全可以理解」——不評判、不最小化</li>
+          <li>開放式問題：「您現在心裡最擔心的是什麼？」（而非是/否問題）</li>
+          <li>沉默的使用：允許病人思考；不急著填補空白</li>
+          <li>非語言溝通：坐下（平視）；身體前傾；溫和的臉部表情</li>
+          <li>NURSE模式（腫瘤科常用）：命名(N)→理解(U)→尊重(R)→支持(S)→探索(E)</li>
+        </ul>
+        <div class="alert-box">
+          <span class="alert-icon">⚠️</span>
+          <span>治療性溝通的<em class="hl">禁忌</em>：「要振作」「正向思考就好」「比你慘的人多的是」「我了解你的感受」（實際上沒有）→ 這些話讓病人感到不被理解，關上溝通大門</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anxiety vs Depression -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="card-title">📊 焦慮 vs 憂鬱 vs 適應障礙——臨床鑑別</div>
+      <table class="data-table" style="margin-top:12px;">
+        <tr><th>特徵</th><th>焦慮症 Anxiety</th><th>憂鬱症 Depression</th><th>適應障礙 Adjustment Disorder</th></tr>
+        <tr><td>核心情緒</td><td>害怕、擔憂、緊張</td><td>悲傷、空虛、無望</td><td>情緒/行為症狀（混合）</td></tr>
+        <tr><td>誘因</td><td>可能有特定觸發</td><td>可能無明確誘因</td><td><em class="hl">有明確壓力事件（3個月內）</em></td></tr>
+        <tr><td>身體症狀</td><td>心悸、出汗、肌肉緊張</td><td>疲憊、食慾變化、睡眠障礙</td><td>類似但程度較輕</td></tr>
+        <tr><td>時間</td><td>持續&gt;6個月（廣泛性焦慮）</td><td>持續&gt;2週（重鬱）</td><td>壓力事件後6個月內消退</td></tr>
+        <tr><td>功能影響</td><td>顯著影響</td><td>顯著影響（嚴重者無法自理）</td><td>不超過正常的悲傷反應程度</td></tr>
+        <tr><td>護理重點</td><td>放鬆技術；認知重構；安全感</td><td>安全評估（自殺）；活動；社交；藥物</td><td>壓力管理；短期支持；通常可自行恢復</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TOPICS -->
+  <section class="section" id="topics">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#be185d,#f472b6);">3</div>
+      <div>
+        <div class="section-title">心理照護主題</div>
+        <div class="section-en">Anxiety · Depression · Crisis · Body Image · Chronic Illness</div>
+      </div>
+    </div>
+
+    <div class="topic-tabs">
+      <button class="tab-btn active" onclick="switchTab('anxiety')">😰 焦慮與恐懼</button>
+      <button class="tab-btn" onclick="switchTab('depress')">🌧️ 憂鬱與自傷</button>
+      <button class="tab-btn" onclick="switchTab('crisis')">⚡ 危機介入</button>
+      <button class="tab-btn" onclick="switchTab('bodyimg')">🪞 身體意象適應</button>
+      <button class="tab-btn" onclick="switchTab('chronic')">🌱 慢性病心理調適</button>
+    </div>
+
+    <!-- ANXIETY -->
+    <div class="topic-panel active" id="panel-anxiety">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">焦慮與恐懼的護理</div><div class="tc-en">Anxiety & Fear in Clinical Nursing</div></div>
+          <span class="tag tag-sky">常見心理問題</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">住院焦慮的常見來源</div>
+            <ul class="ilist">
+              <li>對未知的恐懼：不確定的診斷、預後、治療結果</li>
+              <li>失控感：日常作息被打亂；需依賴他人；隱私喪失</li>
+              <li>疼痛恐懼：害怕手術或操作疼痛</li>
+              <li>死亡焦慮：尤其在嚴重診斷後</li>
+              <li>分離焦慮：與家人/工作/角色分離</li>
+              <li>財務壓力：醫療費用、工作影響</li>
+              <li><em class="hl">預期性焦慮（Anticipatory Anxiety）</em>：對即將發生的事件的持續擔憂（常見於手術前）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">焦慮嚴重度分級（Peplau）</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>等級</th><th>特徵</th><th>護理策略</th></tr>
+              <tr><td><em class="hl-green">輕度（+）</em></td><td>警覺性增加；注意力集中；可學習</td><td>提供訊息；教育；支持</td></tr>
+              <tr><td><em class="hl-amber">中度（++）</em></td><td>知覺縮窄；可引導解決問題</td><td>簡短清晰指令；放鬆技巧</td></tr>
+              <tr><td><em class="hl">重度（+++）</em></td><td>知覺嚴重縮窄；無法學習；身體症狀</td><td>陪伴；減少刺激；藥物評估</td></tr>
+              <tr><td><em class="hl" style="color:var(--primary);">恐慌（++++）</em></td><td>完全失控；可能有解離；危險</td><td>安全、鎮靜；藥物介入（Lorazepam）</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="ds-title">非藥物焦慮護理介入</div>
+            <ul class="ilist">
+              <li><em class="hl">資訊提供</em>：充分告知診斷、治療過程、可預期的感受——減少未知感是降低焦慮最有效策略</li>
+              <li><em class="hl">放鬆技巧</em>：腹式呼吸（4-7-8呼吸法）；漸進性肌肉放鬆（PMR）</li>
+              <li>引導式意象（Guided Imagery）：想像安全、平靜的場景</li>
+              <li>正念呼吸：將注意力帶回當下；打破焦慮的反芻思考循環</li>
+              <li>掌控感恢復：讓病人在可能的範圍內做選擇（穿衣、飲食、活動時間）</li>
+              <li>熟悉環境：術前探視手術室；詳細說明術後流程</li>
+              <li>社會支持：鼓勵家人陪伴（但注意家人本身焦慮不傳染）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">藥物介入</div>
+            <ul class="ilist">
+              <li>術前麻醉前給藥：Midazolam（短效苯二氮類）——鎮靜/遺忘效果</li>
+              <li>苯二氮類（Benzodiazepine）：短期用於急性焦慮；老年人慎用（跌倒/認知影響）</li>
+              <li>SSRI/SNRI：慢性焦慮的長期藥物治療</li>
+              <li>β-blocker（Propranolol）：心悸/顫抖等身體症狀控制（如表演焦慮）</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span><em class="hl-green">4-7-8呼吸法</em>：吸氣4秒→屏氣7秒→吐氣8秒。吐氣啟動副交感神經（迷走神經），是快速降低急性焦慮的自我調節技巧，護理師可在床邊教導</span></div>
+          </div>
+          <div>
+            <div class="ds-title">手術前焦慮護理</div>
+            <ul class="ilist">
+              <li>術前評估：識別高焦慮病人（Spielberger狀態焦慮量表）；既往焦慮史</li>
+              <li>術前護理：充分解釋手術流程；告知麻醉感受；告知術後疼痛管理計畫</li>
+              <li>允許家屬陪伴至手術室外；手術期間定時更新資訊給家屬</li>
+              <li>術後即時回饋：麻醉清醒後告知「手術順利了」是最重要的一句話</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">ICU焦慮與ICU後症候群</div>
+            <ul class="ilist">
+              <li>ICU是高焦慮環境：噪音、光線、程序疼痛、失控感、失去時間感</li>
+              <li>ICU後症候群（PICS）：出院後焦慮、憂鬱、PTSD、認知障礙三聯症</li>
+              <li>預防PICS：ABCDEF束（覺醒/自主呼吸試驗、鎮靜評估、止痛/鎮靜、譫妄管理、早期活動、家庭參與）</li>
+              <li>ICU日誌（ICU Diary）：讓病人出院後理解ICU期間發生了什麼→減少記憶空白造成的PTSD</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPRESSION / SELF-HARM -->
+    <div class="topic-panel" id="panel-depress">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">憂鬱、自傷與自殺防護</div><div class="tc-en">Depression · Self-Harm · Suicide Prevention</div></div>
+          <span class="tag tag-pink">高優先護理</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">住院病人憂鬱的特殊性</div>
+            <ul class="ilist">
+              <li>住院憂鬱常被誤以為「正常反應」而漏診——<em class="hl">任何程度的憂鬱都需要評估</em></li>
+              <li>憂鬱增加住院時間、降低治療依從性、升高死亡率（心血管病人尤著）</li>
+              <li>身體症狀重疊：疲憊、食慾差、睡眠障礙 → 難以與身體疾病鑑別 → 使用HADS（排除身體症狀影響）</li>
+              <li>PHQ-9第9題：「您有多常出現認為自己死了比較好，或用某種方式傷害自己的念頭？」→ 任何非「完全沒有」的回答需立即評估</li>
+              <li>高危族群：癌症確診後、腦中風後、心肌梗塞後、截肢/造口術後、慢性疼痛</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">憂鬱的護理介入</div>
+            <ul class="ilist">
+              <li>建立治療性關係：定期且真誠的接觸；不只在執行護理技術時才互動</li>
+              <li>活化行為（Behavioral Activation）：小活動開始（坐起來、走廊散步）→ 逐步增加</li>
+              <li>社交連結：鼓勵家人探訪；協助與外界保持聯繫（電話/視訊）</li>
+              <li>結構化日常：規律的睡眠/清醒週期；規律三餐</li>
+              <li>藥物配合：SSRI（Fluoxetine, Sertraline）為一線；起效2–4週；勿自行停藥</li>
+              <li>心理治療轉介：認知行為治療（CBT）有最強實證</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">自殺風險評估（重要！）</div>
+            <ul class="ilist">
+              <li>直接詢問是最有效的評估方式——<em class="hl">詢問自殺不會誘發自殺</em>（研究已證實）</li>
+              <li>Columbia評估（C-SSRS）：意念→計畫→行為→企圖——四個層次評估</li>
+              <li>高風險因子：過去自殺企圖（最強單一預測因子）；男性；中老年；孤立；物質濫用；終端疾病；最近重大失落</li>
+              <li>SAL評估：<em class="hl">嚴重度（Severity）</em>、<em class="hl">可得手段（Access）</em>、<em class="hl">意圖（Lethality）</em></li>
+              <li>安全計畫（Safety Planning）：識別警示徵兆→因應策略→支持聯絡人→緊急電話</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>自殺高風險病人的環境安全：<em class="hl">移除潛在危險物品</em>（刀剪、繩帶、大量藥物）；不讓病人獨處；一對一看護；必要時轉介精神科急診</span>
+            </div>
+            <div class="ds-title" style="margin-top:18px;">自傷（Non-Suicidal Self-Injury, NSSI）</div>
+            <ul class="ilist">
+              <li>定義：非以死亡為目的的自我傷害（割傷、燙傷）——通常是情緒調節機制</li>
+              <li>護理師不評判行為（否則病人隱藏）；探索情緒背景</li>
+              <li>提供替代因應策略：握冰塊→刺激感覺但不傷害（注意：這是爭議策略，需個別評估）</li>
+              <li>轉介心理師：辯證行為治療（DBT）為NSSI最有實證的治療</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">抗憂鬱藥物護理要點</div>
+            <ul class="ilist">
+              <li>SSRI（Fluoxetine/Sertraline/Escitalopram）：起效2–4週；初期可能焦慮加劇（須告知）</li>
+              <li>SNRI（Venlafaxine/Duloxetine）：對疼痛也有效；高血壓副作用</li>
+              <li>三環抗憂鬱劑（TCA）：老藥；過量致命；少用</li>
+              <li>啟用初期自殺風險：SSRI啟動初期精力改善但情緒尚未好轉→行動力恢復但仍有意念→<em class="hl">最危險期（前2週）</em></li>
+              <li>停藥反應：SNRI突然停藥→頭暈、電擊感（SSRI/SNRI停藥症候群）；需漸進減量</li>
+              <li>衛教重點：需持續服藥至少6–12個月（緩解後仍需維持治療預防復發）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">台灣自殺防治資源</div>
+            <ul class="ilist">
+              <li>自殺防治專線：<em class="hl">1925</em>（安心專線；24小時）</li>
+              <li>生命線：<em class="hl">1995</em>（24小時）</li>
+              <li>張老師：<em class="hl">1980</em>（週一至週六）</li>
+              <li>精神科急診：嚴重自殺意念或自傷行為</li>
+              <li>社區心理健康中心：慢性心理健康追蹤支持</li>
+              <li>護理師衛教：告知病人資源；不讓「轉介」成為拒絕的理由</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>自殺風險溝通的關鍵問題：<em class="hl-green">「您有沒有想過不想活下去？」</em>如果是：「您有沒有想到具體的方式？」如果是：「您有沒有準備好要這樣做？」——按步驟、直接問、不迴避</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRISIS INTERVENTION -->
+    <div class="topic-panel" id="panel-crisis">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">心理危機介入</div><div class="tc-en">Psychological Crisis Intervention</div></div>
+          <span class="tag tag-amber">緊急介入</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">危機的定義與特性</div>
+            <ul class="ilist">
+              <li>危機：當個人面臨超過其現有因應能力的威脅性事件時，出現心理平衡喪失的狀態</li>
+              <li>危機是<em class="hl">暫時性的</em>（通常4–6週達到高峰）；也是<em class="hl">轉機</em>——可帶來成長</li>
+              <li>危機類型：情境性危機（疾病、失業）；發展性危機（生命週期轉換）；創傷性危機</li>
+              <li>危機期間：認知扭曲、情緒強烈、衝動行為增加、判斷力下降</li>
+              <li>Caplan危機理論：問題→嘗試習慣因應→失敗→危機→新平衡（較好或較差）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">Roberts七階段危機介入模式</div>
+            <div class="flow-container" style="flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--primary);min-width:60px;">Step 1</div>
+                <div style="font-size:13px;color:var(--text);">評估危險性與緊急度（自殺/暴力/傷害風險？）</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(244,114,182,.06);border:1px solid rgba(244,114,182,.14);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--primary);min-width:60px;">Step 2</div>
+                <div style="font-size:13px;color:var(--text);">建立治療性關係——溫暖、接納、不評判的即時連結</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--sky);min-width:60px;">Step 3</div>
+                <div style="font-size:13px;color:var(--text);">識別問題——從病人的角度理解危機（Kleinman式探索）</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--sky);min-width:60px;">Step 4</div>
+                <div style="font-size:13px;color:var(--text);">探索情感——「告訴我您現在的感受」；接納強烈情緒</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--amber);min-width:60px;">Step 5</div>
+                <div style="font-size:13px;color:var(--text);">探索過去因應方式——「過去遇到困難，您是怎麼撐過來的？」</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--amber);min-width:60px;">Step 6</div>
+                <div style="font-size:13px;color:var(--text);">制定行動計畫——具體、可行、以病人主導；安全計畫（如需要）</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--green);min-width:60px;">Step 7</div>
+                <div style="font-size:13px;color:var(--text);">追蹤——確認資源已連結；安全感確認；後續支持計畫</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="ds-title">臨床常見危機情境</div>
+            <ul class="ilist">
+              <li><em class="hl">壞消息傳達後的危機</em>：末期診斷、截肢、永久失能——使用SPIKES模式；給予消化時間</li>
+              <li><em class="hl">醫療創傷後應激</em>：ICU住院、急救經歷、意外傷害——識別PTSD症狀（閃回、迴避、高度警覺）</li>
+              <li><em class="hl">突發失落（急性哀傷）</em>：親人突然死亡——不要說「節哀」；陪伴；允許哭泣；實際支持</li>
+              <li>急診/創傷病人的危機：創傷事件本身即是危機；急性壓力反應（前28天）vs PTSD（後28天）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:18px;">心理急救（Psychological First Aid, PFA）</div>
+            <ul class="ilist">
+              <li>PFA是危機後的即時心理支持（非治療）；適用任何助人者</li>
+              <li>五大行動：<em class="hl">接觸→安全→穩定→資訊→連結</em></li>
+              <li>接觸：溫和接觸；不強迫互動；尊重個人空間</li>
+              <li>安全感：「您現在安全了」；提供實際安全保障</li>
+              <li>穩定：接地技巧——讓病人感受腳踩地板；深呼吸；感官聚焦（54321法）</li>
+              <li>資訊：提供當前情況的清晰資訊；減少混亂</li>
+              <li>連結：連結社會支持（家人、社工）；提供資源</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>危機介入的<em class="hl">時機性</em>至關重要。危機期間個人更願意接受幫助（固有的防禦暫時降低）——這是提供支持的黃金窗口，不要因為「等它過去」而錯失</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY IMAGE -->
+    <div class="topic-panel" id="panel-bodyimg">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">身體意象改變與調適</div><div class="tc-en">Altered Body Image & Psychological Adaptation</div></div>
+          <span class="tag tag-pink">自我概念</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">身體意象的定義與影響</div>
+            <ul class="ilist">
+              <li>身體意象（Body Image）：個人對自己身體的主觀知覺、感受與評價</li>
+              <li>身體意象不只是外觀——也包含功能（「我的身體能做什麼？」）</li>
+              <li>影響身體意象的醫療事件：截肢、乳房切除、腸造口、疤痕、落髮、體重改變、偏癱、氣切</li>
+              <li>身體意象改變的心理歷程：衝擊→否認→哀傷→適應（個人速度不同）</li>
+              <li>負向身體意象的影響：社交退縮、拒絕自我照護、親密關係障礙、憂鬱焦慮</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">護理評估</div>
+            <ul class="ilist">
+              <li>語言線索：「我以後還能去海邊嗎？」「我老公會不會嫌我？」「我不想看鏡子」</li>
+              <li>行為線索：拒絕換藥或查看傷口；過度包覆/遮蓋；不允許家人看</li>
+              <li>直接評估：「手術改變了您的外觀/功能，您有什麼感受？」</li>
+              <li>NANDA診斷：<em class="hl">身體意象紊亂（Disturbed Body Image）</em>的評估指標：語言表達對改變的擔憂；拒絕確認身體改變；社交退縮</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">護理介入策略</div>
+            <ul class="ilist">
+              <li><em class="hl">術前準備</em>：充分告知外觀/功能改變；提供實際圖片/影片（依病人意願）；同儕支持介紹</li>
+              <li><em class="hl">漸進式面對</em>：不強迫立即查看；讓病人決定時機；陪伴第一次查看</li>
+              <li>正向語言重框：「您身體正在適應新的狀態」；強調功能而非外觀</li>
+              <li>實際技能訓練：造口護理技術掌握 → 自我效能感↑ → 身體意象改善</li>
+              <li>伴侶/家庭介入：衛教家人的反應如何影響病人；鼓勵接納性的表達</li>
+              <li>同儕支持（Peer Support）：乳癌病友、造口病友——「有人走過這條路」的力量</li>
+              <li>心理師轉介：嚴重身體意象障礙；認知行為治療（CBT）；接納與承諾治療（ACT）</li>
+            </ul>
+            <div class="tip-box"><span class="alert-icon">💡</span><span>造口病友護理師（ET Nurse）是身體意象適應的重要角色——不只是技術教育者，更是心理支持提供者。造口護理技術的<em class="hl-green">自主掌握</em>是身體意象恢復的關鍵里程碑</span></div>
+          </div>
+          <div>
+            <div class="ds-title">乳房切除後身體意象</div>
+            <ul class="ilist">
+              <li>乳房對女性身份認同的象徵意義——不只是身體部位</li>
+              <li>提供重建選項資訊（即時/延遲重建；義乳）——給予希望感</li>
+              <li>評估伴侶關係：「您的先生/伴侶知道了嗎？他的反應怎麼樣？」</li>
+              <li>性親密：評估並提供性健康諮詢（許多女性最擔心但最少被討論的議題）</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">截肢後身體意象與幻肢痛</div>
+            <ul class="ilist">
+              <li>幻肢感/幻肢痛（Phantom Limb Pain）：截肢後肢體感覺的存在感——非心理問題，是神經系統現象</li>
+              <li>對截肢病人說「您的腿不見了」→ 無效；他的感受告訴他腿還在</li>
+              <li>鏡像療法（Mirror Therapy）：視覺反饋重塑大腦表徵；對幻肢痛有效</li>
+              <li>義肢適應心理支持：從學習使用義肢到重新定義「完整的自己」</li>
+              <li>男性截肢病人特別需要探索「工作能力」的擔憂（身份認同核心）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHRONIC ILLNESS ADJUSTMENT -->
+    <div class="topic-panel" id="panel-chronic">
+      <div class="topic-card">
+        <div class="tc-header">
+          <div><div class="tc-name">慢性病心理調適</div><div class="tc-en">Psychological Adjustment to Chronic Illness</div></div>
+          <span class="tag tag-purple">慢性病</span>
+        </div>
+        <div class="tc-body">
+          <div>
+            <div class="ds-title">慢性病的心理衝擊</div>
+            <ul class="ilist">
+              <li>慢性病（Chronic Illness）：持續性、通常不可治癒、影響日常生活的疾病狀態</li>
+              <li>心理衝擊的五個面向：失落（角色/能力）、不確定性（疾病走向）、身份認同威脅、依賴、孤立</li>
+              <li>疾病認知（Illness Cognition）：病人如何解釋自己的疾病 → 直接影響調適結果</li>
+              <li>Leventhal自我調節模型：病人建立「疾病表徵」（原因、後果、時間線、可控制性）→ 影響因應行為</li>
+              <li>慢性病調適的U型曲線：初期低落→中期波動→長期調適（非線性）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">慢性病特定心理議題</div>
+            <ul class="ilist">
+              <li><em class="hl">糖尿病困擾（Diabetes Distress）</em>：非憂鬱症；針對疾病管理的特定情緒耗竭；DDS量表評估</li>
+              <li>心肌梗塞後PTSD：10–20%病人在心肌梗塞後發展PTSD；閃回心臟事件；影響復健參與</li>
+              <li>慢性疼痛與心理（Pain Catastrophizing）：災難化思維放大疼痛感知；CBT是有效介入</li>
+              <li>復發恐懼（Fear of Cancer Recurrence）：癌症存活者最常見的心理困擾；非病理，但高頻率（&gt;7/10）影響功能 → CONQUER方案</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">促進慢性病心理調適的護理策略</div>
+            <ul class="ilist">
+              <li><em class="hl">疾病敘事（Illness Narrative）</em>：鼓勵病人述說疾病故事 → 重新整理意義 → 調適</li>
+              <li>認知重構：識別「災難化」或「全有全無」思維；引導更平衡的解讀</li>
+              <li>自我效能培養：小目標設定→成功體驗→信心建立（Bandura社會學習理論）</li>
+              <li>同儕支持：有同樣疾病的人的陪伴是最有力的支持（角色楷模；「他可以我也可以」）</li>
+              <li>意義尋找（Meaning-Making）：「這段生病的日子讓您發現了什麼？」</li>
+              <li>接受（Acceptance）：接納疾病的存在 ≠ 放棄；ACT治療的核心——接受 + 在疾病中繼續過有意義的生活</li>
+            </ul>
+            <div class="purple-box"><span class="alert-icon">💡</span><span>慢性病護理的目標不是「讓病人對疾病感覺好」，而是幫助他們<em class="hl-purple">在疾病存在的情況下，繼續過有意義的生活</em>。這是接納與承諾治療（ACT）的精髓</span></div>
+          </div>
+          <div>
+            <div class="ds-title">動機式晤談（Motivational Interviewing, MI）</div>
+            <ul class="ilist">
+              <li>適用：協助慢性病病人改變行為（戒菸、服藥順從、飲食）</li>
+              <li>核心精神：<em class="hl">OARS</em>——開放式問題（O）、肯定（A）、反映（R）、摘要（S）</li>
+              <li>探索矛盾心理：「您一方面知道要控制飲食，另一方面又覺得很難……這兩邊都是真實的</li>
+              <li>強化改變對話（Change Talk）：引導病人說出改變的原因（而非護理師說）</li>
+              <li>滾動抵抗（Rolling with Resistance）：不正面衝突；轉移方向；重框架</li>
+              <li>準備度評估：Prochaska改變階段——前思考→思考→準備→行動→維持</li>
+            </ul>
+          </div>
+          <div>
+            <div class="ds-title">疾病不確定性（Uncertainty in Illness）</div>
+            <ul class="ilist">
+              <li>Mishel疾病不確定性理論：不確定性是慢性/嚴重疾病最普遍的心理特徵</li>
+              <li>「我不知道病會不會好」「我不知道下次會不會復發」→ 能量耗竭</li>
+              <li>護理介入：提供清晰資訊（減少模糊性不確定）；協助「接受不確定性」（存在性不確定）</li>
+              <li>不要說「不要想那麼多」——不確定性是真實存在的；陪伴病人面對不確定</li>
+              <li>「活在當下」的正念策略：將關注從不確定的未來拉回到可掌握的當下</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NP -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0e7490,#38bdf8);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses — Psychological Care (NANDA-I)</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(244,114,182,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">焦慮</div><div class="np-cause">Anxiety ／與診斷未確定、手術、疾病威脅生命有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>GAD-7評估；識別焦慮嚴重度（Peplau分級）</li>
+          <li>充分提供資訊：減少未知最有效；術前詳細說明</li>
+          <li>教導放鬆技巧：4-7-8呼吸法；漸進性肌肉放鬆</li>
+          <li>重度焦慮：陪伴；降低環境刺激；必要時藥物</li>
+          <li>恐慌發作：保持冷靜陪伴；引導呼吸；說話清楚簡短</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">2</div>
+          <div><div class="np-title">無效性因應</div><div class="np-cause">Ineffective Coping ／與壓力超過因應資源、缺乏社會支持有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估目前因應策略（適應性 vs 非適應性）</li>
+          <li>強化現有優勢資源；識別過去成功因應經驗</li>
+          <li>教導問題解決模式；分解問題為可處理步驟</li>
+          <li>連結社會支持：家庭、病友、社工</li>
+          <li>轉介心理師：認知行為治療；壓力管理課程</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(244,114,182,.2);color:var(--primary);">3</div>
+          <div><div class="np-title">無望感</div><div class="np-cause">Hopelessness ／與末期診斷、疾病預後差、資源匱乏有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>自殺風險評估（Columbia C-SSRS）；環境安全</li>
+          <li>探索希望的多元形式（不一定是痊癒）</li>
+          <li>小希望的累積：每天可達成的小目標</li>
+          <li>連結靈性資源；意義再建構</li>
+          <li>PHQ-9評估；必要時精神科轉介及抗憂鬱藥物</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,191,36,.2);color:var(--amber);">4</div>
+          <div><div class="np-title">身體意象紊亂</div><div class="np-cause">Disturbed Body Image ／與截肢、乳房切除、造口、落髮有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估：語言/行為線索；直接詢問感受</li>
+          <li>不強迫查看傷口；讓病人決定時機；陪伴第一次</li>
+          <li>提供義肢/義乳/假髮等替代資源資訊</li>
+          <li>連結同儕支持（乳癌/造口病友會）</li>
+          <li>家屬衛教：反應如何影響病人；接納性表達</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--purple);">5</div>
+          <div><div class="np-title">個人認同困擾</div><div class="np-cause">Disturbed Personal Identity ／與慢性病、角色改變、功能喪失有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>探索疾病對病人身份認同的意義（「您覺得生病改變了您是誰嗎？」）</li>
+          <li>強調疾病只是「有的一部分」，而非「全部」</li>
+          <li>協助識別疾病不影響的優勢與價值</li>
+          <li>生命回顧：連結疾病前的自我</li>
+          <li>ACT接納策略；心理師轉介</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">6</div>
+          <div><div class="np-title">自我照護能力不足</div><div class="np-cause">Self-Care Deficit ／與憂鬱/焦慮導致動機不足、功能障礙有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估自我照護障礙（心理性 vs 身體性因素）</li>
+          <li>從最小可完成的任務開始（行為活化）</li>
+          <li>強化自我效能：每次小成功都給予具體肯定</li>
+          <li>憂鬱治療是基礎：憂鬱解除→自我照護能力通常自然改善</li>
+          <li>職能治療師會診：功能性自我照護能力評估與訓練</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">7</div>
+          <div><div class="np-title">睡眠型態紊亂</div><div class="np-cause">Disturbed Sleep Pattern ／與焦慮、疼痛、住院環境有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估睡眠困擾原因：焦慮/疼痛/噪音/用藥；PSQI評量</li>
+          <li>睡眠衛生教育：固定作息；避免日間長睡；睡前放鬆</li>
+          <li>環境優化：降低夜間燈光/噪音；集中護理操作</li>
+          <li>CBT-I（失眠認知行為治療）：比安眠藥更有長期效果</li>
+          <li>老年人避免苯二氮類（Beers準則）：跌倒/認知風險</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(167,139,250,.2);color:var(--purple);">8</div>
+          <div><div class="np-title">社交孤立</div><div class="np-cause">Social Isolation ／與住院、疾病羞恥感、功能限制有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估孤立程度；探索病人自己的解釋（「為什麼不想見朋友？」）</li>
+          <li>病恥感探索：哪些疾病或症狀令他不想被知道？</li>
+          <li>去汙名化衛教（針對疾病）</li>
+          <li>科技輔助：視訊通話；社群媒體維持社交連結</li>
+          <li>連結病友支持團體；鼓勵家屬定期探訪</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#be185d,#f472b6);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies — Psychological Care in Practice</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：術前嚴重焦慮</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：癌症後憂鬱與自傷意念</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：造口手術身體意象</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：心肌梗塞後PTSD</button>
+      </div>
+
+      <!-- CASE 1: PRE-OP ANXIETY -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>林先生，48歲，因<strong>胃腸道基質瘤（GIST）需接受胃切除手術</strong>，預定明日手術。今晚9:30護理師巡房時，發現林先生坐在床上，雙手抖動，問他怎麼了，他說：<strong>「我睡不著，腦子不斷想手術會不會失敗、麻醉醒不來、或者……發現是癌症末期……我知道我在亂想，但就是停不下來。」</strong>
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">96</div><div class="vital-unit">bpm（靜息↑）</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-abnormal">148/92</div><div class="vital-unit">mmHg（↑焦慮）</div></div>
+          <div class="vital-box"><div class="vital-label">睡眠</div><div class="vital-val vital-abnormal">無法入睡</div><div class="vital-unit">整夜</div></div>
+          <div class="vital-box"><div class="vital-label">焦慮程度</div><div class="vital-val vital-abnormal">主觀8/10</div></div>
+          <div class="vital-box"><div class="vital-label">Peplau</div><div class="vital-val vital-warn">重度（+++）</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 評估林先生的焦慮類型與誘因，分析其認知特徵</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>焦慮評估：</strong><br><br>
+            <strong>類型：</strong><em class="hl">術前預期性焦慮（Preoperative Anticipatory Anxiety）</em>＋災難化思維<br><br>
+            <strong>誘因（Lazarus次級評估）：</strong><br>
+            → 威脅評估（初級）：手術 → 麻醉風險 → 惡性診斷可能 → 死亡<br>
+            → 次級評估：「我沒有能力控制這些結果」 → 感知資源不足 → 焦慮<br><br>
+            <strong>認知特徵（認知扭曲）：</strong><br>
+            → <em class="hl-sky">災難化（Catastrophizing）</em>：「手術會失敗」「麻醉醒不來」<br>
+            → <em class="hl-sky">過度類化</em>：一個不好的可能 → 視為必然<br>
+            → <em class="hl-sky">黑白思維</em>：不是完全好就是末期<br><br>
+            <strong>身體症狀（重度焦慮Peplau +++）：</strong><br>
+            心率↑、血壓↑、手抖、失眠 → 交感神經活化的自律神經表現<br><br>
+            <strong>保護因子：</strong>「我知道我在亂想」 → 尚有一定自我覺察 → 預後較好
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師在床邊可立即執行哪些非藥物介入？示範對話</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>床邊即時介入（非藥物）：</strong><br><br>
+            <strong>第一步：治療性存在與承認</strong><br>
+            → 護理師坐下（平視）；放慢語速；說：<em class="hl">「您剛才說的，我都聽到了。您現在非常擔心，這完全可以理解——明天要手術，任何人都會緊張。」</em><br><br>
+            <strong>第二步：4-7-8呼吸引導（立即身體介入）</strong><br>
+            → 「我教您一個可以讓身體放鬆的呼吸方法，我們一起做：」<br>
+            → 吸氣4秒→屏氣7秒→吐氣8秒×4次<br>
+            → 「做的時候，您有沒有感覺心跳稍微慢一些？」<br><br>
+            <strong>第三步：資訊提供（針對具體擔憂）</strong><br>
+            → 「您說擔心麻醉醒不來——我想告訴您，麻醉師明天手術前會親自來評估您的狀況，這是標準程序。」<br>
+            → 「手術結果我們要等病理報告，但外科醫師已評估腫瘤位置是可手術的。」<br>
+            → 每個具體擔憂：給予清晰事實，減少不確定性<br><br>
+            <strong>第四步：增強掌控感</strong><br>
+            → 「您現在能做的最重要的事，是讓身體充分休息。其他的事明天的醫療團隊會照顧。」<br><br>
+            <strong>後續：</strong>必要時依醫囑給予術前鎮靜藥（Midazolam）；告知值班醫師評估
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: DEPRESSION -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳小姐，35歲，乳癌第二期，完成化療已3個月。回診時護理師例行PHQ-9評估得<strong>16分（中重度憂鬱）</strong>，第9題：「有幾天想過不想活或傷害自己」。個案表示：<strong>「我治療完了，大家以為我應該要開心了，但我更不知道怎麼辦了。」</strong>她的頭髮才剛開始重新長出來，正在找工作。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> PHQ-9第9題有自傷意念，護理師應如何立即回應？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>自傷意念評估流程：</strong><br><br>
+            <strong>第一步：不迴避，直接詢問（溫和但清楚）</strong><br>
+            → <em class="hl">「您在問卷上說有想過不想活或傷害自己，我想多了解一些——您能告訴我這個想法是什麼樣的嗎？」</em><br><br>
+            <strong>第二步：Columbia C-SSRS評估（逐步）</strong><br>
+            → 「您有沒有想死的念頭？」（被動死亡意念）<br>
+            → 「您有沒有想要傷害自己？」（主動自傷）<br>
+            → 「您有沒有想到具體的方式？」（計畫）<br>
+            → 「您有沒有準備或嘗試做過這件事？」（企圖）<br><br>
+            <strong>若為被動死亡意念（「想消失，沒有計畫」）：</strong><br>
+            → 仍需認真對待；建立安全計畫；精神科/心理師轉介<br>
+            → 安全計畫：警示徵兆 + 因應策略 + 聯絡支持者 + 危機電話（1925）<br><br>
+            <strong>同理確認：</strong><br>
+            → <em class="hl">「謝謝您告訴我這些，我知道說出來需要很大的勇氣。我很高興您今天說了，這樣我才能幫助您。」</em><br>
+            → 絕不說：「您怎麼會這樣想？」（批判）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 分析「治療完成後的憂鬱」現象，制定護理照護計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>「治療完成後的憂鬱」現象：</strong><br><br>
+            → 俗稱「落懸（Treatment-Completion Depression）」：積極治療期間有固定結構與關注；治療結束後失去支撐<br>
+            → 「大家以為應該高興了」：外部期待 vs 內在感受不一致 → 孤立感↑<br>
+            → 復發恐懼達高峰：失去定期就醫的「保護感」<br>
+            → 身份認同重建：我還是那個得了乳癌的人嗎？如何重回社會？<br><br>
+            <strong>護理照護計畫：</strong><br>
+            <em class="hl">心理介入：</em><br>
+            → 精神科/心理師轉介（PHQ-9 16分，有自傷意念）<br>
+            → 認知行為治療（CBT）：針對憂鬱及復發恐懼<br>
+            → 必要時抗憂鬱藥物（與腫瘤科醫師協商）<br><br>
+            <em class="hl">心理社會介入：</em><br>
+            → 正常化感受：「治療完成後感到失落和不知所措，是很多病人都有的感受，不只是您」<br>
+            → 連結乳癌存活者支持團體<br>
+            → 就業支持：轉介職業重建資源（若需要）<br><br>
+            <em class="hl">家庭介入：</em><br>
+            → 衛教家人：「她不需要更多正向思考的提醒，她需要的是被聽見和陪伴」
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: OSTOMY BODY IMAGE -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>許先生，55歲，直腸癌接受腹會陰切除術（APR），永久性乙狀結腸造口（Colostomy）。術後第5天，造口外觀粉紅、水腫正常。護理師前來衛教造口護理，許先生用棉被蓋著造口，說：<strong>「你能不能請別人來教？我老婆在外面，麻煩不要讓她進來看這個。</strong>」他太太告訴護理師：「我不知道他怎麼了，他這兩天都不說話，也不吃東西，昨晚一直哭……」
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析許先生的心理狀態，識別護理問題</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>心理狀態分析：</strong><br><br>
+            <strong>核心問題：<em class="hl">身體意象紊亂（Disturbed Body Image）</em></strong><br><br>
+            <strong>行為線索：</strong><br>
+            → 用棉被蓋住造口 → 拒絕確認身體改變<br>
+            → 不讓太太進來 → 逃避親密關係中的暴露；害怕被嫌棄<br>
+            → 不說話、不吃東西 → 退縮、憂鬱徵兆<br>
+            → 昨晚哭泣 → 哀傷（失落身體功能與完整性）<br><br>
+            <strong>心理階段：</strong>哀傷歷程中的「衝擊/否認→哀傷」轉換期<br><br>
+            <strong>特殊意涵：</strong>男性造口病人的特殊擔憂——<em class="hl-sky">性功能受損（APR術後性功能障礙率高）、男性氣概感受</em><br><br>
+            <strong>護理問題：</strong><br>
+            ① 身體意象紊亂（最主要）<br>
+            ② 悲傷<br>
+            ③ 社交孤立風險<br>
+            ④ 知識缺乏（造口護理）——但此時不是優先
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 護理師如何建立信任，推進身體意象的漸進式接受？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>漸進式身體意象護理：</strong><br><br>
+            <strong>第一步：先處理情緒，不急著衛教技術</strong><br>
+            → 詢問是否能坐下談幾分鐘（即使他說可以，也先不拿衛教材料）<br>
+            → <em class="hl">「許先生，我感覺到這幾天對您很不容易。能不能告訴我，您心裡最重的是什麼？」</em><br><br>
+            <strong>第二步：接納與正常化</strong><br>
+            → 不說「您要勇敢」；說：「您現在的反應——不想看、不想讓太太知道——很多接受造口手術的人都有過。這是正常的。」<br><br>
+            <strong>第三步：探索對太太的擔憂</strong><br>
+            → 「您說不想讓太太看——您在擔心她有什麼反應？」<br>
+            → 讓他說出最深的恐懼（被嫌棄？關係改變？性生活？）<br><br>
+            <strong>第四步：漸進式面對造口</strong><br>
+            → 不強迫今天就面對；說「我們不急，等您準備好了，我陪著您一起看」<br>
+            → 若病人同意：<em class="hl">陪著他第一次查看造口</em>；護理師的鎮定表情至關重要<br><br>
+            <strong>第五步：太太的部分</strong><br>
+            → 徵得許先生同意後：私下與太太衛教她的反應如何影響先生<br>
+            → 「他需要的不是表現不在意，而是真實的接受——說出『我在，不管什麼都在』」
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: POST-MI PTSD -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>趙先生，56歲，3個月前急性心肌梗塞（AMI）心臟停止、CPR後救回，ICU住院12天。出院後心臟功能恢復良好（EF 55%）。但太太說他：<strong>「晚上夢到自己心臟病發、一直驚醒、不敢睡覺；不肯運動（說怕心臟再停）；看到醫院電視廣告就關電視；一直說活著有什麼意思……」</strong>今天回心臟科門診，心電圖及超音波均正常。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析趙先生的症狀群，判斷最可能的心理診斷</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>症狀分析：</strong><br><br>
+            <strong>PTSD四大症狀群（DSM-5）——此案均符合：</strong><br><br>
+            ① <em class="hl">闖入症狀（Intrusion）</em>：「夢到自己心臟病發」→ 惡夢；夢中重歷創傷事件（Re-experiencing）<br><br>
+            ② <em class="hl">迴避（Avoidance）</em>：「看到醫院電視廣告就關電視」→ 迴避創傷相關刺激（聽覺線索）；「不肯運動」→ 迴避可能觸發身體感覺的活動<br><br>
+            ③ <em class="hl">認知與情緒負向改變</em>：「活著有什麼意思」→ 負向認知；與未來脫節感<br><br>
+            ④ <em class="hl">警覺增加</em>：驚醒、不敢睡覺 → 睡眠障礙；過度警戒<br><br>
+            <strong>時間：</strong>事件後3個月，症狀超過1個月 → <em class="hl">心肌梗塞後PTSD（Post-MI PTSD）</em>確認<br><br>
+            <strong>鑑別：</strong>心電圖/超音波正常 → <em class="hl">症狀為心理性，非心臟功能問題</em>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 制定護理介入計畫，包含心臟復健與心理治療的整合</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>Post-MI PTSD整合照護計畫：</strong><br><br>
+            <strong>① 心理評估與轉介</strong><br>
+            → PCL-5（PTSD量表）評估嚴重度<br>
+            → PHQ-9（可能共病憂鬱）<br>
+            → 精神科/心理師轉介：PTSD的一線心理治療是<em class="hl">創傷聚焦認知行為治療（TF-CBT）</em>或<em class="hl">EMDR</em><br><br>
+            <strong>② 心臟復健的心理障礙排除</strong><br>
+            → 「不肯運動」的背後：迴避觸發心悸/心跳加速的感覺 → 解釋：「心臟跳快 ≠ 心臟病發」<br>
+            → 漸進式暴露（心臟復健的暴露治療元素）：從低強度活動開始 → 重建運動信心<br>
+            → 心臟復健計畫：有監測、有支持的環境 → 降低PTSD造成的障礙<br><br>
+            <strong>③ 心理教育（衛教）</strong><br>
+            → 告知趙先生及太太：「這些症狀是心臟病發後的心理創傷反應，有名字叫PTSD，是可以治療的」<br>
+            → 解釋：心臟功能正常 ≠ 心理自動恢復（需要主動治療）<br><br>
+            <strong>④ 自傷意念評估</strong><br>
+            → 「活著有什麼意思」 → 需評估被動死亡意念；PHQ-9第9題<br><br>
+            <strong>⑤ 社會支持啟動</strong><br>
+            → 太太衛教：如何支持（陪伴、不催促「要想開」）<br>
+            → 心肌梗塞病友會；ICU後症候群支持資源
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:48px 0 24px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:10px;font-size:15px;color:var(--primary);font-weight:600;font-family:'Noto Serif TC',serif;">心理照護 Psychological Care</div>
+    <div style="margin-bottom:16px;">內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途</div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;">── 系列完整單元 ──</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;font-size:12px;">
+      <span style="color:#00b4d8;">■ 氧合與活動</span>
+      <span style="color:#f59e0b;">■ 營養與排泄</span>
+      <span style="color:#a78bfa;">■ 感覺知覺</span>
+      <span style="color:#10b981;">■ 安全保護</span>
+      <span style="color:#e879f9;">■ 腫瘤照護</span>
+      <span style="color:#f97316;">■ 家庭文化</span>
+      <span style="color:#818cf8;">■ 靈性照護</span>
+      <span style="color:#f472b6;">■ 心理照護</span>
+    </div>
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.topic-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={anxiety:0,depress:1,crisis:2,bodyimg:3,chronic:4};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('topics').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('psych-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('psych-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

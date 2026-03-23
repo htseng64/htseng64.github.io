@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腫瘤全人照護 — Oncology Care | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #0a1628;
+    --primary:   #e879f9;
+    --primary-dk:#c026d3;
+    --primary-lt:#f5d0fe;
+    --rose:      #fb7185;
+    --rose-lt:   #fda4af;
+    --amber:     #f59e0b;
+    --amber-lt:  #fcd34d;
+    --sky:       #38bdf8;
+    --sky-lt:    #bae6fd;
+    --green:     #34d399;
+    --green-lt:  #a7f3d0;
+    --text:      #e2e8f0;
+    --text-dim:  #8fa3be;
+    --border:    rgba(232,121,249,0.2);
+    --card:      rgba(17,34,64,0.8);
+    --card-hov:  rgba(17,34,64,0.95);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 10% 15%,rgba(192,38,211,.13) 0%,transparent 55%),
+               radial-gradient(ellipse at 88% 80%,rgba(251,113,133,.08) 0%,transparent 50%),
+               radial-gradient(ellipse at 50% 45%,rgba(56,189,248,.04) 0%,transparent 65%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:272px;height:100vh;background:rgba(10,22,40,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;backdrop-filter:blur(2px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:222px;width:38px;height:38px;border-radius:10px;background:rgba(232,121,249,.15);border:1px solid rgba(232,121,249,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(232,121,249,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.4;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(232,121,249,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:6px 20px 6px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:272px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:340px;display:flex;flex-direction:column;justify-content:center;padding:60px 0 40px;border-bottom:1px solid var(--border);margin-bottom:60px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:24px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:18px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+  .pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.05em;}
+  .pill-fuchsia{background:rgba(232,121,249,.15);color:var(--primary);border:1px solid rgba(232,121,249,.3);}
+  .pill-rose{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+  .pill-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+  .pill-sky{background:rgba(56,189,248,.15);color:var(--sky);border:1px solid rgba(56,189,248,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:80px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .concept-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden;}
+  .concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .concept-card.onco::before{background:linear-gradient(90deg,var(--primary),var(--primary-lt));}
+  .concept-card.treat::before{background:linear-gradient(90deg,var(--rose),var(--rose-lt));}
+  .concept-card.pallia::before{background:linear-gradient(90deg,var(--sky),var(--sky-lt));}
+  .concept-card:hover{background:var(--card-hov);transform:translateY(-4px);border-color:rgba(232,121,249,.4);box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .concept-icon{font-size:36px;margin-bottom:16px;}
+  .concept-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .concept-en{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+  .concept-points{list-style:none;margin-top:14px;}
+  .concept-points li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:4px 0;display:flex;gap:8px;align-items:flex-start;}
+  .concept-points li::before{content:'▸';color:var(--primary);flex-shrink:0;margin-top:1px;}
+  .value-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
+  .value-box{background:rgba(232,121,249,.08);border:1px solid rgba(232,121,249,.2);border-radius:12px;padding:12px;text-align:center;}
+  .value-label{font-size:10px;color:var(--text-dim);}
+  .value-num{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--primary);margin:4px 0;}
+  .value-unit{font-size:10px;color:var(--text-dim);}
+
+  /* ── ASSESS GRID ── */
+  .assess-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .assess-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;}
+  .assess-card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-fuchsia{background:rgba(232,121,249,.15);color:var(--primary);}
+  .tag-rose{background:rgba(251,113,133,.15);color:var(--rose);}
+  .tag-amber{background:rgba(245,158,11,.15);color:var(--amber);}
+  .tag-sky{background:rgba(56,189,248,.15);color:var(--sky);}
+  .tag-green{background:rgba(52,211,153,.15);color:var(--green);}
+  .assess-list{list-style:none;}
+  .assess-list li{font-size:13px;line-height:1.7;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .assess-list li:last-child{border-bottom:none;}
+  .assess-list li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+
+  /* ── DISEASE TABS ── */
+  .disease-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .disease-panel{display:none;animation:fadeIn .3s ease;}
+  .disease-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .disease-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .disease-card-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .disease-name{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;}
+  .disease-en{font-size:13px;color:var(--text-dim);margin-top:4px;}
+  .disease-body{padding:24px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .ds-title{font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .ds-title::before{content:'';display:block;width:3px;height:14px;background:var(--primary);border-radius:2px;}
+  .info-list{list-style:none;}
+  .info-list li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .info-list li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+  .alert-box{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:#fda4af;display:flex;gap:10px;}
+  .tip-box{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--green-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--sky-lt);display:flex;gap:10px;}
+  .warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--amber-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:16px;}
+  .drug-tag{display:inline-block;background:rgba(232,121,249,.18);border:1px solid rgba(232,121,249,.35);color:#f5d0fe;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:6px;margin:2px;}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(232,121,249,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:14px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(232,121,249,.05);}
+  .case-panel{display:none;padding:28px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:20px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .vitals-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0;}
+  .vital-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+  .vital-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+  .vital-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;margin:4px 0;}
+  .vital-unit{font-size:10px;color:var(--text-dim);}
+  .vital-abnormal{color:var(--rose);}
+  .vital-normal{color:var(--green);}
+  .vital-warn{color:var(--amber);}
+  .q-block{background:rgba(232,121,249,.06);border:1px solid rgba(232,121,249,.2);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:12px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);animation:fadeIn .3s ease;}
+  .answer-content.open{display:block;}
+
+  /* ── TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(232,121,249,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── FULL CARD / FLOW ── */
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:20px;}
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:110px;background:rgba(232,121,249,.08);border:1px solid rgba(232,121,249,.2);border-radius:12px;padding:14px 12px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:20px;padding:0 6px;flex-shrink:0;}
+  .flow-step-num{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── TNM GRID ── */
+  .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
+  .stage-box{border-radius:12px;padding:14px;text-align:center;}
+  .stage-box.s1{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);}
+  .stage-box.s2{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);}
+  .stage-box.s3{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.3);}
+  .stage-box.s4{background:rgba(192,38,211,.12);border:1px solid rgba(192,38,211,.35);}
+  .stage-num{font-size:22px;font-weight:700;margin-bottom:4px;}
+  .s1 .stage-num{color:var(--green);}
+  .s2 .stage-num{color:var(--amber);}
+  .s3 .stage-num{color:var(--rose);}
+  .s4 .stage-num{color:var(--primary);}
+  .stage-desc{font-size:11px;color:var(--text-dim);line-height:1.4;}
+
+  /* ── SIDE EFFECT GRID ── */
+  .se-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+  .se-card{background:rgba(232,121,249,.07);border:1px solid rgba(232,121,249,.18);border-radius:10px;padding:12px;}
+  .se-title{font-size:12px;font-weight:700;color:var(--primary);margin-bottom:6px;}
+  .se-item{font-size:11px;color:var(--text-dim);line-height:1.5;padding:1px 0;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(192,38,211,.45);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-amber{font-style:normal;color:var(--amber);font-weight:600;}
+  em.hl-sky{font-style:normal;color:var(--sky);font-weight:600;}
+  em.hl-green{font-style:normal;color:var(--green);font-weight:600;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.concept-grid{grid-template-columns:repeat(2,1fr);}.value-grid,.stage-row{grid-template-columns:repeat(2,1fr);}.se-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.concept-grid,.assess-grid,.np-grid{grid-template-columns:1fr;}.disease-body{grid-template-columns:1fr;}.vitals-row{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:272px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:60px;}.hero{padding-top:20px;}.hero h1{font-size:28px;}.vitals-row{grid-template-columns:1fr 1fr;}.se-grid{grid-template-columns:1fr;}.disease-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:6px 12px;}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:60px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.case-panel{padding:16px;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">腫瘤全人照護<br>Oncology Care</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+  <div class="nav-section-label">課程大綱</div>
+  <a href="#concepts" class="nav-item active"><span class="nav-icon">🎗️</span><span class="nav-label"> 核心概念</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 護理評估</span></a>
+  <a href="#treatment" class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 治療方式護理</span></a>
+  <a href="#treatment" onclick="switchTab('chemo')" class="nav-sub">→ 化學治療</a>
+  <a href="#treatment" onclick="switchTab('radio')" class="nav-sub">→ 放射線治療</a>
+  <a href="#treatment" onclick="switchTab('targeted')" class="nav-sub">→ 標靶 / 免疫治療</a>
+  <a href="#treatment" onclick="switchTab('surgery')" class="nav-sub">→ 腫瘤手術護理</a>
+  <a href="#nursing" class="nav-item"><span class="nav-icon">🫂</span><span class="nav-label"> 常見護理問題</span></a>
+  <a href="#palliative" class="nav-item"><span class="nav-icon">🕊️</span><span class="nav-label"> 安寧緩和照護</span></a>
+  <a href="#cases" class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第七單元</div>
+    <h1>腫瘤全人照護<br><em>Oncology Nursing Care</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Cancer · Palliative Care</div>
+    <div class="hero-pills">
+      <span class="pill pill-fuchsia">🎗️ 腫瘤護理</span>
+      <span class="pill pill-rose">💉 治療管理</span>
+      <span class="pill pill-amber">🫂 全人照護</span>
+      <span class="pill pill-sky">🕊️ 安寧緩和</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Carcinogenesis · Tumour Classification · Holistic Oncology</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <div class="concept-card onco">
+        <div class="concept-icon">🔬</div>
+        <div class="concept-title">癌症生物學 Carcinogenesis</div>
+        <div class="concept-en">正常細胞轉化為惡性腫瘤的多步驟過程</div>
+        <ul class="concept-points">
+          <li>致癌基因（Oncogene）啟動 + 腫瘤抑制基因（TSG）失活 → 不受控增殖</li>
+          <li>癌症特徵（Hallmarks of Cancer）：自給生長訊號、抵抗凋亡、無限複製、血管新生、侵犯/轉移、免疫逃脫</li>
+          <li>腫瘤分級（Grade）：細胞分化程度 G1（高分化）→ G4（未分化）；分化越低越惡性</li>
+          <li>腫瘤分期（Stage）：TNM系統——T（原發腫瘤大小）、N（淋巴結）、M（遠端轉移）</li>
+          <li>台灣十大癌症（111年）：大腸癌居首；女性乳癌第1；肺癌死亡率最高</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">台灣每年</div><div class="value-num">~12萬</div><div class="value-unit">新診斷</div></div>
+          <div class="value-box"><div class="value-label">死亡第1</div><div class="value-num">肺癌</div></div>
+          <div class="value-box"><div class="value-label">發生第1</div><div class="value-num">大腸癌</div></div>
+          <div class="value-box"><div class="value-label">5年存活</div><div class="value-num">Stage I &gt;90%</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card treat">
+        <div class="concept-icon">⚗️</div>
+        <div class="concept-title">腫瘤治療原則</div>
+        <div class="concept-en">手術、化療、放療、標靶、免疫治療的整合策略</div>
+        <ul class="concept-points">
+          <li>根治性治療（Curative）：目標完全消除腫瘤；早中期癌症</li>
+          <li>輔助治療（Adjuvant）：手術後預防復發（化療/放療/賀爾蒙）</li>
+          <li>新輔助治療（Neoadjuvant）：手術前縮小腫瘤；提高切除率</li>
+          <li>緩和性治療（Palliative）：晚期癌症；控制症狀、延長存活、維護生活品質</li>
+          <li>腫瘤委員會（MDT/Tumor Board）：多學科會議決定個別化治療計畫</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">化療週期</div><div class="value-num">21–28天</div><div class="value-unit">為一週期</div></div>
+          <div class="value-box"><div class="value-label">放療總劑量</div><div class="value-num">50–70 Gy</div></div>
+          <div class="value-box"><div class="value-label">CR定義</div><div class="value-num">完全緩解</div><div class="value-unit">無腫瘤證據</div></div>
+          <div class="value-box"><div class="value-label">PR定義</div><div class="value-num">&gt;30%縮小</div></div>
+        </div>
+      </div>
+
+      <div class="concept-card pallia">
+        <div class="concept-icon">🕊️</div>
+        <div class="concept-title">全人照護觀 Holistic Care</div>
+        <div class="concept-en">身、心、社、靈四個層面的整合性癌症護理</div>
+        <ul class="concept-points">
+          <li>身體（Physical）：症狀控制——疼痛、噁心、疲憊、黏膜炎、感染</li>
+          <li>心理（Psychological）：焦慮、憂鬱、恐懼復發、身體意象改變</li>
+          <li>社會（Social）：家庭角色改變、工作能力、財務壓力、社交支持</li>
+          <li>靈性（Spiritual）：生命意義、存在議題、未竟事宜、宗教信仰</li>
+          <li>癌症存活者照護（Survivorship）：完成治療後的長期追蹤與健康促進</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">疼痛控制</div><div class="value-num">WHO 3階梯</div></div>
+          <div class="value-box"><div class="value-label">安寧適用</div><div class="value-num">預後&lt;6月</div></div>
+          <div class="value-box"><div class="value-label">DNR</div><div class="value-num">預立醫療</div></div>
+          <div class="value-box"><div class="value-label">靈性痛苦</div><div class="value-num">總體疼痛</div><div class="value-unit">Total Pain</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TNM & Staging -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">📊 TNM分期系統與臨床意義</div>
+      <div class="stage-row">
+        <div class="stage-box s1"><div class="stage-num">Stage I</div><div class="stage-desc">腫瘤局限原發部位<br>未侵犯鄰近組織<br>5年存活率高（&gt;80–90%）</div></div>
+        <div class="stage-box s2"><div class="stage-num">Stage II</div><div class="stage-desc">腫瘤較大或侵犯鄰近組織<br>可能有局部淋巴結轉移<br>仍有根治機會</div></div>
+        <div class="stage-box s3"><div class="stage-num">Stage III</div><div class="stage-desc">廣泛局部或區域淋巴結轉移<br>手術切除率降低<br>多需合併治療</div></div>
+        <div class="stage-box s4"><div class="stage-num">Stage IV</div><div class="stage-desc">遠端器官轉移（M1）<br>通常為緩和性治療<br>重視生活品質</div></div>
+      </div>
+      <div class="info-box" style="margin-top:16px;">
+        <span class="alert-icon">💡</span>
+        <span>腫瘤分期（Stage）決定治療策略；腫瘤分級（Grade）反映惡性度。分期越晚、分級越高，預後越差。<em class="hl-sky">Performance Status（PS / ECOG評分）</em>是決定是否能承受積極治療的關鍵指標</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#9d174d,#fb7185);">2</div>
+      <div>
+        <div class="section-title">護理評估</div>
+        <div class="section-en">Oncology Assessment: Symptoms · Nutrition · Psychosocial · Safety</div>
+      </div>
+    </div>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <div class="assess-card-title">🩺 癌症症狀評估 <span class="tag tag-fuchsia">全面評估</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">疼痛</em>：NRS 0–10；性質（骨痛/神經性/內臟痛）；爆發性疼痛頻率；阿片類使用</li>
+          <li>疲憊（Cancer-Related Fatigue）：最常見症狀；BFI量表；排除可治療因素（貧血、甲狀腺）</li>
+          <li>噁心嘔吐：急性（24h內）vs 延遲性（24–120h）vs 預期性（條件化）</li>
+          <li>黏膜炎（Mucositis）：WHO分級 0–IV；口腔評估每班；影響進食與生活品質</li>
+          <li>骨髓抑制：ANC（嗜中性球低下）、Hb（貧血）、血小板（出血風險）</li>
+          <li>周邊神經病變（CIPN）：麻木、刺痛、平衡障礙；評估影響ADL程度</li>
+          <li>腫瘤緊急狀況：SVC症候群、脊髓壓迫、高鈣血症、腫瘤溶解症候群（TLS）</li>
+          <li>功能狀態：ECOG PS評分（0=正常活動～5=死亡）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🧪 腫瘤標記與診斷檢查 <span class="tag tag-sky">Lab & Imaging</span></div>
+        <ul class="assess-list">
+          <li>腫瘤標記：AFP（肝癌）；CEA（大腸癌）；CA 19-9（胰臟/膽道）；CA-125（卵巢）；PSA（攝護腺）；HER-2（乳癌）</li>
+          <li>組織病理：細針穿刺（FNA）、核心切片（Core Biopsy）——確診金標準</li>
+          <li>骨髓穿刺（BMP）：血液惡性腫瘤評估；腫瘤侵犯評估</li>
+          <li>影像：CT（分期）；PET-CT（全身代謝活性）；MRI（軟組織/腦/脊椎）</li>
+          <li>基因檢測：BRCA1/2（乳/卵巢）；EGFR/ALK（肺癌）；MSI/MMR（免疫治療預測）</li>
+          <li>液態切片（Liquid Biopsy）：ctDNA監測治療反應及復發</li>
+          <li>血液：CBC（骨髓抑制）；LFT/RFT（化療前評估）；尿酸（TLS監測）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🍽️ 營養狀態評估 <span class="tag tag-amber">Nutritional</span></div>
+        <ul class="assess-list">
+          <li>癌症惡病質（Cachexia）：非刻意體重減輕&gt;5% / 6個月；肌肉消耗；厭食</li>
+          <li>NRS-2002篩查（≥3分需介入）；PG-SGA（病人整體主觀評估，腫瘤適用）</li>
+          <li>每週監測體重；BMI；上臂圍（肌肉量）</li>
+          <li>生化：白蛋白、前白蛋白（短期指標）；淋巴球計數</li>
+          <li>口腔評估：黏膜炎程度影響攝食；吞嚥功能（頭頸癌）</li>
+          <li>飲食回顧：熱量及蛋白質攝取量；偏好食物</li>
+          <li>腸道功能：便祕（Opioid/VCR）；腹瀉（伊立替康/氟尿嘧啶）</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">💗 心理社會靈性評估 <span class="tag tag-rose">Psychosocial</span></div>
+        <ul class="assess-list">
+          <li>心理困擾溫度計（Distress Thermometer）：0–10分；≥4分需轉介</li>
+          <li>焦慮：GAD-7；憂鬱：PHQ-9；適應障礙 vs 重鬱症鑑別</li>
+          <li>告知（Breaking Bad News）：SPIKES模式——準備(S)、感知(P)、邀請(I)、知識(K)、同理(E)、策略(S)</li>
+          <li>身體意象：手術（乳房切除、造口）；化療（落髮、體重）；放療（皮膚）</li>
+          <li>社會支持：家庭照顧者負擔評估；財務毒性；工作能力</li>
+          <li>靈性需求：生命意義感；希望感；宗教/信仰支持</li>
+          <li>預立醫療：是否有預立醫療決定（AD）；代理人指定；DNR意願</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ECOG Score -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="assess-card-title">📈 ECOG 體能狀態（Performance Status）評分</div>
+      <table class="data-table">
+        <tr><th>分數</th><th>描述</th><th>臨床意義</th></tr>
+        <tr><td><em class="hl">0</em></td><td>完全正常活動，無任何限制</td><td>可承受標準劑量積極治療</td></tr>
+        <tr><td><em class="hl">1</em></td><td>有症狀但可自理日常活動，臥床時間&lt;50%</td><td>可積極治療；密切監測</td></tr>
+        <tr><td><em class="hl-amber">2</em></td><td>有症狀，可自理，不能工作，臥床&lt;50%</td><td>治療需謹慎評估效益/風險</td></tr>
+        <tr><td><em class="hl-rose">3</em></td><td>自理能力受限，臥床&gt;50%</td><td>積極治療風險高；傾向緩和</td></tr>
+        <tr><td><em class="hl-rose">4</em></td><td>完全失能，需完全照護</td><td>緩和/支持性治療；安寧評估</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TREATMENT -->
+  <section class="section" id="treatment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#c026d3,#e879f9);">3</div>
+      <div>
+        <div class="section-title">治療方式與護理</div>
+        <div class="section-en">Chemotherapy · Radiotherapy · Targeted / Immunotherapy · Surgery</div>
+      </div>
+    </div>
+
+    <div class="disease-tabs">
+      <button class="tab-btn active" onclick="switchTab('chemo')">💉 化學治療</button>
+      <button class="tab-btn" onclick="switchTab('radio')">☢️ 放射線治療</button>
+      <button class="tab-btn" onclick="switchTab('targeted')">🎯 標靶 / 免疫治療</button>
+      <button class="tab-btn" onclick="switchTab('surgery')">🔪 腫瘤手術護理</button>
+    </div>
+
+    <!-- CHEMO -->
+    <div class="disease-panel active" id="panel-chemo">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">化學治療護理</div><div class="disease-en">Chemotherapy Nursing Care</div></div>
+          <span class="tag tag-rose">全身治療</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">化療藥物分類</div>
+            <table class="data-table">
+              <tr><th>類別</th><th>代表藥物</th><th>主要毒性</th></tr>
+              <tr><td>烷化劑</td><td>Cyclophosphamide、Cisplatin</td><td>骨髓抑制、出血性膀胱炎（CYC）、腎毒性（CDDP）</td></tr>
+              <tr><td>抗代謝物</td><td>5-FU、Methotrexate、Gemcitabine</td><td>黏膜炎、腹瀉（5-FU）、肝/肺毒性（MTX）</td></tr>
+              <tr><td>長春花鹼類</td><td>Vincristine（VCR）、Vinorelbine</td><td><em class="hl">神經毒性（CIPN）</em>、便祕；漏出組織壞死</td></tr>
+              <tr><td>紫杉醇類</td><td>Paclitaxel（PTX）、Docetaxel</td><td>CIPN、過敏反應（PTX需前驅用藥）、骨髓抑制</td></tr>
+              <tr><td>拓撲異構酶抑制劑</td><td>Irinotecan、Etoposide</td><td>嚴重腹瀉（IRIN）、骨髓抑制</td></tr>
+              <tr><td>鉑類</td><td>Cisplatin、Oxaliplatin</td><td>腎毒性、噁心（CDDP）；神經毒性（OXA）；耳毒性</td></tr>
+              <tr><td>蒽環類</td><td>Doxorubicin（ADM）、Epirubicin</td><td><em class="hl">心臟毒性（累積劑量限制）</em>；骨髓抑制；脫髮</td></tr>
+            </table>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">化療給藥護理重點</div>
+            <ul class="info-list">
+              <li>給藥前確認：<em class="hl">五對（五R）</em>——正確病人/藥物/劑量/途徑/時間；確認血球報告（ANC、Plt、Hb）</li>
+              <li>靜脈通路：優先使用中央靜脈導管（PICC/PORT-A）；評估周邊靜脈</li>
+              <li><em class="hl-rose">外漏（Extravasation）</em>：最嚴重護理問題；發泡劑（Vesicant）外漏→組織壞死；立即停藥、回抽殘餘藥物；冰敷/熱敷（依藥物）；通知醫師</li>
+              <li>過敏反應：Paclitaxel、Oxaliplatin給藥前30分鐘前驅給藥（Diphenhydramine、Dexamethasone）；備Epinephrine</li>
+              <li>Cisplatin水化：給藥前後充分靜脈水化；監測尿量（目標&gt;100 mL/hr）；預防腎毒性</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>Vesicant（發泡劑）化療藥（如ADM、VCR、PTX）外漏立即處置：<em class="hl-rose">停止輸注→回抽→移除針頭→標記外漏範圍→依藥物選擇冷敷（ADM）或熱敷（VCR）→抬高肢體→通知醫師→建立新通路</em></span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">骨髓抑制護理</div>
+            <ul class="info-list">
+              <li>化療後骨髓最低點（Nadir）：通常第7–14天；注意感染/出血風險</li>
+              <li><em class="hl">嗜中性球低下性發燒（FN）</em>：體溫&gt;38°C + ANC&lt;500 → 緊急評估（Oncology Emergency）</li>
+              <li>FN處置：立即血培養→廣效抗生素（1小時內）→若高風險：住院治療</li>
+              <li>G-CSF（Filgrastim/Pegfilgrastim）：促進嗜中性球恢復；注射部位輪替；骨痛為常見副作用</li>
+              <li>血小板低下（&lt;50,000）：軟毛牙刷；避免肌肉注射；跌倒預防；觀察出血徵兆（點狀出血、牙齦出血）</li>
+              <li>Plt &lt;10,000 或有症狀出血：輸注血小板（依醫囑）</li>
+              <li>貧血（Hb &lt;8 g/dL 有症狀）：輸血；EPO（促紅素）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">化療常見副作用護理</div>
+            <div class="se-grid">
+              <div class="se-card"><div class="se-title">🤢 噁心嘔吐（CINV）</div>
+                <div class="se-item">5-HT3拮抗劑（Ondansetron）</div>
+                <div class="se-item">NK1拮抗劑（Aprepitant）</div>
+                <div class="se-item">Dexamethasone</div>
+                <div class="se-item">餐前30分鐘給藥</div>
+                <div class="se-item">少量多餐；避免油膩</div>
+              </div>
+              <div class="se-card"><div class="se-title">🦷 口腔黏膜炎</div>
+                <div class="se-item">每班口腔評估（WHO 0–IV）</div>
+                <div class="se-item">每餐後生理食鹽水漱口</div>
+                <div class="se-item">避免酒精漱口水</div>
+                <div class="se-item">冷凍療法（5-FU前含冰）</div>
+                <div class="se-item">Grade III/IV → NPO + TPN</div>
+              </div>
+              <div class="se-card"><div class="se-title">💇 落髮（Alopecia）</div>
+                <div class="se-item">術前告知（心理準備）</div>
+                <div class="se-item">頭皮冷凍帽（部分藥物）</div>
+                <div class="se-item">通常治療後3–6月再生</div>
+                <div class="se-item">假髮/帽子支持</div>
+                <div class="se-item">身體意象評估</div>
+              </div>
+              <div class="se-card"><div class="se-title">💩 腹瀉（化療相關）</div>
+                <div class="se-item">Irinotecan：早期（膽鹼性）→Atropine；晚期→Loperamide</div>
+                <div class="se-item">記錄次數及性質</div>
+                <div class="se-item">補充水分電解質</div>
+                <div class="se-item">肛周皮膚護理</div>
+              </div>
+              <div class="se-card"><div class="se-title">🤲 周邊神經病變（CIPN）</div>
+                <div class="se-item">Oxaliplatin：遇冷加重</div>
+                <div class="se-item">避免接觸冷水/物品</div>
+                <div class="se-item">跌倒預防（感覺障礙）</div>
+                <div class="se-item">每週評估NRS</div>
+              </div>
+              <div class="se-card"><div class="se-title">❤️ 心臟毒性（ADM）</div>
+                <div class="se-item">累積劑量限制（ADM≤550 mg/m²）</div>
+                <div class="se-item">每次給藥前評估心功能</div>
+                <div class="se-item">定期心臟超音波（EF）</div>
+                <div class="se-item">觀察呼吸困難/下肢水腫</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;"><span class="drug-tag">Ondansetron</span><span class="drug-tag">Aprepitant</span><span class="drug-tag">G-CSF (Filgrastim)</span><span class="drug-tag">Mesna（出血性膀胱炎預防）</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RADIATION -->
+    <div class="disease-panel" id="panel-radio">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">放射線治療護理</div><div class="disease-en">Radiation Therapy (RT) Nursing Care</div></div>
+          <span class="tag tag-amber">局部治療</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">放療原理與類型</div>
+            <ul class="info-list">
+              <li>游離輻射破壞腫瘤細胞DNA → 無法複製 → 細胞死亡</li>
+              <li>外照射（EBRT）：體外機器照射；最常見</li>
+              <li>近接放療（Brachytherapy）：將放射源置入體內（宮頸癌、攝護腺癌）</li>
+              <li>立體定向放射手術（SRS/SBRT）：精準高劑量；腦轉移、早期肺癌</li>
+              <li>質子治療（Proton）：精準度更高；兒童腫瘤、鄰近重要器官腫瘤</li>
+              <li>總劑量分次給予（分次放療）：減少正常組織損傷；利用腫瘤修復能力差的特性</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">放射線劑量限制器官</div>
+            <ul class="info-list">
+              <li>脊髓：&lt;45 Gy（避免放射性脊髓病變）</li>
+              <li>肺：V20 &lt;35%（避免放射性肺炎）</li>
+              <li>腎臟：平均劑量 &lt;23 Gy</li>
+              <li>心臟：平均劑量 &lt;26 Gy（乳癌放療特別注意）</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">放療期間護理</div>
+            <ul class="info-list">
+              <li><em class="hl">皮膚護理（放射野皮膚）</em>：最常見急性反應</li>
+              <li>清潔：溫水輕洗；不可用力擦；勿使用酒精/香皂/爽身粉</li>
+              <li>保濕：醫用保濕乳（非金屬成分）；照射前1小時勿塗抹</li>
+              <li>衣著：棉質寬鬆；避免日曬、熱療（照射野）</li>
+              <li>皮膚分級：乾性脫皮→濕性脫皮（水泡、滲出）→潰瘍</li>
+              <li>濕性脫皮：無菌敷料覆蓋；可考慮暫停放療1–2次</li>
+              <li><em class="hl">照射野標記</em>：勿自行洗掉（定位標記）；護理人員清潔時注意</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">依部位的特殊護理</div>
+            <ul class="info-list">
+              <li><em class="hl">頭頸部放療</em>：口乾（唾液腺損傷→終生）；口腔黏膜炎；吞嚥困難；骨壞死（需牙科處置後才可放療）</li>
+              <li><em class="hl">胸部放療（肺癌/食道癌）</em>：放射性食道炎（吞嚥疼痛）；放射性肺炎（2–6個月後）——乾咳、低燒、呼吸困難</li>
+              <li><em class="hl">腹部/骨盆腔放療</em>：腹瀉、直腸炎；卵巢功能抑制；膀胱炎（血尿）</li>
+              <li><em class="hl">腦部放療</em>：急性：腦水腫（類固醇預防）；頭痛頭暈；晚期：認知功能下降；放射性壞死</li>
+              <li>疲憊：放療期間極常見；安排規律休息；不等同於疾病惡化</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>放療後<em class="hl-rose">放射性肺炎</em>：出現乾咳、低燒、呼吸困難（尤其放療後2–6個月）→立即評估SpO₂、胸部X光；類固醇治療</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">近接放療（Brachytherapy）護理</div>
+            <ul class="info-list">
+              <li>宮頸癌近接放療：放射源置入體內期間需輻射防護</li>
+              <li>護理人員：縮短接觸時間；保持距離；鉛圍裙遮蔽</li>
+              <li>病人：單人隔離病房；探視限制（孕婦/兒童禁止）；說明時站在床尾或門口</li>
+              <li>取出放射源後：輻射防護解除；仍需評估局部反應</li>
+              <li>永久植入（攝護腺）：前6個月避免長時間接觸孕婦/兒童</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARGETED/IMMUNOTHERAPY -->
+    <div class="disease-panel" id="panel-targeted">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">標靶治療 / 免疫治療護理</div><div class="disease-en">Targeted Therapy / Immunotherapy Nursing Care</div></div>
+          <span class="tag tag-sky">精準治療</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">標靶治療分類</div>
+            <table class="data-table">
+              <tr><th>靶點</th><th>代表藥物</th><th>適用癌症</th><th>主要副作用</th></tr>
+              <tr><td>EGFR</td><td>Gefitinib, Erlotinib, Afatinib</td><td>EGFR突變肺癌</td><td>皮疹、腹瀉、間質性肺炎</td></tr>
+              <tr><td>HER-2</td><td>Trastuzumab（Herceptin）</td><td>HER-2陽性乳癌/胃癌</td><td>心臟毒性；過敏反應</td></tr>
+              <tr><td>ALK/ROS1</td><td>Crizotinib, Alectinib</td><td>ALK重排肺癌</td><td>視力改變、肝毒性</td></tr>
+              <tr><td>VEGF/R</td><td>Bevacizumab（Avastin）</td><td>大腸癌、肺癌</td><td>高血壓、傷口癒合↓、腸穿孔</td></tr>
+              <tr><td>BCR-ABL</td><td>Imatinib（Gleevec）</td><td>CML、GIST</td><td>水腫、骨髓抑制</td></tr>
+              <tr><td>CDK4/6</td><td>Palbociclib（Ibrance）</td><td>HR+/HER2- 乳癌</td><td>嗜中性球低下、疲憊</td></tr>
+            </table>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">免疫治療（ICI — 免疫檢查點抑制劑）</div>
+            <ul class="info-list">
+              <li>機轉：阻斷PD-1/PD-L1或CTLA-4抑制信號→T細胞重新活化→攻擊腫瘤</li>
+              <li>代表藥物：Pembrolizumab（Keytruda）、Nivolumab（Opdivo）、Atezolizumab</li>
+              <li>適用：MSI-H腫瘤、肺癌（PD-L1高表達）、黑色素瘤、膀胱癌等</li>
+              <li><em class="hl-rose">免疫相關不良事件（irAE）</em>：自體免疫性炎症；可影響任何器官</li>
+              <li>常見irAE：皮膚炎（最常見）、腸炎（腹瀉）、肺炎、肝炎、內分泌（甲狀腺炎、垂體炎）</li>
+              <li>嚴重irAE（Grade 3/4）：暫停或永久停止ICI；高劑量類固醇治療</li>
+            </ul>
+            <div class="alert-box"><span class="alert-icon">⚠️</span><span>免疫性肺炎（irAE）：免疫治療後出現<em class="hl-rose">漸進性呼吸困難、乾咳、低燒</em>→立即停藥並通知醫師→CT確認→Prednisolone 1–2 mg/kg；與感染鑑別診斷</span></div>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">EGFR抑制劑皮膚護理（重要）</div>
+            <ul class="info-list">
+              <li>皮疹（Acneiform Rash）：治療有效的間接指標；好發臉部/胸背部</li>
+              <li>分級：Grade 1（局部）→ Grade 2（廣泛/伴症狀）→ Grade 3（感染/功能影響）</li>
+              <li>護理：保濕（低致敏性）；SPF≥30防曬；鹽水清潔；避免抓癢</li>
+              <li>Grade 2+：外用抗生素（Clindamycin）；口服Doxycycline</li>
+              <li>甲溝炎：溫鹽水泡腳；修剪指甲；外用抗生素</li>
+              <li>衛教：皮疹不等於過敏，不應自行停藥</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">VEGF抑制劑護理（Bevacizumab）</div>
+            <ul class="info-list">
+              <li><em class="hl">高血壓</em>：最常見；每次給藥前測量血壓；目標&lt;140/90；可用降壓藥控制</li>
+              <li>傷口癒合延遲：<em class="hl-rose">手術前後各4–6週停藥</em></li>
+              <li>腸穿孔（罕見但危及生命）：突發腹痛→立即評估；急診手術</li>
+              <li>動脈血栓：中風、心肌梗塞風險↑；監測神經症狀</li>
+              <li>蛋白尿：每次給藥前尿蛋白篩查（尿試紙）</li>
+            </ul>
+            <div style="margin-top:10px;"><span class="drug-tag">Pembrolizumab</span><span class="drug-tag">Nivolumab</span><span class="drug-tag">Trastuzumab</span><span class="drug-tag">Gefitinib</span><span class="drug-tag">Bevacizumab</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SURGERY -->
+    <div class="disease-panel" id="panel-surgery">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div><div class="disease-name">腫瘤手術前後護理</div><div class="disease-en">Perioperative Oncology Nursing</div></div>
+          <span class="tag tag-green">手術護理</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">術前護理重點</div>
+            <ul class="info-list">
+              <li>心理準備：解釋手術目的、範圍；告知可能的身體改變（造口、截肢、乳房切除）</li>
+              <li>營養優化：術前2–4週高蛋白高熱量飲食；惡病質病人需評估能否耐受手術</li>
+              <li>術前評估：心肺功能（腫瘤手術常為大手術）；凝血功能；感染排除</li>
+              <li>ERAS（加速康復外科）準備：術前2小時可喝清澈液體；術前無痛飲食攝入</li>
+              <li>備血、術前化療/放療記錄；告知麻醉師所有腫瘤藥物</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">乳房切除術（Mastectomy）護理</div>
+            <ul class="info-list">
+              <li>術後引流管（JP drain）：監測引流量及顏色；引流&lt;30 mL/24hr可拔除</li>
+              <li><em class="hl">患側手臂護理</em>（腋下淋巴結清除後）：
+                <br>→ <em class="hl-rose">禁止患側測血壓、抽血、靜脈注射</em>
+                <br>→ 避免割傷、燙傷；外出戴手套
+                <br>→ 避免患側重物（&lt;2 kg）
+              </li>
+              <li>淋巴水腫預防/護理：抬高患臂；彈性袖套；向心性按摩；觀察患肢腫脹</li>
+              <li>身體意象：鼓勵查看手術部位（可漸進）；義乳/重建資訊</li>
+            </ul>
+          </div>
+          <div class="disease-section">
+            <div class="ds-title">結腸直腸癌手術（含造口）</div>
+            <ul class="info-list">
+              <li>腸道準備：機械性腸道準備（MBP）+ 口服抗生素（依醫囑）</li>
+              <li>造口位置標定（術前）：造口治療師（ET nurse）評估腹部</li>
+              <li>造口術後評估：<em class="hl">顏色（粉紅紅色=正常）</em>；紫色/黑色=缺血→立即報告</li>
+              <li>水腫（術後1–6週消退）；造口底盤需每3–5天更換</li>
+              <li>造口排泄觀察：迴腸造口（稀水樣）vs 結腸造口（半成形）</li>
+              <li>造口衛教：自我更換技術；皮膚護理；飲食調整（避免產氣食物）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:16px;">術後一般護理</div>
+            <ul class="info-list">
+              <li>ERAS術後：早期進食（腸音恢復後清流質→漸進）；術後當日或隔日下床</li>
+              <li>疼痛控制：多模式止痛（減少阿片類）；評估傷口及深層疼痛</li>
+              <li>DVT預防：彈性襪；早期活動；低分子肝素（依醫囑）</li>
+              <li>傷口護理：SSI監測；換藥無菌技術；放療後傷口癒合延遲</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#9d174d,#e879f9);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses in Oncology (NANDA-I)</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(232,121,249,.2);color:var(--primary);">1</div>
+          <div><div class="np-title">急性/慢性疼痛</div><div class="np-cause">Pain ／與腫瘤壓迫、骨轉移、化療神經毒性有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每班NRS評估；記錄爆發性疼痛（BTP）次數及特性</li>
+          <li>WHO三階梯止痛：非鴉片類→弱鴉片類→強鴉片類</li>
+          <li>規律給藥（around-the-clock）+ 爆發性疼痛救援藥物（Rescue dose）</li>
+          <li>Morphine副作用護理：便祕（預防性通便藥）；噁心；嗜睡</li>
+          <li>非藥物：熱敷、放鬆技巧、分散注意力、音樂療法</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(251,113,133,.2);color:var(--rose);">2</div>
+          <div><div class="np-title">癌症相關疲憊</div><div class="np-cause">Cancer-Related Fatigue ／與化療、貧血、睡眠障礙、心理困擾有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每班評估（BFI量表）；找出可治療原因（貧血、甲狀腺、憂鬱）</li>
+          <li>節省能量：重要活動安排在精力最佳時段（通常早晨）</li>
+          <li>漸進性運動計畫（適度有氧）：已有強烈實證支持減少疲憊</li>
+          <li>睡眠衛教：睡眠限制療法（CBT-I）；避免日間長睡</li>
+          <li>心理社會介入：放鬆訓練；正念減壓（MBSR）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(245,158,11,.2);color:var(--amber);">3</div>
+          <div><div class="np-title">營養失衡：少於身體需要</div><div class="np-cause">Imbalanced Nutrition ／與黏膜炎、噁心嘔吐、惡病質有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每週體重；PG-SGA營養評估；前白蛋白監測</li>
+          <li>少量多餐（6–8次/天）；高熱量高蛋白食物優先</li>
+          <li>止吐藥規律使用；餐前30分鐘給予</li>
+          <li>口腔護理：減輕黏膜炎；促進食慾</li>
+          <li>腸道營養（EN）→靜脈營養（TPN，腸道無法使用時）；目標熱量30–35 kcal/kg</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(245,158,11,.2);color:var(--amber);">4</div>
+          <div><div class="np-title">感染風險</div><div class="np-cause">Risk for Infection ／與化療骨髓抑制、嗜中性球低下有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>ANC監測：&lt;500/μL啟動保護性隔離；體溫&gt;38°C立即評估</li>
+          <li>手部衛生（WHO五時機）；無菌技術維護所有侵入性管路</li>
+          <li>FN緊急處置：血培養→廣效抗生素（1小時內）</li>
+          <li>生活保護：低菌飲食；生花/植栽限制；訪客篩查</li>
+          <li>口腔護理每4小時；皮膚完整性維護；避免肛門直腸操作</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">5</div>
+          <div><div class="np-title">身體意象紊亂</div><div class="np-cause">Disturbed Body Image ／與落髮、乳房切除、造口、體重改變有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>術前告知身體改變；漸進式接受（不強迫病人立即查看）</li>
+          <li>落髮：術前討論假髮；頭皮冷凍帽；化療後再生通常3–6月</li>
+          <li>乳房切除：義乳資訊；重建選擇（與外科討論）；乳癌病友團體</li>
+          <li>造口：造口治療師介入；同儕支持（有造口者）；衣著調整技巧</li>
+          <li>積極傾聽；反映感受；連結相關支持資源</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(56,189,248,.2);color:var(--sky);">6</div>
+          <div><div class="np-title">焦慮 / 死亡焦慮</div><div class="np-cause">Anxiety / Death Anxiety ／與診斷告知、預後不確定、復發恐懼有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>心理困擾溫度計每次就診評估（≥4分轉介）</li>
+          <li>SPIKES模式應用：按病人準備程度逐步告知資訊</li>
+          <li>傾聽恐懼內容（復發？死亡？家人負擔？）；不給虛假保證</li>
+          <li>正念減壓（MBSR）；認知行為療法；放鬆技巧</li>
+          <li>靈性照護：尊重信仰；協助找到生命意義；轉介院牧/靈性照顧師</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">7</div>
+          <div><div class="np-title">出血風險</div><div class="np-cause">Risk for Bleeding ／與血小板低下、凝血障礙有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>血小板監測：&lt;50,000預防性措施；&lt;10,000輸注考慮</li>
+          <li>軟毛牙刷；避免使用Aspirin/NSAIDs；電動刮鬍刀</li>
+          <li>跌倒預防（出血加重）；避免肌肉注射；減少穿刺次數</li>
+          <li>觀察出血徵兆：點狀出血、牙齦出血、尿色深（血尿）、黑便</li>
+          <li>顱內出血警示：突發頭痛、神經變化→立即CT；危及生命</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(52,211,153,.2);color:var(--green);">8</div>
+          <div><div class="np-title">照護者負荷過重</div><div class="np-cause">Caregiver Role Strain ／與長期照護、身心耗竭、財務壓力有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估照護者：身體健康、情緒狀態、財務壓力、社會支持</li>
+          <li>照護者教育：疾病知識、症狀管理技術、緊急處置</li>
+          <li>喘息服務（Respite Care）：日間照護、短期住院安置</li>
+          <li>社工轉介：政府補助、居家護理、長照2.0資源連結</li>
+          <li>預立醫療對話：鼓勵家庭提早討論末期決策；減少後期決策壓力</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: PALLIATIVE -->
+  <section class="section" id="palliative">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#1e3a5f,#38bdf8);">5</div>
+      <div>
+        <div class="section-title">安寧緩和照護</div>
+        <div class="section-en">Palliative Care · Hospice · End-of-Life Nursing</div>
+      </div>
+    </div>
+
+    <div class="assess-grid">
+      <div class="assess-card">
+        <div class="assess-card-title">🕊️ 安寧緩和照護原則 <span class="tag tag-sky">WHO定義</span></div>
+        <ul class="assess-list">
+          <li>WHO定義：提升生命威脅疾病病人及其家屬生活品質，早期識別並緩解痛苦（身體、社會、心靈）</li>
+          <li>安寧照護<em class="hl">並非等待死亡</em>；積極的症狀管理＋身心社靈支持</li>
+          <li>台灣安寧緩和醫療條例：末期病人可拒絕CPR（DNR）及無效醫療延長</li>
+          <li>安寧病房 vs 居家安寧：依病人及家屬選擇；居家安寧讓病人在熟悉環境走</li>
+          <li>早期安寧介入（Early Palliative Care）：診斷後即應開始，而非等末期才轉介</li>
+          <li>預立醫療決定（Advance Decision, AD）：包含選擇安寧緩和醫療及不予維生治療</li>
+          <li>安寧緩和醫療團隊：醫師、護理師、社工、心理師、靈性照顧師、志工</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">💊 癌症疼痛管理（WHO三階梯） <span class="tag tag-rose">疼痛控制</span></div>
+        <ul class="assess-list">
+          <li>第一階梯：輕度疼痛（NRS 1–3）→ NSAIDs ± Acetaminophen</li>
+          <li>第二階梯：中度疼痛（NRS 4–6）→ 弱鴉片類（Tramadol、Codeine）</li>
+          <li>第三階梯：重度疼痛（NRS 7–10）→ <em class="hl">強鴉片類（Morphine、Oxycodone、Fentanyl）</em></li>
+          <li>WHO原則：口服優先、按時給藥（ATC）、個別化、依階梯</li>
+          <li>Morphine護理：便祕（<em class="hl">預防性通便藥，不可省略</em>）；噁心（初期，通常數天消退）；嗜睡</li>
+          <li>Opioid過量：呼吸抑制（&lt;8次/分）、針尖瞳孔、嗜睡→ Naloxone（Narcan）解毒</li>
+          <li>爆發性疼痛（BTP）：規律劑量的10–15%作為救援藥物；每1–4小時可給</li>
+          <li>滴定（Titration）：24小時總Morphine用量按10–30%增加至疼痛控制</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🌙 臨終護理（End-of-Life Care）</div>
+        <ul class="assess-list">
+          <li>臨終徵象：呼吸型態改變（陳施式呼吸）；皮膚出現花斑（Mottling）；四肢冰冷；意識改變</li>
+          <li>停止進食飲水：臨終自然過程；不是死亡原因；強行灌食弊大於利</li>
+          <li>舒適化護理：口腔保濕（棉棒濕潤）；體位舒適；保暖</li>
+          <li>嗎啡：用於呼吸困難控制（非加速死亡）；低劑量緩解呼吸喘</li>
+          <li>過多分泌物（Death Rattle）：側臥；Scopolamine減少分泌；對家屬解釋為正常現象</li>
+          <li>疼痛評估：意識喪失時→觀察臉部表情/皺眉/肢體僵硬</li>
+          <li>症狀緊急用藥備藥包（Comfort Kit）：嗎啡、止吐藥、鎮靜劑、抗焦慮藥</li>
+          <li>24小時家屬陪伴；心理靈性支持；道別的機會</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <div class="assess-card-title">🫂 哀傷輔導（Bereavement Support）</div>
+        <ul class="assess-list">
+          <li>哀傷是正常反應，不是疾病；Kübler-Ross五階段：否認→憤怒→協議→憂鬱→接受</li>
+          <li>複雜性哀傷（Complicated Grief）：症狀持續&gt;6個月、嚴重功能障礙→需轉介</li>
+          <li>家屬護理：臨終前充分告知；允許家屬陪伴；告知可能徵象</li>
+          <li>死亡後：提供安靜隱私空間（最後告別）；提供哀傷資源</li>
+          <li>護理人員自我照護：Compassion Fatigue（憐憫疲憊）；定期督導；正念；同儕支持</li>
+          <li>機構資源：院內哀傷支持服務；悲傷團體；社區哀傷輔導熱線</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Total Pain Concept -->
+    <div class="full-card" style="margin-top:8px;">
+      <div class="assess-card-title">🔴 整體疼痛（Total Pain）概念 — Dame Cicely Saunders</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px;">
+        <div style="background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.25);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:8px;">🔥</div>
+          <div style="font-size:13px;font-weight:700;color:var(--rose);margin-bottom:6px;">身體痛苦</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">腫瘤壓迫、骨轉移、神經病變、化療副作用</div>
+        </div>
+        <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:8px;">😰</div>
+          <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:6px;">心理痛苦</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">對死亡的恐懼、焦慮憂鬱、身體意象改變、控制感喪失</div>
+        </div>
+        <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:8px;">👨‍👩‍👧</div>
+          <div style="font-size:13px;font-weight:700;color:var(--sky);margin-bottom:6px;">社會痛苦</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">家庭關係、財務壓力、工作喪失、社交孤立</div>
+        </div>
+        <div style="background:rgba(232,121,249,.08);border:1px solid rgba(232,121,249,.25);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:8px;">✨</div>
+          <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">靈性痛苦</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">為何是我？人生意義、未竟之事、死後世界、宗教信仰</div>
+        </div>
+      </div>
+      <div class="tip-box" style="margin-top:16px;">
+        <span class="alert-icon">💡</span>
+        <span>疼痛藥物控制身體痛是基礎，但若心理/社會/靈性痛苦未被處理，止痛效果將大打折扣。全人照護才是真正的「安寧」</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#9d174d,#fb7185);">6</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：化療骨髓抑制 / FN</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：乳癌術後護理</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：肺癌免疫治療 irAE</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：安寧緩和末期照護</button>
+      </div>
+
+      <!-- CASE 1: FN -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>李女士，52歲，乳癌第三期，正在接受AC-T化療方案（Doxorubicin + Cyclophosphamide → Paclitaxel）。今為第三週期化療後第10天，今晨體溫38.6°C，主訴<strong>全身虛弱、畏寒</strong>。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.6</div><div class="vital-unit">°C ↑</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">108</div><div class="vital-unit">bpm</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">102/68</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">ANC</div><div class="vital-val vital-abnormal">180</div><div class="vital-unit">/μL↓↓</div></div>
+          <div class="vital-box"><div class="vital-label">Hb</div><div class="vital-val vital-abnormal">7.8</div><div class="vital-unit">g/dL↓</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--rose);">
+          <strong>身體評估：</strong>PORT-A導管插入部位無紅腫；口腔黏膜炎 Grade II（多處小潰瘍）；無明顯感染灶
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 診斷此個案為嗜中性球低下性發燒（FN），解釋其臨床意義及緊急度</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>FN定義：</strong>單次體溫&gt;38.3°C（或&gt;38°C持續&gt;1小時）+ ANC &lt; 500/μL（或預期降至&lt;500）<br><br>
+            <strong>此案確認FN：</strong><br>
+            • 體溫 38.6°C ✓<br>
+            • ANC 180/μL（&lt;500）✓<br>
+            • 化療後第10天＝<em class="hl">Nadir期（最低點）</em>，最高風險時段<br><br>
+            <strong>臨床嚴重性（MASCC評分評估）：</strong><br>
+            → 血壓偏低（102/68）→提示可能發展為敗血症<br>
+            → <em class="hl-rose">FN是腫瘤科急症，死亡率若未及時治療可達10–40%</em><br>
+            → 低風險FN：可門診口服抗生素；高風險（此案）：需住院靜脈抗生素<br><br>
+            <strong>MASCC評分此案：</strong>血壓低（-5）+ 嚴重症狀（-3）→ 分數低 → 高風險 → 住院治療
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 列出1小時內的緊急處置（Hour-1 Bundle概念應用）</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>FN緊急處置（1小時內）：</strong><br><br>
+            <strong>① 血培養（最重要，在抗生素之前）</strong><br>
+            → <em class="hl">PORT-A血培養（1套）+ 周邊靜脈血培養（1套）</em><br>
+            → 同時送：CBC、CMP（肝腎功能）、乳酸、尿液培養、胸部X光<br><br>
+            <strong>② 廣效抗生素（1小時內給予）</strong><br>
+            → 一線：<em class="hl">Piperacillin/Tazobactam（Tazocin）</em>或Cefepime<br>
+            → 若高度懷疑MRSA（PORT-A感染）：加Vancomycin<br><br>
+            <strong>③ 液體復甦</strong><br>
+            → 血壓偏低 + 心跳快 → 靜脈注射晶體液500–1,000 mL快速輸注<br>
+            → 評估液體反應；監測尿量（目標&gt;0.5 mL/kg/hr）<br><br>
+            <strong>④ 退燒</strong><br>
+            → Acetaminophen（Panadol）；記錄退燒後體溫曲線<br><br>
+            <strong>⑤ 通知腫瘤科醫師 + 準備住院</strong><br>
+            → 評估G-CSF（Filgrastim）使用；持續動態監測
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 個案同時有Grade II黏膜炎，如何護理？下次化療前應衛教什麼？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>黏膜炎護理（Grade II）：</strong><br>
+            • Grade II：多處潰瘍但仍可進食<br>
+            • 每班口腔評估（記錄潰瘍位置/大小）<br>
+            • <em class="hl">每餐後及睡前生理食鹽水漱口</em>（勿用酒精漱口水）<br>
+            • 局部止痛：Magic Mouthwash（Xylocaine漱口液，餐前20分鐘）<br>
+            • 軟食：布丁、豆腐、粥；避免辛辣/酸/粗糙食物；溫涼食物<br>
+            • 監測進展：若發展為Grade III（無法進食）→ 考慮NGT或TPN<br><br>
+            <strong>下次化療前衛教（預防黏膜炎）：</strong><br>
+            → 5-FU前：<em class="hl">冷凍療法（口含冰塊）</em>——血管收縮減少藥物到達口腔黏膜<br>
+            → 化療前牙科評估：修復蛀牙，清潔牙結石<br>
+            → 充足水分（2,000 mL/天）；戒菸戒酒（加重黏膜損傷）<br>
+            → <em class="hl">化療後第3–10天</em>為黏膜炎最嚴重期，應加強口腔護理
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: MASTECTOMY -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳女士，45歲，右側乳癌第二期（HER-2陽性），接受<strong>右側改良型根治性乳房切除術（MRMA）加腋下淋巴結清除</strong>，術後第2天。傷口引流管在位，引流量80 mL/24hr（血性漿液）。個案詢問護理師：「我不敢看傷口，我老公也不知道怎麼辦……」
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-normal">37.1</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-normal">122/76</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-normal">78</div><div class="vital-unit">bpm</div></div>
+          <div class="vital-box"><div class="vital-label">右臂圍</div><div class="vital-val vital-warn">稍增加</div><div class="vital-unit">（術後正常）</div></div>
+          <div class="vital-box"><div class="vital-label">疼痛NRS</div><div class="vital-val vital-warn">4</div><div class="vital-unit">分</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 針對患側手臂護理，列出術後最重要的衛教重點</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>腋下淋巴結清除後 — 患側（右臂）護理衛教：</strong><br><br>
+            <strong>永久禁止（終生）：</strong><br>
+            • <em class="hl-rose">禁止右側量血壓</em>（壓迫淋巴回流）<br>
+            • <em class="hl-rose">禁止右側抽血、靜脈注射</em><br>
+            • 禁止右臂提重物（&gt;2 kg）<br>
+            • 避免患臂受傷：注射、針灸、燙傷、割傷（感染→淋巴水腫）<br><br>
+            <strong>日常保護措施：</strong><br>
+            • 戴手套做家事（避免刮傷）<br>
+            • 戴防曬袖套（日曬可誘發淋巴水腫）<br>
+            • 坐飛機長途旅行：穿彈性袖套（氣壓變化→水腫）<br><br>
+            <strong>監測淋巴水腫徵兆：</strong><br>
+            → 患臂/手背腫脹、沉重感、皮膚張力增加、珠寶戒指變緊<br>
+            → 出現立即就醫：淋巴水腫需早期治療（複合性退腫理療CDT）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 個案表達不敢看傷口且丈夫不知如何因應，護理師應如何介入？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>身體意象護理介入：</strong><br><br>
+            <strong>立即回應（此時此刻）：</strong><br>
+            • 使用開放性回應：<em class="hl">「看到傷口讓您感覺……可以說說嗎？」</em><br>
+            • 接受她的感受；不催促（「應該要面對」的說法會造成傷害）<br>
+            • 正常化：「很多女性在這個時候都有類似的感受」<br><br>
+            <strong>漸進式方法：</strong><br>
+            • <em class="hl">不強迫</em>她立即查看；讓她決定時機<br>
+            • 可先：讓她觸摸敷料外面；再逐步接近傷口<br>
+            • 提供鏡子（讓她在有準備時自行選擇）<br><br>
+            <strong>伴侶支持：</strong><br>
+            • 詢問是否願意讓先生一起參與護理討論（不假設）<br>
+            • 若願意：衛教先生「他的反應對妻子影響極大」；接受、陪伴比言語更重要<br>
+            • 提供乳癌病友支持團體（如 Reach to Recovery 康復之友）<br>
+            • 提供義乳、重建手術資訊（時機成熟時）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 個案HER-2陽性，出院後需接受Trastuzumab（Herceptin）治療，衛教重點為何？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>Trastuzumab（Herceptin）衛教：</strong><br><br>
+            <strong>治療背景：</strong><br>
+            • HER-2陽性乳癌：標靶治療，靜脈注射每3週一次，持續1年（輔助治療）<br><br>
+            <strong>心臟毒性監測（最重要副作用）：</strong><br>
+            • <em class="hl">每3–6個月心臟超音波（EF評估）</em><br>
+            • 若EF下降&gt;10%或&lt;50%：暫停治療<br>
+            • 觀察症狀：呼吸困難、腿部水腫、心悸→立即回診<br>
+            • <em class="hl-rose">禁忌：AC化療（Doxorubicin）期間勿同時使用（增加心臟毒性）</em><br><br>
+            <strong>輸液反應：</strong><br>
+            • 第一次輸注最常見：發燒、畏寒（給藥前預防性Panadol）<br>
+            • 嚴重過敏（罕見）：備急救設備<br><br>
+            <strong>生活衛教：</strong><br>
+            • 治療期間可正常生活；不影響免疫力（非化療）<br>
+            • <em class="hl">孕期禁用</em>（致畸胎）；治療期間避孕至少7個月<br>
+            • 規律回診：每次治療前抽血確認心功能
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: IMMUNOTHERAPY irAE -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王先生，63歲，晚期非小細胞肺癌（PD-L1高表達），接受<strong>Pembrolizumab（Keytruda）免疫治療</strong>已3個週期。本次回診主訴<strong>近2週漸進性呼吸困難加重、乾咳、低燒（37.6°C），日常活動即感喘</strong>。並提到皮膚有些微紅疹。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-warn">37.6</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-abnormal">22</div><div class="vital-unit">次/分↑</div></div>
+          <div class="vital-box"><div class="vital-label">SpO₂</div><div class="vital-val vital-abnormal">91%</div><div class="vital-unit">↓</div></div>
+          <div class="vital-box"><div class="vital-label">ANC</div><div class="vital-val vital-normal">3,200</div><div class="vital-unit">/μL（正常）</div></div>
+          <div class="vital-box"><div class="vital-label">CT</div><div class="vital-val vital-abnormal">雙側磨玻璃影</div><div class="vital-unit">（新出現）</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 此個案最可能的診斷是什麼？如何與感染性肺炎鑑別？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>最可能診斷：<em class="hl">免疫相關肺炎（Immune-related Pneumonitis, irAE Grade 2–3）</em></strong><br><br>
+            <strong>依據：</strong><br>
+            • 免疫治療3週期後（通常3–24週出現）<br>
+            • 漸進性呼吸困難＋乾咳＋低燒（非典型感染症狀）<br>
+            • SpO₂ 91%（活動後可能更低）<br>
+            • CT：雙側磨玻璃影（Ground Glass Opacity, GGO）——免疫性肺炎典型<br>
+            • ANC正常（若細菌感染通常ANC升高）<br><br>
+            <strong>與感染性肺炎鑑別：</strong><br>
+            | 特徵 | 免疫性肺炎 | 細菌性肺炎 |<br>
+            | 發燒 | 低燒/無 | 高燒（&gt;38.5°C）|<br>
+            | 咳嗽 | 乾咳為主 | 有痰/膿痰 |<br>
+            | WBC | 正常/輕度↑ | 明顯↑，核左移 |<br>
+            | PCT | 正常/低 | 明顯↑ |<br>
+            | CT影像 | 雙側GGO/間質性 | 局部浸潤/實變 |<br><br>
+            <strong>確診：</strong>通常臨床診斷 + 排除感染（痰培養、血培養陰性）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 免疫性肺炎的處置與護理計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>免疫性肺炎（Grade 2–3）處置：</strong><br><br>
+            <strong>① 立即處置</strong><br>
+            → <em class="hl-rose">暫停Pembrolizumab</em>（Grade 2以上）<br>
+            → 氧氣治療：維持SpO₂&gt;94%；高流量面罩<br>
+            → 住院觀察<br><br>
+            <strong>② 類固醇治療</strong><br>
+            → Grade 2（輕中度）：口服Prednisolone 1 mg/kg/day<br>
+            → Grade 3（重度，SpO₂&lt;90%）：<em class="hl">IV Methylprednisolone 1–2 mg/kg/day</em><br>
+            → 治療反應後：緩慢減量（≥6週）；快速停藥→復發<br><br>
+            <strong>③ 預防性抗生素/抗黴菌</strong><br>
+            → 高劑量類固醇使用期間：TMP-SMX（PCP預防）<br><br>
+            <strong>護理計畫：</strong><br>
+            • 每班SpO₂監測；必要時動脈血氣<br>
+            • 類固醇副作用監測：血糖（每4–6小時）；血壓；胃腸症狀（給PPI保護）<br>
+            • 衛教病人：此為治療相關反應，非疾病進展；類固醇可有效控制<br>
+            • 後續是否恢復免疫治療：Grade 2緩解後可考慮；Grade 3通常永久停藥
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: PALLIATIVE -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>張先生，72歲，大腸癌第四期（肝、肺多發轉移）。積極治療已無效，ECOG PS 3分。個案及家屬同意轉安寧緩和照護。主要症狀：<strong>持續腹痛（NRS 8分）、嚴重噁心、食慾全無、疲憊到無法下床，並多次詢問「我還有多久？」</strong>家屬（太太）表示非常擔心，不知道怎麼在旁邊陪他。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">疼痛</div><div class="vital-val vital-abnormal">NRS 8</div><div class="vital-unit">重度</div></div>
+          <div class="vital-box"><div class="vital-label">ECOG</div><div class="vital-val vital-abnormal">3</div><div class="vital-unit">臥床&gt;50%</div></div>
+          <div class="vital-box"><div class="vital-label">體重</div><div class="vital-val vital-abnormal">−12 kg</div><div class="vital-unit">3月</div></div>
+          <div class="vital-box"><div class="vital-label">白蛋白</div><div class="vital-val vital-abnormal">2.1</div><div class="vital-unit">g/dL↓↓</div></div>
+          <div class="vital-box"><div class="vital-label">Distress</div><div class="vital-val vital-abnormal">8/10</div><div class="vital-unit">心理困擾</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 制定此個案的疼痛管理計畫（WHO三階梯應用）</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>癌症疼痛管理計畫（NRS 8 = 重度）：</strong><br><br>
+            <strong>現狀評估：</strong><br>
+            • NRS 8 = 重度疼痛 → 直接進入<em class="hl">第三階梯（強鴉片類）</em><br>
+            • 評估疼痛性質：腹部內臟痛（脹痛/絞痛）+ 可能骨轉移（刺痛）<br><br>
+            <strong>處方建議：</strong><br>
+            → 基礎用藥：<em class="hl">口服Morphine 10–30 mg Q4h（ATC按時給）</em><br>
+            → 爆發性疼痛救援：口服即效型Morphine（總日劑量的10–15%）；每1–2小時可給<br>
+            → 若無法口服：皮下/靜脈Morphine持續輸注<br><br>
+            <strong>輔助止痛：</strong><br>
+            → 骨轉移疼痛：Dexamethasone 4–8 mg/day（減少腫瘤周邊水腫）；Bisphosphonate<br>
+            → 神經性疼痛：Gabapentin；Amitriptyline<br><br>
+            <strong>Morphine副作用預防（不可省）：</strong><br>
+            → <em class="hl">通便藥（Senna + Lactulose）——每天規律給，不可等便祕發生</em><br>
+            → 止噁心（初期1–2週）：Metoclopramide<br>
+            → 監測呼吸（&lt;8次/分→Naloxone）<br><br>
+            <strong>劑量滴定：</strong>24小時內記錄BTP次數 + 總救援量；次日調整基礎劑量（增加30%）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 個案問「我還有多久？」護理師應如何回應？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>回應個案「還有多久」的問題：</strong><br><br>
+            <strong>不當回應（應避免）：</strong><br>
+            ❌「不要想太多，好好休息」（迴避）<br>
+            ❌「醫生說大概3個月」（不確定的數字造成焦慮）<br>
+            ❌「不會的，你還很有希望」（虛假保證）<br><br>
+            <strong>建議回應（NURSE模式）：</strong><br>
+            • 先探索背後問題：<em class="hl">「您問這個問題，是有什麼擔心或掛念嗎？」</em><br>
+            • 傾聽內容（可能是：怕痛苦？擔心家人？有未了心願？）<br>
+            • 誠實且溫和：「這個問題很難有精確答案，但我想知道什麼對您最重要……」<br>
+            • 提供確定性：「不論剩多少時間，我們的目標是讓您盡量不痛、舒適」<br>
+            • 邀請繼續對話：「如果您想談談您的擔心，我可以陪您」<br><br>
+            <strong>後續行動：</strong><br>
+            → 通知社工師及靈性照顧師介入<br>
+            → 評估是否有「未竟之事」（心願）；協助道謝、道愛、道別、道歉（四道）<br>
+            → 預立醫療討論：在病人還清醒時進行
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 如何支持照顧者（太太），協助她陪伴瀕死的先生？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>照顧者（家屬）支持計畫：</strong><br><br>
+            <strong>① 評估照顧者當前狀態</strong><br>
+            → 她自己的身體健康、睡眠、進食如何？<br>
+            → 情緒：恐懼（怕看到先生死亡過程）？無力感？自責？<br><br>
+            <strong>② 陪伴技巧衛教（如何「在旁邊」）</strong><br>
+            → 告訴她：<em class="hl">「您的陪伴本身就是最好的照顧」</em><br>
+            → 具體可做的事：握手、輕撫頭髮、說「我在這裡」、播放他喜歡的音樂<br>
+            → 語言：即使病人似乎沒有反應，聽覺是最後消失的感官——可繼續說話<br><br>
+            <strong>③ 臨終徵象衛教（預先告知，減少驚恐）</strong><br>
+            → 呼吸改變（陳施式呼吸）、皮膚出現花斑、手腳冰冷→這是自然過程<br>
+            → 「死亡喉音」：是喉嚨分泌物震動，病人不會痛苦<br>
+            → 停止進食飲水：身體自然過程，<em class="hl">不是您沒照顧好</em><br><br>
+            <strong>④ 喘息安排</strong><br>
+            → 鼓勵她離開病房休息（她需要照顧自己才能照顧先生）<br>
+            → 告知護理師可隨時通知<br><br>
+            <strong>⑤ 後續哀傷輔導</strong><br>
+            → 告知喪親後哀傷支持服務；醫院哀傷電話追蹤（30天/3個月/1年）
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:40px 0 20px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;">腫瘤全人照護 Oncology Nursing Care</div>
+    內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.disease-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={chemo:0,radio:1,targeted:2,surgery:3};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('treatment').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2,c4:3};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('onco-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('onco-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>

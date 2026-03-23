@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>營養與排泄 — Nutrition & Elimination | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-light: #112240;
+    --primary: #f59e0b;
+    --primary-dark: #d97706;
+    --primary-lt: #fcd34d;
+    --emerald: #10b981;
+    --emerald-lt: #6ee7b7;
+    --coral: #ff6b6b;
+    --coral-lt: #ffa0a0;
+    --sky: #38bdf8;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --text-dim: #8fa3be;
+    --border: rgba(245,158,11,0.2);
+    --card: rgba(17,34,64,0.8);
+    --card-hover: rgba(17,34,64,0.95);
+    --glass: rgba(255,255,255,0.04);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'Noto Sans TC', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before {
+    content:'';
+    position:fixed; top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(245,158,11,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(16,185,129,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(255,107,107,0.04) 0%, transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* === SIDEBAR === */
+  .sidebar {
+    position:fixed; top:0; left:0; width:260px; height:100vh;
+    background: rgba(10,22,40,0.97);
+    border-right: 1px solid var(--border);
+    z-index:200;
+    display:flex; flex-direction:column;
+    overflow-y:auto; overflow-x:hidden;
+    backdrop-filter: blur(20px);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+  }
+  body.sidebar-collapsed .sidebar { width: 60px; }
+  body.sidebar-collapsed .sidebar-logo,
+  body.sidebar-collapsed .sidebar-sub,
+  body.sidebar-collapsed .nav-section-label,
+  body.sidebar-collapsed .nav-label,
+  body.sidebar-collapsed .nav-sub {
+    opacity:0; pointer-events:none; width:0; overflow:hidden; white-space:nowrap;
+  }
+  body.sidebar-collapsed .nav-item { justify-content:center; padding:12px 0; }
+  body.sidebar-collapsed .nav-icon { margin:0; }
+  body.sidebar-collapsed .sidebar-header { justify-content:center; padding:16px 0; }
+  body.sidebar-collapsed .main { margin-left:60px; }
+
+  .sidebar-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.55); z-index:190;
+    backdrop-filter:blur(2px);
+  }
+  .sidebar-overlay.active { display:block; }
+
+  .sidebar-toggle {
+    position:fixed; top:14px; left:210px;
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(245,158,11,0.15);
+    border:1px solid rgba(245,158,11,0.35);
+    color:var(--primary); font-size:18px;
+    cursor:pointer; z-index:300;
+    display:flex; align-items:center; justify-content:center;
+    transition:left 0.3s cubic-bezier(0.4,0,0.2,1), background 0.2s;
+    line-height:1;
+  }
+  .sidebar-toggle:hover { background:rgba(245,158,11,0.3); }
+  body.sidebar-collapsed .sidebar-toggle { left: 12px; }
+  @media(max-width:768px){ .sidebar-toggle { left:14px; top:14px; } }
+
+  .sidebar-header {
+    padding:28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .sidebar-logo {
+    font-family:'Noto Serif TC', serif;
+    font-size:15px; font-weight:700;
+    color: var(--primary); letter-spacing:0.05em; line-height:1.4;
+    transition:opacity 0.2s;
+  }
+  .sidebar-sub {
+    font-size:11px; color:var(--text-dim);
+    margin-top:4px; letter-spacing:0.1em; text-transform:uppercase;
+    transition:opacity 0.2s;
+  }
+  .nav-section-label {
+    font-size:10px; font-weight:700; color:var(--text-dim);
+    letter-spacing:0.15em; text-transform:uppercase;
+    padding:16px 20px 8px; transition:opacity 0.2s;
+  }
+  .nav-item {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 20px; color:var(--text-dim);
+    cursor:pointer; text-decoration:none;
+    font-size:13px; font-weight:500;
+    transition:all 0.2s; border-left:3px solid transparent;
+    white-space:nowrap;
+  }
+  .nav-item:hover, .nav-item.active {
+    color:var(--primary); background:rgba(245,158,11,0.08);
+    border-left-color:var(--primary);
+  }
+  .nav-icon {
+    width:22px; height:22px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+  }
+  .nav-label { transition:opacity 0.2s; }
+  .nav-sub {
+    padding:6px 20px 6px 50px; color:var(--text-dim); font-size:12px;
+    cursor:pointer; text-decoration:none; display:block;
+    transition:all 0.2s; border-left:3px solid transparent; white-space:nowrap;
+  }
+  .nav-sub:hover { color:var(--primary-lt); }
+
+  /* === MAIN === */
+  .main {
+    margin-left:260px; padding:0 40px 60px;
+    position:relative; z-index:1;
+    transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height:340px; display:flex; flex-direction:column; justify-content:center;
+    padding:60px 0 40px; border-bottom:1px solid var(--border); margin-bottom:60px;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3);
+    border-radius:100px; padding:6px 16px;
+    font-size:12px; color:var(--primary); letter-spacing:0.1em;
+    margin-bottom:24px; width:fit-content;
+  }
+  .hero-badge span { width:6px; height:6px; background:var(--primary); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.4); }
+  }
+  .hero h1 {
+    font-family:'Noto Serif TC', serif;
+    font-size:clamp(36px,5vw,60px); font-weight:700; line-height:1.2; color:#fff;
+  }
+  .hero h1 em {
+    font-style:normal;
+    background: linear-gradient(135deg, var(--primary), var(--primary-lt));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero-en { font-size:18px; color:var(--text-dim); margin-top:8px; font-weight:300; letter-spacing:0.05em; }
+  .hero-pills { display:flex; gap:10px; margin-top:28px; flex-wrap:wrap; }
+  .pill { padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; letter-spacing:0.05em; }
+  .pill-amber { background:rgba(245,158,11,0.15); color:var(--primary); border:1px solid rgba(245,158,11,0.3); }
+  .pill-emerald { background:rgba(16,185,129,0.15); color:var(--emerald); border:1px solid rgba(16,185,129,0.3); }
+  .pill-coral { background:rgba(255,107,107,0.15); color:var(--coral); border:1px solid rgba(255,107,107,0.3); }
+  .pill-sky { background:rgba(56,189,248,0.15); color:var(--sky); border:1px solid rgba(56,189,248,0.3); }
+
+  /* === SECTION === */
+  .section { margin-bottom:80px; scroll-margin-top:30px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin-bottom:32px; }
+  .section-number {
+    width:40px; height:40px; border-radius:12px;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:700; color:#fff; flex-shrink:0;
+  }
+  .section-title { font-family:'Noto Serif TC', serif; font-size:28px; font-weight:700; color:#fff; }
+  .section-en { font-size:13px; color:var(--text-dim); margin-top:2px; letter-spacing:0.05em; }
+
+  /* === CONCEPT CARDS === */
+  .concept-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .concept-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:28px;
+    transition:all 0.3s; position:relative; overflow:hidden;
+  }
+  .concept-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .concept-card.nutr::before { background:linear-gradient(90deg,var(--primary),var(--primary-lt)); }
+  .concept-card.digest::before { background:linear-gradient(90deg,var(--emerald),var(--emerald-lt)); }
+  .concept-card.elim::before { background:linear-gradient(90deg,var(--coral),var(--coral-lt)); }
+  .concept-card:hover {
+    background:var(--card-hover); transform:translateY(-4px);
+    border-color:rgba(245,158,11,0.4);
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  }
+  .concept-icon { font-size:36px; margin-bottom:16px; }
+  .concept-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:6px; }
+  .concept-en { font-size:12px; color:var(--text-dim); margin-bottom:16px; }
+  .concept-points { list-style:none; margin-top:14px; }
+  .concept-points li {
+    font-size:13px; line-height:1.7; color:var(--text-dim);
+    padding:4px 0; display:flex; gap:8px; align-items:flex-start;
+  }
+  .concept-points li::before { content:'▸'; color:var(--primary); flex-shrink:0; margin-top:1px; }
+
+  /* === VALUE BOX === */
+  .value-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px; }
+  .value-box {
+    background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2);
+    border-radius:12px; padding:14px; text-align:center;
+  }
+  .value-label { font-size:11px; color:var(--text-dim); }
+  .value-num { font-family:'JetBrains Mono',monospace; font-size:17px; font-weight:600; color:var(--primary); margin:4px 0; }
+  .value-unit { font-size:10px; color:var(--text-dim); }
+
+  /* === ASSESS GRID === */
+  .assess-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .assess-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .assess-card-title { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:600; }
+  .tag-amber { background:rgba(245,158,11,0.15); color:var(--primary); }
+  .tag-emerald { background:rgba(16,185,129,0.15); color:var(--emerald); }
+  .tag-coral { background:rgba(255,107,107,0.15); color:var(--coral); }
+  .tag-sky { background:rgba(56,189,248,0.15); color:var(--sky); }
+  .tag-purple { background:rgba(167,139,250,0.15); color:var(--purple); }
+  .assess-list { list-style:none; }
+  .assess-list li {
+    font-size:13px; line-height:1.7; color:var(--text-dim);
+    padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+    display:flex; gap:8px;
+  }
+  .assess-list li:last-child { border-bottom:none; }
+  .assess-list li::before { content:'◦'; color:var(--text-dim); flex-shrink:0; }
+
+  /* === DISEASE TABS === */
+  .disease-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+  .tab-btn {
+    padding:8px 18px; border-radius:100px;
+    border:1px solid var(--border); background:transparent;
+    color:var(--text-dim); font-size:13px; font-weight:500;
+    font-family:'Noto Sans TC', sans-serif; cursor:pointer; transition:all 0.2s;
+  }
+  .tab-btn:hover { color:var(--text); border-color:var(--primary); }
+  .tab-btn.active { background:var(--primary); border-color:var(--primary); color:var(--navy); font-weight:700; }
+  .disease-panel { display:none; animation:fadeIn 0.3s ease; }
+  .disease-panel.active { display:block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .disease-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+  .disease-card-header {
+    padding:24px 28px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+  }
+  .disease-name { font-family:'Noto Serif TC', serif; font-size:22px; font-weight:700; color:#fff; }
+  .disease-en { font-size:13px; color:var(--text-dim); margin-top:4px; }
+  .disease-body { padding:24px 28px; display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .ds-title {
+    font-size:13px; font-weight:700; color:var(--primary);
+    text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  }
+  .ds-title::before { content:''; display:block; width:3px; height:14px; background:var(--primary); border-radius:2px; }
+  .info-list { list-style:none; }
+  .info-list li { font-size:13px; line-height:1.8; color:var(--text-dim); padding:3px 0; padding-left:14px; position:relative; }
+  .info-list li::before { content:'·'; position:absolute; left:0; color:var(--primary); font-size:18px; line-height:1.3; }
+  .alert-box {
+    background:rgba(255,107,107,0.08); border:1px solid rgba(255,107,107,0.25);
+    border-radius:12px; padding:14px 16px; margin-top:14px;
+    font-size:13px; line-height:1.7; color:#ffaaaa; display:flex; gap:10px;
+  }
+  .tip-box {
+    background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25);
+    border-radius:12px; padding:14px 16px; margin-top:14px;
+    font-size:13px; line-height:1.7; color:var(--emerald-lt); display:flex; gap:10px;
+  }
+  .alert-icon { flex-shrink:0; font-size:16px; }
+  .drug-tag {
+    display:inline-block; background:rgba(167,139,250,0.2);
+    border:1px solid rgba(167,139,250,0.4); color:#c4b5fd;
+    font-size:12px; font-weight:600; font-family:'JetBrains Mono',monospace;
+    padding:2px 8px; border-radius:6px; margin:2px;
+  }
+
+  /* === NURSING PROBLEMS === */
+  .np-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .np-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:20px; transition:all 0.2s; cursor:pointer;
+  }
+  .np-card:hover { background:var(--card-hover); border-color:rgba(245,158,11,0.3); }
+  .np-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+  .np-num {
+    width:28px; height:28px; border-radius:8px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700;
+  }
+  .np-title { font-size:14px; font-weight:700; color:#fff; line-height:1.4; }
+  .np-cause { font-size:12px; color:var(--text-dim); margin-top:3px; }
+  .np-items { list-style:none; }
+  .np-items li { font-size:12px; color:var(--text-dim); line-height:1.7; padding:3px 0; display:flex; gap:8px; }
+  .np-items li::before { content:'→'; color:var(--primary); flex-shrink:0; }
+
+  /* === CASE STUDY === */
+  .case-container { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+  .case-tabs { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; }
+  .case-tab {
+    padding:14px 22px; font-size:13px; font-weight:600; color:var(--text-dim);
+    cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent;
+    transition:all 0.2s; background:none; border-top:none; border-left:none; border-right:none;
+    font-family:'Noto Sans TC', sans-serif;
+  }
+  .case-tab:hover { color:var(--primary); }
+  .case-tab.active { color:var(--primary); border-bottom-color:var(--primary); background:rgba(245,158,11,0.05); }
+  .case-panel { display:none; padding:28px; }
+  .case-panel.active { display:block; animation:fadeIn 0.3s ease; }
+  .scenario-box {
+    background:rgba(255,255,255,0.03); border-left:3px solid var(--primary);
+    border-radius:0 12px 12px 0; padding:20px 24px; margin-bottom:24px;
+    font-size:14px; line-height:1.9; color:var(--text);
+  }
+  .scenario-box strong { color:var(--primary); }
+  .vitals-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:20px 0; }
+  .vital-box {
+    background:rgba(0,0,0,0.3); border:1px solid var(--border);
+    border-radius:12px; padding:12px; text-align:center;
+  }
+  .vital-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; }
+  .vital-val { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:600; margin:4px 0; }
+  .vital-unit { font-size:10px; color:var(--text-dim); }
+  .vital-abnormal { color:var(--coral); }
+  .vital-normal { color:var(--emerald); }
+  .vital-warn { color:var(--primary); }
+  .q-block { background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.2); border-radius:12px; padding:18px 20px; margin-bottom:12px; }
+  .q-title { font-size:13px; font-weight:700; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .q-num {
+    width:22px; height:22px; border-radius:50%;
+    background:var(--primary); color:var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; flex-shrink:0;
+  }
+  .answer-toggle {
+    background:none; border:1px solid var(--border);
+    color:var(--text-dim); font-size:12px; padding:6px 14px; border-radius:100px;
+    cursor:pointer; font-family:'Noto Sans TC',sans-serif; margin-top:12px; transition:all 0.2s;
+  }
+  .answer-toggle:hover { border-color:var(--primary); color:var(--primary); }
+  .answer-content {
+    display:none; margin-top:12px;
+    background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.2);
+    border-radius:10px; padding:14px 16px;
+    font-size:13px; line-height:1.8; color:var(--text); animation:fadeIn 0.3s ease;
+  }
+  .answer-content.open { display:block; }
+
+  /* === TABLE === */
+  .data-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .data-table th { background:rgba(245,158,11,0.12); color:var(--primary); font-weight:600; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+  .data-table td { padding:10px 14px; color:var(--text-dim); border-bottom:1px solid rgba(255,255,255,0.04); }
+  .data-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+  /* === FULL CARD === */
+  .full-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px 28px; margin-bottom:20px; }
+
+  /* === FLOW CHART === */
+  .flow-container { display:flex; align-items:stretch; gap:0; margin:16px 0; flex-wrap:wrap; }
+  .flow-step {
+    flex:1; min-width:110px;
+    background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2);
+    border-radius:12px; padding:14px 12px; text-align:center;
+  }
+  .flow-arrow { display:flex; align-items:center; color:var(--primary); font-size:20px; padding:0 6px; flex-shrink:0; }
+  .flow-step-num { font-size:11px; color:var(--primary); font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
+  .flow-step-text { font-size:12px; color:var(--text); line-height:1.5; }
+
+  /* === SCROLL TOP === */
+  .scroll-top {
+    position:fixed; bottom:28px; right:28px;
+    width:44px; height:44px; border-radius:50%;
+    background:var(--primary); color:var(--navy);
+    border:none; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(245,158,11,0.4);
+    z-index:200; transition:all 0.2s; opacity:0;
+  }
+  .scroll-top.visible { opacity:1; }
+  .scroll-top:hover { transform:scale(1.1); }
+
+  /* === HIGHLIGHTS === */
+  em.hl { font-style:normal; color:var(--primary); font-weight:600; }
+  em.hl-emerald { font-style:normal; color:var(--emerald); font-weight:600; }
+  em.hl-coral { font-style:normal; color:var(--coral); font-weight:600; }
+  em.hl-sky { font-style:normal; color:var(--sky); font-weight:600; }
+  em.hl-purple { font-style:normal; color:var(--purple); font-weight:600; }
+
+  /* === RESPONSIVE === */
+  @media(max-width:1100px){
+    .concept-grid { grid-template-columns:repeat(2,1fr); }
+    .value-grid { grid-template-columns:repeat(2,1fr); }
+  }
+  @media(max-width:900px){
+    .concept-grid, .assess-grid, .np-grid { grid-template-columns:1fr; }
+    .disease-body { grid-template-columns:1fr; }
+    .vitals-row { grid-template-columns:repeat(3,1fr); }
+  }
+  @media(max-width:768px){
+    .sidebar { transform:translateX(-100%); width:260px !important; }
+    .sidebar.mobile-open { transform:translateX(0); }
+    .main { margin-left:0 !important; padding:0 16px 60px; padding-top:60px; }
+    .hero { padding-top:20px; }
+    .hero h1 { font-size:28px; }
+    .value-grid { grid-template-columns:1fr 1fr; }
+    .vitals-row { grid-template-columns:repeat(2,1fr); }
+    .disease-tabs { flex-wrap:wrap; }
+    .tab-btn { font-size:12px; padding:7px 13px; }
+  }
+  @media(max-width:480px){
+    .hero h1 { font-size:22px; }
+    .main { padding:0 12px 60px; padding-top:60px; }
+    .flow-container { flex-direction:column; }
+    .flow-arrow { transform:rotate(90deg); align-self:center; padding:2px 0; }
+    .case-panel { padding:16px; }
+    .scenario-box { padding:14px 16px; font-size:13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOGGLE BUTTON -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="開關側欄">☰</button>
+
+<!-- OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">營養與排泄<br>Nutrition / Elimination</div>
+      <div class="sidebar-sub">內外護理學 · 自學教材</div>
+    </div>
+  </div>
+
+  <div class="nav-section-label">課程大綱</div>
+
+  <a href="#concepts" class="nav-item active">
+    <span class="nav-icon">🍽️</span><span class="nav-label"> 核心概念</span>
+  </a>
+  <a href="#assessment" class="nav-item">
+    <span class="nav-icon">📋</span><span class="nav-label"> 護理評估</span>
+  </a>
+  <a href="#diseases" class="nav-item">
+    <span class="nav-icon">🏥</span><span class="nav-label"> 常見疾病</span>
+  </a>
+  <a href="#diseases" onclick="switchTab('peptic')" class="nav-sub">→ 消化性潰瘍 / UGI出血</a>
+  <a href="#diseases" onclick="switchTab('liver')" class="nav-sub">→ 慢性肝炎 / 肝硬化</a>
+  <a href="#diseases" onclick="switchTab('hcc')" class="nav-sub">→ 肝癌</a>
+  <a href="#diseases" onclick="switchTab('pancreas')" class="nav-sub">→ 胰臟炎（癌）</a>
+  <a href="#diseases" onclick="switchTab('gallbladder')" class="nav-sub">→ 膽結石 / 膽囊炎</a>
+  <a href="#diseases" onclick="switchTab('surgery')" class="nav-sub">→ 腸胃道手術後護理</a>
+  <a href="#nursing" class="nav-item">
+    <span class="nav-icon">💊</span><span class="nav-label"> 常見護理問題</span>
+  </a>
+  <a href="#cases" class="nav-item">
+    <span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例分析</span>
+  </a>
+</nav>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 第四單元</div>
+    <h1>營養與排泄<br><em>Nutrition & Elimination</em></h1>
+    <div class="hero-en">Medical-Surgical Nursing | Adult Health Nursing</div>
+    <div class="hero-pills">
+      <span class="pill pill-amber">🍽️ 營養 Nutrition</span>
+      <span class="pill pill-emerald">🔄 消化 Digestion</span>
+      <span class="pill pill-coral">💧 排泄 Elimination</span>
+      <span class="pill pill-sky">📖 自學 Self-Learning</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CONCEPTS -->
+  <section class="section" id="concepts">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">核心概念</div>
+        <div class="section-en">Core Concepts: Nutrition · Digestion · Elimination</div>
+      </div>
+    </div>
+
+    <div class="concept-grid">
+      <!-- NUTRITION -->
+      <div class="concept-card nutr">
+        <div class="concept-icon">🍽️</div>
+        <div class="concept-title">營養 Nutrition</div>
+        <div class="concept-en">身體攝取、利用養分以維持生命功能的過程</div>
+        <ul class="concept-points">
+          <li>六大營養素：醣類（4 kcal/g）、蛋白質（4 kcal/g）、脂肪（9 kcal/g）、維生素、礦物質、水</li>
+          <li>每日基礎代謝率（BMR）：Harris-Benedict 公式估算</li>
+          <li>營養不良指標：白蛋白 &lt;3.5 g/dL、前白蛋白 &lt;17 mg/dL、體重減輕 &gt;10%</li>
+          <li>腸道營養（EN）優於靜脈營養（TPN）：維持腸道黏膜完整性</li>
+          <li>吞嚥功能評估：GUSS量表、改良式鋇劑吞嚥攝影</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">白蛋白</div><div class="value-num">3.5–5</div><div class="value-unit">g/dL</div></div>
+          <div class="value-box"><div class="value-label">前白蛋白</div><div class="value-num">17–42</div><div class="value-unit">mg/dL</div></div>
+          <div class="value-box"><div class="value-label">BMI 正常</div><div class="value-num">18.5–24</div></div>
+          <div class="value-box"><div class="value-label">每日熱量</div><div class="value-num">25–35</div><div class="value-unit">kcal/kg</div></div>
+        </div>
+      </div>
+
+      <!-- DIGESTION -->
+      <div class="concept-card digest">
+        <div class="concept-icon">🔄</div>
+        <div class="concept-title">消化 Digestion</div>
+        <div class="concept-en">食物在消化道中分解為可吸收小分子的過程</div>
+        <ul class="concept-points">
+          <li>口腔：澱粉酶（salivary amylase）開始分解醣類</li>
+          <li>胃：胃酸（HCl, pH 1.5–3.5）、胃蛋白酶（pepsin）分解蛋白質</li>
+          <li>小腸：主要吸收場所；胰液（胰蛋白酶、脂肪酶）、膽汁（乳化脂肪）</li>
+          <li>大腸：水分再吸收、電解質、微生物合成維生素K/B12</li>
+          <li>腸肝循環：膽鹽在迴腸重吸收，回到肝臟再利用</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">胃酸 pH</div><div class="value-num">1.5–3.5</div></div>
+          <div class="value-box"><div class="value-label">小腸長度</div><div class="value-num">6–7</div><div class="value-unit">公尺</div></div>
+          <div class="value-box"><div class="value-label">胃排空時間</div><div class="value-num">2–4</div><div class="value-unit">小時</div></div>
+          <div class="value-box"><div class="value-label">大腸通過</div><div class="value-num">24–72</div><div class="value-unit">小時</div></div>
+        </div>
+      </div>
+
+      <!-- ELIMINATION -->
+      <div class="concept-card elim">
+        <div class="concept-icon">💧</div>
+        <div class="concept-title">排泄 Elimination</div>
+        <div class="concept-en">身體將代謝廢物排出體外的機制</div>
+        <ul class="concept-points">
+          <li>腸道排泄：糞便成分—水（75%）、纖維、細菌、脫落黏膜細胞</li>
+          <li>正常排便：每天1次至每週3次，Bristol分類 Type 3–4 為理想</li>
+          <li>肝臟代謝：膽紅素經膽汁排泄→腸道轉換為糞膽素（糞便棕黃色）</li>
+          <li>腎臟：協同排泄含氮廢物（尿素、肌酸酐）</li>
+          <li>腸造口（ostomy）：迴腸造口（稀水樣）vs 結腸造口（半成形）</li>
+        </ul>
+        <div class="value-grid">
+          <div class="value-box"><div class="value-label">糞便含水量</div><div class="value-num">~75%</div></div>
+          <div class="value-box"><div class="value-label">正常排便頻率</div><div class="value-num">3次/週</div><div class="value-unit">至1次/天</div></div>
+          <div class="value-box"><div class="value-label">血清膽紅素</div><div class="value-num">0.2–1.2</div><div class="value-unit">mg/dL</div></div>
+          <div class="value-box"><div class="value-label">ALT/AST</div><div class="value-num">&lt;40</div><div class="value-unit">U/L</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liver Function Flowchart -->
+    <div class="full-card" style="margin-top:24px;">
+      <div class="assess-card-title">🔬 肝臟主要功能一覽</div>
+      <div class="flow-container">
+        <div class="flow-step"><div class="flow-step-num">代謝</div><div class="flow-step-text">醣類、脂肪、蛋白質代謝中樞</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">解毒</div><div class="flow-step-text">藥物、毒素、酒精代謝分解</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">合成</div><div class="flow-step-text">白蛋白、凝血因子（Ⅱ、Ⅶ、Ⅸ、Ⅹ）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">排泄</div><div class="flow-step-text">膽汁生成→乳化脂肪→排泄膽紅素</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">儲存</div><div class="flow-step-text">肝糖、維生素A/D/B12、鐵質儲存</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASSESSMENT -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#059669,#10b981);">2</div>
+      <div>
+        <div class="section-title">護理評估</div>
+        <div class="section-en">Nursing Assessment: GI · Liver · Nutritional Status</div>
+      </div>
+    </div>
+
+    <div class="assess-grid">
+      <!-- GI Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">🔍 腸胃道系統評估 <span class="tag tag-amber">主觀/客觀</span></div>
+        <ul class="assess-list">
+          <li>腹痛：PQRST、部位（右上、右下、左上、左下、臍周）</li>
+          <li>噁心、嘔吐：量、顏色、性質（咖啡色＝舊出血）</li>
+          <li>排便型態：頻率、Bristol分類、血便（鮮紅 vs 黑色柏油便）</li>
+          <li>吞嚥困難（dysphagia）：固體 vs 液體</li>
+          <li>腹部四步驟評估：<em class="hl">視→聽→叩→觸</em>（腸音先聽）</li>
+          <li>腹部觸診：壓痛、反彈痛（腹膜炎）、肝脾腫大</li>
+          <li>腸蠕動音：正常5–35次/分；腸阻塞：高亢→消失</li>
+          <li>腹水評估：移動性濁音（shifting dullness）、水波紋</li>
+          <li>黃疸：皮膚、鞏膜、尿液深黃色</li>
+          <li>直腸/肛門評估：痔瘡、肛裂、出血</li>
+        </ul>
+      </div>
+
+      <!-- Lab Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">🧪 常用診斷檢查/檢驗 <span class="tag tag-emerald">Lab & Imaging</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">肝功能</em>：ALT/AST（肝細胞損傷）、ALP/γ-GT（膽道阻塞）</li>
+          <li><em class="hl">膽紅素</em>：直接（結合型）vs 間接（非結合型）↑</li>
+          <li><em class="hl">白蛋白</em>：肝合成功能指標；PT/INR：凝血功能</li>
+          <li>胰臟酵素：血清澱粉酶（amylase）、脂肪酶（lipase）↑＝胰臟炎</li>
+          <li>腫瘤標記：AFP↑＝肝癌；CA 19-9↑＝胰臟/膽道癌；CEA＝大腸癌</li>
+          <li>H. pylori 檢查：呼氣試驗（¹³C-UBT）、糞便抗原、胃鏡組織切片</li>
+          <li>糞便潛血試驗（FOBT）：大腸癌篩檢</li>
+          <li><em class="hl">上消化道內視鏡（EGD）</em>：食道/胃/十二指腸直視</li>
+          <li>腹部超音波：膽結石首選；肝臟腫瘤</li>
+          <li>CT/MRI：肝癌、胰臟癌分期；ERCP：膽管/胰管疾病</li>
+        </ul>
+      </div>
+
+      <!-- Nutritional Assessment -->
+      <div class="assess-card">
+        <div class="assess-card-title">📊 營養狀態評估 <span class="tag tag-sky">Nutritional</span></div>
+        <ul class="assess-list">
+          <li>人體測量：身高、體重、BMI、三頭肌皮脂厚度（TSF）</li>
+          <li>體重變化：<em class="hl">非刻意體重減輕 &gt;10% / 6個月</em> → 嚴重營養不良</li>
+          <li>主觀整體評估（SGA）：病史＋身體評估</li>
+          <li>NRS-2002：住院病人營養風險篩查（≥3分需介入）</li>
+          <li>生化指標：白蛋白、前白蛋白（半衰期2天，對急性反應敏感）</li>
+          <li>免疫功能：淋巴球計數 &lt;1,500/mm³ → 免疫低下</li>
+          <li>氮平衡：攝入氮 − 排出氮；負氮平衡＝分解狀態</li>
+          <li>24小時飲食回顧：熱量、蛋白質攝取量估算</li>
+        </ul>
+      </div>
+
+      <!-- Special Procedures -->
+      <div class="assess-card">
+        <div class="assess-card-title">🩺 特殊處置與護理要點 <span class="tag tag-coral">Procedures</span></div>
+        <ul class="assess-list">
+          <li><em class="hl">鼻胃管（NGT）</em>：確認位置——X光為標準；胃液pH &lt;5；聽診打氣音</li>
+          <li>胃管灌食前確認：殘餘量 &gt;200 mL → 暫停並通知醫師</li>
+          <li>肝臟切片：術後右側臥2小時；觀察出血徵兆（HR↑、BP↓）</li>
+          <li>腹腔穿刺（paracentesis）：術後監測BP、電解質；補充白蛋白</li>
+          <li>ERCP後護理：監測胰臟炎徵兆（腹痛、澱粉酶↑）、出血</li>
+          <li>腸造口護理：觀察造口顏色（粉紅=正常；紫/黑=缺血）</li>
+          <li>TPN護理：每日更換管路；監測血糖（每4–6h）；感染防護</li>
+          <li>胃鏡（EGD）前：NPO至少6小時；局部麻醉後勿立即進食</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: DISEASES -->
+  <section class="section" id="diseases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#d97706,#f59e0b);">3</div>
+      <div>
+        <div class="section-title">常見疾病介紹</div>
+        <div class="section-en">Common Diseases: GI · Liver · Pancreas · Biliary</div>
+      </div>
+    </div>
+
+    <div class="disease-tabs">
+      <button class="tab-btn active" onclick="switchTab('peptic')">🫙 消化性潰瘍 / UGI出血</button>
+      <button class="tab-btn" onclick="switchTab('liver')">🔴 慢性肝炎 / 肝硬化</button>
+      <button class="tab-btn" onclick="switchTab('hcc')">⚠️ 肝癌</button>
+      <button class="tab-btn" onclick="switchTab('pancreas')">🟠 胰臟炎（癌）</button>
+      <button class="tab-btn" onclick="switchTab('gallbladder')">🟡 膽結石 / 膽囊炎</button>
+      <button class="tab-btn" onclick="switchTab('surgery')">🏥 腸胃道手術後護理</button>
+    </div>
+
+    <!-- PEPTIC ULCER / UGI BLEEDING -->
+    <div class="disease-panel active" id="panel-peptic">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">消化性潰瘍 / 上消化道出血</div>
+            <div class="disease-en">Peptic Ulcer Disease / Upper GI Bleeding (UGIB)</div>
+          </div>
+          <span class="tag tag-amber">消化道</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">消化性潰瘍病因與分類</div>
+            <ul class="info-list">
+              <li><em class="hl">H. pylori 感染</em>（最常見，約70–80%）：破壞胃黏膜防護屏障</li>
+              <li><em class="hl">NSAIDs / Aspirin</em>長期使用：抑制PGE₂，減少黏液分泌</li>
+              <li>胃潰瘍（GU）：多見於老年、小彎部；H. pylori、NSAIDs</li>
+              <li>十二指腸潰瘍（DU）：年輕男性多見；胃酸過多為主因</li>
+              <li>Zollinger-Ellison症候群：胃泌素瘤→極度高胃酸</li>
+              <li>壓力性潰瘍（Stress ulcer）：加護病房危重病人</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">臨床表徵</div>
+            <ul class="info-list">
+              <li>胃潰瘍：<em class="hl">餐後30–60分鐘</em>疼痛（飯後痛）；進食反而加重</li>
+              <li>十二指腸潰瘍：<em class="hl">空腹疼痛、夜間痛</em>，進食後緩解</li>
+              <li>疼痛性質：上腹灼熱感、鑽孔感；可放射至背部</li>
+              <li>穿孔徵兆：<em class="hl-coral">突然劇烈腹痛、板狀腹（board-like rigidity）</em></li>
+              <li>幽門阻塞：餐後嘔吐、胃瀦留</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">上消化道出血（UGIB）</div>
+            <ul class="info-list">
+              <li>嘔血（hematemesis）：鮮紅或咖啡渣色</li>
+              <li><em class="hl">黑色柏油便（melena）</em>：血液在消化道停留&gt;8小時，氧化變黑</li>
+              <li>鮮紅血便（hematochezia）：大量出血或下GI</li>
+              <li>休克徵兆：BP↓、HR↑、皮膚蒼白溼冷、意識改變</li>
+              <li>Blatchford / Rockall評分：預測再出血風險</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">醫療處置</div>
+            <ul class="info-list">
+              <li><em class="hl">H. pylori 根除</em>：三合一療法 PPI + 兩種抗生素（7–14天）</li>
+              <li>PPI（Omeprazole/Pantoprazole）：抑制胃酸分泌</li>
+              <li>急性出血：建立靜脈通路、輸血、NPO、內視鏡止血</li>
+              <li>內視鏡處置：注射腎上腺素（epinephrine）、電燒、夾閉</li>
+              <li>手術：迷走神經切除術、胃切除術（保守治療失敗）</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <span class="drug-tag">Omeprazole</span>
+              <span class="drug-tag">Pantoprazole IV</span>
+              <span class="drug-tag">Clarithromycin</span>
+              <span class="drug-tag">Amoxicillin</span>
+              <span class="drug-tag">Sucralfate</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li>急性出血：絕對臥床、建立兩條大靜脈通路；輸血前確認血型</li>
+              <li>監測生命徵象每15–30分鐘；記錄I&O；測Hb趨勢</li>
+              <li>協助插鼻胃管：監控出血量；必要時冰鹽水胃灌洗（有爭議）</li>
+              <li>飲食：急性期NPO → 出血止住後清流質 → 漸進恢復</li>
+              <li>衛教：<em class="hl">避免NSAIDs、戒菸戒酒、避免空腹、少量多餐</em></li>
+              <li>H. pylori根除後：4週確認根治（UBT或糞便抗原）</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>UGI出血危急徵兆：吐血量&gt;500 mL、BP &lt;90 mmHg、HR &gt;120 bpm、意識改變、Hb急速下降→立即通知醫師，準備輸血</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">飲食與生活衛教</div>
+            <ul class="info-list">
+              <li>少量多餐（每天5–6次）、定時進食</li>
+              <li>避免：辛辣、咖啡因、酒精、碳酸飲料</li>
+              <li>戒菸：吸菸抑制前列腺素合成，延遲潰瘍癒合</li>
+              <li>壓力管理：壓力→胃酸↑、黏膜防護↓</li>
+              <li><em class="hl-coral">避免空腹服用NSAIDs</em>；需長期服用者應同時給PPI</li>
+              <li>規律回診：每年胃鏡追蹤（胃潰瘍排除惡性）</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>胃潰瘍 vs 十二指腸潰瘍記憶：<em class="hl-emerald">G</em>astric ulcer → 飯後<em class="hl-emerald">G</em>et worse（飯後痛）；<em class="hl-emerald">D</em>uodenal → <em class="hl-emerald">D</em>ark night pain（空腹/夜間痛）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVER DISEASE -->
+    <div class="disease-panel" id="panel-liver">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">慢性肝炎 / 肝硬化</div>
+            <div class="disease-en">Chronic Hepatitis / Liver Cirrhosis</div>
+          </div>
+          <span class="tag tag-coral">肝臟疾病</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">慢性肝炎</div>
+            <ul class="info-list">
+              <li><em class="hl">B型肝炎（HBV）</em>：台灣最常見；血液/垂直感染；HBsAg持續陽性&gt;6個月</li>
+              <li><em class="hl">C型肝炎（HCV）</em>：輸血/針頭；台灣約1–2%盛行率；現有直接抗病毒藥（DAA）治癒率&gt;95%</li>
+              <li>酒精性肝炎：長期飲酒→AST/ALT比值 &gt;2:1</li>
+              <li>非酒精性脂肪性肝炎（NASH）：肥胖、糖尿病、高脂血症</li>
+              <li>抗病毒治療：恩替卡韋（Entecavir）、替諾福韋（Tenofovir）治療HBV</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">肝硬化（Liver Cirrhosis）</div>
+            <ul class="info-list">
+              <li>病理：肝細胞壞死→纖維化→假小葉形成→不可逆</li>
+              <li>Child-Pugh分級：A（5–6分）、B（7–9分）、C（10–15分）</li>
+              <li>MELD評分：預測90天死亡率，決定肝臟移植優先順序</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">肝硬化合併症</div>
+            <ul class="info-list">
+              <li><em class="hl">食道靜脈曲張出血</em>：門脈高壓→靜脈曲張破裂；大量嘔血；致死率高</li>
+              <li><em class="hl">腹水</em>：門脈高壓＋白蛋白↓＋醛固酮↑→液體滯留腹腔</li>
+              <li><em class="hl">肝性腦病變（HE）</em>：血氨↑（NH₃ &gt;80 μg/dL）→神經毒性；撲翼性震顫（asterixis）</li>
+              <li><em class="hl">自發性細菌性腹膜炎（SBP）</em>：發燒、腹痛、腹水WBC↑；Ciprofloxacin預防</li>
+              <li>凝血異常：凝血因子合成↓→PT延長（INR↑）</li>
+              <li>肝腎症候群（HRS）：預後極差；腎臟低灌流</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">護理措施</div>
+            <ul class="info-list">
+              <li><em class="hl">靜脈曲張出血</em>：Sengstaken-Blakemore tube；TIPS；內視鏡套扎（EVL）</li>
+              <li>腹水護理：限鈉（&lt;2g/天）、限水（1,000–1,500 mL）；每日測腹圍、體重</li>
+              <li>肝性腦病變：<em class="hl">Lactulose</em>（軟便、排氨）；<em class="hl">Rifaximin</em>（抑制腸道產氨菌）</li>
+              <li>低蛋白飲食（急性HE：0.5–0.6 g/kg/day）；穩定後恢復1.2–1.5 g/kg</li>
+              <li>避免鎮靜劑（苯二氮類）：加重HE；謹慎使用利尿劑</li>
+              <li>腹腔穿刺引流：術後補充白蛋白（6–8 g / 每抽1 L腹水）</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>肝性腦病變分期：Ⅰ性格改變→Ⅱ撲翼震顫/嗜睡→Ⅲ昏迷前期→Ⅳ昏迷。<em class="hl-coral">評估定向感、睡眠型態、言語清晰度</em>是早期警示關鍵</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">飲食衛教</div>
+            <ul class="info-list">
+              <li>腹水病人：<em class="hl">低鈉飲食（&lt;2g/天）</em>；避免加工食品、醬油、鹹菜</li>
+              <li>腹水期間：限制液體攝取；每日同時間測體重（早晨空腹）</li>
+              <li>蛋白質：一般肝硬化維持1.2–1.5 g/kg；急性HE時暫降</li>
+              <li>能量：35–40 kcal/kg（防止肌肉消耗）</li>
+              <li><em class="hl-coral">絕對禁酒</em>；避免生食海鮮（感染創傷弧菌風險）</li>
+              <li>維生素補充：B群、維生素K（凝血）、鋅（免疫）</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <span class="drug-tag">Lactulose</span>
+              <span class="drug-tag">Rifaximin</span>
+              <span class="drug-tag">Propranolol（靜脈曲張預防）</span>
+              <span class="drug-tag">Furosemide</span>
+              <span class="drug-tag">Spironolactone</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HCC -->
+    <div class="disease-panel" id="panel-hcc">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">肝癌（原發性肝細胞癌）</div>
+            <div class="disease-en">Hepatocellular Carcinoma (HCC)</div>
+          </div>
+          <span class="tag tag-coral">惡性腫瘤</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">危險因子與診斷</div>
+            <ul class="info-list">
+              <li>台灣常見惡性腫瘤第2位；B/C型肝炎、肝硬化為最主要危險因子</li>
+              <li>其他：酒精性肝病、NASH、黃麴毒素（aflatoxin）暴露</li>
+              <li><em class="hl">AFP（甲胎蛋白）</em>：正常 &lt;20 ng/mL；&gt;400 ng/mL 高度懷疑HCC</li>
+              <li>超音波：篩檢工具（高危族群每6個月一次）</li>
+              <li>增強CT或MRI：特徵性「動脈期增強、靜脈期廓清」為診斷標準</li>
+              <li>BCLC分期：0/A（早期）→B（中期）→C（進行期）→D（末期）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">臨床表徵</div>
+            <ul class="info-list">
+              <li>早期：<em class="hl-coral">常無症狀</em>（沉默癌症）；多由篩檢發現</li>
+              <li>晚期：右上腹疼痛/腫塊、體重減輕、黃疸、腹水、發燒</li>
+              <li>副癌症候群：低血糖（腫瘤消耗葡萄糖）、紅血球增多症</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">治療方式</div>
+            <ul class="info-list">
+              <li><em class="hl">手術切除</em>：根治性治療首選；肝功能Child A、腫瘤局限</li>
+              <li><em class="hl">肝臟移植</em>：Milan標準（單顆&lt;5cm 或&lt;3顆每顆&lt;3cm）</li>
+              <li>局部消融：射頻燒灼術（RFA）；微波消融（MWA）</li>
+              <li>肝動脈化學栓塞（TACE）：中期HCC；缺血+化療雙效</li>
+              <li>標靶藥物：Sorafenib（蕾莎瓦）、Lenvatinib — 晚期HCC</li>
+              <li>免疫治療：Atezolizumab + Bevacizumab（一線治療）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">護理措施</div>
+            <ul class="info-list">
+              <li>TACE後：監測發燒、腹痛（栓塞後症候群）；NPO至噁心緩解</li>
+              <li>RFA後：監測肝臟穿孔出血；臥床休息2–4小時</li>
+              <li>標靶藥物Sorafenib：手足症候群（紅腫、脫皮）護理</li>
+              <li>黃疸護理：皮膚搔癢→薄荷爐甘石洗劑；剪短指甲</li>
+              <li>高危族群篩檢衛教：每6個月超音波＋AFP</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANCREATITIS -->
+    <div class="disease-panel" id="panel-pancreas">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">胰臟炎 / 胰臟癌</div>
+            <div class="disease-en">Pancreatitis / Pancreatic Cancer</div>
+          </div>
+          <span class="tag tag-amber">胰臟</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">急性胰臟炎（AP）</div>
+            <ul class="info-list">
+              <li><em class="hl">最常見原因：膽結石（60%）、酒精（30%）</em>；其他：高三酸甘油酯、藥物、ERCP後</li>
+              <li>機轉：胰酶提前活化→自我消化胰臟組織</li>
+              <li>嚴重腹痛：<em class="hl">劇烈、持續、向背部放射</em>；屈膝減輕</li>
+              <li>噁心嘔吐、發燒；嚴重時休克</li>
+              <li>Cullen's sign（臍周瘀斑）、Grey Turner's sign（側腹瘀斑）＝出血性胰臟炎</li>
+              <li>診斷：血清澱粉酶或脂肪酶 <em class="hl">&gt; 正常值3倍</em></li>
+              <li>嚴重度：Atlanta分類；CT嚴重度指數（CTSI）</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">治療與護理</div>
+            <ul class="info-list">
+              <li><em class="hl">NPO（禁食）</em>：讓胰臟休息，減少胰液分泌</li>
+              <li>積極靜脈輸液（乳酸林格氏液）：防止低血容量</li>
+              <li>疼痛控制：Morphine / Hydromorphone（Meperidine已不建議）</li>
+              <li>當可耐受時<em class="hl">盡早恢復口服或腸道營養</em>（比NPO更佳）</li>
+              <li>監測血糖（胰島素分泌受損）、鈣離子（低鈣血症→手足搐搦）</li>
+              <li>嚴重胰臟炎：ICU；感染性壞死→抗生素/外科清創</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>低鈣血症警示：血鈣 &lt;8.5 mg/dL → Chvostek's sign（叩擊臉頰出現抽搐）；Trousseau's sign（血壓計加壓出現腕痙攣）</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">慢性胰臟炎與胰臟癌</div>
+            <ul class="info-list">
+              <li>慢性胰臟炎：復發性腹痛、脂肪瀉（脂肪酶不足）、糖尿病（胰島素不足）</li>
+              <li>胰外分泌不全：補充<em class="hl">胰酶製劑（Pancreatin）</em>隨餐服用</li>
+              <li>胰臟癌（Pancreatic CA）：預後極差（5年存活率&lt;10%）</li>
+              <li>好發：胰頭（60–70%）；CA 19-9 ↑；無痛性阻塞性黃疸</li>
+              <li>Courvoisier's sign：無痛性膽囊腫大＋黃疸＝胰頭癌</li>
+              <li>手術：Whipple手術（胰十二指腸切除術）；術後護理複雜</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">Whipple手術後護理</div>
+            <ul class="info-list">
+              <li>術後監測：血糖（胰臟切除後）；膽汁引流量及顏色</li>
+              <li>延遲性胃排空（DGE）：最常見合併症；NGT持續引流</li>
+              <li>胰漏（pancreatic fistula）：引流液澱粉酶測定</li>
+              <li>飲食：低脂、少量多餐；補充胰酶</li>
+              <li>戒酒宣導：復發或惡化最重要預防措施</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>脂肪瀉（steatorrhea）特徵：<em class="hl-emerald">油亮、飄浮、難沖掉、惡臭</em>的糞便 → 脂肪吸收不良，需補充胰酶</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALLBLADDER -->
+    <div class="disease-panel" id="panel-gallbladder">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">膽結石 / 膽囊炎</div>
+            <div class="disease-en">Cholelithiasis / Cholecystitis</div>
+          </div>
+          <span class="tag tag-sky">膽道</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">膽結石（5Fs危險因子）</div>
+            <ul class="info-list">
+              <li><em class="hl">5Fs記憶法</em>：Fat（肥胖）、Female（女性）、Forty（40歲以上）、Fertile（多次生產）、Fair（白種人）</li>
+              <li>膽固醇結石（最常見）：膽固醇過飽和，膽汁淤積</li>
+              <li>色素性結石：溶血性貧血、肝硬化（膽紅素鹽沉積）</li>
+              <li>臨床：無症狀（沉默結石）多見；症狀性：<em class="hl">膽絞痛</em>（右上腹/上腹劇痛，放射至右肩）</li>
+              <li>脂肪餐後誘發：膽囊收縮素（CCK）釋放→膽囊收縮</li>
+              <li>診斷：腹部超音波（&gt;95%敏感度）</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">急性膽囊炎</div>
+            <ul class="info-list">
+              <li>右上腹持續疼痛&gt;6小時；發燒、右上腹壓痛</li>
+              <li><em class="hl">Murphy's sign 陽性</em>：深吸氣時右上腹觸診疼痛加劇（吸氣停止）</li>
+              <li>白血球↑；超音波：膽囊壁增厚&gt;4mm、膽周積液</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">Charcot's triad / Reynolds' pentad</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>徵象</th><th>Charcot's triad</th><th>Reynolds' pentad</th></tr>
+              <tr><td>發燒</td><td>✓</td><td>✓</td></tr>
+              <tr><td>黃疸</td><td>✓</td><td>✓</td></tr>
+              <tr><td>右上腹痛</td><td>✓</td><td>✓</td></tr>
+              <tr><td>休克</td><td>—</td><td>✓</td></tr>
+              <tr><td>神經症狀</td><td>—</td><td>✓</td></tr>
+              <tr><td>臨床意義</td><td>膽管炎</td><td>急性化膿性膽管炎（急症）</td></tr>
+            </table>
+            <div class="ds-title" style="margin-top:20px;">治療</div>
+            <ul class="info-list">
+              <li><em class="hl">腹腔鏡膽囊切除術（LC）</em>：標準治療；創傷小、恢復快</li>
+              <li>術前：低脂飲食、NPO；術後：觀察腹腔引流液（膽汁漏）</li>
+              <li>ERCP + 取石：膽總管結石（choledocholithiasis）</li>
+              <li>非手術：UDCA溶石（僅限膽固醇結石且膽囊功能正常）</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">術後護理（LC後）</div>
+            <ul class="info-list">
+              <li>監測右肩疼痛：CO₂殘留腹腔→橫膈刺激→右肩牽引痛（<em class="hl">正常現象</em>，1–2天緩解）</li>
+              <li>觀察膽汁漏：腹痛加劇、黃疸、發燒、引流管膽汁色液體增加</li>
+              <li>飲食：術後清流質→低脂軟食；<em class="hl">術後3–6個月低脂飲食</em></li>
+              <li>術後無膽囊：脂肪仍可消化（膽汁持續分泌），但脂肪耐受性稍低</li>
+              <li>傷口照護：腹腔鏡小傷口；7–10天可淋浴</li>
+            </ul>
+            <div class="tip-box">
+              <span class="alert-icon">💡</span>
+              <span>膽囊切除後右肩痛是<em class="hl-emerald">正常的膈神經牽引痛</em>（CO₂刺激），非心臟問題！鼓勵病人早期下床走動促進CO₂吸收</span>
+            </div>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">飲食衛教</div>
+            <ul class="info-list">
+              <li>急性期：NPO → 清流質 → 低脂飲食</li>
+              <li>低脂原則：脂肪 &lt;40g/天；避免油炸、肥肉、奶油</li>
+              <li>建議食物：蒸魚、豆腐、蔬菜、水果、去皮雞肉</li>
+              <li>少量多餐：減少膽囊一次性大量排膽汁的刺激</li>
+              <li>維持理想體重：避免快速減重（反而促進膽固醇結石形成）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GI SURGERY -->
+    <div class="disease-panel" id="panel-surgery">
+      <div class="disease-card">
+        <div class="disease-card-header">
+          <div>
+            <div class="disease-name">腸胃道手術後護理</div>
+            <div class="disease-en">Post-GI Surgery Nursing Care</div>
+          </div>
+          <span class="tag tag-purple">術後照護</span>
+        </div>
+        <div class="disease-body">
+          <div class="disease-section">
+            <div class="ds-title">胃切除術後護理（Gastrectomy）</div>
+            <ul class="info-list">
+              <li>傾食症候群（Dumping Syndrome）：<em class="hl">最常見合併症</em></li>
+              <li>早期傾食（術後30–60分鐘）：高滲食物快速進入小腸→腸蠕動加速→腹瀉、心悸、盜汗</li>
+              <li>晚期傾食（術後2–3小時）：低血糖（反應性胰島素↑）→虛弱、冷汗</li>
+              <li>預防傾食症候群護理：
+                <br>・<em class="hl">少量多餐（6–8次/天）</em>
+                <br>・進食時<em class="hl">勿同時喝水</em>（餐後30分鐘再喝）
+                <br>・<em class="hl">餐後平臥20–30分鐘</em>（延緩胃排空）
+                <br>・避免精製醣類（糖、白米）
+              </li>
+              <li>維生素B12吸收障礙（內因子不足）→每月肌注B12</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">腸造口護理（Colostomy / Ileostomy）</div>
+            <ul class="info-list">
+              <li>造口評估：<em class="hl">顏色（粉紅色/紅色=正常）</em>；紫色/黑色＝缺血→立即通知</li>
+              <li>迴腸造口（ileostomy）：液狀排泄物；水分/電解質流失多；需每天更換袋</li>
+              <li>結腸造口（colostomy）：半成形排泄物；每1–3天排便</li>
+              <li>造口底盤更換：每3–5天；造口周圍皮膚保護（Stomahesive粉）</li>
+              <li>造口底盤孔徑：比造口大<em class="hl">1–2 mm</em>（太大→皮膚受刺激；太小→造口缺血）</li>
+              <li>心理支持：身體意象改變；鼓勵病人參與自我照護</li>
+            </ul>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">術後腸蠕動恢復</div>
+            <ul class="info-list">
+              <li>術後腸阻塞（POI）：聽診腸音消失；延遲進食</li>
+              <li>促進腸蠕動：<em class="hl">早期下床活動</em>（術後24小時內）；避免阿片類過量</li>
+              <li>腸音恢復後：清流質→全流質→軟食→正常飲食</li>
+              <li>排氣/排便後才進食固體食物</li>
+              <li>術後疼痛控制：ERAS（加速康復外科）方案；多模式止痛減少阿片類</li>
+            </ul>
+            <div class="ds-title" style="margin-top:20px;">術後常見合併症監測</div>
+            <table class="data-table">
+              <tr><th>合併症</th><th>早期徵兆</th><th>護理處置</th></tr>
+              <tr><td>吻合口漏</td><td>術後5–7天發燒、腹痛↑、引流液混濁</td><td>NPO、抗生素、通知外科</td></tr>
+              <tr><td>術後出血</td><td>BP↓、HR↑、引流管鮮紅血液</td><td>壓迫、輸血、返手術室</td></tr>
+              <tr><td>腸阻塞</td><td>無排氣、腹脹、嘔吐、腸音消失</td><td>NGT減壓、NPO</td></tr>
+              <tr><td>DVT/PE</td><td>小腿腫脹、突發喘氣、胸痛</td><td>彈性襪、低分子肝素</td></tr>
+            </table>
+          </div>
+
+          <div class="disease-section">
+            <div class="ds-title">鼻胃管護理要點</div>
+            <ul class="info-list">
+              <li>確認位置（每次使用前）：<em class="hl">X光為金標準</em>；胃液pH &lt;5；回抽&gt;10 mL</li>
+              <li>管路標示：固定於鼻翼，每班記錄外露刻度</li>
+              <li>引流護理：觀察引流量、顏色（咖啡色→舊血；鮮紅→新出血）</li>
+              <li>灌食殘餘量：&gt;200 mL暫停灌食；抬高床頭 &gt;30°（預防吸入性肺炎）</li>
+              <li>口腔護理：每班至少一次（防止黏膜乾燥、感染）</li>
+            </ul>
+            <div class="alert-box">
+              <span class="alert-icon">⚠️</span>
+              <span>傾食症候群急性期：立即平臥（降低症狀）；告知病人這是可透過飲食調整改善的情況，不需恐慌，但需配合少量多餐、餐後平臥等措施</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NURSING PROBLEMS -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">4</div>
+      <div>
+        <div class="section-title">常見護理問題</div>
+        <div class="section-en">Common Nursing Diagnoses (NANDA-I)</div>
+      </div>
+    </div>
+
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(245,158,11,0.2);color:var(--primary);">1</div>
+          <div>
+            <div class="np-title">急性/慢性疼痛</div>
+            <div class="np-cause">Acute/Chronic Pain ／與消化性潰瘍、膽結石、胰臟炎有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>評估疼痛：NRS、部位（腹部4象限）、性質、誘因</li>
+          <li>依醫囑給止痛藥並評估效果；胰臟炎→屈膝側臥減輕</li>
+          <li>非藥物：熱敷（慢性）、分散注意力、放鬆技巧</li>
+          <li>消化性潰瘍：依類型調整飲食（胃/十二指腸）</li>
+          <li>急腹症警示：板狀腹、反彈痛→立即通知醫師</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,107,107,0.2);color:var(--coral);">2</div>
+          <div>
+            <div class="np-title">營養失衡：少於身體需要</div>
+            <div class="np-cause">Imbalanced Nutrition ／與食慾不振、嘔吐、吸收障礙有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>每日監測體重、評估BMI及實驗室值（白蛋白、前白蛋白）</li>
+          <li>少量多餐（6–8次/天）；軟質易消化飲食</li>
+          <li>口腔護理促進食慾；創造舒適進食環境</li>
+          <li>肝病：高熱量高蛋白；HE急性期降蛋白攝取</li>
+          <li>必要時：鼻胃管灌食或TPN（腸胃功能無法使用時）</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(255,107,107,0.2);color:var(--coral);">3</div>
+          <div>
+            <div class="np-title">體液容積不足</div>
+            <div class="np-cause">Deficient Fluid Volume ／與出血、嘔吐、腹水有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>UGI出血：每15–30分鐘測生命徵象；建立兩條靜脈通路</li>
+          <li>準確記錄I&O；監測Hb/Hct趨勢；評估組織灌流</li>
+          <li>輸血：確認血型配對；輸注前後生理食鹽水沖管</li>
+          <li>評估休克：BP↓、HR↑、皮膚蒼白濕冷、少尿</li>
+          <li>胰臟炎：積極靜脈補液（150–250 mL/hr）</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(245,158,11,0.2);color:var(--primary);">4</div>
+          <div>
+            <div class="np-title">體液容積過多</div>
+            <div class="np-cause">Excess Fluid Volume ／與肝硬化腹水、低白蛋白血症有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>每日同時間測體重；每日或每班測量腹圍</li>
+          <li>嚴格限鈉（&lt;2g/天）、限水（1,000–1,500 mL/天）</li>
+          <li>利尿劑（Furosemide＋Spironolactone）；監測電解質</li>
+          <li>半坐臥位（改善呼吸困難）；評估下肢水腫程度</li>
+          <li>腹腔穿刺後：補白蛋白；監測BP、尿量</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(16,185,129,0.2);color:var(--emerald);">5</div>
+          <div>
+            <div class="np-title">急性意識混亂</div>
+            <div class="np-cause">Acute Confusion ／與肝性腦病變、血氨升高有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>評估意識（GCS）、定向感、撲翼震顫（asterixis）</li>
+          <li>給予Lactulose：每日2–4次，目標每天2–3次軟便</li>
+          <li>監測血氨（NH₃）數值；低蛋白飲食（急性期）</li>
+          <li>安全措施：床欄上升、移除危險物品、燈光充足</li>
+          <li>限制鎮靜藥物使用；避免便祕（氨由腸道再吸收↑）</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(16,185,129,0.2);color:var(--emerald);">6</div>
+          <div>
+            <div class="np-title">腹瀉</div>
+            <div class="np-cause">Diarrhea ／與胰外分泌不全、傾食症候群、腸道感染有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>記錄排便次數、性質（Bristol分類）、顏色、血便</li>
+          <li>補充水分與電解質（鉀、鈉）；評估脫水徵兆</li>
+          <li>胰外分泌不全：補充胰酶製劑（隨正餐服用）</li>
+          <li>傾食症候群：少量多餐、低精製醣、餐後平臥</li>
+          <li>肛周皮膚護理：每次排便後清潔、塗皮膚保護霜</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(56,189,248,0.2);color:var(--sky);">7</div>
+          <div>
+            <div class="np-title">皮膚完整性受損風險</div>
+            <div class="np-cause">Risk for Impaired Skin Integrity ／與黃疸搔癢、造口排泄物有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>黃疸搔癢：薄荷爐甘石洗劑；剪短指甲；棉質衣物</li>
+          <li>避免熱水澡（加重搔癢）；不可用力抓</li>
+          <li>造口周圍皮膚：每次換袋時清潔並評估皮膚完整性</li>
+          <li>造口底盤孔徑適中（比造口大1–2mm）；隔離膏保護</li>
+          <li>臥床病人：翻身Q2h；骨突部位減壓措施</li>
+        </ul>
+      </div>
+
+      <div class="np-card">
+        <div class="np-head">
+          <div class="np-num" style="background:rgba(167,139,250,0.2);color:var(--purple);">8</div>
+          <div>
+            <div class="np-title">身體意象紊亂</div>
+            <div class="np-cause">Disturbed Body Image ／與腸造口、腹水腹脹、黃疸外觀有關</div>
+          </div>
+        </div>
+        <ul class="np-items">
+          <li>傾聽病人對外觀改變的感受；接受並同理負面情緒</li>
+          <li>鼓勵漸進性參與造口自我護理（提升自我效能）</li>
+          <li>介紹同儕支持團體（腸造口病友會）</li>
+          <li>提供心理社會支持；必要時轉介心理師</li>
+          <li>衛教：造口不影響正常活動（游泳、工作）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: CASES -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">5</div>
+      <div>
+        <div class="section-title">臨床案例分析</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：上消化道出血</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：肝硬化腹水</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：急性胰臟炎</button>
+        <button class="case-tab" onclick="switchCase('c4')">案例四：胃癌術後</button>
+      </div>
+
+      <!-- CASE 1: UGI BLEEDING -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳先生，52歲，有<strong>消化性潰瘍病史10年及長期服用Ibuprofen（關節炎用藥）</strong>。今晨突然嘔吐大量咖啡色液體約500 mL，並有黑色柏油便。家人送急診，病人主訴頭暈、全身虛弱。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-normal">36.9</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-normal">20</div><div class="vital-unit">次/分</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-abnormal">88/58</div><div class="vital-unit">mmHg ↓</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">118</div><div class="vital-unit">bpm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">Hb</div><div class="vital-val vital-abnormal">7.2</div><div class="vital-unit">g/dL ↓</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--coral);">
+          <strong>身體評估：</strong>皮膚蒼白、冰冷；黏膜乾燥；腹部輕度壓痛（上腹）；直腸指診確認黑色柏油便<br>
+          <strong>實驗室：</strong>Hb 7.2 g/dL↓｜BUN/Cr比值 &gt;30（提示上GI出血）｜PT 14.2秒（稍延長）
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此個案上消化道出血的可能原因</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>出血原因分析：</strong><br>
+            • <em class="hl">NSAIDs（Ibuprofen）長期使用</em>：抑制前列腺素（PGE₂）合成→黏膜防護↓、胃酸分泌↑→潰瘍形成<br>
+            • <em class="hl">消化性潰瘍病史10年</em>：慢性潰瘍更易出現侵蝕血管出血<br>
+            • 咖啡色液體：血液在胃中停留，被HCl氧化→正鐵血紅素（hematin）→咖啡渣色<br>
+            • 黑色柏油便（melena）：血液通過腸道&gt;8小時，細菌分解→黑色硫化鐵<br>
+            • BUN/Cr &gt;30：UGI出血的生化指標（腸道吸收血液中蛋白質→BUN↑）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 列出急性期優先護理措施（按優先順序）</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>急性期護理優先措施：</strong><br><br>
+            <strong>① 維持血液動力學穩定（首要）</strong><br>
+            → 建立<em class="hl">兩條大口徑靜脈通路（14–16G）</em>；快速輸液<br>
+            → 備血（交叉配對）；Hb &lt;7 g/dL 輸血；目標Hb 7–9 g/dL<br>
+            → 平臥、抬腿（休克體位）；給氧<br><br>
+            <strong>② 監測出血持續情形</strong><br>
+            → 每15–30分鐘測生命徵象；記錄每小時尿量（目標&gt;0.5 mL/kg/hr）<br>
+            → 放置鼻胃管監控出血量<br><br>
+            <strong>③ 準備內視鏡止血</strong><br>
+            → NPO；通知內視鏡室；協助完成術前備藥（IV PPI）<br><br>
+            <strong>④ 用藥</strong><br>
+            → 靜脈PPI（Pantoprazole 80mg bolus + 8mg/hr持續輸注）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 出院衛教重點為何？如何預防再出血？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>出院衛教重點：</strong><br>
+            • <em class="hl">停用或更換NSAIDs</em>：與醫師討論改用Acetaminophen；若必須使用NSAIDs需合併PPI<br>
+            • H. pylori根除治療完整療程（7–14天）；4週後確認根除（呼氣試驗）<br>
+            • 口服PPI持續4–8週（胃潰瘍）或4–6週（十二指腸潰瘍）<br>
+            • 飲食：<em class="hl">少量多餐、軟質食物</em>；避免空腹、刺激性食物<br>
+            • 戒菸戒酒<br>
+            • 警示症狀：<em class="hl-coral">再次嘔血、黑便、頭暈虛弱→立即急診</em><br>
+            • 定期胃鏡追蹤（胃潰瘍：6–8週後確認癒合）
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2: LIVER CIRRHOSIS -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>李先生，58歲，C型肝炎肝硬化（Child-Pugh B級）。因<strong>腹部明顯脹大、雙下肢水腫、呼吸困難</strong>入院。家屬表示近日病人有<strong>記憶力減退、睡眠日夜顛倒</strong>情形。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-warn">37.8</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-abnormal">24</div><div class="vital-unit">次/分 ↑</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-normal">106/70</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">腹圍</div><div class="vital-val vital-abnormal">98</div><div class="vital-unit">cm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">血氨</div><div class="vital-val vital-abnormal">112</div><div class="vital-unit">μg/dL ↑</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--coral);">
+          <strong>實驗室：</strong>白蛋白 2.3 g/dL↓ | PT/INR 1.8↑ | 血氨 112 μg/dL↑（正常&lt;80）| ALT 68 U/L↑ | 腹部超音波：大量腹水、脾臟腫大
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析此個案腹水形成的病理生理機轉</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>腹水形成機轉（三大因素）：</strong><br><br>
+            <strong>① 門脈高壓</strong><br>
+            → 肝纖維化→肝竇阻力↑→門脈壓↑→腸道毛細血管靜水壓↑→液體滲出腹腔<br><br>
+            <strong>② 低白蛋白血症（白蛋白 2.3 g/dL）</strong><br>
+            → 肝臟合成白蛋白↓→血漿膠體滲透壓↓→液體無法回到血管→積在腹腔<br><br>
+            <strong>③ 繼發性醛固酮增多</strong><br>
+            → 有效血容量↓→RAAS啟動→醛固酮↑→腎臟水鈉滯留→液體更多積累
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 個案出現記憶力減退、睡眠顛倒，護理如何處理？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>肝性腦病變（HE）護理：</strong><br>
+            • 症狀確認：<em class="hl">第I–II期HE</em>（性格改變、睡眠型態改變、輕度定向障礙）<br>
+            • 評估：GCS、是否有撲翼震顫（asterixis）、MMSE<br><br>
+            <strong>治療措施：</strong><br>
+            • <em class="hl">Lactulose</em>：30–45 mL 每日3–4次，目標每天2–3次軟便（排出腸道氨）<br>
+            • <em class="hl">Rifaximin</em>：抑制腸道產氨菌（抗生素作用於腸道）<br>
+            • 尋找誘因：便祕、感染（SBP）、GI出血、電解質異常<br>
+            • 蛋白質：暫時降至0.5–0.6 g/kg/day；穩定後回升<br><br>
+            <strong>安全護理：</strong><br>
+            • 床欄上升；防跌措施；夜間保持小夜燈<br>
+            • 家屬衛教：觀察意識變化；禁止鎮靜藥物
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 制定此個案的飲食護理計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>肝硬化腹水飲食計畫：</strong><br><br>
+            <strong>熱量：</strong>35–40 kcal/kg/day（防止肌肉消耗）<br><br>
+            <strong>鈉：</strong><em class="hl">限鈉 &lt;2g/天（87 mEq）</em><br>
+            → 避免：醬油、鹽、味精、醃製品、罐頭、加工食品<br>
+            → 可用：檸檬汁、薑、蒜增味<br><br>
+            <strong>液體：</strong>限制 1,000–1,500 mL/天<br><br>
+            <strong>蛋白質：</strong>HE穩定後 1.2–1.5 g/kg/day（優選植物性、乳清蛋白）<br><br>
+            <strong>每日監測：</strong><br>
+            → 早晨空腹測體重（增加&gt;1 kg/天→水分滯留↑）<br>
+            → 每班或每日測腹圍<br><br>
+            <em class="hl-coral">絕對禁酒；避免生食海鮮（創傷弧菌感染在肝硬化病人致命）</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3: PANCREATITIS -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王女士，45歲，昨晚吃了大量油膩食物及飲酒後，今晨出現<strong>持續性劇烈上腹痛，向背部放射，屈膝可稍緩解</strong>，伴隨噁心嘔吐5次。有膽結石病史。體型肥胖（BMI 32）。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-abnormal">38.6</div><div class="vital-unit">°C ↑</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-abnormal">22</div><div class="vital-unit">次/分</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">106/72</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">108</div><div class="vital-unit">bpm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">Lipase</div><div class="vital-val vital-abnormal">1850</div><div class="vital-unit">U/L ↑↑</div></div>
+        </div>
+        <div class="scenario-box" style="margin-top:0;border-left-color:var(--primary);">
+          <strong>實驗室：</strong>血清脂肪酶 1,850 U/L（正常&lt;160）↑↑ | 澱粉酶 680 U/L↑ | 鈣離子 7.8 mg/dL↓ | WBC 15,000↑ | 腹部CT：胰臟腫脹、胰周積液（Atlanta中度重症）
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 解釋此個案低鈣血症的原因及護理評估重點</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>急性胰臟炎低鈣血症機轉：</strong><br>
+            • 胰臟壞死→<em class="hl">脂肪皂化反應</em>：脂肪酶分解脂肪→游離脂肪酸與鈣結合→形成不溶性鈣皂（皂化）→血鈣↓<br>
+            • 胰升糖素（Glucagon）↑→降鈣素↑→血鈣↓<br>
+            • 嘔吐→消化液（含鈣）大量流失<br><br>
+            <strong>低鈣血症護理評估：</strong><br>
+            • <em class="hl">Chvostek's sign</em>：叩擊耳前（顏面神經）→同側臉部肌肉抽搐<br>
+            • <em class="hl">Trousseau's sign</em>：血壓計充氣超過收縮壓3分鐘→腕部痙攣（carpopedal spasm）<br>
+            • 手足抽搐（tetany）、肌肉痙攣<br>
+            • 心電圖：QT間期延長<br>
+            • 血鈣 &lt;8.5 mg/dL：靜脈補充10%葡萄糖酸鈣
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 說明急性胰臟炎的飲食護理與恢復進食原則</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>急性胰臟炎飲食護理：</strong><br><br>
+            <strong>舊觀念（已更新）：</strong>過去強調長期NPO讓胰臟「休息」<br><br>
+            <strong>現代實證：</strong><em class="hl">輕中度胰臟炎應盡早（24–48小時內）口服進食</em>，比NPO更能減少感染率、縮短住院<br><br>
+            <strong>恢復進食原則：</strong><br>
+            → 疼痛可控制、噁心緩解後可嘗試口服<br>
+            → 先：<em class="hl-emerald">低脂清流質</em>（米湯、稀粥、果汁）<br>
+            → 再：低脂軟質食物<br>
+            → 進展到：低脂高蛋白正常飲食<br><br>
+            <strong>長期飲食衛教：</strong><br>
+            → <em class="hl-coral">戒酒（最重要）</em>；若膽結石為原因→手術切除膽囊<br>
+            → 低脂飲食（脂肪&lt;40g/天）<br>
+            → 少量多餐；避免暴飲暴食
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 4: GASTRIC SURGERY -->
+      <div class="case-panel" id="cpanel-c4">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>張先生，64歲，胃癌接受<strong>全胃切除術（Total Gastrectomy）</strong>，術後第3天轉回病房。今早進食半流質後約30分鐘，病人突然感到<strong>心悸、冒冷汗、腹部絞痛、腹瀉</strong>，且感覺「昏昏沉沉」。
+        </div>
+        <div class="vitals-row">
+          <div class="vital-box"><div class="vital-label">體溫</div><div class="vital-val vital-normal">36.8</div><div class="vital-unit">°C</div></div>
+          <div class="vital-box"><div class="vital-label">呼吸</div><div class="vital-val vital-normal">18</div><div class="vital-unit">次/分</div></div>
+          <div class="vital-box"><div class="vital-label">血壓</div><div class="vital-val vital-warn">100/68</div><div class="vital-unit">mmHg</div></div>
+          <div class="vital-box"><div class="vital-label">心率</div><div class="vital-val vital-abnormal">116</div><div class="vital-unit">bpm ↑</div></div>
+          <div class="vital-box"><div class="vital-label">血糖</div><div class="vital-val vital-abnormal">52</div><div class="vital-unit">mg/dL ↓</div></div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 判斷此個案發生了什麼合併症？解釋機轉</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>診斷：晚期傾食症候群（Late Dumping Syndrome）</strong><br><br>
+            <strong>機轉：</strong><br>
+            • 全胃切除→幽門括約肌消失→食物快速進入小腸<br>
+            • <em class="hl">高濃度食物</em>（半流質含精製醣）→腸道急速吸收→血糖快速↑<br>
+            • 血糖急升→<em class="hl">胰島素大量釋放</em>（reactive insulin surge）<br>
+            • 胰島素持續作用→<em class="hl">血糖急速下降</em>→低血糖（52 mg/dL）<br>
+            • 低血糖交感神經作用→心悸、冷汗、頭暈（此為晚期傾食，餐後2–3小時）<br><br>
+            <strong>早期 vs 晚期傾食比較：</strong><br>
+            → 早期（餐後30–60分）：腸道滲透壓↑→液體移至腸道→心悸、腹痛、腹瀉<br>
+            → 晚期（餐後2–3小時）：反應性低血糖→昏昏沉沉、心悸、冷汗
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 立即處置及長期飲食衛教計畫</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>立即處置：</strong><br>
+            • 立刻讓病人<em class="hl">平臥</em>（防止低血壓跌倒）<br>
+            • 血糖52 mg/dL → 清醒者：給予<em class="hl">15g快速作用醣類</em>（葡萄糖錠、柳橙汁）<br>
+            • 15分鐘後再測血糖；血糖 &lt;70 mg/dL 仍未回升→IV 50% Dextrose 25mL<br>
+            • 記錄血糖趨勢；通知醫師<br><br>
+            <strong>長期飲食衛教計畫（預防傾食症候群）：</strong><br>
+            <em class="hl">① 少量多餐</em>：6–8次/天，每次份量小（約1/2碗）<br>
+            <em class="hl">② 固液分離</em>：進食時不喝水，餐後30–60分鐘再喝<br>
+            <em class="hl">③ 餐後平臥</em>：20–30分鐘，延緩胃排空<br>
+            <em class="hl">④ 避免精製醣</em>：白糖、蜂蜜、果汁、白米（改糙米）<br>
+            <em class="hl">⑤ 高蛋白低脂</em>：維持肌肉量<br>
+            • 維生素B12：每月肌注（全胃切除→內因子缺乏→巨球性貧血）<br>
+            • 每日監測血糖（尤其餐後2小時）
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 全胃切除術後還需監測哪些長期合併症？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>全胃切除術後長期合併症監測：</strong><br><br>
+            • <em class="hl">維生素B12缺乏</em>→巨球性貧血：每月IM B12；每3–6個月測B12<br>
+            • <em class="hl">缺鐵性貧血</em>：胃酸↓→鐵吸收↓；補充鐵劑（空腹或加VC）<br>
+            • <em class="hl">骨質疏鬆</em>：鈣和維生素D吸收↓；補充鈣製劑＋VD<br>
+            • 傾食症候群：飲食管理<br>
+            • <em class="hl">體重減輕</em>：記錄每週體重；確保熱量充足<br>
+            • 術後癌症追蹤：每3–6個月回診，CT/內視鏡<br>
+            • 心理支持：飲食習慣大幅改變→情緒困擾需評估
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 20px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;">營養與排泄 Nutrition & Elimination</div>
+    內外護理學自學教材 | 114學年第2學期 | 僅供學術教育用途
+  </div>
+</main>
+
+<script>
+// DISEASE TABS
+function switchTab(id) {
+  document.querySelectorAll('.disease-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const mapping = { peptic:0, liver:1, hcc:2, pancreas:3, gallbladder:4, surgery:5 };
+  const tabs = document.querySelectorAll('.tab-btn');
+  if (mapping[id] !== undefined && tabs[mapping[id]]) tabs[mapping[id]].classList.add('active');
+  document.getElementById('diseases').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// CASE TABS
+function switchCase(id) {
+  document.querySelectorAll('.case-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('cpanel-' + id);
+  if (panel) panel.classList.add('active');
+  const mapping = { c1:0, c2:1, c3:2, c4:3 };
+  const tabs = document.querySelectorAll('.case-tab');
+  if (mapping[id] !== undefined && tabs[mapping[id]]) tabs[mapping[id]].classList.add('active');
+}
+
+// ANSWER TOGGLE
+function toggleAnswer(btn) {
+  const content = btn.nextElementSibling;
+  if (content.classList.contains('open')) {
+    content.classList.remove('open'); btn.textContent = '💡 顯示解析';
+  } else {
+    content.classList.add('open'); btn.textContent = '▲ 收起解析';
+  }
+}
+
+// SCROLL TOP
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 400));
+
+// SIDEBAR TOGGLE
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+const toggleBtn = document.getElementById('sidebarToggle');
+const isMobile = () => window.innerWidth <= 768;
+
+function toggleSidebar() {
+  if (isMobile()) {
+    sidebar.classList.toggle('mobile-open');
+    overlay.classList.toggle('active');
+    toggleBtn.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+  } else {
+    document.body.classList.toggle('sidebar-collapsed');
+    const collapsed = document.body.classList.contains('sidebar-collapsed');
+    toggleBtn.textContent = collapsed ? '»' : '☰';
+    localStorage.setItem('ne-sidebarCollapsed', collapsed ? '1' : '0');
+  }
+}
+function closeMobileSidebar() {
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('active');
+  toggleBtn.textContent = '☰';
+}
+sidebar.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => { if (isMobile()) closeMobileSidebar(); });
+});
+window.addEventListener('DOMContentLoaded', () => {
+  if (!isMobile() && localStorage.getItem('ne-sidebarCollapsed') === '1') {
+    document.body.classList.add('sidebar-collapsed');
+    toggleBtn.textContent = '»';
+  }
+});
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('active');
+    toggleBtn.textContent = document.body.classList.contains('sidebar-collapsed') ? '»' : '☰';
+  } else {
+    toggleBtn.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+  }
+});
+
+// NAV HIGHLIGHT
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('section.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin:'-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
