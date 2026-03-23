@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吞嚥困難照護 — Dysphagia Care | 內外護理學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #080f18;
+    --primary:   #0ea5e9;
+    --primary-dk:#0369a1;
+    --primary-lt:#bae6fd;
+    --sage:      #22c55e;
+    --sage-lt:   #bbf7d0;
+    --amber:     #f59e0b;
+    --amber-lt:  #fde68a;
+    --rose:      #f43f5e;
+    --rose-lt:   #fecdd3;
+    --purple:    #8b5cf6;
+    --purple-lt: #ddd6fe;
+    --warm:      #fb923c;
+    --warm-lt:   #fed7aa;
+    --text:      #e2e8f0;
+    --text-dim:  #8fa3be;
+    --border:    rgba(14,165,233,0.18);
+    --card:      rgba(10,20,40,0.82);
+    --card-hov:  rgba(10,20,40,0.97);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse at 12% 12%,rgba(3,105,161,.16) 0%,transparent 52%),
+      radial-gradient(ellipse at 88% 82%,rgba(14,165,233,.08) 0%,transparent 48%),
+      radial-gradient(ellipse at 50% 45%,rgba(34,197,94,.04) 0%,transparent 60%);
+    pointer-events:none;z-index:0;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:fixed;top:0;left:0;width:276px;height:100vh;background:rgba(8,15,24,.97);border-right:1px solid var(--border);z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;backdrop-filter:blur(24px);transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);}
+  body.collapsed .sidebar{width:60px;}
+  body.collapsed .sidebar-logo,body.collapsed .sidebar-sub,body.collapsed .nav-label,body.collapsed .nav-section-label,body.collapsed .nav-sub{opacity:0;pointer-events:none;width:0;overflow:hidden;white-space:nowrap;}
+  body.collapsed .nav-item{justify-content:center;padding:12px 0;}
+  body.collapsed .nav-icon{margin:0;}
+  body.collapsed .sidebar-header{justify-content:center;padding:16px 0;}
+  body.collapsed .main{margin-left:60px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;backdrop-filter:blur(3px);}
+  .sidebar-overlay.active{display:block;}
+  .tog{position:fixed;top:14px;left:226px;width:38px;height:38px;border-radius:10px;background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.35);color:var(--primary);font-size:18px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:left .3s cubic-bezier(.4,0,.2,1),background .2s;line-height:1;}
+  .tog:hover{background:rgba(14,165,233,.3);}
+  body.collapsed .tog{left:12px;}
+  @media(max-width:768px){.tog{left:14px;top:14px;}}
+  .sidebar-header{padding:28px 20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+  .sidebar-logo{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--primary);letter-spacing:.05em;line-height:1.5;transition:opacity .2s;}
+  .sidebar-sub{font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;transition:opacity .2s;}
+  .nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:.15em;text-transform:uppercase;padding:14px 20px 7px;transition:opacity .2s;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text-dim);cursor:pointer;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-item:hover,.nav-item.active{color:var(--primary);background:rgba(14,165,233,.08);border-left-color:var(--primary);}
+  .nav-icon{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .nav-label{transition:opacity .2s;}
+  .nav-sub{padding:5px 20px 5px 50px;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:none;display:block;transition:all .2s;border-left:3px solid transparent;white-space:nowrap;}
+  .nav-sub:hover{color:var(--primary-lt);}
+
+  /* ── MAIN ── */
+  .main{margin-left:276px;padding:0 40px 60px;position:relative;z-index:1;transition:margin-left .3s cubic-bezier(.4,0,.2,1);}
+
+  /* ── HERO ── */
+  .hero{min-height:320px;display:flex;flex-direction:column;justify-content:center;padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:56px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--primary);letter-spacing:.1em;margin-bottom:22px;width:fit-content;}
+  .hero-badge span{width:6px;height:6px;background:var(--primary);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+  .hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(34px,4.5vw,56px);font-weight:700;line-height:1.2;color:#fff;}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--primary),var(--primary-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-en{font-size:17px;color:var(--text-dim);margin-top:8px;font-weight:300;letter-spacing:.05em;}
+  .hero-pills{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .pill{padding:5px 13px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.04em;}
+  .pill-sky{background:rgba(14,165,233,.15);color:var(--primary);border:1px solid rgba(14,165,233,.3);}
+  .pill-sage{background:rgba(34,197,94,.15);color:var(--sage);border:1px solid rgba(34,197,94,.3);}
+  .pill-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+  .pill-rose{background:rgba(244,63,94,.15);color:var(--rose);border:1px solid rgba(244,63,94,.3);}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:76px;scroll-margin-top:30px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:30px;}
+  .section-number{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary-dk),var(--primary));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;}
+  .section-title{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:#fff;}
+  .section-en{font-size:13px;color:var(--text-dim);margin-top:2px;letter-spacing:.05em;}
+
+  /* ── CARDS ── */
+  .two-col{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 24px;}
+  .info-card:hover{background:var(--card-hov);}
+  .card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .full-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:20px;}
+
+  /* ── TAGS ── */
+  .tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  .tag-sky{background:rgba(14,165,233,.15);color:var(--primary);}
+  .tag-sage{background:rgba(34,197,94,.15);color:var(--sage);}
+  .tag-amber{background:rgba(245,158,11,.15);color:var(--amber);}
+  .tag-rose{background:rgba(244,63,94,.15);color:var(--rose);}
+  .tag-purple{background:rgba(139,92,246,.15);color:var(--purple);}
+  .tag-warm{background:rgba(251,146,60,.15);color:var(--warm);}
+
+  /* ── BOXES ── */
+  .alert-box{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--rose-lt);display:flex;gap:10px;}
+  .tip-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--sage-lt);display:flex;gap:10px;}
+  .info-box{background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--primary-lt);display:flex;gap:10px;}
+  .warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--amber-lt);display:flex;gap:10px;}
+  .evidence-box{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13px;line-height:1.75;color:var(--purple-lt);display:flex;gap:10px;}
+  .alert-icon{flex-shrink:0;font-size:15px;}
+
+  /* ── LIST ── */
+  .blist{list-style:none;}
+  .blist li{font-size:13px;line-height:1.75;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+  .blist li:last-child{border-bottom:none;}
+  .blist li::before{content:'◦';color:var(--text-dim);flex-shrink:0;}
+  .ilist{list-style:none;}
+  .ilist li{font-size:13px;line-height:1.8;color:var(--text-dim);padding:3px 0;padding-left:14px;position:relative;}
+  .ilist li::before{content:'·';position:absolute;left:0;color:var(--primary);font-size:18px;line-height:1.3;}
+
+  /* ── TABLE ── */
+  .data-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .data-table th{background:rgba(14,165,233,.12);color:var(--primary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .data-table td{padding:10px 14px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+  .data-table tr:hover td{background:rgba(255,255,255,.02);}
+
+  /* ── TABS ── */
+  .topic-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:13px;font-weight:500;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);border-color:var(--primary);}
+  .tab-btn.active{background:var(--primary);border-color:var(--primary);color:var(--navy);font-weight:700;}
+  .topic-panel{display:none;animation:fadeIn .3s ease;}
+  .topic-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ── CASE ── */
+  .case-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  .case-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+  .case-tab{padding:13px 22px;font-size:13px;font-weight:600;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans TC',sans-serif;}
+  .case-tab:hover{color:var(--primary);}
+  .case-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(14,165,233,.05);}
+  .case-panel{display:none;padding:26px;}
+  .case-panel.active{display:block;animation:fadeIn .3s ease;}
+  .scenario-box{background:rgba(255,255,255,.03);border-left:3px solid var(--primary);border-radius:0 12px 12px 0;padding:18px 22px;margin-bottom:20px;font-size:14px;line-height:1.9;color:var(--text);}
+  .scenario-box strong{color:var(--primary);}
+  .q-block{background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.18);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .q-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .q-num{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .answer-toggle{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:12px;padding:6px 14px;border-radius:100px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:10px;transition:all .2s;}
+  .answer-toggle:hover{border-color:var(--primary);color:var(--primary);}
+  .answer-content{display:none;margin-top:12px;background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.85;color:var(--text);}
+  .answer-content.open{display:block;}
+
+  /* ── SCROLL TOP ── */
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:var(--navy);border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(14,165,233,.45);z-index:200;transition:all .2s;opacity:0;}
+  .scroll-top.visible{opacity:1;}
+  .scroll-top:hover{transform:scale(1.1);}
+
+  /* ── HIGHLIGHTS ── */
+  em.hl{font-style:normal;color:var(--primary);font-weight:600;}
+  em.hl-rose{font-style:normal;color:var(--rose);font-weight:600;}
+  em.hl-sage{font-style:normal;color:var(--sage);font-weight:600;}
+  em.hl-amber{font-style:normal;color:var(--amber);font-weight:600;}
+  em.hl-purple{font-style:normal;color:var(--purple);font-weight:600;}
+  em.hl-warm{font-style:normal;color:var(--warm);font-weight:600;}
+
+  /* ══ MEALTIME SEQUENCE (特色設計) ══ */
+  .meal-timeline{position:relative;margin-top:16px;}
+  .meal-timeline::before{content:'';position:absolute;left:36px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--primary),rgba(14,165,233,.2));}
+  .meal-step{display:flex;gap:16px;margin-bottom:24px;position:relative;}
+  .meal-step-dot{width:72px;height:72px;border-radius:18px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;border:2px solid;z-index:1;}
+  .meal-step-dot.pre{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.4);}
+  .meal-step-dot.during{background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.4);}
+  .meal-step-dot.post{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);}
+  .meal-step-dot.critical{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.4);}
+  .meal-step-dot.amber{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4);}
+  .meal-step-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;margin-top:2px;}
+  .meal-step-dot.pre .meal-step-num{color:var(--purple);}
+  .meal-step-dot.during .meal-step-num{color:var(--primary);}
+  .meal-step-dot.post .meal-step-num{color:var(--sage);}
+  .meal-step-dot.critical .meal-step-num{color:var(--rose);}
+  .meal-step-dot.amber .meal-step-num{color:var(--amber);}
+  .meal-step-body{flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;}
+  .meal-step-body:hover{background:var(--card-hov);}
+  .meal-step-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .meal-step-en{font-size:11px;color:var(--text-dim);margin-bottom:10px;letter-spacing:.05em;}
+  .meal-step-items{list-style:none;}
+  .meal-step-items li{font-size:13px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .meal-step-items li::before{content:'→';flex-shrink:0;font-size:11px;margin-top:2px;}
+  .meal-step-dot.pre~.meal-step-body .meal-step-items li::before{color:var(--purple);}
+  .meal-step-dot.during~.meal-step-body .meal-step-items li::before{color:var(--primary);}
+  .meal-step-dot.post~.meal-step-body .meal-step-items li::before{color:var(--sage);}
+  .meal-step-dot.critical~.meal-step-body .meal-step-items li::before{color:var(--rose);}
+  .meal-step-dot.amber~.meal-step-body .meal-step-items li::before{color:var(--amber);}
+  .meal-step-warning{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--rose-lt);display:flex;gap:8px;}
+  .meal-step-tip{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--sage-lt);display:flex;gap:8px;}
+  .meal-step-evidence{background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--purple-lt);display:flex;gap:8px;}
+
+  /* ══ IDDSI FOOD LEVELS ══ */
+  .iddsi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;}
+  .iddsi-card{border-radius:12px;padding:14px 12px;text-align:center;border:2px solid;}
+  .iddsi-level{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-bottom:4px;}
+  .iddsi-name{font-size:12px;font-weight:700;margin-bottom:6px;}
+  .iddsi-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+  .iddsi-eg{font-size:10px;margin-top:6px;font-style:italic;}
+
+  /* ── NP GRID ── */
+  .np-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .np-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;}
+  .np-card:hover{background:var(--card-hov);border-color:rgba(14,165,233,.3);}
+  .np-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .np-num{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+  .np-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;}
+  .np-cause{font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .np-items{list-style:none;}
+  .np-items li{font-size:12px;color:var(--text-dim);line-height:1.7;padding:3px 0;display:flex;gap:8px;}
+  .np-items li::before{content:'→';color:var(--primary);flex-shrink:0;}
+
+  /* ── FLOW ── */
+  .flow-container{display:flex;align-items:stretch;gap:0;margin:14px 0;flex-wrap:wrap;}
+  .flow-step{flex:1;min-width:100px;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:12px;padding:14px 10px;text-align:center;}
+  .flow-arrow{display:flex;align-items:center;color:var(--primary);font-size:18px;padding:0 5px;flex-shrink:0;}
+  .flow-step-num{font-size:10px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+  .flow-step-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+  /* ── EVIDENCE BADGE ── */
+  .evd{display:inline-flex;align-items:center;gap:5px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;color:var(--purple-lt);font-family:'JetBrains Mono',monospace;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px){.four-col{grid-template-columns:repeat(2,1fr);}.iddsi-grid{grid-template-columns:repeat(2,1fr);}.three-col{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:900px){.two-col,.np-grid{grid-template-columns:1fr;}.three-col{grid-template-columns:1fr;}}
+  @media(max-width:768px){.sidebar{transform:translateX(-100%);width:276px !important;}.sidebar.open{transform:translateX(0);}.main{margin-left:0 !important;padding:0 16px 60px;padding-top:58px;}.hero{padding-top:18px;}.hero h1{font-size:26px;}.topic-tabs{flex-wrap:wrap;}.tab-btn{font-size:12px;padding:6px 12px;}.meal-timeline::before{left:35px;}.iddsi-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.hero h1{font-size:22px;}.main{padding:0 12px 60px;padding-top:58px;}.case-panel{padding:16px;}.flow-container{flex-direction:column;}.flow-arrow{transform:rotate(90deg);align-self:center;padding:2px 0;}.meal-step{gap:10px;}.meal-step-dot{width:60px;height:60px;font-size:18px;}}
+</style>
+</head>
+<body>
+
+<button class="tog" id="togBtn" onclick="toggleSidebar()" title="開關側欄">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="sidebar-logo">吞嚥困難照護<br>Dysphagia Care</div>
+      <div class="sidebar-sub">內外護理學 · 實證照護</div>
+    </div>
+  </div>
+  <div class="nav-section-label">學習目標</div>
+  <a href="#mechanism" class="nav-item active"><span class="nav-icon">🫁</span><span class="nav-label"> 吞嚥機轉與分期</span></a>
+  <a href="#assessment" class="nav-item"><span class="nav-icon">📋</span><span class="nav-label"> 吞嚥評估工具</span></a>
+  <a href="#mealtime" class="nav-item"><span class="nav-icon">🍽️</span><span class="nav-label"> 進食流程與順序</span></a>
+  <a href="#mealtime" onclick="switchTab('prep')" class="nav-sub">→ 進食前準備</a>
+  <a href="#mealtime" onclick="switchTab('during')" class="nav-sub">→ 進食中監控</a>
+  <a href="#mealtime" onclick="switchTab('post')" class="nav-sub">→ 進食後照護</a>
+  <a href="#iddsi" class="nav-item"><span class="nav-icon">🥣</span><span class="nav-label"> 食物質地 IDDSI</span></a>
+  <a href="#evidence" class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 實證照護指引</span></a>
+  <a href="#technique" class="nav-item"><span class="nav-icon">💡</span><span class="nav-label"> 代償技術與策略</span></a>
+  <a href="#nursing" class="nav-item"><span class="nav-icon">💊</span><span class="nav-label"> 護理問題與計畫</span></a>
+  <a href="#cases" class="nav-item"><span class="nav-icon">🔬</span><span class="nav-label"> 臨床案例演練</span></a>
+</nav>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span></span> 內外護理學 · 進階照護主題</div>
+    <h1>吞嚥困難照護<br><em>Dysphagia Care</em></h1>
+    <div class="hero-en">Evidence-Based Dysphagia Management in Medical-Surgical Nursing</div>
+    <div class="hero-pills">
+      <span class="pill pill-sky">🫁 吞嚥機轉</span>
+      <span class="pill pill-sage">🍽️ 進食順序</span>
+      <span class="pill pill-amber">🥣 IDDSI質地</span>
+      <span class="pill pill-rose">🔬 實證照護</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 1: MECHANISM
+  ══════════════════════════════ -->
+  <section class="section" id="mechanism">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">吞嚥機轉與分期</div>
+        <div class="section-en">Swallowing Mechanism & Phases of Deglutition</div>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <div class="card-title">🫁 正常吞嚥四期（Deglutition Phases）</div>
+      <div class="four-col">
+        <div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">第一期</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">口腔準備期</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Oral Preparatory Phase</div>
+          <ul class="ilist">
+            <li>牙齒咀嚼食物→食糜</li>
+            <li>唾液混合食糜（澱粉酶）</li>
+            <li>舌頭攪拌、整合成食團</li>
+            <li>完全隨意控制（Voluntary）</li>
+          </ul>
+        </div>
+        <div style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">第二期</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">口腔推送期</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Oral Transit Phase</div>
+          <ul class="ilist">
+            <li>舌尖→上顎→舌根運動</li>
+            <li>將食團推向咽部</li>
+            <li>觸發吞嚥反射開始</li>
+            <li>仍有部分隨意控制</li>
+          </ul>
+        </div>
+        <div style="background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--rose);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">第三期 ⚠️最複雜</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">咽部期</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Pharyngeal Phase</div>
+          <ul class="ilist">
+            <li>軟顎上升→封閉鼻腔</li>
+            <li>聲門閉合（防誤吸）</li>
+            <li>環咽肌（UES）開放</li>
+            <li>食道入口打開</li>
+            <li><em class="hl-rose">不隨意（0.5–1秒）</em></li>
+          </ul>
+        </div>
+        <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--sage);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">第四期</div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">食道期</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Esophageal Phase</div>
+          <ul class="ilist">
+            <li>食道蠕動波推進</li>
+            <li>重力+蠕動共同作用</li>
+            <li>賁門括約肌（LES）開放</li>
+            <li>完全不隨意</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert-box" style="margin-top:16px;">
+        <span class="alert-icon">⚠️</span>
+        <span>吞嚥困難最危險的期是<em class="hl-rose">咽部期</em>——聲門閉合失敗會導致食物進入氣管（誤吸，Aspiration）。無聲性誤吸（Silent Aspiration）最危險，病人無咳嗽反應，護理師最難識別。</span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-title">🔴 吞嚥困難的常見病因 <span class="tag tag-rose">病因分類</span></div>
+        <table class="data-table">
+          <tr><th>類別</th><th>常見疾病/原因</th></tr>
+          <tr><td><em class="hl">神經性</em></td><td>腦中風（最常見）、帕金森氏症、失智症、ALS、重症肌無力、腦瘤</td></tr>
+          <tr><td><em class="hl">結構性</em></td><td>頭頸部腫瘤術後、食道癌、食道狹窄、口腔/咽喉手術</td></tr>
+          <tr><td><em class="hl-amber">醫源性</em></td><td>長期插管（>72小時）、頭頸部放射治療、某些藥物副作用</td></tr>
+          <tr><td><em class="hl-purple">老化相關</em></td><td>咽部肌力減弱、唾液分泌減少、牙齒缺失、感覺退化</td></tr>
+          <tr><td><em class="hl-sage">其他</em></td><td>嚴重GERD、口腔念珠菌感染、乾燥症、虛弱衰竭</td></tr>
+        </table>
+      </div>
+      <div class="info-card">
+        <div class="card-title">⚠️ 誤吸的臨床表現 <span class="tag tag-rose">警示徵兆</span></div>
+        <ul class="blist">
+          <li><em class="hl-rose">進食中/後咳嗽或嗆咳</em>（最明顯徵兆）</li>
+          <li>進食後聲音改變——「濕潤聲」（Wet/Gurgling Voice）</li>
+          <li>進食時間延長（>30分鐘完成一餐）</li>
+          <li>進食後氧飽和度下降（≥2%以上）</li>
+          <li>反覆發生吸入性肺炎（Aspiration Pneumonia）</li>
+          <li>進食時呼吸急促、費力</li>
+          <li>不明原因低燒（隱性誤吸）</li>
+          <li><em class="hl-rose">無聲性誤吸（Silent Aspiration）</em>：無咳嗽，最隱匿！</li>
+          <li>體重持續下降、脫水徵兆</li>
+          <li>拒食、對進食有恐懼感</li>
+        </ul>
+        <div class="alert-box">
+          <span class="alert-icon">⚠️</span>
+          <span>腦中風病人中有<em class="hl-rose">42–67%</em>出現誤吸，其中約<em class="hl-rose">40%為無聲性誤吸</em>，需要VFSS才能確認。不能單靠床邊觀察排除誤吸風險！</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 2: ASSESSMENT
+  ══════════════════════════════ -->
+  <section class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#b45309,#f59e0b);">2</div>
+      <div>
+        <div class="section-title">吞嚥評估工具</div>
+        <div class="section-en">Dysphagia Assessment Tools — From Bedside to Instrumental</div>
+      </div>
+    </div>
+
+    <!-- Assessment Hierarchy -->
+    <div class="full-card">
+      <div class="card-title">📊 吞嚥評估層次（從簡易篩查到儀器檢查）</div>
+      <div class="flow-container">
+        <div class="flow-step"><div class="flow-step-num">第一步</div><div class="flow-step-text">🔍 臨床吞嚥篩查<br>（護理師執行）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">第二步</div><div class="flow-step-text">📋 臨床吞嚥評估（CSE）<br>（語言治療師）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">第三步</div><div class="flow-step-text">🎥 改良式鋇劑吞嚥（VFSS）<br>（儀器確認）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">第四步</div><div class="flow-step-text">🔭 軟式喉部內視鏡（FEES）<br>（直接觀察）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-step-num">介入計畫</div><div class="flow-step-text">制定飲食修改<br>+代償策略</div></div>
+      </div>
+      <div class="tip-box" style="margin-top:8px;">
+        <span class="alert-icon">💡</span>
+        <span>WHO建議：所有急性腦中風病人入院<em class="hl-sage">24小時內</em>應完成吞嚥篩查。護理師是最先接觸病人的照護者，擔任「第一關守門員」。</span>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="info-card">
+        <div class="card-title">🧪 GUSS 吞嚥篩查 <span class="tag tag-sky">護理師可執行</span></div>
+        <ul class="blist">
+          <li><strong>全名：</strong>Gugging Swallowing Screen</li>
+          <li><strong>滿分：</strong>20分（0–5分/部分 ×4）</li>
+          <li><strong>第一部分：</strong>間接吞嚥測試（5分）——意識、咳嗽、口腔分泌物</li>
+          <li><strong>第二部分：</strong>直接吞嚥測試（各5分）
+            <br>→ 半固體（糊狀）
+            <br>→ 液體（5ml→10ml→20ml→50ml）
+            <br>→ 固體（餅乾）
+          </li>
+          <li><strong>判斷：</strong>20分=正常；15–19=輕度；10–14=中度；≤9=重度</li>
+        </ul>
+        <div class="evidence-box">
+          <span class="alert-icon">📚</span>
+          <span><span class="evd">Grade A</span> GUSS靈敏度79–100%、特異性50–69%識別誤吸風險（Trapl et al., 2007）</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-title">🎥 VFSS 改良式鋇劑吞嚥 <span class="tag tag-amber">黃金標準</span></div>
+        <ul class="blist">
+          <li><strong>全名：</strong>Videofluoroscopic Swallowing Study（改良式鋇劑吞嚥研究）</li>
+          <li>X光透視下即時觀察吞嚥各期</li>
+          <li>可直接看到誤吸時機（咽部期哪個步驟失敗）</li>
+          <li>評估代償策略效果（頭部姿勢/質地改變）</li>
+          <li><em class="hl">診斷無聲性誤吸的最重要工具</em></li>
+          <li>護理師護理準備：告知含鋇顯影劑無毒；過敏史評估</li>
+          <li>術後：觀察顯影劑排出；鼓勵水分攝取</li>
+        </ul>
+        <div class="evidence-box">
+          <span class="alert-icon">📚</span>
+          <span><span class="evd">Grade A</span> VFSS仍是識別誤吸與誤吸時機的<em class="hl-purple">診斷金標準</em>（ASHA指引）</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-title">🔭 FEES 軟式喉部內視鏡 <span class="tag tag-sage">直接觀察</span></div>
+        <ul class="blist">
+          <li><strong>全名：</strong>Fiberoptic Endoscopic Evaluation of Swallowing</li>
+          <li>軟管鏡經鼻進入咽喉直接觀察</li>
+          <li>可在床邊執行（適合重症/無法移動病人）</li>
+          <li>觀察咽部期殘留物、聲門閉合情況</li>
+          <li>可用真實食物測試（非鋇劑）</li>
+          <li>護理師協助：解釋步驟；鼻腔局部麻醉準備；觀察術後不適</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Toronto Bedside Test -->
+    <div class="full-card">
+      <div class="card-title">🥛 多倫多床邊吞嚥篩查測試（TOR-BSST）<span class="tag tag-sky">護理師適用</span></div>
+      <div class="two-col">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">測試步驟：</div>
+          <ul class="ilist">
+            <li>病人坐正（≥60度坐位）</li>
+            <li>聲音評估：請病人說「啊」10秒——觀察是否有「濕音」</li>
+            <li>10口水吞嚥測試：每次5mL清水，連續10次</li>
+            <li>每次吞嚥後立即評估聲音</li>
+            <li>若出現異常聲音或嗆咳→立即停止→高風險</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px;">判斷結果：</div>
+          <ul class="ilist">
+            <li><em class="hl-sage">通過</em>：10口全部完成，無嗆咳，無濕音 → 可進一步評估口服飲食</li>
+            <li><em class="hl-rose">未通過</em>：任何一口嗆咳/濕音/停止 → NPO + 語言治療師評估</li>
+            <li><em class="hl-amber">暫緩測試</em>：意識不清、無法配合指令、嚴重口腔分泌物</li>
+          </ul>
+          <div class="info-box">
+            <span class="alert-icon">💡</span>
+            <span>未通過吞嚥篩查→<em class="hl">NPO（禁食）</em>→鼻胃管或靜脈補液→盡快安排語言治療師全面評估（48小時內）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 3: MEALTIME SEQUENCE ★ 重點
+  ══════════════════════════════ -->
+  <section class="section" id="mealtime">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#065f46,#22c55e);">3</div>
+      <div>
+        <div class="section-title">🍽️ 進食流程與時務順序</div>
+        <div class="section-en">Mealtime Protocol — Evidence-Based Feeding Sequence for Dysphagia Patients</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-bottom:24px;">
+      <span class="alert-icon">📌</span>
+      <span>研究顯示，遵循<em class="hl">標準化進食流程（Mealtime Protocol）</em>可將吸入性肺炎發生率降低約<em class="hl">50%</em>（Cichero et al., 2016）。護理師主導的進食協助是預防誤吸最關鍵的介入。</span>
+    </div>
+
+    <div class="topic-tabs">
+      <button class="tab-btn active" onclick="switchTab('prep')">📋 進食前準備</button>
+      <button class="tab-btn" onclick="switchTab('during')">🍽️ 進食中監控</button>
+      <button class="tab-btn" onclick="switchTab('post')">✅ 進食後照護</button>
+      <button class="tab-btn" onclick="switchTab('sequence')">📐 完整時序流程</button>
+    </div>
+
+    <!-- PREP TAB -->
+    <div class="topic-panel active" id="panel-prep">
+      <div class="full-card">
+        <div class="card-title">📋 進食前準備清單 <span class="tag tag-purple">Pre-Meal Checklist</span></div>
+        <div class="meal-timeline">
+
+          <div class="meal-step">
+            <div class="meal-step-dot pre"><span>👤</span><div class="meal-step-num">PRE-1</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">確認意識與警覺程度</div>
+              <div class="meal-step-en">Assess Alertness & Cognition Level</div>
+              <ul class="meal-step-items">
+                <li>GCS評估：意識清醒（E4V5M6）是進食的前提</li>
+                <li>病人是否能維持<em class="hl-purple">至少15分鐘的清醒狀態</em>（進食所需）</li>
+                <li>是否能理解並執行簡單指令（「張嘴」「咬住」）</li>
+                <li>注意力是否能維持於進食任務（失智症病人需要協助）</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span>意識程度 GCS &lt;13 分或無法配合指令 → 暫緩口服進食，通知醫師及語言治療師</span></div>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade A</span> 意識警覺程度是預測誤吸的獨立危險因子（SIGN 2010）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot pre"><span>🪥</span><div class="meal-step-num">PRE-2</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">進食前口腔清潔</div>
+              <div class="meal-step-en">Pre-Meal Oral Hygiene — CRITICAL STEP</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-purple">進食前30分鐘完成口腔護理</em>（非進食後才做）</li>
+                <li>清除口腔殘留分泌物、菌落：溫水漱口或棉棒擦拭</li>
+                <li>移除活動性假牙→清潔→裝回（若適合進食）</li>
+                <li>評估口腔黏膜：破損、念珠菌、乾燥 → 影響食物感知</li>
+                <li>唾液腺按摩：腮腺（耳前圓形按摩）→ 促進唾液分泌</li>
+              </ul>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade A</span> 系統性回顧顯示：良好口腔衛生可使吸入性肺炎發生率降低<em class="hl-purple">40%</em>（van der Maarel-Wierink, 2013）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot pre"><span>🪑</span><div class="meal-step-num">PRE-3</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">正確體位擺位</div>
+              <div class="meal-step-en">Optimal Positioning Before Eating</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-purple">坐正90度（最優先）：</em>床頭90度或坐椅；雙腳踩地或腳凳</li>
+                <li>若無法完全坐直：最低<em class="hl-rose">床頭抬高60度</em>（實證支持的最低安全角度）</li>
+                <li>頭部<em class="hl">自然垂直正中位置</em>，避免頭部過度後仰（讓食物直衝喉嚨！）</li>
+                <li>偏癱病人：患側肩膀以枕頭支撐，維持軀幹對稱</li>
+                <li>確認頸部放鬆，無緊繃或過度前彎</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span><em>嚴禁</em>讓病人在仰臥位或床頭低於45度時進食——最高誤吸風險！</span></div>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade B</span> 坐姿90度比半坐臥位顯著減少咽部殘留量（Welch et al., 1993）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot pre"><span>🔇</span><div class="meal-step-num">PRE-4</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">進食環境準備</div>
+              <div class="meal-step-en">Environmental Setup for Safe Eating</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-purple">關掉電視、手機靜音</em>：分心是吸入性肺炎的重要原因</li>
+                <li>移除不必要的人員（保留1位照護者或語言治療師）</li>
+                <li>確保採光充足（病人能看清楚食物）</li>
+                <li>桌面高度適當：食物在視線範圍內，不需費力低頭或抬頭</li>
+                <li>準備緊急吸痰設備在手邊（確認運作正常）</li>
+                <li>備好衛生紙或圍兜（流涎病人）</li>
+              </ul>
+              <div class="meal-step-tip"><span>💡</span><span>研究顯示<em class="hl-sage">安靜環境進食</em>可使老年病人進食時間縮短、攝取量增加，且嗆咳次數顯著減少（Watson, 2019）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot pre"><span>🥣</span><div class="meal-step-num">PRE-5</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">確認食物質地與液體稠度</div>
+              <div class="meal-step-en">Verify Food Texture & Liquid Consistency (IDDSI)</div>
+              <ul class="meal-step-items">
+                <li>核對語言治療師醫囑的IDDSI等級</li>
+                <li>液體增稠劑：確認已按正確比例添加並充分攪拌（靜置時間是否足夠）</li>
+                <li>固體食物：確認無隱藏風險（湯水分離、食物中有多種質地）</li>
+                <li>溫度：避免過燙（感覺遲鈍者可能無法感知）；冰冷刺激可促進吞嚥反射</li>
+                <li>份量：計算熱量目標是否達到（追蹤體重趨勢）</li>
+              </ul>
+              <div class="meal-step-tip"><span>💡</span><span><em class="hl-sage">冷食/冰食</em>可刺激咽部感覺受器，有助觸發吞嚥反射——對延遲觸發吞嚥反射的病人可先給冷食開始</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- DURING TAB -->
+    <div class="topic-panel" id="panel-during">
+      <div class="full-card">
+        <div class="card-title">🍽️ 進食中監控與協助步驟 <span class="tag tag-sky">During Feeding Protocol</span></div>
+        <div class="meal-timeline">
+
+          <div class="meal-step">
+            <div class="meal-step-dot during"><span>🌡️</span><div class="meal-step-num">D-1</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">給食前口腔感覺刺激（Oral Sensory Stimulation）</div>
+              <div class="meal-step-en">Thermal-Tactile Stimulation</div>
+              <ul class="meal-step-items">
+                <li>以小湯匙輕觸前顎弓（Anterior Faucial Pillar）進行熱冷刺激</li>
+                <li>此刺激可<em class="hl">強化咽部吞嚥反射觸發</em>（對延遲觸發效果最佳）</li>
+                <li>可先提供少量冰涼食物或冰水漱口激活感覺系統</li>
+                <li>確認病人口腔有充足唾液——必要時提供人工唾液或少量水分</li>
+              </ul>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade B</span> 熱冷刺激可縮短吞嚥延遲時間（Hamdy et al., 1998；RCSLT 指引）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot critical"><span>📏</span><div class="meal-step-num">D-2 ⚠️</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">每口食物量的控制（Bolus Size Control）</div>
+              <div class="meal-step-en">Critical: Appropriate Bolus Size Per Spoon</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-rose">標準每口量：糊狀/固體 3–5mL（約1/2小茶匙）</em></li>
+                <li>液體：使用計量湯匙（5mL/次），不用大湯匙或直接由杯子喝</li>
+                <li>吞嚥困難者：每口量寧少勿多，小口是安全關鍵</li>
+                <li>使用凹面淺湯匙（Dysphagia spoon）——比一般湯匙更容易控制量</li>
+                <li>每口之間必須確認前一口已完全吞下再給下一口</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span>最常見的護理錯誤：每口太多！大份量食物超過咽部處理能力→殘留→下一次吸入</span></div>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade A</span> 小口量（3–5mL）顯著減少咽部殘留和誤吸風險（Logemann, 1998）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot during"><span>⌛</span><div class="meal-step-num">D-3</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">給食速度控制（Feeding Rate）</div>
+              <div class="meal-step-en">Pacing Between Each Swallow</div>
+              <ul class="meal-step-items">
+                <li><em class="hl">每口間隔至少20–30秒</em>（讓咽部完全清除前一口食物）</li>
+                <li>口頭確認或視覺確認完全吞下後再給下一口</li>
+                <li>整餐進食時間建議：<em class="hl">20–30分鐘</em>（超過30分鐘疲勞增加誤吸風險）</li>
+                <li>若進食超過30分鐘仍未完成→評估是否改由管路補足剩餘熱量</li>
+                <li>每進食5–10分鐘評估疲勞程度（咳嗽增加、聲音變化是疲勞徵兆）</li>
+              </ul>
+              <div class="meal-step-tip"><span>💡</span><span>對照顧者衛教：<em class="hl-sage">不催促進食</em>。焦急催促是誤吸的重要原因。「慢慢吃比快快吃安全10倍」</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot critical"><span>👁️</span><div class="meal-step-num">D-4 ⚠️</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">每口吞嚥確認（Swallow Confirmation）</div>
+              <div class="meal-step-en">Verify Complete Swallowing Before Next Bolus</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-rose">每口必須確認已完整吞嚥</em>，才能給下一口</li>
+                <li>視覺觀察：喉結上下移動（喉結運動=吞嚥發生）</li>
+                <li>聽覺確認：吞嚥聲音（正常清晰，無濕潤聲）</li>
+                <li>口頭確認：「您吞下去了嗎？」（對認知功能正常者）</li>
+                <li>餵食者輕觸喉部感受喉結移動（對意識不清者）</li>
+                <li>每吞嚥2–3次後請病人說「啊」：若聲音清晰=安全；若濕音=殘留危險</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span>口腔殘留食物（Pocketing）：部分病人食物藏在頰黏膜/舌下→ 每5分鐘用壓舌板檢查→請病人用舌頭清除口腔</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot during"><span>🗣️</span><div class="meal-step-num">D-5</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">應用吞嚥代償技術（Compensatory Strategies）</div>
+              <div class="meal-step-en">Apply Prescribed Compensatory Maneuvers During Eating</div>
+              <ul class="meal-step-items">
+                <li><em class="hl">頸部前傾法（Chin Tuck / Chin Down）</em>：進食中輕微低頭（約15–20度）→ 縮小喉嚥距離→ 保護呼吸道</li>
+                <li><em class="hl">頭部旋轉（Head Rotation）</em>：轉向患側→ 患側咽部關閉→ 食物從健側通過</li>
+                <li><em class="hl">超上喉門吞嚥（Super-Supraglottic Swallow）</em>：吞嚥前閉氣用力→ 聲門充分關閉→吞嚥→立即咳嗽清除殘留</li>
+                <li>代償技術依語言治療師評估後指定，護理師需熟悉並在進食時提醒執行</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot critical"><span>🚨</span><div class="meal-step-num">D-6 急</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">誤吸緊急應對（Emergency Response to Aspiration）</div>
+              <div class="meal-step-en">Immediate Response When Aspiration Occurs</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-rose">立即停止進食</em>——拿走食物和飲料</li>
+                <li>讓病人前傾（不要後仰！）——有助咳出</li>
+                <li>鼓勵有力咳嗽（若尚有咳嗽能力）</li>
+                <li>若出現喘鳴音或嚴重呼吸困難→口腔/咽部吸痰</li>
+                <li>評估SpO₂：若下降→給氧→立即通知醫師</li>
+                <li>完全梗塞（異物哽嗆）→Heimlich法→緊急急救</li>
+                <li>記錄：發生時機、食物類型、處置及病人反應</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span>任何一次誤吸事件後→24小時內通知語言治療師重新評估→可能需調整飲食計畫</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- POST TAB -->
+    <div class="topic-panel" id="panel-post">
+      <div class="full-card">
+        <div class="card-title">✅ 進食後照護步驟 <span class="tag tag-sage">Post-Meal Care</span></div>
+        <div class="meal-timeline">
+
+          <div class="meal-step">
+            <div class="meal-step-dot post"><span>🪥</span><div class="meal-step-num">POST-1</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">進食後立即口腔護理（Post-Meal Oral Care）</div>
+              <div class="meal-step-en">Immediate Oral Hygiene After Every Meal — Most Important Post-Meal Step</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-sage">每餐飯後立即進行口腔護理</em>（不可延誤）</li>
+                <li>清除所有食物殘渣：棉棒擦拭齒縫、舌面、頰黏膜</li>
+                <li>漱口水或生理食鹽水漱口（可用的話）</li>
+                <li>若病人有口腔黏膜炎→使用CHX漱口液或醫師指定藥物</li>
+                <li>移除假牙→清洗→浸入清水中</li>
+                <li>若意識不清→棉棒擦拭法，不可用水漱口</li>
+              </ul>
+              <div class="meal-step-evidence"><span>📚</span><span><span class="evd">Grade A</span> 飯後殘渣是吸入性肺炎的主要菌源。飯後口腔護理是預防院內吸入性肺炎最關鍵的護理行為（Sjögren, 2008）</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot post"><span>🪑</span><div class="meal-step-num">POST-2</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">進食後維持坐姿（Post-Meal Upright Position）</div>
+              <div class="meal-step-en">Maintain Upright Position After Eating</div>
+              <ul class="meal-step-items">
+                <li><em class="hl-sage">進食後至少保持坐姿（≥60度）30–45分鐘</em></li>
+                <li>目的：利用重力清除咽部殘留；防止胃食道逆流誤吸</li>
+                <li>不可立即讓病人平躺（常見護理錯誤！）</li>
+                <li>若必須躺下：右側臥（促進胃排空）而非仰臥</li>
+                <li>為病人計時並記錄（可在床頭貼提醒標籤）</li>
+              </ul>
+              <div class="meal-step-warning"><span>⚠️</span><span>常見錯誤：「病人說要休息了」→立即讓其平躺。<em class="hl-rose">必須堅持30–45分鐘坐姿</em>，這是防止GERD相關誤吸的關鍵</span></div>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot post"><span>📊</span><div class="meal-step-num">POST-3</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">進食紀錄與評估（Meal Documentation）</div>
+              <div class="meal-step-en">Systematic Mealtime Documentation</div>
+              <ul class="meal-step-items">
+                <li>記錄攝食量（%）：如「正餐完成70%、點心30%」</li>
+                <li>記錄食物質地（IDDSI等級）及液體稠度</li>
+                <li>記錄進食期間任何事件：嗆咳次數、停止原因、SpO₂變化</li>
+                <li>記錄進食所需時間（>30分鐘需評估）</li>
+                <li>連續3天攝食量&lt;60% → 通知醫師及營養師評估是否需補充管路營養</li>
+                <li>每週追蹤體重；每月血清白蛋白/前白蛋白</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="meal-step">
+            <div class="meal-step-dot amber"><span>🫁</span><div class="meal-step-num">POST-4</div></div>
+            <div class="meal-step-body">
+              <div class="meal-step-title">呼吸及感染監測（Post-Meal Respiratory Monitoring）</div>
+              <div class="meal-step-en">Watch for Signs of Aspiration Pneumonia</div>
+              <ul class="meal-step-items">
+                <li>進食後30分鐘：評估SpO₂（若下降≥3% → 記錄並評估）</li>
+                <li>進食後聲音評估：「請說啊」——濕音/嘶啞→ 可能有咽部殘留</li>
+                <li>每班：體溫監測（低燒是隱性誤吸的早期徵兆）</li>
+                <li>每天：聽診肺部（右下葉最常見吸入性肺炎位置）</li>
+                <li>觀察痰液性狀改變（顏色、量增加）</li>
+                <li>進食後3–4小時的延遲性SpO₂監測（隱性誤吸可能延遲表現）</li>
+              </ul>
+              <div class="meal-step-tip"><span>💡</span><span>吸入性肺炎的「聽診高危區」：右下肺（仰臥時食物流向）。吞嚥困難病人每班至少聽診一次右下肺。</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL SEQUENCE TAB -->
+    <div class="topic-panel" id="panel-sequence">
+      <div class="full-card">
+        <div class="card-title">📐 吞嚥困難病人完整進食時序總覽 <span class="tag tag-sage">Standard Protocol</span></div>
+        <div style="overflow-x:auto;margin-top:14px;">
+          <table class="data-table">
+            <tr>
+              <th style="min-width:120px;">時間點</th>
+              <th>護理行動</th>
+              <th>負責人</th>
+              <th>實證等級</th>
+            </tr>
+            <tr>
+              <td><em class="hl-purple">進食前60分</em></td>
+              <td>評估意識狀態（GCS）；確認當日吞嚥評估醫囑；準備適當質地食物（IDDSI）</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-purple">進食前30分</em></td>
+              <td><em class="hl">口腔護理</em>（清除口腔菌落）；假牙清潔與裝回；唾液腺按摩</td>
+              <td>護理師/照護助手</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-purple">進食前10分</em></td>
+              <td>坐正體位（90度）；環境準備（關電視、安靜）；準備吸痰設備</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade B</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl">開始進食</em></td>
+              <td>口腔熱冷感覺刺激；確認進食開始時間（計時）；介紹食物（嗅覺/視覺促進唾液）</td>
+              <td>護理師/語言治療師</td>
+              <td><span class="evd">Grade B</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl">每一口前</em></td>
+              <td>確認前一口已完全吞下（喉結觀察/聲音確認）；控制份量3–5mL；提示代償姿勢（如chin-tuck）</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl">每5–10分</em></td>
+              <td>評估疲勞（咳嗽增加？聲音改變？）；記錄進食量；評估SpO₂（若有疑慮）</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade B</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-rose">如有嗆咳</em></td>
+              <td>立即停止進食→前傾→鼓勵咳嗽→必要時吸痰→評估SpO₂→通知醫師</td>
+              <td>護理師（立即）</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-sage">進食後立即</em></td>
+              <td><em class="hl">口腔護理</em>（最重要！）；清除食物殘渣；漱口或棉棒擦拭</td>
+              <td>護理師/照護助手</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-sage">進食後0–45分</em></td>
+              <td>維持坐姿（≥60度）30–45分鐘；禁止平躺；監測SpO₂和體溫</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade A</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-sage">進食後記錄</em></td>
+              <td>攝食量%、食物質地、嗆咳事件、進食時間、SpO₂數值</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade C</span></td>
+            </tr>
+            <tr>
+              <td><em class="hl-amber">每班評估</em></td>
+              <td>聽診雙下肺；評估口腔殘留；體溫監測（隱性誤吸）</td>
+              <td>護理師</td>
+              <td><span class="evd">Grade B</span></td>
+            </tr>
+          </table>
+        </div>
+        <div class="alert-box" style="margin-top:14px;">
+          <span class="alert-icon">⚠️</span>
+          <span>最常被忽略的兩步驟：①<em class="hl-rose">進食前30分鐘的口腔護理</em>（非進食後才做）+ ②<em class="hl-rose">進食後坐姿維持30–45分鐘</em>。這兩步驟是預防吸入性肺炎最有實證支持的護理行為。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 4: IDDSI
+  ══════════════════════════════ -->
+  <section class="section" id="iddsi">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#7c2d12,#fb923c);">4</div>
+      <div>
+        <div class="section-title">食物質地分級 — IDDSI 框架</div>
+        <div class="section-en">International Dysphagia Diet Standardisation Initiative (IDDSI) 2019</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-bottom:20px;">
+      <span class="alert-icon">💡</span>
+      <span>IDDSI（國際吞嚥困難飲食標準化倡議）2019年發布，提供統一的8個等級食物質地與液體稠度分類，讓全球醫療機構使用相同語言，降低因命名不一致造成的誤吸風險。台灣衛生福利部建議醫院採用IDDSI。</span>
+    </div>
+
+    <div class="full-card">
+      <div class="card-title">🥣 IDDSI 液體稠度等級（Level 0–4）</div>
+      <div class="iddsi-grid">
+        <div class="iddsi-card" style="background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.35);">
+          <div class="iddsi-level" style="color:#38bdf8;">0</div>
+          <div class="iddsi-name" style="color:#38bdf8;">稀薄液體 Thin</div>
+          <div class="iddsi-desc">正常水分狀態；流動最快；吞嚥困難者最危險</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">水、茶、牛奶、果汁</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.35);">
+          <div class="iddsi-level" style="color:#818cf8;">1</div>
+          <div class="iddsi-name" style="color:#818cf8;">微稠 Slightly Thick</div>
+          <div class="iddsi-desc">比水稍稠；仍流動快；輕度吞嚥困難可能適用</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">優格飲料、薄奶昔</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.35);">
+          <div class="iddsi-level" style="color:#f59e0b;">2</div>
+          <div class="iddsi-name" style="color:#f59e0b;">少稠 Mildly Thick</div>
+          <div class="iddsi-desc">流動緩慢；倒出時留掛痕跡</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">番茄汁、稀薄優格</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.35);">
+          <div class="iddsi-level" style="color:#f97316;">3</div>
+          <div class="iddsi-name" style="color:#f97316;">中稠 Moderately Thick</div>
+          <div class="iddsi-desc">倒時流速明顯慢；可用湯匙舀起</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">稠果汁、奶昔、調製增稠水</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.35);">
+          <div class="iddsi-level" style="color:#ef4444;">4</div>
+          <div class="iddsi-name" style="color:#ef4444;">極稠 Extremely Thick</div>
+          <div class="iddsi-desc">不流動；需湯匙舀；可成形但不硬</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">稠布丁、稠優格</div>
+        </div>
+      </div>
+
+      <div class="card-title" style="margin-top:24px;">🍚 IDDSI 食物質地等級（Level 3–7）</div>
+      <div class="iddsi-grid">
+        <div class="iddsi-card" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);">
+          <div class="iddsi-level" style="color:#ef4444;">3</div>
+          <div class="iddsi-name" style="color:#ef4444;">液體化食物 Liquidised</div>
+          <div class="iddsi-desc">高度均質；可從杯子喝；無塊狀</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">均質粥湯、蔬菜汁</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.3);">
+          <div class="iddsi-level" style="color:#f97316;">4</div>
+          <div class="iddsi-name" style="color:#f97316;">泥狀 Pureed</div>
+          <div class="iddsi-desc">光滑均質；可成堆；無纖維塊</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">打泥蔬菜、肉泥、布丁</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);">
+          <div class="iddsi-level" style="color:#f59e0b;">5</div>
+          <div class="iddsi-name" style="color:#f59e0b;">糜爛狀 Minced &amp; Moist</div>
+          <div class="iddsi-desc">切成小丁（4mm）；濕潤；舌頭可壓碎</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">切丁嫩豆腐、軟糜飯、碎肉</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);">
+          <div class="iddsi-level" style="color:#22c55e;">6</div>
+          <div class="iddsi-name" style="color:#22c55e;">軟質 Soft &amp; Bite-Sized</div>
+          <div class="iddsi-desc">切成15mm以下；需少量咀嚼；無骨頭/皮</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">嫩肉塊、軟蔬菜、蒸魚</div>
+        </div>
+        <div class="iddsi-card" style="background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.3);">
+          <div class="iddsi-level" style="color:#0ea5e9;">7</div>
+          <div class="iddsi-name" style="color:#0ea5e9;">正常 Regular / Easy to Chew</div>
+          <div class="iddsi-desc">一般正常食物；無特殊限制</div>
+          <div class="iddsi-eg" style="color:var(--text-dim);">一般飲食（無特殊吞嚥問題）</div>
+        </div>
+      </div>
+
+      <div class="alert-box" style="margin-top:16px;">
+        <span class="alert-icon">⚠️</span>
+        <span>高危險食物（任何等級的吞嚥困難均需避免）：<em class="hl-rose">黏性食物</em>（湯圓、麻糬）、<em class="hl-rose">容易碎裂食物</em>（餅乾、薄片薯片）、<em class="hl-rose">多質地食物</em>（含湯的食物如湯泡飯）、<em class="hl-rose">圓形光滑固體</em>（葡萄、豌豆）</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 5: EVIDENCE
+  ══════════════════════════════ -->
+  <section class="section" id="evidence">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#5b21b6,#8b5cf6);">5</div>
+      <div>
+        <div class="section-title">實證照護指引</div>
+        <div class="section-en">Evidence-Based Practice Guidelines for Dysphagia Nursing</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="card-title">📚 核心實證摘要 <span class="tag tag-purple">EBP Summary</span></div>
+        <ul class="blist">
+          <li><span class="evd">Grade A</span> <em class="hl">早期吞嚥篩查</em>（24小時內）顯著降低吸入性肺炎（NNT=8）（Hinchey, 2005, NEJM）</li>
+          <li><span class="evd">Grade A</span> <em class="hl">口腔衛生介入</em>使肺炎風險降低40%（Sjögren, 2008, systematic review）</li>
+          <li><span class="evd">Grade A</span> <em class="hl">坐姿進食（90度）</em>比半坐臥顯著減少殘留和誤吸</li>
+          <li><span class="evd">Grade A</span> <em class="hl">小口量（3–5mL）</em>是減少誤吸風險的獨立保護因子</li>
+          <li><span class="evd">Grade A</span> <em class="hl">液體增稠</em>降低液體誤吸但需監控脫水（IDDSI 2019）</li>
+          <li><span class="evd">Grade B</span> <em class="hl">Chin-tuck姿勢</em>對特定病人有效，但非所有人適用（需VFSS確認）</li>
+          <li><span class="evd">Grade B</span> <em class="hl">吞嚥復健運動</em>（Shaker Exercise、Mendelsohn、Masako）可改善肌力</li>
+          <li><span class="evd">Grade C</span> 進食後坐姿維持30分鐘（共識意見，生理學依據充分）</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="card-title">🚫 常見錯誤護理行為（需立即改正） <span class="tag tag-rose">Practice Errors</span></div>
+        <ul class="blist">
+          <li><em class="hl-rose">❌ 仰臥或低床頭進食</em>——每次都是一次潛在的誤吸</li>
+          <li><em class="hl-rose">❌ 每口太多食物</em>——最常見的家屬和護理師錯誤</li>
+          <li><em class="hl-rose">❌ 進食前未做口腔護理</em>——口腔菌被帶入氣道</li>
+          <li><em class="hl-rose">❌ 進食後立即平躺</em>——胃食道逆流誤吸</li>
+          <li><em class="hl-rose">❌ 邊吃邊說話或分心</em>——吞嚥與呼吸協調被打破</li>
+          <li><em class="hl-rose">❌ 催促進食</em>——過快速度超過咽部處理能力</li>
+          <li><em class="hl-rose">❌ 使用吸管（部分病人）</em>——可能增加液體量控制困難</li>
+          <li><em class="hl-rose">❌ 液體增稠後未等待足夠時間</em>——增稠劑需要2–3分鐘達到最稠濃度</li>
+          <li><em class="hl-rose">❌ 混合質地食物（如湯泡飯）</em>——稀薄液體與固體同時進入咽部</li>
+          <li><em class="hl-rose">❌ 嗆咳後繼續餵食</em>——需評估並通知醫師後才能繼續</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- WHO Oral Care Bundle -->
+    <div class="full-card">
+      <div class="card-title">🦷 口腔護理套組（Oral Care Bundle）— 實證最高等級介入 <span class="tag tag-purple">Grade A</span></div>
+      <div class="three-col" style="margin-top:12px;">
+        <div style="background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.2);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;">頻率</div>
+          <ul class="ilist">
+            <li>每餐前30分鐘：口腔清潔（去除進食前菌落）</li>
+            <li>每餐後立即：清除食物殘渣</li>
+            <li>睡前：完整刷牙+CHX漱口（最重要）</li>
+            <li>每4小時：意識不清病人的棉棒護理</li>
+          </ul>
+        </div>
+        <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--sage);margin-bottom:10px;">工具</div>
+          <ul class="ilist">
+            <li>軟毛牙刷（最有效清潔工具）</li>
+            <li>棉棒（無法使用牙刷時）</li>
+            <li>0.12% CHX葡萄糖酸漱口液（最強實證）</li>
+            <li>人工唾液（乾燥症病人）</li>
+            <li>壓舌板（評估口腔殘留用）</li>
+          </ul>
+        </div>
+        <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:10px;">注意事項</div>
+          <ul class="ilist">
+            <li>意識不清者：頭側一旁或側臥，防液體流入喉</li>
+            <li>避免大量液體（小量潤濕即可）</li>
+            <li>吸痰設備備用（護理前吸淨分泌物）</li>
+            <li>假牙：每天移除夜間浸泡，不可戴假牙睡覺</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 6: TECHNIQUES
+  ══════════════════════════════ -->
+  <section class="section" id="technique">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#065f46,#22c55e);">6</div>
+      <div>
+        <div class="section-title">代償技術與吞嚥復健策略</div>
+        <div class="section-en">Compensatory Maneuvers & Swallowing Rehabilitation Techniques</div>
+      </div>
+    </div>
+
+    <div class="full-card">
+      <div class="card-title">🗣️ 姿勢代償技術（Postural Techniques）— 立即有效</div>
+      <table class="data-table" style="margin-top:12px;">
+        <tr><th>技術名稱</th><th>操作方式</th><th>適用情況</th><th>實證</th></tr>
+        <tr>
+          <td><em class="hl">頸部前傾（Chin Tuck / Chin Down）</em></td>
+          <td>進食時下巴輕微向前低（15–20度），不是過度低頭</td>
+          <td>舌根後縮不足；喉部上升不足；延遲觸發吞嚥反射</td>
+          <td><span class="evd">Grade B</span></td>
+        </tr>
+        <tr>
+          <td><em class="hl">頭部旋轉（Head Rotation）</em></td>
+          <td>頭轉向患側（癱瘓側），使患側咽部被壓縮，食物走健側</td>
+          <td>單側咽部癱瘓（腦中風偏癱）；單側喉神經麻痺</td>
+          <td><span class="evd">Grade B</span></td>
+        </tr>
+        <tr>
+          <td><em class="hl">頭部傾斜（Head Tilt）</em></td>
+          <td>頭傾向健側，重力引導食物走健側</td>
+          <td>單側口腔無力；單側舌頭癱瘓</td>
+          <td><span class="evd">Grade C</span></td>
+        </tr>
+        <tr>
+          <td><em class="hl">頸部前傾合併旋轉</em></td>
+          <td>Chin down + Head rotation組合使用</td>
+          <td>單側咽部癱瘓合併延遲觸發</td>
+          <td><span class="evd">Grade C</span></td>
+        </tr>
+      </table>
+      <div class="warn-box">
+        <span class="alert-icon">⚠️</span>
+        <span>姿勢技術<em class="hl-amber">需要VFSS確認有效後才能常規使用</em>——並非所有吞嚥困難病人都適合Chin Tuck（部分病人反而增加誤吸）。護理師應確認語言治療師的醫囑後執行。</span>
+      </div>
+    </div>
+
+    <div class="full-card" style="margin-top:0;">
+      <div class="card-title">💪 吞嚥動作技術（Swallowing Maneuvers）— 需訓練後執行</div>
+      <table class="data-table" style="margin-top:12px;">
+        <tr><th>技術</th><th>步驟</th><th>目的</th><th>適用</th></tr>
+        <tr>
+          <td><em class="hl">超上喉門吞嚥<br>Super-Supraglottic Swallow</em></td>
+          <td>①深吸氣→②閉氣用力→③進食→④吞嚥（保持閉氣）→⑤立即咳嗽清喉</td>
+          <td>最大化聲門閉合，清除殘留</td>
+          <td>聲門閉合不全；頭頸癌術後</td>
+        </tr>
+        <tr>
+          <td><em class="hl">Mendelsohn 手法</em></td>
+          <td>在吞嚥峰值時用手指/肌肉力量將喉部維持在最高位置2–3秒後放下</td>
+          <td>延長UES開放時間，改善食道入口打開</td>
+          <td>環咽肌功能障礙；喉部上升不足</td>
+        </tr>
+        <tr>
+          <td><em class="hl">用力吞嚥<br>Effortful Swallow</em></td>
+          <td>吞嚥時用最大力量收縮咽部肌肉（如吞一個很大的東西一樣用力）</td>
+          <td>增加咽部清除力，減少殘留</td>
+          <td>咽部肌力不足；多量殘留</td>
+        </tr>
+        <tr>
+          <td><em class="hl">雙吞嚥<br>Double Swallow</em></td>
+          <td>每口食物連續吞嚥兩次（第一次吞→空吞一次）</td>
+          <td>清除咽部殘留食物</td>
+          <td>咽部殘留多；喉部感覺遲鈍</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="full-card" style="margin-top:0;">
+      <div class="card-title">🏋️ 吞嚥復健運動（Swallowing Rehabilitation Exercises）</div>
+      <div class="three-col" style="margin-top:12px;">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;">Shaker Exercise（頭部抬舉運動）</div>
+          <ul class="ilist">
+            <li>平躺，肩膀不動，只抬頭看腳趾1分鐘</li>
+            <li>重複30次等長收縮（抬頭1秒放下）</li>
+            <li>每天3組</li>
+            <li>目的：強化喉骨前舌骨肌群 → 改善UES開放</li>
+          </ul>
+          <div class="evidence-box" style="margin-top:8px;"><span>📚</span><span><span class="evd">Grade A</span> Shaker et al., 2002, JAMA</span></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--sage);margin-bottom:8px;">Masako（舌保持技術）</div>
+          <ul class="ilist">
+            <li>用牙齒輕咬住舌尖，在舌頭被固定情況下做吞嚥動作</li>
+            <li>每天10次</li>
+            <li>目的：增強舌根後縮力，促進咽部清除</li>
+          </ul>
+          <div class="evidence-box" style="margin-top:8px;"><span>📚</span><span><span class="evd">Grade B</span> Fujiu & Logemann, 1996</span></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:8px;">EMST（呼氣肌肌力訓練）</div>
+          <ul class="ilist">
+            <li>使用呼氣肌力訓練裝置進行呼氣抗阻訓練</li>
+            <li>每天5組×5次</li>
+            <li>目的：增強咳嗽清除能力 + 間接改善吞嚥</li>
+          </ul>
+          <div class="evidence-box" style="margin-top:8px;"><span>📚</span><span><span class="evd">Grade B</span> Troche et al., 2010 （帕金森氏症效果顯著）</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 7: NP
+  ══════════════════════════════ -->
+  <section class="section" id="nursing">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);">7</div>
+      <div>
+        <div class="section-title">常見護理問題與照護計畫</div>
+        <div class="section-en">Nursing Diagnoses & Care Plans for Dysphagia</div>
+      </div>
+    </div>
+    <div class="np-grid">
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(244,63,94,.2);color:var(--rose);">1</div>
+          <div><div class="np-title">吞嚥障礙</div><div class="np-cause">Impaired Swallowing ／與神經肌肉控制障礙、意識改變、頭頸部手術有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>GUSS/TOR-BSST每班篩查；通知語言治療師評估</li>
+          <li>依醫囑執行IDDSI等級飲食；進食時全程監控</li>
+          <li>進食前後口腔護理；進食後坐姿≥30分鐘</li>
+          <li>控制每口量（3–5mL）；控制進食速度（20–30分鐘/餐）</li>
+          <li>記錄進食量、嗆咳事件、SpO₂趨勢</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(245,158,11,.2);color:var(--amber);">2</div>
+          <div><div class="np-title">誤吸風險</div><div class="np-cause">Risk for Aspiration ／與吞嚥機制受損、意識改變、呼吸道保護反射不全有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每班評估口腔殘留；聽診雙下肺（右下肺為主）</li>
+          <li>進食環境：安靜、坐正、無分心</li>
+          <li>每口前確認前口已完全吞嚥（視覺+聽覺確認）</li>
+          <li>備妥吸痰設備；熟悉誤吸緊急處置</li>
+          <li>SpO₂監測（進食前、進食後即時、進食後30–60分鐘）</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(245,158,11,.2);color:var(--amber);">3</div>
+          <div><div class="np-title">營養失衡：少於身體需要</div><div class="np-cause">Imbalanced Nutrition ／與進食困難、能量攝取不足有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每週體重、每月前白蛋白；PG-SGA營養篩查</li>
+          <li>記錄每餐攝食量（%）；計算熱量與蛋白質</li>
+          <li>高熱量高蛋白食物優先（在有限進食量中最大化熱量）</li>
+          <li>連續3天&lt;60%→鼻胃管補足熱量（EN優先TPN）</li>
+          <li>口服營養補充（ONS）如安素、益力多等補充</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(14,165,233,.2);color:var(--primary);">4</div>
+          <div><div class="np-title">液體缺乏風險</div><div class="np-cause">Risk for Deficient Fluid Volume ／與液體增稠導致攝取量減少有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>每日記錄液體攝取量（目標≥1,500mL/day）</li>
+          <li>監測脫水徵兆：口腔乾燥、尿量、皮膚彈性</li>
+          <li>確保增稠液體口感可接受；提供多種風味選擇</li>
+          <li>每4小時提供增稠飲料（勿等病人感到口渴）</li>
+          <li>必要時靜脈補液補足缺口</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(34,197,94,.2);color:var(--sage);">5</div>
+          <div><div class="np-title">感染風險（吸入性肺炎）</div><div class="np-cause">Risk for Infection ／與誤吸、口腔菌落定殖有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>口腔衛生套組（每餐前後 + 睡前）</li>
+          <li>每班監測體溫；觀察痰液性狀</li>
+          <li>定期聽診雙肺；每週胸部X光評估（高危病人）</li>
+          <li>半坐臥位（≥60度）所有鼻胃管灌食時</li>
+          <li>早期發現肺炎徵兆：低燒、痰量增加、SpO₂↓</li>
+        </ul>
+      </div>
+      <div class="np-card">
+        <div class="np-head"><div class="np-num" style="background:rgba(139,92,246,.2);color:var(--purple);">6</div>
+          <div><div class="np-title">焦慮與身體意象</div><div class="np-cause">Anxiety ／與進食恐懼、飲食受限、社交進食障礙有關</div></div>
+        </div>
+        <ul class="np-items">
+          <li>評估進食恐懼（feeding anxiety）程度</li>
+          <li>提供清晰的進食指導，減少不確定性→降低焦慮</li>
+          <li>鼓勵社交進食（可控制環境下與他人共餐）</li>
+          <li>衛教：修改飲食是暫時的，多數病人可逐步改善</li>
+          <li>轉介心理師（嚴重進食恐懼）；語言治療師共同擬定漸進計畫</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SECTION 8: CASES
+  ══════════════════════════════ -->
+  <section class="section" id="cases">
+    <div class="section-header">
+      <div class="section-number" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);">8</div>
+      <div>
+        <div class="section-title">臨床案例演練</div>
+        <div class="section-en">Clinical Case Studies</div>
+      </div>
+    </div>
+    <div class="case-container">
+      <div class="case-tabs">
+        <button class="case-tab active" onclick="switchCase('c1')">案例一：急性腦中風</button>
+        <button class="case-tab" onclick="switchCase('c2')">案例二：帕金森氏症進展</button>
+        <button class="case-tab" onclick="switchCase('c3')">案例三：頭頸癌術後</button>
+      </div>
+
+      <!-- CASE 1 -->
+      <div class="case-panel active" id="cpanel-c1">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>李先生，68歲，左側大腦中動脈梗塞（MCA stroke）發病後第3天，右側偏癱（上肢2/5、下肢3/5），<strong>右側顏面神經麻痺</strong>。意識清醒（GCS 14，輕度混亂）。目前鼻胃管灌食中，語言治療師昨日完成評估，指示：<strong>可嘗試IDDSI Level 4（泥狀食物）+ Level 3液體（中稠）口服，進食需護理師全程陪伴。</strong>今天是病人第一次嘗試口服進食。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 第一次口服進食前，護理師應依序完成哪些準備步驟？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>進食前準備（按時間順序執行）：</strong><br><br>
+            <strong>進食前60分：</strong><br>
+            → 再次確認醫囑（IDDSI Level 4泥狀 + Level 3中稠液體）<br>
+            → 通知膳食部門準備適當質地食物<br>
+            → 評估意識狀態：GCS 14，可配合→ OK進行<br><br>
+            <strong>進食前30分：</strong><br>
+            → <em class="hl">口腔護理</em>：因右側顏面麻痺需特別注意右側頰黏膜食物殘留<br>
+            → 唾液腺按摩促進唾液分泌（中風後常有口乾）<br><br>
+            <strong>進食前10分：</strong><br>
+            → <em class="hl">坐姿90度</em>：床頭搖高90度 + 臀部靠近床背<br>
+            → 右側偏癱肩膀以枕頭支撐（預防垂肩影響姿勢）<br>
+            → 關掉電視；移除不必要人員<br>
+            → 確認吸痰設備在手邊（備用）<br>
+            → 準備凹面淺湯匙（5mL量匙）<br>
+            → 確認增稠劑已按比例加入液體並靜置2分鐘<br><br>
+            <strong>特別注意（第一次進食）：</strong><br>
+            → 先從少量冷食開始（激活吞嚥反射）<br>
+            → 每次只給3–5mL；不急<br>
+            → 告知病人進食時不要說話<br>
+            → 若首次有嗆咳→立即停止→評估後決定繼續
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 進食中，護理師發現李先生吞完第3口後說「啊」聲音聽起來有些濕潤。應如何處理？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>「濕音（Wet Voice）」的意義：</strong><br>
+            → 濕潤聲 = 咽部有食物/液體殘留在聲帶周圍<br>
+            → 是<em class="hl-rose">潛在誤吸的警示徵兆</em>，即使病人無嗆咳<br><br>
+            <strong>立即處置：</strong><br>
+            ① <em class="hl">暫停進食</em>（先不給下一口）<br>
+            ② 請病人用力咳嗽（若能配合）→ 嘗試清除殘留<br>
+            ③ 等待30–60秒後再次請病人說「啊」→聲音是否清晰？<br>
+            ④ 若聲音恢復清晰→可謹慎繼續（記錄事件）<br>
+            ⑤ 若聲音持續濕潤或出現嗆咳→<em class="hl-rose">立即停止進食</em><br><br>
+            <strong>後續：</strong><br>
+            → 立即通知語言治療師（在下次進食前重新評估）<br>
+            → 評估SpO₂<br>
+            → 今餐剩餘熱量由鼻胃管補足（不因口服停止而讓病人挨餓）<br>
+            → 詳細記錄：「進食第3口後出現濕音，已停止口服，通知ST，SpO₂ ___%」
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q3</div> 語言治療師建議使用「頭部轉向右側（Head Rotation to Right）」策略。說明其機轉及護理師如何確認執行正確。</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>頭部旋轉策略機轉：</strong><br>
+            → 李先生右側顏面麻痺 + 可能右側咽部肌力減弱（右腦中風 = 左側偏癱... 等一下，<em class="hl">左側MCA = 右側偏癱</em>）<br>
+            → 左側大腦中動脈梗塞→右側身體偏癱→右側咽部收縮力可能減弱<br>
+            → 頭轉向<em class="hl">右側（患側）</em>→ 壓縮右側咽部→食物被引導走<em class="hl">左側（健側）</em>咽部通道<br>
+            → 健側咽部肌肉功能正常→有效推送食物入食道<br><br>
+            <strong>護理師確認執行正確的方式：</strong><br>
+            ① 執行前：詢問病人「知道頭要轉向哪一邊嗎？」→ 確認認知理解<br>
+            ② 輔助調整：若病人自行旋轉角度不夠→護理師輕扶下巴協助固定正確位置<br>
+            ③ 旋轉角度：頭轉約45度向右；不需完全轉向肩膀<br>
+            ④ 在整個吞嚥過程中維持此姿勢（勿在食物到達咽部前恢復正中位）<br>
+            ⑤ 效果確認：執行後聲音是否更清晰？嗆咳是否減少？→ 若無改善回報語言治療師
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2 -->
+      <div class="case-panel" id="cpanel-c2">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>陳女士，74歲，帕金森氏症確診12年（Hoehn & Yahr Stage 4），目前服用Sinemet（Levodopa/Carbidopa）每日4次。家屬表示最近半年：<strong>進食時間越來越長（每餐超過40分鐘）、常有流涎、進食後頻繁低燒（37.5–38°C），胸部X光發現右下肺浸潤</strong>。體重近3個月減輕4.5公斤（原63kg→58.5kg）。
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 分析陳女士目前吞嚥困難的病理機轉，與一般中風後吞嚥困難有何不同？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>帕金森氏症吞嚥困難的特殊性：</strong><br><br>
+            <strong>基底核（Basal Ganglia）多巴胺缺乏的影響：</strong><br>
+            → 吞嚥是半隨意/不隨意動作，依賴基底核協調<br>
+            → 多巴胺↓ → 吞嚥啟動延遲 + 動作緩慢（bradykinesia）<br><br>
+            <strong>PD吞嚥困難特點（與中風比較）：</strong><br>
+            | 特徵 | 帕金森氏症 | 中風 |
+            |---|---|---|
+            | 發展 | 漸進性惡化 | 急性發作 |
+            | 主要問題期 | 口腔期（舌頭滾動推送食物困難）| 咽部期（觸發延遲）|
+            | 流涎 | <em class="hl">很常見</em>（吞嚥頻率↓） | 少見 |
+            | 認知 | 後期可有失智 | 取決於病灶 |
+            | 藥物效果 | Levodopa對部分病人有效 | 無特效藥 |<br><br>
+            <strong>陳女士的症狀解讀：</strong><br>
+            → 進食>40分鐘→口腔期緩慢+疲勞積累→後段進食誤吸↑<br>
+            → 流涎→不是分泌多，而是<em class="hl">吞嚥頻率降低（未主動吞嚥口水）</em><br>
+            → 右下肺浸潤→已發生吸入性肺炎<br>
+            → 體重↓4.5kg→已出現營養失衡
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> Sinemet的服藥時間對吞嚥有何影響？如何安排進食時機？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>Levodopa（Sinemet）與吞嚥的關聯：</strong><br><br>
+            <strong>機轉：</strong><br>
+            → Levodopa → 轉換為多巴胺 → 改善運動功能（包括吞嚥肌肉協調）<br>
+            → 服藥後<em class="hl">45–60分鐘</em>達藥效峰值（「On」狀態）<br>
+            → 此時吞嚥功能最好<br><br>
+            <strong>進食時機安排：</strong><br>
+            → <em class="hl">安排進食在服藥後45–60分鐘</em>（藥效最佳時進食）<br>
+            → 避免在「Off」狀態（藥效消失前後）進食<br>
+            → 高蛋白飲食與Levodopa競爭吸收→進食時蛋白質攝取分散於全天<br>
+            → 與家屬討論Sinemet服藥時間表，配合3餐時機<br><br>
+            <strong>具體安排（以每日4次Sinemet為例）：</strong><br>
+            早上7:00服藥→<em class="hl">早餐安排8:00（藥效On期）</em><br>
+            中午12:00服藥→午餐安排12:45–1:00<br>
+            下午5:00服藥→晚餐安排5:45–6:00<br><br>
+            <strong>護理師衛教重點：</strong><br>
+            → Sinemet<em class="hl-rose">不可與高蛋白食物同服</em>（餐前1小時或餐後2小時服藥）<br>
+            → 觀察On/Off周期；記錄吞嚥問題是否與Off期相關
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3 -->
+      <div class="case-panel" id="cpanel-c3">
+        <div class="scenario-box">
+          <strong>個案資料：</strong>王先生，56歲，下咽癌（Hypopharyngeal cancer T3N2M0），接受<strong>下咽/喉部分切除術 + 術後放射治療（總劑量60Gy，已完成第25次/共30次）</strong>。目前鼻胃管在位，本週語言治療師評估認為可嘗試口服IDDSI Level 5（糜爛狀）。王先生非常擔心：<strong>「我以後還能正常吃東西嗎？嗆到會不會更嚴重？」</strong>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q1</div> 頭頸癌放射治療後的吞嚥困難有哪些特殊護理考量？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>放射治療後吞嚥困難的特殊性：</strong><br><br>
+            <strong>放射治療對吞嚥器官的影響：</strong><br>
+            → 黏膜炎（Mucositis）：口腔/咽部疼痛→進食困難（急性期）<br>
+            → 唾液腺損傷→<em class="hl">永久性口乾（Xerostomia）</em>：食物難以形成食團<br>
+            → 纖維化（Fibrosis）：肌肉彈性↓→咽部收縮力永久下降（6個月–2年後達高峰）<br>
+            → 喉部水腫：急性期喉部腫脹→影響呼吸道保護<br><br>
+            <strong>護理特殊考量：</strong><br>
+            ① <em class="hl">口乾的處理</em>：人工唾液噴劑；進食前先潤濕口腔；稠質食物添加醬汁/肉汁<br>
+            ② <em class="hl">疼痛控制</em>：進食前20分鐘給止痛藥；Xylocaine漱口液飯前使用<br>
+            ③ <em class="hl">預防性吞嚥運動</em>（放療期間持續進行）：防止廢用性萎縮和纖維化<br>
+            ④ 放療結束後仍需持續追蹤（晚期放療後吞嚥困難可在數月後才出現）<br>
+            ⑤ 冷食/冰食：除了刺激感覺，也能暫時減輕黏膜炎疼痛
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-title"><div class="q-num">Q2</div> 王先生擔心「以後能不能正常吃東西」——如何回應他的心理需求並提供正確的預期管理？</div>
+          <button class="answer-toggle" onclick="toggleAnswer(this)">💡 顯示解析</button>
+          <div class="answer-content">
+            <strong>治療性溝通回應：</strong><br><br>
+            <strong>先確認情緒：</strong><br>
+            → 「聽到您說這些，我能感受到您對未來飲食的擔憂——這是很正常的顧慮。」<br>
+            → 允許他表達（不急著給答案）<br><br>
+            <strong>預後實事求是（既不過度悲觀也不虛假保證）：</strong><br>
+            → 「好消息：很多接受過這類手術加放療的病人，透過持續的吞嚥復健，可以恢復吃某些正常食物。」<br>
+            → 「現實是：可能需要3–12個月甚至更長的努力，有些人需要長期調整食物質地。」<br>
+            → 「我們今天嘗試IDDSI 5，是向前進的第一步——不是終點。」<br><br>
+            <strong>強化他的主動性：</strong><br>
+            → <em class="hl">「吞嚥復健運動是您能主動做的最重要的事」</em>——每天練習比等待更重要<br>
+            → 提供書面的「每日吞嚥運動計畫表」（Shaker Exercise等）<br>
+            → 連結頭頸癌病友支持團體（如陽光基金會頭頸資訊）<br><br>
+            <strong>關於嗆到的恐懼：</strong><br>
+            → 「我們護理師在您進食時會全程陪伴。如果發生嗆咳，我知道怎麼處理。您不會是孤單的。」<br>
+            → 漸進性嘗試：從1口→3口→半碗，建立信心
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:44px 0 22px;color:var(--text-dim);font-size:12px;border-top:1px solid var(--border);">
+    <div style="margin-bottom:8px;font-size:14px;color:var(--primary);font-weight:600;font-family:'Noto Serif TC',serif;">吞嚥困難照護 · 實證護理指引</div>
+    <div style="margin-bottom:6px;">內外護理學進階主題 | 114學年第2學期 | 實證等級依SIGN/GRADE分類</div>
+    <div>參考文獻：IDDSI Framework 2019 · SIGN Guideline 119 · ASHA Clinical Practice Guidelines · ESPEN Dysphagia Guidelines 2021</div>
+    <div style="margin-top:6px;">僅供學術教育用途</div>
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.topic-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  const m={prep:0,during:1,post:2,sequence:3};
+  const tabs=document.querySelectorAll('.tab-btn');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+  document.getElementById('mealtime').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function switchCase(id){
+  document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('cpanel-'+id);if(p)p.classList.add('active');
+  const m={c1:0,c2:1,c3:2};
+  const tabs=document.querySelectorAll('.case-tab');
+  if(m[id]!==undefined&&tabs[m[id]])tabs[m[id]].classList.add('active');
+}
+function toggleAnswer(btn){
+  const c=btn.nextElementSibling;c.classList.toggle('open');
+  btn.textContent=c.classList.contains('open')?'▲ 收起解析':'💡 顯示解析';
+}
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll',()=>document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400));
+const sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),togBtn=document.getElementById('togBtn');
+const isMobile=()=>window.innerWidth<=768;
+function toggleSidebar(){
+  if(isMobile()){sidebar.classList.toggle('open');overlay.classList.toggle('active');togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}
+  else{document.body.classList.toggle('collapsed');const c=document.body.classList.contains('collapsed');togBtn.textContent=c?'»':'☰';localStorage.setItem('dysp-sb',c?'1':'0');}
+}
+function closeDrawer(){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent='☰';}
+sidebar.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{if(isMobile())closeDrawer();}));
+window.addEventListener('DOMContentLoaded',()=>{if(!isMobile()&&localStorage.getItem('dysp-sb')==='1'){document.body.classList.add('collapsed');togBtn.textContent='»';}});
+window.addEventListener('resize',()=>{if(!isMobile()){sidebar.classList.remove('open');overlay.classList.remove('active');togBtn.textContent=document.body.classList.contains('collapsed')?'»':'☰';}else{togBtn.textContent=sidebar.classList.contains('open')?'✕':'☰';}});
+const navItems=document.querySelectorAll('.nav-item'),sections=document.querySelectorAll('section.section');
+sections.forEach(s=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const a=document.querySelector(`.nav-item[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});},{rootMargin:'-30% 0px -60% 0px'}).observe(s));
+</script>
+</body>
+</html>
