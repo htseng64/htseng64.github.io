@@ -275,7 +275,8 @@ footer strong{color:var(--goldl)}
     <button onclick="go('ED',this)"><span class="dot" style="background:#0EA5E9"></span>🔍 倫理困境</button>
     <button onclick="go('DM',this)"><span class="dot" style="background:#8B5CF6"></span>🗺️ 六大模式</button>
     <button onclick="go('CA',this)"><span class="dot" style="background:#10B981"></span>🧩 模式案例</button>
-    <button onclick="go('QZ',this)"><span class="dot" style="background:#EC4899"></span>📝 測驗</button>
+    <button onclick="go('QZ',this)"><span class="dot" style="background:#EC4899"></span>📝 四原則測驗</button>
+    <button onclick="go('QZ2',this)"><span class="dot" style="background:#F59E0B"></span>🧩 整合測驗</button>
     <button onclick="go('DI',this)"><span class="dot" style="background:#06B6D4"></span>💬 討論</button>
   </nav>
 </header>
@@ -1738,19 +1739,42 @@ footer strong{color:var(--goldl)}
 
 <!-- SECTION: QUIZ (already exists, kept) -->
 
+<!-- ══════════════════════════════
+     測驗一 QUIZ1 四原則 Ch2
+══════════════════════════════ -->
 <div class="sw" id="sw-QZ"><div class="ca">
   <div class="sec-hd">
     <div class="sec-ico" style="background:#FCE7F3;font-size:26px">📝</div>
-    <div class="sec-title"><h2 style="color:#DB2777">即時測驗</h2><p>32 題 | 四原則各4題 + 決策模式16題 | 選後即時顯示解析</p></div>
+    <div class="sec-title"><h2 style="color:#DB2777">四原則即時測驗</h2><p>16 題 | 自主、行善、不傷害、公平各 4 題 | 選後即時顯示解析</p></div>
   </div>
   <div class="qwrap">
-    <div class="qpbar"><div class="qpfill" id="qpf" style="width:6.25%"></div></div>
-    <div id="qa"></div>
-    <div class="sr" id="sr">
-      <div class="sring" id="sring"><div class="sn" id="sn">-</div><div class="st">/ 16</div></div>
-      <div class="sm" id="sm"></div><div class="ss" id="ss"></div>
-      <div class="sbd" id="sbd"></div>
-      <button class="bp" onclick="restart()" style="margin:0 auto">🔄 重新測驗</button>
+    <div class="qpbar"><div class="qpfill" id="q1pf" style="width:6.25%"></div></div>
+    <div id="q1area"></div>
+    <div class="sr" id="q1sr">
+      <div class="sring" id="q1ring"><div class="sn" id="q1sn">-</div><div class="st">/ 16</div></div>
+      <div class="sm" id="q1sm"></div><div class="ss" id="q1ss"></div>
+      <div class="sbd" id="q1bd"></div>
+      <button class="bp" onclick="q1restart()" style="margin:0 auto">🔄 重新測驗</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     測驗二 QUIZ2 決策模式 Ch7
+══════════════════════════════ -->
+<div class="sw" id="sw-QZ2"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:#FEF3C7;font-size:26px">🧩</div>
+    <div class="sec-title"><h2 style="color:#D97706">整合測驗：倫理決策模式</h2><p>16 題 | 決策基礎 5 題、六大模式 6 題、模式應用 5 題 | 選後即時解析</p></div>
+  </div>
+  <div class="qwrap">
+    <div class="qpbar"><div class="qpfill" id="q2pf" style="width:6.25%"></div></div>
+    <div id="q2area"></div>
+    <div class="sr" id="q2sr">
+      <div class="sring" id="q2ring"><div class="sn" id="q2sn">-</div><div class="st">/ 16</div></div>
+      <div class="sm" id="q2sm"></div><div class="ss" id="q2ss"></div>
+      <div class="sbd" id="q2bd"></div>
+      <button class="bp" onclick="q2restart()" style="margin:0 auto">🔄 重新測驗</button>
     </div>
   </div>
 </div></div>
@@ -1761,164 +1785,144 @@ footer strong{color:var(--goldl)}
 <div class="sw" id="sw-DI"><div class="ca">
   <div class="sec-hd">
     <div class="sec-ico" style="background:#CFFAFE;font-size:26px">💬</div>
-    <div class="sec-title"><h2 style="color:#0891B2">臨床倫理討論</h2><p>8個討論情境 | 小組討論 | 無標準答案，只有最適合當下情境的決定</p></div>
+    <div class="sec-title"><h2 style="color:#0891B2">臨床倫理討論</h2><p>12個討論情境 | 四原則 8 題 + 決策模式 4 題</p></div>
   </div>
   <div class="hb tip"><div class="hi">🎯</div><div class="hc"><h4>討論活動指南</h4>
-    <p>每題請小組（3-4人）先閱讀情境，用<strong>四大原則框架分析</strong>，最後提出「護理行動建議」。重點：你能說出你選擇這樣做的<strong>倫理理由</strong>嗎？能識別這個情境涉及哪些原則的衝突嗎？</p>
+    <p>每題請小組（3-4人）閱讀情境，用<strong>四大原則框架</strong>或<strong>倫理決策模式</strong>分析，提出「護理行動建議」，並說出倫理理由。</p>
   </div></div>
 
-  <!-- A -->
-  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--A);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--A)">🧭 自主原則相關討論</h3>
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--A);margin:24px 0 14px;padding-left:12px;border-left:4px solid var(--A)">🧭 自主原則</h3>
   <div class="dc" style="border-color:var(--A)">
-    <div class="dtag" style="background:var(--Al);color:var(--A)">自主原則 討論一</div>
-    <h3>「護理師，我還能活多久？」——你第一句話說什麼？</h3>
-    <div class="dsc">陳太太，45歲，乳癌末期，意識清楚。她的丈夫事先跟所有醫護說「千萬不要告訴她真實病況，她承受不了」。今天你是值班護理師，陳太太獨自問你：「護理師，我的病況很嚴重嗎？我還能活多久？」</div>
+    <div class="dtag" style="background:var(--Al);color:var(--A)">自主 討論一</div>
+    <h3>「護理師，我還能活多久？」——你的第一句話說什麼？</h3>
+    <div class="dsc">陳太太，45歲，乳癌末期。丈夫事先告知所有醫護「千萬不要告訴她真實病況」。今天你獨自值班，陳太太問你：「護理師，我還能活多久？」</div>
     <ul class="dpts">
-      <li>陳太太有沒有知情的權利？護理師如何在「告知」與「保護」之間找到平衡？</li>
-      <li>丈夫的「善意隱瞞」在倫理上是否合理？這樣做對誰更好？對誰更壞？</li>
-      <li>角色扮演：你是護理師，你現在的<strong>第一句話</strong>會說什麼？（不能直接告知，也不能說謊）</li>
-      <li>台灣《病人自主權利法》在這個情境中提供什麼指引？家屬有無代替病人決定知情範圍的權利？</li>
+      <li>陳太太有知情的權利嗎？護理師如何在「告知」與「保護」之間找到平衡？</li>
+      <li>丈夫的「善意隱瞞」在倫理上是否合理？對誰更好？</li>
+      <li>角色扮演：你的<strong>第一句話</strong>是什麼？（不能直接告知，也不能說謊）</li>
+      <li>《病人自主權利法》提供什麼指引？</li>
     </ul>
   </div>
   <div class="dc" style="border-color:var(--A)">
-    <div class="dtag" style="background:var(--Al);color:var(--A)">自主原則 討論二</div>
-    <h3>精神科病人拒絕服藥，護理師能強制給藥嗎？</h3>
-    <div class="dsc">小偉，28歲，思覺失調症，入院後拒絕服藥：「那些藥讓我變笨，我不要吃！」醫師知道若不服藥，他可能再次出現幻覺、傷害自己或他人。請問：護理師能強制給藥嗎？</div>
+    <div class="dtag" style="background:var(--Al);color:var(--A)">自主 討論二</div>
+    <h3>精神科病人拒絕服藥，能強制給藥嗎？</h3>
+    <div class="dsc">小偉，28歲，思覺失調症，拒絕服藥：「那些藥讓我變笨！」醫師知道不服藥可能再次出現幻覺，傷害自己或他人。</div>
     <ul class="dpts">
-      <li>小偉有沒有拒絕服藥的自主權？他的「意思能力（判斷能力）」是否完整？</li>
-      <li>強制給藥是「行善（保護他人安全）」還是「違反不傷害（侵犯自主）」？</li>
-      <li>《精神衛生法》在此提供什麼法律框架？什麼情況下可以強制治療？</li>
-      <li>如何在尊重病人自主與保護社會安全之間找到平衡？護理師的角色是什麼？</li>
+      <li>小偉的意思能力是否完整？強制給藥是行善還是侵犯自主？</li>
+      <li>《精神衛生法》在此的法律框架？什麼情況下可強制治療？</li>
+      <li>如何在尊重自主與保護安全之間找到平衡？</li>
     </ul>
   </div>
 
-  <!-- B -->
-  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--B);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--B)">❤️ 行善原則相關討論</h3>
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--B);margin:24px 0 14px;padding-left:12px;border-left:4px solid var(--B)">❤️ 行善原則</h3>
   <div class="dc" style="border-color:var(--B)">
-    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善原則 討論一</div>
+    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善 討論一</div>
     <h3>「強迫病人復健」是真正的行善嗎？</h3>
-    <div class="dsc">林太太，65歲，髖關節置換手術後，物理治療師安排每日復健。但林太太因疼痛和疲憊，每次都強烈拒絕：「我就想休息，你們一直來煩我！」護理師認為不復健會導致關節沾黏，對她的長期恢復很不利。</div>
+    <div class="dsc">林太太，65歲，髖關節手術後，每次都強烈拒絕復健：「我就想休息！你們一直來煩我！」護理師認為不復健會關節沾黏。</div>
     <ul class="dpts">
-      <li>護理師認為復健對林太太「有益」，但林太太不願意——誰的判斷才是「行善」的標準？</li>
-      <li>行善原則是否允許護理師在病人不情願的情況下，仍堅持執行對其有益的照護？</li>
-      <li>如果是你，如何在「尊重林太太的當下意願」和「促進她的長期健康利益」之間取得平衡？</li>
+      <li>誰的判斷才是行善的標準？行善允許在病人不情願時仍堅持照護嗎？</li>
+      <li>如何在「尊重當下意願」和「促進長期健康」之間取得平衡？</li>
       <li>討論：「行善」和「強迫」的界線在哪裡？</li>
     </ul>
   </div>
   <div class="dc" style="border-color:var(--B)">
-    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善原則 討論二</div>
-    <h3>癌末病人：「不要再化療了」——我們還能為他做什麼？</h3>
-    <div class="dsc">王先生，58歲，胰臟癌第四期，已進行三次化療但效果有限，且副作用嚴重（嘔吐、極度疲憊、無法進食）。他跟家人說「我不要再化療了，我只想好好陪你們度過剩下的日子」。主治醫師希望再嘗試一次新的化療方案。</div>
+    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善 討論二</div>
+    <h3>癌末病人拒絕繼續化療——護理師還能為他做什麼？</h3>
+    <div class="dsc">王先生，58歲，胰臟癌四期，三次化療效果有限副作用嚴重。他說「不要再化療了，我只想陪家人」。醫師建議再試一次新方案。</div>
     <ul class="dpts">
-      <li>王先生不願意繼續化療，這是他的自主決定。醫師建議繼續化療，這是行善。誰應該優先？</li>
-      <li>繼續化療的利害如何評估？停止化療後，護理師如何繼續「行善」？</li>
-      <li>安寧緩和照護（Palliative Care）如何體現行善原則？「放棄治療」等於「放棄病人」嗎？</li>
-      <li>護理師如何在這個情境中支持王先生和他的家人？</li>
+      <li>自主（不想化療）vs 行善（繼續治療），誰應優先？</li>
+      <li>停止化療後，護理師如何繼續實踐行善？安寧緩和照護如何體現？</li>
+      <li>「放棄治療」等於「放棄病人」嗎？</li>
     </ul>
   </div>
 
-  <!-- N -->
-  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--N);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--N)">🛡️ 不傷害原則相關討論</h3>
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--N);margin:24px 0 14px;padding-left:12px;border-left:4px solid var(--N)">🛡️ 不傷害原則</h3>
   <div class="dc" style="border-color:var(--N)">
-    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害原則 討論一</div>
+    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害 討論一</div>
     <h3>發現同事護理疏失——你要通報嗎？</h3>
-    <div class="dsc">你觀察到同事阿美護理師，今天夜班因疲勞，巡視不夠頻繁，高風險病人床欄沒有拉起，且有一次差點給藥錯誤（被你攔截）。阿美是你的好朋友，明天就要輪班考核了。你會怎麼處理？</div>
+    <div class="dsc">你發現好友阿美今天因疲勞，差點給藥錯誤，高風險病人床欄也未拉起。明天她要考核。你會怎麼處理？</div>
     <ul class="dpts">
-      <li>阿美的行為是否違反不傷害原則？護理師對同事的疏失有通報義務嗎？</li>
-      <li>「友誼」和「保護病人安全」發生衝突時，你如何取捨？</li>
-      <li>如果你選擇沉默，而後來真的有病人因此受傷——你的道德責任是什麼？</li>
-      <li>討論：醫療機構的「不良事件通報文化」對病人安全的重要性？如何在不懲罰個人的前提下促進安全文化？</li>
+      <li>友誼和保護病人安全衝突時，你如何取捨？</li>
+      <li>若沉默後有病人受傷——你的道德責任是什麼？</li>
+      <li>如何在不懲罰個人的前提下促進安全文化？</li>
     </ul>
   </div>
   <div class="dc" style="border-color:var(--N)">
-    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害原則 討論二</div>
-    <h3>大量出血急救vs子宮外孕胎兒：「兩害相權取其輕」</h3>
-    <div class="dsc">小莉，30歲，子宮外孕大量出血，危及生命，需要緊急手術切除輸卵管（胎兒也會因此死亡）。她本人無意識，家屬（丈夫）哭著問：「我是要選孩子，還是選太太？」你是負責護理師，如何支持這個家庭？</div>
+    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害 討論二</div>
+    <h3>子宮外孕大出血——「兩害相權取其輕」</h3>
+    <div class="dsc">小莉，30歲，子宮外孕大出血，緊急手術需切除輸卵管（胎兒也將死亡）。她無意識，丈夫哭著問：「我是要選孩子還是選太太？」</div>
     <ul class="dpts">
-      <li>手術會造成胎兒死亡（傷害），但不手術母親會死亡（更大傷害）——這是典型的「兩害相權取其輕」，如何分析？</li>
-      <li>複式影響原則如何解釋這個情境？（手術的主要目的是什麼？胎兒死亡是故意的嗎？）</li>
-      <li>丈夫沒有「選孩子還是選太太」的真正選擇空間——護理師如何在危急情境中提供情緒支持而不是空話？</li>
-      <li>事後，護理師如何協助這個家庭處理失去孩子的悲傷？</li>
+      <li>用「複式影響原則」分析此情境——四個條件如何對應？</li>
+      <li>丈夫沒有「選孩子或太太」的空間——護理師如何在危急中提供支持？</li>
+      <li>事後如何協助家庭處理失去孩子的悲傷？</li>
     </ul>
   </div>
 
-  <!-- J -->
-  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--J);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--J)">⚖️ 公平原則相關討論</h3>
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--J);margin:24px 0 14px;padding-left:12px;border-left:4px solid var(--J)">⚖️ 公平原則</h3>
   <div class="dc" style="border-color:var(--J)">
-    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平原則 討論一</div>
+    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平 討論一</div>
     <h3>疫情高峰：只剩一台呼吸器，給誰？</h3>
-    <div class="dsc">COVID-19高峰，加護病房資源耗盡，只剩最後一台呼吸器。此時同時有兩個病人需要：A 是55歲的資深護理長（SOFA評分3）；B 是23歲的大學生（SOFA評分2）。你是分流小組成員。</div>
+    <div class="dsc">只剩最後一台呼吸器：A是55歲護理長（SOFA=3），B是23歲大學生（SOFA=2，存活率較高）。</div>
     <ul class="dpts">
-      <li>依SOFA評分，B的存活率較高，應優先——但A是護理長（有工具價值），又是前線工作者。你如何決定？</li>
-      <li>「工具價值」（護理長對醫療系統的貢獻）可以成為分配標準嗎？這樣的標準是否公平？</li>
-      <li>如果你是評分相同、只能用年齡決勝的情境，你接受「年輕者優先」的標準嗎？為什麼？</li>
-      <li>分流決定做出後，護理師如何向未獲得呼吸器的病人及家屬說明？說什麼？</li>
+      <li>依SOFA評分B優先，但A是前線醫護（工具價值）。你如何決定？</li>
+      <li>「社會貢獻度」能成為分配標準嗎？這是否公平？</li>
+      <li>決定後，護理師如何向未獲資源的病人及家屬說明？</li>
     </ul>
   </div>
   <div class="dc" style="border-color:var(--J)">
-    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平原則 討論二（分組角色扮演）</div>
-    <h3>DNR vs 家屬堅持急救——你是護理師怎麼做？</h3>
-    <div class="dsc">黃阿公，78歲，肺癌末期，三個月前在醫師見證下簽署「預立醫療決定書（AD）」，明確表示希望自然死亡、不插管急救。今日病情急轉直下，女兒衝進護理站大喊：「他是我爸爸！我要你們救他！一定要插管！你們要讓他死嗎！」</div>
+    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平 討論二（角色扮演）</div>
+    <h3>DNR vs 家屬堅持急救</h3>
+    <div class="dsc">黃阿公，78歲，肺癌末期，已簽AD，明確不希望插管。今日病情急轉，女兒大喊：「一定要救他！插管！」</div>
     <ul class="dpts">
-      <li>角色扮演：<strong>A組</strong>扮演護理師，<strong>B組</strong>扮演女兒，<strong>C組</strong>扮演觀察者提供回饋。</li>
-      <li>護理師如何依據四大原則及法律，同時安撫家屬並維護病人意願？說什麼？怎麼說？</li>
-      <li>護理師的情緒管理：面對憤怒、恐懼的家屬，如何保持專業且不失去同理心？</li>
+      <li>角色扮演：A組飾護理師，B組飾女兒，C組觀察提供回饋。</li>
+      <li>護理師如何同時安撫家屬並維護病人意願？你的第一句話是什麼？</li>
       <li>觀察者回饋：護理師說了什麼有幫助？什麼可以做得更好？</li>
     </ul>
   </div>
 
-  <!-- Ch7 discussions -->
-  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:#0284C7;margin:28px 0 16px;padding-left:12px;border-left:4px solid #0284C7">🔍 倫理決策模式相關討論</h3>
-
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:#8B5CF6;margin:24px 0 14px;padding-left:12px;border-left:4px solid #8B5CF6">🗺️ 倫理決策模式</h3>
   <div class="dc" style="border-color:#0284C7">
-    <div class="dtag" style="background:#E0F2FE;color:#0284C7">倫理困境 討論一</div>
+    <div class="dtag" style="background:#E0F2FE;color:#0284C7">決策模式 討論一</div>
     <h3>「這是倫理問題還是倫理兩難？」——分類演練</h3>
-    <div class="dsc">請小組討論以下三個情境，判斷各屬於「倫理問題（Ethical Issue）」還是「倫理兩難（Ethical Dilemma）」，並說明理由：<br>① 護理師發現同事下班後偷帶藥品回家<br>② 病人有知情權，但家屬堅持隱瞞癌症診斷<br>③ 照顧者不願照顧失智母親，但強迫她照顧又侵犯照顧者自主</div>
+    <div class="dsc">判斷以下情境的類型並說明理由：①護理師發現同事偷帶藥品回家 ②病人有知情權但家屬堅持隱瞞癌症 ③照顧者不願照顧失智母親</div>
     <ul class="dpts">
-      <li>三個情境中，哪些是「你知道怎麼做，但會不會去做」的倫理問題？哪些是「兩邊都對，只能選一邊」的倫理兩難？</li>
-      <li>以情境②為例：「病人知情權」和「家屬善意隱瞞」各有什麼倫理依據？為什麼這是「兩難」而非「問題」？</li>
-      <li>以情境③為例：失智母親的最佳利益 vs 照顧者的自主——這是否有「正確答案」？社會資源能扮演什麼角色？</li>
-      <li>思考：在你的護理實習或臨床工作中，遇過哪些情況是「知道該怎麼做卻很難去做」？背後的阻力是什麼？</li>
+      <li>三個情境中，哪些是「知道怎麼做但會不會去做」？哪些是「兩邊都對只能選一邊」？</li>
+      <li>情境②：病人知情權和家屬善意各有什麼倫理依據？為什麼是「兩難」？</li>
+      <li>你在實習中遇過「知道該做卻很難做到」的情況嗎？背後的阻力是什麼？</li>
     </ul>
   </div>
-
   <div class="dc" style="border-color:#8B5CF6">
-    <div class="dtag" style="background:#EDE9FE;color:#8B5CF6">六大模式 討論二</div>
+    <div class="dtag" style="background:#EDE9FE;color:#8B5CF6">決策模式 討論二</div>
     <h3>「選對工具，解對問題」——模式配對演練</h3>
-    <div class="dsc">以下四個臨床情境，小組討論：應選用六大模式中的哪一個？說明選擇理由，並簡述如何應用該模式的前兩個步驟。<br>① 老人家因跌倒住院，家屬要求護理師「什麼都不要告訴他，免得他擔心」<br>② 加護病房只剩一床，同時有急性心肌梗塞（可逆）和末期腎衰竭（不可逆）兩位病人<br>③ 病人是印度教信徒，醫師建議輸血但病人因教義拒絕<br>④ 85歲末期癌症病人已簽DNR，家屬打電話來說「一定要急救」</div>
+    <div class="dsc">以下情境各選一個最適合的模式並說明理由：①家屬要護理師不告訴老人病情 ②ICU一床，急性心梗 vs 末期腎衰竭 ③原住民病人因教義拒絕輸血 ④DNR病人，家屬打電話要急救</div>
     <ul class="dpts">
-      <li>各組分配一個情境，用「柯阿湯約西約」口訣先判斷最適合的模式，再說明選擇理由。</li>
-      <li>情境①——告知問題：選阿洛斯卡 or 西娃？兩個模式在這個情境的應用有何不同？</li>
-      <li>情境②——資源分配：湯普生模式10步驟中，步驟7「誰應該做決定」在ICU情境中如何確認？</li>
-      <li>情境④——約翰森四象限：各組快速完成四象限分析，每個象限填入2-3個關鍵要點，最後提出倫理建議。</li>
+      <li>用「柯阿湯約西約」先判斷模式，再說明選擇理由。</li>
+      <li>情境①選阿洛斯卡 vs 西娃，兩個模式有何不同？</li>
+      <li>情境④用約翰森四象限：每個象限填入2-3個關鍵要點，最後提出倫理建議。</li>
     </ul>
   </div>
-
   <div class="dc" style="border-color:#059669">
-    <div class="dtag" style="background:#D1FAE5;color:#059669">醫病共享決策 討論三</div>
-    <h3>SDM 角色扮演：腎衰竭病人的治療選擇</h3>
-    <div class="dsc">陳先生，52歲，工程師，確診末期腎衰竭，醫師說有四種選擇：血液透析（HD，每週3次到醫院）、腹膜透析（PD，居家自行操作）、腎臟移植（等候名單）、安寧緩和療護。陳先生非常在意工作，問：「哪個最好？我可以自己決定嗎？」</div>
+    <div class="dtag" style="background:#D1FAE5;color:#059669">決策模式 討論三（SDM角色扮演）</div>
+    <h3>SDM 三步驟演練：腎衰竭病人的治療選擇</h3>
+    <div class="dsc">陳先生，52歲，工程師，末期腎衰竭，有四種選擇：血液透析（HD）、腹膜透析（PD）、腎臟移植、安寧療護。非常在意工作，問：「哪個最好？我可以自己決定嗎？」</div>
     <ul class="dpts">
-      <li>角色扮演：一人飾演陳先生，一人飾演護理師，進行SDM三步驟（選擇對談→選項對談→決策對談）的對話演練。</li>
-      <li>選擇對談：護理師如何在不給建議的情況下，讓陳先生了解他有選擇？怎麼說才能讓他感受到「我有控制權」？</li>
-      <li>選項對談：四個選項的優缺點如何用陳先生能理解的語言說明？哪些是他最在意的考量（工作影響？疼痛？）？</li>
-      <li>決策對談：如果陳先生說「我想選PD，但我太太反對」，護理師接下來應如何引導？能幫他「說服」太太嗎？</li>
+      <li>角色扮演：一人飾陳先生，一人飾護理師，進行SDM三步驟對話。</li>
+      <li>選擇對談：如何讓陳先生感受到「我有控制權」？</li>
+      <li>如果陳先生說「我想選PD，但太太反對」，護理師如何引導？</li>
     </ul>
   </div>
-
   <div class="dc" style="border-color:#0F766E">
-    <div class="dtag" style="background:#CCFBF1;color:#0F766E">約翰森四象限 討論四（綜合演練）</div>
-    <h3>「是否該放手？」——完整四象限分析小組報告</h3>
-    <div class="dsc">郭女士，88歲，阿茲海默症末期，長期臥床，最近因吸入性肺炎住院，目前發高燒、呼吸困難，需要決定是否插管。她沒有預立意願書，家屬分歧：兒子要求「不計一切救活她」，女兒認為「媽媽這樣活著是痛苦，應該讓她走」。</div>
+    <div class="dtag" style="background:#CCFBF1;color:#0F766E">決策模式 討論四（四象限小組報告）</div>
+    <h3>「是否該放手？」——完整四象限分析</h3>
+    <div class="dsc">郭女士，88歲，阿茲海默末期，吸入性肺炎，呼吸衰竭。無預立意願書。兒子「不計一切救活她」，女兒「讓她有尊嚴地走」。</div>
     <ul class="dpts">
-      <li>分組完成四象限分析：①醫療因素（插管能否改善病情？）②病人意向（無預立意願，如何推測？）③生命品質（插管後的可能情況？）④其他情境（家屬衝突、文化、資源）</li>
-      <li>整合四象限後，小組的倫理建議是什麼？建議插管還是安寧療護？說出你們的倫理理由。</li>
-      <li>護理師面對意見衝突的家屬，應如何扮演「溝通橋梁」的角色？具體說出你要說的第一句話。</li>
-      <li>觀察者回饋：哪個小組的論證最有說服力？他們用了哪些倫理原則和模式概念？</li>
+      <li>各組完成四象限：①醫療因素 ②病人意向（如何推測？）③生命品質 ④情境因素</li>
+      <li>整合後你的建議是插管還是安寧療護？說出完整倫理理由。</li>
+      <li>護理師面對衝突家屬，如何當「溝通橋梁」？說出你的第一句話。</li>
     </ul>
   </div>
 
-
+  <div class="card" style="border-top:4px solid #6B7280;text-align:center;padding:26px;margin-top:8px">
     <div style="font-size:26px;margin-bottom:10px">🤔</div>
     <h3 style="margin-bottom:10px;font-family:'Noto Serif TC',serif">期末反思題</h3>
     <p style="max-width:580px;margin:0 auto;font-size:14.5px;color:#374151;line-height:1.9">
@@ -1930,30 +1934,29 @@ footer strong{color:var(--goldl)}
   </div>
 </div></div>
 
+
 <footer>
-  <strong>生醫倫理四大原則</strong> | 醫療與生命倫理 Ch.2 | 弘光科技大學護理系<br>
-  曾惠楨 ✉ htseng@hk.edu.tw | 參考：張美玉等（2023）護理倫理概論（六版）
+  <strong>生醫倫理四大原則 × 倫理決策模式</strong> | 醫療與生命倫理 Ch.2 &amp; Ch.7 | 弘光科技大學護理系<br>
+  曾惠楨 ✉ htseng@hk.edu.tw
 </footer>
 
 <script>
-// NAV
+// ── NAV ──────────────────────────────────────────
 function go(id,btn){
   document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
   const t=document.getElementById('sw-'+id);
   if(t)t.classList.add('active');
   if(btn)btn.classList.add('active');
-  const nav=document.getElementById('nav');
-  if(nav.classList.contains('open'))nav.classList.remove('open');
+  document.getElementById('nav').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.getElementById('hbg').addEventListener('click',()=>{
   document.getElementById('nav').classList.toggle('open');
 });
 
-// TABS
+// ── TABS ─────────────────────────────────────────
 function st(btn,id){
-  const con=btn.closest('.sw')||document;
   const tg=btn.closest('.tabs');
   if(!tg)return;
   const par=tg.parentElement;
@@ -1964,7 +1967,7 @@ function st(btn,id){
   if(t)t.classList.add('active');
 }
 
-// CASE ACCORDION
+// ── CASE ACCORDION ───────────────────────────────
 function tc2(hd){
   const body=hd.nextElementSibling;
   const tog=hd.querySelector('.cto');
@@ -1972,177 +1975,254 @@ function tc2(hd){
   if(tog)tog.classList.toggle('open');
 }
 
+// ── QUIZ ENGINE (generic) ─────────────────────────
+const L=['A','B','C','D'];
 
-
-// ── ADDITIONAL QUIZ QUESTIONS (Ch7) ──────────────────
-const Qs2=[
-  {q:"倫理決策最主要的目的是？",opts:["快速解決問題","滿足醫療團隊意見","根據倫理原則選擇最佳行動","避免與病人家屬發生衝突"],c:2,p:"決策基礎",pc:"#0EA5E9",
-   ex:"✅ 倫理決策核心是依倫理原則行動，透過系統性步驟，以不傷害病人為原則，與病人和家屬共同制定最佳利益方案。"},
-  {q:"「倫理兩難（Ethical Dilemma）」和「倫理問題（Ethical Issue）」最大的差別是？",opts:["倫理兩難沒有解決辦法，倫理問題有","倫理兩難雙方都有道理難以取捨，倫理問題對錯明確只是是否遵守","倫理問題比倫理兩難更複雜","只有護理師會遇到倫理兩難"],c:1,p:"決策基礎",pc:"#0EA5E9",
-   ex:"✅ 倫理兩難：雙方都有正當理由，難以取捨（如病人知情 vs 家屬隱瞞）。倫理問題：對錯明確，關鍵是「敢不敢做對的事」（如發現同事偷藥，舉報是對的但有壓力）。"},
-  {q:"當病人無意思能力時，醫護人員應依何優先順序做決策？",opts:["家屬期待→醫師建議→病人預立意願","病人當下意識清楚的意願→預立意願→推測意願→最佳利益","醫師建議→法律顧問→家屬→病人","法律顧問→倫理委員會→家屬→醫師"],c:1,p:"決策基礎",pc:"#0EA5E9",
-   ex:"✅ 圖7-1 病人醫療決策的原則順序：①病人當下意識清楚表達意願→②依據預立意願→③推測意願（依病人價值觀）→④依病人最佳利益。尊重自主是最高原則。"},
-  {q:"醫病共享決策（SDM）強調哪項核心價值？",opts:["醫師專業判斷為主","病人需完全服從醫師","醫護人員與病人雙方協商共同決策","家屬意見優先於病人"],c:2,p:"決策基礎",pc:"#0EA5E9",
-   ex:"✅ SDM（Shared Decision-Making）強調：醫護人員提供實證資訊，病人提供價值觀與期待，雙方透過選擇對談→選項對談→決策對談，共同做出最符合病人偏好的醫療決策。"},
-  {q:"影響護理倫理決策的三大類因素是？",opts:["年齡、性別、學歷","個人價值觀、倫理相關理論、組織與法律","醫院規模、病人數量、護理師年資","護理師薪水、工作環境、主管態度"],c:1,p:"決策基礎",pc:"#0EA5E9",
-   ex:"✅ 三大影響因素：①個人因素（價值觀、宗教、道德觀）；②理論因素（結果論、義務論、德行論）；③組織與法律因素（政策、護理規範、病人自主法）。事件核心永遠是「人」，以病人權益為中心。"},
-  {q:"柯廷（Curtin）倫理決策模式的第一步是？",opts:["應用倫理原則","確認倫理議題","背景資料收集","採取行動"],c:2,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 柯廷模式六步驟：①背景資料收集→②倫理議題確認→③倫理決策者評估→④可行方案分析→⑤應用倫理原則→⑥解決倫理議題採取行動。就像蓋房子要先打好地基。"},
-  {q:"阿洛斯卡（Aroskar）模式特別強調在做倫理決策時要掌握什麼？",opts:["病人的財務狀況","有效時間並考量價值系統","醫院的床位數量","護理師的年資"],c:1,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 阿洛斯卡認為解決倫理困境時，應掌握有效時間及考量價值系統，並根據三種倫理理論（結果論、義務論、德行論）分析情境。常適用於「告知 vs 保密」的倫理困境。"},
-  {q:"湯普生（Thompson）模式共有幾個步驟？最後一步是？",opts:["6步驟，最後是採取行動","8步驟，最後是家屬同意","10步驟，最後是評值","5步驟，最後是反思"],c:2,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 湯普生模式共10步驟：步驟1-7為倫理困境確認與分析，步驟8運用理論批判性探索，步驟9選擇最佳方案，步驟10評值——確認決策結果是否與預期一致。"},
-  {q:"約瑟夫（Joseph）模式中「價值判斷」的步驟包含哪三個子步驟？",opts:["蒐集資料、分析問題、做決定","界定價值觀、評量排序、表明偏誤","法律分析、倫理分析、文化分析","贊成觀點、反對觀點、中立觀點"],c:1,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 約瑟夫模式的「價值判斷」包含：①界定個人/專業價值觀→②評量這些價值觀並排定優先順序→③表明其中的偏誤（bias）。這步驟幫助決策者識別自己的主觀偏見。"},
-  {q:"西娃（Silva, 1990）模式的五個步驟依序是？",opts:["確立問題→收集資料→擬定方案→採取行動→評值","收集評估資料→確立問題→擬定行為措施→抉擇決定行動→評值決策品質","分析倫理→法律審查→價值判斷→選擇原則→表明立場","倫理困境→溝通協調→多方參與→資源分配→結果評估"],c:1,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 西娃模式五步驟：①收集及評估資料（情境/小組/組織因素）→②確立問題（倫理/非倫理因素）→③擬定可採用行為措施（結果論/義務論）→④抉擇及決定行動過程→⑤評值決策品質及行動過程。"},
-  {q:"約翰森（Johnsen, 2002）臨床倫理決策模式使用「四象限」分析，第二象限分析的是？",opts:["醫療因素考量（行善與不傷害原則）","病人意向考量（尊重自主原則）","生命品質考量（行善、不傷害與自主原則）","其他情境考量（守信與公平原則）"],c:1,p:"六大模式",pc:"#8B5CF6",
-   ex:"✅ 約翰森四象限：第一象限=醫療因素（行善/不傷害）；第二象限=病人意向（自主）：包括決策能力、知情同意、預立醫囑；第三象限=生命品質；第四象限=其他情境（家庭/法律/文化/資源）。"},
-  {q:"「病人已簽署DNR，家屬淚求插管延命」這個案例最適合用哪個模式分析？",opts:["柯廷模式（Curtin）","阿洛斯卡模式（Aroskar）","湯普生模式（Thompson）","約翰森臨床模式（Johnsen）"],c:3,p:"模式應用",pc:"#10B981",
-   ex:"✅ 約翰森臨床倫理決策模式（台灣臨床機構最廣泛使用），透過四象限分析：第一象限確認急救是否有益、第二象限確認DNR意願具法律效力、第三象限評估插管後生命品質、第四象限考慮家屬情境與文化背景，最終整合做出有依據的臨床決策。"},
-  {q:"護理師發現林女士疑似遭受家暴，林女士拜託「不要通報」，護理師面臨的是什麼類型的困境？依阿洛斯卡模式，最應考量哪項？",opts:["倫理問題；醫院政策規定","倫理兩難；個人自主原則 vs 不傷害原則與法律通報義務","倫理問題；護理師的個人安全","倫理兩難；節省醫療資源"],c:1,p:"模式應用",pc:"#10B981",
-   ex:"✅ 這是「倫理兩難」：林女士自主權（拒絕通報）vs 不傷害原則（持續受暴風險升高）及家暴法律通報義務。依阿洛斯卡模式：當個案有傷害自己之虞時，自主原則不具優先性，不傷害原則應被優先考量，護理師應積極與個案溝通，協助其在充分資訊下做出對自己最大福祉的決定。"},
-  {q:"「資源有限，加護病房只剩一床，兩位重症病人同時需要」，最適合用哪個決策模式？",opts:["西娃模式（Silva）","約翰森模式（Johnsen）","湯普生模式（Thompson）","阿洛斯卡模式（Aroskar）"],c:2,p:"模式應用",pc:"#10B981",
-   ex:"✅ 湯普生模式特別適用於稀缺資源的公平分配問題，其10步驟幫助分析：確認健康問題→收集相關資料→確認倫理議題→確認各方道德立場→確認價值衝突→決定誰做決定→評估行動範圍→採取行動→評值。"},
-  {q:"在約翰森四象限中，若評估「插管後病人生命品質將嚴重惡化、無法恢復正常生活」，這屬於哪個象限的分析？",opts:["第一象限：醫療因素","第二象限：病人意向","第三象限：生命品質","第四象限：其他情境"],c:2,p:"模式應用",pc:"#10B981",
-   ex:"✅ 第三象限「生命品質考量」：涉及行善、不傷害與自主原則，評估治療成功後病人回到正常生活的可能性、身心社會功能的負面效應、醫療人員的評估偏見，以及安寧緩和醫療的適用性。"},
-  {q:"「柯阿湯西約約」記憶法中，哪個模式是台灣臨床機構最廣泛使用？",opts:["柯廷（Curtin）模式","湯普生（Thompson）模式","西娃（Silva）模式","約翰森（Johnsen）模式"],c:3,p:"模式應用",pc:"#10B981",
-   ex:"✅ 約翰森臨床倫理決策模式（Johnsen, 2002）是台灣臨床機構較廣泛使用的模式，因為其「四象限分析法」與生命倫理四原則（行善、不傷害、自主、公平）直接對應，非常實用於臨床情境。"}
-];
-
-// Merge all questions
-const allQs = [...Qs, ...Qs2];
-// Rebuild ps to include new categories  
-const allPs = {"自主":{s:0,t:0},"行善":{s:0,t:0},"不傷害":{s:0,t:0},"公平":{s:0,t:0},"綜合":{s:0,t:0},"決策基礎":{s:0,t:0},"六大模式":{s:0,t:0},"模式應用":{s:0,t:0}};
-
-
-const Qs=[
-  // 自主 (4)
-  {q:"王奶奶（85歲，意識清楚）因宗教信仰明確拒絕輸血，家屬希望護理師「勸說她接受救命」。最符合倫理的護理行動是？",opts:["積極勸說王奶奶改變決定，因救命最重要","尊重王奶奶的決定，詳細記錄並通知醫師","直接安排輸血，事後再跟她解釋","等醫師來處理，護理師不介入"],c:1,p:"自主",pc:"#2563EB",
-   ex:"✅ 王奶奶意識清楚、具完全行為能力，有法律權利拒絕任何醫療處置。護理師尊重其決定並記錄，才是正確做法。家屬無法代替有行為能力的成人病人做醫療決定。"},
-  {q:"以下哪一項「不是」知情同意的四大評估要素？",opts:["病人的能力（Competence）","病情的說明（Disclosure）","病人的年齡（Age）","自願性（Voluntariness）"],c:2,p:"自主",pc:"#2563EB",
-   ex:"✅ 知情同意的四大要素是：①能力、②說明、③了解（Comprehension）、④自願性。年齡影響行為能力判斷，但它本身不是知情同意的構成要素。"},
-  {q:"依民法規定，未滿幾歲的人為「無行為能力人」，所有法律行為需由法定代理人代行？",opts:["未滿7歲","未滿12歲","未滿16歲","未滿18歲"],c:0,p:"自主",pc:"#2563EB",
-   ex:"✅ 依民法§13：未滿7歲者為無行為能力人；7歲以上未滿18歲為限制行為能力人；年滿18歲為完全行為能力人。"},
-  {q:"「強醫主（Full Paternalism）」的定義是？",opts:["醫療決策完全由醫師透過專業主導，未必告知病人","重大決策告知病人後再徵詢同意才執行","護理師替醫師做臨床決策","病人完全主導所有醫療決定"],c:0,p:"自主",pc:"#2563EB",
-   ex:"✅ 強醫主（Full Paternalism）：醫療決策完全由醫師主導。相對的，弱醫主（Weak Paternalism）在重大決策上會先告知並徵詢病人/家屬同意。"},
-  // 行善 (4)
-  {q:"護理師評估王強（70歲，急性闌尾炎）為跌倒高危險群，最符合行善原則的行動是？",opts:["等他真的跌倒再處理","執行預防性跌倒措施並向病人說明危險","限制所有病人行動確保零跌倒","告知家屬讓家屬負責照顧"],c:1,p:"行善",pc:"#059669",
-   ex:"✅ 行善原則的具體做法之一是「預防病人受傷害」——事先預測危險因子並採取適當措施。同時告知病人，兼顧行善與尊重自主。"},
-  {q:"行善原則包含哪兩個主要觀念？",opts:["遵從醫師指示；維護護理師的工作效率","提供有益病人的事；權衡利益和傷害得失","預防疾病；治療疾病","尊重自主；促進公平"],c:1,p:"行善",pc:"#059669",
-   ex:"✅ 行善原則的兩個主要觀念：①提供有益病人的事（主動促進健康福祉）；②權衡利益和傷害得失（行善對病人的傷害不能遠超過益處）。"},
-  {q:"王美美（62歲）乳癌化療期間出現口腔黏膜炎副作用。護理師的正確處理符合哪個倫理概念？",opts:["直接停止化療，避免繼續傷害","仔細評估化療的利益和傷害，並積極處理副作用","告訴病人副作用是必然的，忍耐就好","這不是護理師的責任，請醫師處理"],c:1,p:"行善",pc:"#059669",
-   ex:"✅ 這是「權衡利害原則」的應用：化療可延長生命（大利），但有副作用（害）。只要利益大於傷害，治療是合理的；同時應積極處理副作用，以行善的精神將傷害減至最小。"},
-  {q:"行善原則中，「去除病人傷害」的臨床例子是？",opts:["預防高齡病人跌倒","為糖尿病足壞疽病人進行截肢手術以防敗血症","提供出院衛教指導","安排術前心理準備"],c:1,p:"行善",pc:"#059669",
-   ex:"✅「去除病人傷害」是指積極排除既有的損傷狀況。截肢手術雖造成肢體喪失，但目的是去除壞疽組織、預防敗血症這個更大的傷害——是行善原則中「去除傷害」的典型案例。"},
-  // 不傷害 (4)
-  {q:"不傷害原則在臨床上的正確理解是？",opts:["護理師必須完全避免對病人造成任何疼痛","護理師應將傷害減至最低，有正當理由的必要性傷害是可接受的","只要病人沒有明確抱怨就沒有傷害","不傷害原則比行善原則更次要"],c:1,p:"不傷害",pc:"#DC2626",
-   ex:"✅ 不傷害不是「完全不能造成任何痛苦」，而是「將傷害減至最低」。有正當理由的必要性傷害（打針、手術、清創）是可接受的。且不傷害原則的優先性高於行善原則。"},
-  {q:"癌末病人使用嗎啡止痛，雖知有輕微呼吸抑制副作用，仍給藥。這符合哪個原則？",opts:["強醫主（Full Paternalism）","複式影響原則（Principle of Double Effect）","違反不傷害原則","分配性公平原則"],c:1,p:"不傷害",pc:"#DC2626",
-   ex:"✅ 複式影響原則（Double Effect）：行為主要目的良善（止痛），附帶有害影響（輕微呼吸抑制）非故意造成，且利益大於傷害，在倫理上可接受。四個條件同時滿足。"},
-  {q:"護理師發現自己剛才給藥錯誤，應立即採取的行動是？",opts:["先觀察病人狀況，若沒事就算了，下次注意","立即評估病人、通知醫師、填寫不良事件報告並誠實告知病人","跟同事說好不要聲張，避免被懲罰","只通知護理長，不需要告知病人"],c:1,p:"不傷害",pc:"#DC2626",
-   ex:"✅ 發現給藥錯誤應立即：①評估病人→②通知醫師→③執行醫囑→④填寫不良事件報告→⑤誠實告知病人。隱瞞錯誤才是更嚴重的倫理違反——它剝奪了及時補救的機會，造成更大傷害。"},
-  {q:"不傷害原則中，「複式影響原則（Double Effect）」的倫理可接受性需滿足幾個條件？",opts:["只需要1個條件：主要目的良善","2個條件：目的良善＋傷害非故意","4個條件：行為本身良善、意圖良善、善果非透過害果達成、利大於害","只需醫師簽署同意書即可"],c:2,p:"不傷害",pc:"#DC2626",
-   ex:"✅ 複式影響原則需同時滿足四個條件：①行為本身是中立或良善的；②意圖是良善的；③良善效果不是透過有害效果達成的；④良善效果的利益大於有害效果。缺少任何一條件都不能以此原則辯護。"},
-  // 公平 (4)
-  {q:"急診室採用「先到先診治」但重症病人可優先的制度，體現了哪種公平？",opts:["分配性公平（Distributive Justice）","報應性公平（Retributive Justice）","程序性公平（Procedural Justice）","形式公平原則"],c:2,p:"公平",pc:"#7C3AED",
-   ex:"✅ 程序性公平強調資源分配「過程」的重要性：建立明確公開的處理程序（分診制度）以保障個人權益。急診的標準化分診系統是程序性公平的典型應用。"},
-  {q:"亞里斯多德提出的公平核心概念是？",opts:["所有人一律平等，分配完全相同的資源","平等的人要平等對待，不平等的人要不平等對待（比例原則）","有錢的人可以獲得更好的醫療資源","只有醫師才能決定誰獲得醫療資源"],c:1,p:"公平",pc:"#7C3AED",
-   ex:"✅ 亞里斯多德的公平核心：「平等的人要平等對待，不平等的人（需求不同）要不平等對待」——這種差異對待不是歧視，而是比例原則（proportionality），是實質公平的基礎。"},
-  {q:"COVID-19疫情期間，醫護人員優先接種疫苗，依據哪種資源分配方法？",opts:["依醫療急迫性（Medical Need）","依工具價值（Instrumental Values）","平等分配原則（Equal Share）","依市場機制（Market Approach）"],c:1,p:"公平",pc:"#7C3AED",
-   ex:"✅ 依工具價值分配：根據個人具有的特定社會功能或能發揮的重要作用決定分配順序。醫護人員維持醫療系統運作，優先接種可保護最多人——符合工具價值分配原則。"},
-  {q:"SOFA評分系統用於加護病房資源分配，評分越高代表？",opts:["病人病況越穩定，越需要優先入住ICU","病人的住院死亡率越高，優先程度越低","病人的社會貢獻越大","病人的年齡越大"],c:1,p:"公平",pc:"#7C3AED",
-   ex:"✅ SOFA評分越高，代表住院中死亡率越高、預後越差。在「優先存活率高者」的分配原則下，SOFA分數低（死亡率低、預後好）的病人反而獲得優先分配資源的機會，以最大化存活人數。"}
-];
-
-let cur=0,sc=0,ans=new Array(allQs.length).fill(false);
-const ps={"自主":{s:0,t:0},"行善":{s:0,t:0},"不傷害":{s:0,t:0},"公平":{s:0,t:0}};
-const ls=['A','B','C','D'];
-
-function bq(i){
-  const q=allQs[i];
-  return `<div class="qcard" id="qc${i}">
+function buildQ(Qs,i,pfx){
+  const q=Qs[i];
+  const prev=i>0?`goQ('${pfx}',${i},-1)`:'void(0)';
+  const opts=q.opts.map((o,j)=>`<button class="qo" onclick="pickA('${pfx}',${i},${j})" id="${pfx}o${i}${j}">
+      <span class="ql">${L[j]}</span>${o}</button>`).join('');
+  return `<div class="qcard" id="${pfx}c${i}">
     <div class="qmeta">
       <div class="qnum">第 ${i+1} 題 / 共 ${Qs.length} 題</div>
-      <span class="qtag" style="background:${q.pc}20;color:${q.pc}">${q.p}原則</span>
+      <span class="qtag" style="background:${q.pc}20;color:${q.pc}">${q.p}</span>
     </div>
     <div class="qq">${q.q}</div>
-    <div class="qopts" id="op${i}">
-      ${q.opts.map((o,j)=>`<button class="qo" onclick="sa(${i},${j})" id="o${i}${j}">
-        <span class="ql">${ls[j]}</span>${o}</button>`).join('')}
-    </div>
-    <div class="qexp" id="ex${i}"></div>
+    <div class="qopts" id="${pfx}op${i}">${opts}</div>
+    <div class="qexp" id="${pfx}ex${i}"></div>
     <div class="qnav">
-      <button class="bs" onclick="${i>0?'gq('+(i-1)+')':'void(0)'}" style="opacity:${i>0?1:.3}">← 上一題</button>
-      <button class="bp" id="nb${i}" onclick="gq(${i+1})" style="display:none">
-        ${i<allQs.length-1?'下一題 →':'查看結果 🎯'}
+      <button class="bs" onclick="${prev}" style="opacity:${i>0?1:.3}">← 上一題</button>
+      <button class="bp" id="${pfx}nb${i}" onclick="goQ('${pfx}',${i},1)" style="display:none">
+        ${i<Qs.length-1?'下一題 →':'查看結果 🎯'}
       </button>
     </div>
   </div>`;
 }
 
-function sa(qi,oi){
-  if(ans[qi])return;
-  ans[qi]=true;
-  const q=Qs[qi];
-  const btns=document.querySelectorAll(`#op${qi} .qo`);
+// State for each quiz
+const QState={};
+function initQ(pfx,Qs){
+  QState[pfx]={Qs,cur:0,sc:0,ans:new Array(Qs.length).fill(false),ps:{}};
+  const ps=QState[pfx].ps;
+  Qs.forEach(q=>{ if(!ps[q.p])ps[q.p]={s:0,t:0}; });
+}
+
+function pickA(pfx,qi,oi){
+  const st=QState[pfx];
+  if(st.ans[qi])return;
+  st.ans[qi]=true;
+  const q=st.Qs[qi];
+  const btns=document.querySelectorAll(`#${pfx}op${qi} .qo`);
   btns.forEach(b=>b.disabled=true);
   const ok=oi===q.c;
-  if(ok){sc++;allPs[q.p].s++;}
+  if(ok){st.sc++;st.ps[q.p].s++;}
   btns[oi].classList.add(ok?'cor':'wrg');
   if(!ok)btns[q.c].classList.add('cor');
-  allPs[q.p].t++;
-  const ex=document.getElementById('ex'+qi);
+  st.ps[q.p].t++;
+  const ex=document.getElementById(`${pfx}ex${qi}`);
   ex.textContent=q.ex;ex.classList.add('show');
   if(!ok)ex.classList.add('we');
-  const nb=document.getElementById('nb'+qi);
+  const nb=document.getElementById(`${pfx}nb${qi}`);
   if(nb)nb.style.display='flex';
-  const pct=Math.round(((qi+1)/allQs.length)*100);
-  document.getElementById('qpf').style.width=pct+'%';
+  const pct=Math.round(((qi+1)/st.Qs.length)*100);
+  document.getElementById(`${pfx}pf`).style.width=pct+'%';
 }
 
-function gq(i){
-  if(i>=allQs.length){showR();return;}
-  document.getElementById('qa').innerHTML=bq(i);
-  cur=i;
-  window.scrollTo({top:document.getElementById('sw-QZ').offsetTop-80,behavior:'smooth'});
+function goQ(pfx,i,dir){
+  const st=QState[pfx];
+  const next=i+dir;
+  if(next>=st.Qs.length){showResult(pfx);return;}
+  document.getElementById(`${pfx}area`).innerHTML=buildQ(st.Qs,next,pfx);
+  st.cur=next;
 }
 
-function showR(){
-  document.getElementById('qa').style.display='none';
-  document.getElementById('qpf').style.width='100%';
-  const r=document.getElementById('sr');r.classList.add('show');
-  const pct=sc/allQs.length;
-  document.getElementById('sn').textContent=sc;
+function showResult(pfx){
+  const st=QState[pfx];
+  document.getElementById(`${pfx}area`).style.display='none';
+  document.getElementById(`${pfx}pf`).style.width='100%';
+  const r=document.getElementById(`${pfx}sr`);r.classList.add('show');
+  const pct=st.sc/st.Qs.length;
+  document.getElementById(`${pfx}sn`).textContent=st.sc;
   let col,msg,sub;
-  if(pct>=.875){col='#059669';msg='🏆 優秀！完全掌握四大原則';sub='你對生醫倫理四大原則有深入掌握，臨床應用能力優秀！';}
-  else if(pct>=.7){col='#2563EB';msg='👍 良好！基本概念清晰';sub='基本概念掌握良好，建議複習答錯的題目。';}
-  else if(pct>=.5){col='#D97706';msg='📚 尚可，需要複習';sub='部分概念尚不夠清晰，建議重新閱讀各原則說明。';}
-  else{col='#DC2626';msg='💪 再努力！重新學習';sub='建議重新學習四大原則，再次挑戰測驗。';}
-  const ring=document.getElementById('sring');
+  if(pct>=.875){col='#059669';msg='🏆 優秀！完全掌握';sub='概念掌握深入，臨床應用能力優秀！';}
+  else if(pct>=.7){col='#2563EB';msg='👍 良好！基本清晰';sub='基本概念良好，建議複習答錯的題目。';}
+  else if(pct>=.5){col='#D97706';msg='📚 尚可，需要複習';sub='部分概念不夠清晰，建議重新閱讀說明。';}
+  else{col='#DC2626';msg='💪 再努力！重新學習';sub='建議重新學習，再次挑戰測驗。';}
+  const ring=document.getElementById(`${pfx}ring`);
   ring.style.borderColor=col;
-  document.getElementById('sm').textContent=msg;
-  document.getElementById('sm').style.color=col;
-  document.getElementById('ss').textContent=sub;
-  const pcs={"自主":"#2563EB","行善":"#059669","不傷害":"#DC2626","公平":"#7C3AED"};
-  const pls={"自主":"#DBEAFE","行善":"#D1FAE5","不傷害":"#FEE2E2","公平":"#EDE9FE"};
+  document.getElementById(`${pfx}sm`).textContent=msg;
+  document.getElementById(`${pfx}sm`).style.color=col;
+  document.getElementById(`${pfx}ss`).textContent=sub;
+  const pcs={"自主":"#2563EB","行善":"#059669","不傷害":"#DC2626","公平":"#7C3AED",
+    "綜合":"#B45309","決策基礎":"#0284C7","六大模式":"#8B5CF6","模式應用":"#059669"};
+  const pls={"自主":"#DBEAFE","行善":"#D1FAE5","不傷害":"#FEE2E2","公平":"#EDE9FE",
+    "綜合":"#FEF3C7","決策基礎":"#E0F2FE","六大模式":"#EDE9FE","模式應用":"#D1FAE5"};
   let bd='';
-  for(let p in allPs){const d=allPs[p];if(!d.t)continue;
-    bd+=`<div class="bi" style="background:${pls[p]}"><div class="bn" style="color:${pcs[p]}">${p}</div>
-    <div class="bsc" style="color:${pcs[p]}">${d.s}</div><div class="bt">/ ${d.t}</div></div>`;}
-  document.getElementById('sbd').innerHTML=bd;
+  for(let p in st.ps){const d=st.ps[p];if(!d.t)continue;
+    bd+=`<div class="bi" style="background:${pls[p]||'#F3F4F6'}"><div class="bn" style="color:${pcs[p]||'#374151'}">${p}</div>
+    <div class="bsc" style="color:${pcs[p]||'#374151'}">${d.s}</div><div class="bt">/ ${d.t}</div></div>`;}
+  document.getElementById(`${pfx}bd`).innerHTML=bd;
 }
 
-function restart(){
-  sc=0;cur=0;ans=new Array(allQs.length).fill(false);
-  for(let p in allPs)allPs[p]={s:0,t:0};
-  document.getElementById('qa').style.display='block';
-  document.getElementById('sr').classList.remove('show');
-  document.getElementById('qa').innerHTML=bq(0);
-  document.getElementById('qpf').style.width=(100/allQs.length)+'%';
+// ── QUIZ 1 QUESTIONS (Ch2 四原則) ───────────────
+const Q1=[
+  {q:"王奶奶（85歲，意識清楚）因宗教信仰明確拒絕輸血，家屬希望護理師「勸說她接受救命」。最符合倫理的護理行動是？",
+   opts:["積極勸說王奶奶改變決定，因救命最重要","尊重王奶奶的決定，詳細記錄並通知醫師","直接安排輸血，事後再跟她解釋","等醫師來處理，護理師不介入"],
+   c:1,p:"自主",pc:"#2563EB",
+   ex:"✅ 王奶奶意識清楚、具完全行為能力，有法律權利拒絕任何醫療處置。護理師尊重其決定並記錄，才是正確做法。家屬無法代替有行為能力的成人病人做醫療決定。"},
+  {q:"以下哪一項「不是」知情同意的四大評估要素？",
+   opts:["病人的能力（Competence）","病情的說明（Disclosure）","病人的年齡（Age）","自願性（Voluntariness）"],
+   c:2,p:"自主",pc:"#2563EB",
+   ex:"✅ 知情同意四大要素：①能力、②說明、③了解（Comprehension）、④自願性。年齡影響行為能力判斷，但本身不是知情同意的構成要素。"},
+  {q:"依民法規定，未滿幾歲的人為「無行為能力人」？",
+   opts:["未滿7歲","未滿12歲","未滿16歲","未滿18歲"],
+   c:0,p:"自主",pc:"#2563EB",
+   ex:"✅ 依民法§13：未滿7歲者為無行為能力人；7歲以上未滿18歲為限制行為能力人；年滿18歲為完全行為能力人。"},
+  {q:"「強醫主（Full Paternalism）」的定義是？",
+   opts:["醫療決策完全由醫師專業主導，未必告知病人","重大決策告知病人後再徵詢同意才執行","護理師替醫師做臨床決策","病人完全主導所有醫療決定"],
+   c:0,p:"自主",pc:"#2563EB",
+   ex:"✅ 強醫主：醫療決策完全由醫師主導。弱醫主（Weak Paternalism）在重大決策上會先告知並徵詢病人/家屬同意。"},
+  {q:"護理師評估王強（70歲，急性闌尾炎）為跌倒高危險群，最符合行善原則的行動是？",
+   opts:["等他真的跌倒再處理","執行預防性跌倒措施並向病人說明危險","限制所有病人行動確保零跌倒","告知家屬讓家屬自行照顧"],
+   c:1,p:"行善",pc:"#059669",
+   ex:"✅ 行善原則的具體做法之一是「預防病人受傷害」——事先預測危險因子並採取措施，同時告知病人，兼顧行善與尊重自主。"},
+  {q:"行善原則包含哪兩個主要觀念？",
+   opts:["遵從醫師指示；維護護理師效率","提供有益病人的事；權衡利益和傷害得失","預防疾病；治療疾病","尊重自主；促進公平"],
+   c:1,p:"行善",pc:"#059669",
+   ex:"✅ 行善原則的兩個觀念：①提供有益病人的事（主動促進健康）；②權衡利益和傷害得失（行善對病人的傷害不能遠超過益處）。"},
+  {q:"王美美（62歲）乳癌化療期間出現口腔黏膜炎副作用。護理師的正確處理符合哪個概念？",
+   opts:["直接停止化療，避免繼續傷害","仔細評估化療的利益和傷害，並積極處理副作用","告訴病人副作用是必然的，忍耐就好","這不是護理師的責任"],
+   c:1,p:"行善",pc:"#059669",
+   ex:"✅ 這是「權衡利害原則」的應用：化療可延長生命（大利），但有副作用（害）。只要利益大於傷害，治療是合理的；同時積極處理副作用，以行善精神將傷害減至最小。"},
+  {q:"行善原則中，「去除病人傷害」的臨床例子是？",
+   opts:["預防高齡病人跌倒","為糖尿病足壞疽病人進行截肢手術以防敗血症","提供出院衛教指導","安排術前心理準備"],
+   c:1,p:"行善",pc:"#059669",
+   ex:"✅「去除病人傷害」是積極排除既有損傷。截肢雖造成肢體喪失，但目的是去除壞疽組織、預防敗血症這個更大的傷害——是行善原則中「去除傷害」的典型案例。"},
+  {q:"不傷害原則在臨床上的正確理解是？",
+   opts:["護理師必須完全避免對病人造成任何疼痛","護理師應將傷害減至最低，有正當理由的必要性傷害是可接受的","只要病人沒有明確抱怨就沒有傷害","不傷害原則比行善原則更次要"],
+   c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 不傷害不是「完全不能造成任何痛苦」，而是「將傷害減至最低」。有正當理由的必要性傷害（打針、手術）是可接受的。且不傷害原則的優先性高於行善原則。"},
+  {q:"癌末病人使用嗎啡止痛，雖知有呼吸抑制副作用，仍給藥。符合哪個原則？",
+   opts:["強醫主（Full Paternalism）","複式影響原則（Principle of Double Effect）","違反不傷害原則","分配性公平原則"],
+   c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 複式影響原則（Double Effect）：主要目的良善（止痛），附帶有害影響（呼吸抑制）非故意，且利益大於傷害，在倫理上可接受。四個條件同時滿足。"},
+  {q:"護理師發現自己給藥錯誤，應立即採取的行動是？",
+   opts:["先觀察病人，若沒事就算了","立即評估病人、通知醫師、填寫不良事件報告並誠實告知病人","跟同事說好不要聲張，避免被懲罰","只通知護理長，不需告知病人"],
+   c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 發現給藥錯誤應立即：①評估病人→②通知醫師→③執行醫囑→④填寫不良事件報告→⑤誠實告知病人。隱瞞錯誤才是更嚴重的倫理違反。"},
+  {q:"複式影響原則（Double Effect）的倫理可接受性需滿足幾個條件？",
+   opts:["只需1個：主要目的良善","2個：目的良善＋傷害非故意","4個：行為良善、意圖良善、善果非透過害果達成、利大於害","只需醫師簽署同意書即可"],
+   c:2,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 複式影響原則需同時滿足四個條件：①行為本身中立或良善；②意圖良善；③善果不是透過害果達成；④善果利益大於害果。缺少任何一條都不能以此原則辯護。"},
+  {q:"急診室採用「先到先診治」但重症病人可優先的制度，體現了哪種公平？",
+   opts:["分配性公平","報應性公平","程序性公平","形式公平"],
+   c:2,p:"公平",pc:"#7C3AED",
+   ex:"✅ 程序性公平強調資源分配「過程」的重要性：建立明確公開的處理程序（分診制度）以保障個人權益。急診的標準化分診系統是程序性公平的典型應用。"},
+  {q:"亞里斯多德的公平核心概念是？",
+   opts:["所有人分配完全相同的資源","平等的人要平等對待，不平等的人要不平等對待（比例原則）","有錢的人可以獲得更好的醫療資源","只有醫師才能決定誰獲得醫療資源"],
+   c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ 亞里斯多德的公平核心：「平等的人要平等對待，不平等的人（需求不同）要不平等對待」——這種差異對待不是歧視，而是比例原則（proportionality），是實質公平的基礎。"},
+  {q:"COVID-19期間，醫護人員優先接種疫苗，依據哪種資源分配方法？",
+   opts:["依醫療急迫性（Medical Need）","依工具價值（Instrumental Values）","平等分配原則（Equal Share）","依市場機制（Market Approach）"],
+   c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ 依工具價值分配：根據個人具有的特定社會功能決定分配順序。醫護人員維持醫療系統運作，優先接種可保護最多人——符合工具價值分配原則。"},
+  {q:"SOFA評分系統用於加護病房資源分配，評分越高代表？",
+   opts:["病人病況越穩定，越需要優先入住ICU","病人的住院死亡率越高，優先程度越低","病人的社會貢獻越大","病人的年齡越大"],
+   c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ SOFA評分越高，住院死亡率越高、預後越差。在「優先存活率高者」的分配原則下，SOFA分數低的病人反而獲得優先資源，以最大化存活人數。"}
+];
+
+// ── QUIZ 2 QUESTIONS (Ch7 決策模式) ─────────────
+const Q2=[
+  {q:"倫理決策最主要的目的是？",
+   opts:["快速解決問題","滿足醫療團隊意見","根據倫理原則選擇最佳行動","避免與病人家屬發生衝突"],
+   c:2,p:"決策基礎",pc:"#0284C7",
+   ex:"✅ 倫理決策核心是依倫理原則行動，透過系統性步驟，以不傷害病人為原則，與病人和家屬共同制定最佳利益方案。"},
+  {q:"「倫理兩難」和「倫理問題」最大的差別是？",
+   opts:["倫理兩難沒有解決辦法，倫理問題有","倫理兩難雙方都有道理難以取捨，倫理問題對錯明確只是是否遵守","倫理問題比倫理兩難更複雜","只有護理師會遇到倫理兩難"],
+   c:1,p:"決策基礎",pc:"#0284C7",
+   ex:"✅ 倫理兩難：雙方都有正當理由，難以取捨（如病人知情 vs 家屬隱瞞）。倫理問題：對錯明確，關鍵是「敢不敢做對的事」（如發現同事偷藥，舉報是對的但有壓力）。"},
+  {q:"當病人無意思能力時，醫護人員應依何優先順序決策？",
+   opts:["家屬期待→醫師建議→病人預立意願","病人當下意識清楚意願→預立意願→推測意願→最佳利益","醫師建議→法律顧問→家屬→病人","法律顧問→倫理委員會→家屬→醫師"],
+   c:1,p:"決策基礎",pc:"#0284C7",
+   ex:"✅ 圖7-1決策原則順序：①病人當下意識清楚表達意願→②依據預立意願→③推測意願（依病人價值觀）→④依病人最佳利益。尊重自主是最高原則。"},
+  {q:"醫病共享決策（SDM）的三步驟依序是？",
+   opts:["診斷→治療→評值","選擇對談→選項對談→決策對談","知情→同意→執行","告知→討論→決定"],
+   c:1,p:"決策基礎",pc:"#0284C7",
+   ex:"✅ SDM三步驟：①選擇對談（Choice Talk）知情——提供所有治療選項；②選項對談（Option Talk）溝通——比較優缺點；③決策對談（Decision Talk）決定——共同做出最符合病人偏好的選擇。"},
+  {q:"影響護理倫理決策的三大類因素是？",
+   opts:["年齡、性別、學歷","個人價值觀、倫理相關理論、組織與法律","醫院規模、病人數量、護理師年資","護理師薪水、工作環境、主管態度"],
+   c:1,p:"決策基礎",pc:"#0284C7",
+   ex:"✅ 三大影響因素：①個人因素（價值觀、宗教、道德觀）；②理論因素（結果論、義務論、德行論）；③組織與法律因素（政策、護理規範、病人自主法）。事件核心永遠是「人」。"},
+  {q:"柯廷（Curtin）模式的第一步是？",
+   opts:["應用倫理原則","確認倫理議題","背景資料收集","採取行動"],
+   c:2,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 柯廷模式六步驟：①背景資料收集→②倫理議題確認→③倫理決策者評估→④可行方案分析→⑤應用倫理原則→⑥解決倫理議題採取行動。就像蓋房子先打地基。"},
+  {q:"阿洛斯卡（Aroskar）模式特別強調在做倫理決策時要掌握什麼？",
+   opts:["病人的財務狀況","有效時間並考量價值系統","醫院的床位數量","護理師的年資"],
+   c:1,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 阿洛斯卡認為解決倫理困境時，應掌握有效時間及考量價值系統，並根據結果論、義務論、德行論三種倫理理論分析情境。常適用於「告知 vs 保密」的困境。"},
+  {q:"湯普生（Thompson）模式共有幾個步驟？最後一步是？",
+   opts:["6步驟，最後是採取行動","8步驟，最後是家屬同意","10步驟，最後是評值","5步驟，最後是反思"],
+   c:2,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 湯普生模式共10步驟：步驟1-7為情境確認與分析，步驟8運用理論批判性探索，步驟9選擇最佳方案，步驟10評值——確認決策結果是否與預期一致。"},
+  {q:"約瑟夫（Joseph）模式中「價值判斷」的三個子步驟是？",
+   opts:["蒐集資料、分析問題、做決定","界定價值觀、評量排序、表明偏誤","法律分析、倫理分析、文化分析","贊成觀點、反對觀點、中立觀點"],
+   c:1,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 約瑟夫模式的「價值判斷」：①界定個人/專業價值觀→②評量並排定優先順序→③表明其中的偏誤（bias）。這步驟幫助決策者識別自己的主觀偏見。"},
+  {q:"西娃（Silva, 1990）模式的第三步驟是？",
+   opts:["收集及評估資料","確立問題","擬定可採用行為措施（從結果論與義務論角度）","評值決策品質"],
+   c:2,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 西娃模式五步驟：①收集評估資料→②確立問題→③擬定可採用行為措施（從結果論與義務論兩個角度）→④抉擇及決定行動→⑤評值決策品質及行動過程。"},
+  {q:"約翰森（Johnsen, 2002）臨床模式「第二象限」分析的是？",
+   opts:["醫療因素考量（行善與不傷害原則）","病人意向考量（尊重自主原則）","生命品質考量（行善、不傷害與自主原則）","其他情境考量（守信與公平原則）"],
+   c:1,p:"六大模式",pc:"#8B5CF6",
+   ex:"✅ 約翰森四象限：第一象限=醫療因素（行善/不傷害）；第二象限=病人意向（自主）：包括決策能力、知情同意、預立醫囑；第三象限=生命品質；第四象限=其他情境。"},
+  {q:"「病人已簽署DNR，家屬淚求插管延命」，最適合用哪個模式分析？",
+   opts:["柯廷模式（Curtin）","阿洛斯卡模式（Aroskar）","湯普生模式（Thompson）","約翰森臨床模式（Johnsen）"],
+   c:3,p:"模式應用",pc:"#059669",
+   ex:"✅ 約翰森臨床模式（台灣最廣泛使用），透過四象限分析：第一象限確認急救是否有益、第二象限確認DNR意願具法律效力、第三象限評估生命品質、第四象限考慮家屬情境，整合做出有依據的臨床決策。"},
+  {q:"護理師面臨林女士家暴案（疑似受虐但拒絕通報）依阿洛斯卡模式，最應考量哪項？",
+   opts:["倫理問題；醫院政策規定","倫理兩難；個人自主原則 vs 不傷害原則與法律通報義務","倫理問題；護理師的個人安全","倫理兩難；節省醫療資源"],
+   c:1,p:"模式應用",pc:"#059669",
+   ex:"✅ 這是「倫理兩難」：自主權（拒絕通報）vs 不傷害（受暴風險上升）＋法律通報義務。依阿洛斯卡：當個案有傷害自己之虞時，自主原則不具優先性，不傷害原則應被優先考量。"},
+  {q:"「資源有限，ICU只剩一床，兩位重症病人同時需要」，最適合用哪個決策模式？",
+   opts:["西娃模式（Silva）","約翰森模式（Johnsen）","湯普生模式（Thompson）","阿洛斯卡模式（Aroskar）"],
+   c:2,p:"模式應用",pc:"#059669",
+   ex:"✅ 湯普生模式特別適用於稀缺資源的公平分配問題，其10步驟幫助分析各方道德立場、確認價值衝突、決定誰做決定，最終達到「利益平衡（Benefit Balance）」。"},
+  {q:"在約翰森四象限中，「插管後病人生命品質將嚴重惡化」的評估屬於哪個象限？",
+   opts:["第一象限：醫療因素","第二象限：病人意向","第三象限：生命品質","第四象限：其他情境"],
+   c:2,p:"模式應用",pc:"#059669",
+   ex:"✅ 第三象限「生命品質考量」：涉及行善、不傷害與自主原則，評估治療後回到正常生活的可能性、身心社交負面效應、安寧緩和醫療的適用性等。"},
+  {q:"「柯阿湯約西約」記憶法中，哪個模式是台灣臨床機構最廣泛使用？",
+   opts:["柯廷（Curtin）模式","湯普生（Thompson）模式","西娃（Silva）模式","約翰森（Johnsen）模式"],
+   c:3,p:"模式應用",pc:"#059669",
+   ex:"✅ 約翰森臨床倫理決策模式（Johnsen, 2002）是台灣臨床機構較廣泛使用的模式，因為其「四象限分析法」與生命倫理四原則（行善、不傷害、自主、公平）直接對應，非常實用於臨床情境。"}
+];
+
+// ── INIT QUIZ 1 ───────────────────────────────────
+function q1restart(){
+  initQ('q1',Q1);
+  document.getElementById('q1area').style.display='block';
+  document.getElementById('q1sr').classList.remove('show');
+  document.getElementById('q1area').innerHTML=buildQ(Q1,0,'q1');
+  document.getElementById('q1pf').style.width='6.25%';
 }
 
-restart();
+// ── INIT QUIZ 2 ───────────────────────────────────
+function q2restart(){
+  initQ('q2',Q2);
+  document.getElementById('q2area').style.display='block';
+  document.getElementById('q2sr').classList.remove('show');
+  document.getElementById('q2area').innerHTML=buildQ(Q2,0,'q2');
+  document.getElementById('q2pf').style.width='6.25%';
+}
+
+// Start both quizzes
+q1restart();
+q2restart();
+
 </script>
 </body>
 </html>
