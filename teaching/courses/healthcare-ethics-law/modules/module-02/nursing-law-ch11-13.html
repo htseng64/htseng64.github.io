@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理與法律 | Ch.11-13 互動教學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1f36; --ink2:#2d3456; --muted:#64748b;
+  --bg:#f7f6f2; --white:#ffffff;
+  --c11:#0f4c81; --c11l:#dbeafe; --c11m:#2563eb;
+  --c12:#7c2d12; --c12l:#fef3c7; --c12m:#d97706;
+  --c13:#134e4a; --c13l:#d1fae5; --c13m:#059669;
+  --gold:#b5832a; --goldl:#fef9ec;
+  --r:10px; --rl:18px;
+  --sh:0 2px 16px rgba(26,31,54,.09);
+  --shl:0 6px 32px rgba(26,31,54,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:15.5px}
+
+/* ── HEADER ── */
+header{background:var(--ink);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.35)}
+.htop{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{font-family:'Noto Serif TC',serif;font-size:16px;color:#e2c97e;font-weight:700;letter-spacing:.02em}
+.logo span{display:block;font-size:11px;color:rgba(255,255,255,.4);font-weight:300;font-family:'Noto Sans TC',sans-serif;letter-spacing:.05em}
+.hbg{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.hbg span{display:block;width:22px;height:2px;background:#fff;margin:5px 0;border-radius:2px;transition:.3s}
+nav{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 12px}
+nav::-webkit-scrollbar{display:none}
+.nb{background:none;border:none;color:rgba(255,255,255,.55);padding:10px 14px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:500;white-space:nowrap;
+  border-bottom:3px solid transparent;transition:.2s;display:flex;align-items:center;gap:5px}
+.nb:hover{color:#fff}
+.nb.on{color:#fff;border-bottom-color:#e2c97e}
+.ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#0d1526 0%,#1a2545 50%,#0f1e3a 100%);
+  color:#fff;padding:56px 20px 48px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(181,131,42,.13),transparent 55%),
+             radial-gradient(ellipse at 80% 30%,rgba(15,76,129,.2),transparent 50%)}
+.hbadge{display:inline-block;background:rgba(181,131,42,.18);border:1px solid rgba(181,131,42,.4);
+  color:#e2c97e;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 16px;border-radius:20px;margin-bottom:18px}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(22px,4.5vw,40px);font-weight:900;line-height:1.2;margin-bottom:8px}
+.hero h1 em{font-style:normal;color:#e2c97e}
+.hero p{color:rgba(255,255,255,.55);font-size:13.5px;margin-bottom:36px}
+.chcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto}
+.chcard{border-radius:var(--r);padding:20px 16px;cursor:pointer;transition:.25s;text-align:center;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);backdrop-filter:blur(4px)}
+.chcard:hover{background:rgba(255,255,255,.12);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.chcard .ci{font-size:28px;margin-bottom:10px}
+.chcard .cn{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+.chcard .cs{font-size:11px;color:rgba(255,255,255,.45)}
+
+/* ── SECTIONS ── */
+.sw{display:none;animation:fi .35s ease}
+.sw.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ca{max-width:1060px;margin:0 auto;padding:36px 18px}
+
+/* ── SECTION HEADER ── */
+.shd{display:flex;align-items:center;gap:14px;margin-bottom:26px;padding-bottom:18px;border-bottom:2px solid rgba(0,0,0,.07)}
+.sico{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.sti h2{font-family:'Noto Serif TC',serif;font-size:clamp(20px,3vw,27px);font-weight:900}
+.sti p{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;margin-bottom:22px;background:rgba(0,0,0,.06);border-radius:9px;padding:3px;width:fit-content;flex-wrap:wrap}
+.tb{background:none;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:500;color:var(--muted);transition:.2s;white-space:nowrap}
+.tb.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tc{display:none}.tc.on{display:block}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:16px}
+.card h3{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;margin-bottom:10px}
+.card p,.card li{color:#374151;font-size:14px;line-height:1.85}
+.card ul{padding-left:18px}.card li{margin-bottom:5px}
+
+/* ── CONCEPT BOX ── */
+.cb{border-left:4px solid;background:#fff;border-radius:0 var(--r) var(--r) 0;padding:16px 20px;margin-bottom:14px;box-shadow:var(--sh)}
+.cb .lb{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.cb h3{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.cb p,.cb li{font-size:13.5px;color:#374151;line-height:1.8}
+.cb ul{padding-left:16px}
+
+/* ── LAW BOX ── */
+.law{background:#fff;border-radius:var(--r);padding:16px 18px;margin-bottom:12px;
+  border:1px solid #E5E7EB;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--sh)}
+.law .li{font-size:22px;flex-shrink:0;margin-top:2px}
+.law .lc h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.law .lc p{font-size:13px;color:#374151}
+.lawblue{background:var(--c11l);border-color:#93C5FD}
+.lawyellow{background:var(--c12l);border-color:#FCD34D}
+.lawgreen{background:var(--c13l);border-color:#6EE7B7}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* ── HIGHLIGHT ── */
+.hb{border-radius:var(--r);padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start}
+.hb .hi{font-size:20px;flex-shrink:0;margin-top:2px}
+.hb .hc h4{font-size:13.5px;font-weight:700;margin-bottom:3px}
+.hb .hc p{font-size:13px;color:#374151}
+.tip{background:#fffbeb;border:1px solid #fde68a}
+.wrn{background:#fff5f5;border:1px solid #fed7d7}
+.ok{background:#f0fff4;border:1px solid #c6f6d5}
+.inf{background:#eff6ff;border:1px solid #bfdbfe}
+
+/* ── STEP BOX ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f3f4f6;align-items:flex-start}
+.step:last-child{border-bottom:none}
+.snum{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+.sbody h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.sbody p{font-size:13px;color:#374151}
+
+/* ── CASE ACCORDION ── */
+.cc{background:#fff;border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);margin-bottom:16px}
+.ch{padding:15px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px}
+.ch:hover{filter:brightness(.97)}
+.chl{display:flex;align-items:center;gap:12px}
+.ctag{background:rgba(0,0,0,.15);color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;
+  padding:3px 9px;border-radius:5px;white-space:nowrap}
+.ch h3{font-family:'Noto Serif TC',serif;font-weight:700;font-size:15px;color:#fff}
+.cto{background:rgba(255,255,255,.2);border:none;width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;transition:transform .3s;flex-shrink:0;font-size:13px}
+.cto.op{transform:rotate(180deg)}
+.cbody{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .5s ease,padding .3s}
+.cbody.op{max-height:1800px;padding:20px}
+.scen{background:#f8f7f5;border-radius:9px;padding:14px;margin-bottom:12px;border-left:4px solid #e5e7eb}
+.scen .sl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.scen p,.scen li{font-size:13.5px;color:#374151;line-height:1.8}
+.scen ul{padding-left:16px}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.ai{background:#fff;border-radius:8px;padding:12px;border:1px solid #e5e7eb}
+.al{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.ai p{font-size:13px;color:#374151;line-height:1.7}
+.res{background:var(--goldl);border:1px solid #e8d5a3;border-radius:9px;padding:14px}
+.rl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.res p{font-size:13.5px;color:#574624}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:16px;font-size:13px}
+.tbl th{padding:10px 14px;text-align:left;font-weight:700;font-size:12px}
+.tbl td{padding:10px 14px;border-top:1px solid #f3f4f6;vertical-align:top}
+.tbl tr:hover td{background:#fafafa}
+
+/* ── TAGS ── */
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:var(--muted)}
+
+/* ── QUIZ ── */
+.qwrap{max-width:680px;margin:0 auto}
+.qpbar{height:5px;background:#e5e7eb;border-radius:3px;margin-bottom:22px;overflow:hidden}
+.qpfill{height:100%;background:linear-gradient(90deg,var(--ink),var(--gold));border-radius:3px;transition:width .4s}
+.qcard{background:#fff;border-radius:var(--rl);padding:24px;box-shadow:var(--shl);margin-bottom:14px}
+.qmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.qnum{font-size:12px;font-weight:600;color:var(--muted)}
+.qtag{font-size:10px;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:10px}
+.qq{font-family:'Noto Serif TC',serif;font-size:clamp(14px,2.2vw,17px);font-weight:700;line-height:1.65;margin-bottom:18px}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qo{background:#f8f9fa;border:2px solid #e5e7eb;border-radius:8px;padding:11px 14px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:13px;text-align:left;transition:.2s;
+  display:flex;align-items:center;gap:10px;width:100%}
+.qo:hover:not(:disabled){border-color:var(--ink);background:#eef2ff}
+.ql{width:24px;height:24px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:.2s}
+.qo.cor{border-color:#059669;background:#d1fae5}.qo.cor .ql{background:#059669;color:#fff}
+.qo.wrg{border-color:#dc2626;background:#fee2e2}.qo.wrg .ql{background:#dc2626;color:#fff}
+.qo:disabled{cursor:default}
+.qexp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:#065f46;display:none}
+.qexp.on{display:block}
+.qexp.we{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}
+.qnav{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.bp{background:var(--ink);color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:13.5px;font-weight:700;transition:.2s;display:flex;align-items:center;gap:5px}
+.bp:hover{background:var(--ink2);transform:translateY(-1px)}
+.bs{background:transparent;color:var(--muted);border:2px solid #e5e7eb;padding:10px 18px;border-radius:8px;
+  cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:13.5px;font-weight:600;transition:.2s}
+.bs:hover{border-color:var(--ink);color:var(--ink)}
+.sr{display:none;text-align:center;padding:40px 24px;background:#fff;border-radius:var(--rl);box-shadow:var(--shl)}
+.sr.on{display:block}
+.sring{width:120px;height:120px;border-radius:50%;border:7px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 18px}
+.sn{font-family:'Noto Serif TC',serif;font-size:38px;font-weight:700}
+.st{font-size:11.5px;color:var(--muted)}
+.sm{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;margin-bottom:5px}
+.ss{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+.sbd{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.bi{border-radius:8px;padding:12px 8px;text-align:center}
+.bn{font-size:11px;font-weight:700;margin-bottom:4px}.bsc{font-size:19px;font-weight:800}.bt{font-size:10px;color:var(--muted)}
+
+/* ── DISCUSSION ── */
+.dc{background:#fff;border-radius:var(--rl);padding:20px;box-shadow:var(--sh);margin-bottom:16px;border-top:4px solid}
+.dtag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.dc h3{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.5}
+.dsc{background:#f8f7f5;border-radius:8px;padding:13px;font-size:13.5px;color:#374151;margin-bottom:11px}
+.dpts{list-style:none;padding:0}
+.dpts li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13.5px;color:var(--muted);border-bottom:1px solid #f3f4f6}
+.dpts li:last-child{border-bottom:none}
+.dpts li::before{content:'💬';flex-shrink:0;margin-top:2px}
+
+/* ── SUMMARY GRID ── */
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.sp{border-radius:var(--rl);padding:20px 14px;text-align:center;color:#fff;cursor:pointer;transition:.2s}
+.sp:hover{transform:translateY(-2px);box-shadow:var(--shl)}
+.sp .si{font-size:26px;margin-bottom:8px}
+.sp .sz{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:900;margin-bottom:3px}
+.sp .se{font-size:10px;opacity:.65;margin-bottom:8px}
+.sp .sk{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;font-size:11.5px;font-weight:700}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:rgba(255,255,255,.4);text-align:center;padding:20px;font-size:12px;margin-top:36px}
+footer strong{color:#e2c97e}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hbg{display:block}
+  nav{display:none;flex-direction:column;padding:6px 12px 12px}
+  nav.op{display:flex}
+  .nb{padding:10px 6px;border-bottom:1px solid rgba(255,255,255,.08);border-left:3px solid transparent}
+  .nb.on{border-bottom-color:rgba(255,255,255,.08);border-left-color:#e2c97e}
+  .chcards,.g2,.g3,.ag,.sg,.sbd{grid-template-columns:1fr 1fr}
+  .tbl{font-size:12px}.tbl th,.tbl td{padding:8px 10px}
+  .ca{padding:22px 12px}
+}
+@media(max-width:480px){
+  .chcards{grid-template-columns:1fr}
+  .g2,.g3,.ag{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr}
+  .sbd{grid-template-columns:1fr 1fr}
+  .hero{padding:40px 14px 32px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="htop">
+    <div class="logo">護理與法律 <span>CH.11–13 互動教學 | 醫療法規與護理實務</span></div>
+    <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+  </div>
+  <nav id="nav">
+    <button class="nb on" onclick="go('ov',this)"><span class="ndot" style="background:#e2c97e"></span>📋 總覽</button>
+    <button class="nb" onclick="go('c11',this)"><span class="ndot" style="background:var(--c11m)"></span>⚖️ CH11 執業法規</button>
+    <button class="nb" onclick="go('c12',this)"><span class="ndot" style="background:var(--c12m)"></span>🏥 CH12 醫療糾紛</button>
+    <button class="nb" onclick="go('c13',this)"><span class="ndot" style="background:var(--c13m)"></span>📋 CH13 病歷法律</button>
+    <button class="nb" onclick="go('qz1',this)"><span class="ndot" style="background:#8b5cf6"></span>📝 CH11 測驗</button>
+    <button class="nb" onclick="go('qz2',this)"><span class="ndot" style="background:#ec4899"></span>📝 CH12 測驗</button>
+    <button class="nb" onclick="go('qz3',this)"><span class="ndot" style="background:#06b6d4"></span>📝 CH13 測驗</button>
+    <button class="nb" onclick="go('di',this)"><span class="ndot" style="background:#f59e0b"></span>💬 討論</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hbadge">Nursing Law · 護理法律</div>
+  <h1>護理人員<em>執業</em>法律完整指南</h1>
+  <p>涵蓋執業資格、醫療糾紛與病歷管理三大核心主題</p>
+  <div class="chcards">
+    <div class="chcard" onclick="go('c11',document.querySelectorAll('.nb')[1])">
+      <div class="ci">⚖️</div>
+      <div class="cn">CH11 執業法規</div>
+      <div class="cs">護理人員資格、權利義務、機構設置</div>
+    </div>
+    <div class="chcard" onclick="go('c12',document.querySelectorAll('.nb')[2])">
+      <div class="ci">🏥</div>
+      <div class="cn">CH12 醫療糾紛</div>
+      <div class="cs">糾紛原因、護理過失、預防處理三原則</div>
+    </div>
+    <div class="chcard" onclick="go('c13',document.querySelectorAll('.nb')[3])">
+      <div class="ci">📋</div>
+      <div class="cn">CH13 病歷法律</div>
+      <div class="cs">病歷規定、電子病歷、竄改責任、個資法</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 總覽 ══════════════ -->
+<div class="sw on" id="sw-ov"><div class="ca">
+  <div class="sg">
+    <div class="sp" style="background:linear-gradient(135deg,#0f4c81,#1d4ed8)" onclick="go('c11',document.querySelectorAll('.nb')[1])">
+      <div class="si">⚖️</div><div class="sz">CH11</div><div class="se">護理人員執業相關法律規定</div><div class="sk">資格·義務·機構</div>
+    </div>
+    <div class="sp" style="background:linear-gradient(135deg,#7c2d12,#d97706)" onclick="go('c12',document.querySelectorAll('.nb')[2])">
+      <div class="si">🏥</div><div class="sz">CH12</div><div class="se">醫療糾紛的預防與處理</div><div class="sk">糾紛·過失·解決</div>
+    </div>
+    <div class="sp" style="background:linear-gradient(135deg,#134e4a,#059669)" onclick="go('c13',document.querySelectorAll('.nb')[3])">
+      <div class="si">📋</div><div class="sz">CH13</div><div class="se">病歷相關的法律問題</div><div class="sk">病歷·電子·個資</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📜 三章核心法律架構</h3>
+    <table class="tbl" style="margin-top:12px;box-shadow:none;border:1px solid #e5e7eb">
+      <thead><tr style="background:var(--ink);color:#fff">
+        <th>章節</th><th>核心主題</th><th>主要法規依據</th><th>護理師最常遇到的情境</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--c11m)">⚖️ CH11</strong></td><td>護理人員執業資格、業務範圍、機構設置</td><td>護理人員法、勞動基準法、職業安全衛生法</td><td>執業證書申請、業務範圍爭議、機構開設</td></tr>
+        <tr><td><strong style="color:var(--c12m)">🏥 CH12</strong></td><td>醫療糾紛原因、護理過失責任、預防處理</td><td>醫療法、醫療事故預防及爭議處理法、刑法</td><td>病人投訴、護理疏失訴訟、燙傷燙傷案例</td></tr>
+        <tr><td><strong style="color:var(--c13m)">📋 CH13</strong></td><td>病歷建立保存、電子病歷、偽造竄改責任</td><td>醫療法、醫師法、個人資料保護法、病人自主權利法</td><td>病歷記載疏漏、電子病歷安全、洩漏個資</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="g3">
+    <div class="hb inf"><div class="hi">💡</div><div class="hc"><h4>法律是倫理的最低標準</h4><p>護理師應超越法律最低要求，以倫理四大原則（行善、不傷害、自主、公平）為更高指引。</p></div></div>
+    <div class="hb tip"><div class="hi">⚠️</div><div class="hc"><h4>護理疏失三種責任</h4><p>刑事責任（業務過失傷亡）、民事責任（違約/侵權）、行政責任（執照懲處），三者可同時成立。</p></div></div>
+    <div class="hb ok"><div class="hi">🔐</div><div class="hc"><h4>病歷是法律文件</h4><p>病歷不只是醫療記錄，更是法律證據。記載不實、竄改偽造皆有刑事責任。</p></div></div>
+  </div>
+</div></div>
+
+<!-- ══════════════ CH11 ══════════════ -->
+<div class="sw" id="sw-c11"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c11l)">⚖️</div>
+    <div class="sti"><h2 style="color:var(--c11)">CH11 護理人員執業相關法律規定</h2><p>資格與業務 | 法定權利義務 | 護理機構設置</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'11a')">👩‍⚕️ 資格與業務</button>
+    <button class="tb" onclick="st(this,'11b')">⚖️ 權利與義務</button>
+    <button class="tb" onclick="st(this,'11c')">🏢 機構設置</button>
+    <button class="tb" onclick="st(this,'11d')">🎬 影片倫理</button>
+  </div>
+
+  <!-- 11a 資格與業務 -->
+  <div class="tc on" id="11a">
+    <div class="cb" style="border-color:var(--c11m)">
+      <div class="lb" style="color:var(--c11m)">護理人員法 定義</div>
+      <h3>護理人員的分類</h3>
+      <p>護理人員包含<strong>護理師</strong>與<strong>護士</strong>，另有完成專科訓練並經衛福部甄審合格者，可取得<strong>專科護理師</strong>證書，每6年更新一次。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid var(--c11m)">
+        <h3>🔬 專科護理師業務範圍</h3>
+        <p style="margin-bottom:10px">在<strong>醫師監督下</strong>可執行醫療業務，分兩大類：</p>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;margin-bottom:8px">
+          <div style="font-weight:700;color:var(--c11);font-size:13px;margin-bottom:6px">涉及侵入人體者</div>
+          <ul style="font-size:13px;color:#1e3a8a;padding-left:14px">
+            <li>傷口處置</li><li>管路處置</li><li>檢查處置</li><li>其他處置</li>
+          </ul>
+        </div>
+        <div style="background:#f0fdf4;border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">未涉及侵入人體者</div>
+          <ul style="font-size:13px;color:#065f46;padding-left:14px">
+            <li>預立特定醫療流程表單代為開立</li><li>檢驗、檢查之初步綜合判斷</li>
+            <li>非侵入性醫療處置</li><li>相關醫療諮詢</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid #8b5cf6">
+          <h3>🌍 特殊領域護理人員</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:#0284c7">社</div><div class="sbody"><h4>社區衛生護理師</h4><p>台灣護理學會認證，目前無專屬法令，由學會發給認證證書。</p></div></div>
+            <div class="step"><div class="snum" style="background:#7c3aed">精</div><div class="sbody"><h4>精神衛生護理師</h4><p>依「精神衛生護理師認證辦法」，提升精神衛生照護能力。</p></div></div>
+            <div class="step"><div class="snum" style="background:#059669">學</div><div class="sbody"><h4>學校護理人員</h4><p>依「學校衛生法」及中華民國學校護理人員協進會認證辦法執業。</p></div></div>
+            <div class="step"><div class="snum" style="background:#d97706">助</div><div class="sbody"><h4>助產人員</h4><p>依「助產人員法」，涵蓋助產師與助產士，由衛福部核發證書。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hb tip"><div class="hi">⚠️</div><div class="hc"><h4>重要提醒：業務範圍的邊界</h4>
+      <p>依<strong>護理人員法第24條</strong>，護理業務職掌四類：①健康問題之護理評估、②預防保健之護理措施、③護理指導及諮詢、④醫療輔助行為（須在醫師指示下）。<strong>超越業務範圍擅自執行醫療行為，可能涉及違法。</strong></p>
+    </div></div>
+  </div>
+
+  <!-- 11b 權利義務 -->
+  <div class="tc" id="11b">
+    <div class="g2">
+      <div>
+        <div class="cb" style="border-color:var(--c11m)"><div class="lb" style="color:var(--c11m)">護理師的權利</div>
+          <h3>法定工作權利保障</h3>
+          <p>護理人員適用<strong>勞動基準法</strong>的全部保障，包括工時、休假、職災補償等。</p>
+        </div>
+        <div class="card">
+          <h3>🛡️ 工作環境安全相關法規</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c11m)">1</div><div class="sbody"><h4>人類免疫缺乏病毒傳染防治條例</h4><p>保障護理人員在照護HIV感染者時的職業安全與防護權利。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c11m)">2</div><div class="sbody"><h4>職業安全衛生法</h4><p>規範工作場所安全標準，雇主須提供安全的工作環境。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c11m)">3</div><div class="sbody"><h4>醫療法</h4><p>規範醫療機構對醫事人員的責任義務。</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="cb" style="border-color:#dc2626"><div class="lb" style="color:#dc2626">護理師的義務</div>
+          <h3>法定專業義務</h3>
+          <p>護理人員之<strong>業務範圍</strong>規定在護理人員法第24條及第四章業務與責任。違反注意義務依<strong>護理人員法第35條</strong>予以懲處。</p>
+        </div>
+        <div class="card">
+          <h3>⚠️ 違反義務的後果</h3>
+          <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px">
+            <div style="background:#fee2e2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:4px">🔴 刑事責任</div>
+              <p style="font-size:13px;color:#7f1d1d">業務過失致傷、重傷或死亡（刑法相關條款），不可免除</p>
+            </div>
+            <div style="background:#fef3c7;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#d97706;font-size:13px;margin-bottom:4px">🟡 民事責任</div>
+              <p style="font-size:13px;color:#78350f">違約責任或侵權責任，須賠償病人損害</p>
+            </div>
+            <div style="background:#ede9fe;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#7c3aed;font-size:13px;margin-bottom:4px">🟣 行政責任</div>
+              <p style="font-size:13px;color:#4c1d95">依護理人員法受衛生主管機關裁罰，包括停業或廢照</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hb wrn"><div class="hi">🚨</div><div class="hc"><h4>注意義務違反最常見情境</h4>
+      <p>給藥錯誤、跌倒未防護、病情變化未及時通報、執行超出業務範圍的處置——這些都可能同時引發刑事、民事、行政三種責任。</p>
+    </div></div>
+  </div>
+
+  <!-- 11c 機構設置 -->
+  <div class="tc" id="11c">
+    <div class="cb" style="border-color:var(--c11m)"><div class="lb" style="color:var(--c11m)">護理人員法第14條</div>
+      <h3>護理機構設置的目的</h3>
+      <p>為減少醫療資源浪費、滿足連續性醫療照護需求並發揮護理人員執業功能，依法得設置護理機構。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-left:4px solid var(--c11m)">
+        <h3>🏢 護理機構類型</h3>
+        <ul>
+          <li><strong>一般護理機構：</strong>依護理人員法第14條設置，提供連續性護理照護</li>
+          <li><strong>精神復健機構：</strong>依精神衛生法與「精神復健機構設置及管理辦法」</li>
+          <li><strong>護理之家：</strong>提供長期照護服務，須符合相關設置標準</li>
+        </ul>
+      </div>
+      <div>
+        <div class="hb wrn" style="margin-bottom:12px"><div class="hi">⚠️</div><div class="hc"><h4>機構設置的法律責任延伸</h4>
+          <p>護理機構不只是護理師的法律責任，<strong>非護理人員（如看護）</strong>也屬護理人員法所言護理機構人員，受保密義務管轄。</p>
+        </div></div>
+        <div class="hb wrn"><div class="hi">📱</div><div class="hc"><h4>真實案例警示</h4>
+          <p>某護理之家看護拍攝病人臀部並上傳網路，遭衛生局追蹤懲處。<strong>護理機構須承擔監督與管理責任</strong>，確保所有人員履行保密義務。</p>
+        </div></div>
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--c11m)">
+      <h3>📊 護理師工作場域多元化趨勢</h3>
+      <div class="g3" style="margin-top:12px">
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏥</div><strong style="color:var(--c11)">醫院病房</strong><br>傳統護理執業場域</div>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏡</div><strong style="color:var(--c11)">護理之家</strong><br>長照護理機構</div>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏫</div><strong style="color:var(--c11)">學校護理室</strong><br>學校衛生法規範</div>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🧠</div><strong style="color:var(--c11)">精神復健機構</strong><br>精神衛生法規範</div>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🌍</div><strong style="color:var(--c11)">社區衛生</strong><br>台灣護理學會認證</div>
+        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">👶</div><strong style="color:var(--c11)">助產機構</strong><br>助產人員法規範</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11d 影片倫理 -->
+  <div class="tc" id="11d">
+    <div class="card" style="border-top:3px solid var(--c11m)">
+      <h3>🎬 影片：Florence Nightingale</h3>
+      <div class="scen" style="margin-top:10px"><div class="sl">影片劇情</div>
+        <p>敘述弗羅倫斯·南丁格爾不平凡的一生，義無反顧地從事護理工作並親赴戰爭前線照顧病人。奠定現今護理理論教育之基礎，為護理學科之鼻祖，影響後世深遠。後世以她的生日5月12日作為<strong>國際護師節</strong>。</p>
+      </div>
+      <h3 style="margin-top:16px;margin-bottom:10px">🔍 影片倫理議題</h3>
+      <div class="g2">
+        <div style="background:var(--c11l);border-radius:8px;padding:12px"><div style="font-weight:700;color:var(--c11);font-size:13px;margin-bottom:6px">五大倫理主題</div>
+          <ul style="font-size:13px;color:#1e3a8a;padding-left:14px"><li>人性尊嚴</li><li>自主意識</li><li>生涯抉擇</li><li>人道主義關懷</li><li>行善誠信</li></ul>
+        </div>
+        <div style="background:#f0fdf4;border-radius:8px;padding:12px"><div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">討論題綱</div>
+          <ul style="font-size:13px;color:#065f46;padding-left:14px"><li>如何找尋人生價值與定位</li><li>如何堅毅追尋人生目標</li><li>如何折衷平衡取捨之藝術</li><li>如何犧牲小我完成大我</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ CH12 ══════════════ -->
+<div class="sw" id="sw-c12"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c12l)">🏥</div>
+    <div class="sti"><h2 style="color:var(--c12)">CH12 醫療糾紛的預防與處理</h2><p>醫療糾紛簡介 | 常見糾紛類型 | 預防及處理三原則</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'12a')">📖 糾紛簡介</button>
+    <button class="tb" onclick="st(this,'12b')">⚖️ 護理過失</button>
+    <button class="tb" onclick="st(this,'12c')">🛡️ 預防三原則</button>
+    <button class="tb" onclick="st(this,'12d')">📜 燙傷案例</button>
+    <button class="tb" onclick="st(this,'12e')">🎬 影片倫理</button>
+  </div>
+
+  <!-- 12a 糾紛簡介 -->
+  <div class="tc on" id="12a">
+    <div class="cb" style="border-color:var(--c12m)"><div class="lb" style="color:var(--c12m)">醫療事故預防及爭議處理法</div>
+      <h3>醫療糾紛的定義與分類</h3>
+      <p>醫療糾紛涉及高度醫學專業性，訴訟須長時間與成本投入，導致醫病信任關係逐步流失，<strong>防禦性醫療</strong>因此成為無奈之舉。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📊 依涵蓋範圍分類</h3>
+        <div style="display:grid;gap:8px;margin-top:8px">
+          <div style="background:var(--c12l);border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">廣義：醫療服務爭議</div>
+            <p style="font-size:13px;color:#78350f">包含所有醫療過程中的不滿，涵蓋態度、溝通、等待時間等非醫療技術因素</p>
+          </div>
+          <div style="background:#fef9ec;border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">狹義：醫療處置糾紛</div>
+            <p style="font-size:13px;color:#78350f">專指醫療行為本身造成的損害，如手術失誤、給藥錯誤、診斷失誤等</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 依因果關係分類</h3>
+        <div style="display:grid;gap:8px;margin-top:8px">
+          <div style="background:#fee2e2;border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:4px">醫療爭議（Medical Dispute）</div>
+            <p style="font-size:13px;color:#7f1d1d">醫病雙方對醫療過程或結果有不同看法，因果關係尚不確定</p>
+          </div>
+          <div style="background:#ffe4e6;border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#9f1239;font-size:13px;margin-bottom:4px">醫療疏失（Medical Error）</div>
+            <p style="font-size:13px;color:#7f1d1d">已確定因果關係，醫療人員的行為確實造成病人損害</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔄 醫療糾紛處理途徑比較</h3>
+      <table class="tbl" style="margin-top:10px;box-shadow:none;border:1px solid #e5e7eb">
+        <thead><tr style="background:#7c2d12;color:#fff"><th>途徑</th><th>方式</th><th>優點</th><th>缺點</th></tr></thead>
+        <tbody>
+          <tr><td><strong>訴訟</strong></td><td>民事訴訟、刑事告訴</td><td>有強制執行力、法律保障</td><td>耗時費力、醫病關係破裂</td></tr>
+          <tr><td><strong>ADR</strong><br><small>裁判外紛爭解決</small></td><td>調解、仲裁、協商</td><td>快速、低成本、保全關係</td><td>無強制力，需雙方同意</td></tr>
+          <tr><td><strong>醫療事故<br>關懷小組</strong></td><td>院內即時溝通</td><td>及早釐清、減少升級</td><td>限於院內，客觀性有限</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 12b 護理過失 -->
+  <div class="tc" id="12b">
+    <div class="cb" style="border-color:var(--c12m)"><div class="lb" style="color:var(--c12m)">護理人員法第24條</div>
+      <h3>護理業務四類職掌</h3>
+      <p>① 健康問題之護理評估　② 預防保健之護理措施　③ 護理指導及諮詢　④ <strong>醫療輔助行為</strong>（須在醫師指示下執行）</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid #dc2626">
+        <h3>⚖️ 護理人員的刑事責任</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:#f59e0b">傷</div><div class="sbody"><h4>業務過失致人於傷</h4><p>因護理業務上的疏失造成病人受傷。</p></div></div>
+          <div class="step"><div class="snum" style="background:#ef4444">重</div><div class="sbody"><h4>業務過失致人於重傷</h4><p>造成病人重大身體傷害，如失明、喪失肢體等。</p></div></div>
+          <div class="step"><div class="snum" style="background:#991b1b">死</div><div class="sbody"><h4>業務過失致人於死</h4><p>最嚴重，因護理疏失導致病人死亡，刑期最重。</p></div></div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid #d97706">
+        <h3>💰 護理人員的民事責任</h3>
+        <div style="display:grid;gap:8px;margin-top:8px">
+          <div style="background:var(--c12l);border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">違約責任</div>
+            <p style="font-size:13px;color:#78350f">與醫療機構訂有契約，護理師的疏失導致契約目的無法達成（院方可向護理師求償）。</p>
+          </div>
+          <div style="background:#fef9ec;border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">侵權責任</div>
+            <p style="font-size:13px;color:#78350f">護理行為侵害病人身體權、健康權，病人可直接向護理師或醫院提出侵權損害賠償。</p>
+          </div>
+        </div>
+        <div class="hb tip" style="margin-top:12px;margin-bottom:0"><div class="hi">💡</div><div class="hc"><h4>三責同時成立</h4>
+          <p>刑事、民事、行政責任可<strong>同時並行</strong>，不因其中一種結案而免除其他責任。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12c 預防三原則 -->
+  <div class="tc" id="12c">
+    <div class="card" style="border-top:4px solid var(--c12m);margin-bottom:20px">
+      <h3>🛡️ 醫療糾紛預防及處理三原則</h3>
+      <p style="margin-bottom:14px;font-size:14px;color:#374151">本法歸納三個層面的核心原則，缺一不可：</p>
+      <div class="g3">
+        <div style="background:var(--c11l);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-size:28px;margin-bottom:8px">🔗</div>
+          <div style="font-weight:800;color:var(--c11);font-size:16px;margin-bottom:6px">資源整合</div>
+          <div style="font-size:11.5px;color:#1e3a8a">系統層面</div>
+          <p style="font-size:12.5px;color:#374151;margin-top:8px">整合院內資源，設置醫療事故關懷小組，建立第三方鑑定機制，完善調解程序</p>
+        </div>
+        <div style="background:var(--c12l);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-size:28px;margin-bottom:8px">🤝</div>
+          <div style="font-weight:800;color:#92400e;font-size:16px;margin-bottom:6px">溝通同理</div>
+          <div style="font-size:11.5px;color:#92400e">心態層面</div>
+          <p style="font-size:12.5px;color:#374151;margin-top:8px">以同理心溝通，及早說明、坦誠告知，不迴避、不推諉，維護醫病信任關係</p>
+        </div>
+        <div style="background:var(--c13l);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-size:28px;margin-bottom:8px">📢</div>
+          <div style="font-weight:800;color:#065f46;font-size:16px;margin-bottom:6px">主動通報</div>
+          <div style="font-size:11.5px;color:#065f46">行動層面</div>
+          <p style="font-size:12.5px;color:#374151;margin-top:8px">發現醫療事故應主動通報，啟動院內不良事件通報系統，促進系統改善</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚙️ 「醫療事故預防及爭議處理法」三大機制</h3>
+      <div class="steps">
+        <div class="step"><div class="snum" style="background:var(--c12m)">1</div><div class="sbody"><h4>醫療事故關懷小組（院內）</h4><p>強化院內即時溝通機制，在糾紛升級前及早介入，以關懷代替對抗。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c12m)">2</div><div class="sbody"><h4>裁判外紛爭解決模式（ADR）</h4><p>節省訴訟時間與金錢成本，透過調解、仲裁達成雙方可接受的解決方案。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c12m)">3</div><div class="sbody"><h4>第三方鑑定單位</h4><p>設置獨立公正的鑑定機制，及早釐清醫療事實，減少法院對衛福部醫事審議委員會的依賴。</p></div></div>
+      </div>
+    </div>
+    <div class="hb ok"><div class="hi">🎯</div><div class="hc"><h4>預防醫療糾紛的核心態度</h4>
+      <p>醫療糾紛的根源往往不是技術問題，而是<strong>溝通問題</strong>。病人不滿的是「沒有人告訴我、沒有人道歉、沒有人關心我」。溝通同理是最有效的預防手段。</p>
+    </div></div>
+  </div>
+
+  <!-- 12d 燙傷案例 -->
+  <div class="tc" id="12d">
+    <div class="hb wrn" style="margin-bottom:16px"><div class="hi">⚠️</div><div class="hc"><h4>真實判決案例分析</h4>
+      <p>本案例為真實司法判決案例，用於分析護理師的注意義務、過失認定及醫療糾紛處理流程。</p>
+    </div></div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#7c2d12,#b45309)" onclick="tog(this)">
+        <div class="chl"><span class="ctag">燙傷糾紛案例</span><h3>抽脂手術保暖操作不當致3度燙傷</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cbody">
+        <div class="scen"><div class="sl">📖 案例事實</div>
+          <p>原告A赴被告B診所由C醫師進行腰部抽脂手術（費用20萬元）。術中採全身麻醉，護理師D使用烘被機為病人保暖。清醒後原告發現右小腿外側（未手術部位）有劇烈疼痛且被繃帶包紮，翌日回診見10~15公分水泡，C醫師說明係烘被機溫度過高造成2度燙傷。之後至E醫院才知實為3度燙傷，已傷及真皮層，無法復原。</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:#dc2626">❌ 原告主張（各審）</div>
+            <ul style="font-size:13px;color:#374151;padding-left:14px;line-height:1.8">
+              <li>護理師D未即時回報，有<strong>延誤過失</strong></li>
+              <li>C醫師治療錯誤且隱瞞病情（3度誤報為2度）</li>
+              <li>B診所債務不履行</li>
+              <li>主張連帶賠償 <strong>360餘萬元</strong></li>
+            </ul>
+          </div>
+          <div class="ai"><div class="al" style="color:#059669">✅ 被告主張</div>
+            <ul style="font-size:13px;color:#374151;padding-left:14px;line-height:1.8">
+              <li>已給付原告40萬元，<strong>兩造已和解</strong>並簽協議書</li>
+              <li>護理師使用烘被機在術中無預見可能性，無過失</li>
+              <li>回診治療已盡相當必要注意</li>
+              <li>傷口發膿係原告未依醫囑照護所致</li>
+            </ul>
+          </div>
+        </div>
+        <div class="scen"><div class="sl">⚖️ 各審判決結果</div>
+          <ul style="padding-left:14px;font-size:13.5px;line-height:1.9">
+            <li><strong>第一審：</strong>兩造已達成和解，駁回原告之訴</li>
+            <li><strong>第二審：</strong>協議內容已兩造意思一致，駁回上訴</li>
+            <li><strong>第三審：</strong>訴訟資料未合法表明上訴理由，以不合法駁回</li>
+          </ul>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:#d97706">🔍 護理師過失爭點</div><p style="font-size:13px;color:#374151">護理師D使用烘被機保暖，溫度過高造成燙傷。爭點在於：<strong>術中有無預見可能性？</strong>保溫操作是否符合護理標準？未即時回報是否構成過失？</p></div>
+          <div class="ai"><div class="al" style="color:#0284c7">💡 本案學習要點</div><p style="font-size:13px;color:#374151">①護理操作須定時評估效果（保暖裝置須定期查看）；②發現異常須<strong>立即回報</strong>；③和解協議書有法律效力，不可事後反悔重新求償；④醫學美容手術風險高，須有麻醉科醫師在場。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 預防措施建議</div>
+          <p>使用保暖裝置時：①確認設備安全性；②每30分鐘評估皮膚狀況；③發現異常立即移除並通報；④詳實記錄護理紀錄。護理記錄是最重要的自我保護工具。</p>
+        </div>
+      </div>
+    </div>
+    <div class="hb tip"><div class="hi">💡</div><div class="hc"><h4>醫學美容糾紛趨勢</h4>
+      <p>隨醫學美容人數增加，糾紛頻傳。衛福部正討論進行美容手術時，是否須有<strong>麻醉科專科醫師或受麻醉相關訓練之醫師在場</strong>，以確保病人安全。</p>
+    </div></div>
+  </div>
+
+  <!-- 12e 影片倫理 -->
+  <div class="tc" id="12e">
+    <div class="card" style="border-top:3px solid var(--c12m)">
+      <h3>🎬 影片：The Children Act（孩童法令）</h3>
+      <div class="scen" style="margin-top:10px"><div class="sl">影片劇情</div>
+        <p>菲歐娜·梅伊為英國法院法官，處理一件醫療糾紛訴訟。當事人未滿18歲，罹患血癌須輸血方可延長生命，而當事人與其家庭因<strong>宗教因素</strong>反對輸血。法官最終做出給當事人輸血之判決。</p>
+      </div>
+      <div class="g2" style="margin-top:14px">
+        <div style="background:var(--c12l);border-radius:8px;padding:12px"><div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:6px">五大倫理議題</div>
+          <ul style="font-size:13px;color:#78350f;padding-left:14px"><li>生命權</li><li>自主權</li><li>宗教信仰自由</li><li>未成年人拒絕醫療權</li><li>病人的最大利益</li></ul>
+        </div>
+        <div style="background:#fef9ec;border-radius:8px;padding:12px"><div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:6px">討論題綱</div>
+          <ul style="font-size:13px;color:#78350f;padding-left:14px"><li>如何衡量生命品質與生命長短</li><li>如何劃出自主權與生命權之界線</li><li>如何在新時代解讀理解教義</li><li>如何評價病人的最大利益</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ CH13 ══════════════ -->
+<div class="sw" id="sw-c13"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c13l)">📋</div>
+    <div class="sti"><h2 style="color:var(--c13)">CH13 病歷相關的法律問題</h2><p>病歷法律規定 | 電子病歷隱私 | 偽造竄改 | 個資法</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'13a')">📄 病歷法律規定</button>
+    <button class="tb" onclick="st(this,'13b')">💻 電子病歷</button>
+    <button class="tb" onclick="st(this,'13c')">🚫 偽造竄改</button>
+    <button class="tb" onclick="st(this,'13d')">🔐 個資法</button>
+    <button class="tb" onclick="st(this,'13e')">🎬 影片倫理</button>
+  </div>
+
+  <!-- 13a 病歷法律 -->
+  <div class="tc on" id="13a">
+    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">醫療法核心規定</div>
+      <h3>病歷建立的法律義務</h3>
+      <p>醫療機構被賦予建立<strong>清晰、詳實與完整</strong>病歷之義務，並有監督之責，須確保病歷由醫事人員<strong>親自</strong>所載，並<strong>簽章與記載時間</strong>，增刪亦同。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📝 病歷資料範圍</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>醫師製作部分</h4><p>醫師依醫師法有製作病歷之義務，須簽章與記載時間。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>檢查與檢驗部分</h4><p>所有檢驗報告、影像資料、病理切片報告等均屬病歷一部分。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>各類醫事人員紀錄部分</h4><p>護理記錄、藥師紀錄、物理治療紀錄等，均為法律意義上的病歷。</p></div></div>
+        </div>
+        <div class="hb ok" style="margin-top:12px;margin-bottom:0"><div class="hi">📋</div><div class="hc"><h4>護理記錄是病歷的一部分</h4>
+          <p>護理師的護理記錄具有<strong>與醫師病歷同等的法律地位</strong>，記載不實同樣構成法律責任。</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>📋 病人取得病歷的權利</h3>
+          <ul>
+            <li>病人在<strong>自費</strong>前提下，醫療機構不可拖延或拒絕</li>
+            <li>應提供病人<strong>病歷複製本</strong>或<strong>中文病歷摘要</strong></li>
+            <li>醫師非必須以中文書寫，但必要時須提供中文摘要</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>📜 病人自主權利法（第17條）</h3>
+          <p style="font-size:13.5px;color:#374151">變更或執行預立醫療決定時，須在病歷中<strong>詳細記載</strong>；同意書、病人書面意思表示與預立醫療決定應與病歷<strong>一起保存</strong>。</p>
+        </div>
+        <div class="card">
+          <h3>📅 病歷保存年限</h3>
+          <ul style="font-size:13.5px;color:#374151">
+            <li>醫療機構：<strong>7年</strong>（病人未成年者至成年後7年）</li>
+            <li>電子病歷：同等保存義務，銷毀時應確保無洩漏之虞</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13b 電子病歷 -->
+  <div class="tc" id="13b">
+    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">醫療法第69條</div>
+      <h3>電子病歷的法源依據</h3>
+      <p>醫療機構以<strong>電子文件方式</strong>製作、貯存病歷時，書面病歷得免製作。電子病歷製作後<strong>24小時內</strong>須完成電子簽章。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid var(--c13m)">
+        <h3>✅ 電子病歷的優點</h3>
+        <div class="g2" style="gap:8px;margin-top:8px">
+          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">🔄</div><strong style="color:#065f46">跨院傳輸</strong><br>節省重複檢查資源</div>
+          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">⚡</div><strong style="color:#065f46">效率提升</strong><br>便利閱覽與查詢</div>
+          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">✅</div><strong style="color:#065f46">決策正確</strong><br>提升醫療品質</div>
+          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">📊</div><strong style="color:#065f46">資料整合</strong><br>完整醫療紀錄</div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
+          <h3>⚠️ 電子病歷的安全要求</h3>
+          <ul style="font-size:13.5px;color:#374151">
+            <li>醫療機構應確實執行電子病歷的<strong>存取管理</strong>與<strong>備份作業</strong></li>
+            <li>銷毀電子病歷時，應確保<strong>無洩漏病歷內容之虞</strong>（醫療法第70條第4項）</li>
+            <li>須防範<strong>未授權存取</strong>、<strong>竄改</strong>與<strong>外洩</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🖥️ 護理資訊系統應用</h3>
+          <ul style="font-size:13.5px;color:#374151">
+            <li>護理資訊系統（NIS）</li>
+            <li>行動護理車 + 標籤讀取器</li>
+            <li>行動巡房系統</li>
+            <li>急診護理系統</li>
+            <li>門診報到系統</li>
+          </ul>
+          <p style="font-size:13px;color:var(--muted);margin-top:8px">目標：人機介面設計改良，降低病歷錯誤提供的風險</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13c 偽造竄改 -->
+  <div class="tc" id="13c">
+    <div class="cb" style="border-color:#dc2626"><div class="lb" style="color:#dc2626">醫療法第67、68條</div>
+      <h3>病歷偽造與竄改的法律問題</h3>
+      <p>無論偽造或竄改病歷，皆涉及<strong>病歷記載不實</strong>。醫療機構有義務確保病歷清晰、詳實、完整，且增刪有明確規定——<strong>任何修改都須有紀錄</strong>。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid #dc2626">
+        <h3>❌ 偽造病歷的法律定義</h3>
+        <ul>
+          <li><strong>偽造：</strong>完全捏造、製作不存在的病歷記載</li>
+          <li><strong>竄改：</strong>修改已存在的真實記載，使其不實</li>
+          <li><strong>記載不實：</strong>故意記載與事實不符的內容</li>
+        </ul>
+        <div class="hb wrn" style="margin-top:12px;margin-bottom:0"><div class="hi">⚠️</div><div class="hc"><h4>影片案例連結</h4>
+          <p>The Good Doctor影片中，醫師竄改病歷延長病人住院時間，構成<strong>醫師法違反、醫療法違反、偽造文書罪</strong>。</p>
+        </div></div>
+      </div>
+      <div class="card" style="border-top:3px solid #d97706">
+        <h3>✅ 合法修改病歷的規定</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:#d97706">1</div><div class="sbody"><h4>增刪須有標記</h4><p>修改病歷應保留原始記載可辨識（如劃線而非塗黑），並在旁邊記明修改原因、時間與簽章。</p></div></div>
+          <div class="step"><div class="snum" style="background:#d97706">2</div><div class="sbody"><h4>電子病歷的版本控制</h4><p>電子病歷系統應有<strong>稽核軌跡（Audit Trail）</strong>，記錄所有存取、修改記錄，不可刪除修改記錄。</p></div></div>
+          <div class="step"><div class="snum" style="background:#d97706">3</div><div class="sbody"><h4>親自記載並簽章</h4><p>病歷須由醫事人員親自記載，不可代為記載他人的觀察或判斷。</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)" onclick="tog(this)">
+        <div class="chl"><span class="ctag">竄改病歷案例</span><h3>護理師為何絕對不能竄改病歷？</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cbody">
+        <div class="scen"><div class="sl">⚠️ 常見竄改情境</div>
+          <ul style="padding-left:14px;font-size:13.5px;line-height:2">
+            <li>給藥後才補記護理記錄，且記載與實際不符</li>
+            <li>病人跌倒後，修改評估記錄讓跌倒風險評分降低</li>
+            <li>發現疏失後，事後補記「已通報醫師」</li>
+            <li>為掩蓋操作失誤，修改護理執行時間</li>
+          </ul>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:#dc2626">❌ 竄改的法律後果</div>
+            <p style="font-size:13px;color:#374151">①<strong>刑事罪：</strong>偽造文書罪（刑法第210-216條），可處有期徒刑<br>
+            ②<strong>行政罰：</strong>衛生主管機關依護理人員法廢止執照<br>
+            ③<strong>民事賠償：</strong>因竄改掩蓋疏失，使病人損害更加擴大，賠償金額可能更高<br>
+            ④<strong>信賴破壞：</strong>竄改紀錄在法庭上一旦被發現，所有護理師的可信度全毀</p>
+          </div>
+          <div class="ai"><div class="al" style="color:#059669">✅ 正確做法</div>
+            <p style="font-size:13px;color:#374151">發現錯誤時：<br>
+            ① <strong>誠實通報</strong>主管與醫師<br>
+            ② 填寫<strong>不良事件通報</strong>（incident report）<br>
+            ③ 在病歷中如實記載事件經過<br>
+            ④ 補充記錄時，標明「補記」、時間、簽名<br>
+            ⑤ <strong>絕對不修改原始記錄</strong></p>
+          </div>
+        </div>
+        <div class="res"><div class="rl">✅ 核心原則</div>
+          <p>「誠實的錯誤記錄，勝過精心竄改的完美記錄。」病歷誠實是護理師最重要的專業操守，也是自我保護的最佳方式。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13d 個資法 -->
+  <div class="tc" id="13d">
+    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">個人資料保護法第6條</div>
+      <h3>病歷屬於特種個人資料</h3>
+      <p>病歷屬於個人資料，屬<strong>隱私權保障範疇</strong>。依個資法第6條第1項，原則上<strong>不得蒐集、處理或利用</strong>，但符合特定情形（如醫療目的）者，例外得予以處理。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid var(--c13m)">
+        <h3>🔐 病歷保密性的多重法律依據</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>個人資料保護法</h4><p>最主要的個資保護基準法，規範所有個人資料的蒐集、處理與利用。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>人類免疫缺乏病毒傳染防治條例</h4><p>特別規範HIV感染者的病歷保密，禁止洩漏並有明確處罰。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>傳染病防治法</h4><p>規範傳染病病人病歷的保密義務，醫事人員及醫事機構皆須承擔法律責任。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>⚠️ 常見個資洩漏情境</h3>
+          <ul style="font-size:13.5px;color:#374151">
+            <li>在走廊、電梯大聲討論病人病情</li>
+            <li>將病人資料放在公共電腦桌面</li>
+            <li>用個人手機拍攝病人病歷</li>
+            <li>向家屬說明病情未確認身份</li>
+            <li>在社群媒體分享病人照片（即使不清晰）</li>
+            <li>病歷室未落鎖，外人可自由進出</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>✅ 電子病歷隱私保護實務</h3>
+          <ul style="font-size:13.5px;color:#374151">
+            <li>離開電腦前必須<strong>鎖定螢幕</strong></li>
+            <li>使用<strong>個人帳號</strong>登入，不共用密碼</li>
+            <li>僅查閱自己負責照護的病人病歷</li>
+            <li>列印病歷後須<strong>妥善銷毀</strong>（碎紙機）</li>
+            <li>對可疑的系統入侵或異常存取立即通報</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13e 影片倫理 -->
+  <div class="tc" id="13e">
+    <div class="card" style="border-top:3px solid var(--c13m)">
+      <h3>🎬 影片：The Good Doctor</h3>
+      <div class="scen" style="margin-top:10px"><div class="sl">影片劇情</div>
+        <p>男主角為年輕醫師，對女病人產生超出醫病關係之情感。為延續此關係，不惜<strong>調整藥物劑量、竄改病歷</strong>，意圖延長病人在醫院的時間，最終導致病人不治。</p>
+      </div>
+      <div class="g2" style="margin-top:14px">
+        <div style="background:var(--c13l);border-radius:8px;padding:12px"><div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">五大倫理議題</div>
+          <ul style="font-size:13px;color:#065f46;padding-left:14px"><li>醫病關係的界線</li><li>專業操守</li><li>不傷害原則（violated）</li><li>正義原則（violated）</li><li>行善誠信（violated）</li></ul>
+        </div>
+        <div style="background:#f0fdf4;border-radius:8px;padding:12px"><div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">討論題綱</div>
+          <ul style="font-size:13px;color:#065f46;padding-left:14px"><li>如何掌握醫病相處之界線</li><li>如何秉持理性專業不受私人情感羈絆</li><li>如何以病人利益最大化為職志</li><li>如何堅持公平與正義</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ QUIZ 1 (CH11) ══════════════ -->
+<div class="sw" id="sw-qz1"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:#ede9fe;font-size:24px">📝</div>
+    <div class="sti"><h2 style="color:#7c3aed">CH11 即時測驗</h2><p>護理執業法規 | 10題 | 選後立即解析</p></div>
+  </div>
+  <div class="qwrap">
+    <div class="qpbar"><div class="qpfill" id="q1pf" style="width:10%"></div></div>
+    <div id="q1a"></div>
+    <div class="sr" id="q1sr">
+      <div class="sring" id="q1rg"><div class="sn" id="q1sn">-</div><div class="st">/ 10</div></div>
+      <div class="sm" id="q1sm"></div><div class="ss" id="q1ss"></div>
+      <div class="sbd" id="q1bd"></div>
+      <button class="bp" onclick="qr('q1',Q1)" style="margin:0 auto">🔄 重新測驗</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ QUIZ 2 (CH12) ══════════════ -->
+<div class="sw" id="sw-qz2"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:#fce7f3;font-size:24px">📝</div>
+    <div class="sti"><h2 style="color:#db2777">CH12 即時測驗</h2><p>醫療糾紛 | 10題 | 選後立即解析</p></div>
+  </div>
+  <div class="qwrap">
+    <div class="qpbar"><div class="qpfill" id="q2pf" style="width:10%"></div></div>
+    <div id="q2a"></div>
+    <div class="sr" id="q2sr">
+      <div class="sring" id="q2rg"><div class="sn" id="q2sn">-</div><div class="st">/ 10</div></div>
+      <div class="sm" id="q2sm"></div><div class="ss" id="q2ss"></div>
+      <div class="sbd" id="q2bd"></div>
+      <button class="bp" onclick="qr('q2',Q2)" style="margin:0 auto">🔄 重新測驗</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ QUIZ 3 (CH13) ══════════════ -->
+<div class="sw" id="sw-qz3"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:#cffafe;font-size:24px">📝</div>
+    <div class="sti"><h2 style="color:#0891b2">CH13 即時測驗</h2><p>病歷法律 | 10題 | 選後立即解析</p></div>
+  </div>
+  <div class="qwrap">
+    <div class="qpbar"><div class="qpfill" id="q3pf" style="width:10%"></div></div>
+    <div id="q3a"></div>
+    <div class="sr" id="q3sr">
+      <div class="sring" id="q3rg"><div class="sn" id="q3sn">-</div><div class="st">/ 10</div></div>
+      <div class="sm" id="q3sm"></div><div class="ss" id="q3ss"></div>
+      <div class="sbd" id="q3bd"></div>
+      <button class="bp" onclick="qr('q3',Q3)" style="margin:0 auto">🔄 重新測驗</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════ DISCUSSION ══════════════ -->
+<div class="sw" id="sw-di"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:#fef3c7;font-size:24px">💬</div>
+    <div class="sti"><h2 style="color:#b45309">臨床倫理討論</h2><p>9個討論情境 | CH11·12·13各3題 | 無標準答案</p></div>
+  </div>
+  <div class="hb tip"><div class="hi">🎯</div><div class="hc"><h4>討論指引</h4>
+    <p>每題請小組（3-4人）先閱讀情境，從<strong>法律</strong>（法規依據）和<strong>倫理</strong>（四大原則）兩個角度分析，最後提出具體的「護理行動建議」。</p>
+  </div></div>
+
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;color:var(--c11);margin:20px 0 14px;padding-left:12px;border-left:4px solid var(--c11m)">⚖️ CH11 護理執業法規</h3>
+  <div class="dc" style="border-color:var(--c11m)">
+    <div class="dtag" style="background:var(--c11l);color:var(--c11)">執業資格 討論一</div>
+    <h3>業務範圍的邊界——護理師可以做多少？</h3>
+    <div class="dsc">陳護理師在急診夜班，醫師不在場，遇到一位突發呼吸困難的病人。為了及時搶救，陳護理師決定自行開立氧氣面罩與靜脈注射醫囑，並自行插管。事後醫師表示「你做得很好，救了他」。這樣的行為在法律上沒問題嗎？</div>
+    <ul class="dpts">
+      <li>護理師法第24條規定的四類業務範圍為何？插管是否在護理師業務範圍內？</li>
+      <li>「救了病人」的好結果能否免除法律責任？為什麼？</li>
+      <li>醫師事後表示「做得很好」，是否等於事後追認授權？這對法律責任有何影響？</li>
+      <li>面對緊急情況時，護理師在等待醫師的過程中「合法可做」的界線在哪裡？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c11m)">
+    <div class="dtag" style="background:var(--c11l);color:var(--c11)">執業環境 討論二</div>
+    <h3>護理之家的保密義務——看護洩漏病人隱私</h3>
+    <div class="dsc">某護理之家的看護（非護理師，由護理機構雇用）在照護時，為了「讓家屬看到爺爺吃東西的可愛模樣」，用手機拍下爺爺進食的影片並上傳LINE群組。影片在無意間流傳，被外人看到。護理機構主管知道後，說「這不是護理師，責任不在我們。」</div>
+    <ul class="dpts">
+      <li>看護雖非護理師，是否受護理人員法的保密義務約束？法律依據為何？</li>
+      <li>護理機構是否需要承擔監督管理責任？</li>
+      <li>主管說「責任不在我們」，這在法律上正確嗎？可能面臨什麼責任？</li>
+      <li>作為護理機構的護理長，你應如何建立機構內的隱私保護文化？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c11m)">
+    <div class="dtag" style="background:var(--c11l);color:var(--c11)">工作環境 討論三</div>
+    <h3>護理師的職業安全——面對暴力攻擊的合法自保</h3>
+    <div class="dsc">急診護理師小林在處理一位情緒激動的病人家屬時，遭到對方推撞，造成頸部輕傷。小林向護理長反映，護理長卻說「忍一忍就算了，這種事很常見，告人會讓大家很麻煩」。</div>
+    <ul class="dpts">
+      <li>職業安全衛生法對護理師的工作安全保障為何？</li>
+      <li>護理師被攻擊時，在法律上有哪些救濟途徑？</li>
+      <li>護理長的處理方式是否適當？機構是否有責任提供安全的工作環境？</li>
+      <li>如果你是小林，你會如何處理這件事？（法律角度 + 倫理角度）</li>
+    </ul>
+  </div>
+
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;color:var(--c12);margin:28px 0 14px;padding-left:12px;border-left:4px solid var(--c12m)">🏥 CH12 醫療糾紛</h3>
+  <div class="dc" style="border-color:var(--c12m)">
+    <div class="dtag" style="background:var(--c12l);color:#92400e">糾紛預防 討論一</div>
+    <h3>溝通即預防——如何說「對不起」而不是認罪？</h3>
+    <div class="dsc">阿明護理師在進行靜脈注射時，不小心造成病人手背瘀血腫脹。病人非常生氣。阿明說：「對不起，我注射技術不夠好，一定是我的問題。」病人家屬聽到後立即說要告人。護理長趕到後說「你別再說任何話！」</div>
+    <ul class="dpts">
+      <li>阿明護理師說「一定是我的問題」在法律上是否構成自認過失？</li>
+      <li>「溝通同理」原則如何在此情境下正確應用？應說什麼？不該說什麼？</li>
+      <li>瘀血腫脹是醫療事故嗎？需要啟動「醫療事故關懷小組」嗎？</li>
+      <li>設計一段正確的溝通話術：在表達關懷的同時，不讓法律風險升高。</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c12m)">
+    <div class="dtag" style="background:var(--c12l);color:#92400e">護理過失 討論二</div>
+    <h3>燙傷案例延伸——護理師的注意義務邊界</h3>
+    <div class="dsc">參考本章燙傷案例：護理師D在術中使用烘被機保暖，但未定期查看，導致病人3度燙傷。若你是D護理師的同事，在術前已知道這台烘被機曾有過熱紀錄，但沒有說出來。事後你被問到是否知情。</div>
+    <ul class="dpts">
+      <li>護理師D的行為構成「業務過失」的要件為何？注意義務如何認定？</li>
+      <li>作為知情同事，你有義務說出烘被機過熱紀錄嗎？不說出來是否構成法律問題？</li>
+      <li>「主動通報」原則在這個情境中如何應用？通報的時機是事前、事中、還是事後？</li>
+      <li>如果你是護理長，如何建立設備安全管理機制以預防此類事故再發生？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c12m)">
+    <div class="dtag" style="background:var(--c12l);color:#92400e">和解協議 討論三</div>
+    <h3>和解書簽了還能告嗎？——醫病和解的法律意義</h3>
+    <div class="dsc">從燙傷案例中，原告已與被告診所達成和解並簽署協議書，收到40萬元賠償。但之後發現燙傷比預期嚴重（3度而非2度），且傷口無法復原，因此重新提起訴訟要求360萬元賠償。法院最終三審都駁回。</div>
+    <ul class="dpts">
+      <li>為什麼法院認為和解協議有效，不允許原告事後重新起訴？和解書的法律效力為何？</li>
+      <li>若和解時病人對真實病情受到誤導（被告知是2度而非3度燙傷），這對和解的效力有何影響？</li>
+      <li>作為護理師，在病人提出和解前，你有哪些義務？如何保護自己？</li>
+      <li>ADR（裁判外紛爭解決）對護理師和病人各有什麼優缺點？</li>
+    </ul>
+  </div>
+
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;color:var(--c13);margin:28px 0 14px;padding-left:12px;border-left:4px solid var(--c13m)">📋 CH13 病歷法律</h3>
+  <div class="dc" style="border-color:var(--c13m)">
+    <div class="dtag" style="background:var(--c13l);color:#065f46">病歷記載 討論一</div>
+    <h3>補記 vs 竄改——護理記錄的法律紅線</h3>
+    <div class="dsc">護理師小美在夜班結束前，發現自己忘記記錄凌晨2點給病人的一顆安眠藥。現在是早上6點，病人還在睡覺，病情穩定。小美想補記這筆給藥紀錄，但不確定應該如何記載才不算「竄改病歷」。</div>
+    <ul class="dpts">
+      <li>補記（late documentation）和竄改病歷有何根本差異？合法補記應如何操作？</li>
+      <li>小美應在補記時寫什麼？時間應填凌晨2點（實際給藥時間）還是早上6點（補記時間）？</li>
+      <li>若這顆安眠藥後來被懷疑與病人病情變化有關，補記的護理記錄在法律上有多大的證明力？</li>
+      <li>病歷記載的及時性為何重要？你的科室應建立哪些制度來確保及時記錄？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c13m)">
+    <div class="dtag" style="background:var(--c13l);color:#065f46">電子病歷 討論二</div>
+    <h3>電子病歷安全漏洞——你的登入帳號被同事借用</h3>
+    <div class="dsc">護理師阿強因帳號密碼設定太複雜，告訴同事小芳：「今天人手不足，你先用我的帳號登入，幫我記幾筆護理記錄。」小芳照做了。事後某位病人的家屬質疑護理記錄有問題，調閱稽核軌跡發現所有記錄都是阿強登入的。</div>
+    <ul class="dpts">
+      <li>使用他人帳號登入電子病歷系統，構成哪些法律問題？（個資法、醫療法？）</li>
+      <li>稽核軌跡顯示阿強登入，但實際是小芳操作——法律責任由誰承擔？</li>
+      <li>小芳記載的護理記錄是否有效？若有錯誤，誰需要負責？</li>
+      <li>如何建立機構的電子病歷安全文化？帳號共用的制度性防範措施有哪些？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--c13m)">
+    <div class="dtag" style="background:var(--c13l);color:#065f46">個資保護 討論三</div>
+    <h3>Line群組洩漏病人資料——數位時代的保密義務</h3>
+    <div class="dsc">外科病房護理師在科內LINE群組分享了一張「今日有趣案例」的截圖，包含病人姓名首字、年齡、診斷和手術方式，說明「這個病人真的很少見！」。截圖在群組中廣泛傳播，最終病人家屬看到，認出是自己的親人。</div>
+    <ul class="dpts">
+      <li>護理師的行為是否違反個人資料保護法？「去識別化」（隱去全名）是否足夠保護？</li>
+      <li>在LINE群組分享病人資料，涉及哪些個資法的「處理」行為？</li>
+      <li>護理師說這是「教育目的」，可否作為個資法的例外情形？</li>
+      <li>制定你的科室「數位通訊使用守則」，規範哪些資訊絕對不能在LINE群組分享。</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-top:4px solid #6b7280;text-align:center;padding:26px;margin-top:8px">
+    <div style="font-size:26px;margin-bottom:10px">🤔</div>
+    <h3 style="margin-bottom:10px;font-family:'Noto Serif TC',serif">期末反思</h3>
+    <p style="max-width:560px;margin:0 auto;font-size:14.5px;color:#374151;line-height:1.9">
+      「法律是倫理的<strong>最低標準</strong>——做到合法，不代表做到專業應有的倫理水準。<br>
+      在你的護理執業生涯中，當法律要求和倫理判斷發生衝突時，你如何做決定？」
+    </p>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">請寫下300字以上的反思，準備課堂分享</p>
+  </div>
+</div></div>
+
+<footer>
+  <strong>護理與法律 CH.11–13</strong> | 護理倫理與法律 互動教學 <br>
+  資料來源：華格納 編著 張梅芳、李淑琍、吳麗蘭 | 護理倫理與法律 Ch.11~13
+</footer>
+
+<script>
+// NAV
+function go(id,btn){
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const t=document.getElementById('sw-'+id);
+  if(t)t.classList.add('on');
+  if(btn)btn.classList.add('on');
+  document.getElementById('nav').classList.remove('op');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('hbg').addEventListener('click',()=>{
+  document.getElementById('nav').classList.toggle('op');
+});
+
+// TABS
+function st(btn,id){
+  const tg=btn.closest('.tabs');
+  if(!tg)return;
+  const par=tg.parentElement;
+  par.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  par.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  const t=par.querySelector('#'+id);
+  if(t)t.classList.add('on');
+}
+
+// ACCORDION
+function tog(hd){
+  const body=hd.nextElementSibling;
+  const to=hd.querySelector('.cto');
+  body.classList.toggle('op');
+  if(to)to.classList.toggle('op');
+}
+
+// ── QUIZ ENGINE ─────────────────────────────────
+const L=['A','B','C','D'];
+const QS={};
+
+function bQ(qs,i,pfx){
+  const q=qs[i];
+  const prev=i>0?`gQ('${pfx}',${i},-1)`:'void(0)';
+  const opts=q.o.map((o,j)=>`<button class="qo" onclick="pA('${pfx}',${i},${j})" id="${pfx}o${i}${j}">
+    <span class="ql">${L[j]}</span>${o}</button>`).join('');
+  return `<div class="qcard">
+    <div class="qmeta"><div class="qnum">第${i+1}題 / 共${qs.length}題</div>
+      <span class="qtag" style="background:${q.pc}20;color:${q.pc}">${q.p}</span></div>
+    <div class="qq">${q.q}</div>
+    <div class="qopts" id="${pfx}op${i}">${opts}</div>
+    <div class="qexp" id="${pfx}ex${i}"></div>
+    <div class="qnav">
+      <button class="bs" onclick="${prev}" style="opacity:${i>0?1:.3}">← 上一題</button>
+      <button class="bp" id="${pfx}nb${i}" onclick="gQ('${pfx}',${i},1)" style="display:none">
+        ${i<qs.length-1?'下一題 →':'查看結果 🎯'}</button>
+    </div></div>`;
+}
+
+function pA(pfx,qi,oi){
+  const st=QS[pfx];
+  if(st.done[qi])return;
+  st.done[qi]=true;
+  const q=st.qs[qi];
+  document.querySelectorAll(`#${pfx}op${qi} .qo`).forEach(b=>b.disabled=true);
+  const ok=oi===q.c;
+  if(ok){st.sc++;if(!st.ps[q.p])st.ps[q.p]={s:0,t:0};st.ps[q.p].s++;}
+  if(!st.ps[q.p])st.ps[q.p]={s:0,t:0};
+  st.ps[q.p].t++;
+  document.getElementById(`${pfx}o${qi}${oi}`).classList.add(ok?'cor':'wrg');
+  if(!ok)document.getElementById(`${pfx}o${qi}${q.c}`).classList.add('cor');
+  const ex=document.getElementById(`${pfx}ex${qi}`);
+  ex.textContent=q.ex;ex.classList.add('on');
+  if(!ok)ex.classList.add('we');
+  const nb=document.getElementById(`${pfx}nb${qi}`);
+  if(nb)nb.style.display='flex';
+  document.getElementById(`${pfx}pf`).style.width=Math.round(((qi+1)/st.qs.length)*100)+'%';
+}
+
+function gQ(pfx,i,dir){
+  const st=QS[pfx];
+  const next=i+dir;
+  if(next>=st.qs.length){showR(pfx);return;}
+  document.getElementById(`${pfx}a`).innerHTML=bQ(st.qs,next,pfx);
+  st.cur=next;
+}
+
+function showR(pfx){
+  const st=QS[pfx];
+  document.getElementById(`${pfx}a`).style.display='none';
+  document.getElementById(`${pfx}pf`).style.width='100%';
+  document.getElementById(`${pfx}sr`).classList.add('on');
+  const pct=st.sc/st.qs.length;
+  document.getElementById(`${pfx}sn`).textContent=st.sc;
+  let col,msg,sub;
+  if(pct>=.9){col='#059669';msg='🏆 優秀！法規掌握透徹';sub='對護理相關法規有深入理解，執業實力堅實！';}
+  else if(pct>=.7){col='#2563eb';msg='👍 良好！繼續加強';sub='基本概念良好，建議複習答錯的題目。';}
+  else if(pct>=.5){col='#d97706';msg='📚 尚可，需要複習';sub='部分法規概念尚不清晰，建議重新閱讀相關章節。';}
+  else{col='#dc2626';msg='💪 再努力！重新學習';sub='建議重新學習本章法規重點，再次挑戰。';}
+  const rg=document.getElementById(`${pfx}rg`);
+  rg.style.borderColor=col;
+  document.getElementById(`${pfx}sm`).textContent=msg;
+  document.getElementById(`${pfx}sm`).style.color=col;
+  document.getElementById(`${pfx}ss`).textContent=sub;
+  const pcs={'CH11':'#2563eb','CH12':'#d97706','CH13':'#059669','法律':'#7c3aed'};
+  const pls={'CH11':'#dbeafe','CH12':'#fef3c7','CH13':'#d1fae5','法律':'#ede9fe'};
+  let bd='';
+  for(let p in st.ps){const d=st.ps[p];if(!d.t)continue;
+    bd+=`<div class="bi" style="background:${pls[p]||'#f3f4f6'}"><div class="bn" style="color:${pcs[p]||'#374151'}">${p}</div>
+    <div class="bsc" style="color:${pcs[p]||'#374151'}">${d.s}</div><div class="bt">/ ${d.t}</div></div>`;}
+  document.getElementById(`${pfx}bd`).innerHTML=bd;
+}
+
+function qr(pfx,qs){
+  QS[pfx]={qs,sc:0,cur:0,done:new Array(qs.length).fill(false),ps:{}};
+  document.getElementById(`${pfx}a`).style.display='block';
+  document.getElementById(`${pfx}sr`).classList.remove('on');
+  document.getElementById(`${pfx}a`).innerHTML=bQ(qs,0,pfx);
+  document.getElementById(`${pfx}pf`).style.width=(100/qs.length)+'%';
+}
+
+// ── Q1 CH11 ────────────────────────────
+const Q1=[
+  {q:"依護理人員法，護理師的業務範圍共有幾類？下列何者「不屬於」護理師的法定業務範圍？",
+   o:["健康問題之護理評估","預防保健之護理措施","在醫師指示下進行醫療輔助行為","在無醫師在場情況下自行開立藥物處方"],
+   c:3,p:"CH11",pc:"#2563eb",
+   ex:"✅ 護理人員法第24條規定護理業務四類：①健康問題之護理評估、②預防保健之護理措施、③護理指導及諮詢、④醫療輔助行為（須在醫師指示下）。自行開立處方超出護理師業務範圍，可能構成非法執行醫療業務。"},
+  {q:"「專科護理師」可以在醫師「監督下」執行醫療業務。下列何者屬於「涉及侵入人體」的業務項目？",
+   o:["預立特定醫療流程表單代為開立","相關醫療諮詢","傷口處置","檢驗檢查之初步綜合判斷"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 涉及侵入人體的業務項目包括：傷口處置、管路處置、檢查處置及其他處置。預立表單代為開立、醫療諮詢、初步綜合判斷屬於「未涉及侵入人體者」的業務範圍。"},
+  {q:"護理人員違反業務上注意義務，可能面臨哪些責任？",
+   o:["僅有民事責任","僅有行政責任（吊銷執照）","刑事、民事、行政責任皆可能同時成立","只有在造成病人死亡時才有刑事責任"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 護理人員業務上的疏失可能同時引發：①刑事責任（業務過失傷亡）、②民事責任（違約或侵權損害賠償）、③行政責任（依護理人員法受衛生主管機關裁罰，包括停業或廢照），三種責任可同時並行。"},
+  {q:"某護理之家的看護（非護理師）拍攝病人臀部並上傳網路，被衛生局追蹤。下列說明何者正確？",
+   o:["看護非護理師，不受護理人員法管轄，機構無責","看護雖非護理師，但護理機構仍有監督管理責任","只有護理師才有保密義務，看護可以不受約束","衛生局沒有權力追蹤非護理師的行為"],
+   c:1,p:"CH11",pc:"#2563eb",
+   ex:"✅ 看護縱使非護理人員，仍屬護理人員法所言護理機構及其人員之範疇，受保密義務管轄。護理機構不僅須確保自身義務之履行，亦須承擔對機構內所有人員的監督與管理責任。"},
+  {q:"專科護理師證書的更新週期為？",
+   o:["每2年","每4年","每6年","每10年"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 專科護理師經衛生福利部甄審合格，由其發給專科護理師證書，並每6年進行更新。這是確保專科護理師持續專業發展、維持執業能力的機制。"},
+  {q:"下列哪一項與護理人員工作環境安全保障「最直接相關」的法規？",
+   o:["民法","刑法","職業安全衛生法","護理人員法第24條"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 職業安全衛生法規範工作場所安全標準，雇主須提供安全的工作環境，是與護理人員工作環境安全最直接相關的法規。此外，人類免疫缺乏病毒傳染防治條例及醫療法也有相關保障規定。"},
+  {q:"護理人員可在哪些工作場域執業？下列何者「不在」護理人員可選擇的工作場域內？",
+   o:["精神復健機構","學校護理室","法院法庭（作為法律諮詢員）","助產機構"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 護理人員可選擇的工作場域日趨多元，包括：醫院病房、護理之家、精神復健機構、學校護理室、社區衛生機構、助產機構等。在法院擔任法律諮詢員不屬於護理執業範疇。"},
+  {q:"設置護理機構的主要目的，下列何者最符合護理人員法的立法精神？",
+   o:["增加護理師的創業機會","減少醫療資源浪費、滿足連續性醫療照護需求","提高醫院的競爭力","讓護理師擺脫醫師監督"],
+   c:1,p:"CH11",pc:"#2563eb",
+   ex:"✅ 依護理人員法第14條，設置護理機構的目的在於：減少醫療資源的浪費、滿足連續性醫療照護之需求，並發揮護理人員執業功能。這體現了護理專業在醫療體系中的獨特價值。"},
+  {q:"關於台灣的社區衛生護理師，下列說明何者正確？",
+   o:["有完整的專屬法令保障","由衛生福利部直接發給認證證書","目前無專屬法令，由台灣護理學會依認證辦法發給證書","不需要認證，任何護理師都可以自稱社區衛生護理師"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 目前台灣無社區衛生護理專屬法令。台灣護理學會修訂「台灣護理學會社區衛生護理師認證辦法」，具備報考資格且筆試及格者，由台灣護理學會主動寄發社區衛生護理師證書。"},
+  {q:"護理人員法中規定護理人員業務上違法或不當行為的處罰依據是？",
+   o:["護理人員法第14條","護理人員法第24條","護理人員法第35條","護理人員法第2條"],
+   c:2,p:"CH11",pc:"#2563eb",
+   ex:"✅ 護理人員法第35條規範護理人員業務上違法或不當行為的行政處罰，包括警告、停業及廢止執業執照等。護理人員法第24條則是規範業務範圍，第14條是護理機構設置規定，第2條是護理人員定義。"}
+];
+
+// ── Q2 CH12 ────────────────────────────
+const Q2=[
+  {q:"醫療糾紛中，「醫療爭議（Medical Dispute）」與「醫療疏失（Medical Error）」的主要差別是？",
+   o:["醫療爭議指因果關係尚不確定，醫療疏失是已確定護理人員有錯誤","醫療疏失比醫療爭議更輕微","只有醫師才會有醫療疏失，護理師只有醫療爭議","醫療爭議不需要賠償，醫療疏失才需要"],
+   c:0,p:"CH12",pc:"#d97706",
+   ex:"✅ 醫療爭議（Medical Dispute）：醫病雙方對醫療過程或結果看法不同，因果關係尚不確定。醫療疏失（Medical Error）：已確定因果關係，醫療人員的行為確實造成病人損害。兩者的關鍵差異在於因果關係是否確立。"},
+  {q:"本章歸納醫療糾紛的預防及處理三原則，下列何者屬於「心態層面」的原則？",
+   o:["資源整合","溝通同理","主動通報","設置第三方鑑定"],
+   c:1,p:"CH12",pc:"#d97706",
+   ex:"✅ 三原則分別對應不同層面：①資源整合（系統層面）、②溝通同理（心態層面）、③主動通報（行動層面）。溝通同理強調以同理心處理糾紛，及早說明坦誠告知，維護醫病信任關係。"},
+  {q:"「醫療事故預防及爭議處理法」設置了哪三大機制？下列何者「不屬於」該法的機制？",
+   o:["院內醫療事故關懷小組","裁判外紛爭解決模式（ADR）","強制醫療訴訟制度","第三方鑑定單位"],
+   c:2,p:"CH12",pc:"#d97706",
+   ex:"✅ 醫療事故預防及爭議處理法三大機制：①醫療事故關懷小組（院內即時溝通）、②裁判外紛爭解決模式ADR（節省訴訟成本）、③第三方鑑定單位（客觀釐清事實）。沒有「強制醫療訴訟制度」，該法反而是要減少訴訟。"},
+  {q:"從燙傷案例中，護理師D使用烘被機保暖導致病人3度燙傷。護理師D面臨的最主要刑事法律責任是？",
+   o:["業務過失致人於傷","業務過失致人於重傷","侵權行為","違反勞動基準法"],
+   c:0,p:"CH12",pc:"#d97706",
+   ex:"✅ 護理師D的行為造成病人燙傷（3度燙傷屬於身體傷害），依刑法規定，護理師因業務上的疏失致人受傷，構成「業務過失致人於傷」的刑事責任。若傷害升至重傷或死亡，責任更重。"},
+  {q:"在燙傷案例中，原告與被告達成和解並簽署協議書，被告給付40萬元。之後原告重新提告求償360萬元，三審法院均駁回。主要原因是？",
+   o:["法院認為40萬元賠償已足夠","和解協議書已具有法律效力，兩造意思表示一致","被告診所不在台灣司法管轄範圍","護理師D的行為屬於意外，不構成過失"],
+   c:1,p:"CH12",pc:"#d97706",
+   ex:"✅ 法院認定兩造已達成和解，且協議書內容已經兩造意思表示一致，故具有法律效力。和解協議書是雙方自願達成的契約，簽署後原則上不可反悔重新起訴，這體現了「契約自由原則」。"},
+  {q:"裁判外紛爭解決模式（ADR）相較於訴訟的主要優點是？",
+   o:["ADR具有強制執行力，比訴訟更有效","ADR不需要雙方同意，法院可強制啟動","ADR速度較快、成本較低、有助於保全醫病關係","ADR的結果一定比訴訟更公平"],
+   c:2,p:"CH12",pc:"#d97706",
+   ex:"✅ ADR的主要優點：①快速解決（不需漫長訴訟程序）、②低成本（不需大量訴訟費用）、③有助於保全醫病關係（以協商代替對抗）。缺點是沒有強制執行力，需要雙方自願同意參與。"},
+  {q:"護理業務過失致人於死的刑事責任，依據哪部法律？",
+   o:["護理人員法","醫療法","刑法","民法"],
+   c:2,p:"CH12",pc:"#d97706",
+   ex:"✅ 護理人員從事業務之刑事責任依據「刑法」相關條款，分別為業務過失致人於傷、業務過失致人於重傷、業務過失致人於死。護理人員法主要規範行政責任，刑事責任依刑法追究。"},
+  {q:"醫療糾紛頻傳的主要原因，下列何者「最不可能」是根本原因？",
+   o:["醫病溝通不良，病人感覺沒有人關心他","醫療技術過於先進，副作用太多","病人自主意識提升，對醫療結果期待更高","醫療資源不足，護理師工作負荷過重"],
+   c:1,p:"CH12",pc:"#d97706",
+   ex:"✅ 醫療糾紛的主要根源通常是：溝通不良、病人期待未被管理、資訊不對等、工作負荷過重導致疏失等。「醫療技術過於先進副作用太多」並非糾紛主因——事實上先進技術通常減少而非增加糾紛，且多數糾紛可透過更好的溝通預防。"},
+  {q:"防禦性醫療（Defensive Medicine）指的是？",
+   o:["護理師為保護病人而採取的積極護理措施","醫師為避免糾紛訴訟而進行的非必要檢查或處置","醫院設立的糾紛防禦委員會","護理師拒絕執行高風險的醫療輔助行為"],
+   c:1,p:"CH12",pc:"#d97706",
+   ex:"✅ 防禦性醫療（Defensive Medicine）是指醫師為了避免醫療糾紛訴訟，而進行非醫療必要的額外檢查、治療或文件記錄，以「自我保護」為目的。這是醫療糾紛環境下的不健康現象，增加醫療成本並不一定對病人有益。"},
+  {q:"護理師填寫不良事件通報（Incident Report）的主要目的是？",
+   o:["主要用來懲罰犯錯的護理師","找出系統漏洞，改善流程以預防再發生","向病人家屬公開承認錯誤","讓醫院蒐集護理師的黑歷史"],
+   c:1,p:"CH12",pc:"#d97706",
+   ex:"✅ 不良事件通報的主要目的是「系統改善」，找出造成事故的系統漏洞（流程、設備、人力、訓練），而非懲罰個人。醫療安全文化強調「非懲罰性通報」——鼓勵主動通報以學習改善，而非隱瞞。"}
+];
+
+// ── Q3 CH13 ────────────────────────────
+const Q3=[
+  {q:"依「醫療法」規定，醫療機構對病歷建立的義務，需符合哪三個標準？",
+   o:["安全、詳實、中文","清晰、詳實、完整","精確、快速、標準","書面、電子、多語言"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 醫療法規定醫療機構有義務建立清晰、詳實與完整的病歷。這三個標準缺一不可：清晰（可辨識閱讀）、詳實（內容充分）、完整（不遺漏任何醫療過程的重要資訊）。"},
+  {q:"電子病歷製作完成後，須在多少時間內完成電子簽章？",
+   o:["6小時","12小時","24小時","48小時"],
+   c:2,p:"CH13",pc:"#059669",
+   ex:"✅ 依醫療法規定，電子病歷製作後24小時內須完成電子簽章。電子簽章具有與實體簽名同等的法律效力，確保病歷的真實性與不可否認性。"},
+  {q:"病人要求取得病歷複製本，醫療機構應如何處理？",
+   o:["醫療機構可依自行判斷決定是否提供","在病人自費的前提下，醫療機構不可拖延或拒絕，應提供病歷複製本或中文病歷摘要","只有在訴訟時法院命令才能提供","病歷屬醫療機構所有，病人沒有取得的權利"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 在病人自費前提下，醫療機構不可拖延或拒絕，應提供病人病歷複製本或中文病歷摘要。醫師並非必須以中文書寫病歷，但必要時醫療機構有提供中文病歷摘要之義務。"},
+  {q:"護理師的護理記錄在法律上的地位是？",
+   o:["只是內部參考文件，沒有法律效力","僅在發生糾紛時才有法律意義","與醫師病歷具有同等的法律地位，是法律意義上的病歷一部分","只有主任護理師的記錄才有法律效力"],
+   c:2,p:"CH13",pc:"#059669",
+   ex:"✅ 護理記錄是病歷的一部分，與醫師病歷具有同等的法律地位。所有醫事人員製作的紀錄（包括護理記錄、藥師紀錄、物理治療紀錄等）均屬病歷，記載不實同樣構成法律責任。"},
+  {q:"偽造病歷與竄改病歷的關鍵差別是？",
+   o:["竄改比偽造更嚴重","偽造是完全捏造不存在的記載，竄改是修改既有的真實記載使其不實","兩者沒有差別，法律處罰相同","只有醫師才能偽造病歷，護理師只會竄改"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 偽造病歷：完全捏造、製作不存在的病歷記載。竄改病歷：修改已存在的真實記載，使其成為不實。兩者皆涉及病歷記載不實，無論偽造或竄改，都可能構成偽造文書罪（刑法第210-216條）。"},
+  {q:"合法修改病歷的正確方式是？",
+   o:["用立可白塗掉錯誤，重新填寫正確內容","直接刪除錯誤記錄，重新建立一筆新記錄","保留原始記載可辨識（如劃線），在旁邊標明修改原因、時間並簽章","只要在下次回診前修改完畢，任何方式皆可"],
+   c:2,p:"CH13",pc:"#059669",
+   ex:"✅ 合法修改病歷應保留原始記載可辨識（如劃線而非塗黑），並在旁邊記明修改原因、時間與簽章。電子病歷須有稽核軌跡（Audit Trail），記錄所有修改，不可刪除修改記錄。用立可白是絕對錯誤的做法。"},
+  {q:"依「個人資料保護法」，病歷屬於何種類型的個人資料？",
+   o:["一般個人資料，可自由處理","特種個人資料，原則上不得蒐集處理，符合特定情形方可例外","公開資料，任何人都可以取得","醫療機構的財產，不屬於個人資料"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 病歷屬於個人資料，屬隱私權保障範疇，依個資法第6條第1項屬「特種個人資料」，原則上不得蒐集、處理或利用，只有符合特定情形（如醫療目的，且符合法規要求）者，才得例外處理。"},
+  {q:"護理師在科內LINE群組分享含有病人診斷和年齡的截圖（未顯示完整姓名），這是否違反個資法？",
+   o:["不違反，因為沒有完整姓名，已達去識別化標準","違反個資法，因為病歷資訊即使部分去識別化，若仍可辨識特定個人，仍屬個人資料","不違反，教育目的是個資法的合法例外","只在病人本人看到時才違反"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 即使未顯示完整姓名，若結合年齡、診斷、手術方式等資訊仍可辨識特定個人，即屬個人資料。護理師在LINE群組分享病人資訊，構成個資法的「處理」行為，且未獲病人同意，違反個資法保護原則。"},
+  {q:"電子病歷銷毀時，應符合什麼要件？",
+   o:["只需通知衛生局即可","申請法院許可後才能銷毀","應確保無洩漏病歷內容之虞（醫療法第70條第4項）","每5年必須強制銷毀一次"],
+   c:2,p:"CH13",pc:"#059669",
+   ex:"✅ 醫療法第70條第4項規定，銷毀病歷（包括電子病歷）時，應確保無洩漏病歷內容之虞。必須採用安全的銷毀方式（如資料徹底清除或物理銷毀存儲媒體），不可直接棄置未處理的電子設備。"},
+  {q:"護理師小美在夜班結束補記凌晨給藥記錄，正確的做法是？",
+   o:["以凌晨時間記載，不需特別說明補記事實","以早上補記時間記載，並標明「補記」字樣、補記原因及簽章","直接刪除給藥記錄，說明已給藥","請同班同事幫忙回寫記錄"],
+   c:1,p:"CH13",pc:"#059669",
+   ex:"✅ 合法補記（Late Documentation）的正確做法：記載補記的實際時間（不是偽稱的凌晨時間）、標明「補記」字樣、說明補記原因（如：夜班繁忙未及記錄）、並親自簽章。這樣的補記具有法律效力，且透明誠實，不構成竄改。"}
+];
+
+// Initialize all quizzes
+qr('q1',Q1);qr('q2',Q2);qr('q3',Q3);
+</script>
+</body>
+</html>

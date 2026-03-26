@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臨床倫理四象限分析 — 互動學習系統</title>
+<style>
+:root {
+  --primary: #2d3a8c;
+  --primary-light: #667eea;
+  --secondary: #764ba2;
+  --success: #276749;
+  --success-bg: #f0fff4;
+  --success-border: #9ae6b4;
+  --danger: #9b2c2c;
+  --danger-bg: #fff5f5;
+  --danger-border: #feb2b2;
+  --synthesis-bg: #fffbeb;
+  --synthesis-border: #f6ad55;
+  --synthesis-text: #7b341e;
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1a202c;
+  --muted: #718096;
+  --border: #e2e8f0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:var(--bg);color:var(--text);line-height:1.8;font-size:15px}
+
+header{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:#fff;padding:44px 24px;text-align:center;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='white' opacity='.1'/%3E%3C/svg%3E");pointer-events:none}
+header h1{font-size:clamp(1.35em,4vw,2.1em);font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);margin-bottom:8px}
+header .sub{opacity:.9;font-size:1.02em}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:4px 14px;font-size:.8em}
+
+nav{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.09);position:sticky;top:0;z-index:100;display:flex;overflow-x:auto;gap:0}
+nav button{flex:1 0 auto;padding:14px 16px;border:none;background:none;cursor:pointer;font-size:.85em;color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;font-weight:500}
+nav button.active,nav button:hover{color:var(--primary);border-bottom-color:var(--primary-light);background:#f7f9ff}
+
+.page{display:none;padding:32px 22px;max-width:1020px;margin:0 auto}
+.page.active{display:block}
+.page-title{font-size:1.65em;font-weight:700;color:var(--primary);margin-bottom:6px;padding-bottom:12px;border-bottom:3px solid var(--primary-light)}
+.page-principle{color:var(--muted);font-size:.9em;margin-bottom:26px}
+
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.07);margin-bottom:22px;overflow:hidden}
+.card-head{background:linear-gradient(135deg,var(--primary-light),var(--secondary));color:#fff;padding:15px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.card-head h3{font-size:1em;font-weight:600}
+.card-body{padding:22px 24px;display:none}
+.card-body.open{display:block}
+.toggle-icon{transition:transform .3s;font-size:1.1em}
+
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:14px;overflow:hidden;box-shadow:0 3px 18px rgba(0,0,0,.1);margin-bottom:28px}
+.quad{padding:22px;border:1px solid var(--border)}
+.quad:nth-child(1){background:#eef2ff;border-color:#c3cafe}
+.quad:nth-child(2){background:#fff5f5;border-color:#fed7d7}
+.quad:nth-child(3){background:#f0fff4;border-color:#c6f6d5}
+.quad:nth-child(4){background:#fffff0;border-color:#fefcbf}
+.quad h3{font-size:.93em;font-weight:700;margin-bottom:8px;color:var(--primary)}
+.quad p{font-size:.82em;color:var(--muted);line-height:1.5}
+.quad-btn{display:block;width:100%;margin-top:12px;padding:9px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85em;transition:opacity .2s;font-weight:500}
+.quad-btn:hover{opacity:.82}
+
+/* ──────────────────────────────────────
+   CRITIQUE BLOCK  (核心新設計)
+────────────────────────────────────── */
+.critique-block{margin:28px 0;border-radius:14px;overflow:hidden;border:2px solid #c3d0f0;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+
+.critique-header{background:linear-gradient(135deg,#2d3a8c,#4a5568);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:10px}
+.critique-header .lamp{font-size:1.4em}
+.critique-header h4{font-size:.98em;font-weight:700;letter-spacing:.02em}
+
+.critique-question{background:#f0f4ff;border-bottom:2px solid #c3d0f0;padding:16px 22px}
+.critique-question .q-label{font-size:.76em;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:6px}
+.critique-question p{font-size:.92em;color:#2d3748;line-height:1.75;font-style:italic}
+
+.critique-reasons{display:grid;grid-template-columns:1fr 1fr}
+
+.reason-col{padding:20px 22px}
+.reason-col.agree-col{background:var(--success-bg);border-right:2px solid var(--success-border)}
+.reason-col.disagree-col{background:var(--danger-bg)}
+
+.reason-label{font-size:.77em;font-weight:700;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px;padding-bottom:10px;border-bottom:2px solid;margin-bottom:14px}
+.agree-col .reason-label{color:var(--success);border-color:var(--success-border)}
+.disagree-col .reason-label{color:var(--danger);border-color:var(--danger-border)}
+
+.reason-list{list-style:none;padding:0;margin:0}
+.reason-list li{font-size:.875em;line-height:1.8;padding:6px 0 6px 22px;position:relative;color:#2d3748;border-bottom:1px dotted rgba(0,0,0,.08)}
+.reason-list li:last-child{border-bottom:none}
+.reason-list li::before{position:absolute;left:0;top:7px;font-size:.95em;font-weight:700}
+.agree-col .reason-list li::before{content:"✓";color:var(--success)}
+.disagree-col .reason-list li::before{content:"✗";color:var(--danger)}
+.reason-list li strong{font-weight:700}
+.reason-list li em{font-style:italic;color:var(--muted);font-size:.9em}
+
+.critique-synthesis{background:var(--synthesis-bg);border-top:2px solid var(--synthesis-border);padding:22px 24px}
+.synthesis-label{font-size:.77em;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--synthesis-text);display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--synthesis-border);margin-bottom:14px}
+.critique-synthesis p{font-size:.89em;line-height:1.9;color:#3d2a0a;margin-bottom:10px}
+.critique-synthesis p:last-child{margin-bottom:0}
+.critique-synthesis strong{color:#92400e;font-weight:700}
+
+/* ── Misc helpers ── */
+.info-box{border-radius:9px;padding:15px 18px;margin:14px 0;border-left:4px solid}
+.info-box.blue{background:#ebf8ff;border-color:#63b3ed}
+.info-box.green{background:var(--success-bg);border-color:#68d391}
+.info-box.red{background:var(--danger-bg);border-color:#fc8181}
+.info-box.yellow{background:#fffff0;border-color:#ecc94b}
+.info-box h4{font-size:.88em;font-weight:700;margin-bottom:7px;color:var(--primary)}
+.info-box p,.info-box ul{font-size:.87em}
+ul,ol{padding-left:22px}
+li{margin-bottom:4px}
+
+.decision-box{background:#fff;border:2px solid #c3cafe;border-radius:14px;padding:26px;margin-bottom:22px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.decision-box h3{color:var(--primary);margin-bottom:16px;font-size:1.08em;font-weight:700}
+.decision-box h4{color:var(--secondary);margin:18px 0 9px;font-size:.95em;font-weight:700}
+
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:14px}
+.theory-card{background:#f8f9ff;border:1px solid var(--border);border-radius:10px;padding:16px}
+.theory-card h5{color:var(--primary);margin-bottom:9px;font-size:.88em;font-weight:700}
+.theory-card .pro{color:var(--success);font-size:.84em;margin-bottom:6px;line-height:1.65}
+.theory-card .con{color:var(--danger);font-size:.84em;line-height:1.65}
+
+.nav-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.nav-btns button{padding:10px 26px;border:2px solid var(--primary);border-radius:24px;cursor:pointer;font-family:inherit;font-size:.88em;font-weight:600;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-secondary{background:#fff;color:var(--primary)}
+.nav-btns button:hover{opacity:.83;transform:translateY(-1px)}
+
+.tip{background:#fffff0;border:1px solid #fef08a;border-radius:8px;padding:12px 16px;font-size:.85em;color:#713f12;margin:16px 0;line-height:1.7}
+
+@media(max-width:640px){
+  .quad-grid{grid-template-columns:1fr}
+  .critique-reasons{grid-template-columns:1fr}
+  .reason-col.agree-col{border-right:none;border-bottom:2px solid var(--success-border)}
+  .theory-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏥 臨床倫理四象限分析互動學習系統</h1>
+  <p class="sub">Clinical Ethics Four-Quadrant Analysis — Final Report Example</p>
+  <div class="badge-row">
+    <span class="badge">📚 護理倫理</span>
+    <span class="badge">🎓 期末報告範例</span>
+    <span class="badge">⚕️ 安寧照護決策</span>
+    <span class="badge">💡 批判性思考訓練</span>
+  </div>
+</header>
+
+<nav>
+  <button onclick="go('overview')" class="active">📋 案例總覽</button>
+  <button onclick="go('q1')">象限一：醫學適應症</button>
+  <button onclick="go('q2')">象限二：病人意向</button>
+  <button onclick="go('q3')">象限三：生命品質</button>
+  <button onclick="go('q4')">象限四：情境考量</button>
+  <button onclick="go('decision')">✅ 倫理決策建議</button>
+</nav>
+
+<!-- ═══ 總覽 ═══ -->
+<div id="page-overview" class="page active">
+  <h2 class="page-title">📋 案例總覽與四象限框架</h2>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('case')">
+      <h3>📄 案例背景：張女士的安寧照護抉擇</h3>
+      <span class="toggle-icon" id="ti-case">▲</span>
+    </div>
+    <div class="card-body open" id="cb-case">
+      <p><strong>病人：</strong>張美華女士，72 歲，退休國中教師</p>
+      <p><strong>診斷：</strong>第四期卵巢癌（腹腔廣泛轉移），已接受三線化療</p>
+      <p><strong>現況：</strong>疼痛指數 5/10（藥物控制中）、體重下降、食慾差；意識清楚，定向感正常</p>
+      <br>
+      <p><strong>核心困境：</strong>張女士明確表示<em>拒絕繼續化療</em>，希望轉入居家安寧照護。子女堅決反對，認為「不治療等於放棄媽媽」；主治醫師估計繼續化療可延命 3–6 個月，不治療則縮短至 1–2 個月。護理師面臨如何倡議病人自主、協調家庭衝突的倫理困境。</p>
+    </div>
+  </div>
+
+  <h3 style="color:var(--primary);margin-bottom:16px;font-size:1em;font-weight:700">四象限快速導覽</h3>
+  <div class="quad-grid">
+    <div class="quad">
+      <h3>🔬 象限一　醫學適應症</h3>
+      <p>Medical Indications<br>行善 × 不傷害</p>
+      <button class="quad-btn" onclick="go('q1')">進入分析 →</button>
+    </div>
+    <div class="quad">
+      <h3>🙋 象限二　病人意向考量</h3>
+      <p>Patient Preferences<br>尊重自主</p>
+      <button class="quad-btn" onclick="go('q2')">進入分析 →</button>
+    </div>
+    <div class="quad">
+      <h3>💚 象限三　生命品質考量</h3>
+      <p>Quality of Life<br>行善 × 不傷害 × 自主</p>
+      <button class="quad-btn" onclick="go('q3')">進入分析 →</button>
+    </div>
+    <div class="quad">
+      <h3>🌐 象限四　情境脈絡考量</h3>
+      <p>Contextual Features<br>公平正義</p>
+      <button class="quad-btn" onclick="go('q4')">進入分析 →</button>
+    </div>
+  </div>
+
+  <div class="tip">💡 <strong>閱讀說明：</strong>各象限的「批判性思考」欄位依序呈現 <strong>同意的理由 → 不同意的理由 → 批判性整合分析</strong>，可作為期末報告撰寫的結構範本。</div>
+</div>
+
+<!-- ═══ 象限一 ═══ -->
+<div id="page-q1" class="page">
+  <h2 class="page-title">🔬 象限一：醫學適應症 (Medical Indications)</h2>
+  <p class="page-principle">核心原則：行善（Beneficence）× 不傷害（Non-maleficence）</p>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q1a')">
+      <h3>一、病情評估與診斷</h3><span class="toggle-icon" id="ti-q1a">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q1a">
+      <ul>
+        <li>第四期卵巢癌，腹腔廣泛轉移，已接受三線化療</li>
+        <li>預估存活期：繼續化療約 3–6 個月；選擇安寧照護約 1–2 個月</li>
+        <li>問題性質：慢性、進行性、不可逆，終將危及生命</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q1b')">
+      <h3>二、治療目標分析</h3><span class="toggle-icon" id="ti-q1b">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q1b">
+      <ul>
+        <li>化療目標：延長生命、控制腫瘤進展，但<strong>無法治癒</strong></li>
+        <li>成功機率：腫瘤縮小約 30%，但生活品質可能顯著下降</li>
+        <li>替代方案：安寧緩和照護——疼痛控制、症狀管理、心理靈性支持</li>
+      </ul>
+      <div class="info-box yellow" style="margin-top:14px">
+        <h4>🔑 關鍵問題</h4>
+        <p>在末期癌症情境中，「積極治療」是否等同於「最佳照護」？醫療團隊的義務是否包含支持病人選擇善終？</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="critique-block">
+    <div class="critique-header">
+      <span class="lamp">💡</span>
+      <h4>批判性思考：「延長生命」是否等同於「行善」？</h4>
+    </div>
+    <div class="critique-question">
+      <div class="q-label">討論問題</div>
+      <p>在末期癌症情境中，繼續化療以延長生命，是否符合「行善」與「不傷害」原則？醫療「善」的標準應以生命的「量」還是「質」為依歸？</p>
+    </div>
+    <div class="critique-reasons">
+      <div class="reason-col agree-col">
+        <div class="reason-label">✅ 同意繼續化療的理由</div>
+        <ul class="reason-list">
+          <li><strong>生命延長具有內在價值：</strong>即使只延長 3–6 個月，仍可能讓病人見到孫子畢業、完成遺願，每一天都有其獨特意義。</li>
+          <li><strong>醫療不確定性：</strong>30% 的腫瘤縮小機率代表仍有治療反應可能，放棄即放棄此機會。</li>
+          <li><strong>義務論支持：</strong>醫療專業者有救治生命的義務；從義務論角度，停止可能延命的治療有違醫師的職業承諾。</li>
+          <li><strong>家屬心理需求：</strong>繼續治療讓家屬感到「已盡全力」，有助減少日後的哀傷與罪惡感。</li>
+        </ul>
+      </div>
+      <div class="reason-col disagree-col">
+        <div class="reason-label">❌ 反對繼續化療的理由</div>
+        <ul class="reason-list">
+          <li><strong>治療傷害超過益處：</strong>嚴重噁心嘔吐、感染風險、頻繁住院所造成的痛苦，可能遠超延命 3–6 個月的益處。</li>
+          <li><strong>違反不傷害原則：</strong>明知療效有限卻強制執行，實為醫源性傷害，違背「首先勿傷害（Primum non nocere）」。</li>
+          <li><strong>醫療無效性問題：</strong>當治療目標已從「治癒」轉為有限度的「延命」，且延命伴隨生活品質極差，可能構成「醫療無效性（medical futility）」。</li>
+          <li><strong>安寧照護也是行善：</strong>提供高品質症狀控制與靈性支持，使病人有尊嚴地離世，同樣是「對病人最好」的積極照護選擇。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="critique-synthesis">
+      <div class="synthesis-label">⚖️ 批判性整合分析</div>
+      <p>「行善」與「不傷害」原則在末期照護情境下，需要重新詮釋其內涵。傳統醫學文化傾向以「延長生命」作為行善的量尺，然而這種觀點忽略了病人主觀生命品質的核心重要性。從結果論的角度，評估一項醫療決策是否「行善」，必須綜合考量治療帶來的整體效益與傷害：當副作用的痛苦已確定，而療效僅為機率性的短暫延命時，繼續積極治療未必符合最大效益原則。</p>
+      <p><strong>本案的核心倫理立場應為：安寧照護並非「放棄」，而是將醫療目標從「對抗疾病」轉移至「提升剩餘生命品質」，這同樣是高度積極且符合「行善」精神的醫療選擇。</strong>護理人員應協助醫療團隊與家屬共同理解此一觀念轉換，破除「積極治療 = 盡責」的隱性偏見。</p>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-secondary" onclick="go('overview')">← 返回總覽</button>
+    <button class="btn-primary" onclick="go('q2')">象限二 →</button>
+  </div>
+</div>
+
+<!-- ═══ 象限二 ═══ -->
+<div id="page-q2" class="page">
+  <h2 class="page-title">🙋 象限二：病人意向考量 (Patient Preferences)</h2>
+  <p class="page-principle">核心原則：尊重自主（Respect for Autonomy）</p>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q2a')">
+      <h3>一、決策能力評估</h3><span class="toggle-icon" id="ti-q2a">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q2a">
+      <ul>
+        <li>張女士意識清楚、定向感正常</li>
+        <li>能理解病情、治療選項及後果</li>
+        <li>能表達並堅持自己的醫療決定</li>
+        <li><strong>結論：具完全決策能力</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q2b')">
+      <h3>二、病人意願與知情同意</h3><span class="toggle-icon" id="ti-q2b">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q2b">
+      <ul>
+        <li>拒絕繼續化療，希望接受安寧照護</li>
+        <li>重視生命品質勝於延長時間</li>
+        <li>願意簽署 DNR 同意書</li>
+        <li>✓ 已被告知化療益處與風險，理解各選項後果，決定非受外在壓力</li>
+      </ul>
+      <div class="info-box green" style="margin-top:12px">
+        <h4>⚖️ 法律依據</h4>
+        <p>依《病人自主權利法》（2019），具完全行為能力之成年人有權拒絕任何醫療處置；醫療團隊有義務尊重並協助實現。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="critique-block">
+    <div class="critique-header">
+      <span class="lamp">💡</span>
+      <h4>批判性思考：自主原則的文化脈絡爭辯</h4>
+    </div>
+    <div class="critique-question">
+      <div class="q-label">討論問題</div>
+      <p>即使家屬強烈反對，具決策能力病人的自主意願是否應絕對優先？在台灣家庭文化脈絡下，護理人員應如何處理「個人自主」與「家庭和諧」之間的倫理張力？</p>
+    </div>
+    <div class="critique-reasons">
+      <div class="reason-col agree-col">
+        <div class="reason-label">✅ 同意自主權應優先的理由</div>
+        <ul class="reason-list">
+          <li><strong>法律明確保障：</strong>《病人自主權利法》清楚規定，具決策能力的成年人有權拒絕任何醫療，家屬無法取代病人做決定。</li>
+          <li><strong>義務論基礎：</strong>尊重自主是不可侵犯的道德義務；無論後果如何，侵犯一個人的自主決定本身即構成倫理上的錯誤。</li>
+          <li><strong>防止父權主義（paternalism）：</strong>以「為病人好」為由覆蓋病人意志，是一種醫療父權主義，長期削弱病人的主體性。</li>
+          <li><strong>身體完整性原則：</strong>未經本人同意而對其施行醫療，即使出於善意，亦可能侵犯身體自主。</li>
+        </ul>
+      </div>
+      <div class="reason-col disagree-col">
+        <div class="reason-label">❌ 對「自主絕對優先」持保留的理由</div>
+        <ul class="reason-list">
+          <li><strong>關係性自主（relational autonomy）：</strong>個人決定從來不是在真空中形成的；家庭關係與文化價值觀是自主的構成部分，完全忽視家屬是另一種文化偏見。</li>
+          <li><strong>家屬的合理利益：</strong>家屬將承受失去至親的哀傷，其情感需求與參與決策的期望具有倫理正當性，不應被視為干擾。</li>
+          <li><strong>文化脈絡的差異：</strong>西方個人主義的自主概念不能直接移植至台灣家族文化，在地化的「自主」應包含家庭和諧的考量空間。</li>
+          <li><strong>決定的純粹性問題：</strong>需評估病人是否因擔心「成為家人負擔」而選擇放棄治療，此類非純粹自主的決定需更深入確認。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="critique-synthesis">
+      <div class="synthesis-label">⚖️ 批判性整合分析</div>
+      <p>自主原則在倫理學上具有核心地位，但在臨床實踐中不能以「尊重自主」為由，忽視病人所處的家庭與文化脈絡。學者 Sherwin（1998）提出的「關係性自主」概念提醒我們：真正的自主不僅是個人意志的表達，也需確保其決定是在充分支持、不受操控的環境下形成。</p>
+      <p>因此，護理人員的責任不是在「病人 vs. 家屬」之間選邊站，而是：<strong>（1）確認張女士的決定確實自主且知情；（2）協助家屬理解尊重媽媽的選擇本身也是一種深刻的愛與孝道；（3）為全家人提供哀傷準備與心理支持。</strong>「尊重自主」的最終目標，是讓病人與家庭在這段艱難旅程中共同找到和解與意義，而非製造更深的對立。</p>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-secondary" onclick="go('q1')">← 象限一</button>
+    <button class="btn-primary" onclick="go('q3')">象限三 →</button>
+  </div>
+</div>
+
+<!-- ═══ 象限三 ═══ -->
+<div id="page-q3" class="page">
+  <h2 class="page-title">💚 象限三：生命品質考量 (Quality of Life)</h2>
+  <p class="page-principle">核心原則：行善 × 不傷害 × 自主</p>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q3a')">
+      <h3>一、當前生命品質評估（四個面向）</h3><span class="toggle-icon" id="ti-q3a">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q3a">
+      <ul>
+        <li><strong>身體：</strong>疼痛 5/10（需藥物控制）、疲倦、食慾差</li>
+        <li><strong>心理：</strong>因化療副作用產生焦慮與恐懼</li>
+        <li><strong>社會：</strong>希望在家與家人相處、參加孫子畢業典禮</li>
+        <li><strong>靈性：</strong>身為退休教師，希望「有尊嚴地離開」</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q3b')">
+      <h3>二、兩種選擇的預期生命品質比較</h3><span class="toggle-icon" id="ti-q3b">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q3b">
+      <div class="info-box red">
+        <h4>繼續化療的預期後果</h4>
+        <ul>
+          <li>生命可能延長 3–6 個月，但伴隨嚴重嘔吐、掉髮、感染風險、頻繁住院</li>
+          <li>無法實現「在家陪伴家人」的心願；心理負擔加重</li>
+        </ul>
+      </div>
+      <div class="info-box green">
+        <h4>選擇安寧照護的預期結果</h4>
+        <ul>
+          <li>生命可能縮短，但身體痛苦明顯減少</li>
+          <li>能在家中度過最後時光，完成重要心願，保有尊嚴</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="critique-block">
+    <div class="critique-header">
+      <span class="lamp">💡</span>
+      <h4>批判性思考：生命品質的定義權與醫療偏見</h4>
+    </div>
+    <div class="critique-question">
+      <div class="q-label">討論問題</div>
+      <p>醫療文化中是否存在「必須奮戰到底」的隱性偏見，導致病人難以自由選擇善終？「生命品質」應由誰來定義與評估？護理人員在其中扮演何種角色？</p>
+    </div>
+    <div class="critique-reasons">
+      <div class="reason-col agree-col">
+        <div class="reason-label">✅ 同意存在「抗戰偏見」的理由</div>
+        <ul class="reason-list">
+          <li><strong>醫療文化的英雄主義：</strong>醫療體系長期以「對抗疾病」為核心敘事，「放棄治療」常被隱含地詮釋為失敗，對病人與家屬造成無形壓力。</li>
+          <li><strong>研究支持：</strong>多項研究發現，許多末期病人接受過度積極治療，係因家屬壓力或未充分溝通善終選項，而非本人的真實意願（Temel et al., 2010）。</li>
+          <li><strong>生命品質指標被制度忽視：</strong>現行醫療績效（如存活率）傾向量化的生命「量」，難以測量的主觀生命「質」在制度上處於弱勢。</li>
+          <li><strong>護理倡議的結構困境：</strong>護理師明知病人偏好，卻因家屬反對與醫療文化壓力而難以有效倡議，揭示系統性問題。</li>
+        </ul>
+      </div>
+      <div class="reason-col disagree-col">
+        <div class="reason-label">❌ 對「抗戰偏見」論點的反駁</div>
+        <ul class="reason-list">
+          <li><strong>積極治療有其合理性：</strong>部分病人確實在延長的時間中完成重要心願或出現意外復原，將積極治療一概而論為「偏見」過於簡化。</li>
+          <li><strong>安寧選擇也可能帶有偏見：</strong>若社會過度強調「有尊嚴地死亡」，同樣可能對希望繼續積極治療的病人造成反方向的文化壓力。</li>
+          <li><strong>家屬抗拒有資訊不足的成分：</strong>家屬反對部分原因是對安寧品質的不信任，這需要教育與溝通，而非單純歸因為偏見。</li>
+          <li><strong>「生命品質」的主觀性與變動性：</strong>病人評估可能隨病程、心理狀態改變，當下的表達未必能代表所有時間點的偏好，需持續評估。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="critique-synthesis">
+      <div class="synthesis-label">⚖️ 批判性整合分析</div>
+      <p>「生命品質」的評估主體應當是病人本人，而非醫療提供者或家屬。然而，這一原則在臨床實踐中面臨多重挑戰：病人的偏好可能受文化期待、家庭壓力與資訊落差影響而變形；醫療人員本身亦可能帶有「積極治療才是盡責」的職業偏見。</p>
+      <p>護理人員的倫理責任在於創造一個讓病人能夠「真正自由選擇」的環境：<strong>提供關於安寧照護的充分且正面的資訊；協助病人釐清其核心價值觀；並在家庭會議中作為病人利益的倡導者（patient advocate）。</strong>無論病人最終選擇繼續治療或轉入安寧，護理師的職責都是確保這個決定源於充分知情的自主意志，而非某種文化偏見或外部壓力的產物。</p>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-secondary" onclick="go('q2')">← 象限二</button>
+    <button class="btn-primary" onclick="go('q4')">象限四 →</button>
+  </div>
+</div>
+
+<!-- ═══ 象限四 ═══ -->
+<div id="page-q4" class="page">
+  <h2 class="page-title">🌐 象限四：情境脈絡考量 (Contextual Features)</h2>
+  <p class="page-principle">核心原則：公平正義（Justice）</p>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q4a')">
+      <h3>一、家庭動力與文化脈絡</h3><span class="toggle-icon" id="ti-q4a">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q4a">
+      <ul>
+        <li><strong>子女立場：</strong>強烈要求繼續化療，擔心「不治療 = 不孝」</li>
+        <li><strong>文化背景：</strong>台灣孝道文化——子女有義務盡一切努力延長父母生命</li>
+        <li><strong>潛在心理：</strong>若選擇停治，日後可能產生強烈罪惡感與預期性哀傷</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head" onclick="tog('q4b')">
+      <h3>二、社會、法律與機構資源</h3><span class="toggle-icon" id="ti-q4b">▲</span>
+    </div>
+    <div class="card-body open" id="cb-q4b">
+      <ul>
+        <li>《病人自主權利法》賦予病人拒絕醫療的合法權利</li>
+        <li>《安寧緩和醫療條例》（2000）支持善終選擇</li>
+        <li>醫院倫理委員會具正式調解機制</li>
+      </ul>
+      <div class="info-box blue" style="margin-top:12px">
+        <h4>🏥 可轉介資源</h4>
+        <p>安寧照護團隊、醫務社工、心理師、院牧 / 宗教關懷師——協助家庭和解、哀傷準備、靈性照顧。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="critique-block">
+    <div class="critique-header">
+      <span class="lamp">💡</span>
+      <h4>批判性思考：孝道文化與病人自主的倫理張力</h4>
+    </div>
+    <div class="critique-question">
+      <div class="q-label">討論問題</div>
+      <p>在台灣文化脈絡下，「孝道」是否構成合理限制病人自主意願的道德依據？護理人員應以何種立場介入家庭決策衝突，才能同時兼顧法律義務、文化敏感度與病人最佳利益？</p>
+    </div>
+    <div class="critique-reasons">
+      <div class="reason-col agree-col">
+        <div class="reason-label">✅ 支持納入家庭共識的理由</div>
+        <ul class="reason-list">
+          <li><strong>文化脈絡的倫理正當性：</strong>孝道並非陋習，而是重視家庭連結與相互照顧的深層文化價值，在倫理評估中具有正當地位。</li>
+          <li><strong>家庭是照護的核心資源：</strong>台灣安寧照護高度依賴家庭支持，若家屬無法接受，安寧照護的實際執行品質可能大打折扣。</li>
+          <li><strong>集體決策的文化現實：</strong>Kleinman（1988）指出，亞洲家庭的醫療決策本質上是集體過程，個人主義的西方自主模型無法完整描述此現實。</li>
+          <li><strong>家屬哀傷需求具道德重量：</strong>忽視家屬情感而強行執行病人意願，可能導致家庭破裂與長期哀傷障礙，這也是一種道德傷害。</li>
+        </ul>
+      </div>
+      <div class="reason-col disagree-col">
+        <div class="reason-label">❌ 反對以孝道凌駕自主的理由</div>
+        <ul class="reason-list">
+          <li><strong>文化不能成為侵犯自主的藉口：</strong>尊重文化多元不等於允許文化規範凌駕個人基本權利；法律已明確保障病人最終決定權。</li>
+          <li><strong>孝道的真義可以重新詮釋：</strong>若母親明確表達希望善終，強迫其承受痛苦治療反而是對孝道精神的背離——真正的孝是尊重與愛護，而非控制。</li>
+          <li><strong>護理倡議的倫理義務：</strong>ANA 護理倫理守則明確要求護理師倡議病人利益，尤其當病人面對家庭壓力時，護理師有責任成為病人的聲音。</li>
+          <li><strong>防範前車之鑑：</strong>許多末期病人因家屬反對而被迫承受痛苦的積極治療，造成「不善終」的遺憾，這是護理專業亟需積極改變的現象。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="critique-synthesis">
+      <div class="synthesis-label">⚖️ 批判性整合分析</div>
+      <p>此案例凸顯了<strong>個人主義自主觀</strong>與<strong>關係性 / 集體文化脈絡</strong>之間的根本張力。單純以西方個人主義框架處理台灣家庭的醫療決策，不僅文化敏感度不足，在實務上也可能造成更深的傷害。然而，文化脈絡不能成為剝奪病人基本自主權的正當理由。</p>
+      <p>護理人員面對此類衝突時，最佳策略是<strong>「以病人為中心的家庭和解」</strong>：不選邊站，而是協助家庭找到一個「尊重媽媽意願」與「表達家人的愛」可以共存的詮釋框架。具體而言，這需要多專業協作：護理師倡議病人意願、社工評估家庭動力、安寧團隊提供喪親輔導、倫理委員會在必要時介入調解。</p>
+      <p><strong>真正的「孝道」，應是在尊重母親最後心願的同時，陪伴她走完這段旅程，而非以愛之名強加痛苦。</strong></p>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-secondary" onclick="go('q3')">← 象限三</button>
+    <button class="btn-primary" onclick="go('decision')">倫理決策建議 →</button>
+  </div>
+</div>
+
+<!-- ═══ 決策 ═══ -->
+<div id="page-decision" class="page">
+  <h2 class="page-title">✅ 倫理決策分析與建議</h2>
+  <p class="page-principle">組織整合能力（佔期末報告 20%）</p>
+
+  <div class="decision-box">
+    <h3>🎯 一、綜合倫理評估結論</h3>
+    <p>經過四象限系統性分析，本組認為：</p>
+    <ol style="padding-left:24px;margin:12px 0">
+      <li style="margin-bottom:10px"><strong>病人自主權應被優先尊重：</strong>張女士具完全決策能力，充分知情後的決定受法律與倫理雙重保障。</li>
+      <li style="margin-bottom:10px"><strong>安寧照護符合行善原則：</strong>提供舒適照護使病人有尊嚴地走完餘生，亦是「行善」的積極展現，而非消極的放棄。</li>
+      <li><strong>家庭和解是關鍵任務：</strong>倫理困境的核心不在「治療或不治療」，而在「如何協助家庭理解並接受病人的決定」。</li>
+    </ol>
+  </div>
+
+  <div class="decision-box">
+    <h3>🛠️ 二、護理介入建議</h3>
+    <h4>立即行動</h4>
+    <div class="info-box green">
+      <ul>
+        <li><strong>召開家庭會議：</strong>醫師、護理師、安寧團隊、社工共同出席，提供完整且平衡的資訊</li>
+        <li><strong>確認病人真實意願：</strong>在無家屬場合私下確認，排除外部壓力影響</li>
+        <li><strong>去除錯誤認知：</strong>向家屬說明安寧照護是積極的症狀控制，不等於放棄生命</li>
+      </ul>
+    </div>
+    <h4>中期目標</h4>
+    <div class="info-box blue">
+      <ul>
+        <li><strong>協助家庭達成共識：</strong>重新詮釋「孝道」，讓家屬理解尊重母親選擇也是愛的展現</li>
+        <li><strong>轉介安寧居家照護：</strong>若病人決定不變，及早啟動相關多專業服務</li>
+        <li><strong>預期性哀傷輔導：</strong>為家屬提供喪親準備與心理支持，降低長期哀傷障礙風險</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="decision-box">
+    <h3>📚 三、倫理理論綜合驗證</h3>
+    <div class="theory-grid">
+      <div class="theory-card">
+        <h5>義務論（Deontology）</h5>
+        <p class="pro">✓ 尊重病人自主是不可侵犯的道德義務；具決策能力的成人有拒絕醫療的道德與法律權利。</p>
+        <p class="con">✗ 醫師的救治義務在病人明確拒絕時，須讓位於自主原則——義務之間的衝突需以位階排序解決。</p>
+      </div>
+      <div class="theory-card">
+        <h5>結果論（Consequentialism）</h5>
+        <p class="pro">✓ 安寧照護可最大化張女士的整體幸福：減少痛苦、實現心願、有尊嚴離世。</p>
+        <p class="con">✗ 繼續化療雖可延命 3–6 個月，但伴隨痛苦使整體效益明顯低於安寧選項。</p>
+      </div>
+      <div class="theory-card">
+        <h5>德行論（Virtue Ethics）</h5>
+        <p class="pro">✓ 真正有智慧與同情心的護理師，懂得在適當時機「放手」，陪伴而非強制。</p>
+        <p class="con">✗ 勇氣有時意味著在家屬壓力下，仍堅持倡議病人的最佳利益，而非服從多數。</p>
+      </div>
+      <div class="theory-card">
+        <h5>關懷倫理（Care Ethics）</h5>
+        <p class="pro">✓ 以關係為中心，同時回應病人的終末期需求與家屬的哀傷，追求整體家庭的福祉。</p>
+        <p class="con">✗ 需避免「關懷」成為忽視個人自主的藉口——真正的關懷應包含對自主意志的尊重。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-secondary" onclick="go('q4')">← 象限四</button>
+    <button class="btn-secondary" onclick="go('overview')">🏠 回到總覽</button>
+  </div>
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const order=['overview','q1','q2','q3','q4','decision'];
+  document.querySelectorAll('nav button').forEach((b,i)=>{
+    b.classList.toggle('active',i===order.indexOf(id));
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tog(id){
+  const b=document.getElementById('cb-'+id);
+  const i=document.getElementById('ti-'+id);
+  const open=b.classList.toggle('open');
+  i.textContent=open?'▲':'▼';
+}
+</script>
+</body>
+</html>
