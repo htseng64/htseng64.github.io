@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Voyager Academy | 星航員訓練終端</title>
+    <style>
+        /* --- 1. 核心視覺系統 (Core Visuals) --- */
+        :root {
+            --space-dark: #020617;
+            --panel-bg: rgba(15, 23, 42, 0.85);
+            --neon-blue: #38bdf8;
+            --neon-gold: #fbbf24;
+            --neon-red: #ef4444;
+            --neon-green: #10b981;
+            --text-silver: #e2e8f0;
+            
+            /* 部門顏色 */
+            --dept-command: #ef4444; /* 紅：義務論 */
+            --dept-engineer: #fbbf24; /* 黃：效益論 */
+            --dept-medical: #38bdf8; /* 藍：德行論 */
+        }
+
+        body {
+            background-color: var(--space-dark);
+            color: var(--text-silver);
+            font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #1e293b 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #0f172a 0%, transparent 40%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* --- 2. 儀表板佈局 (Dashboard Layout) --- */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        /* 左側：個人檔案 (Profile) */
+        .profile-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .avatar-frame {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            border: 4px solid var(--text-silver); /* 預設 */
+            padding: 5px;
+            position: relative;
+        }
+        
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #334155;
+        }
+
+        .rank-badge {
+            background: var(--neon-gold);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .stat-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; }
+        .stat-label { font-size: 0.8rem; color: #94a3b8; }
+        .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--neon-blue); }
+
+        /* 右側：任務中心 (Mission Control) */
+        .mission-panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        h2 { border-bottom: 2px solid var(--neon-blue); padding-bottom: 10px; margin-top: 0; color: var(--neon-blue); }
+
+        .mission-card {
+            background: linear-gradient(90deg, rgba(15,23,42,0.8), rgba(30,41,59,0.5));
+            border-left: 4px solid var(--neon-gold);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .mission-card:hover { transform: translateX(5px); background: rgba(30,41,59,0.8); }
+        
+        .mission-header { display: flex; justify-content: space-between; align-items: center; }
+        .mission-title { font-size: 1.4rem; font-weight: bold; color: var(--text-silver); }
+        .mission-status { background: rgba(16, 185, 129, 0.2); color: var(--neon-green); padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; }
+
+        .btn-action {
+            background: var(--neon-blue);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn-action:hover { background: white; box-shadow: 0 0 15px var(--neon-blue); }
+
+        /* --- 3. 教育透視鏡 (Pedagogy Lens) --- */
+        .pedagogy-toggle-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .pedagogy-btn {
+            background: #4f46e5;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* 教育標籤 (預設隱藏) */
+        .pedagogy-tag {
+            display: none; /* 預設隱藏 */
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #ec4899; /* Pink for contrast */
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 10;
+            border: 1px solid white;
+        }
+
+        .pedagogy-mode .pedagogy-tag {
+            display: block; /* 開啟時顯示 */
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- 4. 分院儀式 Modal (Sorting Hat) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            display: flex; /* 改為 flex 顯示 */
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .sorting-content {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            text-align: center;
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 0 50px rgba(251, 191, 36, 0.3);
+        }
+
+        .sorting-question { font-size: 1.5rem; margin-bottom: 30px; line-height: 1.6; }
+        .sorting-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: transparent;
+            border: 1px solid var(--text-silver);
+            color: var(--text-silver);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .sorting-btn:hover { background: var(--neon-blue); color: black; border-color: var(--neon-blue); }
+
+    </style>
+</head>
+<body>
+
+    <div id="sorting-modal" class="modal-overlay">
+        <div class="sorting-content">
+            <h1 style="color: var(--neon-gold);">🚀 星航員入職測試</h1>
+            <p>艦長 Polaris 需要知道你的決策特質，以分配適合的部門。</p>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+            
+            <div id="quiz-q1">
+                <p class="sorting-question">Q: 星艦引擎過熱，必須手動關閉。這會導致維修機器人(你的朋友)無法逃生，但能拯救全艦 500 人。你會？</p>
+                <button class="sorting-btn" onclick="completeSorting('engineer')">A. 關閉引擎 (犧牲少數，拯救多數) 👉 效益傾向</button>
+                <button class="sorting-btn" onclick="completeSorting('command')">B. 尋找其他方法 (絕不主動犧牲夥伴) 👉 義務傾向</button>
+                <button class="sorting-btn" onclick="completeSorting('medical')">C. 我親自去關 (展現勇氣與犧牲) 👉 德行傾向</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        
+        <aside class="profile-panel">
+            <div class="avatar-frame" id="avatar-frame">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="avatar-img" alt="Cadet Avatar">
+                <div class="pedagogy-tag" style="top: 80%; right: -20px;">Component: Gamified Profile</div>
+            </div>
+            
+            <h2 id="cadet-name">Cadet 尚未分發</h2>
+            <span class="rank-badge" id="dept-badge">RECRUIT</span>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">LEVEL</div>
+                    <div class="stat-value">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">XP</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">BADGES</div>
+                    <div class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">RANK</div>
+                    <div class="stat-value">#--</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <h4 style="color: var(--neon-gold); margin: 0 0 10px 0;">🏆 本週之星</h4>
+                <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Annie" style="width:40px; height:40px; border-radius:50%; border:2px solid var(--neon-gold);">
+                    <div style="text-align:left;">
+                        <div style="font-size:0.9rem; font-weight:bold;">Cadet Annie</div>
+                        <div style="font-size:0.7rem; color:#94a3b8;">Quiz Score: 100%</div>
+                    </div>
+                </div>
+                <div class="pedagogy-tag">Motivation: Leaderboard</div>
+            </div>
+        </aside>
+
+        <main class="mission-panel">
+            <h2>🛸 Mission Control: Unit 1</h2>
+            
+            <div class="mission-card">
+                <div class="pedagogy-tag">Bloom's: Understand | Quiz (10%)</div> <div class="mission-header">
+                    <div class="mission-title">Task 1-1: 倖存者掃描 (Survivor Scan)</div>
+                    <span class="mission-status">OPEN</span>
+                </div>
+                <p>請回顧 M1 影片，並完成 TronClass Quiz 1-1。你必須正確識別 5 位倖存者的身份與潛在價值。</p>
+                <button class="btn-action">前往測驗 (Go to Quiz)</button>
+            </div>
+
+            <div class="mission-card" style="border-left-color: var(--neon-red);">
+                <div class="pedagogy-tag">Bloom's: Analyze | Group Discussion</div> <div class="mission-header">
+                    <div class="mission-title">Task 1-2: 賢者辯論 (The Debate)</div>
+                    <span class="mission-status">LOCKED</span>
+                </div>
+                <p>你的部門 (工程/指揮/醫療) 對於犧牲老兵有不同看法。請至討論區發表你的部門觀點。</p>
+                <button class="btn-action" disabled style="background:#475569; color:#94a3b8;">等待解鎖</button>
+            </div>
+
+            <div class="mission-card" style="border-left-color: var(--neon-green);">
+                <div class="pedagogy-tag">Bloom's: Evaluate | Reflection Rubric</div> <div class="mission-header">
+                    <div class="mission-title">Task 1-5: 艦長日誌 (Final Log)</div>
+                    <span class="mission-status">LOCKED</span>
+                </div>
+                <p>根據 M5 的結果，撰寫 300 字反思日誌。你需要說明你的最終決定以及理由。</p>
+                <button class="btn-action" disabled style="background:#475569; color:#94a3b8;">等待解鎖</button>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="pedagogy-toggle-container">
+        <button class="pedagogy-btn" onclick="togglePedagogy()">👁️ Pedagogy View: OFF</button>
+    </div>
+
+    <script>
+        // --- 1. 分院邏輯 (Sorting Logic) ---
+        function completeSorting(dept) {
+            // 隱藏 Modal
+            document.getElementById('sorting-modal').style.display = 'none';
+            
+            // 更新介面
+            const nameEl = document.getElementById('cadet-name');
+            const badgeEl = document.getElementById('dept-badge');
+            const frameEl = document.getElementById('avatar-frame');
+
+            if (dept === 'engineer') {
+                nameEl.innerText = "Cadet (工程部)";
+                badgeEl.innerText = "ENGINEERING (UTILITARIAN)";
+                badgeEl.style.background = "var(--dept-engineer)";
+                frameEl.style.borderColor = "var(--dept-engineer)";
+                alert("歡迎來到工程部！你的核心價值是「最大效益」。");
+            } else if (dept === 'command') {
+                nameEl.innerText = "Cadet (指揮部)";
+                badgeEl.innerText = "COMMAND (DEONTOLOGY)";
+                badgeEl.style.background = "var(--dept-command)";
+                frameEl.style.borderColor = "var(--dept-command)";
+                alert("歡迎來到指揮部！你的核心價值是「絕對義務」。");
+            } else if (dept === 'medical') {
+                nameEl.innerText = "Cadet (醫科部)";
+                badgeEl.innerText = "SCIENCES (VIRTUE)";
+                badgeEl.style.background = "var(--dept-medical)";
+                frameEl.style.borderColor = "var(--dept-medical)";
+                alert("歡迎來到醫科部！你的核心價值是「人性品格」。");
+            }
+        }
+
+        // --- 2. 教育透視鏡開關 (Toggle) ---
+        let isPedagogyOn = false;
+
+        function togglePedagogy() {
+            isPedagogyOn = !isPedagogyOn;
+            const body = document.body;
+            const btn = document.querySelector('.pedagogy-btn');
+
+            if (isPedagogyOn) {
+                body.classList.add('pedagogy-mode');
+                btn.innerText = "👁️ Pedagogy View: ON";
+                btn.style.background = "#ec4899"; // Pink
+            } else {
+                body.classList.remove('pedagogy-mode');
+                btn.innerText = "👁️ Pedagogy View: OFF";
+                btn.style.background = "#4f46e5"; // Blue
+            }
+        }
+
+        // 檢查是否已經分院過 (簡單模擬，實際可存 localStorage)
+        // document.getElementById('sorting-modal').style.display = 'flex'; 
+    </script>
+</body>
+</html>

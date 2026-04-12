@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醫護倫理與法規：期末案例分析工作台</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --border: #bdc3c7;
+        }
+        body {
+            font-family: 'Microsoft JhengHei', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 { margin: 0; color: var(--primary); }
+        .subtitle { color: #7f8c8d; font-size: 0.9em; }
+
+        /* Case Selector */
+        .controls {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        select {
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+        }
+        
+        /* Action Buttons */
+        .btn-group { display: flex; gap: 10px; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-word { background-color: #2980b9; }
+        .btn-print { background-color: var(--secondary); }
+        .btn-clear { background-color: var(--accent); }
+
+        /* Case Display */
+        .case-info {
+            background: #fff8e1;
+            border-left: 5px solid #f1c40f;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .dilemma-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        /* Analysis Sections */
+        .section-title {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            margin-top: 30px;
+            border-radius: 5px 5px 0 0;
+            font-size: 1.1em;
+        }
+        
+        .quadrant-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .quadrant-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .q-header {
+            font-weight: bold;
+            color: var(--secondary);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .guidance {
+            font-size: 0.85em;
+            color: #666;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border-left: 3px solid #bdc3c7;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52,152,219,0.3);
+        }
+
+        /* Status Bar */
+        #status-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; max-width: 100%; padding: 0; }
+            .controls, .btn, #status-msg { display: none !important; }
+            textarea { 
+                border: none; 
+                resize: none; 
+                height: auto; 
+                min-height: auto;
+                padding: 0;
+            }
+            .quadrant-grid { display: block; }
+            .quadrant-box { 
+                page-break-inside: avoid; 
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+            .guidance { display: none; } /* Hide guidance in print to save space */
+            h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>醫護倫理與法規：期末案例分析報告</h1>
+        <div class="subtitle">Clinical Ethics Case Study Worksheet</div>
+    </header>
+
+    <div class="controls">
+        <div style="flex-grow: 1;">
+            <label for="caseSelect"><strong>1. 選擇案例：</strong></label>
+            <select id="caseSelect" onchange="loadCase()">
+                <option value="">-- 請選擇要分析的案例 --</option>
+                </select>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-clear" onclick="clearData()">🗑️ 清除重寫</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ 列印 / 存為 PDF</button>
+            <button class="btn btn-word" onclick="exportToWord()">💾 下載 Word (.doc)</button>
+        </div>
+    </div>
+
+    <div id="workspace" style="display:none;">
+        <div class="case-info">
+            <h2 id="caseTitle" style="margin-top:0; color:#d35400;"></h2>
+            <p><strong>情境：</strong><span id="caseScenario"></span></p>
+            <p><strong><span class="dilemma-tag">核心困境</span></strong> <span id="caseDilemma"></span></p>
+        </div>
+
+        <h3 style="text-align:center; margin: 30px 0;">Jonsen 臨床倫理四象限分析 (Four Quadrants Analysis)</h3>
+        
+        <div class="quadrant-grid">
+            <div class="quadrant-box">
+                <div class="q-header">1. 醫療因素 (Medical Indications)</div>
+                <div class="guidance">
+                    <strong>原則：</strong>行善、不傷害<br>
+                    <strong>思考：</strong>診斷與預後？治療目標？成功率？無效醫療？
+                </div>
+                <textarea id="q1" placeholder="請在此輸入分析..." oninput="saveProgress()"></textarea>
+            </div>
+
+            <div class="quadrant-box">
+                <div class="q-header">2. 病人意向 (Patient Preferences)</div>
+                <div class="guidance">
+                    <strong>原則：</strong>尊重自主<br>
+                    <strong>思考：</strong>決策能力？知情同意？預立醫囑(AD)？代理人？
+                </div>
+                <textarea id="q2" placeholder="請在此輸入分析..." oninput="saveProgress()"></textarea>
+            </div>
+
+            <div class="quadrant-box">
+                <div class="q-header">3. 生命品質 (Quality of Life)</div>
+                <div class="guidance">
+                    <strong>原則：</strong>行善、不傷害、自主<br>
+                    <strong>思考：</strong>治療後的生活前景？身心缺憾？誰定義「值得活」？
+                </div>
+                <textarea id="q3" placeholder="請在此輸入分析..." oninput="saveProgress()"></textarea>
+            </div>
+
+            <div class="quadrant-box">
+                <div class="q-header">4. 情境因素 (Contextual Features)</div>
+                <div class="guidance">
+                    <strong>原則：</strong>正義、守信<br>
+                    <strong>思考：</strong>家庭/經濟/宗教壓力？法律規範？資源分配？利益衝突？
+                </div>
+                <textarea id="q4" placeholder="請在此輸入分析..." oninput="saveProgress()"></textarea>
+            </div>
+        </div>
+
+        <div class="section-title">綜合決策與行動方案 (Decision Making)</div>
+        <div class="quadrant-box" style="margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;">
+            <div class="guidance">
+                <strong>決策步驟：</strong>
+                1. 權衡上述四象限的衝突點。<br>
+                2. 提出小組的具體決定（做什麼？不做什麼？）。<br>
+                3. 說明理由（引用倫理原則或法律）。
+            </div>
+            <textarea id="conclusion" style="height: 200px;" placeholder="經小組討論，我們認為..." oninput="saveProgress()"></textarea>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: right; color: #7f8c8d; font-size: 0.9em;">
+            * 系統會自動暫存您的進度，但請務必在離開前下載檔案備份。
+        </div>
+    </div>
+</div>
+
+<div id="status-msg">進度已儲存</div>
+
+<script>
+    // 1. Case Data Database
+    const cases = [
+        { id: 1, title: "Case 1: 重度酗酒者的換肝抉擇", s: "55歲張先生因嚴重酗酒導致肝衰竭，急需換肝。同時有一位生活規律的國小老師也急需肝臟。張先生是家中經濟支柱，但有復飲風險。", d: "應得權 (Desert) vs. 需求 (Need)：是否因個人行為（酗酒）而喪失獲得稀缺資源的權利？" },
+        { id: 2, title: "Case 2: 失智長者的人體試驗", s: "藥廠進行阿茲海默新藥試驗。失智的李奶奶無同意能力，但其負債累累的兒子為了高額營養金，堅持讓母親加入試驗。", d: "代理同意 vs. 利益衝突：如何保護易受傷害族群不被利用？" },
+        { id: 3, title: "Case 3: 護理之家的身體約束", s: "護理之家王爺爺常跌倒，家屬揚言提告。護理長下令強制約束。王爺爺情緒激動絕食抗議。", d: "安全 (行善) vs. 自由 (自主)：為了預防跌倒，可以剝奪多少自由？" },
+        { id: 4, title: "Case 4: 給錯藥的沈默", s: "新進護理師給錯藥，導致病人低血糖，經處理後恢復。學姊教唆隱瞞不報，以免被扣績效。", d: "誠實 (Veracity) vs. 自保：無永久傷害時，是否仍需揭露錯誤？" },
+        { id: 5, title: "Case 5: 預立醫療決定 vs 家屬衝突", s: "癌末林女士已簽署預立醫療決定(AD)拒絕插管。昏迷後，旅居國外的獨生子趕回，情緒崩潰堅持要救到底，否則提告。", d: "病人自主 (AD) vs. 家屬權力：法律與情感的拉鋸。" },
+        { id: 6, title: "Case 6: 唐氏症早產兒", s: "早產唐氏症男嬰合併嚴重先天畸形。父母因已照顧一名腦麻兒身心俱疲，拒絕手術同意書，要求拔管。", d: "兒童最佳利益 vs. 父母代理權：活著受苦是最佳利益嗎？" },
+        { id: 7, title: "Case 7: 代理孕母的身體自主權", s: "代理孕母小雅懷孕24週，發現胎兒有輕微肢體缺陷。委託父母要求墮胎並願付違約金，小雅拒絕並堅持生下。", d: "契約精神 vs. 身體自主權：胎兒是商品嗎？子宮可被契約控制嗎？" },
+        { id: 8, title: "Case 8: 精神科強制住院", s: "思覺失調症患者阿強拒絕服藥，症狀復發但尚未傷人。家屬與鄰居恐懼，要求強制住院。", d: "社會安全 vs. 人身自由：未傷人前的強制治療界線。" },
+        { id: 9, title: "Case 9: 病患摔倒與責任", s: "夜班護力不足，護理師忙於急救無法回應鈴聲，導致另一病患下床摔傷。醫院暗示是護理師個人疏失。", d: "個人責任 vs. 系統錯誤：結構性問題下的代罪羔羊。" },
+        { id: 10, title: "Case 10: 安養院的無聲虐待", s: "實習生發現安養院限制長輩尿布更換次數，並目睹照服員辱罵老人。學姊警告勿多管閒事。", d: "吹哨者兩難：揭發弊端 vs. 個人前途風險。" }
+    ];
+
+    // 2. Initialize
+    const select = document.getElementById('caseSelect');
+    cases.forEach(c => {
+        let option = document.createElement("option");
+        option.value = c.id;
+        option.text = c.title;
+        select.appendChild(option);
+    });
+
+    // Load saved selection if exists
+    const savedCaseId = localStorage.getItem('ethics_current_case');
+    if(savedCaseId) {
+        select.value = savedCaseId;
+        loadCase(false); // Don't clear data on init load
+    }
+
+    // 3. Functions
+    function loadCase(clear = true) {
+        const id = select.value;
+        const ws = document.getElementById('workspace');
+        
+        if (!id) {
+            ws.style.display = 'none';
+            return;
+        }
+
+        const c = cases.find(x => x.id == id);
+        document.getElementById('caseTitle').innerText = c.title;
+        document.getElementById('caseScenario').innerText = c.s;
+        document.getElementById('caseDilemma').innerText = c.d;
+        
+        ws.style.display = 'block';
+        
+        // Load saved content for this case
+        if(clear) {
+            // If switching cases, try to load saved data for that case
+            loadInputs(id);
+        } else {
+            loadInputs(id);
+        }
+        
+        localStorage.setItem('ethics_current_case', id);
+    }
+
+    function saveProgress() {
+        const id = select.value;
+        if(!id) return;
+
+        const data = {
+            q1: document.getElementById('q1').value,
+            q2: document.getElementById('q2').value,
+            q3: document.getElementById('q3').value,
+            q4: document.getElementById('q4').value,
+            conclusion: document.getElementById('conclusion').value
+        };
+        
+        localStorage.setItem('ethics_data_' + id, JSON.stringify(data));
+        
+        // Show status
+        const msg = document.getElementById('status-msg');
+        msg.style.opacity = 1;
+        setTimeout(() => msg.style.opacity = 0, 1500);
+    }
+
+    function loadInputs(id) {
+        const saved = localStorage.getItem('ethics_data_' + id);
+        if(saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('q1').value = data.q1 || '';
+            document.getElementById('q2').value = data.q2 || '';
+            document.getElementById('q3').value = data.q3 || '';
+            document.getElementById('q4').value = data.q4 || '';
+            document.getElementById('conclusion').value = data.conclusion || '';
+        } else {
+            // Clear inputs if no saved data
+            document.getElementById('q1').value = '';
+            document.getElementById('q2').value = '';
+            document.getElementById('q3').value = '';
+            document.getElementById('q4').value = '';
+            document.getElementById('conclusion').value = '';
+        }
+    }
+
+    function clearData() {
+        if(confirm("確定要清空目前案例的所有輸入內容嗎？此動作無法復原。")) {
+            const id = select.value;
+            localStorage.removeItem('ethics_data_' + id);
+            loadInputs(id); // Reloads empty
+        }
+    }
+
+    function exportToWord() {
+        const id = select.value;
+        if(!id) { alert("請先選擇案例！"); return; }
+        
+        const c = cases.find(x => x.id == id);
+        
+        // Helper to handle newlines
+        const formatText = (text) => text.replace(/\n/g, "<br/>");
+
+        const content = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'><title>${c.title}</title></head>
+            <body>
+                <h1>${c.title}</h1>
+                <p><strong>情境：</strong>${c.s}</p>
+                <p><strong>倫理困境：</strong>${c.d}</p>
+                <hr/>
+                <h2>一、醫療因素 (Medical Indications)</h2>
+                <p>${formatText(document.getElementById('q1').value)}</p>
+                
+                <h2>二、病人意向 (Patient Preferences)</h2>
+                <p>${formatText(document.getElementById('q2').value)}</p>
+                
+                <h2>三、生命品質 (Quality of Life)</h2>
+                <p>${formatText(document.getElementById('q3').value)}</p>
+                
+                <h2>四、情境因素 (Contextual Features)</h2>
+                <p>${formatText(document.getElementById('q4').value)}</p>
+                <hr/>
+                <h2>綜合決策與行動方案</h2>
+                <p>${formatText(document.getElementById('conclusion').value)}</p>
+            </body>
+            </html>
+        `;
+
+        const blob = new Blob(['\ufeff', content], {
+            type: 'application/msword'
+        });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `倫理報告_${c.title}.doc`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html>
