@@ -74,7 +74,7 @@ nav::-webkit-scrollbar{display:none}
 .tb{background:none;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;
   font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:500;color:var(--muted);transition:.2s;white-space:nowrap}
 .tb.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.tc{display:none}.tc.on{display:block}
+.tc{display:none !important}.tc.on{display:block !important}
 
 /* ── CARDS ── */
 .card{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:16px}
@@ -333,128 +333,292 @@ footer strong{color:#e2c97e}
   <!-- 11a 資格與業務 -->
   <div class="tc on" id="11a">
     <div class="cb" style="border-color:var(--c11m)">
-      <div class="lb" style="color:var(--c11m)">護理人員法 定義</div>
-      <h3>護理人員的分類</h3>
-      <p>護理人員包含<strong>護理師</strong>與<strong>護士</strong>，另有完成專科訓練並經衛福部甄審合格者，可取得<strong>專科護理師</strong>證書，每6年更新一次。</p>
+      <div class="lb" style="color:var(--c11m)">護理人員法 基本定義</div>
+      <h3>護理人員的法定分類</h3>
+      <p>依護理人員法第2條，護理人員包含<strong>護理師</strong>（需大學護理系畢業並通過國考）與<strong>護士</strong>（需護專畢業並通過國考）。另有完成專科訓練並經衛福部甄審合格者，可取得<strong>專科護理師</strong>（NP）證書，每<strong>6年</strong>更新一次。三者統稱「護理人員」，受護理人員法規範。</p>
     </div>
+
     <div class="g2">
       <div class="card" style="border-top:3px solid var(--c11m)">
-        <h3>🔬 專科護理師業務範圍</h3>
-        <p style="margin-bottom:10px">在<strong>醫師監督下</strong>可執行醫療業務，分兩大類：</p>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;margin-bottom:8px">
-          <div style="font-weight:700;color:var(--c11);font-size:13px;margin-bottom:6px">涉及侵入人體者</div>
-          <ul style="font-size:13px;color:#1e3a8a;padding-left:14px">
-            <li>傷口處置</li><li>管路處置</li><li>檢查處置</li><li>其他處置</li>
-          </ul>
-        </div>
-        <div style="background:#f0fdf4;border-radius:8px;padding:12px">
-          <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">未涉及侵入人體者</div>
-          <ul style="font-size:13px;color:#065f46;padding-left:14px">
-            <li>預立特定醫療流程表單代為開立</li><li>檢驗、檢查之初步綜合判斷</li>
-            <li>非侵入性醫療處置</li><li>相關醫療諮詢</li>
-          </ul>
+        <h3>📋 護理人員法第24條：四大業務職掌</h3>
+        <p style="margin-bottom:12px;font-size:13.5px;color:#374151">這是護理師「合法執業範圍」的核心條文，所有護理師（含護士）皆適用：</p>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c11m)">1</div><div class="sbody">
+            <h4>健康問題之護理評估</h4>
+            <p>透過身體評估、問診、觀察等方式，獨立判斷病人的健康問題與護理需求。<em style="color:#6b7280;font-size:12px">例：入院評估、跌倒風險評估、疼痛評估</em></p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:var(--c11m)">2</div><div class="sbody">
+            <h4>預防保健之護理措施</h4>
+            <p>執行促進健康、預防疾病的護理措施，涵蓋衛教、接種前後照護、健康篩檢等。<em style="color:#6b7280;font-size:12px">例：疫苗接種後觀察、健康衛教、跌倒預防措施</em></p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:var(--c11m)">3</div><div class="sbody">
+            <h4>護理指導及諮詢</h4>
+            <p>提供病人及家屬相關健康知識、護理技能指導，協助建立自我照護能力。<em style="color:#6b7280;font-size:12px">例：傷口換藥指導、出院衛教、糖尿病自我注射教學</em></p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:#dc2626">4</div><div class="sbody">
+            <h4>醫療輔助行為 ⚠️須在醫師指示下</h4>
+            <p>協助執行醫師開立的醫療處置，<strong>必須有醫師明確指示</strong>，護理師不可自行決定執行。<em style="color:#dc2626;font-size:12px">例：靜脈注射、採血、導尿管置入</em></p>
+          </div></div>
         </div>
       </div>
       <div>
-        <div class="card" style="border-top:3px solid #8b5cf6">
-          <h3>🌍 特殊領域護理人員</h3>
-          <div class="steps">
-            <div class="step"><div class="snum" style="background:#0284c7">社</div><div class="sbody"><h4>社區衛生護理師</h4><p>台灣護理學會認證，目前無專屬法令，由學會發給認證證書。</p></div></div>
-            <div class="step"><div class="snum" style="background:#7c3aed">精</div><div class="sbody"><h4>精神衛生護理師</h4><p>依「精神衛生護理師認證辦法」，提升精神衛生照護能力。</p></div></div>
-            <div class="step"><div class="snum" style="background:#059669">學</div><div class="sbody"><h4>學校護理人員</h4><p>依「學校衛生法」及中華民國學校護理人員協進會認證辦法執業。</p></div></div>
-            <div class="step"><div class="snum" style="background:#d97706">助</div><div class="sbody"><h4>助產人員</h4><p>依「助產人員法」，涵蓋助產師與助產士，由衛福部核發證書。</p></div></div>
+        <div class="card" style="border-top:3px solid #7c3aed">
+          <h3>🔬 專科護理師（NP）的擴充業務</h3>
+          <p style="font-size:13.5px;color:#374151;margin-bottom:12px">專科護理師除上述四大業務外，可在<strong>醫師監督</strong>（supervision，比指示更高層次的監管）下執行醫療業務：</p>
+          <div style="background:var(--c11l);border-radius:8px;padding:12px;margin-bottom:8px">
+            <div style="font-weight:700;color:var(--c11);font-size:13px;margin-bottom:8px">🔴 涉及侵入人體者</div>
+            <div class="g2" style="gap:6px">
+              <div style="background:#fff;border-radius:6px;padding:8px;font-size:12.5px"><strong>傷口處置</strong><br>清創、縫合傷口評估與初步處置</div>
+              <div style="background:#fff;border-radius:6px;padding:8px;font-size:12.5px"><strong>管路處置</strong><br>中心靜脈導管照護、胸管評估</div>
+              <div style="background:#fff;border-radius:6px;padding:8px;font-size:12.5px"><strong>檢查處置</strong><br>特定侵入性檢查的協助與後續照護</div>
+              <div style="background:#fff;border-radius:6px;padding:8px;font-size:12.5px"><strong>其他處置</strong><br>依衛福部公告之具體項目</div>
+            </div>
+          </div>
+          <div style="background:#f0fdf4;border-radius:8px;padding:12px">
+            <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:8px">🟢 未涉及侵入人體者</div>
+            <ul style="font-size:13px;color:#065f46;padding-left:14px;line-height:2">
+              <li>預立特定醫療流程所需表單之<strong>代為開立</strong></li>
+              <li>檢驗、檢查之<strong>初步綜合判斷</strong>（非最終診斷）</li>
+              <li>非侵入性醫療處置</li>
+              <li>相關醫療諮詢</li>
+            </ul>
           </div>
         </div>
+        <div class="hb wrn"><div class="hi">⚖️</div><div class="hc">
+          <h4>「指示」vs「監督」的法律差異</h4>
+          <p><strong>醫師指示（Instruction）：</strong>一般護理師執行醫療輔助行為的前提，醫師下達具體醫囑即可。<strong>醫師監督（Supervision）：</strong>專科護理師執行醫療業務的前提，需要更積極的監管介入，醫師須可及時處理複雜情況。</p>
+        </div></div>
       </div>
     </div>
-    <div class="hb tip"><div class="hi">⚠️</div><div class="hc"><h4>重要提醒：業務範圍的邊界</h4>
-      <p>依<strong>護理人員法第24條</strong>，護理業務職掌四類：①健康問題之護理評估、②預防保健之護理措施、③護理指導及諮詢、④醫療輔助行為（須在醫師指示下）。<strong>超越業務範圍擅自執行醫療行為，可能涉及違法。</strong></p>
-    </div></div>
+
+    <div class="card" style="border-left:4px solid #8b5cf6">
+      <h3>🌍 六類特殊領域護理人員及法規依據</h3>
+      <table class="tbl" style="margin-top:12px;box-shadow:none;border:1px solid #e5e7eb">
+        <thead><tr style="background:#4c1d95;color:#fff">
+          <th>類型</th><th>認證/法規依據</th><th>發證單位</th><th>更新週期</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>一般護理師</strong></td><td>護理人員法 § 2、考試院護理師考試</td><td>衛生福利部</td><td>每6年換照</td></tr>
+          <tr><td><strong>專科護理師</strong></td><td>護理人員法 § 7-2、衛福部甄審合格</td><td>衛生福利部</td><td>每6年更新</td></tr>
+          <tr><td><strong>社區衛生護理師</strong></td><td>台灣護理學會社區衛生護理師認證辦法</td><td>台灣護理學會</td><td>依學會規定</td></tr>
+          <tr><td><strong>精神衛生護理師</strong></td><td>精神衛生護理師認證辦法</td><td>台灣護理學會</td><td>依學會規定</td></tr>
+          <tr><td><strong>學校護理人員</strong></td><td>學校衛生法、學校護理人員認證辦法</td><td>中華民國學校護理人員協進會</td><td>依學會規定</td></tr>
+          <tr><td><strong>助產人員</strong></td><td>助產人員法、助產人員法施行細則</td><td>衛生福利部</td><td>依法令規定</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="g2">
+      <div class="hb tip"><div class="hi">💡</div><div class="hc">
+        <h4>護士 vs 護理師的差別</h4>
+        <p>兩者法定業務範圍「相同」（護理人員法第24條），但<strong>護士不得自行開業</strong>（無法獨立設立護理機構），護理師可以。在職場上護士可升格為護理師，只要通過國考取得護理師證書即可。</p>
+      </div></div>
+      <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+        <h4>業務範圍越界的法律風險</h4>
+        <p>護理師超越業務範圍自行執行醫療行為（如自行診斷、自行開藥），可能觸犯<strong>醫師法第28條「未具醫師資格擅自執行醫療業務」</strong>，最重可處有期徒刑。</p>
+      </div></div>
+    </div>
   </div>
 
   <!-- 11b 權利義務 -->
   <div class="tc" id="11b">
-    <div class="g2">
-      <div>
-        <div class="cb" style="border-color:var(--c11m)"><div class="lb" style="color:var(--c11m)">護理師的權利</div>
-          <h3>法定工作權利保障</h3>
-          <p>護理人員適用<strong>勞動基準法</strong>的全部保障，包括工時、休假、職災補償等。</p>
-        </div>
-        <div class="card">
-          <h3>🛡️ 工作環境安全相關法規</h3>
+    <div class="cb" style="border-color:var(--c11m)">
+      <div class="lb" style="color:var(--c11m)">法律保障全覽</div>
+      <h3>護理師的法定權利與義務概述</h3>
+      <p>護理師同時具有三個身份：<strong>受僱者</strong>（享有勞工保護）、<strong>醫事專業人員</strong>（有專業義務）、及<strong>公民</strong>（享有人身安全等基本權利）。這三個身份帶來的權利與義務，在臨床上常常交疊。</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--c11m)">
+      <h3>⚖️ 一、護理人員的法定權利</h3>
+      <div class="g2" style="margin-top:14px">
+        <div>
+          <div style="font-weight:700;color:var(--c11);margin-bottom:10px;font-size:14px">🔹 勞動基準法（全面適用）</div>
           <div class="steps">
-            <div class="step"><div class="snum" style="background:var(--c11m)">1</div><div class="sbody"><h4>人類免疫缺乏病毒傳染防治條例</h4><p>保障護理人員在照護HIV感染者時的職業安全與防護權利。</p></div></div>
-            <div class="step"><div class="snum" style="background:var(--c11m)">2</div><div class="sbody"><h4>職業安全衛生法</h4><p>規範工作場所安全標準，雇主須提供安全的工作環境。</p></div></div>
-            <div class="step"><div class="snum" style="background:var(--c11m)">3</div><div class="sbody"><h4>醫療法</h4><p>規範醫療機構對醫事人員的責任義務。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c11m)">工</div><div class="sbody">
+              <h4>工時與休假保障</h4>
+              <p>每日正常工時不超過8小時，每週不超過40小時。延長工時須給付加班費（前2小時133%、再2小時167%）。特休假依年資累計。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c11m)">薪</div><div class="sbody">
+              <h4>薪資與同工同酬</h4>
+              <p>不得低於法定最低薪資，不得因性別而有差別待遇（性別工作平等法）。夜班及輪班護理師有夜勤加給之法定保障。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c11m)">職</div><div class="sbody">
+              <h4>職業災害補償</h4>
+              <p>因執行職務所致傷病，雇主須依法補償醫療費用、工資及殘廢補償。護理師針刺傷、職業感染皆屬職災範疇。</p>
+            </div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--c11);margin-bottom:10px;font-size:14px">🔹 工作安全相關法規</div>
+          <div class="law lawblue" style="margin-bottom:8px">
+            <div class="li">🦠</div>
+            <div class="lc"><h4>人類免疫缺乏病毒傳染防治條例</h4>
+              <p>護理師照護HIV感染者時，雇主須提供適當防護設備；不得以HIV感染者身份強迫護理師在無防護下暴露風險。</p>
+            </div>
+          </div>
+          <div class="law lawblue" style="margin-bottom:8px">
+            <div class="li">🏗️</div>
+            <div class="lc"><h4>職業安全衛生法</h4>
+              <p>雇主有義務提供安全衛生的工作環境及職安教育訓練。護理職業危害包括：針刺傷、感染性物質暴露、搬運傷害、職場暴力。</p>
+            </div>
+          </div>
+          <div class="law lawblue">
+            <div class="li">🏥</div>
+            <div class="lc"><h4>醫療法（職場安全部分）</h4>
+              <p>醫療機構有義務維護醫事人員執業安全，須建立職場暴力防範機制，並提供被害員工必要協助。</p>
+            </div>
           </div>
         </div>
       </div>
-      <div>
-        <div class="cb" style="border-color:#dc2626"><div class="lb" style="color:#dc2626">護理師的義務</div>
-          <h3>法定專業義務</h3>
-          <p>護理人員之<strong>業務範圍</strong>規定在護理人員法第24條及第四章業務與責任。違反注意義務依<strong>護理人員法第35條</strong>予以懲處。</p>
+    </div>
+    <div class="card" style="border-top:4px solid #dc2626">
+      <h3>⚠️ 二、護理人員的法定義務</h3>
+      <div class="g2" style="margin-top:14px">
+        <div>
+          <div class="cb" style="border-color:#dc2626;margin-bottom:12px">
+            <div class="lb" style="color:#dc2626">護理人員法第四章 業務與責任</div>
+            <h3>注意義務（Duty of Care）</h3>
+            <p>護理師須具備<strong>同等執業水準的合理注意</strong>——以相同情況下同等資格護理師的標準判斷。違反即構成護理過失。</p>
+          </div>
+          <div class="hb wrn"><div class="hi">⚖️</div><div class="hc">
+            <h4>護理人員法第35條：違規懲處四級制</h4>
+            <p>衛生主管機關可依情節輕重處以：<br>
+            <strong>① 警告 → ② 停業1個月~1年 → ③ 廢止執業執照 → ④ 廢止護理師（士）證書</strong>（最嚴重，終身不得執業）</p>
+          </div></div>
         </div>
-        <div class="card">
-          <h3>⚠️ 違反義務的後果</h3>
-          <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px">
+        <div>
+          <div style="display:grid;gap:8px">
             <div style="background:#fee2e2;border-radius:8px;padding:12px">
-              <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:4px">🔴 刑事責任</div>
-              <p style="font-size:13px;color:#7f1d1d">業務過失致傷、重傷或死亡（刑法相關條款），不可免除</p>
+              <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:6px">🔴 刑事責任（刑法）</div>
+              <ul style="font-size:13px;color:#7f1d1d;padding-left:14px;line-height:1.9">
+                <li>業務過失傷害罪（刑法 § 284）：5年以下有期徒刑</li>
+                <li>業務過失重傷罪（刑法 § 284）：更重刑責</li>
+                <li>業務過失致死罪（刑法 § 276）：5年以下有期徒刑</li>
+              </ul>
             </div>
             <div style="background:#fef3c7;border-radius:8px;padding:12px">
-              <div style="font-weight:700;color:#d97706;font-size:13px;margin-bottom:4px">🟡 民事責任</div>
-              <p style="font-size:13px;color:#78350f">違約責任或侵權責任，須賠償病人損害</p>
+              <div style="font-weight:700;color:#d97706;font-size:13px;margin-bottom:6px">🟡 民事責任（民法）</div>
+              <ul style="font-size:13px;color:#78350f;padding-left:14px;line-height:1.9">
+                <li>侵權行為損害賠償（民法 § 184）</li>
+                <li>醫院與護理師可能須連帶負責</li>
+                <li>賠償：醫療費、薪資損失、精神慰撫金</li>
+              </ul>
             </div>
             <div style="background:#ede9fe;border-radius:8px;padding:12px">
-              <div style="font-weight:700;color:#7c3aed;font-size:13px;margin-bottom:4px">🟣 行政責任</div>
-              <p style="font-size:13px;color:#4c1d95">依護理人員法受衛生主管機關裁罰，包括停業或廢照</p>
+              <div style="font-weight:700;color:#7c3aed;font-size:13px;margin-bottom:6px">🟣 行政責任（護理人員法 § 35）</div>
+              <ul style="font-size:13px;color:#4c1d95;padding-left:14px;line-height:1.9">
+                <li>警告（最輕）</li>
+                <li>停業 1個月～1年</li>
+                <li>廢止執業執照</li>
+                <li>廢止護理師（士）證書（最重）</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="hb wrn"><div class="hi">🚨</div><div class="hc"><h4>注意義務違反最常見情境</h4>
-      <p>給藥錯誤、跌倒未防護、病情變化未及時通報、執行超出業務範圍的處置——這些都可能同時引發刑事、民事、行政三種責任。</p>
+    <div class="card">
+      <h3>📊 注意義務違反的常見臨床情境</h3>
+      <table class="tbl" style="margin-top:10px;box-shadow:none;border:1px solid #e5e7eb">
+        <thead><tr style="background:var(--ink);color:#fff"><th>臨床情境</th><th>可能觸犯</th><th>預防關鍵做法</th></tr></thead>
+        <tbody>
+          <tr><td>給藥錯誤（劑量、藥物、病人身份）</td><td>業務過失傷害</td><td>執行三讀五對，床邊確認手環</td></tr>
+          <tr><td>跌倒高風險未執行預防措施</td><td>注意義務疏忽</td><td>評估後立即執行防跌措施並記錄</td></tr>
+          <tr><td>生命徵象異常未及時通報醫師</td><td>延誤治療、業務過失</td><td>SBAR通報，記錄通報時間</td></tr>
+          <tr><td>執行超出業務範圍的醫療行為</td><td>違反護理人員法＋醫師法</td><td>確認有醫師明確指示後方執行</td></tr>
+          <tr><td>侵入性操作未遵守無菌技術</td><td>業務過失傷害</td><td>落實標準防護，記錄操作過程</td></tr>
+          <tr><td>護理記錄未及時完成或不實</td><td>護理人員法違反</td><td>即時記錄、合法補記、絕不竄改</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="hb ok"><div class="hi">💡</div><div class="hc">
+      <h4>護理師自我保護的關鍵：護理記錄</h4>
+      <p>護理記錄在法律訴訟中是最重要的自我保護工具——「<strong>沒有記錄，等於沒有做</strong>」。完整、及時、客觀的護理記錄，是在糾紛發生時證明自己盡到注意義務的最有力證據。</p>
     </div></div>
   </div>
-
   <!-- 11c 機構設置 -->
   <div class="tc" id="11c">
-    <div class="cb" style="border-color:var(--c11m)"><div class="lb" style="color:var(--c11m)">護理人員法第14條</div>
-      <h3>護理機構設置的目的</h3>
-      <p>為減少醫療資源浪費、滿足連續性醫療照護需求並發揮護理人員執業功能，依法得設置護理機構。</p>
+    <div class="cb" style="border-color:var(--c11m)">
+      <div class="lb" style="color:var(--c11m)">護理人員法第14條</div>
+      <h3>護理機構設置的法律依據與目的</h3>
+      <p>為<strong>減少醫療資源的浪費</strong>、<strong>滿足連續性醫療照護之需求</strong>並<strong>發揮護理人員執業功能</strong>，依護理人員法第14條，得設置護理機構。護理機構設置是護理師從「受僱者」轉型為「執業機構負責人」的重要制度設計。</p>
     </div>
     <div class="g2">
-      <div class="card" style="border-left:4px solid var(--c11m)">
-        <h3>🏢 護理機構類型</h3>
-        <ul>
-          <li><strong>一般護理機構：</strong>依護理人員法第14條設置，提供連續性護理照護</li>
-          <li><strong>精神復健機構：</strong>依精神衛生法與「精神復健機構設置及管理辦法」</li>
-          <li><strong>護理之家：</strong>提供長期照護服務，須符合相關設置標準</li>
-        </ul>
+      <div>
+        <div class="card" style="border-left:4px solid var(--c11m);margin-bottom:12px">
+          <h3>🏢 護理機構的三大類型</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c11m)">1</div><div class="sbody">
+              <h4>一般護理機構</h4>
+              <p>依護理人員法第14條設置，提供連續性護理照護服務。包含：<strong>居家護理所</strong>（最常見，提供居家護理服務）、<strong>護理之家</strong>（提供長期護理照護）。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:#7c3aed)">2</div><div class="sbody">
+              <h4>精神復健機構</h4>
+              <p>依「精神衛生法」與「精神復健機構設置及管理辦法」設置，提供精神疾病患者的社區復健服務。護理人員可選擇在此工作。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:#059669">3</div><div class="sbody">
+              <h4>護理之家（細分）</h4>
+              <p>依人力、空間、設備標準設置，依法須有護理師擔任機構負責人，提供24小時護理照護。</p>
+            </div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📊 護理師工作場域多元化趨勢</h3>
+          <div class="g2" style="gap:8px;margin-top:8px">
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🏥</div><strong style="color:var(--c11)">醫院病房</strong><br>傳統護理執業場域</div>
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🏡</div><strong style="color:var(--c11)">居家護理所</strong><br>護理師可自行開業</div>
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🏠</div><strong style="color:var(--c11)">護理之家</strong><br>長照機構，需符合設置標準</div>
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🧠</div><strong style="color:var(--c11)">精神復健機構</strong><br>精神衛生法規範</div>
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🏫</div><strong style="color:var(--c11)">學校護理室</strong><br>學校衛生法規範</div>
+            <div style="background:var(--c11l);border-radius:8px;padding:10px;text-align:center;font-size:12.5px"><div style="font-size:20px;margin-bottom:4px">🌍</div><strong style="color:var(--c11)">社區衛生</strong><br>台灣護理學會認證</div>
+          </div>
+        </div>
       </div>
       <div>
-        <div class="hb wrn" style="margin-bottom:12px"><div class="hi">⚠️</div><div class="hc"><h4>機構設置的法律責任延伸</h4>
-          <p>護理機構不只是護理師的法律責任，<strong>非護理人員（如看護）</strong>也屬護理人員法所言護理機構人員，受保密義務管轄。</p>
-        </div></div>
-        <div class="hb wrn"><div class="hi">📱</div><div class="hc"><h4>真實案例警示</h4>
-          <p>某護理之家看護拍攝病人臀部並上傳網路，遭衛生局追蹤懲處。<strong>護理機構須承擔監督與管理責任</strong>，確保所有人員履行保密義務。</p>
-        </div></div>
+        <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
+          <h3>⚠️ 護理機構的法律責任延伸</h3>
+          <p style="font-size:13.5px;color:#374151;margin-bottom:12px">護理機構的法律責任不僅限於護理師本人，還延伸至機構內的<strong>所有人員</strong>：</p>
+          <div class="law lawyellow" style="margin-bottom:8px">
+            <div class="li">👤</div>
+            <div class="lc"><h4>看護的法律地位</h4>
+              <p>看護縱使非護理人員，亦屬護理人員法所言護理機構「其人員」，受<strong>保密義務</strong>管轄。護理機構負責人須確保看護履行保密義務。</p>
+            </div>
+          </div>
+          <div class="law lawyellow">
+            <div class="li">🏢</div>
+            <div class="lc"><h4>機構負責人的監督責任</h4>
+              <p>護理機構不僅須確保自身義務之履行，亦須承擔<strong>監督與管理責任</strong>——確保機構內所有人員遵守法令，否則機構亦須連帶承擔行政責任。</p>
+            </div>
+          </div>
+        </div>
+        <div class="cc" style="box-shadow:var(--sh)">
+          <div class="ch" style="background:linear-gradient(135deg,#0f4c81,#1d4ed8)" onclick="tog(this)">
+            <div class="chl"><span class="ctag">真實案例</span><h3>看護上傳病人隱私影像案</h3></div>
+            <button class="cto">▼</button>
+          </div>
+          <div class="cbody">
+            <div class="scen"><div class="sl">📖 案例事實</div>
+              <p>某護理之家的看護（非護理師）在照護時，因覺得「病人臀部形狀有趣」，拍攝照片並上傳網路。被衛生局追蹤，護理機構與看護皆受到處分。護理機構負責人主張「看護不是護理師，責任不在我們」。</p>
+            </div>
+            <div class="ag">
+              <div class="ai"><div class="al" style="color:#dc2626">❌ 護理機構的錯誤認知</div>
+                <p style="font-size:13px;color:#374151">負責人的主張<strong>法律上不正確</strong>。護理人員法明確規定機構及其人員皆受保密義務約束，看護屬「其人員」之範疇。</p>
+              </div>
+              <div class="ai"><div class="al" style="color:#059669">✅ 正確理解</div>
+                <p style="font-size:13px;color:#374151">護理機構須：①建立所有人員保密義務教育訓練制度；②明定不得拍攝病人的規定；③違反時有相應懲處機制；④發生時主動向病人及衛生局說明處理。</p>
+              </div>
+            </div>
+            <div class="res"><div class="rl">✅ 法律啟示</div>
+              <p>機構設置者的責任不只是「開業」，而是建立<strong>完整的管理機制</strong>——包括人員訓練、監督機制、違規處理——確保病人安全與隱私得到全面保護。</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card" style="border-top:3px solid var(--c11m)">
-      <h3>📊 護理師工作場域多元化趨勢</h3>
-      <div class="g3" style="margin-top:12px">
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏥</div><strong style="color:var(--c11)">醫院病房</strong><br>傳統護理執業場域</div>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏡</div><strong style="color:var(--c11)">護理之家</strong><br>長照護理機構</div>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🏫</div><strong style="color:var(--c11)">學校護理室</strong><br>學校衛生法規範</div>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🧠</div><strong style="color:var(--c11)">精神復健機構</strong><br>精神衛生法規範</div>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">🌍</div><strong style="color:var(--c11)">社區衛生</strong><br>台灣護理學會認證</div>
-        <div style="background:var(--c11l);border-radius:8px;padding:12px;text-align:center;font-size:13px"><div style="font-size:22px;margin-bottom:6px">👶</div><strong style="color:var(--c11)">助產機構</strong><br>助產人員法規範</div>
-      </div>
-    </div>
+    <div class="hb tip"><div class="hi">💡</div><div class="hc">
+      <h4>護理師開業的專業挑戰</h4>
+      <p>本章結論指出：護理人員可選擇之工作場域日趨多元，此考驗著<strong>專業能力的不斷精進</strong>、<strong>長期經驗的持續累積</strong>與<strong>科技智慧的因應調適</strong>。護理師不只是「執行者」，更要成為「能承擔法律責任的專業人」。</p>
+    </div></div>
   </div>
-
   <!-- 11d 影片倫理 -->
   <div class="tc" id="11d">
     <div class="card" style="border-top:3px solid var(--c11m)">
@@ -538,38 +702,108 @@ footer strong{color:#e2c97e}
 
   <!-- 12b 護理過失 -->
   <div class="tc" id="12b">
-    <div class="cb" style="border-color:var(--c12m)"><div class="lb" style="color:var(--c12m)">護理人員法第24條</div>
-      <h3>護理業務四類職掌</h3>
-      <p>① 健康問題之護理評估　② 預防保健之護理措施　③ 護理指導及諮詢　④ <strong>醫療輔助行為</strong>（須在醫師指示下執行）</p>
+    <div class="cb" style="border-color:var(--c12m)">
+      <div class="lb" style="color:var(--c12m)">護理人員法第24條 × 醫療法</div>
+      <h3>護理業務過失與法律責任</h3>
+      <p>探討醫療糾紛責任時，可從<strong>倫理角度</strong>或<strong>法律角度</strong>檢視。本節以護理人員舉例說明<strong>法定責任</strong>——即護理師在哪些情況下可能面臨刑事、民事及行政責任。</p>
     </div>
+
     <div class="g2">
-      <div class="card" style="border-top:3px solid #dc2626">
-        <h3>⚖️ 護理人員的刑事責任</h3>
+      <div class="card" style="border-top:3px solid var(--c12m)">
+        <h3>📋 護理人員的法定業務職掌（護理人員法§24）</h3>
+        <p style="font-size:13.5px;color:#374151;margin-bottom:10px">這是認定「護理師業務範圍」的法律基準，也是判斷「是否超越業務範圍」的依據：</p>
         <div class="steps">
-          <div class="step"><div class="snum" style="background:#f59e0b">傷</div><div class="sbody"><h4>業務過失致人於傷</h4><p>因護理業務上的疏失造成病人受傷。</p></div></div>
-          <div class="step"><div class="snum" style="background:#ef4444">重</div><div class="sbody"><h4>業務過失致人於重傷</h4><p>造成病人重大身體傷害，如失明、喪失肢體等。</p></div></div>
-          <div class="step"><div class="snum" style="background:#991b1b">死</div><div class="sbody"><h4>業務過失致人於死</h4><p>最嚴重，因護理疏失導致病人死亡，刑期最重。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c12m)">1</div><div class="sbody">
+            <h4>健康問題之護理評估</h4>
+            <p>護理師的獨立專業判斷，包括入院評估、疼痛評估、跌倒風險評估等。</p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:var(--c12m)">2</div><div class="sbody">
+            <h4>預防保健之護理措施</h4>
+            <p>主動保護病人安全的措施，如防跌措施、感染控制、壓力傷預防等。</p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:var(--c12m)">3</div><div class="sbody">
+            <h4>護理指導及諮詢</h4>
+            <p>協助病人建立自我照護能力，如傷口照護指導、藥物使用說明、出院衛教。</p>
+          </div></div>
+          <div class="step"><div class="snum" style="background:#dc2626">4</div><div class="sbody">
+            <h4>醫療輔助行為 ⚠️須有醫師指示</h4>
+            <p>協助執行醫師醫囑，如靜脈注射、採血、給藥、傷口換藥等。<strong>沒有醫師指示自行執行，即超越業務範圍。</strong></p>
+          </div></div>
         </div>
-      </div>
-      <div class="card" style="border-top:3px solid #d97706">
-        <h3>💰 護理人員的民事責任</h3>
-        <div style="display:grid;gap:8px;margin-top:8px">
-          <div style="background:var(--c12l);border-radius:8px;padding:12px">
-            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">違約責任</div>
-            <p style="font-size:13px;color:#78350f">與醫療機構訂有契約，護理師的疏失導致契約目的無法達成（院方可向護理師求償）。</p>
-          </div>
-          <div style="background:#fef9ec;border-radius:8px;padding:12px">
-            <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">侵權責任</div>
-            <p style="font-size:13px;color:#78350f">護理行為侵害病人身體權、健康權，病人可直接向護理師或醫院提出侵權損害賠償。</p>
-          </div>
-        </div>
-        <div class="hb tip" style="margin-top:12px;margin-bottom:0"><div class="hi">💡</div><div class="hc"><h4>三責同時成立</h4>
-          <p>刑事、民事、行政責任可<strong>同時並行</strong>，不因其中一種結案而免除其他責任。</p>
+        <div class="hb tip" style="margin-top:10px;margin-bottom:0"><div class="hi">➕</div><div class="hc">
+          <h4>專科護理師的擴充業務</h4>
+          <p>專科護理師除上述四類外，可在<strong>醫師監督下</strong>執行醫療業務（含侵入性操作）——但「監督」比「指示」要求更高層次的醫師介入。</p>
         </div></div>
       </div>
+      <div>
+        <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
+          <h3>⚖️ 護理人員的刑事責任</h3>
+          <p style="font-size:13.5px;color:#374151;margin-bottom:10px">依「刑法」業務過失相關條款，分三個層級：</p>
+          <div style="display:grid;gap:8px">
+            <div style="background:#fef3c7;border-radius:8px;padding:12px;border-left:3px solid #f59e0b">
+              <div style="font-weight:700;color:#b45309;font-size:13px;margin-bottom:4px">🟡 業務過失致人於傷（§ 284）</div>
+              <p style="font-size:13px;color:#78350f">因護理業務疏失造成病人受傷。最常見的護理刑事責任。<br><em>例：給藥錯誤導致過敏反應、未防護跌倒導致骨折</em></p>
+            </div>
+            <div style="background:#fed7aa;border-radius:8px;padding:12px;border-left:3px solid #ea580c">
+              <div style="font-weight:700;color:#9a3412;font-size:13px;margin-bottom:4px">🟠 業務過失致人於重傷（§ 284）</div>
+              <p style="font-size:13px;color:#7c2d12">造成病人失明、失聰、喪失肢體、嚴重器官功能喪失等重大傷害。刑責更重，且難以和解了結。<br><em>例：輸液錯誤導致腎衰竭、操作失誤導致癱瘓</em></p>
+            </div>
+            <div style="background:#fee2e2;border-radius:8px;padding:12px;border-left:3px solid #dc2626">
+              <div style="font-weight:700;color:#7f1d1d;font-size:13px;margin-bottom:4px">🔴 業務過失致人於死（§ 276）</div>
+              <p style="font-size:13px;color:#7f1d1d">最嚴重，因護理疏失直接導致病人死亡。刑期最重，且無法以金錢彌補。<br><em>例：疏忽術後血氧下降未及時通報、錯誤給藥導致心跳停止</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid #d97706">
+          <h3>💰 護理人員的民事責任</h3>
+          <div style="display:grid;gap:8px;margin-top:8px">
+            <div style="background:var(--c12l);border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">違約責任</div>
+              <p style="font-size:13px;color:#78350f">護理師與醫療機構間有勞動契約，護理師對機構有服務義務。疏失導致契約目的無法達成，機構可向護理師求償（但實務上多由機構承擔後再追究）。</p>
+            </div>
+            <div style="background:#fef9ec;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#92400e;font-size:13px;margin-bottom:4px">侵權行為責任（民法§ 184）</div>
+              <p style="font-size:13px;color:#78350f">護理行為直接侵害病人的<strong>身體權、健康權</strong>，病人可向護理師和/或醫院請求損害賠償，包括：醫療費、薪資損失、精神慰撫金等。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <div class="card">
+      <h3>🔄 三種責任的交互關係</h3>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:12px">護理師業務過失可能<strong>同時</strong>引發三種責任，且各自獨立進行，不因其中一種結案而免除其他責任：</p>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="background:#fee2e2;border-radius:10px;padding:14px 16px;text-align:center;flex:1;min-width:140px">
+          <div style="font-size:20px;margin-bottom:4px">⚖️</div>
+          <div style="font-weight:700;color:#dc2626;font-size:13px">刑事責任</div>
+          <div style="font-size:12px;color:#7f1d1d;margin-top:4px">刑事法院審理<br>國家公權力介入</div>
+        </div>
+        <div style="color:#94a3b8;font-size:20px">+</div>
+        <div style="background:#fef3c7;border-radius:10px;padding:14px 16px;text-align:center;flex:1;min-width:140px">
+          <div style="font-size:20px;margin-bottom:4px">💰</div>
+          <div style="font-weight:700;color:#d97706;font-size:13px">民事責任</div>
+          <div style="font-size:12px;color:#78350f;margin-top:4px">民事法院審理<br>病人向護理師求償</div>
+        </div>
+        <div style="color:#94a3b8;font-size:20px">+</div>
+        <div style="background:#ede9fe;border-radius:10px;padding:14px 16px;text-align:center;flex:1;min-width:140px">
+          <div style="font-size:20px;margin-bottom:4px">📋</div>
+          <div style="font-weight:700;color:#7c3aed;font-size:13px">行政責任</div>
+          <div style="font-size:12px;color:#4c1d95;margin-top:4px">衛生主管機關<br>執照懲處</div>
+        </div>
+        <div style="color:#94a3b8;font-size:20px">=</div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:14px 16px;text-align:center;flex:1;min-width:140px">
+          <div style="font-size:20px;margin-bottom:4px">⚠️</div>
+          <div style="font-weight:700;color:#059669;font-size:13px">三責同時</div>
+          <div style="font-size:12px;color:#065f46;margin-top:4px">可同時並行<br>互不免除</div>
+        </div>
+      </div>
+    </div>
+    <div class="hb ok"><div class="hi">💡</div><div class="hc">
+      <h4>護理疏失vs醫師疏失——同樣嚴重</h4>
+      <p>依醫療法第10條，護理師與護士皆屬<strong>醫事人員</strong>，與醫師承擔同等類型的法律責任。護理師不應認為「是醫師指示的，責任在醫師」——獨立執行的護理行為（評估、記錄、護理措施），護理師須獨立承擔責任。</p>
+    </div></div>
+  </div>
   <!-- 12c 預防三原則 -->
   <div class="tc" id="12c">
     <div class="card" style="border-top:4px solid var(--c12m);margin-bottom:20px">
@@ -697,86 +931,192 @@ footer strong{color:#e2c97e}
 
   <!-- 13a 病歷法律 -->
   <div class="tc on" id="13a">
-    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">醫療法核心規定</div>
-      <h3>病歷建立的法律義務</h3>
-      <p>醫療機構被賦予建立<strong>清晰、詳實與完整</strong>病歷之義務，並有監督之責，須確保病歷由醫事人員<strong>親自</strong>所載，並<strong>簽章與記載時間</strong>，增刪亦同。</p>
+    <div class="cb" style="border-color:var(--c13m)">
+      <div class="lb" style="color:var(--c13m)">醫療法 × 醫師法 × 病人自主權利法</div>
+      <h3>病歷建立的法律義務體系</h3>
+      <p>病歷作為病人醫療過程之記錄，涉及病人身心靈切身生命與健康，影響層面甚巨。醫療機構與醫事人員在面對病人自主意識覺醒之際，<strong>對病歷的真實性確保與保密性確保著實責無旁貸</strong>。</p>
     </div>
+
     <div class="g2">
-      <div class="card">
-        <h3>📝 病歷資料範圍</h3>
-        <div class="steps">
-          <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>醫師製作部分</h4><p>醫師依醫師法有製作病歷之義務，須簽章與記載時間。</p></div></div>
-          <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>檢查與檢驗部分</h4><p>所有檢驗報告、影像資料、病理切片報告等均屬病歷一部分。</p></div></div>
-          <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>各類醫事人員紀錄部分</h4><p>護理記錄、藥師紀錄、物理治療紀錄等，均為法律意義上的病歷。</p></div></div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c13m)">
+          <h3>📝 一、一般病歷的法律規定</h3>
+          <div class="law lawgreen" style="margin-bottom:8px">
+            <div class="li">📜</div>
+            <div class="lc"><h4>醫療法（對醫療機構）</h4>
+              <p>醫療機構有義務建立<strong>清晰、詳實與完整</strong>的病歷，並有<strong>監督之責</strong>，須確保病歷由醫事人員<strong>親自</strong>所載，並<strong>簽章與記載時間</strong>，增刪亦同。不可拖延或拒絕提供病人病歷複製本。</p>
+            </div>
+          </div>
+          <div class="law lawgreen" style="margin-bottom:8px">
+            <div class="li">👨‍⚕️</div>
+            <div class="lc"><h4>醫師法（對醫師）</h4>
+              <p>醫師有製作病歷之義務，須<strong>簽章與記載時間</strong>。「醫療法」並未限制醫師須以中文書寫病歷，但必要時醫療機構有提供<strong>中文病歷摘要</strong>之義務。</p>
+            </div>
+          </div>
+          <div class="law lawgreen">
+            <div class="li">🤝</div>
+            <div class="lc"><h4>病人自主權利法§17（對整個醫療過程）</h4>
+              <p>變更預立醫療決定、執行或確認預立醫療決定之內容及範圍時，須在病歷中<strong>詳細記載</strong>。同意書、病人的書面意思表示與預立醫療決定應與病歷<strong>一起保存</strong>。</p>
+            </div>
+          </div>
         </div>
-        <div class="hb ok" style="margin-top:12px;margin-bottom:0"><div class="hi">📋</div><div class="hc"><h4>護理記錄是病歷的一部分</h4>
-          <p>護理師的護理記錄具有<strong>與醫師病歷同等的法律地位</strong>，記載不實同樣構成法律責任。</p>
-        </div></div>
       </div>
       <div>
         <div class="card" style="margin-bottom:12px">
-          <h3>📋 病人取得病歷的權利</h3>
-          <ul>
-            <li>病人在<strong>自費</strong>前提下，醫療機構不可拖延或拒絕</li>
-            <li>應提供病人<strong>病歷複製本</strong>或<strong>中文病歷摘要</strong></li>
-            <li>醫師非必須以中文書寫，但必要時須提供中文摘要</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>📜 病人自主權利法（第17條）</h3>
-          <p style="font-size:13.5px;color:#374151">變更或執行預立醫療決定時，須在病歷中<strong>詳細記載</strong>；同意書、病人書面意思表示與預立醫療決定應與病歷<strong>一起保存</strong>。</p>
+          <h3>📋 病歷資料的涵蓋範圍</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody">
+              <h4>醫師製作部分</h4>
+              <p>入院病歷、病程記錄、手術記錄、出院摘要。依醫師法有製作義務，須簽章與記載時間。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody">
+              <h4>檢查與檢驗部分</h4>
+              <p>所有檢驗報告、影像資料（X光、CT、MRI）、心電圖、病理切片報告等，均屬病歷一部分，須留存。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody">
+              <h4>各類醫事人員紀錄</h4>
+              <p><strong>護理記錄</strong>、藥師調劑紀錄、物理治療紀錄、呼吸治療紀錄、社工紀錄等，均為法律意義上的病歷，與醫師病歷具有<strong>同等法律地位</strong>。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">4</div><div class="sbody">
+              <h4>同意書與預立文件</h4>
+              <p>手術同意書、麻醉同意書、預立醫療決定書（AD）、DNR意願書、安寧緩和醫療意願書等，均須與病歷一起保存。</p>
+            </div></div>
+          </div>
         </div>
         <div class="card">
           <h3>📅 病歷保存年限</h3>
-          <ul style="font-size:13.5px;color:#374151">
-            <li>醫療機構：<strong>7年</strong>（病人未成年者至成年後7年）</li>
-            <li>電子病歷：同等保存義務，銷毀時應確保無洩漏之虞</li>
-          </ul>
+          <div style="display:grid;gap:8px;margin-top:8px">
+            <div style="background:var(--c13l);border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:4px">一般情況：7年</div>
+              <p style="font-size:13px;color:#374151">醫療機構須保存病歷至少7年（醫療法 § 70）</p>
+            </div>
+            <div style="background:var(--c13l);border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:4px">未成年病人：延長至成年後7年</div>
+              <p style="font-size:13px;color:#374151">病人未成年者，保存年限延至其成年後7年，確保病人成年後可調閱</p>
+            </div>
+            <div style="background:var(--c13l);border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:4px">銷毀要件：確保無洩漏之虞</div>
+              <p style="font-size:13px;color:#374151">依醫療法 § 70第4項，銷毀病歷（含電子病歷）時，應確保無洩漏病歷內容之虞</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <div class="card">
+      <h3>🔑 病人取得病歷的權利</h3>
+      <div class="g2" style="margin-top:10px">
+        <div class="hb ok"><div class="hi">✅</div><div class="hc">
+          <h4>病人有權索取病歷</h4>
+          <p>在<strong>病人自費</strong>的前提下，醫療機構<strong>不可拖延或拒絕</strong>，應提供：<br>
+          ① 病歷複製本（全文影本）<br>
+          ② 中文病歷摘要（若原件非中文）</p>
+        </div></div>
+        <div class="hb tip"><div class="hi">⚠️</div><div class="hc">
+          <h4>常見錯誤觀念</h4>
+          <p>❌「病歷是醫院的財產，不給病人看」——法律上病人有完整的取得權利。<br>❌「醫師用英文寫，病人看不懂就算了」——必要時醫療機構有義務提供中文摘要。</p>
+        </div></div>
+      </div>
+    </div>
+    <div class="hb inf"><div class="hi">📋</div><div class="hc">
+      <h4>護理記錄的特殊法律重要性</h4>
+      <p>護理記錄在醫療糾紛訴訟中往往是<strong>決定性證據</strong>：若護理記錄顯示「病人生命徵象已有異常，但無通報記錄」，護理師很難脫免責任。反之，詳實的護理記錄可以證明護理師已盡到注意義務。「沒有記錄，等於沒有做」是護理執業的金科玉律。</p>
+    </div></div>
+  </div>
   <!-- 13b 電子病歷 -->
   <div class="tc" id="13b">
-    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">醫療法第69條</div>
-      <h3>電子病歷的法源依據</h3>
-      <p>醫療機構以<strong>電子文件方式</strong>製作、貯存病歷時，書面病歷得免製作。電子病歷製作後<strong>24小時內</strong>須完成電子簽章。</p>
+    <div class="cb" style="border-color:var(--c13m)">
+      <div class="lb" style="color:var(--c13m)">醫療法第69條 × 第70條</div>
+      <h3>電子病歷的法律規定與隱私保護</h3>
+      <p>電子病歷高度涉及<strong>病人安全</strong>與<strong>隱私問題</strong>，須予以密切關注。台灣現今多數醫療機構已導入電子病歷，病人安全與隱私問題之重視與突破成為重點工作。</p>
     </div>
+
     <div class="g2">
-      <div class="card" style="border-top:3px solid var(--c13m)">
-        <h3>✅ 電子病歷的優點</h3>
-        <div class="g2" style="gap:8px;margin-top:8px">
-          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">🔄</div><strong style="color:#065f46">跨院傳輸</strong><br>節省重複檢查資源</div>
-          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">⚡</div><strong style="color:#065f46">效率提升</strong><br>便利閱覽與查詢</div>
-          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">✅</div><strong style="color:#065f46">決策正確</strong><br>提升醫療品質</div>
-          <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:20px;margin-bottom:4px">📊</div><strong style="color:#065f46">資料整合</strong><br>完整醫療紀錄</div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c13m)">
+          <h3>📜 電子病歷的法律基礎（醫療法§69）</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c13m)">法</div><div class="sbody">
+              <h4>法源依據</h4>
+              <p>醫療法第69條賦予電子病歷的法源依據。當醫療機構以電子文件方式製作、貯存病歷時，書面方式之病歷<strong>得免製作</strong>（可完全取代紙本）。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">簽</div><div class="sbody">
+              <h4>電子簽章要求</h4>
+              <p>電子病歷製作後<strong>24小時內</strong>須完成<strong>電子簽章</strong>。電子簽章具有與實體簽名同等的法律效力，確保病歷的<strong>真實性</strong>與<strong>不可否認性</strong>。</p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">保</div><div class="sbody">
+              <h4>保密與銷毀（醫療法§70第4項）</h4>
+              <p>醫療機構應確實執行電子病歷的<strong>存取管理</strong>與<strong>備份作業</strong>。銷毀電子病歷時，應確保<strong>無洩漏病歷內容之虞</strong>（不可直接丟棄含資料的電子設備）。</p>
+            </div></div>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--c13m)">
+          <h3>✅ 電子病歷的五大優點</h3>
+          <div class="g2" style="gap:8px;margin-top:8px">
+            <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:18px;margin-bottom:4px">🔄</div><strong style="color:#065f46">跨院傳輸</strong><br>節省重複檢查<br>避免醫療資源浪費</div>
+            <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:18px;margin-bottom:4px">⚡</div><strong style="color:#065f46">效率提升</strong><br>便利閱覽查詢<br>即時更新資料</div>
+            <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:18px;margin-bottom:4px">✅</div><strong style="color:#065f46">決策正確</strong><br>提升醫療決策<br>的正確性與效率</div>
+            <div style="background:var(--c13l);border-radius:7px;padding:10px;font-size:12.5px;text-align:center"><div style="font-size:18px;margin-bottom:4px">📊</div><strong style="color:#065f46">資料整合</strong><br>完整醫療紀錄<br>各科別資訊統一</div>
+          </div>
         </div>
       </div>
       <div>
         <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
-          <h3>⚠️ 電子病歷的安全要求</h3>
-          <ul style="font-size:13.5px;color:#374151">
-            <li>醫療機構應確實執行電子病歷的<strong>存取管理</strong>與<strong>備份作業</strong></li>
-            <li>銷毀電子病歷時，應確保<strong>無洩漏病歷內容之虞</strong>（醫療法第70條第4項）</li>
-            <li>須防範<strong>未授權存取</strong>、<strong>竄改</strong>與<strong>外洩</strong></li>
-          </ul>
+          <h3>⚠️ 電子病歷的安全風險與要求</h3>
+          <div style="display:grid;gap:8px;margin-top:8px">
+            <div style="background:#fee2e2;border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:6px">🔴 主要安全風險</div>
+              <ul style="font-size:13px;color:#7f1d1d;padding-left:14px;line-height:1.9">
+                <li>未授權存取（非負責護理師查閱他人病歷）</li>
+                <li>帳號共用導致責任不清</li>
+                <li>資料外洩（截圖、列印後未銷毀）</li>
+                <li>竄改病歷（稽核軌跡可偵測）</li>
+                <li>系統遭駭客入侵</li>
+              </ul>
+            </div>
+            <div style="background:var(--c13l);border-radius:8px;padding:12px">
+              <div style="font-weight:700;color:#065f46;font-size:13px;margin-bottom:6px">✅ 醫療機構的安全要求</div>
+              <ul style="font-size:13px;color:#065f46;padding-left:14px;line-height:1.9">
+                <li>建立<strong>稽核軌跡（Audit Trail）</strong>記錄所有存取與修改</li>
+                <li>實施<strong>存取權限管理</strong>（僅開放負責照護的病人）</li>
+                <li>定期<strong>備份</strong>並驗證備份完整性</li>
+                <li>電子病歷<strong>加密傳輸</strong></li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="card">
-          <h3>🖥️ 護理資訊系統應用</h3>
-          <ul style="font-size:13.5px;color:#374151">
-            <li>護理資訊系統（NIS）</li>
-            <li>行動護理車 + 標籤讀取器</li>
-            <li>行動巡房系統</li>
-            <li>急診護理系統</li>
-            <li>門診報到系統</li>
-          </ul>
-          <p style="font-size:13px;color:var(--muted);margin-top:8px">目標：人機介面設計改良，降低病歷錯誤提供的風險</p>
+          <h3>🖥️ 護理資訊系統的多元應用</h3>
+          <p style="font-size:13.5px;color:#374151;margin-bottom:10px">電子病歷不只是病歷數位化，還帶動了整個護理資訊系統（NIS）的升級，包含：</p>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>行動護理車 + 標籤讀取器</h4><p>床邊執行給藥前掃描病人手環與藥物條碼，確認「對的病人、對的藥」，大幅降低給藥錯誤。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>行動巡房系統</h4><p>護理師攜帶平板執行床邊評估並即時記錄，確保記錄及時性，避免「事後補記」問題。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>急診護理系統</h4><p>整合急診分診、生命徵象記錄與醫囑系統，確保急診高壓環境下的記錄完整性。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">4</div><div class="sbody"><h4>門診報到與追蹤系統</h4><p>整合門診護理評估、衛教記錄與追蹤計畫，確保照護連續性。</p></div></div>
+          </div>
+          <div class="hb tip" style="margin-top:10px;margin-bottom:0"><div class="hi">🎯</div><div class="hc">
+            <h4>科技目標：降低錯誤，不是增加負擔</h4>
+            <p>護理資訊系統的設計理念是透過<strong>人機介面的改良</strong>，降低病歷錯誤提供的風險——護理師應主動學習善用科技工具，提升護理安全與記錄品質。</p>
+          </div></div>
         </div>
       </div>
     </div>
-  </div>
 
+    <div class="card">
+      <h3>🔐 護理師的電子病歷安全實務守則</h3>
+      <table class="tbl" style="margin-top:10px;box-shadow:none;border:1px solid #e5e7eb">
+        <thead><tr style="background:var(--c13);color:#fff"><th>情境</th><th>正確做法</th><th>法律依據</th></tr></thead>
+        <tbody>
+          <tr><td>離開電腦前</td><td>必須鎖定螢幕（Windows鍵+L）</td><td>個資法安全措施義務</td></tr>
+          <tr><td>帳號管理</td><td>使用個人帳號，<strong>絕不共用密碼</strong></td><td>醫療法電子簽章責任歸屬</td></tr>
+          <tr><td>查閱範圍</td><td>僅查閱自己負責照護的病人病歷</td><td>個資法不得超出目的使用</td></tr>
+          <tr><td>列印病歷</td><td>列印後須妥善管理，不再需要時用碎紙機銷毀</td><td>個資法安全措施</td></tr>
+          <tr><td>拍攝病歷</td><td><strong>絕對禁止</strong>用個人手機拍攝病歷畫面</td><td>個資法、護理人員保密義務</td></tr>
+          <tr><td>發現異常登入</td><td>立即向資訊部門通報，確認是否遭到入侵</td><td>醫療機構安全管理責任</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <!-- 13c 偽造竄改 -->
   <div class="tc" id="13c">
     <div class="cb" style="border-color:#dc2626"><div class="lb" style="color:#dc2626">醫療法第67、68條</div>
@@ -843,45 +1183,106 @@ footer strong{color:#e2c97e}
 
   <!-- 13d 個資法 -->
   <div class="tc" id="13d">
-    <div class="cb" style="border-color:var(--c13m)"><div class="lb" style="color:var(--c13m)">個人資料保護法第6條</div>
-      <h3>病歷屬於特種個人資料</h3>
-      <p>病歷屬於個人資料，屬<strong>隱私權保障範疇</strong>。依個資法第6條第1項，原則上<strong>不得蒐集、處理或利用</strong>，但符合特定情形（如醫療目的）者，例外得予以處理。</p>
+    <div class="cb" style="border-color:var(--c13m)">
+      <div class="lb" style="color:var(--c13m)">個人資料保護法第6條</div>
+      <h3>個人資料保護法對病歷隱私的規範</h3>
+      <p>鑒於病歷屬於個人資料，屬於<strong>隱私權保障範疇</strong>，依個資法第6條第1項，原則上<strong>不得蒐集、處理或利用</strong>，但若符合某些情形（如醫療目的且符合法規），例外得予以蒐集、處理或利用。</p>
     </div>
+
     <div class="g2">
-      <div class="card" style="border-top:3px solid var(--c13m)">
-        <h3>🔐 病歷保密性的多重法律依據</h3>
-        <div class="steps">
-          <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>個人資料保護法</h4><p>最主要的個資保護基準法，規範所有個人資料的蒐集、處理與利用。</p></div></div>
-          <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>人類免疫缺乏病毒傳染防治條例</h4><p>特別規範HIV感染者的病歷保密，禁止洩漏並有明確處罰。</p></div></div>
-          <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>傳染病防治法</h4><p>規範傳染病病人病歷的保密義務，醫事人員及醫事機構皆須承擔法律責任。</p></div></div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c13m)">
+          <h3>🔐 個資法三個核心概念</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c13m)">蒐</div><div class="sbody">
+              <h4>蒐集（Collection）</h4>
+              <p>指以任何方式取得個人資料。<em>例：護理師詢問病人過去病史、家族病史、用藥習慣。</em></p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">處</div><div class="sbody">
+              <h4>處理（Processing）</h4>
+              <p>指建立、記錄、輸入、儲存、編輯、更正、複製、檢索、刪除、輸出、連結或內部傳送。<em>例：將病人資料輸入電子病歷系統，或在院內系統之間傳遞病歷。</em></p>
+            </div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">利</div><div class="sbody">
+              <h4>利用（Use）</h4>
+              <p>指對個人資料的蒐集及處理以外的運用。<em>例：用病人資料做研究、用於其他病人的治療參考（未經匿名化）。</em></p>
+            </div></div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <h3>📜 病歷保密性的多重法律依據</h3>
+          <div class="law lawgreen" style="margin-bottom:8px">
+            <div class="li">🏛️</div>
+            <div class="lc"><h4>個人資料保護法（主要基準法）</h4>
+              <p>病歷屬「特種個人資料」，處理需有法律依據或當事人書面同意，違反者可處<strong>行政罰鍰及刑事責任</strong>（最重5年以下有期徒刑）。</p>
+            </div>
+          </div>
+          <div class="law lawgreen" style="margin-bottom:8px">
+            <div class="li">🦠</div>
+            <div class="lc"><h4>人類免疫缺乏病毒傳染防治條例</h4>
+              <p>特別規範HIV感染者病歷保密，禁止洩漏有明確處罰規定。就算是家屬也不得知悉，除非病人同意。</p>
+            </div>
+          </div>
+          <div class="law lawgreen">
+            <div class="li">🦟</div>
+            <div class="lc"><h4>傳染病防治法</h4>
+              <p>規範傳染病病人病歷的保密義務，醫事人員及醫事機構皆須承擔法律責任，違反者有行政及刑事罰則。</p>
+            </div>
+          </div>
         </div>
       </div>
       <div>
-        <div class="card" style="margin-bottom:12px">
-          <h3>⚠️ 常見個資洩漏情境</h3>
-          <ul style="font-size:13.5px;color:#374151">
-            <li>在走廊、電梯大聲討論病人病情</li>
-            <li>將病人資料放在公共電腦桌面</li>
-            <li>用個人手機拍攝病人病歷</li>
-            <li>向家屬說明病情未確認身份</li>
-            <li>在社群媒體分享病人照片（即使不清晰）</li>
-            <li>病歷室未落鎖，外人可自由進出</li>
-          </ul>
+        <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
+          <h3>❌ 常見個資洩漏情境與法律後果</h3>
+          <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb;margin-top:8px">
+            <thead><tr style="background:#7f1d1d;color:#fff"><th>情境</th><th>違反法規</th></tr></thead>
+            <tbody>
+              <tr><td>在走廊、電梯大聲討論病人病情</td><td>個資法保密義務</td></tr>
+              <tr><td>將病人資料放在公共電腦桌面</td><td>個資法安全管理義務</td></tr>
+              <tr><td>用個人手機拍攝病人病歷或影像</td><td>個資法＋護理人員保密義務</td></tr>
+              <tr><td>向家屬說明病情未確認身份</td><td>個資法＋醫療法</td></tr>
+              <tr><td>在社群媒體分享病人照片或資訊</td><td>個資法（嚴重違反）</td></tr>
+              <tr><td>LINE群組分享含有病人資訊的截圖</td><td>個資法（即使部分遮蔽）</td></tr>
+            </tbody>
+          </table>
         </div>
         <div class="card">
-          <h3>✅ 電子病歷隱私保護實務</h3>
-          <ul style="font-size:13.5px;color:#374151">
-            <li>離開電腦前必須<strong>鎖定螢幕</strong></li>
-            <li>使用<strong>個人帳號</strong>登入，不共用密碼</li>
-            <li>僅查閱自己負責照護的病人病歷</li>
-            <li>列印病歷後須<strong>妥善銷毀</strong>（碎紙機）</li>
-            <li>對可疑的系統入侵或異常存取立即通報</li>
-          </ul>
+          <h3>✅ 電子病歷隱私保護實務守則</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c13m)">1</div><div class="sbody"><h4>離開電腦前鎖定螢幕</h4><p>即使只是離開1分鐘，也應鎖定螢幕，防止未授權人員查閱。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">2</div><div class="sbody"><h4>使用個人帳號，不共用密碼</h4><p>帳號共用不只是安全問題，更是<strong>法律責任歸屬</strong>問題——所有操作記錄都歸帳號所有人承擔。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">3</div><div class="sbody"><h4>僅查閱負責照護病人的病歷</h4><p>出於好奇查閱無關病人的病歷，即使是同院的名人病人，也構成個資法違反。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">4</div><div class="sbody"><h4>列印病歷後妥善銷毀</h4><p>不再需要的病歷列印件，必須用碎紙機銷毀，不可直接投入一般垃圾桶。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c13m)">5</div><div class="sbody"><h4>對可疑存取立即通報</h4><p>發現系統異常、可疑的登入記錄，或認為密碼已外洩，應立即向資訊部門通報。</p></div></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <div class="card" style="border-top:3px solid var(--c13m)">
+      <h3>⚠️ 個資法違反的法律後果</h3>
+      <div class="g3" style="margin-top:12px">
+        <div style="background:#fee2e2;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:8px">⚖️</div>
+          <div style="font-weight:700;color:#dc2626;font-size:14px;margin-bottom:6px">刑事責任</div>
+          <p style="font-size:12.5px;color:#7f1d1d">意圖營利違反個資法：<br>最重<strong>5年有期徒刑</strong><br>非意圖營利但違反：<br>最重2年有期徒刑</p>
+        </div>
+        <div style="background:#fef3c7;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:8px">💰</div>
+          <div style="font-weight:700;color:#d97706;font-size:14px;margin-bottom:6px">民事賠償</div>
+          <p style="font-size:12.5px;color:#78350f">每人每件<br>新台幣<strong>500元~20,000元</strong><br>同一原因事實多人受損：<br>最高賠償<strong>2億元</strong></p>
+        </div>
+        <div style="background:#ede9fe;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:8px">🏛️</div>
+          <div style="font-weight:700;color:#7c3aed;font-size:14px;margin-bottom:6px">行政裁罰</div>
+          <p style="font-size:12.5px;color:#4c1d95">主管機關裁罰<br>罰鍰<strong>2萬~200萬元</strong><br>情節重大者限期改善<br>停業或廢止登記</p>
+        </div>
+      </div>
+    </div>
+    <div class="hb ok"><div class="hi">💡</div><div class="hc">
+      <h4>護理師的雙重保密義務</h4>
+      <p>護理師的保密義務來自兩個層面：①<strong>個資法</strong>（法律義務，違反有刑事和民事責任）；②<strong>護理倫理</strong>（專業義務，是建立醫病信任關係的基礎）。兩者共同構成護理師對病人隱私的全面保護責任。</p>
+    </div></div>
+  </div>
   <!-- 13e 影片倫理 -->
   <div class="tc" id="13e">
     <div class="card" style="border-top:3px solid var(--c13m)">
@@ -1089,12 +1490,32 @@ footer strong{color:#e2c97e}
 <script>
 // NAV
 function go(id,btn){
-  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
-  const t=document.getElementById('sw-'+id);
-  if(t)t.classList.add('on');
+  // Hide all sections, deactivate all nav buttons
+  document.querySelectorAll('.sw').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
+  // Show target section
+  var target=document.getElementById('sw-'+id);
+  if(target){
+    target.classList.add('on');
+    // Reset tabs in this section: show first tab content, activate first tab button
+    var firstTb=target.querySelector('.tb');
+    var allTbs=target.querySelectorAll('.tb');
+    var allTcs=target.querySelectorAll('.tc');
+    allTbs.forEach(function(b){b.classList.remove('on');});
+    allTcs.forEach(function(t){t.classList.remove('on');});
+    if(firstTb){
+      firstTb.classList.add('on');
+      // Get the id from onclick="st(this,'XXX')"
+      var m=firstTb.getAttribute('onclick').match(/'([^']+)'\s*\)/);
+      if(m){
+        var firstTc=document.getElementById(m[1]);
+        if(firstTc)firstTc.classList.add('on');
+      }
+    }
+  }
   if(btn)btn.classList.add('on');
-  document.getElementById('nav').classList.remove('op');
+  var nav=document.getElementById('nav');
+  if(nav)nav.classList.remove('op');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.getElementById('hbg').addEventListener('click',()=>{
@@ -1103,14 +1524,18 @@ document.getElementById('hbg').addEventListener('click',()=>{
 
 // TABS
 function st(btn,id){
-  const tg=btn.closest('.tabs');
-  if(!tg)return;
-  const par=tg.parentElement;
-  par.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
-  par.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));
+  // Scope to nearest .sw section for correct isolation
+  const section=btn.closest('.sw');
+  if(!section)return;
+  // Reset all tab buttons in this section
+  section.querySelectorAll('.tb').forEach(function(b){b.classList.remove('on');});
+  // Hide all tab content panels in this section
+  section.querySelectorAll('.tc').forEach(function(t){t.classList.remove('on');});
+  // Activate clicked button
   btn.classList.add('on');
-  const t=par.querySelector('#'+id);
-  if(t)t.classList.add('on');
+  // Show target panel using direct getElementById (most reliable)
+  var target=document.getElementById(id);
+  if(target){target.classList.add('on');}
 }
 
 // ACCORDION
