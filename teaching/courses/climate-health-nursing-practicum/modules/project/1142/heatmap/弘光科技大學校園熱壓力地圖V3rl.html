@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>弘光科技大學｜校園熱壓力支援地圖</title>
+  <style>
+    :root{
+      --bg:#f6f7f4;
+      --panel:#ffffff;
+      --line:#d9e0e7;
+      --text:#243447;
+      --muted:#6b7280;
+      --building:#dfe5ea;
+      --building-dark:#cfd8df;
+      --path:#c6d4df;
+      --grass:#dcefd8;
+      --water:#dceffd;
+      --low:#86c98a;
+      --mid:#f2d36b;
+      --high:#f29c52;
+      --veryhigh:#e35d5d;
+      --warm:#f4c27a;
+      --cool:#8dc7e8;
+      --cool-fill:rgba(141,199,232,.30);
+      --warm-fill:rgba(242,156,82,.20);
+      --shadow:0 10px 24px rgba(36,52,71,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif}
+    .wrap{width:min(1280px,92%);margin:0 auto;padding:24px 0 40px}
+    .hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+    .hero h1{margin:0 0 8px;font-size:clamp(28px,4vw,40px);line-height:1.15}
+    .hero p{margin:0;max-width:900px;line-height:1.7;color:var(--muted)}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;text-decoration:none;font-weight:700;border:1px solid #cfe0ef;background:#fff;color:#1d4ed8}
+    .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+    .card,.map-card,.detail-card,.table-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .card{padding:18px}
+    .label{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .value{font-size:28px;font-weight:800;line-height:1.1}
+    .sub{margin-top:8px;font-size:13px;color:var(--muted)}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .toolbar-left,.toolbar-right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .seg{display:inline-flex;background:#f8fafb;border:1px solid var(--line);border-radius:14px;padding:4px}
+    .seg button{border:0;background:transparent;padding:8px 12px;border-radius:10px;font-weight:700;color:#526274;cursor:pointer}
+    .seg button.active{background:#fff;color:#1f3b53;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--muted)}
+    .legend span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 10px}
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .main{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;align-items:start}
+    .map-card{padding:18px}
+    .map-box{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fbfcfd;aspect-ratio:1.08/1}
+    .detail-card{padding:18px;min-height:360px}
+    .detail-card h2{margin:0 0 8px;font-size:22px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;color:#243447;margin-bottom:10px}
+    .detail-card p{margin:8px 0;line-height:1.7}
+    .detail-card ul{margin:10px 0 0;padding-left:18px;line-height:1.7}
+    .meta-line{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .meta-chip{font-size:12px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 10px;color:#556476}
+    .table-card{margin-top:18px;padding:12px;overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:980px}
+    th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #e8edf2;font-size:14px;vertical-align:top}
+    th{background:#f8fafb}
+    .pill{display:inline-block;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;color:#243447}
+    .foot{margin-top:16px;text-align:center;font-size:13px;color:var(--muted)}
+    .zone-label{font-size:12px;font-weight:700;fill:#334155;pointer-events:none}
+    .small-label{font-size:10px;font-weight:700;fill:#607083;pointer-events:none}
+    .click-target{cursor:pointer}
+    .tooltip{position:absolute;pointer-events:none;z-index:10;display:none;max-width:260px;background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 12px;font-size:12px;color:#334155}
+    .qr-box{display:flex;align-items:center;gap:12px;padding:12px;border:1px dashed var(--line);border-radius:16px;background:#fbfdff;margin-top:12px}
+    .qr-box img{width:92px;height:92px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#fff}
+    .last-updated{font-size:12px;color:var(--muted)}
+    .buildings-note{font-size:12px;color:var(--muted);margin-top:6px}
+    @keyframes dashMove{to{stroke-dashoffset:-120}}
+    .flow{animation:dashMove 5s linear infinite}
+    @media (max-width:980px){.summary{grid-template-columns:repeat(2,1fr)}.main{grid-template-columns:1fr}}
+    @media (max-width:640px){.summary{grid-template-columns:1fr}.zone-label,.small-label{display:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>弘光科技大學｜校園熱壓力支援地圖</h1>
+        <p>完整底圖版：補上主要大樓標示，並以「曝曬動線、過渡熱區、避暑點」三層顯示學生在建築之間往返的熱暴露情境。可接 Google Sheet 即時更新，未來也可持續增加新的過渡區。</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn" id="formLink" href="#" target="_blank" rel="noopener">填寫 Google 表單</a>
+        <a class="btn" href="#tableSection">查看統計表</a>
+      </div>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="seg" id="timeSeg">
+          <button data-slot="noon" class="active">中午</button>
+          <button data-slot="afternoon">下午</button>
+        </div>
+        <div class="last-updated" id="lastUpdated">最後更新：尚未取得</div>
+      </div>
+      <div class="toolbar-right legend">
+        <span><i class="dot" style="background:var(--veryhigh)"></i>曝曬動線</span>
+        <span><i class="dot" style="background:var(--warm)"></i>過渡熱區</span>
+        <span><i class="dot" style="background:var(--cool)"></i>避暑點</span>
+        <span><i class="dot" style="background:#dfe5ea"></i>建築標示</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="map-card">
+        <div class="map-box">
+          <div class="tooltip" id="tooltip"></div>
+          <svg viewBox="0 0 1000 920" width="100%" height="100%" aria-label="弘光科技大學校園熱壓力地圖">
+            <rect x="0" y="0" width="1000" height="920" fill="#f9fbfc"/>
+
+            <!-- 開放停車 / 右上區 -->
+            <path d="M760 120 L940 210 L940 420 L760 350 Z" fill="var(--water)" stroke="#c7dced" stroke-width="2"/>
+
+            <!-- 操場 -->
+            <rect x="260" y="130" width="320" height="210" rx="90" fill="var(--grass)" stroke="#bdd8b7" stroke-width="2"/>
+            <text x="420" y="245" text-anchor="middle" font-size="28" font-weight="700" fill="#5a6f5b">操場</text>
+
+            <!-- 主要步道 / 坡道 -->
+            <path d="M770 770 L690 680 L620 620 L540 560 L440 505 L330 455 L215 410" fill="none" stroke="var(--path)" stroke-width="40" stroke-linecap="round"/>
+            <path d="M185 710 L285 640 L390 595 L495 555 L625 515 L760 470" fill="none" stroke="var(--path)" stroke-width="32" stroke-linecap="round"/>
+            <path d="M275 360 L330 455 L385 560" fill="none" stroke="var(--path)" stroke-width="24" stroke-linecap="round"/>
+            <path d="M585 340 L640 400 L705 455" fill="none" stroke="var(--path)" stroke-width="24" stroke-linecap="round"/>
+
+            <!-- 左上 / 上方建築 -->
+            <rect x="145" y="220" width="115" height="70" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="202" y="261" text-anchor="middle" class="small-label">J 工學館</text>
+
+            <rect x="190" y="170" width="85" height="48" rx="8" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="232" y="199" text-anchor="middle" class="small-label">K 體育館</text>
+
+            <rect x="92" y="330" width="130" height="82" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="157" y="375" text-anchor="middle" class="zone-label">H 館</text>
+
+            <rect x="112" y="435" width="150" height="84" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="187" y="480" text-anchor="middle" class="zone-label">舊宿舍區</text>
+
+            <!-- 中央建築 -->
+            <rect x="490" y="370" width="150" height="92" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="565" y="421" text-anchor="middle" class="zone-label">G 圖資大樓</text>
+
+            <rect x="655" y="300" width="110" height="86" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="710" y="348" text-anchor="middle" class="zone-label">E 護理大樓</text>
+
+            <!-- 右中建築群 -->
+            <rect x="610" y="445" width="108" height="84" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="664" y="490" text-anchor="middle" class="small-label">P 綜合教學</text>
+
+            <rect x="748" y="452" width="104" height="82" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="800" y="497" text-anchor="middle" class="zone-label">B 教學大樓</text>
+
+            <rect x="820" y="560" width="108" height="86" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="874" y="608" text-anchor="middle" class="zone-label">A 教學大樓</text>
+
+            <rect x="700" y="560" width="100" height="78" rx="10" fill="var(--building-dark)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="750" y="604" text-anchor="middle" class="zone-label">行政大樓</text>
+
+            <!-- 左下 / 下方建築 -->
+            <rect x="250" y="540" width="120" height="95" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="310" y="592" text-anchor="middle" class="zone-label">L 棟</text>
+
+            <rect x="388" y="520" width="145" height="92" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="460" y="570" text-anchor="middle" class="zone-label">F 棟</text>
+
+            <rect x="480" y="615" width="145" height="92" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="552" y="665" text-anchor="middle" class="small-label">D / N 區</text>
+
+            <rect x="272" y="648" width="120" height="88" rx="10" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="332" y="697" text-anchor="middle" class="small-label">M 教學區</text>
+
+            <!-- 下方 Q 棟與校門口 -->
+            <rect x="675" y="728" width="190" height="62" rx="12" fill="#f3ede0" stroke="#d7c9ac" stroke-width="2"/>
+            <text x="770" y="765" text-anchor="middle" class="zone-label">校門口</text>
+
+            <rect x="120" y="760" width="170" height="78" rx="12" fill="var(--building)" stroke="#b8c2cc" stroke-width="2"/>
+            <text x="205" y="804" text-anchor="middle" class="zone-label">Q 棟宿舍</text>
+
+            <!-- 校外道路 -->
+            <path d="M610 845 L1000 845" stroke="#d0d7de" stroke-width="42" stroke-linecap="round"/>
+            <text x="875" y="832" text-anchor="middle" class="small-label">台灣大道側</text>
+
+            <!-- 熱區 / 動線 / 避暑點 -->
+            <g id="zoneGroup"></g>
+          </svg>
+        </div>
+        <div class="buildings-note">已補上主要建築標示：A、B、D、E、F、G、H、J、K、L、M、N、P、Q、行政大樓、操場、校門口。熱資料仍以動線、過渡熱區、避暑點為主。</div>
+      </div>
+
+      <div class="detail-card" id="detailCard">
+        <h2>點選地圖熱區</h2>
+        <div class="badge" style="background:#eef2f7;">區域資訊</div>
+        <p>左側採三層顯示：曝曬動線、過渡熱區、避暑點。滑鼠移上去可先看症狀摘要，點一下顯示完整資訊。</p>
+        <div class="qr-box">
+          <img id="qrImg" alt="Google 表單 QR code" />
+          <div>
+            <strong>共用填報入口</strong>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.7;">這個 QR code 是共用 Google 表單入口，不是每個地圖區塊各自一個。未來也可再升級成分區預填 QR code。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card" id="tableSection">
+      <table>
+        <thead>
+          <tr>
+            <th>區域編號</th>
+            <th>類型</th>
+            <th>區域</th>
+            <th>平均 HSS</th>
+            <th>風險</th>
+            <th>筆數</th>
+            <th>常見症狀</th>
+            <th>建議改善</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="foot">弘光科技大學校園熱壓力支援地圖｜完整大樓標示版</div>
+  </div>
+
+  <script>
+    // ===== 請修改這 3 行 =====
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfUEvfd8XGbNI9KShWR6RGreiaTFeJqTMZjhUKNxOeTLwCWeg/viewform';
+const FORM_ENTRY_ID = 'entry.1170680062';
+const SHEET_JSON_URL = 'https://script.google.com/macros/s/AKfycbxtJXp_gN79jTx14R2g3_kNFbPk1hxXG4iGrES0Dy_bgmLCgOXwiE_xBn2NFFK8IHeNcw/exec';
+const USE_REMOTE = true;
+
+    const AUTO_REFRESH_MS = 60000;
+
+    const DEMO_DATA = {
+      updated: '2026-04-14 16:10:00',
+      noon: [
+        {id:'PATH-01',layer:'path',area:'校門口→教學區上坡',short:'上坡主線',score:15.8,count:36,symptoms:'口渴、疲倦、心跳快',action:'設遮蔭、分段休息、補水提醒',desc:'陡升坡＋長距離＋無遮蔭，為主要熱暴露動線。',d:'M770 770 L690 680 L610 620 L520 570 L420 520 L320 470',width:30},
+        {id:'PATH-02',layer:'path',area:'G棟前與大樓間通道',short:'G前',score:13.6,count:30,symptoms:'口渴、頭暈',action:'增加遮蔭與動線導引',desc:'G棟前與左側大樓間為通行必經且無樹蔭。',d:'M500 430 L585 438 L700 455',width:24},
+        {id:'PATH-03',layer:'path',area:'Q宿舍→教學區動線',short:'Q宿舍線',score:13.2,count:22,symptoms:'口渴、頭痛',action:'補水點、午後提醒',desc:'靠近台灣大道側的 Q 棟學生宿舍往返教室的重要路徑。',d:'M205 798 L245 730 L295 655 L355 590',width:24},
+        {id:'PATH-04',layer:'path',area:'操場周邊曝曬動線',short:'操場',score:14.7,count:18,symptoms:'大量出汗、疲倦',action:'戶外活動補水、遮陽安排',desc:'操場及周邊開放空間為明顯曝曬區。',d:'M285 175 L360 145 L470 150 L555 195',width:26},
+        {id:'WARM-01',layer:'warm_zone',area:'L棟1F 書局前桌椅區',short:'L停留',score:8.8,count:16,symptoms:'悶熱、出汗',action:'增加送風、避暑資訊',desc:'有座位可停留，但無冷氣，尖峰時段悶熱。',x:228,y:525,w:170,h:128,rx:18},
+        {id:'WARM-02',layer:'warm_zone',area:'A/B教學大樓外走廊',short:'A/B走廊',score:7.9,count:14,symptoms:'悶熱、疲倦',action:'送風、等候提醒',desc:'上課前後等待空間，未開冷氣時熱感明顯。',x:745,y:438,w:195,h:220,rx:18},
+        {id:'WARM-03',layer:'warm_zone',area:'P棟B1餐廳外動線',short:'P餐廳',score:11.2,count:30,symptoms:'口渴、疲倦',action:'補水提醒、動線分流',desc:'P棟地下一樓餐廳外的人流停留熱區。',x:596,y:435,w:138,h:110,rx:18},
+        {id:'WARM-04',layer:'warm_zone',area:'P4/P5 與 GPE 間空地',short:'P4/P5',score:14.2,count:20,symptoms:'高溫不適',action:'植樹、遮蔭設施',desc:'大片硬鋪面曝曬區。',x:742,y:322,w:180,h:156,rx:18},
+        {id:'WARM-05',layer:'warm_zone',area:'P7/P11/P15 停車區',short:'停車區',score:13.8,count:18,symptoms:'曝曬、悶熱',action:'遮棚、降溫鋪面',desc:'汽機車停放區，無遮蔭。',x:760,y:120,w:190,h:160,rx:18},
+        {id:'WARM-06',layer:'warm_zone',area:'預留新增過渡區 01',short:'預留1',score:0,count:0,symptoms:'尚未收集',action:'待學生補充',desc:'預留新增過渡熱區。',x:360,y:700,w:110,h:70,rx:18,planned:true},
+        {id:'COOL-01',layer:'cool_spot',area:'圖資G室內冷氣區',short:'G避暑',score:2.6,count:12,symptoms:'較少不適',action:'可作短暫避暑點',desc:'館內冷氣空間，可短暫停留降溫。',x:505,y:385,w:120,h:62,rx:18},
+        {id:'COOL-02',layer:'cool_spot',area:'上課時冷氣教室',short:'冷氣教室',score:2.1,count:10,symptoms:'較少不適',action:'上課前後可作短暫降溫點',desc:'教室內開冷氣時是重要避暑支持點。',x:828,y:575,w:96,h:62,rx:18},
+        {id:'COOL-03',layer:'cool_spot',area:'餐廳室內區',short:'餐廳內',score:2.8,count:9,symptoms:'較少不適',action:'可作中午避暑點',desc:'室內有冷氣，可短暫停留。',x:620,y:470,w:90,h:55,rx:16}
+      ],
+      afternoon: [
+        {id:'PATH-01',layer:'path',area:'校門口→教學區上坡',short:'上坡主線',score:16.4,count:34,symptoms:'口渴、疲倦、心跳快',action:'設遮蔭、分段休息、補水提醒',desc:'午後體感溫度更高，上坡負荷增加。',d:'M770 770 L690 680 L610 620 L520 570 L420 520 L320 470',width:30},
+        {id:'PATH-02',layer:'path',area:'G棟前與大樓間通道',short:'G前',score:14.1,count:28,symptoms:'口渴、頭暈',action:'增加遮蔭與動線導引',desc:'下午西曬更強，G棟前與相鄰通道熱感提升。',d:'M500 430 L585 438 L700 455',width:24},
+        {id:'PATH-03',layer:'path',area:'Q宿舍→教學區動線',short:'Q宿舍線',score:14.0,count:20,symptoms:'口渴、頭痛',action:'補水點、午後提醒',desc:'Q棟出入動線在午後更易累積熱不適。',d:'M205 798 L245 730 L295 655 L355 590',width:24},
+        {id:'PATH-04',layer:'path',area:'操場周邊曝曬動線',short:'操場',score:15.2,count:16,symptoms:'大量出汗、疲倦',action:'戶外活動補水、遮陽安排',desc:'下午操場與周邊開放空間曝曬更強。',d:'M285 175 L360 145 L470 150 L555 195',width:26},
+        {id:'WARM-01',layer:'warm_zone',area:'L棟1F 書局前桌椅區',short:'L停留',score:9.4,count:18,symptoms:'悶熱、出汗',action:'增加送風、避暑資訊',desc:'有椅子可停留，但非冷氣空間。',x:228,y:525,w:170,h:128,rx:18},
+        {id:'WARM-02',layer:'warm_zone',area:'A/B教學大樓外走廊',short:'A/B走廊',score:8.6,count:16,symptoms:'悶熱、疲倦',action:'送風、等候提醒',desc:'下午上課前後熱感更明顯。',x:745,y:438,w:195,h:220,rx:18},
+        {id:'WARM-03',layer:'warm_zone',area:'P棟B1餐廳外動線',short:'P餐廳',score:10.5,count:22,symptoms:'口渴、疲倦',action:'補水提醒、動線分流',desc:'午後仍有移動停留人流。',x:596,y:435,w:138,h:110,rx:18},
+        {id:'WARM-04',layer:'warm_zone',area:'P4/P5 與 GPE 間空地',short:'P4/P5',score:14.8,count:18,symptoms:'高溫不適',action:'植樹、遮蔭設施',desc:'午後曝曬仍高。',x:742,y:322,w:180,h:156,rx:18},
+        {id:'WARM-05',layer:'warm_zone',area:'P7/P11/P15 停車區',short:'停車區',score:14.4,count:16,symptoms:'曝曬、悶熱',action:'遮棚、降溫鋪面',desc:'停車區午後溫度更高。',x:760,y:120,w:190,h:160,rx:18},
+        {id:'WARM-06',layer:'warm_zone',area:'預留新增過渡區 01',short:'預留1',score:0,count:0,symptoms:'尚未收集',action:'待學生補充',desc:'預留新增過渡熱區。',x:360,y:700,w:110,h:70,rx:18,planned:true},
+        {id:'COOL-01',layer:'cool_spot',area:'圖資G室內冷氣區',short:'G避暑',score:2.4,count:11,symptoms:'較少不適',action:'可作短暫避暑點',desc:'館內可暫時降溫。',x:505,y:385,w:120,h:62,rx:18},
+        {id:'COOL-02',layer:'cool_spot',area:'上課時冷氣教室',short:'冷氣教室',score:2.3,count:9,symptoms:'較少不適',action:'上課前後可作短暫降溫點',desc:'非上課時不一定開放或開冷氣。',x:828,y:575,w:96,h:62,rx:18},
+        {id:'COOL-03',layer:'cool_spot',area:'餐廳室內區',short:'餐廳內',score:2.7,count:8,symptoms:'較少不適',action:'可作中午避暑點',desc:'餐廳室內冷氣區。',x:620,y:470,w:90,h:55,rx:16}
+      ]
+    };
+
+    const formLink = document.getElementById('formLink');
+    const qrImg = document.getElementById('qrImg');
+    formLink.href = FORM_URL;
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(FORM_URL)}`;
+
+    function openFormWithArea(areaText){
+      const url = `${FORM_URL}?usp=pp_url&${FORM_ENTRY_ID}=${encodeURIComponent(areaText)}`;
+      window.open(url, '_blank');
+    }
+
+    let currentSlot = 'noon';
+    let state = { updated:'', noon:[], afternoon:[] };
+
+    function riskLevel(score){
+      if(score <= 0) return '待收集';
+      if(score <= 4) return '低';
+      if(score <= 8) return '中';
+      if(score <= 13) return '高';
+      return '非常高';
+    }
+    function riskColor(score){
+      const s = getComputedStyle(document.documentElement);
+      if(score <= 0) return '#d1d5db';
+      if(score <= 4) return s.getPropertyValue('--low').trim();
+      if(score <= 8) return s.getPropertyValue('--mid').trim();
+      if(score <= 13) return s.getPropertyValue('--high').trim();
+      return s.getPropertyValue('--veryhigh').trim();
+    }
+    function layerLabel(layer){
+      return layer === 'path' ? '曝曬動線' : layer === 'warm_zone' ? '過渡熱區' : '避暑點';
+    }
+    function layerColor(layer, score){
+      const s = getComputedStyle(document.documentElement);
+      if(layer === 'cool_spot') return s.getPropertyValue('--cool').trim();
+      if(layer === 'warm_zone') return score <= 0 ? '#d1d5db' : s.getPropertyValue('--warm').trim();
+      return riskColor(score);
+    }
+    function overallAverage(data){
+      const valid = data.filter(d=>Number(d.score)>0);
+      const n = valid.reduce((sum,d)=>sum + (Number(d.count)||0), 0);
+      const total = valid.reduce((sum,d)=>sum + (Number(d.score)||0) * (Number(d.count)||0), 0);
+      return n ? total/n : 0;
+    }
+    function highestPath(data){
+      return [...data].filter(d=>d.layer==='path').sort((a,b)=>b.score-a.score)[0] || data[0];
+    }
+    function totalResponses(data){
+      return data.reduce((sum,d)=>sum + (Number(d.count)||0), 0);
+    }
+    function commonSymptoms(data){
+      const map = {};
+      data.forEach(d=>{
+        String(d.symptoms||'').split(/[、,]/).map(v=>v.trim()).filter(Boolean).forEach(v=>map[v]=(map[v]||0)+1);
+      });
+      return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,2).map(v=>v[0]).join('、');
+    }
+
+    async function fetchState(){
+      if(!USE_REMOTE) return DEMO_DATA;
+      const res = await fetch(SHEET_JSON_URL + '?t=' + Date.now());
+      if(!res.ok) throw new Error('讀取資料失敗');
+      return await res.json();
+    }
+
+    function renderSummary(){
+      const data = state[currentSlot] || [];
+      const avg = overallAverage(data);
+      const top = highestPath(data) || {area:'尚無資料',score:0};
+      const total = totalResponses(data);
+      const symptoms = commonSymptoms(data);
+      const items = [
+        {label:'全校平均 HSS', value:avg ? avg.toFixed(1) : '0.0', sub:`整體風險：${riskLevel(avg)}`},
+        {label:'最高風險動線', value:top.area || '尚無資料', sub:`平均 HSS ${Number(top.score || 0).toFixed(1)}`},
+        {label:'本時段回報筆數', value:total, sub:currentSlot==='noon' ? '中午資料' : '下午資料'},
+        {label:'常見不適症狀', value:symptoms || '尚無資料', sub:'可作為改善依據'}
+      ];
+      document.getElementById('summary').innerHTML = items.map(item => `
+        <div class="card">
+          <div class="label">${item.label}</div>
+          <div class="value">${item.value}</div>
+          <div class="sub">${item.sub}</div>
+        </div>`).join('');
+      document.getElementById('lastUpdated').textContent = '最後更新：' + (state.updated || '尚未取得');
+    }
+
+    function makeTooltipText(item){
+      return `<strong>${item.id}</strong><br>${item.area}<br>${layerLabel(item.layer)}｜症狀：${item.symptoms || '尚無資料'}`;
+    }
+
+    function attachHover(el, item){
+      const tip = document.getElementById('tooltip');
+      el.addEventListener('mousemove', (e)=>{
+        const box = document.querySelector('.map-box').getBoundingClientRect();
+        tip.style.display = 'block';
+        tip.innerHTML = makeTooltipText(item);
+        tip.style.left = (e.clientX - box.left + 14) + 'px';
+        tip.style.top = (e.clientY - box.top + 14) + 'px';
+      });
+      el.addEventListener('mouseleave', ()=>{ tip.style.display = 'none'; });
+    }
+
+    function renderZones(){
+      const group = document.getElementById('zoneGroup');
+      group.innerHTML = '';
+      const data = state[currentSlot] || [];
+      const pathLabelPos = {
+        'PATH-01':[520,540],
+        'PATH-02':[618,424],
+        'PATH-03':[260,700],
+        'PATH-04':[420,118]
+      };
+
+      data.forEach((item, idx)=>{
+        const color = layerColor(item.layer, Number(item.score));
+        let target;
+
+        if(item.layer === 'path'){
+          const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+          path.setAttribute('d', item.d);
+          path.setAttribute('fill','none');
+          path.setAttribute('stroke', color);
+          path.setAttribute('stroke-width', item.width || 24);
+          path.setAttribute('stroke-linecap','round');
+          path.setAttribute('stroke-opacity','0.66');
+          path.setAttribute('stroke-dasharray','26 16');
+          path.setAttribute('class','click-target flow');
+          group.appendChild(path);
+          target = path;
+        } else {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+          rect.setAttribute('x', item.x);
+          rect.setAttribute('y', item.y);
+          rect.setAttribute('width', item.w);
+          rect.setAttribute('height', item.h);
+          rect.setAttribute('rx', item.rx || 18);
+          rect.setAttribute('stroke', color);
+          rect.setAttribute('stroke-width', 3);
+          rect.setAttribute('stroke-dasharray', item.planned ? '8 6' : '');
+          rect.setAttribute('fill', item.layer === 'cool_spot' ? 'var(--cool-fill)' : item.planned ? 'rgba(209,213,219,.18)' : 'var(--warm-fill)');
+          rect.setAttribute('class','click-target');
+          group.appendChild(rect);
+          target = rect;
+        }
+
+        target.addEventListener('click', ()=>{
+          renderDetail(item);
+          openFormWithArea(`${item.id}｜${item.area}`);
+        });
+        attachHover(target, item);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+        label.textContent = item.short || item.area;
+        if(item.layer === 'path'){
+          const p = pathLabelPos[item.id] || [520, 520 - idx*16];
+          label.setAttribute('x', p[0]);
+          label.setAttribute('y', p[1]);
+        } else {
+          label.setAttribute('x', item.x + item.w/2);
+          label.setAttribute('y', item.y + item.h/2 + 4);
+        }
+        label.setAttribute('text-anchor','middle');
+        label.setAttribute('class','zone-label');
+        group.appendChild(label);
+
+        if(idx === 0) renderDetail(item);
+      });
+    }
+
+    function renderDetail(item){
+      const badgeColor = layerColor(item.layer, Number(item.score));
+      document.getElementById('detailCard').innerHTML = `
+        <h2>${item.area}</h2>
+        <div class="badge" style="background:${badgeColor};">${item.id}｜${layerLabel(item.layer)}${item.layer==='cool_spot' ? '｜支援點' : item.planned ? '｜預留區' : '｜'+riskLevel(Number(item.score))}</div>
+        <p><strong>平均熱壓力分數：</strong>${Number(item.score).toFixed(1)}</p>
+        <p><strong>填答筆數：</strong>${item.count}</p>
+        <p><strong>常見症狀：</strong>${item.symptoms || '尚無資料'}</p>
+        <p><strong>改善建議：</strong>${item.action || '尚無資料'}</p>
+        <p><strong>情境描述：</strong>${item.desc || '尚無資料'}</p>
+        <div class="meta-line">
+          <span class="meta-chip">時段：${currentSlot==='noon' ? '中午' : '下午'}</span>
+          <span class="meta-chip">類型：${layerLabel(item.layer)}</span>
+          <span class="meta-chip">區域編號：${item.id}</span>
+        </div>
+        <ul>
+          <li>滑鼠 hover 可快速查看症狀摘要。</li>
+          <li>這個編號可直接對應 Google 表單與 Google Sheet。</li>
+          <li>未來新增過渡區時，只要新增 WARM-06、WARM-07 等資料列即可。</li>
+        </ul>
+        <div class="qr-box">
+          <img alt="Google 表單 QR code" src="${qrImg.src}" />
+          <div>
+            <strong>共用填報入口</strong>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.7;">掃描 QR code 或點上方按鈕即可填表。之後若需要，也可再升級成各區預填 QR code。</div>
+          </div>
+        </div>`;
+    }
+
+    function renderTable(){
+      const data = state[currentSlot] || [];
+      document.getElementById('tbody').innerHTML = data.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${layerLabel(item.layer)}</td>
+          <td>${item.area}</td>
+          <td>${Number(item.score).toFixed(1)}</td>
+          <td><span class="pill" style="background:${layerColor(item.layer, Number(item.score))};">${item.layer==='cool_spot' ? '避暑點' : item.planned ? '預留區' : riskLevel(Number(item.score))}</span></td>
+          <td>${item.count}</td>
+          <td>${item.symptoms || '尚無資料'}</td>
+          <td>${item.action || '尚無資料'}</td>
+        </tr>`).join('');
+    }
+
+    function bindTimeSwitch(){
+      document.querySelectorAll('#timeSeg button').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          document.querySelectorAll('#timeSeg button').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          currentSlot = btn.dataset.slot;
+          renderSummary(); renderZones(); renderTable();
+        });
+      });
+    }
+
+    async function refreshAll(){
+      try{
+        state = await fetchState();
+      }catch(err){
+        console.error(err);
+        state = DEMO_DATA;
+      }
+      renderSummary();
+      renderZones();
+      renderTable();
+    }
+
+    async function fetchState(){
+      if(!USE_REMOTE) return DEMO_DATA;
+      const res = await fetch(SHEET_JSON_URL + '?t=' + Date.now());
+      if(!res.ok) throw new Error('讀取資料失敗');
+      return await res.json();
+    }
+
+    bindTimeSwitch();
+    refreshAll();
+    setInterval(refreshAll, AUTO_REFRESH_MS);
+  </script>
+</body>
+</html>
