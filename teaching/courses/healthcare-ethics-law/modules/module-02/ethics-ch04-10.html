@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>護理倫理特論 CH04–CH10</title>
+<style>
+:root{
+  --ink:#1a2540;--bg:#f5f6fa;--card:#fff;--sh:0 2px 12px rgba(0,0,0,.08);
+  --c04:#7c3aed;--c04m:#8b5cf6;--c04l:#f5f3ff;
+  --c05:#0369a1;--c05m:#0284c7;--c05l:#e0f2fe;
+  --c06:#b91c1c;--c06m:#dc2626;--c06l:#fef2f2;
+  --c07:#047857;--c07m:#059669;--c07l:#ecfdf5;
+  --c08:#1e40af;--c08m:#2563eb;--c08l:#eff6ff;
+  --c09:#b45309;--c09m:#d97706;--c09l:#fffbeb;
+  --c10:#9d174d;--c10m:#db2777;--c10l:#fdf2f8;
+  --gold:#e2c97e;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.7}
+/* ─── header ─── */
+header{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;padding:14px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.hrow{display:flex;align-items:center;gap:12px}
+.htitle{flex:1}
+.htitle h1{font-size:clamp(13px,2vw,17px);font-weight:700;letter-spacing:.5px}
+.htitle p{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px}
+.hbg{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px}
+@media(max-width:768px){.hbg{display:block}}
+/* ─── nav ─── */
+nav{background:#1a2540;padding:0 8px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.nb{display:inline-block;padding:10px 12px;color:rgba(255,255,255,.65);font-size:12.5px;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
+.nb:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nb.on{color:#fff;border-bottom-color:var(--gold);font-weight:600}
+@media(max-width:768px){
+  nav{display:none;flex-direction:column;padding:8px 0}
+  nav.op{display:flex}
+  .nb{padding:12px 16px;border-bottom:none;border-left:3px solid transparent}
+  .nb.on{border-left-color:var(--gold);background:rgba(255,255,255,.06)}
+}
+/* ─── main ─── */
+main{max-width:1100px;margin:0 auto;padding:20px 16px}
+.sw{display:none;animation:fi .35s ease}
+.sw.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ─── cards & boxes ─── */
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--sh);margin-bottom:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:680px){.g2,.g3{grid-template-columns:1fr}}
+/* ─── section header ─── */
+.shd{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--bg)}
+.sico{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.sti h2{font-size:18px;font-weight:700;color:var(--ink)}
+.sti p{font-size:12.5px;color:#64748b;margin-top:3px}
+/* ─── tabs ─── */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tb{padding:7px 14px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12.5px;cursor:pointer;transition:.2s;color:#64748b}
+.tb:hover{border-color:#94a3b8;color:var(--ink)}
+.tb.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tc{display:none !important}.tc.on{display:block !important}
+/* ─── overview cards ─── */
+.ovcard{background:var(--card);border-radius:12px;padding:20px;text-align:center;box-shadow:var(--sh);cursor:pointer;transition:.15s;border-top:4px solid transparent}
+.ovcard:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.ovcard .ico{font-size:32px;margin-bottom:10px}
+.ovcard h3{font-size:14px;font-weight:700;margin-bottom:6px}
+.ovcard p{font-size:12px;color:#64748b;line-height:1.5}
+/* ─── callout boxes ─── */
+.cb{background:#fff;border-radius:8px;border-left:4px solid #94a3b8;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sh)}
+.lb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;opacity:.85}
+.cb h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.cb p{font-size:13.5px;color:#374151;line-height:1.7}
+/* ─── hint boxes ─── */
+.hb{display:flex;gap:10px;border-radius:8px;padding:12px 14px;margin-bottom:12px}
+.hi{font-size:18px;flex-shrink:0;margin-top:2px}
+.hc h4{font-size:13.5px;font-weight:700;margin-bottom:4px}
+.hc p{font-size:13px;line-height:1.6;color:#374151}
+.tip{background:#fefce8;border:1px solid #fde68a}
+.wrn{background:#fff7ed;border:1px solid #fed7aa}
+.ok{background:#f0fdf4;border:1px solid #bbf7d0}
+.inf{background:#eff6ff;border:1px solid #bfdbfe}
+.pur{background:#f5f3ff;border:1px solid #ddd6fe}
+.red{background:#fef2f2;border:1px solid #fecaca}
+/* ─── steps ─── */
+.steps{display:grid;gap:10px}
+.step{display:flex;gap:10px;align-items:flex-start}
+.snum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0;margin-top:2px}
+.sbody h4{font-size:13.5px;font-weight:700;margin-bottom:3px}
+.sbody p,.sbody li{font-size:13px;color:#374151;line-height:1.6}
+/* ─── table ─── */
+.tbl{width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;box-shadow:var(--sh)}
+.tbl th{padding:10px 12px;text-align:left;font-size:12.5px;font-weight:700}
+.tbl td{padding:9px 12px;font-size:13px;border-bottom:1px solid #f1f5f9;color:#374151}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover{background:#f8fafc}
+/* ─── accordion ─── */
+.cc{border-radius:10px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh)}
+.ch{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#fff}
+.chl{display:flex;flex-direction:column;gap:4px}
+.chl h3{font-size:14px;font-weight:700}
+.ctag{font-size:10px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px;width:fit-content}
+.cto{background:none;border:none;color:#fff;font-size:14px;cursor:pointer;transition:.2s}
+.cbody{display:none;padding:16px;background:#fff}
+/* ─── scenario ─── */
+.scen{background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:12px;border-left:3px solid #94a3b8}
+.sl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#64748b;margin-bottom:8px}
+.scen p{font-size:13px;color:#374151;line-height:1.7}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media(max-width:600px){.ag{grid-template-columns:1fr}}
+.ai{background:#f8fafc;border-radius:8px;padding:12px}
+.al{font-weight:700;font-size:12.5px;margin-bottom:6px}
+.res{background:#f0fdf4;border-radius:8px;padding:12px}
+.rl{font-weight:700;font-size:12.5px;color:#065f46;margin-bottom:6px}
+/* ─── law boxes ─── */
+.law{display:flex;gap:10px;border-radius:8px;padding:12px;margin-bottom:8px}
+.li{font-size:20px;flex-shrink:0}
+.lc h4{font-weight:700;font-size:13.5px;margin-bottom:4px}
+.lc p{font-size:13px;color:#374151;line-height:1.6}
+.lawblue{background:#eff6ff;border:1px solid #bfdbfe}
+.lawyellow{background:#fffbeb;border:1px solid #fed7aa}
+.lawgreen{background:#f0fdf4;border:1px solid #bbf7d0}
+.lawpur{background:#f5f3ff;border:1px solid #ddd6fe}
+.lawred{background:#fef2f2;border:1px solid #fecaca}
+/* ─── quiz ─── */
+.qsect{display:none;padding:0}
+.qsect.on{display:block}
+.qcard{background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)}
+.qcard p{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.6}
+.qopt{display:grid;gap:8px}
+.qbtn{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:13px;text-align:left;transition:.15s;width:100%}
+.qbtn:hover{border-color:#94a3b8;background:#f8fafc}
+.qbtn.correct{background:#f0fdf4;border-color:#22c55e;color:#14532d;font-weight:600}
+.qbtn.wrong{background:#fef2f2;border-color:#ef4444;color:#7f1d1d}
+.qbtn.disabled{cursor:not-allowed;pointer-events:none}
+.qexp{display:none;background:#f0fdf4;border-left:4px solid #22c55e;border-radius:0 8px 8px 0;padding:12px;margin-top:10px;font-size:13px;color:#14532d;line-height:1.6}
+.qexp.on{display:block}
+.qnum{font-size:11px;color:#94a3b8;font-weight:700;margin-bottom:6px;text-transform:uppercase}
+.qnav{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.qscore{text-align:center;padding:24px;background:#fff;border-radius:10px;box-shadow:var(--sh);display:none;margin-top:16px}
+.sr{display:none}.sr.on{display:block}
+/* ─── discussion ─── */
+.disc{background:#fff;border-radius:10px;padding:20px;box-shadow:var(--sh);margin-bottom:14px;border-left:4px solid #94a3b8}
+.disc h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.disc p{font-size:13px;color:#374151;line-height:1.7;margin-bottom:8px}
+.disc .hint{background:#f8fafc;border-radius:6px;padding:10px;font-size:12.5px;color:#64748b}
+/* ─── quiz nav ─── */
+.qchnav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.qchbtn{padding:8px 16px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:12.5px;cursor:pointer;transition:.2s;color:#64748b;font-weight:600}
+.qchbtn:hover{border-color:#94a3b8}
+.qchbtn.on{color:#fff;border-color:transparent}
+/* ─── footer ─── */
+footer{text-align:center;padding:20px;color:#94a3b8;font-size:12px;margin-top:20px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <button class="hbg" onclick="document.getElementById('nav').classList.toggle('op')">☰</button>
+    <div class="htitle">
+      <h1>🌿 護理倫理特論 CH.04–CH.10</h1>
+      <p>生殖科技・兒科・精神科・長照・瀕死・人體試驗・器官移植</p>
+    </div>
+  </div>
+</header>
+
+<nav id="nav">
+  <span class="nb on" onclick="go('ov',this)">📋 總覽</span>
+  <span class="nb" onclick="go('c04',this)">🧬 CH04 生殖科技</span>
+  <span class="nb" onclick="go('c05',this)">👶 CH05 兒科倫理</span>
+  <span class="nb" onclick="go('c06',this)">🧠 CH06 精神科</span>
+  <span class="nb" onclick="go('c07',this)">🌿 CH07 長期照護</span>
+  <span class="nb" onclick="go('c08',this)">⚕️ CH08 瀕死死亡</span>
+  <span class="nb" onclick="go('c09',this)">🔬 CH09 人體試驗</span>
+  <span class="nb" onclick="go('c10',this)">🫀 CH10 器官/HIV</span>
+  <span class="nb" onclick="go('qz',this)">📝 測驗</span>
+  <span class="nb" onclick="go('disc',this)">💬 討論</span>
+</nav>
+
+<main>
+
+<!-- ══ OVERVIEW ══ -->
+<div class="sw on" id="sw-ov">
+  <div class="shd">
+    <div class="sico" style="background:#e2f0e8">🌿</div>
+    <div class="sti"><h2>護理倫理特論 CH.04–CH.10</h2><p>七章特殊倫理議題總覽</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:20px">
+    <div class="ovcard" style="border-top-color:var(--c04m)" onclick="go('c04',document.querySelectorAll('.nb')[1])">
+      <div class="ico">🧬</div><h3>CH04 生殖科技倫理議題</h3>
+      <p>基因工程・人工生殖・代理孕母・墮胎</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c05m)" onclick="go('c05',document.querySelectorAll('.nb')[2])">
+      <div class="ico">👶</div><h3>CH05 兒科的倫理議題</h3>
+      <p>兒童人權・最佳利益・新生兒・贊同權</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c06m)" onclick="go('c06',document.querySelectorAll('.nb')[3])">
+      <div class="ico">🧠</div><h3>CH06 精神科的倫理議題</h3>
+      <p>倫理概論・思覺失調・強制醫療・資源分配</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c07m)" onclick="go('c07',document.querySelectorAll('.nb')[4])">
+      <div class="ico">🌿</div><h3>CH07 長期照護倫理議題</h3>
+      <p>長照倫理・身體約束・老人受虐・法律規範</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c08m)" onclick="go('c08',document.querySelectorAll('.nb')[5])">
+      <div class="ico">⚕️</div><h3>CH08 瀕死與死亡倫理</h3>
+      <p>自然死・自殺處遇・安樂死・安寧療護</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c09m)" onclick="go('c09',document.querySelectorAll('.nb')[6])">
+      <div class="ico">🔬</div><h3>CH09 人體試驗倫理</h3>
+      <p>紐倫堡宣言・赫爾辛基・IRB・新藥試驗</p>
+    </div>
+    <div class="ovcard" style="border-top-color:var(--c10m)" onclick="go('c10',document.querySelectorAll('.nb')[7])">
+      <div class="ico">🫀</div><h3>CH10 器官移植與HIV</h3>
+      <p>Opt-in/Opt-out・腦死判定・器官分配・HIV倫理</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:14px">📊 七章主題與倫理原則對應</h3>
+    <table class="tbl">
+      <thead><tr style="background:var(--ink);color:#fff"><th>章節</th><th>核心主題</th><th>主要倫理原則</th><th>關鍵法規/宣言</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CH04</strong></td><td>生殖科技（基因/人工生殖/代孕/墮胎）</td><td>自主、不傷害、公平</td><td>人工生殖法、優生保健法</td></tr>
+        <tr><td><strong>CH05</strong></td><td>兒科倫理（最佳利益/贊同權）</td><td>最佳利益準則、行善</td><td>兒童權利公約、CAPTA</td></tr>
+        <tr><td><strong>CH06</strong></td><td>精神科（思覺失調症/強制醫療）</td><td>自主、君父主義、正義</td><td>精神衛生法（2024）</td></tr>
+        <tr><td><strong>CH07</strong></td><td>長期照護（身體約束/老人受虐）</td><td>自主性、隱私性、統整性</td><td>老人福利法§41-43</td></tr>
+        <tr><td><strong>CH08</strong></td><td>瀕死死亡（安樂死/安寧療護）</td><td>自主、行善、不傷害</td><td>安寧緩和醫療條例、病主法</td></tr>
+        <tr><td><strong>CH09</strong></td><td>人體試驗（倫理審查/新藥試驗）</td><td>自主同意、風險最小化、公平</td><td>紐倫堡宣言、赫爾辛基宣言、人體研究法</td></tr>
+        <tr><td><strong>CH10</strong></td><td>器官移植與HIV（捐贈/腦死/隱私）</td><td>自主、行善、公平</td><td>人體器官移植條例、HIV防治條例</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ CH04 生殖科技 ══ -->
+<div class="sw" id="sw-c04"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c04l)">🧬</div>
+    <div class="sti"><h2 style="color:var(--c04)">CH04 生殖科技倫理議題</h2><p>基因工程 | 人工協助生殖 | 代理孕母 | 墮胎議題</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'04a')">🧬 基因工程</button>
+    <button class="tb" onclick="st(this,'04b')">🍼 人工生殖</button>
+    <button class="tb" onclick="st(this,'04c')">🤱 代理孕母</button>
+    <button class="tb" onclick="st(this,'04d')">⚖️ 墮胎議題</button>
+  </div>
+
+  <!-- 04a 基因工程 -->
+  <div class="tc on" id="04a">
+    <div class="cb" style="border-color:var(--c04m)">
+      <div class="lb" style="color:var(--c04m)">4-1 基因遺傳工程倫理議題</div>
+      <h3>基因科技帶來的倫理衝擊</h3>
+      <p>生殖科技的發展帶給人們對生命新的認知，而新的認知往往帶來對現有倫理價值新的衝擊與挑戰。基因(gene)是指遺傳物質，攜帶遺傳訊息，決定生物體特質。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid var(--c04m)">
+          <h3>🔬 人類基因科技六大類</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c04m)">1</div><div class="sbody"><h4>基因圖譜（Mapping）</h4><p>繪製人類完整基因組圖譜，奠定基因醫學基礎。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">2</div><div class="sbody"><h4>遺傳基因檢測</h4><p>六大範疇：天賦潛能、慢性遺傳病、一般健康、特殊體質、癌症、罕見疾病。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">3</div><div class="sbody"><h4>基因治療（Gene Therapy）</h4><p>透過修正缺陷基因來治療疾病，分體細胞與生殖細胞治療。<strong style="color:#dc2626">臺灣禁止生殖細胞基因治療</strong>。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">4</div><div class="sbody"><h4>人造組織與器官</h4><p>三類：機械性人造器官、半機械半生物性、生物性人造器官。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">5</div><div class="sbody"><h4>基因改造食品（GMO）</h4><p>卡塔赫那生物安全議定書（2003）為主要國際規範，對簽約國具法律約束力。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">6</div><div class="sbody"><h4>基因編輯</h4><p>CRISPR技術可精確編輯基因組，引發深遠的倫理爭議。</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid #7c3aed;margin-bottom:12px">
+          <h3>🐑 複製技術里程碑</h3>
+          <div class="hb inf"><div class="hi">📅</div><div class="hc">
+            <h4>1997年 桃莉羊誕生</h4>
+            <p>魏爾米特(Ian Wilmut)自成熟母羊的乳房細胞複製出桃莉(Dolly)，在《Nature》宣告複製技術的重大突破。1998年1月12日，<strong>歐洲十九國簽約禁止複製人類</strong>，為世界首份強制性法律文件。</p>
+          </div></div>
+          <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+            <h4>複製人的倫理衝擊</h4>
+            <p>複製人涉及：①人類主體性與獨特性的喪失；②基因一致性降低物種多樣性；③對人性尊嚴的根本衝擊。臺灣《體細胞治療規範》明確禁止複製人類個體。</p>
+          </div></div>
+        </div>
+        <div class="card">
+          <h3>⚠️ 基因科技衍生之倫理問題</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:#dc2626">①</div><div class="sbody"><h4>基因轉殖安全性</h4><p>基因改造生物可能對生態系統與人體健康產生未知影響。</p></div></div>
+            <div class="step"><div class="snum" style="background:#dc2626">②</div><div class="sbody"><h4>遺傳資訊的心理與社會壓力</h4><p>得知自己具有遺傳病風險，可能造成心理負擔及就業/保險歧視。</p></div></div>
+            <div class="step"><div class="snum" style="background:#dc2626">③</div><div class="sbody"><h4>個人隱私 vs 家庭利益衝突</h4><p>基因訊息涉及血親，個人隱私保障可能與家庭成員知情權衝突。</p></div></div>
+            <div class="step"><div class="snum" style="background:#dc2626">④</div><div class="sbody"><h4>醫療資源分配與社會正義</h4><p>基因檢測費用昂貴，是否只有富裕者才能享有？基因歧視問題如何解決？</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📜 基因科技相關法律規範</h3>
+      <div class="g2">
+        <div>
+          <div style="font-weight:700;color:var(--c04);margin-bottom:8px;font-size:13.5px">🌐 國際規範</div>
+          <div class="law lawpur" style="margin-bottom:8px"><div class="li">📋</div><div class="lc"><h4>卡塔赫那生物安全議定書（2003）</h4><p>規範基因改造生物安全，對簽約國具<strong>法律拘束力</strong>。CODEX/FAO準則為軟性法律，不具拘束力。</p></div></div>
+          <div class="law lawpur"><div class="li">📜</div><div class="lc"><h4>《世界人類基因組暨人權宣言》</h4><p>第5條：嚴格評核潛在好處後才得進行基因研究；第10條：不得超過人的尊嚴、自由與人權；第12條：應以減輕痛苦改善健康為目的。</p></div></div>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--c04);margin-bottom:8px;font-size:13.5px">🇹🇼 臺灣相關法規</div>
+          <div class="law lawpur" style="margin-bottom:8px"><div class="li">🔬</div><div class="lc"><h4>基因治療人體試驗申請規範</h4><p>醫院申請須先通過院內IRB審查，再向衛福部提出人體試驗計畫書。</p></div></div>
+          <div class="law lawpur" style="margin-bottom:8px"><div class="li">🚫</div><div class="lc"><h4>體細胞治療規範</h4><p>臺灣絕對禁止進行影響人類生殖遺傳功能之細胞療法，及以任何方法複製人類個體。</p></div></div>
+          <div class="law lawpur"><div class="li">🧪</div><div class="lc"><h4>人類胚胎幹細胞研究倫理規範</h4><p>可使用：①自然流產胚胎；②合法人工流產胚胎；③人工生殖後剩餘胚胎（受精後未逾14天）。<strong>不得以複製人為研究目的</strong>。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04b 人工生殖 -->
+  <div class="tc" id="04b">
+    <div class="cb" style="border-color:var(--c04m)">
+      <div class="lb" style="color:var(--c04m)">4-2 人工協助生殖技術</div>
+      <h3>ART（Assisted Reproductive Technology）</h3>
+      <p>利用生殖醫學的協助，以非性交的人工方法達到受孕生育的目的。</p>
+    </div>
+    <div class="g2">
+      <div class="card" style="border-top:3px solid var(--c04m)">
+        <h3>🍼 三大人工生殖技術</h3>
+        <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb;margin-top:8px">
+          <thead><tr style="background:var(--c04);color:#fff"><th>技術</th><th>英文縮寫</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><strong>人工受精</strong></td><td>IUI</td><td>精液洗滌後注入子宮；分同體/異體兩種</td></tr>
+            <tr><td><strong>禮物嬰兒</strong></td><td>GIFT</td><td>輸卵管內精卵植入術；卵子取出後與精子混合放入輸卵管</td></tr>
+            <tr><td><strong>試管嬰兒</strong></td><td>IVF-ET</td><td>體外受精後胚胎植入；分同體/異體；ICSI為精卵顯微注射</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid #7c3aed;margin-bottom:12px">
+          <h3>📋 人工生殖法重點規定</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c04m)">適</div><div class="sbody"><h4>適用對象限制</h4><p>以<strong>夫妻</strong>為限（未婚、離婚、同性戀皆不適用）；夫妻一方須患不孕症或重大遺傳疾病。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">子</div><div class="sbody"><h4>子女法律地位</h4><p>妻以丈夫精子受胎所生之子女為婚生子女；使用他人捐精/捐卵所生者，亦「視為婚生子女」。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c04m)">保</div><div class="sbody"><h4>保密義務</h4><p>違反保密義務適用刑法第316條：處1年以下有期徒刑、拘役或罰金。</p></div></div>
+            <div class="step"><div class="snum" style="background:#dc2626">禁</div><div class="sbody"><h4>禁止商業行為</h4><p>人工生殖法第31條：意圖營利買賣生殖細胞或居間介紹，處2年以下有期徒刑。</p></div></div>
+          </div>
+        </div>
+        <div class="cc">
+          <div class="ch" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)" onclick="tog(this)">
+            <div class="chl"><span class="ctag">案例討論</span><h3>死後取精的倫理爭議</h3></div>
+            <button class="cto">▼</button>
+          </div>
+          <div class="cbody">
+            <div class="scen"><div class="sl">📖 案例背景（民國94年）</div>
+              <p>陸軍孫吉祥上尉意外身亡，女友及家屬希望取出精子進行試管嬰兒手術。衛福部原本禁止，後改變立場同意取出，但不允許進行人工生殖。</p>
+            </div>
+            <div class="ag">
+              <div class="ai"><div class="al" style="color:#059669">✅ 贊同死後取精</div><p style="font-size:13px">憲法保障人性尊嚴與人格權；個人對自身人格的發展有自決權；當事人生前可能有生育意願。</p></div>
+              <div class="ai"><div class="al" style="color:#dc2626">❌ 反對死後取精</div><p style="font-size:13px">死者無法養育子女，影響孩子人格發展；人工生殖法第21條規定生殖細胞提供者死亡應予銷毀；子女身分確認問題。</p></div>
+            </div>
+            <div class="res"><div class="rl">⚖️ 現行法律規定</div><p>人工生殖法第21條第2款：生殖細胞提供者死亡時應予銷毀，不得再使用進行人工生殖。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hb tip"><div class="hi">🤔</div><div class="hc">
+      <h4>「訂做寶寶」的倫理問題</h4>
+      <p>利用著床前基因診斷術(PGD)，可製造出HLA相符的「救命寶寶」為病兄姊捐贈骨髓——這是倫理上的合理選擇，還是將孩子工具化？請思考「行善原則」與「個人尊嚴」之間的張力。（參考電影《姐姐的守護者》）</p>
+    </div></div>
+  </div>
+
+  <!-- 04c 代理孕母 -->
+  <div class="tc" id="04c">
+    <div class="cb" style="border-color:var(--c04m)">
+      <div class="lb" style="color:var(--c04m)">4-3 代理孕母（Surrogate Motherhood）</div>
+      <h3>代孕的倫理爭議與法制</h3>
+      <p>代理孕母係指代替、取代母職的懷孕過程，依胎兒與孕母血緣分為：<strong>有血緣（基因型）</strong>代理孕母與<strong>無血緣（妊娠型）</strong>代理孕母。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>⚖️ 四大倫理原則分析</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c04m)">自</div><div class="sbody"><h4>自主原則</h4><p>①代孕者的自主權：是否出於真正自願？②子女的自主權：孩子無法自己決定是否被代孕。③資訊的自主權：所有相關方須充分知情。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c04m)">不</div><div class="sbody"><h4>不傷害原則</h4><p>代孕者風險：懷孕生產的身體與心理風險；嬰兒風險：可能因基因或法律糾紛受害。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c04m)">善</div><div class="sbody"><h4>行善原則</h4><p>不孕者的希望：可能是唯一懷抱自己基因孩子的方式；代孕者的回饋：協助他人成家立業的利他動機。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c04m)">公</div><div class="sbody"><h4>公平正義原則</h4><p>①是否造成權力不平衡（富裕委託者 vs 弱勢代孕者）？②是否只有富人才能負擔代孕費用？③女性生殖功能是否商品化？</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c04m);margin-bottom:12px">
+          <h3>🌍 各國代孕法制比較</h3>
+          <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb;font-size:12.5px">
+            <thead><tr style="background:var(--c04);color:#fff"><th>政策</th><th>代表國家</th></tr></thead>
+            <tbody>
+              <tr><td>完全禁止（有刑事懲罰）</td><td>多數西方國家</td></tr>
+              <tr><td>允許利他型（禁商業型）</td><td>法國、希臘、英國、加拿大</td></tr>
+              <tr><td>允許商業型代孕</td><td>印度（生產後法律關係自動消失）</td></tr>
+              <tr><td>有條件開放（設倫理委員會審查）</td><td>南非、英國、阿根廷</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>🇹🇼 臺灣代孕法制現況</h3>
+          <div class="hb inf"><div class="hi">📋</div><div class="hc">
+            <h4>2004年公民共識</h4>
+            <p>台大社會系「公民共識會議」達成「有條件開放代孕」共識：限已婚夫妻、雙方精卵須有受孕能力、代孕者限本國籍、<strong>必須無償</strong>。</p>
+          </div></div>
+          <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+            <h4>目前仍未立法</h4>
+            <p>2006年完成《代孕生殖法草案》，2012年再次公民審議，但因爭議持續，<strong>草案至今未送立法院</strong>。</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04d 墮胎 -->
+  <div class="tc" id="04d">
+    <div class="cb" style="border-color:var(--c04m)">
+      <div class="lb" style="color:var(--c04m)">4-4 墮胎的議題</div>
+      <h3>人工流產的法律與倫理</h3>
+      <p>「人工流產」是合法醫療技術；「墮胎」在刑法定義為罪。《優生保健法》實施後提供合法人工流產管道，並以「人工流產」取代「墮胎」稱謂。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid #dc2626;margin-bottom:12px">
+          <h3>⚖️ 兩大對立立場</h3>
+          <div class="hb red"><div class="hi">❤️</div><div class="hc">
+            <h4>親生存派（Pro-Lifers）</h4>
+            <p>胚胎自受孕即有生命權，國家有義務保護；胎兒是有尊嚴的人，不可剝奪其生命。主張禁止或嚴格限制人工流產。</p>
+          </div></div>
+          <div class="hb pur"><div class="hi">👩</div><div class="hc">
+            <h4>親抉擇派（Pro-Choicers）</h4>
+            <p>女性對自己身體有自主權；強迫懷孕侵害女性隱私權、身體完整性與平等權。主張女性有權決定是否終止妊娠。</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">⚖️</div><div class="hc">
+            <h4>漸進主義者（Gradualists）</h4>
+            <p>胎兒的道德地位隨發育進展而增加，早期流產較晚期流產在道德上更可接受。美國羅伊訴韋德案（1973）即採此邏輯（後已於2022年推翻）。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c04m)">
+          <h3>🇹🇼 臺灣法律規定</h3>
+          <div class="law lawgreen" style="margin-bottom:8px"><div class="li">📋</div><div class="lc"><h4>優生保健法第9條：合法人工流產6款條件</h4>
+            <ol style="font-size:13px;padding-left:14px;line-height:1.9">
+              <li>本人或配偶患有礙優生遺傳性/傳染性/精神疾病</li>
+              <li>四親等內血親患有礙優生遺傳性疾病</li>
+              <li>有醫學理由致懷孕/分娩危及生命</li>
+              <li>醫學上認定胎兒有畸形發育之虞</li>
+              <li>因被強制性交、誘姦或非法相姦而受孕</li>
+              <li>因懷孕或生產將影響心理健康或家庭生活</li>
+            </ol>
+          </div></div>
+          <div class="hb wrn"><div class="hi">⏱️</div><div class="hc">
+            <h4>施行時間限制</h4>
+            <p>優生保健法施行細則第15條：人工流產應於<strong>妊娠24週內</strong>施行。但屬醫療行為者不在此限。</p>
+          </div></div>
+          <div class="hb inf"><div class="hi">💡</div><div class="hc">
+            <h4>刑法第288-292條（墮胎罪）</h4>
+            <p>自行墮胎最重6月以下有期徒刑；受囑託墮胎最重2年；意圖營利最重5年。優生保健法在特定條件下豁免刑責。</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH05 兒科倫理 ══ -->
+<div class="sw" id="sw-c05"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c05l)">👶</div>
+    <div class="sti"><h2 style="color:var(--c05)">CH05 兒科的倫理議題</h2><p>兒童人權 | 最佳利益準則 | 新生兒議題 | 贊同權</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'05a')">👶 兒童人權</button>
+    <button class="tb" onclick="st(this,'05b')">⚖️ 最佳利益</button>
+    <button class="tb" onclick="st(this,'05c')">🏥 新生兒議題</button>
+    <button class="tb" onclick="st(this,'05d')">🤝 贊同權</button>
+  </div>
+
+  <!-- 05a 兒童人權 -->
+  <div class="tc on" id="05a">
+    <div class="cb" style="border-color:var(--c05m)">
+      <div class="lb" style="color:var(--c05m)">5-1 兒童之人權</div>
+      <h3>從財產到主體：兒童人權的演進</h3>
+      <p>過去社會公認兒童是父母或監護人的<strong>財產</strong>，使父母擁有最大權力替兒童做決定。20世紀後，兒童基本權益才開始受到保護。</p>
+    </div>
+    <div class="card">
+      <h3>📜 兒童人權重要里程碑</h3>
+      <div class="steps">
+        <div class="step"><div class="snum" style="background:var(--c05m)">1924</div><div class="sbody"><h4>日內瓦兒童權利宣言</h4><p>第五屆國際聯盟大會發表，兒童基本權益首次受到國際保護。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c05m)">1989</div><div class="sbody"><h4>聯合國兒童權利公約（CRC）</h4><p>明確規定兒童享有自我決定、受尊重、尊嚴、不受干擾、告知後決定的權利。定義：<strong>未滿18歲者</strong>為兒童。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c05m)">2021</div><div class="sbody"><h4>臺灣《兒童及少年福利與權益保障法》修正</h4><p>兒童（未滿12歲）、少年（12-18歲）均受法律明文保障。</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05b 最佳利益 -->
+  <div class="tc" id="05b">
+    <div class="cb" style="border-color:var(--c05m)">
+      <div class="lb" style="color:var(--c05m)">5-2 最佳利益準則（The Best-Interests Standard）</div>
+      <h3>代理決策的核心準則</h3>
+      <p>最佳利益準則使父母不能虐待、忽略與危害兒童，也使專業人員可協助代理決策者替缺乏決策能力者做出適當決定。<strong>不僅適用於兒童，也適用於各年齡無能力者</strong>。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>✅ 合理決策的三項原則</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c05m)">1</div><div class="sbody"><h4>客觀科學判斷</h4><p>基於客觀科學、醫學與合理理由，權衡利與弊，<strong>最大化整體長期利益、最小化負擔</strong>。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">2</div><div class="sbody"><h4>符合道德、社會、法律最低標準</h4><p>決策需符合道德與法律上最低限度可接受的照護與治療。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">3</div><div class="sbody"><h4>符合職責義務</h4><p>決策者所做決定必須符合其在道德與法律上的職責。</p></div></div>
+        </div>
+        <div class="hb tip" style="margin-top:10px;margin-bottom:0"><div class="hi">💡</div><div class="hc">
+          <h4>重要提醒：生活品質判定</h4>
+          <p>最佳利益準則的決策是對<strong>個人生活品質的判定</strong>，而非「為了他人而活」的價值判斷。</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="cc">
+          <div class="ch" style="background:linear-gradient(135deg,#075985,#0284c7)" onclick="tog(this)">
+            <div class="chl"><span class="ctag">歷史案例</span><h3>Hopkins案例（1971）</h3></div><button class="cto">▼</button>
+          </div>
+          <div class="cbody">
+            <div class="scen"><div class="sl">📖 案例</div><p>影片《誰應該存活？》中，2名唐氏症合併十二指腸閉鎖嬰兒，因父母考量心智遲緩且認為父母有權決定孩子生死，拒絕手術，嬰兒因無法進食死亡。</p></div>
+            <div class="res"><div class="rl">倫理分析</div><p>當時社會對殘障生命價值的歧視影響了這個決策。現今最佳利益準則要求基於孩子的最大利益（唐氏症兒童可透過手術存活），而非預設其生命沒有價值。</p></div>
+          </div>
+        </div>
+        <div class="cc" style="margin-top:12px">
+          <div class="ch" style="background:linear-gradient(135deg,#075985,#0284c7)" onclick="tog(this)">
+            <div class="chl"><span class="ctag">歷史案例</span><h3>Baby Doe案例（1982）</h3></div><button class="cto">▼</button>
+          </div>
+          <div class="cbody">
+            <div class="scen"><div class="sl">📖 案例</div><p>Baby Doe患唐氏症合併食道氣管瘻管。父母拒絕手術，法院支持父母決定，嬰兒死亡。</p></div>
+            <div class="res"><div class="rl">法律回應</div><p>美國通過《兒童虐待修正案（CAPTA）》，規定1歲以下嬰兒須盡可能接受維生治療，除非：①無清醒可能之昏迷；②醫療只能延緩死亡；③治療無效且不人道。但此法也導致過度醫療問題。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05c 新生兒議題 -->
+  <div class="tc" id="05c">
+    <div class="cb" style="border-color:var(--c05m)">
+      <div class="lb" style="color:var(--c05m)">5-3 新生兒與嬰兒健康照護的議題</div>
+      <h3>新生兒復甦術的倫理決策</h3>
+      <p>是否積極救治新生兒或嬰兒，必須依照出生後狀況評估，並與父母深入討論後決定。<strong>不予（withhold）與撤除（withdraw）維生措施，在倫理上是同等且合理的</strong>。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📋 新生兒復甦術指引演進</h3>
+        <div class="hb inf"><div class="hi">📅</div><div class="hc">
+          <h4>2010年舊版指引（已修改）</h4>
+          <p>不啟動CPR的三族群：①妊娠週數小於23週或體重小於400克；②無腦症；③確診13號染色體症候群。</p>
+        </div></div>
+        <div class="hb ok"><div class="hi">📅</div><div class="hc">
+          <h4>2021年新版指引（現行）</h4>
+          <p>刪除三族群建議，改為三項原則：</p>
+          <ol style="font-size:13px;padding-left:14px;margin-top:6px;line-height:1.9">
+            <li>不予或中斷維生措施在倫理上是<strong>同等且合理的</strong></li>
+            <li>CPR超過20分鐘仍無心跳，需與家庭討論終止</li>
+            <li>生存危機時，經專家與父母共同決策，限度復甦術是合理的</li>
+          </ol>
+        </div></div>
+      </div>
+      <div class="card">
+        <h3>🤝 共享決策（SDM）的倫理程序</h3>
+        <p style="font-size:13px;color:#374151;margin-bottom:12px">嬰兒倫理決策模式七大步驟：</p>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c05m)">1</div><div class="sbody"><p>描述嬰兒的醫療照護資訊與社會狀態</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">2</div><div class="sbody"><p>全面性評估</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">3</div><div class="sbody"><p>發展三個不同的決策情境（替代方案）</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">4</div><div class="sbody"><p>參與照護的專業人員產生共識</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">5</div><div class="sbody"><p>規劃如何與父母進行討論</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">6</div><div class="sbody"><p>與父母討論</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">7</div><div class="sbody"><p>評值</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05d 贊同權 -->
+  <div class="tc" id="05d">
+    <div class="cb" style="border-color:var(--c05m)">
+      <div class="lb" style="color:var(--c05m)">5-4 兒童與青少年醫療照護之倫理議題</div>
+      <h3>贊同權（Assent）—兒童的醫療參與權</h3>
+      <p>取得兒童之<strong>贊同(assent)</strong>是治療照護過程的必要步驟，目的是瞭解孩子是否願意接受即將發生的治療，以及對治療選擇的偏好。贊同≠同意(consent)。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📜 贊同權的起源</h3>
+        <div class="hb inf"><div class="hi">📅</div><div class="hc">
+          <h4>1977年美國國家委員會報告</h4>
+          <p>首次提出兒童應被視為<strong>獨立個體</strong>，其意願與偏好需被瞭解與尊重，參與研究與否需取得兒童贊同。</p>
+        </div></div>
+        <div class="hb tip"><div class="hi">💡</div><div class="hc">
+          <h4>贊同 vs 同意 的區別</h4>
+          <p>兒童就算無法完全瞭解治療資訊，仍具備足夠能力決定是否接受治療，特別是對<strong>沒有直接利益</strong>的治療或研究——此時贊同更為重要。</p>
+        </div></div>
+      </div>
+      <div class="card">
+        <h3>✅ 取得兒童贊同的七大步驟</h3>
+        <p style="font-size:13px;color:#374151;margin-bottom:12px">（Bartholome, 1995）</p>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c05m)">1</div><div class="sbody"><p>以符合兒童發展能力的方式瞭解自己的疾病狀態</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">2</div><div class="sbody"><p>告知兒童將經歷的檢驗與治療程序</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">3</div><div class="sbody"><p>評估兒童對說明內容的瞭解程度</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">4</div><div class="sbody"><p>確認是否存在脅迫兒童接受治療的不適當壓力</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">5</div><div class="sbody"><p>取得兒童接受治療意願的表達</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">6</div><div class="sbody"><p>若父母與孩子偏好衝突，可尋求<strong>兒科倫理委員會</strong>協助</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c05m)">7</div><div class="sbody"><p>仍無法達成協議，可能需要正式的法律程序裁決</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🏥 兒科倫理委員會</h3>
+      <div class="g2">
+        <div class="hb inf"><div class="hi">📅</div><div class="hc">
+          <h4>起源：1982年Baby Doe事件</h4>
+          <p>（倫理委員會整體緣起於1976年美國Karen Quinlan植物人事件）</p>
+        </div></div>
+        <div class="hb ok"><div class="hi">✅</div><div class="hc">
+          <h4>委員會特性</h4>
+          <p>獨立(Independent)、多元(Pluralistic)、多學科(Multidisciplinary)；具備倫理訓練；成員盡量不隸屬同一機構；以個案最佳利益做建議。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH06 精神科 ══ -->
+<div class="sw" id="sw-c06"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c06l)">🧠</div>
+    <div class="sti"><h2 style="color:var(--c06)">CH06 精神科的倫理議題</h2><p>倫理概論 | 思覺失調症 | 強制醫療 | 資源分配</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'06a')">📚 倫理概論</button>
+    <button class="tb" onclick="st(this,'06b')">🧬 思覺失調症</button>
+    <button class="tb" onclick="st(this,'06c')">⚕️ 強制醫療</button>
+    <button class="tb" onclick="st(this,'06d')">⚖️ 資源分配</button>
+  </div>
+
+  <!-- 06a 倫理概論 -->
+  <div class="tc on" id="06a">
+    <div class="cb" style="border-color:var(--c06m)">
+      <div class="lb" style="color:var(--c06m)">6-1 成人與精神科倫理概論</div>
+      <h3>倫理與法律的四大差異</h3>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb">
+          <thead><tr style="background:var(--c06);color:#fff"><th>面向</th><th>法律</th><th>倫理</th></tr></thead>
+          <tbody>
+            <tr><td>規範對象</td><td>拘束人<strong>外在行為</strong></td><td>支配<strong>內在人心</strong></td></tr>
+            <tr><td>重點</td><td>權利與義務並重</td><td>重在<strong>義務</strong></td></tr>
+            <tr><td>產生方式</td><td>國家依法定程序</td><td>社群共識形成</td></tr>
+            <tr><td>制裁效果</td><td>國家制裁，<strong>明確有效</strong></td><td>個人良心/社群清議，<strong>效果模糊</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="hb tip" style="margin-top:12px;margin-bottom:0"><div class="hi">💡</div><div class="hc">
+          <h4>結論</h4>
+          <p>法律提供規範的<strong>最低標準</strong>；倫理則提供<strong>與法律相同或更高</strong>的標準。</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>📚 12種主要倫理學說</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12.5px">
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>目的論倫理學</strong><br>以結果/目的評判行為</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>義務論</strong><br>以義務本身評判行為</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>德行倫理學</strong><br>強調行為者品格美德</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>結果主義</strong><br>以後果評判行為對錯</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>直觀論</strong><br>道德直覺的判斷</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px"><strong>照顧倫理</strong><br>以關係與關懷為核心</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:8px" style="grid-column:span 2"><strong>原則主義</strong><br>自主、行善、不傷害、正義四大原則</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🔑 知情同意三要件</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c06m)">1</div><div class="sbody"><h4>同意能力（Competence）</h4><p>病人具有理解和決策的心智能力。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c06m)">2</div><div class="sbody"><h4>自願（Voluntary）</h4><p>無脅迫、誘惑或不當影響的自由決定。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c06m)">3</div><div class="sbody"><h4>充分告知（Full Disclosure）</h4><p>提供足夠資訊讓病人做出知情決定。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06b 思覺失調症 -->
+  <div class="tc" id="06b">
+    <div class="cb" style="border-color:var(--c06m)">
+      <div class="lb" style="color:var(--c06m)">6-2 思覺失調症之倫理議題</div>
+      <h3>思覺失調症（Schizophrenia）</h3>
+      <p>七成可能與遺傳有關，因此涉及是否對此類病人進行強制人工流產的倫理爭議。病人常因欠缺病識感而拒絕治療，引發自主能力、強制治療等倫理衝突。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>🧠 思覺失調症「4A」核心症狀</h3>
+        <div class="g2" style="gap:8px;margin-top:10px">
+          <div style="background:var(--c06l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;margin-bottom:6px">🔗</div><strong style="font-size:13px">思想聯結弛緩</strong><br><small style="color:#64748b">Loosening of Association</small></div>
+          <div style="background:var(--c06l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;margin-bottom:6px">🌀</div><strong style="font-size:13px">自閉式思考</strong><br><small style="color:#64748b">Autistic Thinking</small></div>
+          <div style="background:var(--c06l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;margin-bottom:6px">⚡</div><strong style="font-size:13px">矛盾情感</strong><br><small style="color:#64748b">Ambivalence</small></div>
+          <div style="background:var(--c06l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;margin-bottom:6px">😐</div><strong style="font-size:13px">不適當情感表現</strong><br><small style="color:#64748b">Inappropriate Affect</small></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c06m);margin-bottom:12px">
+          <h3>⚖️ 人工流產倫理：精神障礙者</h3>
+          <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+            <h4>兩大立場衝突</h4>
+            <p><strong>親生存派：</strong>胎兒有生命權，不因母親精神疾病而消失。<br>
+            <strong>親抉擇派：</strong>女性（即使精神障礙者）對自己身體有自主權。</p>
+          </div></div>
+          <div class="hb inf"><div class="hi">🔍</div><div class="hc">
+            <h4>精神障礙者能力評估步驟</h4>
+            <ol style="font-size:13px;padding-left:14px;line-height:1.9">
+              <li>引發期（The Trigger Phase）</li>
+              <li>實際支持期（Practical Support Phase）</li>
+              <li>診斷閾（Diagnostic Threshold）</li>
+              <li>評估期（Assessment Phase）</li>
+            </ol>
+          </div></div>
+        </div>
+        <div class="hb red"><div class="hi">🚫</div><div class="hc">
+          <h4>種族優生的歷史警示</h4>
+          <p>德國納粹「T-4行動」以「社會達爾文主義」為由屠殺精神障礙者。這種侵害人性尊嚴的行為<strong>嚴重違反不傷害原則</strong>。現代醫學倫理明確反對任何形式的種族優生政策。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06c 強制醫療 -->
+  <div class="tc" id="06c">
+    <div class="cb" style="border-color:var(--c06m)">
+      <div class="lb" style="color:var(--c06m)">6-3 強制醫療之倫理議題</div>
+      <h3>強制醫療：自主 vs 保護的張力</h3>
+      <p>強制醫療係違反個人意思令其接受治療。除精神衛生法外，傳染病防治法、HIV防治條例等亦有強制醫療規定。應在<strong>最小侵害原則</strong>下保障基本人權。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid var(--c06m);margin-bottom:12px">
+          <h3>🇹🇼 我國精神衛生法（2024施行新法）5大修正重點</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c06m)">1</div><div class="sbody"><h4>強化心理健康促進</h4><p>擴大適用範圍至一般民眾的心理健康服務。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c06m)">2</div><div class="sbody"><h4>積極布建社區支持資源</h4><p>強化社區心理衛生中心，提供多元化支持。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c06m)">3</div><div class="sbody"><h4>加強危機前端處理</h4><p>強化疑似病人通報與危機處理機制。</p></div></div>
+            <div class="step"><div class="snum" style="background:#dc2626">4</div><div class="sbody"><h4>強制住院改採<strong>法官保留</strong></h4><p>強制住院案件須經法院審理裁定，不再由審查會決定。緊急安置延長為<strong>7天</strong>，強制住院每次最多<strong>60天</strong>，<strong>延長以一次為限</strong>。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c06m)">5</div><div class="sbody"><h4>強化病人權益保障</h4><p>防止汙名化，刪除得以不告知病人方式進行強制社區治療的規定。</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>🇺🇸 美國強制社區治療（AOT）</h3>
+          <div class="hb inf"><div class="hi">📅</div><div class="hc">
+            <h4>起源：Kendra法案</h4>
+            <p>精神病人將Kendra推入紐約地下鐵被撞死，社會壓力促使立法設立「門診協助治療（AOT）」。</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">✅</div><div class="hc">
+            <h4>AOT四項基本特徵</h4>
+            <ol style="font-size:13px;padding-left:14px;line-height:1.9">
+              <li>治療以門診方式提供</li>
+              <li>治療由<strong>法院裁定</strong></li>
+              <li>治療必須為最小、必要限制</li>
+              <li>未遵醫囑本身不能作為住院或處罰理由</li>
+            </ol>
+          </div></div>
+        </div>
+        <div class="card" style="margin-top:0">
+          <h3>⚖️ 英國《精神能力法》五大原則</h3>
+          <ol style="font-size:13px;padding-left:14px;line-height:2;color:#374151">
+            <li>一個人應被<strong>推定為具有意思能力</strong>，除非被證明為否</li>
+            <li>不應遭受「不能做決定」之對待，除非已嘗試所有方法仍失敗</li>
+            <li>不因做出「不明智決定」就被判定為不能做所有決定</li>
+            <li>代理無能力之人，必須以其<strong>最佳利益</strong>行為</li>
+            <li>行動前必須考量是否能以<strong>最小限制自由</strong>的方式達成目的</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06d 資源分配 -->
+  <div class="tc" id="06d">
+    <div class="cb" style="border-color:var(--c06m)">
+      <div class="lb" style="color:var(--c06m)">6-4 資源分配之倫理議題</div>
+      <h3>精神科的分配正義</h3>
+      <p>分配正義在精神科分四個層次：①精神科vs其他科的資源分配；②精神科各資源間的分配；③不同疾病種類的分配；④對個別精神病人的資源分配。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>⚖️ 正義理論分類</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c06m)">交</div><div class="sbody"><h4>交換正義（Commutative Justice）</h4><p>公平的交換與契約關係。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c06m)">分</div><div class="sbody"><h4>分配正義（Distributive Justice）</h4><p>社會資源如何公平分配。羅爾斯：應對<strong>最弱勢族群有利</strong>。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c06m)">社</div><div class="sbody"><h4>社會正義（Social Justice）</h4><p>政治權利與公民權利的實質利益分配。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>🏷️ 汙名化（Stigma）的倫理問題</h3>
+          <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+            <h4>汙名化的影響</h4>
+            <p>社會汙名化精神疾病導致：①病人尊嚴受損；②資源分配不公平；③病人不願就醫，延誤治療。<strong>護理師應消除偏見，尊重社區生活型態的多元性，不得有差別待遇。</strong></p>
+          </div></div>
+        </div>
+        <div class="card">
+          <h3>🌏 澳洲維多利亞州《精神健康福祉法》（2022）13項倫理原則</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;font-size:12px">
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">①尊嚴與自主</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">②多元化照護</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">③最少限制</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">④支持性決定</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑤家庭和照顧者</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑥親身體驗</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑦健康需求</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑧<strong>危險尊嚴</strong></div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑨青少年福祉</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑩多元化</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑪性別安全</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px">⑫文化安全</div>
+            <div style="background:var(--c06l);border-radius:6px;padding:7px" style="grid-column:span 2">⑬受扶養者福祉</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH07 長期照護 ══ -->
+<div class="sw" id="sw-c07"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c07l)">🌿</div>
+    <div class="sti"><h2 style="color:var(--c07)">CH07 長期照護的倫理議題</h2><p>長照倫理 | 身體約束 | 老人受虐 | 法律規範</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'07a')">🌿 長照倫理</button>
+    <button class="tb" onclick="st(this,'07b')">🔗 身體約束</button>
+    <button class="tb" onclick="st(this,'07c')">⚠️ 老人受虐</button>
+    <button class="tb" onclick="st(this,'07d')">📜 法律規範</button>
+  </div>
+
+  <!-- 07a 長照倫理 -->
+  <div class="tc on" id="07a">
+    <div class="cb" style="border-color:var(--c07m)">
+      <div class="lb" style="color:var(--c07m)">7-1 長期照護的倫理</div>
+      <h3>老年化社會的長照倫理挑戰</h3>
+      <p>截至2023年底，臺灣65歲以上老人已有<strong>429萬人，占總人口近20%</strong>。身為護理人員，面對長期照護個案時，能夠兼顧身、心、靈需求，突破倫理困境，將是重要課題。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>📋 臺灣「長照人員守則」十條（2013）</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c07m)">01</div><div class="sbody"><p>尊重生命、愛惜生命、關懷生活品質</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">02</div><div class="sbody"><p>秉持愛心、耐心及專業知能，提供長照服務</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">03</div><div class="sbody"><p>本著平等精神、不分性別、年齡、宗教及種族等</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">04</div><div class="sbody"><p>注重服務對象的隱私，克盡保密責任</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">05</div><div class="sbody"><p>應與服務對象、家屬及其他相關人員溝通協調，共同致力於服務工作</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">06</div><div class="sbody"><p>應秉終身學習精神，持續充實專業知能，提升服務品質</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">07</div><div class="sbody"><p>應以服務對象之最佳利益為優先考量</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">08</div><div class="sbody"><p>提供服務應兼顧自身安全</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">09</div><div class="sbody"><p>應遵守法規，秉持誠實信用原則提供服務</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">10</div><div class="sbody"><p>以當責態度，維護社會公義，增進長照整體利益</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>🌿 護理人員對長照個案的五項倫理責任</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c07m)">1</div><div class="sbody"><h4>尊重個案自主權</h4><p>善盡告知說明義務</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">2</div><div class="sbody"><h4>遵守不傷害原則</h4><p>確保個案安全</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">3</div><div class="sbody"><h4>遵守行善原則</h4><p>以個案最佳利益做考量，搜集分析相關資訊</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">4</div><div class="sbody"><h4>確保長照資源的分配正義</h4><p>公平合理地分配有限資源</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">5</div><div class="sbody"><h4>重視生命價值原則</h4><p>尊重每位個案的生命尊嚴與獨特性</p></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🔍 三大倫理考量議題</h3>
+          <div class="hb ok"><div class="hi">🔓</div><div class="hc"><h4>自主性（Autonomy）</h4><p>住民應有權參與有關己身生命、健康的決定。護理人員有義務協助個案保有並增進自主性。</p></div></div>
+          <div class="hb ok"><div class="hi">🔒</div><div class="hc"><h4>隱私性（Privacy）</h4><p>別人不可接近個案，除非個案表達意願；必須留意私密與隱私的平衡點。</p></div></div>
+          <div class="hb ok"><div class="hi">🌟</div><div class="hc"><h4>統整性（Integrity）</h4><p>尊重與人格有關的個人存在經驗。良好照護應表現在尊重個案的統整性。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07b 身體約束 -->
+  <div class="tc" id="07b">
+    <div class="cb" style="border-color:var(--c07m)">
+      <div class="lb" style="color:var(--c07m)">7-2 身體約束的議題</div>
+      <h3>身體約束：複雜且多面向的問題</h3>
+      <p>護理人員可能出於預防跌倒或意外傷害而施加身體約束，但護理人員的內心折騰也不亞於個案。2006年美國有女孩因不當身體約束（俯臥2小時）窒息而死，英國亦有多起案例。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>⚖️ 四大倫理原則與身體約束</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:#d97706">善</div><div class="sbody"><h4>行善與不傷害原則</h4><p>若身體約束非為治療性且無法提升個案安寧感，此項措施毫無意義。文獻顯示約束可能導致窒息死亡與心理創傷，<strong>無法符合不傷害原則</strong>。</p></div></div>
+          <div class="step"><div class="snum" style="background:#d97706">自</div><div class="sbody"><h4>自主原則</h4><p>身體約束有違個案自主原則。執行前，得<strong>徵求個案同意</strong>，並應依充足知識確保符合個案最佳利益。</p></div></div>
+          <div class="step"><div class="snum" style="background:#d97706">公</div><div class="sbody"><h4>公平正義原則</h4><p>長照個案接受身體約束，是否有違公平正義？是否有合適的替代方案？值得進一步檢視。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>🌟 自立支援三原則（2011年自日本引進）</h3>
+          <div class="g3" style="gap:8px;margin-top:8px">
+            <div style="background:var(--c07l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:20px;margin-bottom:4px">🔓</div><strong style="font-size:13px">不約束</strong><br><small style="color:#065f46">Restraint-Free</small></div>
+            <div style="background:var(--c07l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:20px;margin-bottom:4px">🚫</div><strong style="font-size:13px">不尿布</strong><br><small style="color:#065f46">Diaper-Free</small></div>
+            <div style="background:var(--c07l);border-radius:8px;padding:12px;text-align:center"><div style="font-size:20px;margin-bottom:4px">🚶</div><strong style="font-size:13px">不臥床</strong><br><small style="color:#065f46">Bed-Free</small></div>
+          </div>
+          <div class="hb ok" style="margin-top:10px;margin-bottom:0"><div class="hi">📅</div><div class="hc">
+            <h4>政策里程碑</h4>
+            <p>2017年長照2.0將<strong>機構零約束</strong>納入政策目標；2018年自立支援納入長照補助項目。</p>
+          </div></div>
+        </div>
+        <div class="card">
+          <h3>✅ 減少身體約束的四項建議</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c07m)">一</div><div class="sbody"><h4>思索有無替代方案</h4><p>執行前應做周全性評估，提出約束替代方案。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">二</div><div class="sbody"><h4>提供在職教育訓練</h4><p>長照機構六項品質指標操作手冊（2009）包含約束主題。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">三</div><div class="sbody"><h4>清楚向家屬陳述風險</h4><p>邀約家屬共同討論，制訂個別化約束照護計畫。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">四</div><div class="sbody"><h4>邁向無約束照護</h4><p>「無約束（Restraint-Free）」代表長照品質的提升。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07c 老人受虐 -->
+  <div class="tc" id="07c">
+    <div class="cb" style="border-color:var(--c07m)">
+      <div class="lb" style="color:var(--c07m)">7-3 老人受虐的議題</div>
+      <h3>老人受虐：被低估的社會問題</h3>
+      <p>社區老人受虐率自0.2%上升至20.8%（黃，2010年跨國研究）。臺灣老人受虐通報比率僅0.26%（2023年），一般認為屬嚴重低估。加害者以家人最多（約2/3），老人受虐為必須正視的議題。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>📊 臺灣老人受虐七大類型</h3>
+          <div style="display:grid;gap:6px">
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">👊</span><div><strong>身體受虐</strong>：攻擊、毆打、不當身體限制</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">💊</span><div><strong>醫療受虐</strong>（臺灣特有分類）：拒絕或濫用醫療</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">😢</span><div><strong>心理／情緒受虐</strong>：言語傷害、威脅恐嚇</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">💰</span><div><strong>金錢濫用</strong>：未經同意使用財產</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">🙈</span><div><strong>照顧者疏忽</strong>：未提供必要照護</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">🧍</span><div><strong>自我疏忽</strong>：老人自己未能照顧自身</div></div>
+            <div style="background:var(--c07l);border-radius:7px;padding:10px;font-size:13px;display:flex;gap:8px;align-items:center"><span style="font-size:18px">🚫</span><div><strong>性侵害</strong>：任何非自願性接觸</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>⚠️ 老人受虐危險因素（11項警訊）</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12.5px;margin-top:8px">
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">年齡超過80歲</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">女性</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">自我照顧失能</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">失智與認知功能不全</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">憂鬱</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">社交隔離</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">受害者或照顧者有壓力</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">照顧者的問題</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">經濟受剝奪警訊</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">機構人力短缺</div>
+            <div style="background:#fff7ed;border-radius:5px;padding:7px">身體檢查疑似受虐跡象</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>📋 老人受虐通報程序</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c07m)">1</div><div class="sbody"><h4>確保安全</h4><p>若老人處於嚴重危險，應請求<strong>警方協助</strong>。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">2</div><div class="sbody"><h4>遵循通報程序</h4><p>向社會局（處）通報；隔離受虐老人與加害者。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">3</div><div class="sbody"><h4>社工資源轉介</h4><p>評估資源需求：安置住所、居家服務、支持團體。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">4</div><div class="sbody"><h4>通報以外的措施</h4><p>討論安全措施、提供法律資源、詳細記錄事實。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07d 法律規範 -->
+  <div class="tc" id="07d">
+    <div class="cb" style="border-color:var(--c07m)">
+      <div class="lb" style="color:var(--c07m)">老人受虐：法律規範</div>
+      <h3>老人福利法的法律保障</h3>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📜 老人福利法§41-43、§48</h3>
+        <div class="law lawgreen" style="margin-bottom:8px"><div class="li">§41</div><div class="lc"><h4>保護措施</h4><p>老人因直系血親卑親屬或扶養義務者有疏忽、虐待、遺棄等情事，致有生命、身體、健康或自由之危難，直轄市、縣市主管機關得依申請或職權予以適當短期保護及安置。</p></div></div>
+        <div class="law lawgreen" style="margin-bottom:8px"><div class="li">§43</div><div class="lc"><h4>責任通報</h4><p>醫事人員、社會工作人員等及其他執行老人福利業務之相關人員，於執行職務時知悉老人有疑似以上情況者，<strong>應通報當地主管機關</strong>。</p></div></div>
+        <div class="law lawgreen"><div class="li">§48</div><div class="lc"><h4>罰則</h4><p>老人福利機構有虐待、妨害老人身心健康或發現老人受虐事實未向主管機關通報者，處新臺幣<strong>6萬元以上30萬元以下罰鍰</strong>，再限期令其改善。</p></div></div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c07m);margin-bottom:12px">
+          <h3>⚖️ 老人受虐的倫理考量四面向</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c07m)">1</div><div class="sbody"><h4>醫療適應症（行善及不傷害）</h4><p>老人受虐個案目前呈現的身體問題為何？是否得連結其他醫療、社會資源，防個案再度受傷害？</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">2</div><div class="sbody"><h4>個案之喜好（尊重自主）</h4><p>任何醫療或處遇介入前，皆需告知個案。若照顧者就是施虐者，應另擇合適的照顧者。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">3</div><div class="sbody"><h4>生活品質（行善、不傷害、自主）</h4><p>連結適宜長照服務可改善身體狀況、減輕照顧者負擔；舉報可引進社會資源持續追蹤。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c07m)">4</div><div class="sbody"><h4>情境特徵（盡責與正義）</h4><p>考量老人受虐引發的家族議題、法律規定、文化價值觀及醫療資源。以<strong>個案長期利益</strong>為優先。</p></div></div>
+          </div>
+        </div>
+        <div class="hb ok"><div class="hi">🎯</div><div class="hc">
+          <h4>護理人員的雙重職責</h4>
+          <p>護理人員對老人受虐個案，既是<strong>法律上的責任通報者</strong>（老福法§43），也是<strong>倫理上的保護者</strong>——應整合醫療評估、安全保護、社會資源連結，以最佳利益為核心，從自我覺醒、自我反思中，正視老人受虐問題。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH08 瀕死 ══ -->
+<div class="sw" id="sw-c08"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c08l)">⚕️</div>
+    <div class="sti"><h2 style="color:var(--c08)">CH08 瀕死與死亡的倫理議題</h2><p>死亡相關倫理 | 自然死/自殺 | 安樂死 | 安寧療護</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'08a')">💭 死亡倫理</button>
+    <button class="tb" onclick="st(this,'08b')">🌿 自然死/自殺</button>
+    <button class="tb" onclick="st(this,'08c')">⚕️ 安樂死</button>
+    <button class="tb" onclick="st(this,'08d')">🕊️ 安寧療護</button>
+  </div>
+
+  <!-- 08a 死亡倫理 -->
+  <div class="tc on" id="08a">
+    <div class="cb" style="border-color:var(--c08m)">
+      <div class="lb" style="color:var(--c08m)">8-1 與死亡相關的倫理議題</div>
+      <h3>當儀器延續生命：誰來決定？</h3>
+      <p>「死」常常是人們最避諱談論的話題。「究竟是因為活著所以使用儀器？或是因為使用儀器所以活著？」護理人員如何協助個案及其至親，在面對生命末期時維護應有的尊嚴，使個案無憾、安詳迎接死亡？</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>🛡️ 自殺防治守門人（衛福部推動）</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c08m)">一問</div><div class="sbody"><h4>主動關懷積極傾聽（to ask）</h4><p>直接問：「你有沒有想要傷害自己？」，不必擔心觸碰禁忌。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">二應</div><div class="sbody"><h4>適當回應與支持陪伴（to respond）</h4><p>不批判、不辯論，表示理解與陪伴。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">三轉介</div><div class="sbody"><h4>資源轉介與持續關懷（to refer）</h4><p>連結精神科、心理諮商等專業資源，持續追蹤關懷。</p></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚕️ 醫護人員面對自殺個案的五步驟處遇</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c08m)">1</div><div class="sbody"><h4>確認病人當下的安全</h4><p>移除致命物品，評估危機程度。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">2</div><div class="sbody"><h4>決定處理的層級</h4><p>門診、住院或急診收治。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">3</div><div class="sbody"><h4>急性期安全計畫</h4><p>制訂具體的安全計畫。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">4</div><div class="sbody"><h4>確認要處理的部分</h4><p>解決引發自殺意念的核心問題。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c08m)">5</div><div class="sbody"><h4>提供接續的追蹤與評估</h4><p>定期評估風險，持續支持。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08b 自然死/自殺 -->
+  <div class="tc" id="08b">
+    <div class="cb" style="border-color:var(--c08m)">
+      <div class="lb" style="color:var(--c08m)">8-2 自然死、自殺的定義</div>
+      <h3>從自然死到自殺的光譜</h3>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:3px solid var(--c08m);margin-bottom:12px">
+          <h3>🌿 自然死（Natural Death）</h3>
+          <div class="hb ok"><div class="hi">💡</div><div class="hc">
+            <h4>定義</h4>
+            <p>在沒有意外或人為干涉的情形下，人們按照自己的天年，以自然的方式走完生命的漩渦。<strong>最常見形式：在睡夢中過世</strong>。</p>
+          </div></div>
+          <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+            <h4>高科技維生醫療之末期死亡 ≠ 自然死</h4>
+            <p>若有一段時間只是「有生命跡象」的日子（無療效），最後死亡，這是<strong>高科技維生醫療之末期死亡</strong>，而非真正意義的自然死。</p>
+          </div></div>
+          <div class="hb inf"><div class="hi">📜</div><div class="hc">
+            <h4>法律保障</h4>
+            <p>我國《安寧緩和醫療條例》旨在確保末期個案得以「自然死」。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>⚠️ 自殺（Suicide）</h3>
+          <p style="font-size:13.5px;color:#374151;margin-bottom:12px">Durkheim定義：「個體直接或間接地，以積極或消極的行為，導致自身死亡」。</p>
+          <div class="card" style="box-shadow:none;border:1px solid #e5e7eb;padding:12px">
+            <h4 style="font-size:13.5px;margin-bottom:8px">自殺嚴重程度光譜</h4>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:12.5px">
+              <div style="background:#fef9ec;border-radius:6px;padding:7px 10px">💭 自殺意念（Suicide Idea）</div>
+              <div style="background:#fef3c7;border-radius:6px;padding:7px 10px">⚠️ 自殺威脅/計畫（Threat/Plan）</div>
+              <div style="background:#fed7aa;border-radius:6px;padding:7px 10px">⚡ 自殺行為（Suicidal Act）</div>
+              <div style="background:#fecaca;border-radius:6px;padding:7px 10px">🔴 自殺企圖（Attempted Suicide）</div>
+              <div style="background:#fee2e2;border-radius:6px;padding:7px 10px;font-weight:700;color:#7f1d1d">💀 自殺身亡（Committed Suicide）</div>
+            </div>
+          </div>
+          <div class="hb inf" style="margin-top:10px;margin-bottom:0"><div class="hi">📋</div><div class="hc">
+            <h4>自殺企圖的重要性</h4>
+            <p>WHO特別指出，自殺企圖是預測未來是否再自殺的<strong>最良好變項</strong>，亦是重要警訊，值得特別注意與防範。</p>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08c 安樂死 -->
+  <div class="tc" id="08c">
+    <div class="cb" style="border-color:var(--c08m)">
+      <div class="lb" style="color:var(--c08m)">8-2/8-3 安樂死（Euthanasia）</div>
+      <h3>安樂死的四種類型</h3>
+      <p>安樂死字面意思是「好的死亡」。現代意義指：罹患無法忍受的痛苦或不治絕症，希望以人為方式提早結束生命。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📊 安樂死的四種排列組合</h3>
+        <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb;margin-top:8px">
+          <thead><tr style="background:var(--c08);color:#fff"><th>類型</th><th>說明</th><th>倫理爭議</th></tr></thead>
+          <tbody>
+            <tr><td><strong>自願而積極</strong></td><td>當事人請求，醫師主動執行致死行為</td><td>最具爭議，荷蘭/比利時等少數國家合法</td></tr>
+            <tr><td><strong>自願而消極</strong></td><td>當事人要求停止治療，自然死亡</td><td>與安寧療護有根本差異（安寧非此）</td></tr>
+            <tr><td><strong>非自願而消極</strong></td><td>無意願表達（昏迷/兒童），停止維生</td><td>需代理決策，依最佳利益判斷</td></tr>
+            <tr><td><strong>非自願而積極</strong></td><td>違反當事人意願的積極致死</td><td>道德上普遍不可接受，構成犯罪</td></tr>
+          </tbody>
+        </table>
+        <div class="hb inf" style="margin-top:10px;margin-bottom:0"><div class="hi">💡</div><div class="hc">
+          <h4>協助自殺 vs 安樂死的區別</h4>
+          <p><strong>協助自殺：</strong>醫師開立致命處方，由個案自行執行。<br><strong>安樂死：</strong>醫師開處方<em>且</em>親自執行致死藥劑注射。</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c08m);margin-bottom:12px">
+          <h3>🇳🇱 荷蘭安樂死法（2002年4月1日生效）</h3>
+          <p style="font-size:13px;color:#374151;margin-bottom:10px">世界第一個允許安樂死的國家，須符合以下六項條件：</p>
+          <ol style="font-size:13px;padding-left:16px;line-height:2;color:#374151">
+            <li>個案是<strong>自願且成熟思考</strong>後做出的請求</li>
+            <li>病況<strong>無治癒希望</strong>，且痛苦無法忍受</li>
+            <li>醫師需做詳盡<strong>病情告知</strong></li>
+            <li>醫師與個案討論過<strong>其他替代選擇</strong></li>
+            <li>至少向另一位獨立醫師<strong>委託諮詢</strong></li>
+            <li>依謹慎之醫療專業義務實施</li>
+          </ol>
+          <div class="hb wrn" style="margin-top:10px;margin-bottom:0"><div class="hi">⚠️</div><div class="hc">
+            <h4>年齡規定</h4>
+            <p>12-16歲需法定代理人同意；16歲以上可自行決定；16-18歲需告知父母參與討論，但父母反對時未成年個案意願優先。</p>
+          </div></div>
+        </div>
+        <div class="hb wrn"><div class="hi">🇹🇼</div><div class="hc">
+          <h4>臺灣現況</h4>
+          <p>安樂死目前在臺灣<strong>不為法律所允許</strong>，但《安寧緩和醫療條例》與《病人自主權利法》提供合法的善終管道。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08d 安寧療護 -->
+  <div class="tc" id="08d">
+    <div class="cb" style="border-color:var(--c08m)">
+      <div class="lb" style="color:var(--c08m)">安寧緩和醫療（Hospice Palliative Care）</div>
+      <h3>21世紀的新專業醫療</h3>
+      <p>安寧療護（Hospice Care）+ 緩和醫療（Palliative Medicine）= 安寧緩和照護，讓現代人在醫療發達的時代達到「善終與善生」。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>🕊️ 安寧緩和醫療的三大核心</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c08m)">1</div><div class="sbody"><h4>症狀控制</h4><p>積極緩解疼痛及其他不適症狀，提升生活品質。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c08m)">2</div><div class="sbody"><h4>告知與醫療決策討論</h4><p>協助個案和家屬瞭解病情，討論倫理抉擇。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c08m)">3</div><div class="sbody"><h4>提升社會心理與靈性生活品質</h4><p>照顧全人（身心靈）、全家、全程。</p></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>⚠️ 安寧療護的常見誤解</h3>
+          <div class="hb red"><div class="hi">❌</div><div class="hc">
+            <h4>誤解：簽署安寧意願書 = 放棄一切醫療</h4>
+            <p>這是<strong>嚴重錯誤認知</strong>！安寧療護給的是<strong>有效醫療</strong>（症狀控制、緩解化療等），堅決反對消極安樂死。</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">✅</div><div class="hc">
+            <h4>正確理解</h4>
+            <p>「預立安寧緩和醫療暨維生醫療抉擇意願書」只有在<strong>啟動安寧療護的時間點後</strong>才生效。因非末期因素突發惡化時，仍應給予適當醫療。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c08m);margin-bottom:12px">
+          <h3>📜 臺灣善終兩大專法</h3>
+          <div class="law lawblue" style="margin-bottom:8px"><div class="li">📋</div><div class="lc"><h4>安寧緩和醫療條例（民國89年）</h4><p>末期病人可簽署「預立安寧緩和醫療暨維生醫療抉擇意願書」表達善終意願；醫護人員尊重並依法執行。</p></div></div>
+          <div class="law lawblue"><div class="li">📋</div><div class="lc"><h4>病人自主權利法（亞洲第一）</h4><p>明訂病人對病情、醫療選項有<strong>知情之權利</strong>。當符合五款臨床條件時，得拒絕或接受持續醫療：末期病人、不可逆昏迷、永久植物人、極重度失智、其他公告情形。</p></div></div>
+        </div>
+        <div class="card">
+          <h3>🏥 安寧療護健保收案對象</h3>
+          <p style="font-size:13px;color:#374151;margin-bottom:8px">以末期疾病為主，包含：</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px">
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">癌症末期</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">漸凍人（末期運動神經元病）</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">失智症末期</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">心臟衰竭</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">慢性腎衰竭</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">慢性肝硬化</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">末期衰弱老人（111年新增）</span>
+            <span style="background:var(--c08l);border-radius:5px;padding:4px 9px">符合病主法第14條第1項第2-5款</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH09 人體試驗 ══ -->
+<div class="sw" id="sw-c09"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c09l)">🔬</div>
+    <div class="sti"><h2 style="color:var(--c09)">CH09 人體試驗的倫理議題</h2><p>概論 | 紐倫堡/赫爾辛基 | IRB審查 | 新藥試驗</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'09a')">🔬 概論</button>
+    <button class="tb" onclick="st(this,'09b')">📜 倫理宣言</button>
+    <button class="tb" onclick="st(this,'09c')">🏛️ IRB審查</button>
+    <button class="tb" onclick="st(this,'09d')">💊 新藥試驗</button>
+  </div>
+
+  <!-- 09a 概論 -->
+  <div class="tc on" id="09a">
+    <div class="cb" style="border-color:var(--c09m)">
+      <div class="lb" style="color:var(--c09m)">9-1 人體試驗概論</div>
+      <h3>人體試驗的全球化與護理角色</h3>
+      <p>疾病的全球化已造就全球化的人體試驗產業，需有放諸四海皆準的標準，以符合倫理要求，兼顧研究參與者的權利並避免傷害，研究結果才能造福人群。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>📋 人體試驗的五個研究階段</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c09m)">1</div><div class="sbody"><h4>界定試驗目的與假設</h4><p>確定研究問題、目的與研究假設。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">2</div><div class="sbody"><h4>研究設計，書寫計畫書</h4><p>設計方法學，完成IRB申請文件。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">3</div><div class="sbody"><h4>執行試驗</h4><p>招募研究參與者、執行介入措施、評估結果、協調監測、資料處理。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">4</div><div class="sbody"><h4>資料分析</h4><p>描述性統計、假設驗證、成效估計。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">5</div><div class="sbody"><h4>結論與發表</h4><p>將結果發表於科學期刊，應用於臨床。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c09m);margin-bottom:12px">
+          <h3>💊 人體試驗五大類型（NIH分類）</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c09m)">治</div><div class="sbody"><h4>治療性試驗</h4><p>測試新療法、藥物或器材的療效。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c09m)">預</div><div class="sbody"><h4>預防性試驗</h4><p>測試疾病預防措施的有效性。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c09m)">篩</div><div class="sbody"><h4>早期察覺/篩檢試驗</h4><p>評估篩檢工具的準確性。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c09m)">診</div><div class="sbody"><h4>診斷性試驗</h4><p>評估診斷方法的效度。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c09m)">生</div><div class="sbody"><h4>生活品質試驗</h4><p>評估照護介入對生活品質的影響。</p></div></div>
+          </div>
+        </div>
+        <div class="hb ok"><div class="hi">👩‍⚕️</div><div class="hc">
+          <h4>護理人員在人體試驗的角色</h4>
+          <p><strong>臨床研究護理師（CRN）：</strong>研究參與者相關照護的執行者<br>
+          <strong>臨床研究專員（CRA）：</strong>試驗品質之監測與維護者</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09b 倫理宣言 -->
+  <div class="tc" id="09b">
+    <div class="cb" style="border-color:var(--c09m)">
+      <div class="lb" style="color:var(--c09m)">人體試驗的倫理理念與宣言</div>
+      <h3>兩大宣言：人體試驗倫理的基石</h3>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:4px solid var(--c09m);margin-bottom:12px">
+          <h3>⚖️ 紐倫堡宣言（Nuremberg Code）</h3>
+          <div class="hb tip"><div class="hi">📅</div><div class="hc">
+            <h4>背景</h4>
+            <p>二次大戰後，針對納粹人體試驗暴行的反應所制定。確立兩大核心原則：</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">✅</div><div class="hc">
+            <h4>原則一：知情同意</h4>
+            <p>人體試驗<strong>必須使研究參與者知情並取得其同意</strong>——這是絕對必要的要件。</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">✅</div><div class="hc">
+            <h4>原則二：利益大於風險</h4>
+            <p>研究參與者獲得之<strong>研究利益必須大過研究風險</strong>。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:4px solid #d97706;margin-bottom:12px">
+          <h3>🌏 赫爾辛基宣言（Declaration of Helsinki）</h3>
+          <div class="hb inf"><div class="hi">📅</div><div class="hc">
+            <h4>1964年制定，最新版2013年（唯一官方版本）</h4>
+            <p>世界醫學會制定，明確指出所有包含人體組織或資料的人體試驗，皆需以此宣言做為<strong>倫理指導原則</strong>。臺灣衛福部即參酌此宣言。</p>
+          </div></div>
+        </div>
+        <div class="card">
+          <h3>🇹🇼 臺灣三大人體試驗法規比較</h3>
+          <table class="tbl" style="box-shadow:none;border:1px solid #e5e7eb;font-size:12.5px">
+            <thead><tr style="background:var(--c09);color:#fff"><th>法規</th><th>適用範疇</th><th>倫理原則</th></tr></thead>
+            <tbody>
+              <tr><td><strong>人體研究法</strong><br>（2011）</td><td>取得/調查/分析/運用人體檢體或個人生物行為資訊</td><td>尊重自主、風險利益平衡、最小侵害、公平分配</td></tr>
+              <tr><td><strong>醫療法+人體試驗管理辦法</strong></td><td>新醫療技術、新藥品、新醫療器材的試驗</td><td>尊重自主、健康權益保障、隱私保護</td></tr>
+              <tr><td><strong>人體生物資料庫管理條例</strong></td><td>Biobanking：人體生物資料庫設置與運用</td><td>尊重自主、行善/不傷害、公平正義</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09c IRB審查 -->
+  <div class="tc" id="09c">
+    <div class="cb" style="border-color:var(--c09m)">
+      <div class="lb" style="color:var(--c09m)">機構審查委員會（IRB）</div>
+      <h3>IRB：研究參與者的守護者</h3>
+      <p>IRB（Institutional Review Board）或REC（Research Ethics Committee）是公正且具有專業知識的第三者，替研究參與者做判斷；以委員會機制執行法律賦予的責任。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>✅ IRB核准人體試驗的七項準則</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c09m)">1</div><div class="sbody"><h4>風險最少化</h4><p>對研究參與者的風險必須減至最少。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">2</div><div class="sbody"><h4>風險不超過利益</h4><p>參與者承受的風險，最多只能與預期利益相當。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">3</div><div class="sbody"><h4>選樣機率均等</h4><p>對易受傷害族群（脆弱族群）應給予額外保護措施。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">4</div><div class="sbody"><h4>取得知情同意書</h4><p>除合乎免用同意書的狀況外，皆需取得同意書。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">5</div><div class="sbody"><h4>適時監測資料</h4><p>確保研究參與者安全的持續監測。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">6</div><div class="sbody"><h4>確保隱私與保密</h4><p>個人資料保密，保護參與者識別資訊。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">7</div><div class="sbody"><h4>陳述檢體使用方式</h4><p>清楚陳述檢體與剩餘檢體的使用及儲存方式。</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c09m);margin-bottom:12px">
+          <h3>📋 三種審查類型</h3>
+          <div class="hb ok"><div class="hi">✅</div><div class="hc"><h4>免除審查（Exempt Review）</h4><p>風險最低的研究，如使用既有資料的研究。</p></div></div>
+          <div class="hb tip"><div class="hi">⚡</div><div class="hc"><h4>簡易審查（Expedited Review）</h4><p>最小風險，但不符合免除審查條件。</p></div></div>
+          <div class="hb wrn"><div class="hi">🏛️</div><div class="hc"><h4>一般審查（Full-Board Review）</h4><p>超過最小風險，或涉及脆弱族群的研究。</p></div></div>
+        </div>
+        <div class="card">
+          <h3>⚠️ 嚴重不良事件（SAE）通報</h3>
+          <p style="font-size:13px;color:#374151;margin-bottom:8px">人體試驗期間發生以下情事應通報中央主管機關：</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px">
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">💀 死亡</span>
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">⚡ 危及生命</span>
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">♿ 永久性身心障礙</span>
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">👶 胎兒/新生兒畸形</span>
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">🏥 需住院或延長住院</span>
+            <span style="background:#fee2e2;border-radius:5px;padding:4px 9px">⚠️ 可能導致永久傷害的併發症</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09d 新藥試驗 -->
+  <div class="tc" id="09d">
+    <div class="cb" style="border-color:var(--c09m)">
+      <div class="lb" style="color:var(--c09m)">9-2 新藥試驗的議題</div>
+      <h3>新藥研發的六個階段</h3>
+    </div>
+    <div class="card">
+      <h3>💊 新藥研發流程（食藥署規範）</h3>
+      <table class="tbl" style="margin-top:10px;box-shadow:none;border:1px solid #e5e7eb">
+        <thead><tr style="background:var(--c09);color:#fff"><th>階段</th><th>內容</th><th>時間</th><th>受試人數</th></tr></thead>
+        <tbody>
+          <tr><td><strong>第一階段</strong></td><td>早期研究或實驗室試驗（安全性測試）</td><td>2-5年</td><td>-</td></tr>
+          <tr><td><strong>第二階段</strong></td><td>臨床前試驗或動物試驗（毒理藥理）</td><td>1-4年</td><td>-</td></tr>
+          <tr><td><strong>第三階段</strong></td><td>申請臨床人體試驗許可（IND申請）</td><td>-</td><td>-</td></tr>
+          <tr><td><strong>第四階段 Phase I</strong></td><td>人體藥理試驗（安全性、劑量）</td><td>約1年</td><td>20-80位健康志願者</td></tr>
+          <tr><td><strong>第四階段 Phase II</strong></td><td>療效探索試驗（有效性、副作用）</td><td>約2年</td><td>100-300位病人</td></tr>
+          <tr><td><strong>第四階段 Phase III</strong></td><td>療效確認試驗（安全性、有效性確認）</td><td>3-5年</td><td>1,000-3,000位病人</td></tr>
+          <tr><td><strong>第五階段</strong></td><td>藥物上市許可申請（NDA）</td><td>約2年</td><td>-</td></tr>
+          <tr><td><strong>第六階段</strong></td><td>上市後監測（追蹤長期影響）</td><td>持續</td><td>數百至數千人</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>⚖️ 臨床試驗倫理三要素</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c09m)">1</div><div class="sbody"><h4>保障研究參與者人權</h4><p>通過IRB審核、取得同意書、通報不良事件。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">2</div><div class="sbody"><h4>確認試驗結果可信度</h4><p>嚴格遵守試驗方案、正確完整記錄、藥物克責、定期監測。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c09m)">3</div><div class="sbody"><h4>研究參與者可以隨時撤回同意書</h4><p>參與者的自主權在研究開始後仍受保護。</p></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚠️ 利益衝突案例分析（典型）</h3>
+        <div class="scen"><div class="sl">📖 案例場景</div>
+          <p>研究者接受藥廠提供每收一位個案給付6,000元的條件，未填寫財務利益揭露單，收納不符合條件的研究參與者，且只通報10件應通報的80件嚴重不良事件。</p>
+        </div>
+        <div class="res"><div class="rl">✅ 倫理問題點</div>
+          <ol style="font-size:13px;padding-left:14px;line-height:1.9">
+            <li>需做<strong>財務利益揭露</strong>，否則構成利益衝突</li>
+            <li>收納不符合條件的參與者屬<strong>嚴重不遵從</strong></li>
+            <li>少報嚴重不良事件屬<strong>影響試驗成果的不遵從</strong></li>
+            <li>REC可能採取的行動：<strong>暫停或終止試驗</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ CH10 器官/HIV ══ -->
+<div class="sw" id="sw-c10"><div class="ca">
+  <div class="shd">
+    <div class="sico" style="background:var(--c10l)">🫀</div>
+    <div class="sti"><h2 style="color:var(--c10)">CH10 其他特殊倫理議題</h2><p>器官移植/捐贈 | 腦死判定 | 器官分配 | HIV倫理</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb on" onclick="st(this,'10a')">🫀 器官捐贈</button>
+    <button class="tb" onclick="st(this,'10b')">🧠 腦死判定</button>
+    <button class="tb" onclick="st(this,'10c')">⚖️ 器官分配</button>
+    <button class="tb" onclick="st(this,'10d')">🦠 HIV倫理</button>
+  </div>
+
+  <!-- 10a 器官捐贈 -->
+  <div class="tc on" id="10a">
+    <div class="cb" style="border-color:var(--c10m)">
+      <div class="lb" style="color:var(--c10m)">10-1 器官移植與器官捐贈議題</div>
+      <h3>器官捐贈的倫理複雜性</h3>
+      <p>器官捐贈所涉及的諸多倫理、法律、社會等錯綜複雜議題，皆挑戰了醫學倫理建構於<strong>行善、不傷害、個案自主、公平</strong>的原則。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:4px solid var(--c10m);margin-bottom:12px">
+          <h3>📋 Opt-in vs Opt-out 立法比較</h3>
+          <div class="g2" style="gap:10px;margin-top:10px">
+            <div style="background:var(--c10l);border-radius:8px;padding:14px">
+              <div style="font-weight:700;color:var(--c10);font-size:13.5px;margin-bottom:8px">🇹🇼 Opt-in Law（臺灣現行）</div>
+              <p style="font-size:13px;color:#374151">民眾<strong>自由選擇</strong>同意器官捐贈；需積極簽署捐贈意願卡或於健保卡登錄。</p>
+              <div style="margin-top:8px;font-size:12.5px;color:#9d174d">→ 捐贈率相對較低，仰賴勸募風氣</div>
+            </div>
+            <div style="background:#f0fdf4;border-radius:8px;padding:14px">
+              <div style="font-weight:700;color:#065f46;font-size:13.5px;margin-bottom:8px">🌍 Opt-out Law（部分國家）</div>
+              <p style="font-size:13px;color:#374151">國民死亡後<strong>預設同意</strong>捐贈，除非生前簽立拒絕書。</p>
+              <div style="margin-top:8px;font-size:12.5px;color:#065f46">→ 採用Opt-out的國家，器官捐贈風氣較盛</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🇺🇸 美國「Required Request」制度</h3>
+          <div class="hb inf"><div class="hi">📋</div><div class="hc">
+            <p>美國法律規定：個案在醫院臨終時，醫護人員<strong>依法必須</strong>向家屬提出器官捐贈之建議。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c10m);margin-bottom:12px">
+          <h3>⚖️ 活體捐贈的倫理考量</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c10m)">自主</div><div class="sbody"><h4>確保真正自由意志</h4><p>如何確保決定過程是在完全自由且資訊透明的情況下進行？捐贈者是否遭受家庭壓力？</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c10m)">無償</div><div class="sbody"><h4>器官捐贈是「利益持中」</h4><p>應是<strong>無償</strong>的，但也<strong>不應從中獲利</strong>。我國規定無條件無償捐贈，相關費用由全民健保給付。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c10m)">保密</div><div class="sbody"><h4>保護雙方資料</h4><p>捐贈與受贈雙方資料必須保密，由社工師擔任聯繫者。</p></div></div>
+          </div>
+        </div>
+        <div class="hb tip"><div class="hi">💡</div><div class="hc">
+          <h4>活體捐贈者的生活品質</h4>
+          <p>美國研究發現，活體肝臟捐贈者比起一般美國人口，生活品質各面向均有<strong>顯著提高</strong>（SF-36量表）。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10b 腦死判定 -->
+  <div class="tc" id="10b">
+    <div class="cb" style="border-color:var(--c10m)">
+      <div class="lb" style="color:var(--c10m)">腦死判定流程</div>
+      <h3>腦死：器官捐贈的法律前提</h3>
+      <p>腦死（腦幹死）判定通過，才能視同法律上的死亡，才可進行器官摘除。</p>
+    </div>
+    <div class="card">
+      <h3>🔄 器官捐贈標準流程</h3>
+      <div class="steps">
+        <div class="step"><div class="snum" style="background:var(--c10m)">1</div><div class="sbody"><h4>病人入住急診室/加護病房</h4><p>維持瀕臨腦死病人的生命徵象與器官功能。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c10m)">2</div><div class="sbody"><h4>第一次腦死判定</h4><p>由神經外科/神經內科等專科醫師進行。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c10m)">3</div><div class="sbody"><h4>聯絡器官移植小組</h4><p>移植醫院與非移植醫院無差別——第一次腦死判定後聯絡。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c10m)">4</div><div class="sbody"><h4>非疾病死亡者</h4><p>須聯絡檢察官與法醫相驗核准。</p></div></div>
+        <div class="step"><div class="snum" style="background:var(--c10m)">5</div><div class="sbody"><h4>第二次腦死判定</h4><p>通過後，視同腦幹死，才能入手術室摘除器官。</p></div></div>
+      </div>
+    </div>
+    <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+      <h4>腦死判定的倫理問題</h4>
+      <p>「腦死」在醫學上視同「死亡」，但家屬常難以接受「還有心跳卻已死亡」的概念。護理人員需要具備同理心與溝通技巧，協助家屬理解，同時尊重個案與家屬的自主權，不施壓要求捐贈。</p>
+    </div></div>
+  </div>
+
+  <!-- 10c 器官分配 -->
+  <div class="tc" id="10c">
+    <div class="cb" style="border-color:var(--c10m)">
+      <div class="lb" style="color:var(--c10m)">器官分配的倫理問題</div>
+      <h3>公平原則與器官分配</h3>
+      <p>器官分配原則通指在屍體（大愛）捐贈的分配。「捐贈器官是否應為無償」是核心倫理問題。</p>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>⚖️ 器官分配的公平原則</h3>
+        <div class="hb ok"><div class="hi">🇹🇼</div><div class="hc">
+          <h4>臺灣現行機制</h4>
+          <p>由<strong>財團法人器官捐贈移植登錄中心</strong>，依照相關法源進行各器官的分配與分享。器官捐贈家庭無法獲得任何實質好處，確保公平與正義原則。</p>
+        </div></div>
+        <div class="hb inf"><div class="hi">💰</div><div class="hc">
+          <h4>無償原則</h4>
+          <p>我國法律規定器官捐贈是<strong>無條件且無償</strong>之捐贈；捐贈相關醫療費用由全民健保給付；多數醫院提供喪葬補助費給捐贈者家屬。</p>
+        </div></div>
+        <div class="hb wrn"><div class="hi">⚠️</div><div class="hc">
+          <h4>商業化的倫理爭議</h4>
+          <p>器官買賣是否能增加器官來源？然而這可能導致剝削弱勢族群、破壞公平原則，全球大多數國家明令禁止。</p>
+        </div></div>
+      </div>
+      <div class="card">
+        <h3>🔬 器官分配倫理四大考量</h3>
+        <div class="steps">
+          <div class="step"><div class="snum" style="background:var(--c10m)">醫</div><div class="sbody"><h4>醫療需求</h4><p>等待最久、醫療最緊急的病人優先？</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c10m)">配</div><div class="sbody"><h4>組織相容性</h4><p>ABO血型、HLA配對程度影響移植成功率。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c10m)">機</div><div class="sbody"><h4>機會平等</h4><p>不應因財富、社會地位影響器官分配順序。</p></div></div>
+          <div class="step"><div class="snum" style="background:var(--c10m)">效</div><div class="sbody"><h4>整體效益最大化</h4><p>移植成功機率最高者優先，以確保器官最大效用？此與公平原則有時衝突。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10d HIV倫理 -->
+  <div class="tc" id="10d">
+    <div class="cb" style="border-color:var(--c10m)">
+      <div class="lb" style="color:var(--c10m)">10-2 HIV感染個案醫學倫理議題</div>
+      <h3>愛滋病倫理：零歧視與隱私保護</h3>
+      <p>截至2024年2月底，臺灣已通報<strong>46,063名</strong>HIV感染者。協助HIV感染者涉及複雜的醫療法律及醫學倫理議題，考驗政府與人民的應對方式。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="card" style="border-top:4px solid var(--c10m);margin-bottom:12px">
+          <h3>💊 治療進展</h3>
+          <div class="hb ok"><div class="hi">💊</div><div class="hc">
+            <h4>雞尾酒療法（HAART）</h4>
+            <p>組合至少三種抗愛滋藥物，有效控制血漿病毒量（PVL）、提高CD4淋巴球數。</p>
+          </div></div>
+          <div class="hb ok"><div class="hi">🎯</div><div class="hc">
+            <h4>U=U原則（Undetectable = Untransmittable）</h4>
+            <p>感染者穩定服藥，使血液中測不到病毒量（&lt;200 copies/ml），即<strong>不會藉由性行為傳播HIV</strong>。</p>
+          </div></div>
+          <div class="hb inf"><div class="hi">📊</div><div class="hc">
+            <h4>UNAIDS「90-90-90」目標（2020）</h4>
+            <p>①90%感染者知道自己的感染狀況；②90%確診者接受持續抗病毒治療；③90%接受治療者達到病毒受到抑制。2030年目標提升至95-95-95。</p>
+          </div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:3px solid var(--c10m);margin-bottom:12px">
+          <h3>🔐 HIV感染者隱私保護四步驟</h3>
+          <div class="steps">
+            <div class="step"><div class="snum" style="background:var(--c10m)">1</div><div class="sbody"><h4>告知前的評估與準備</h4><p>評估告知的時機、場合與對象。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c10m)">2</div><div class="sbody"><h4>運用同理心溝通</h4><p>以詳細、誠懇的關懷態度回應家屬。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c10m)">3</div><div class="sbody"><h4>告知醫療處置及後續轉介</h4><p>提供目前醫療處置與後續治療協助管道。</p></div></div>
+            <div class="step"><div class="snum" style="background:var(--c10m)">4</div><div class="sbody"><h4>確認理解程度並記錄</h4><p>確認家屬與個案對資訊的瞭解，記錄會談內容，持續追蹤。</p></div></div>
+          </div>
+        </div>
+        <div class="hb red"><div class="hi">⚠️</div><div class="hc">
+          <h4>針扎暴露的特殊規定</h4>
+          <p>依《人類免疫缺乏病毒傳染防治條例》：醫事人員或警消遭意外針扎、體液及血液暴露或咬傷時，<strong>可不需對方同意，立即採樣進行HIV檢測</strong>；應在<strong>暴露後72小時內</strong>給予預防性投藥（PEP）。</p>
+        </div></div>
+        <div class="hb ok"><div class="hi">🎯</div><div class="hc">
+          <h4>臺灣愛滋器官互捐（2018）</h4>
+          <p>鬆綁HIV感染者互捐器官的規定，領先東亞，在兼顧公平、倫理及人權原則下開放，為愛滋防治寫下重要里程碑。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ QUIZ ══ -->
+<div class="sw" id="sw-qz">
+  <div class="shd">
+    <div class="sico" style="background:#fef9ec">📝</div>
+    <div class="sti"><h2>測驗</h2><p>CH04-CH10 各章節自我評量</p></div>
+  </div>
+  <div class="qchnav">
+    <button class="qchbtn on" style="background:var(--c04m);color:#fff" onclick="showQz('qz04',this)">🧬 CH04</button>
+    <button class="qchbtn" onclick="showQz('qz05',this)">👶 CH05</button>
+    <button class="qchbtn" onclick="showQz('qz06',this)">🧠 CH06</button>
+    <button class="qchbtn" onclick="showQz('qz07',this)">🌿 CH07</button>
+    <button class="qchbtn" onclick="showQz('qz08',this)">⚕️ CH08</button>
+    <button class="qchbtn" onclick="showQz('qz09',this)">🔬 CH09</button>
+    <button class="qchbtn" onclick="showQz('qz10',this)">🫀 CH10</button>
+  </div>
+
+  <!-- CH04 Quiz -->
+  <div class="qsect on" id="qz04" data-ch="CH04 生殖科技倫理"></div>
+  <!-- CH05 Quiz -->
+  <div class="qsect" id="qz05" data-ch="CH05 兒科倫理議題"></div>
+  <!-- CH06 Quiz -->
+  <div class="qsect" id="qz06" data-ch="CH06 精神科倫理議題"></div>
+  <!-- CH07 Quiz -->
+  <div class="qsect" id="qz07" data-ch="CH07 長期照護倫理"></div>
+  <!-- CH08 Quiz -->
+  <div class="qsect" id="qz08" data-ch="CH08 瀕死死亡倫理"></div>
+  <!-- CH09 Quiz -->
+  <div class="qsect" id="qz09" data-ch="CH09 人體試驗倫理"></div>
+  <!-- CH10 Quiz -->
+  <div class="qsect" id="qz10" data-ch="CH10 器官移植與HIV"></div>
+</div>
+
+<!-- ══ DISCUSSION ══ -->
+<div class="sw" id="sw-disc">
+  <div class="shd">
+    <div class="sico" style="background:#f0f9ff">💬</div>
+    <div class="sti"><h2>問題討論</h2><p>CH04-CH10 倫理議題討論</p></div>
+  </div>
+
+  <!-- CH04 -->
+  <h3 style="color:var(--c04);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c04l);padding-bottom:6px">🧬 CH04 生殖科技倫理議題</h3>
+  <div class="disc" style="border-color:var(--c04m)">
+    <h4>1. 基因編輯技術（CRISPR）可以用來消除遺傳疾病，您認為其倫理界線在哪裡？「設計寶寶」是否可以接受？</h4>
+    <div class="hint">💡 提示：比較基因治療（somatic cell）與生殖細胞基因編輯的差異；思考行善原則（消除疾病）vs 公平原則（基因歧視）；臺灣現行法規的立場。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c04m)">
+    <h4>2. 代理孕母在臺灣至今未完成立法，您認為最核心的倫理障礙是什麼？應否開放？</h4>
+    <div class="hint">💡 提示：分析自主、不傷害、行善、公平四原則；比較有償vs無償代孕；考慮女性生殖功能商品化的問題。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c04m)">
+    <h4>3. 一位因被強制性交而懷孕的未婚婦女，希望進行人工流產，但其父母因宗教理由強烈反對。護理師應如何處理這個倫理困境？</h4>
+    <div class="hint">💡 提示：優生保健法第9條第5款（強制性交得合法流產）；尊重自主 vs 家庭關係；護理師的倫理義務。</div>
+  </div>
+
+  <!-- CH05 -->
+  <h3 style="color:var(--c05);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c05l);padding-bottom:6px;margin-top:20px">👶 CH05 兒科的倫理議題</h3>
+  <div class="disc" style="border-color:var(--c05m)">
+    <h4>4. 一位10歲的白血病兒童表示不願意再接受化療，但父母堅持要積極治療。如何在尊重兒童贊同權與父母決策權之間取得平衡？</h4>
+    <div class="hint">💡 提示：贊同(assent)vs同意(consent)；最佳利益準則的應用；兒科倫理委員會的角色；評估兒童的決策能力。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c05m)">
+    <h4>5. 一對極早產兒（23週，400克）的父母拒絕接受積極救治，堅持僅給予安撫照護。護理師與醫療團隊應如何回應？</h4>
+    <div class="hint">💡 提示：2021年新版新生兒復甦術指引的原則；最佳利益準則的應用；不予(withhold)與撤除(withdraw)的倫理同等性；共享決策的過程。</div>
+  </div>
+
+  <!-- CH06 -->
+  <h3 style="color:var(--c06);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c06l);padding-bottom:6px;margin-top:20px">🧠 CH06 精神科的倫理議題</h3>
+  <div class="disc" style="border-color:var(--c06m)">
+    <h4>6. 一位思覺失調症患者拒絕服藥，反覆住院，其家屬強烈要求進行強制社區治療。在倫理上，強制醫療的正當性如何評估？</h4>
+    <div class="hint">💡 提示：精神衛生法新法（2024）強制醫療改採法官保留；評估強制醫療的倫理正當性（最小侵害原則）；AOT的四項特徵。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c06m)">
+    <h4>7. 醫療資源分配上，精神科常被邊緣化，您認為「精神健康」是否應與「身體健康」享有同等的醫療資源？從正義理論如何論證？</h4>
+    <div class="hint">💡 提示：分配正義的四個層次；汙名化如何影響資源分配；羅爾斯的差異原則（對最弱勢族群有利）。</div>
+  </div>
+
+  <!-- CH07 -->
+  <h3 style="color:var(--c07);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c07l);padding-bottom:6px;margin-top:20px">🌿 CH07 長期照護的倫理議題</h3>
+  <div class="disc" style="border-color:var(--c07m)">
+    <h4>8. 護理之家的一位失智老人反覆嘗試離床跌倒，為了安全考量，護理師考慮使用身體約束。從四大倫理原則分析，這是否合理？</h4>
+    <div class="hint">💡 提示：自立支援三原則（不約束）；行善vs不傷害的張力；取代約束的替代方案有哪些？護理師的心理折騰。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c07m)">
+    <h4>9. 您在居家護理訪視中，發現一位80歲老人身上有不明傷痕，其成年子女聲稱是老人自己跌倒所致。您應如何處理？</h4>
+    <div class="hint">💡 提示：老人受虐七類型的判斷；老福法§43的強制通報義務；使用老人受虐篩檢表；通報後的後續措施；保護通報者。</div>
+  </div>
+
+  <!-- CH08 -->
+  <h3 style="color:var(--c08);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c08l);padding-bottom:6px;margin-top:20px">⚕️ CH08 瀕死與死亡的倫理議題</h3>
+  <div class="disc" style="border-color:var(--c08m)">
+    <h4>10. 一位末期癌症患者已簽署「預立安寧緩和醫療意願書」，但其子女強烈要求全力急救。護理師應如何應對？</h4>
+    <div class="hint">💡 提示：安寧緩和醫療條例的法律效力；消除「簽署意願書=放棄一切醫療」的誤解；安寧療護的有效醫療本質；與家屬的溝通策略。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c08m)">
+    <h4>11. 荷蘭安樂死合法化已超過20年，您認為臺灣是否應該立法允許自願安樂死？請從倫理與法律角度論述。</h4>
+    <div class="hint">💡 提示：安樂死的四種分類；荷蘭安樂死六大條件；臺灣病人自主權利法的替代方案；安寧療護作為消除安樂死動機的途徑。</div>
+  </div>
+
+  <!-- CH09 -->
+  <h3 style="color:var(--c09);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c09l);padding-bottom:6px;margin-top:20px">🔬 CH09 人體試驗的倫理議題</h3>
+  <div class="disc" style="border-color:var(--c09m)">
+    <h4>12. 一項新冠疫苗的Phase III試驗急需快速完成，計畫主持人考慮簡化知情同意程序。護理師發現這可能違反研究倫理，應如何處理？</h4>
+    <div class="hint">💡 提示：知情同意的重要性（紐倫堡宣言）；IRB的角色；護理師的吹哨義務；簡化知情同意是否符合赫爾辛基宣言。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c09m)">
+    <h4>13. 研究者發現某藥物對特定罕見遺傳疾病有潛在效果，但招募足夠研究參與者困難，考慮給予參與費用以提高參與率。這在倫理上是否適當？</h4>
+    <div class="hint">💡 提示：自願（voluntary）同意的要件；不當誘惑（undue inducement）的倫理問題；脆弱族群的保護；IRB的審查考量。</div>
+  </div>
+
+  <!-- CH10 -->
+  <h3 style="color:var(--c10);margin-bottom:10px;font-size:15px;font-weight:700;border-bottom:2px solid var(--c10l);padding-bottom:6px;margin-top:20px">🫀 CH10 器官移植與HIV</h3>
+  <div class="disc" style="border-color:var(--c10m)">
+    <h4>14. 一位死亡的車禍傷者家屬拒絕器官捐贈，但傷者曾在網路上表達希望捐贈器官的意願（但未簽署書面意願書）。護理師應如何處理？</h4>
+    <div class="hint">💡 提示：Opt-in制度下，書面同意的重要性；家屬決定權 vs 個人自主權；如何尊重家屬的同時傳達個案生前意願。</div>
+  </div>
+  <div class="disc" style="border-color:var(--c10m)">
+    <h4>15. 一位HIV感染者在急診就診，急診護理師拒絕為其執行靜脈穿刺，表示「怕被感染」。這涉及哪些倫理與法律問題？</h4>
+    <div class="hint">💡 提示：愛滋零歧視原則；HIV的傳染途徑（標準防護措施足夠）；《人類免疫缺乏病毒傳染防治條例》中的醫護人員保護規定；護理師拒絕照護的倫理義務。</div>
+  </div>
+</div>
+
+<footer>🌿 護理倫理特論 CH04-CH10｜弘光科技大學護理學系</footer>
+
+</main>
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sw').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
+  var t=document.getElementById('sw-'+id);
+  if(t){
+    t.classList.add('on');
+    var tbs=t.querySelectorAll('.tb'),tcs=t.querySelectorAll('.tc');
+    tbs.forEach(function(b){b.classList.remove('on');});
+    tcs.forEach(function(x){x.classList.remove('on');});
+    var fb=t.querySelector('.tb');
+    if(fb){fb.classList.add('on');var m=fb.getAttribute('onclick').match(/'([^']+)'\s*\)/);if(m){var fc=document.getElementById(m[1]);if(fc)fc.classList.add('on');}}
+  }
+  if(btn)btn.classList.add('on');
+  var nav=document.getElementById('nav');if(nav)nav.classList.remove('op');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function st(btn,id){
+  var s=btn.closest('.sw');if(!s)return;
+  s.querySelectorAll('.tb').forEach(function(b){b.classList.remove('on');});
+  s.querySelectorAll('.tc').forEach(function(x){x.classList.remove('on');});
+  btn.classList.add('on');var t=document.getElementById(id);if(t)t.classList.add('on');
+}
+function tog(hd){
+  var b=hd.nextElementSibling,o=b.style.display==='block';
+  b.style.display=o?'none':'block';hd.querySelector('.cto').textContent=o?'▼':'▲';
+}
+
+// ── Quiz Data ──
+var qData={
+  qz04:[
+    {q:'桃莉羊（Dolly）是從哪一種細胞複製而來？',o:['A.胚胎幹細胞','B.成熟母羊的乳房細胞','C.受精卵','D.神經幹細胞'],a:1,e:'魏爾米特（Ian Wilmut）自成熟母羊的乳房細胞（體細胞）複製出桃莉羊。'},
+    {q:'臺灣絕對禁止以任何方法複製人類個體，此規範見於哪一法規？',o:['A.人體研究法','B.人工生殖法','C.體細胞治療人體試驗申請與操作規範','D.醫療法'],a:2,e:'《體細胞治療人體試驗申請與操作規範》明確規定，臺灣絕對禁止進行涉及或會影響人類生殖遺傳功能之細胞療法，包括以任何方法複製人類個體。'},
+    {q:'人工生殖法第31條規定，意圖營利從事生殖細胞買賣者，最重處何種刑罰？',o:['A.拘役','B.1年以下有期徒刑','C.2年以下有期徒刑','D.5年以下有期徒刑'],a:2,e:'人工生殖法第31條：意圖營利從事生殖細胞買賣或居間介紹者，處2年以下有期徒刑、拘役或科罰金。'},
+    {q:'代理孕母倫理爭議中，「公平正義原則」的考量不包括下列何者？',o:['A.女性生殖功能商品化','B.代孕者的身體風險','C.富裕委託者與弱勢代孕者的權力不平衡','D.全民是否能平等取得代孕機會'],a:1,e:'代孕者的身體風險屬於「不傷害原則」的考量。公平正義考量包括：女性生殖功能商品化、權力平衡、全民平等。'},
+    {q:'優生保健法施行細則第15條規定，人工流產應於妊娠幾週內施行？',o:['A.12週','B.16週','C.20週','D.24週'],a:3,e:'優生保健法施行細則第15條：人工流產應於妊娠24週內施行，但屬醫療行為者不在此限。'},
+    {q:'「親抉擇派（Pro-Choicers）」的核心主張是？',o:['A.胎兒自受孕起有生命權','B.女性對自身身體有自主權，有權決定是否終止妊娠','C.墮胎應完全禁止','D.胚胎的道德地位應逐漸確立'],a:1,e:'親抉擇派否定胎兒或胚胎具有任何高於女性的權益，主張女性具有自主權可以選擇、決定是否實施人工流產，基於隱私權、身體完整性與平等權。'},
+    {q:'臺灣2004年公民共識會議對代理孕母的共識為何？',o:['A.完全禁止代理孕母','B.允許商業型代孕','C.有條件開放，必須無償且限本國籍','D.目前尚無任何共識'],a:2,e:'2004年達成「贊成，但有條件開放代孕」共識：限已婚夫妻、雙方精卵須有受孕能力、代孕者限本國籍、必須無償行為。'},
+    {q:'人類胚胎幹細胞研究倫理規範中，可供研究用的胚胎來源限於哪種情況？',o:['A.特意製造供研究用的胚胎','B.精卵有性生殖製造的胚胎','C.人工生殖後剩餘且受精後未逾14天可銷毀的胚胎','D.任何合法取得的胚胎'],a:2,e:'可使用：①自然流產的胚胎組織；②合法人工流產的胚胎組織；③人工生殖後剩餘得銷毀的胚胎，但以受精後「未逾14天」的胚胎為限。'},
+    {q:'卡塔赫那生物安全議定書（2003）對簽約國的法律效力？',o:['A.無任何拘束力','B.僅為建議性質的軟性法律','C.具有法律拘束力','D.需各國另行立法才生效'],a:2,e:'卡塔赫那生物安全議定書為國際公約，對簽約國具有法律拘束力；CODEX/FAO所發表的準則，在性質上僅為軟性法律，不具法律上的拘束力。'},
+    {q:'《世界人類基因組暨人權宣言》第12條規定人類基因組研究的應用，均應以何為目的？',o:['A.增進國家科學競爭力','B.促進研究者學術成就','C.確保基因技術的專利保護','D.減輕個人及全人類的痛苦和改善健康狀況'],a:3,e:'第12條規定：有關人類基因組研究的應用，均應以「減輕個人及全人類的痛苦和改善健康狀況」為目的。'}
+  ],
+  qz05:[
+    {q:'「最佳利益準則（Best-Interests Standard）」除適用於兒童外，還適用於哪些人？',o:['A.只適用於12歲以下兒童','B.只適用於未成年人','C.各年齡層缺乏決策能力的人','D.只適用於新生兒'],a:2,e:'最佳利益準則不僅適用於兒童，也適用於各年齡層無能力（incompetence）者，即缺乏決策能力的所有人。'},
+    {q:'2021年新版新生兒復甦術指引最重要的倫理改變是？',o:['A.不予CPR的三族群建議恢復適用','B.不予或中斷維生措施在倫理上是同等且合理的','C.父母可以任意拒絕急救','D.所有新生兒必須接受完整急救'],a:1,e:'2021年新版指引最重要的改變：「不予（withhold）或中斷（withdraw）維生措施，在倫理上是同等且合理的」，並且同時需提供支持性照護。'},
+    {q:'CAPTA（兒童虐待修正案）修訂後主要導致的倫理問題是？',o:['A.嬰兒死亡率大幅上升','B.醫護人員傾向過度醫療，忽視嬰兒痛苦','C.父母完全失去決策權','D.醫療費用無法負擔'],a:1,e:'CAPTA修訂後，健康專業人員容易傾向選擇「過度醫療」，而未能基於嬰兒最佳利益正視嬰兒所受的痛苦。'},
+    {q:'兒童「贊同（assent）」的概念最早起源於哪個報告？',o:['A.1971年Hopkins案例報告','B.1977年美國國家委員會的研究保護報告','C.1982年Baby Doe法案','D.1989年聯合國兒童權利公約'],a:1,e:'兒童贊同權的概念最早可追溯到1977年美國「生物醫學及行為研究之人類受試者保護國家委員會」所創立的保護與監控研究機制的報告中。'},
+    {q:'兒科倫理委員會緣起於哪一事件？',o:['A.1971年Hopkins案例','B.1976年Karen Quinlan植物人事件','C.1982年Baby Doe事件','D.1989年聯合國兒童權利公約'],a:2,e:'兒科倫理委員會緣起於1982年Baby Doe事件（倫理委員會整體緣起於1976年Karen Quinlan植物人事件）。'},
+    {q:'聯合國兒童權利公約定義兒童為幾歲以下的人？',o:['A.12歲','B.15歲','C.18歲','D.21歲'],a:2,e:'聯合國1989年兒童權利公約：「兒童係指未滿18歲之人」。'},
+    {q:'取得兒童贊同的過程中，若父母與孩子偏好衝突無法解決，最終可尋求何種途徑？',o:['A.直接遵從父母決定','B.完全依照兒童偏好','C.尋求倫理委員會，必要時尋求正式法律程序','D.由主治醫師做最後決定'],a:2,e:'若父母與孩子偏好衝突仍無法解決，可尋求醫院倫理委員會的協助；倘若仍無法達成協議，則可能需要正式的法律程序裁決。'},
+    {q:'嬰兒倫理決策模式的七大步驟中，哪一步驟需要「發展出三個不同的決策情境」？',o:['A.第一步：描述嬰兒醫療照護資訊','B.第二步：全面性評估','C.第三步：發展三個決策情境','D.第四步：產生專業共識'],a:2,e:'第三步：基於「步驟2（全面性評估）」，發展出三個不同的決策情境，用來增強替代方案及有利於逐步進行決策。'},
+    {q:'依聯合國兒童權利公約，維護兒童最佳利益是誰的責任？',o:['A.只是父母的責任','B.只是醫療機構的責任','C.是國家責任，由國家強化監督協助','D.是兒童自身的責任'],a:2,e:'依聯合國兒童權利公約，維護兒童人權乃「國家責任」，國家則需強化、監督、協助輔導各環節，以維護兒童最佳利益。'},
+    {q:'下列何者屬於合理拒絕積極救治未滿1歲嬰兒的條件（CAPTA規定）？',o:['A.父母堅決拒絕時','B.醫療費用過高時','C.治療行為是無效且不人道','D.嬰兒有遺傳疾病時'],a:2,e:'CAPTA規定三種可免除積極治療的條件：①慢性且無清醒可能的昏迷；②醫療只能延緩死亡；③治療行為是無效且不人道。'}
+  ],
+  qz06:[
+    {q:'倫理與法律的差異：「倫理之制裁主體」是下列何者？',o:['A.國家','B.個人良心或社群清議','C.法院','D.醫療主管機關'],a:1,e:'倫理的制裁主體為「個人良心或社群清議」，效果模糊薄弱；法律的制裁主體為國家，效果明確有效。'},
+    {q:'思覺失調症「4A」核心症狀不包括哪一項？',o:['A.思想聯結弛緩','B.攻擊性行為','C.自閉式思考','D.矛盾情感'],a:1,e:'思覺失調症4A症狀：思想聯結弛緩（Association）、自閉式思考（Autistic thinking）、矛盾情感（Ambivalence）、不適當情感表現（Affect）。攻擊性行為是次發性症狀。'},
+    {q:'臺灣《精神衛生法》新法（2024年施行），強制住院改採何種機制？',o:['A.衛生主管機關審查','B.醫院倫理委員會審查','C.法官保留（法院審理裁定）','D.家屬同意即可'],a:2,e:'精神衛生法新法：強制住院改採「法官保留」，須經法院審理裁定。每次強制住院不得逾60日，延長以一次為限。'},
+    {q:'英國《精神能力法》五大原則中，「應被推定為具有意思能力」代表什麼？',o:['A.精神病人永遠不需評估能力','B.除非被證明為否，否則推定病人有決策能力','C.病人的任何決定都必須被接受','D.只有法院才能評估能力'],a:1,e:'英國《精神能力法》原則一：「一個人應被推定為具有意思能力，除非被證明為否」——重視對精神病人的尊重。'},
+    {q:'美國強制社區治療（AOT）起源於哪個事件？',o:['A.Baby Doe案例','B.Karen Quinlan植物人案','C.精神病人將Kendra推入紐約地下鐵軌道死亡','D.思覺失調症患者在社區傷人'],a:2,e:'AOT起源於精神病人將Kendra推入紐約市地下鐵，遭電車撞死之案件，社會壓力促使立法制定「門診協助治療（AOT）」。'},
+    {q:'羅爾斯（Rawls）的正義論如何應用於醫療資源分配？',o:['A.平均分配給所有人','B.優先分配給支付能力強的人','C.應對最弱勢族群或最差階級有利','D.完全依市場機制'],a:2,e:'羅爾斯認為：社會資源的分配應對「最弱勢族群或最差階級有利」，這是分配正義的核心原則。'},
+    {q:'知情同意（Informed Consent）的三要件不包括？',o:['A.同意能力','B.自願','C.充分告知','D.書面形式'],a:3,e:'知情同意三要件：①同意能力（Competence）；②自願（Voluntary）；③充分告知（Full Disclosure）。書面形式不是必要要件。'},
+    {q:'澳洲維多利亞州《精神健康福祉法》（2022）共有幾條倫理原則？',o:['A.5條','B.9條','C.13條','D.18條'],a:2,e:'澳洲維多利亞州2022年《精神健康福祉法》明訂13條原則，涵蓋尊嚴、自主、多元化、最少限制、危險尊嚴等。'},
+    {q:'汙名化（Stigma）對精神疾病病人最主要的影響是？',o:['A.增加治療資源','B.使病人獲得更多關注','C.造成不公平，病人尊嚴受損，不願就醫','D.有利於病人自我保護'],a:2,e:'汙名化造成：對精神疾病個人及家人尊嚴的倫理問題、資源分配不公平，以及病人不願出來接受篩檢或治療。'},
+    {q:'精神衛生法新法中，緊急安置期間最長為幾天？',o:['A.3天','B.5天','C.7天','D.14天'],a:2,e:'精神衛生法新法（2024）修正：緊急安置期間由5天延長為「7天」；強制鑑定應自緊急安置之次日起3日內完成。'}
+  ],
+  qz07:[
+    {q:'臺灣「長照人員守則」共幾條，由哪個組織發表？',o:['A.8條，衛生福利部','B.10條，臺灣長期照護專業協會','C.12條，衛生福利部','D.10條，中華民國護理學會'],a:1,e:'臺灣長期照護專業協會在2013年發表了「長照人員守則」共十條。'},
+    {q:'長照中的「統整性（Integrity）」最準確的定義是？',o:['A.照護計畫的整合性','B.多專業的協作','C.一種道德價值觀，尊重與人格有關的個人存在的經驗','D.個案身心靈的完整性'],a:2,e:'統整性（Integrity）是一種道德價值觀，可定義為「尊重與人格有關的個人存在的經驗」。良好的照護應表現在尊重個案的統整性。'},
+    {q:'「自立支援」三大照顧原則是？',o:['A.不約束、不尿布、不插管','B.不約束、不尿布、不臥床','C.不約束、不臥床、不手術','D.不尿布、不臥床、不插管'],a:1,e:'自立支援（2011年自日本引進）三大照顧原則：①不約束；②不尿布；③不臥床。'},
+    {q:'老福法第43條規定，醫事人員發現老人疑似受虐，應如何處理？',o:['A.先告知家屬再決定','B.等確定後再通報','C.應通報當地主管機關','D.轉介社工即可，不必通報'],a:2,e:'老人福利法第43條規定：醫事人員等執行老人福利業務之相關人員，於執行職務時知悉老人有疑似受虐情況者，「應通報當地主管機關」。'},
+    {q:'臺灣老人受虐分類共幾類，比Hudson分類多了哪一類？',o:['A.5類，多了照顧者疏忽','B.6類，多了自我疏忽','C.7類，多了醫療受虐','D.8類，多了醫療受虐和社會受虐'],a:2,e:'臺灣老人受虐分類共「七類」，與Hudson相比，多了「醫療受虐」，且疏忽部分細分出「自我疏忽」。'},
+    {q:'老人受虐危險因素中，哪一項屬於「照顧者」方面的因素？',o:['A.年齡超過80歲','B.女性','C.社交隔離','D.照顧者的問題（如壓力、藥物濫用等）'],a:3,e:'老人受虐危險因素：個人因素（年齡>80、女性、失能、失智等）、情境因素（社交隔離、壓力），以及「照顧者的問題」（照顧者本身的壓力、問題等）。'},
+    {q:'老福法第48條規定，長照機構發現老人受虐未通報者，最高可處多少罰鍰？',o:['A.3萬元以上15萬元以下','B.6萬元以上30萬元以下','C.10萬元以上50萬元以下','D.20萬元以上100萬元以下'],a:1,e:'老人福利法第48條：老人福利機構有虐待老人或發現老人受虐事實未通報者，處新臺幣「6萬元以上30萬元以下罰鍰」，再限期令其改善。'},
+    {q:'長照倫理議題中「行為不當（Malpractice）」是指？',o:['A.在工作中未遵守法律，以不合法手段達成目的','B.未經個案同意洩漏其資料，或未能防止個案受傷害','C.拒絕為個案提供服務','D.違反勞動基準法'],a:1,e:'胡（2005）：行為不當（Malpractice）是「未經個案同意洩漏其資料、未能防止個案受傷害」；而瀆職（Malfeasance）才是在工作中未遵守法律。'},
+    {q:'Jonsen等人認為老人受虐倫理考量的最優先順序是？',o:['A.情境特徵','B.醫療適應症','C.個案之喜好','D.個案最佳利益'],a:3,e:'Jonsen（2002）等人認為，長照實務引發的倫理議題在做倫理考量時，以「個案最佳利益」為最優先順序。'},
+    {q:'2006年美國威斯康辛早療機構身體約束死亡事件，女孩因何種姿勢約束而死？',o:['A.仰臥頭部固定','B.側臥四肢束縛','C.俯臥臉朝下，長達兩小時','D.坐姿腰部束縛'],a:2,e:'2006年案例：女孩每次約束都採「俯臥，臉朝下」姿勢長達二小時，最後死於胸部受壓窒息的合併症。'}
+  ],
+  qz08:[
+    {q:'自殺防治守門人「三轉介」是指？',o:['A.主動關懷積極傾聽','B.適當回應與支持陪伴','C.資源轉介與持續關懷','D.評估自殺風險等級'],a:2,e:'一問（主動關懷積極傾聽）→二應（適當回應與支持陪伴）→三轉介（資源轉介與持續關懷）。'},
+    {q:'「自然死」的定義中，高科技維生醫療之末期死亡為何不算自然死？',o:['A.因為有醫師介入','B.因為有一段時間只是「有生命跡象」，並無實際療效','C.因為沒有家屬陪伴','D.因為使用了藥物'],a:1,e:'高科技維生醫療之末期死亡是指：有一段時間只是「有生命跡象」的日子（除生命跡象外，並無療效），這不算真正的自然死。'},
+    {q:'荷蘭安樂死法（2002）對16-18歲未成年人的規定是？',o:['A.完全禁止','B.完全由父母決定','C.可獨立申請，但父母需被告知；父母反對時，個案意願優先','D.須法院裁定'],a:2,e:'16-18歲：可獨立申請，但需告知父母參與討論；若父母反對，此年齡層的意願「應優先於其父母意願」。'},
+    {q:'臺灣《病人自主權利法》最重要的立法精神是？',o:['A.規定所有人必須簽署預立醫療決定書','B.允許安樂死','C.明定病人對病情及醫療選項有知情之權利','D.只保障末期病人的權利'],a:2,e:'病人自主權利法明文規定：病人對於病情、醫療選項及各選項的可能成效與風險預後，「有知情之權利」，成為亞洲第一部名為「病人自主權利」的專法。'},
+    {q:'安寧緩和醫療的三大核心重點不包括下列何者？',o:['A.症狀控制','B.積極化療以延長生命','C.協助告知與醫療決策討論','D.提升末期個案與家屬的靈性生活品質'],a:1,e:'安寧緩和醫療三大核心：①症狀控制；②協助告知與醫療決策討論；③提升社會心理、靈性生活品質。積極化療延長生命不是安寧療護核心。'},
+    {q:'「積極安樂死」與「消極安樂死」最主要的差異是？',o:['A.有無當事人同意','B.是否使用藥物','C.積極作為（給予致死藥物）vs 停止維生治療','D.是否由醫師執行'],a:2,e:'積極安樂死是藉著藥物或人工方法等「積極作為」進行；消極安樂死是「刻意中止醫療」或中斷基本照顧需求，導致死亡。'},
+    {q:'WHO特別強調「自殺企圖」最重要的臨床意義是？',o:['A.代表此人下次必定自殺成功','B.是預測未來是否再自殺的良好變項和重要警訊','C.表示此人需要立即住院','D.表示自殺動機是表演性的'],a:1,e:'WHO特別指出自殺企圖是「預測未來是否再自殺的良好變項，亦是非常重要的警訊」，值得特別注意與防範。'},
+    {q:'誤解「簽署安寧意願書=放棄一切醫療」最嚴重的後果是？',o:['A.家屬不滿意','B.造成醫療糾紛','C.導致「該給的醫療故意不給，使個案死亡」，既違法又汙名化安寧療護','D.增加醫療費用'],a:2,e:'此誤解把安寧療護等同消極安樂死——導致「該給予的醫療故意不給，導致個案死亡」，既違法又把安寧療護徹底汙名化。'},
+    {q:'安寧療護的服務對象須符合哪兩個條件？',o:['A.所有疾病末期個案，且有意願接受安寧療護','B.癌症末期病人，且年齡超過65歲','C.任何住院病人，且家屬同意','D.多重器官衰竭病人，且醫師建議'],a:0,e:'安寧緩和醫療的服務對象：①所有疾病的末期個案（或多重器官嚴重老化的高齡老人）；②「有意願接受安寧緩和醫療照護的人」——不能、也不可以強迫。'},
+    {q:'依Durkheim的定義，自殺的本質是什麼？',o:['A.因他人傷害導致死亡','B.個體直接或間接地以積極或消極行為導致自身死亡','C.因意外事故導致死亡','D.由他人決定結束的生命'],a:1,e:'Durkheim定義：「自殺為個體直接或間接地，以積極或消極的行為，導致自身死亡」——強調在個人意識下的行為。'}
+  ],
+  qz09:[
+    {q:'紐倫堡宣言最重要的核心原則是？',o:['A.研究利益高於個人權利','B.人體試驗必須使研究參與者知情並取得其同意','C.只有醫師才能進行人體試驗','D.研究必須在教學醫院進行'],a:1,e:'紐倫堡宣言確立兩大核心原則：①知情同意是絕對必要的要件；②研究參與者獲得之研究利益必須大過研究風險。'},
+    {q:'赫爾辛基宣言最新官方版本是哪一年？',o:['A.1964年原始版本','B.2000年','C.2013年10月','D.2020年'],a:2,e:'赫爾辛基宣言最新也是唯一官方的版本已於「2013年10月」問世（2013年赫爾辛基宣言）。臺灣衛福部即參酌此宣言。'},
+    {q:'臺灣《人體研究法》何時公布施行？',o:['A.2000年','B.2005年','C.2011年12月28日','D.2015年'],a:2,e:'臺灣《人體研究法》於「2011年12月28日」公布施行，共計六章26條。在此之前人體研究的法律規範僅限於醫療法施行細則。'},
+    {q:'新藥研發Phase III臨床試驗的主要目的是？',o:['A.首次測試人體安全性（20-80人）','B.探索初步療效（100-300人）','C.確認安全性、有效性（1,000-3,000人）','D.申請藥物查驗登記'],a:2,e:'Phase III（療效確認試驗）：招募1,000-3,000位志願病人，確認藥品的安全性、有效性、偵測副作用，約需3-5年。'},
+    {q:'IRB核准人體試驗的七項準則中，關於「選樣」的要求是？',o:['A.只招募最容易取得的參與者','B.研究參與者被選樣的機率均等；對易受傷害族群應給予額外保護','C.優先招募有治療需求的個案','D.只招募健康志願者'],a:1,e:'IRB第三項準則：「研究參與者被選樣的機率均等；對於易受傷害族群（脆弱族群）應給予額外的保護措施」。'},
+    {q:'「嚴重不良事件（SAE）」需在何時通報中央主管機關？',o:['A.只有死亡案例才需通報','B.發生死亡、危及生命、永久性身心障礙等情事時','C.結束試驗後統一通報','D.只需向IRB通報，不需向主管機關報告'],a:1,e:'SAE通報：凡發生死亡、危及生命、永久性身心障礙、胎兒/新生兒畸形、需住院或延長住院、可能導致永久傷害的併發症等，應通報中央主管機關。'},
+    {q:'臨床研究護理師（CRN）與臨床研究專員（CRA）最大的職責差異是？',o:['A.CRN負責試驗品質監測，CRA負責參與者照護','B.CRN負責研究參與者照護執行，CRA負責委託機構試驗品質監測','C.兩者職責完全相同','D.CRN負責IRB申請，CRA負責統計分析'],a:1,e:'CRN（臨床研究護理師）：研究參與者相關照護的執行者；CRA（臨床研究專員）：負責委託機構試驗品質之監測與維護。'},
+    {q:'人體試驗三種審查類型中，「免除審查（Exempt Review）」適用於什麼情況？',o:['A.所有人體試驗都可免除審查','B.風險最低的研究，如使用既有匿名資料','C.超過最小風險的研究','D.涉及脆弱族群的研究'],a:1,e:'免除審查適用於風險最低的研究（如使用既有匿名資料、教育測驗等）。未符合免除或簡易審查要件，則為一般審查。'},
+    {q:'人體研究倫理原則中，「尊重自主」具體體現在哪項要求？',o:['A.研究者可以為了科學利益決定所有事項','B.研究參與者可以隨時撤回同意書','C.只有醫師可以決定參與資格','D.家屬同意可以取代個人同意'],a:1,e:'尊重自主原則要求：研究參與者「可以隨時撤回其同意書」；當損害參與者健康時也能申請補償或保險。'},
+    {q:'研究者接受藥廠的「每收一位個案給付費用」屬於哪種倫理問題？',o:['A.研究倫理無問題','B.利益衝突（Conflict of Interest）','C.研究費用的合理補償','D.屬於研究獎勵機制'],a:1,e:'研究者接受藥廠按收案數給付費用，且未申報財務利益，構成「利益衝突（Conflict of Interest）」，可能影響研究的客觀性與參與者安全。'}
+  ],
+  qz10:[
+    {q:'臺灣現行採用哪種器官捐贈立法制度？',o:['A.Opt-out Law（預設同意）','B.Opt-in Law（自由選擇同意）','C.Required Request Law（強制詢問）','D.以上皆採用'],a:1,e:'臺灣現行採用「Opt-in Law」：讓民眾自由選擇同意器官捐贈，需積極簽署意願書或於健保卡登錄。'},
+    {q:'採用「Opt-out Law」的國家，器官捐贈風氣相較如何？',o:['A.與Opt-in國家相同','B.比Opt-in國家更低','C.一般而言比Opt-in國家更盛','D.完全取決於文化因素'],a:2,e:'一般而言，採用Opt-out law（預設同意）的國家，其器官捐贈風氣較盛，因為預設為同意，需主動拒絕才不捐贈。'},
+    {q:'臺灣器官捐贈腦死判定流程中，何時才能入手術室摘除器官？',o:['A.家屬簽署同意書後即可','B.第一次腦死判定通過後','C.第二次腦死判定通過（視同腦幹死）後','D.主治醫師判定後即可'],a:2,e:'依臺灣流程：第一次腦死判定→聯絡移植小組→第二次腦死判定通過（視同腦幹死）→才能入手術室摘除器官。'},
+    {q:'我國器官捐贈的補償原則為何？',o:['A.可給予高額金錢補償','B.提供住院費用補助給捐贈者','C.無條件且無償捐贈，相關費用由全民健保給付','D.給予捐贈者家屬免費醫療'],a:2,e:'我國法律規定：器官捐贈是「無條件且無償」之捐贈，捐贈器官相關的醫療及住院費用由全民健保給付，多數醫院提供喪葬補助費給捐贈者家屬。'},
+    {q:'HIV感染者的「U=U原則」代表什麼？',o:['A.尚未感染=不傳染','B.病毒量測不到=不會透過性行為傳播','C.未接受治療=無感染力','D.早期治療=完全治癒'],a:1,e:'U=U（Undetectable = Untransmittable）：HIV感染者穩定服藥，使血液中測不到病毒量（<200 copies/ml）時，「不會藉由性行為傳播HIV」。'},
+    {q:'UNAIDS「90-90-90」目標中，第二個90是指？',o:['A.90%的感染者知道自己的感染狀況','B.90%確診者接受持續抗病毒治療','C.90%接受治療者達到病毒受到抑制','D.90%的高危險群接受篩檢'],a:1,e:'90-90-90目標：①90%感染者知道感染狀況；②90%確診者「接受持續抗病毒治療」；③90%接受治療者達到病毒受到抑制（2020年目標，2030年提升至95-95-95）。'},
+    {q:'依《人類免疫缺乏病毒傳染防治條例》，醫護人員遭意外針扎後，關於HIV檢測的規定是？',o:['A.必須先取得對方同意才能檢測','B.可不需對方同意，立即採樣進行HIV檢測','C.須等待24小時後再採樣','D.只能在傷者同意的情況下進行'],a:1,e:'依現行條例：醫事人員或警消遭意外針扎、體液及血液暴露或咬傷時，「可不需對方同意，立即採樣進行HIV檢測」；應在暴露後72小時內給予預防性投藥（PEP）。'},
+    {q:'臺灣2018年開放HIV感染者互捐器官，此政策的倫理意義是？',o:['A.降低器官移植成功率','B.允許HIV感染者器官進入一般器官分配系統','C.在兼顧公平、倫理及人權原則下，消除HIV感染者的歧視','D.不具任何倫理意義'],a:2,e:'2018年開放HIV感染者互捐器官，領先東亞，在兼顧公平、倫理及人權原則之下，開放愛滋器官互捐，消除歧視，為愛滋防治的重要里程碑。'},
+    {q:'器官捐贈「捐贈與受贈雙方資料必須保密」，由誰負責傳遞雙方的關懷？',o:['A.器官移植主治醫師','B.醫院院長','C.醫院內的專業社工師','D.捐贈者家屬代表'],a:2,e:'目前我國在醫院內的專業社工師，通常擔任「捐」與「受」雙方的聯繫者，負責傳遞關懷，同時確保雙方資料保密。'},
+    {q:'HIV隱私保護程序中，「告知後」的重要步驟是？',o:['A.立即聯絡媒體','B.確認家屬及個案對資訊的瞭解程度，並記錄會談內容，持續追蹤','C.通報衛生主管機關','D.轉介其他醫院處理'],a:1,e:'告知後步驟：確認家屬及個案對所提供資訊的瞭解程度，並「記錄會談內容，持續追蹤」。'}
+  ]
+};
+
+// ── Build quizzes ──
+var colors={'qz04':'var(--c04m)','qz05':'var(--c05m)','qz06':'var(--c06m)','qz07':'var(--c07m)','qz08':'var(--c08m)','qz09':'var(--c09m)','qz10':'var(--c10m)'};
+function buildQz(){
+  Object.keys(qData).forEach(function(id){
+    var sec=document.getElementById(id);
+    if(!sec)return;
+    var qs=qData[id],html='<div class="qcard" id="'+id+'_score" style="display:none;text-align:center;padding:24px"><h3 style="font-size:18px;margin-bottom:8px">🎉 測驗完成！</h3><p id="'+id+'_result" style="font-size:16px;margin:12px 0"></p><button onclick="resetQz(\''+id+'\')" style="padding:10px 20px;background:'+colors[id]+';color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:13px">🔄 重新測驗</button></div>';
+    qs.forEach(function(q,i){
+      html+='<div class="qcard"><div class="qnum">第'+(i+1)+'題 / 共'+qs.length+'題</div>';
+      html+='<p>'+q.q+'</p><div class="qopt">';
+      q.o.forEach(function(o,j){
+        html+='<button class="qbtn" id="'+id+'_q'+i+'_o'+j+'" onclick="ansQ(\''+id+'\','+i+','+j+')" data-idx="'+j+'">'+o+'</button>';
+      });
+      html+='</div><div class="qexp" id="'+id+'_exp'+i+'">💡 '+q.e+'</div></div>';
+    });
+    sec.innerHTML=html;
+  });
+}
+function ansQ(qzid,qi,oi){
+  var q=qData[qzid][qi];
+  var btns=document.querySelectorAll('[id^="'+qzid+'_q'+qi+'_o"]');
+  btns.forEach(function(b){
+    var idx=parseInt(b.getAttribute('data-idx'));
+    b.classList.add(idx===q.a?'correct':'wrong');
+    b.classList.add('disabled');
+  });
+  var exp=document.getElementById(qzid+'_exp'+qi);
+  if(exp)exp.classList.add('on');
+  // Check completion
+  var total=qData[qzid].length,correct=0;
+  for(var i=0;i<total;i++){
+    var btns2=document.querySelectorAll('[id^="'+qzid+'_q'+i+'_o"]');
+    var answered=false;
+    btns2.forEach(function(b){if(b.classList.contains('correct')||b.classList.contains('wrong'))answered=true;});
+    if(!answered)return;
+    var anyCorrect=false;
+    btns2.forEach(function(b){if(b.classList.contains('correct'))anyCorrect=true;});
+    if(anyCorrect)correct++;
+  }
+  var score=document.getElementById(qzid+'_score');
+  var result=document.getElementById(qzid+'_result');
+  if(score&&result){
+    result.textContent='答對 '+correct+' 題 / 共 '+total+' 題（'+Math.round(correct/total*100)+'分）';
+    score.style.display='block';
+    score.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+function resetQz(qzid){
+  var sec=document.getElementById(qzid);
+  if(sec)sec.innerHTML='';
+  buildQz();
+  document.getElementById(qzid+'_score').style.display='none';
+}
+function showQz(id,btn){
+  document.querySelectorAll('.qsect').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.qchbtn').forEach(function(b){b.classList.remove('on');b.style.background='';b.style.color='';});
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  btn.style.background=colors[id];btn.style.color='#fff';
+}
+window.addEventListener('DOMContentLoaded',function(){buildQz();});
+</script>
+</body>
+</html>
