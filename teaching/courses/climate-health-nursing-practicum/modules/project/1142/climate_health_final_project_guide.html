@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>氣候變遷與健康調適｜期末專題創意導引</title>
+  <style>
+    :root{
+      --bg:#f7fafc;
+      --panel:#ffffff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --brand:#2563eb;
+      --soft:#eff6ff;
+      --green:#dcfce7;
+      --yellow:#fef9c3;
+      --pink:#fce7f3;
+      --purple:#f3e8ff;
+      --shadow:0 12px 30px rgba(15,23,42,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;background:linear-gradient(180deg,#eef6ff 0%,#f7fafc 38%,#ffffff 100%);color:var(--ink)}
+    .wrap{width:min(1180px,92%);margin:0 auto;padding:28px 0 56px}
+    .hero{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid #dbeafe;box-shadow:var(--shadow);border-radius:28px;padding:28px;margin-bottom:22px}
+    .hero h1{margin:0 0 10px;font-size:clamp(30px,4vw,44px);line-height:1.15}
+    .hero p{margin:0;color:var(--muted);max-width:900px;line-height:1.8}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start;margin-top:18px}
+    .mini-box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}
+    .mini-box h3{margin:0 0 10px;font-size:18px}
+    .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .badge{display:inline-block;padding:6px 11px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #bfdbfe;background:#fff;color:#1d4ed8}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+    .nav a{text-decoration:none;padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#374151;font-size:14px}
+    section{margin-top:22px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    h2{margin:0 0 12px;font-size:28px}
+    h3{margin:0 0 10px;font-size:20px}
+    p{line-height:1.8}
+    .muted{color:var(--muted)}
+    .grid-2,.grid-3,.grid-4{display:grid;gap:16px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+    .card h4{margin:0 0 10px;font-size:18px}
+    .tag{display:inline-block;font-size:12px;padding:5px 10px;border-radius:999px;background:#f8fafc;border:1px solid var(--line);margin-bottom:8px}
+    .theme-heat{background:var(--soft)}
+    .theme-community{background:var(--green)}
+    .theme-plastic{background:var(--yellow)}
+    .theme-dengue{background:var(--pink)}
+    .theme-house{background:var(--purple)}
+    .steps{counter-reset:step}
+    .step{position:relative;padding:18px 18px 18px 64px;border:1px solid var(--line);border-radius:20px;background:#fff}
+    .step::before{counter-increment:step;content:counter(step);position:absolute;left:18px;top:18px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#dbeafe;color:#1d4ed8;font-weight:800}
+    ul{margin:8px 0 0;padding-left:20px;line-height:1.8}
+    .prompt-box{position:relative;background:#0f172a;color:#e5eefc;border-radius:18px;padding:16px 16px 52px;font-size:14px;line-height:1.7;white-space:pre-wrap}
+    .copy-btn{position:absolute;right:14px;bottom:12px;border:0;background:#2563eb;color:#fff;padding:9px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+    .deliverable{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px dashed #bfdbfe;border-radius:16px;background:#f8fbff}
+    .dot{width:11px;height:11px;border-radius:50%;background:#2563eb;margin-top:10px;flex:0 0 auto}
+    .rubric table{width:100%;border-collapse:collapse}
+    .rubric th,.rubric td{padding:12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+    .rubric th{background:#f8fafc}
+    .footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
+    @media (max-width: 980px){
+      .hero-grid,.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>氣候變遷與健康調適｜期末專題創意導引網站</h1>
+      <p>這不是傳統報告，而是「從真實情境出發、用 AI 共創、做出可行行動」的專題。每一組都要把抽象的氣候議題轉成看得見、做得到、能說服人的作品，例如行動指南網站、互動地圖、社區倡議提案、校園改善設計或健康提醒工具。</p>
+      <div class="badge-row">
+        <span class="badge">情境導向</span>
+        <span class="badge">小組共創</span>
+        <span class="badge">AI Prompt 可複製</span>
+        <span class="badge">可完成的範圍</span>
+        <span class="badge">期末可展示成果</span>
+      </div>
+      <div class="hero-grid">
+        <div class="mini-box">
+          <h3>本課程希望你們做到的事</h3>
+          <ul>
+            <li>從校園或社區找到一個「真的存在」的氣候與健康問題。</li>
+            <li>用觀察、訪談、簡單資料蒐集，建立自己的情境案例。</li>
+            <li>用 AI 幫助你們生成點子、整理語句、設計提醒，但不是直接照抄答案。</li>
+            <li>最後做出一個看得懂、講得清楚、能被採取的成果。</li>
+          </ul>
+        </div>
+        <div class="mini-box">
+          <h3>期末成果至少要包含</h3>
+          <ul>
+            <li>1 個明確問題</li>
+            <li>3–5 個真實情境</li>
+            <li>1 組行動建議</li>
+            <li>1 個視覺化成果</li>
+            <li>1 段 AI 使用反思</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="#themes">主題靈感</a>
+      <a href="#workflow">專題流程</a>
+      <a href="#prompts">AI Prompt</a>
+      <a href="#deliverables">成果形式</a>
+      <a href="#rubric">評分標準</a>
+    </div>
+
+    <section id="themes">
+      <div class="panel">
+        <h2>一、主題靈感：每組都要選「真實問題」</h2>
+        <p class="muted">下面不是要你們照抄，而是示範怎麼把「大主題」轉成「可完成的小專題」。每組應聚焦一個情境、一群人、一個場域，避免做太大。</p>
+        <div class="grid-3">
+          <div class="card theme-heat">
+            <div class="tag">範例主題 A</div>
+            <h4>校園熱壓力支援地圖</h4>
+            <p>不是只畫哪裡熱，而是分析「學生真正會走的路、停留的地方、可避暑的點」。</p>
+            <ul>
+              <li>問題：哪些路徑最容易讓學生熱不適？</li>
+              <li>創意點：互動地圖、地圖點擊填表、顏色變化。</li>
+              <li>可完成成果：熱區網站、行動指南、遮蔭倡議。</li>
+            </ul>
+          </div>
+          <div class="card theme-community">
+            <div class="tag">範例主題 B</div>
+            <h4>社區熱衰竭預防</h4>
+            <p>關心高溫下社區長者、慢性病者、獨居者會面臨什麼問題，以及社區可以怎麼做。</p>
+            <ul>
+              <li>問題：高溫下誰最容易被忽略？</li>
+              <li>創意點：社區關懷卡、熱浪提醒單、居家自檢表。</li>
+              <li>可完成成果：海報、衛教單、簡易 LINE 提醒內容。</li>
+            </ul>
+          </div>
+          <div class="card theme-plastic">
+            <div class="tag">範例主題 C</div>
+            <h4>校園減塑 × 健康行動</h4>
+            <p>不只是「少用塑膠」，而是讓學生願意改變行為，例如飲料杯、餐盒、一次性用品。</p>
+            <ul>
+              <li>問題：為什麼知道不好還是會一直用？</li>
+              <li>創意點：行為心理設計、減塑挑戰賽、行動小工具。</li>
+              <li>可完成成果：活動提案、互動網站、宣導短片腳本。</li>
+            </ul>
+          </div>
+          <div class="card theme-dengue">
+            <div class="tag">範例主題 D</div>
+            <h4>校園與社區登革熱預防</h4>
+            <p>從積水、容器、宿舍周邊與日常行為，設計更貼近學生的預防倡議。</p>
+            <ul>
+              <li>問題：大家知道要防蚊，但為什麼還是忽略積水？</li>
+              <li>創意點：巡檢地圖、積水回報單、宿舍自查卡。</li>
+              <li>可完成成果：巡檢工具、提醒文案、案例地圖。</li>
+            </ul>
+          </div>
+          <div class="card theme-house">
+            <div class="tag">範例主題 E</div>
+            <h4>空屋造成的不適與環境健康</h4>
+            <p>聚焦台中沙鹿空屋與閒置空間，分析悶熱、黴菌、積水、蚊蟲、粉塵等問題。</p>
+            <ul>
+              <li>問題：空屋如何影響附近居民或學生身體感受？</li>
+              <li>創意點：空屋觀察卡、風險地圖、改善倡議書。</li>
+              <li>可完成成果：環境調查、情境故事、社區提案。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="tag">你們自己的版本</div>
+            <h4>把大題目變成小專題</h4>
+            <p>請用這個句型定義你們的專題：</p>
+            <div class="prompt-box" id="template_goal">在＿＿＿＿（場域）中，針對＿＿＿＿（對象）於＿＿＿＿（情境/時段）所面臨的＿＿＿＿（健康/環境問題），設計一套＿＿＿＿（具體可行的行動/工具/指南）。
+<button class="copy-btn" onclick="copyPrompt('template_goal')">Copy</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="panel">
+        <h2>二、專題流程：照著做，就做得出來</h2>
+        <div class="steps grid-2">
+          <div class="step">
+            <h3>先找一個夠小、夠真實的問題</h3>
+            <p>不要做「氣候變遷很嚴重」這種太大題。請具體到一個地點、一群人、一個時段。例如：中午上坡走到教學區、L 棟書局前悶熱停留、社區獨居長者在下午高溫下不願外出。</p>
+            <ul>
+              <li>產出：一句專題問題</li>
+              <li>建議：用「如何協助……」開頭</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3>建立 3–5 個真實情境卡</h3>
+            <p>每組至少做 3 張情境卡。內容不是長篇大論，而是簡潔清楚：誰、在哪裡、什麼時候、發生什麼不舒服、為什麼重要。</p>
+            <ul>
+              <li>產出：情境卡草稿</li>
+              <li>建議：可拍現場照片或畫小示意圖</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3>做最基本的觀察與資料收集</h3>
+            <p>不一定要做大型研究。你們可以用：觀察記錄、簡單 Google 表單、拍照、短訪談、環境巡查、案例整理。重點是要有自己的資料，不要完全靠網路。</p>
+            <ul>
+              <li>產出：1 張整理表或 1 份簡單資料</li>
+              <li>建議：量不求大，但要真</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3>用 AI 幫你們想得更完整</h3>
+            <p>AI 不是替你們交作業，而是幫你們補足盲點：風險還有哪些？提醒語可以怎麼寫？如何把語氣改成更像大學生會接受的版本？</p>
+            <ul>
+              <li>產出：至少 3 次有效 Prompt 紀錄</li>
+              <li>建議：保留 AI 生成前後的修改差異</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3>把想法變成看得見的成果</h3>
+            <p>成果不一定要做 App。較實際的作品包括：單頁網站、互動地圖、社區衛教單、行動指南、倡議海報、短片腳本、巡檢工具。</p>
+            <ul>
+              <li>產出：期末可展示成品</li>
+              <li>建議：做「可被理解」比做「很炫」重要</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3>最後做反思</h3>
+            <p>你們要說清楚：AI 幫了什麼？哪裡不能全信？如果下次再做，你們最想改進什麼？這一段很重要，因為它代表你們真的有學到。</p>
+            <ul>
+              <li>產出：AI 使用反思 + 專題限制</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="prompts">
+      <div class="panel">
+        <h2>三、AI Prompt 導引：不是問答案，是幫你想得更完整</h2>
+        <p class="muted">每一組至少挑 3 個 Prompt 使用，並把 AI 回答整理成你們自己的版本。不要整段照貼。</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Prompt A｜情境分析</h3>
+            <div class="prompt-box" id="prompt_a">你是一位公共衛生與護理專家。請根據以下情境，分析可能的健康風險、影響因素與容易被忽略的問題。
+
+情境：＿＿＿＿＿＿＿＿＿
+對象：＿＿＿＿＿＿＿＿＿
+場域：＿＿＿＿＿＿＿＿＿
+時間：＿＿＿＿＿＿＿＿＿
+
+請輸出：
+1. 可能健康風險（至少 3 項）
+2. 造成風險的環境因素
+3. 容易被忽略的族群或情況
+4. 學生或民眾常見錯誤行為
+<button class="copy-btn" onclick="copyPrompt('prompt_a')">Copy</button></div>
+          </div>
+          <div class="card">
+            <h3>Prompt B｜行動設計</h3>
+            <div class="prompt-box" id="prompt_b">請根據以下問題，設計「可被採取的健康行動」。
+
+問題：＿＿＿＿＿＿＿＿＿
+場域：＿＿＿＿＿＿＿＿＿
+對象：＿＿＿＿＿＿＿＿＿
+
+請分成三層提出建議：
+1. 個人可以立刻做到的行動
+2. 小組/班級可以一起做的行動
+3. 學校或社區可以改善的措施
+
+請每項建議都寫得具體，不要只寫口號。
+<button class="copy-btn" onclick="copyPrompt('prompt_b')">Copy</button></div>
+          </div>
+          <div class="card">
+            <h3>Prompt C｜提醒語生成</h3>
+            <div class="prompt-box" id="prompt_c">請把以下健康建議，改寫成適合大學生或社區民眾閱讀的提醒語。
+
+原始建議：＿＿＿＿＿＿＿＿＿
+
+請輸出三種版本：
+1. 溫和提醒型
+2. 警示型
+3. 行動導向型
+
+每句請控制在 25 字內。
+<button class="copy-btn" onclick="copyPrompt('prompt_c')">Copy</button></div>
+          </div>
+          <div class="card">
+            <h3>Prompt D｜自然解方與永續面向</h3>
+            <div class="prompt-box" id="prompt_d">請把以下氣候與健康問題，轉換成自然解方（NbS）與永續行動。
+
+問題：＿＿＿＿＿＿＿＿＿
+場域：＿＿＿＿＿＿＿＿＿
+
+請輸出：
+1. 短期可行方案
+2. 中期改善方案
+3. 長期校園/社區倡議方向
+4. 與 SDGs 或永續概念的連結
+<button class="copy-btn" onclick="copyPrompt('prompt_d')">Copy</button></div>
+          </div>
+          <div class="card">
+            <h3>Prompt E｜網站內容整理</h3>
+            <div class="prompt-box" id="prompt_e">請把以下資料整理為單頁式網站內容，對象是大學生。
+
+資料：＿＿＿＿＿＿＿＿＿
+
+網站請包含：
+1. 問題是什麼
+2. 情境卡
+3. 風險分析
+4. 行動建議
+5. 小提醒
+6. 結尾倡議語
+
+語氣：清楚、簡潔、有行動感。
+<button class="copy-btn" onclick="copyPrompt('prompt_e')">Copy</button></div>
+          </div>
+          <div class="card">
+            <h3>Prompt F｜創意發想</h3>
+            <div class="prompt-box" id="prompt_f">我們是一組大學生，要做「氣候變遷與健康調適」期末專題。請根據以下主題，提供 5 個有創意但可在一學期內完成的專題成果形式。
+
+主題：＿＿＿＿＿＿＿＿＿
+限制：不能做太大型 App，要在學生能力可完成範圍內。
+
+請輸出：
+1. 成果名稱
+2. 為什麼有創意
+3. 為什麼可完成
+4. 需要的素材或工具
+<button class="copy-btn" onclick="copyPrompt('prompt_f')">Copy</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="deliverables">
+      <div class="panel">
+        <h2>四、成果形式：不是只能做報告</h2>
+        <div class="grid-2">
+          <div class="deliverable"><div class="dot"></div><div><strong>單頁式網站</strong><br><span class="muted">適合做情境卡、風險、行動、提醒語與圖片整理。最容易展示，也最適合放進課程網站。</span></div></div>
+          <div class="deliverable"><div class="dot"></div><div><strong>互動地圖</strong><br><span class="muted">適合校園熱壓力、登革熱積水點、社區風險點等主題。可加顏色、按鈕與回報表單。</span></div></div>
+          <div class="deliverable"><div class="dot"></div><div><strong>健康行動指南</strong><br><span class="muted">做成一頁懶人包、摺頁或圖文海報，最容易讓同學或居民實際使用。</span></div></div>
+          <div class="deliverable"><div class="dot"></div><div><strong>倡議提案</strong><br><span class="muted">適合針對校園減塑、遮蔭改善、社區高溫關懷等，提出簡單但有說服力的建議。</span></div></div>
+          <div class="deliverable"><div class="dot"></div><div><strong>巡檢工具 / 觀察表</strong><br><span class="muted">例如空屋觀察卡、登革熱巡檢表、熱區回報單，強調「可持續使用」。</span></div></div>
+          <div class="deliverable"><div class="dot"></div><div><strong>短片腳本或情境短劇</strong><br><span class="muted">不用真的拍很難的片，也可以先完成腳本與分鏡，讓議題更有感染力。</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="panel">
+        <h2>五、小組工作分配建議</h2>
+        <div class="grid-4">
+          <div class="card"><h4>資料觀察手</h4><p>負責找情境、拍照、觀察、簡單訪談與整理資料。</p></div>
+          <div class="card"><h4>AI 提示設計手</h4><p>負責寫 Prompt、整理 AI 輸出、比較前後版本差異。</p></div>
+          <div class="card"><h4>內容整合手</h4><p>負責把資料整理成情境卡、行動建議與網站文案。</p></div>
+          <div class="card"><h4>視覺與展示手</h4><p>負責網站、海報、地圖、簡報與最後口頭呈現。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rubric">
+      <div class="panel rubric">
+        <h2>六、評分標準</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>評分面向</th>
+              <th>比例</th>
+              <th>教師看重什麼</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>問題聚焦與情境真實性</td>
+              <td>20%</td>
+              <td>是否選到真實且具體的問題，而不是空泛大題。</td>
+            </tr>
+            <tr>
+              <td>風險分析與健康觀點</td>
+              <td>20%</td>
+              <td>是否能清楚說出氣候與健康之間的關係。</td>
+            </tr>
+            <tr>
+              <td>行動設計與可行性</td>
+              <td>25%</td>
+              <td>是否提出真的可做、不是口號的建議。</td>
+            </tr>
+            <tr>
+              <td>AI 使用能力</td>
+              <td>20%</td>
+              <td>是否善用 AI 幫助思考、整理與改寫，而不是直接照抄。</td>
+            </tr>
+            <tr>
+              <td>成果呈現與說服力</td>
+              <td>15%</td>
+              <td>網站、地圖、海報或簡報是否清楚、有創意、看得懂。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="webbuild">
+      <div class="panel">
+        <h2>八、各組專題「網頁搭建導引」（直接照做🔥）</h2>
+        <p class="muted">以下是依照 Heatmap 範例延伸，每一組都可以做出「自己的專題網站」。不用會寫程式，只要複製結構＋填內容。</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>📌 網頁基本結構（每組都一樣）</h3>
+            <ul>
+              <li>① 首頁：問題＋一句話</li>
+              <li>② 情境卡（3–5個）</li>
+              <li>③ 風險分析</li>
+              <li>④ 行動建議</li>
+              <li>⑤ 成果展示（地圖／圖表）</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>💡 最重要觀念</h3>
+            <ul>
+              <li>不是做很多頁，而是做「一頁清楚」</li>
+              <li>用卡片（card）呈現，不用長文章</li>
+              <li>每區塊＝一個重點</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card theme-heat">
+          <h3>🔥 Heatmap 組（校園熱壓力）</h3>
+          <ul>
+            <li>主頁：放校園地圖（你們已完成）</li>
+            <li>點擊區域 → 顯示症狀＋開表單</li>
+            <li>顏色代表風險（紅高、綠低）</li>
+          </ul>
+          <p><b>加分：</b>中午 vs 下午切換</p>
+        </div>
+
+        <div class="card theme-community">
+          <h3>🌡 社區熱衰竭組</h3>
+          <ul>
+            <li>首頁：長者情境（圖＋故事）</li>
+            <li>卡片：高溫風險（3–5點）</li>
+            <li>行動：居家檢查清單</li>
+          </ul>
+          <p><b>網頁設計：</b>像健康衛教網站</p>
+        </div>
+
+        <div class="card theme-plastic">
+          <h3>♻ 校園減塑組</h3>
+          <ul>
+            <li>首頁：一天塑膠使用情境</li>
+            <li>卡片：行為分析（為何不改）</li>
+            <li>行動：減塑挑戰（可點）</li>
+          </ul>
+          <p><b>創意：</b>做「挑戰任務卡」</p>
+        </div>
+
+        <div class="card theme-dengue">
+          <h3>🦟 登革熱預防組</h3>
+          <ul>
+            <li>首頁：積水情境照片</li>
+            <li>卡片：風險點（容器、花盆）</li>
+            <li>行動：巡檢清單</li>
+          </ul>
+          <p><b>加分：</b>加入「回報表單」</p>
+        </div>
+
+        <div class="card theme-house">
+          <h3>🏚 空屋健康組</h3>
+          <ul>
+            <li>首頁：空屋照片＋問題</li>
+            <li>卡片：黴菌、蚊蟲、悶熱</li>
+            <li>行動：改善建議</li>
+          </ul>
+          <p><b>創意：</b>做「風險地圖」</p>
+        </div>
+
+        <div class="card">
+          <h3>🤖 AI 網頁生成 Prompt</h3>
+          <div class="prompt-box" id="web_prompt">
+請將以下專題整理成「單頁網站」：
+
+內容包含：
+1. 首頁（問題＋一句話）
+2. 情境卡（3–5個）
+3. 風險分析
+4. 行動建議
+5. 成果展示（圖或地圖）
+
+要求：
+- 使用卡片式設計
+- 每段不超過20字
+- 適合大學生閱讀
+- 可直接貼到HTML
+<button class="copy-btn" onclick="copyPrompt('web_prompt')">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="poster">
+      <div class="panel">
+        <h2>七、成果轉換：電子海報（必做🔥）</h2>
+        <p class="muted">所有專題最後都需轉換成「一頁電子海報」，讓任何人 30 秒內看懂你的專題。</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>📌 海報結構（一定要有）</h3>
+            <ul>
+              <li>① 問題情境（圖＋一句話）</li>
+              <li>② 為什麼重要（健康風險）</li>
+              <li>③ 你們做了什麼（方法）</li>
+              <li>④ 前後比較（數據或觀察）</li>
+              <li>⑤ 行動建議（重點）</li>
+              <li>⑥ 一句倡議（結尾）</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>📊 前後測設計（簡單即可）</h3>
+            <ul>
+              <li>填寫前：不知道 / 沒注意 / 不會做</li>
+              <li>填寫後：知道 / 願意改變 / 有行動</li>
+              <li>用 5–10 人即可（同學）</li>
+              <li>用 Google Form 或簡單問卷</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h4>📈 圖表呈現（一定要）</h4>
+            <ul>
+              <li>長條圖（前後比較）</li>
+              <li>圓餅圖（症狀比例）</li>
+              <li>顏色：紅＝高風險、綠＝改善</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4>🎨 視覺設計建議</h4>
+            <ul>
+              <li>顏色不超過 3 種</li>
+              <li>文字短句（不要段落）</li>
+              <li>大量留白</li>
+              <li>用圖＞用字</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4>🛠 工具（免費）</h4>
+            <ul>
+              <li>Canva（最推薦）</li>
+              <li>PowerPoint</li>
+              <li>Google Slides</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🤖 AI 海報生成 Prompt（可直接用）</h3>
+          <div class="prompt-box" id="poster_prompt">
+請將以下專題內容整理為「一頁電子海報」：
+
+內容包含：
+1. 情境
+2. 健康風險
+3. 方法（你們做了什麼）
+4. 前後比較（數據）
+5. 行動建議
+
+要求：
+- 每段不超過 20 字
+- 使用標題＋重點句
+- 適合大學生閱讀
+- 視覺清楚、可直接放入海報
+<button class="copy-btn" onclick="copyPrompt('poster_prompt')">Copy</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🎯 海報一句話公式（最重要）</h3>
+          <div class="prompt-box" id="poster_formula">
+在＿＿＿＿情境下，我們發現＿＿＿＿問題，
+透過＿＿＿＿方法，讓＿＿＿＿改善（數據或結果），
+因此建議＿＿＿＿行動。
+<button class="copy-btn" onclick="copyPrompt('poster_formula')">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="templates">
+      <div class="panel">
+        <h2>九、各組 HTML 網頁模型（可直接改）</h2>
+        <p class="muted">下面提供五組可直接複製、修改、上線的 HTML 基本模型。做法很簡單：先複製其中一份，改標題、圖片、情境卡內容與圖表區塊，再逐步加強。</p>
+
+        <div class="grid-2">
+          <div class="card theme-heat">
+            <h3>Template A｜校園熱壓力 Heatmap 組</h3>
+            <p>適合做互動地圖、點擊熱區、顏色變化與行動建議。</p>
+            <div class="prompt-box" id="tpl_heat"><!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校園熱壓力支援地圖</title>
+<style>
+body{font-family:"Microsoft JhengHei";margin:0;background:#f7fafc;color:#1f2937}
+.wrap{width:min(1100px,92%);margin:auto;padding:24px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;margin:16px 0}
+.map{height:420px;border-radius:18px;background:#eef6ff;display:grid;place-items:center}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>校園熱壓力支援地圖</h1>
+  <div class="card">一句話問題：中午哪些動線最容易讓學生熱不適？</div>
+  <div class="card map">這裡放地圖 / 熱區圖</div>
+  <div class="grid">
+    <div class="card"><h3>情境 1</h3><p>校門口上坡</p></div>
+    <div class="card"><h3>情境 2</h3><p>G 棟前通道</p></div>
+    <div class="card"><h3>情境 3</h3><p>L 棟停留區</p></div>
+  </div>
+  <div class="card"><h3>行動建議</h3><ul><li>避開高風險時段</li><li>先補水再移動</li><li>規劃遮蔭路線</li></ul></div>
+</div>
+</body>
+</html>
+<button class="copy-btn" onclick="copyPrompt('tpl_heat')">Copy</button></div>
+            <div class="deliverable"><div class="dot"></div><div><strong>加強步驟</strong><br><span class="muted">① 加地圖圖片 → ② 熱區上色 → ③ 點擊顯示資訊 → ④ 接 Google 表單 → ⑤ 接 Google Sheet 即時更新</span></div></div>
+            <div class="prompt-box" id="prompt_heat_upgrade">請把以下校園熱壓力網站 HTML 升級：
+1. 加入三個情境卡
+2. 加入中午 / 下午切換
+3. 加入風險顏色
+4. 加入行動建議
+5. 保持單頁式、易讀
+<button class="copy-btn" onclick="copyPrompt('prompt_heat_upgrade')">Copy</button></div>
+          </div>
+
+          <div class="card theme-community">
+            <h3>Template B｜社區熱衰竭預防組</h3>
+            <p>適合做社區長者情境、居家檢查清單與熱浪提醒頁。</p>
+            <div class="prompt-box" id="tpl_community"><!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社區熱衰竭預防行動</title>
+<style>
+body{font-family:"Microsoft JhengHei";margin:0;background:#f0fdf4;color:#1f2937}
+.wrap{width:min(1080px,92%);margin:auto;padding:24px}.card{background:#fff;border:1px solid #d1fae5;border-radius:18px;padding:18px;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>社區熱衰竭預防行動</h1>
+  <div class="card">一句話問題：高溫下，社區長者可能在哪些情境最容易出現熱衰竭風險？</div>
+  <div class="grid">
+    <div class="card"><h3>情境 1</h3><p>獨居長者在家悶熱</p></div>
+    <div class="card"><h3>情境 2</h3><p>外出買菜中暑風險</p></div>
+    <div class="card"><h3>情境 3</h3><p>不願開冷氣節省電費</p></div>
+  </div>
+  <div class="card"><h3>居家檢查清單</h3><ul><li>室內通風</li><li>是否有冷氣或風扇</li><li>補水提醒</li></ul></div>
+</div>
+</body>
+</html>
+<button class="copy-btn" onclick="copyPrompt('tpl_community')">Copy</button></div>
+            <div class="deliverable"><div class="dot"></div><div><strong>加強步驟</strong><br><span class="muted">① 加長者照片或插圖 → ② 加熱衰竭警示症狀 → ③ 加居家自檢卡 → ④ 加 LINE 提醒語</span></div></div>
+            <div class="prompt-box" id="prompt_community_upgrade">請把以下社區熱衰竭網站 HTML 升級成更有說服力的衛教頁，加入：
+1. 長者情境故事
+2. 熱衰竭症狀卡
+3. 居家檢查表
+4. 簡單前後比較圖表
+<button class="copy-btn" onclick="copyPrompt('prompt_community_upgrade')">Copy</button></div>
+          </div>
+
+          <div class="card theme-plastic">
+            <h3>Template C｜校園減塑組</h3>
+            <p>適合做行為挑戰、減塑任務卡與一週追蹤。</p>
+            <div class="prompt-box" id="tpl_plastic"><!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校園減塑行動挑戰</title>
+<style>
+body{font-family:"Microsoft JhengHei";margin:0;background:#fefce8;color:#1f2937}
+.wrap{width:min(1080px,92%);margin:auto;padding:24px}.card{background:#fff;border:1px solid #fde68a;border-radius:18px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>校園減塑行動挑戰</h1>
+  <div class="card">一句話問題：為什麼大家知道減塑很重要，卻還是每天用很多一次性塑膠？</div>
+  <div class="grid">
+    <div class="card"><h3>情境 1</h3><p>早餐外帶塑膠袋</p></div>
+    <div class="card"><h3>情境 2</h3><p>手搖飲塑膠杯</p></div>
+    <div class="card"><h3>情境 3</h3><p>午餐免洗餐具</p></div>
+  </div>
+  <div class="card"><h3>本週減塑挑戰</h3><ul><li>自備水杯</li><li>自備餐具</li><li>減少外帶袋</li></ul></div>
+</div>
+</body>
+</html>
+<button class="copy-btn" onclick="copyPrompt('tpl_plastic')">Copy</button></div>
+            <div class="deliverable"><div class="dot"></div><div><strong>加強步驟</strong><br><span class="muted">① 加一週挑戰表 → ② 加班級任務計分 → ③ 加前後比較圖 → ④ 加可分享宣言卡</span></div></div>
+            <div class="prompt-box" id="prompt_plastic_upgrade">請把以下校園減塑 HTML 升級成更有互動感的挑戰網站，加入：
+1. 行為任務卡
+2. 本週挑戰進度
+3. 前後塑膠使用比較
+4. 鼓勵同學願意參與的語氣
+<button class="copy-btn" onclick="copyPrompt('prompt_plastic_upgrade')">Copy</button></div>
+          </div>
+
+          <div class="card theme-dengue">
+            <h3>Template D｜登革熱預防組</h3>
+            <p>適合做巡檢卡、積水點地圖與回報區。</p>
+            <div class="prompt-box" id="tpl_dengue"><!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登革熱預防巡檢網站</title>
+<style>
+body{font-family:"Microsoft JhengHei";margin:0;background:#fff1f2;color:#1f2937}
+.wrap{width:min(1080px,92%);margin:auto;padding:24px}.card{background:#fff;border:1px solid #fbcfe8;border-radius:18px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>登革熱預防巡檢網站</h1>
+  <div class="card">一句話問題：校園或社區哪些地方最容易被忽略而形成積水與蚊蟲孳生？</div>
+  <div class="grid">
+    <div class="card"><h3>風險點 1</h3><p>花盆底盤</p></div>
+    <div class="card"><h3>風險點 2</h3><p>空瓶容器</p></div>
+    <div class="card"><h3>風險點 3</h3><p>屋後積水區</p></div>
+  </div>
+  <div class="card"><h3>巡檢清單</h3><ul><li>倒</li><li>刷</li><li>清</li><li>通</li></ul></div>
+</div>
+</body>
+</html>
+<button class="copy-btn" onclick="copyPrompt('tpl_dengue')">Copy</button></div>
+            <div class="deliverable"><div class="dot"></div><div><strong>加強步驟</strong><br><span class="muted">① 加風險點照片 → ② 加巡檢前後比較 → ③ 加回報表單按鈕 → ④ 加紅黃綠風險標示</span></div></div>
+            <div class="prompt-box" id="prompt_dengue_upgrade">請把以下登革熱巡檢 HTML 升級為更有行動感的預防網站，加入：
+1. 紅黃綠風險區塊
+2. 巡檢表
+3. 前後清理成果比較
+4. 學生可立即做到的提醒語
+<button class="copy-btn" onclick="copyPrompt('prompt_dengue_upgrade')">Copy</button></div>
+          </div>
+
+          <div class="card theme-house">
+            <h3>Template E｜空屋健康風險組</h3>
+            <p>適合做風險觀察卡、空屋照片故事與改善倡議頁。</p>
+            <div class="prompt-box" id="tpl_house"><!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空屋與環境健康風險</title>
+<style>
+body{font-family:"Microsoft JhengHei";margin:0;background:#faf5ff;color:#1f2937}
+.wrap{width:min(1080px,92%);margin:auto;padding:24px}.card{background:#fff;border:1px solid #e9d5ff;border-radius:18px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>空屋與環境健康風險</h1>
+  <div class="card">一句話問題：空屋周邊可能帶來哪些不舒服或健康風險？</div>
+  <div class="grid">
+    <div class="card"><h3>觀察 1</h3><p>潮濕與黴味</p></div>
+    <div class="card"><h3>觀察 2</h3><p>蚊蟲與積水</p></div>
+    <div class="card"><h3>觀察 3</h3><p>空氣不流通與悶熱</p></div>
+  </div>
+  <div class="card"><h3>改善倡議</h3><ul><li>定期巡查</li><li>清除積水</li><li>環境通報</li></ul></div>
+</div>
+</body>
+</html>
+<button class="copy-btn" onclick="copyPrompt('tpl_house')">Copy</button></div>
+            <div class="deliverable"><div class="dot"></div><div><strong>加強步驟</strong><br><span class="muted">① 加照片故事 → ② 加風險分級 → ③ 加簡易地圖 → ④ 加社區建議與通報資訊</span></div></div>
+            <div class="prompt-box" id="prompt_house_upgrade">請把以下空屋健康風險 HTML 升級成更有說服力的倡議網站，加入：
+1. 空屋情境故事
+2. 風險分級
+3. 簡易風險地圖
+4. 改善與通報建議
+<button class="copy-btn" onclick="copyPrompt('prompt_house_upgrade')">Copy</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>十、如何從基本版一路加強（共通步驟）</h3>
+          <div class="steps grid-2">
+            <div class="step">
+              <h3>先完成基本版 HTML</h3>
+              <p>先讓網站有：標題、問題、3 張情境卡、1 組行動建議。不要一開始就做太多效果。</p>
+            </div>
+            <div class="step">
+              <h3>加入你們自己的資料</h3>
+              <p>把觀察結果、照片、簡單統計、問卷結果放進網站，讓作品不是空的。</p>
+            </div>
+            <div class="step">
+              <h3>加入視覺化成果</h3>
+              <p>可以是地圖、長條圖、風險顏色、前後比較，讓別人一眼看懂結果。</p>
+            </div>
+            <div class="step">
+              <h3>加入互動或引導</h3>
+              <p>例如按鈕、巡檢清單、挑戰卡、回報表單、點擊提示區，讓網站不只是「看」。</p>
+            </div>
+            <div class="step">
+              <h3>加入 AI 修飾</h3>
+              <p>用 AI 幫你們把句子改得更短、更清楚、更像行動倡議，而不是直接複製整段回答。</p>
+            </div>
+            <div class="step">
+              <h3>最後轉成電子海報</h3>
+              <p>把網站內容濃縮成一頁海報，保留問題、方法、成效與建議，方便期末展演。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>十一、共通升級 Prompt（任何組都能用）</h3>
+          <div class="prompt-box" id="prompt_upgrade_all">請幫我把以下專題網站 HTML 從基本版升級成更完整的課堂專題作品。
+
+目前已有：標題、情境卡、行動建議。
+請再加入：
+1. 更清楚的首頁問題句
+2. 風險分析卡片
+3. 一個可視覺化成果區塊
+4. 一組更有行動感的提醒語
+5. 保持單頁、清楚、適合大學生
+
+以下是目前 HTML：
+＿＿＿＿＿＿＿＿＿＿
+<button class="copy-btn" onclick="copyPrompt('prompt_upgrade_all')">Copy</button></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">氣候變遷與健康調適｜期末專題創意導引網站</div>
+  </div>
+
+  <script>
+    function copyPrompt(id){
+      const text = document.getElementById(id).innerText.replace('Copy','').trim();
+      navigator.clipboard.writeText(text);
+      alert('已複製 Prompt');
+    }
+  </script>
+</body>
+</html>
