@@ -3,74 +3,264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>學生加入課堂</title>
+<title>學生加入課堂｜護理互動遊戲中心</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:#070b18;--card:#10182b;--text:#e5e7eb;--dim:#94a3b8;--gold:#facc15;--teal:#2dd4bf;--pink:#f472b6;--border:rgba(255,255,255,.12)}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,"Noto Sans TC",sans-serif;color:var(--text);background:radial-gradient(circle at 10% 10%,rgba(250,204,21,.10),transparent 35%),radial-gradient(circle at 90% 90%,rgba(45,212,191,.10),transparent 35%),var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
-.card{width:100%;max-width:440px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));border:1px solid var(--border);border-radius:26px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.38);text-align:center}
-h1{margin:0 0 10px;color:var(--gold);font-size:30px}.hint{color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:22px}
-input{width:100%;padding:15px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:#fff;font-size:17px;margin:8px 0;text-align:center}
-button{width:100%;padding:15px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--teal),#0891b2);color:#001;font-size:17px;font-weight:900;margin-top:12px;cursor:pointer}
-.box{display:none;text-align:left;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.35);border-radius:14px;padding:14px;margin:12px 0;line-height:1.8}.box.on{display:block}.box b{color:var(--gold)}
-.msg{margin-top:12px;color:var(--pink);font-size:14px;line-height:1.6}.ok{color:var(--teal)}
+:root{
+  --bg:#070b18;--card:#10182b;--text:#e5e7eb;--dim:#94a3b8;
+  --gold:#facc15;--teal:#2dd4bf;--pink:#f472b6;--red:#fb7185;--border:rgba(255,255,255,.12)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:Arial,"Noto Sans TC",sans-serif;color:var(--text);
+  background:radial-gradient(circle at 10% 10%,rgba(250,204,21,.10),transparent 35%),
+  radial-gradient(circle at 90% 90%,rgba(45,212,191,.10),transparent 35%),var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px
+}
+.card{
+  width:100%;max-width:460px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));
+  border:1px solid var(--border);border-radius:28px;padding:30px 26px;
+  box-shadow:0 24px 70px rgba(0,0,0,.38);text-align:center
+}
+.icon{font-size:48px;margin-bottom:8px}
+h1{margin:0 0 10px;color:var(--gold);font-size:30px}
+.hint{color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:22px}
+input{
+  width:100%;padding:15px;border-radius:14px;border:1px solid var(--border);
+  background:rgba(255,255,255,.06);color:#fff;font-size:17px;margin:8px 0;text-align:center
+}
+input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(45,212,191,.10)}
+button{
+  width:100%;padding:15px;border:0;border-radius:14px;
+  background:linear-gradient(135deg,var(--teal),#0891b2);color:#001;
+  font-size:17px;font-weight:900;margin-top:12px;cursor:pointer
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.gold{background:linear-gradient(135deg,var(--gold),#d97706)}
+.box{
+  display:none;text-align:left;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.35);
+  border-radius:14px;padding:14px;margin:12px 0;line-height:1.8;font-size:14px
+}
+.box.on{display:block}.box b{color:var(--gold)}
+.msg{margin-top:12px;color:var(--pink);font-size:14px;line-height:1.6;min-height:20px}.ok{color:var(--teal)}
+.small{font-size:12px;color:var(--dim);line-height:1.6;margin-top:14px}
+.success{
+  display:none;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.35);
+  color:#bffcf2;border-radius:16px;padding:18px;margin-top:14px;line-height:1.8
+}
+.success.on{display:block}
 </style>
 </head>
 <body>
 <div class="card">
-  <h1>📱 加入課堂</h1>
+  <div class="icon">📱</div>
+  <h1>加入課堂</h1>
   <div class="hint">請輸入老師公布的通關密語、學號與遊戲暱稱。</div>
-  <input id="passcode" placeholder="通關密語">
-  <input id="studentId" placeholder="學號">
-  <button onclick="verifyStudent()">查詢學號</button>
+
+  <input id="passcode" placeholder="通關密語" autocomplete="off">
+  <input id="studentId" placeholder="學號" autocomplete="off">
+  <button id="verifyBtn" onclick="verifyStudent()">查詢學號</button>
+
   <div class="box" id="foundBox"></div>
-  <input id="nickname" placeholder="遊戲暱稱（排行榜顯示）" style="display:none">
-  <button id="joinBtn" onclick="joinClass()" style="display:none;background:linear-gradient(135deg,var(--gold),#d97706)">加入課堂</button>
+
+  <input id="nickname" placeholder="遊戲暱稱（排行榜顯示）" style="display:none" autocomplete="off">
+  <button id="joinBtn" class="gold" onclick="joinClass()" style="display:none">加入課堂</button>
+
+  <div id="successBox" class="success"></div>
   <div id="msg" class="msg"></div>
+  <div class="small">排行榜只顯示暱稱；老師匯出成績時會還原學號、姓名與組別。</div>
 </div>
+
 <script>
-let sb=null, sessionId="", sessionData=null, foundStudent=null;
-const params=new URLSearchParams(location.search);
-const sbUrl=params.get("sb_url");
-const sbKey=params.get("sb_key");
-sessionId=params.get("session_id")||params.get("s")||"";
-function msg(t, ok=false){const el=document.getElementById("msg");el.textContent=t;el.className=ok?"msg ok":"msg"}
-async function init(){
-  if(!sbUrl||!sbKey){msg("此學生入口缺少 Supabase 設定。請老師從 start.html 重新建立 QR。");return}
-  if(!sessionId){msg("此連結缺少課堂代碼。請重新掃描老師的 QR Code。");return}
-  sb=window.supabase.createClient(sbUrl,sbKey);
-  const {data,error}=await sb.from("sessions").select("*").eq("id",sessionId).single();
-  if(error||!data){msg("找不到課堂，請老師重新建立課堂。");return}
-  sessionData=data;
+/*
+  ✅ 最終學生版說明
+  學生不會看到 Supabase 設定。
+  若你希望完全不依賴 QR 夾帶設定，請把下方兩行改成你的 Supabase 設定。
+  也可以保留空白，系統會自動讀取 start.html 產生 QR 時帶入的 sb_url / sb_key。
+*/
+const FIXED_SUPABASE_URL = "";
+const FIXED_SUPABASE_KEY = "";
+
+let sb = null;
+let sessionId = "";
+let sessionData = null;
+let foundStudent = null;
+
+const params = new URLSearchParams(location.search);
+sessionId = params.get("session_id") || params.get("s") || "";
+
+const sbUrl =
+  FIXED_SUPABASE_URL ||
+  params.get("sb_url") ||
+  localStorage.getItem("SUPABASE_URL") ||
+  "";
+
+const sbKey =
+  FIXED_SUPABASE_KEY ||
+  params.get("sb_key") ||
+  localStorage.getItem("SUPABASE_KEY") ||
+  "";
+
+function msg(text, ok=false){
+  const el = document.getElementById("msg");
+  el.textContent = text;
+  el.className = ok ? "msg ok" : "msg";
 }
-init();
+
+function setBusy(id, busy, textBusy, textNormal){
+  const btn = document.getElementById(id);
+  btn.disabled = busy;
+  btn.textContent = busy ? textBusy : textNormal;
+}
+
+async function init(){
+  if(!sessionId){
+    msg("此連結缺少課堂代碼。請重新掃描老師投影的 QR Code。");
+    return;
+  }
+
+  if(!sbUrl || !sbKey){
+    msg("此 QR Code 尚未帶入課堂連線資料，請老師重新在 start.html 按「一鍵開課並產生 QR」。");
+    return;
+  }
+
+  try{
+    sb = window.supabase.createClient(sbUrl, sbKey);
+  }catch(e){
+    msg("Supabase 連線建立失敗，請老師確認設定。");
+    return;
+  }
+
+  const {data, error} = await sb
+    .from("sessions")
+    .select("*")
+    .eq("id", sessionId)
+    .single();
+
+  if(error || !data){
+    msg("找不到此課堂，請老師重新建立課堂。");
+    return;
+  }
+
+  sessionData = data;
+  msg("已連線到課堂，請輸入通關密語與學號。", true);
+}
+
 async function verifyStudent(){
-  if(!sb||!sessionData){msg("系統尚未完成連線，請稍後再試。");return}
-  const pass=document.getElementById("passcode").value.trim();
-  const sid=document.getElementById("studentId").value.trim();
-  if(!pass||!sid){msg("請輸入通關密語與學號");return}
-  if(pass!==sessionData.passcode){msg("通關密語錯誤");return}
-  const {data,error}=await sb.from("students").select("*").eq("student_id",sid).limit(1);
-  if(error){msg("查詢學生名單失敗："+error.message);return}
-  if(!data||!data.length){msg("查無此學號，請確認或請老師檢查名單。");return}
-  foundStudent=data[0];
-  document.getElementById("foundBox").innerHTML=`<b>找到學生資料</b><br>姓名：${foundStudent.name||""}<br>學號：${foundStudent.student_id||""}<br>組別：${foundStudent.team_name||""}`;
+  if(!sb || !sessionData){
+    msg("系統尚未完成連線，請稍後再試，或請重新掃描 QR Code。");
+    return;
+  }
+
+  const pass = document.getElementById("passcode").value.trim();
+  const sid = document.getElementById("studentId").value.trim();
+
+  if(!pass || !sid){
+    msg("請輸入通關密語與學號。");
+    return;
+  }
+
+  if(pass !== sessionData.passcode){
+    msg("通關密語錯誤，請確認老師公布的密語。");
+    return;
+  }
+
+  setBusy("verifyBtn", true, "查詢中…", "查詢學號");
+
+  const {data, error} = await sb
+    .from("students")
+    .select("*")
+    .eq("student_id", sid)
+    .limit(1);
+
+  setBusy("verifyBtn", false, "查詢中…", "查詢學號");
+
+  if(error){
+    msg("查詢學生名單失敗：" + error.message);
+    return;
+  }
+
+  if(!data || !data.length){
+    msg("查無此學號，請確認輸入是否正確，或請老師檢查 Supabase students 名單。");
+    return;
+  }
+
+  foundStudent = data[0];
+
+  document.getElementById("foundBox").innerHTML = `
+    <b>✅ 找到學生資料</b><br>
+    姓名：${foundStudent.name || ""}<br>
+    學號：${foundStudent.student_id || ""}<br>
+    組別：${foundStudent.team_name || ""}
+  `;
   document.getElementById("foundBox").classList.add("on");
-  document.getElementById("nickname").style.display="";
-  document.getElementById("joinBtn").style.display="";
-  if(foundStudent.nickname){document.getElementById("nickname").value=foundStudent.nickname}
+
+  document.getElementById("nickname").style.display = "";
+  document.getElementById("joinBtn").style.display = "";
+
+  if(foundStudent.nickname){
+    document.getElementById("nickname").value = foundStudent.nickname;
+  }
+
   msg("請輸入暱稱後加入課堂。", true);
 }
+
 async function joinClass(){
-  if(!foundStudent){msg("請先查詢學號");return}
-  const nick=document.getElementById("nickname").value.trim();
-  if(!nick){msg("請輸入遊戲暱稱");return}
-  const row={session_id:sessionId,student_id:foundStudent.student_id,name:foundStudent.name||"",nickname:nick,team_name:foundStudent.team_name||"",created_at:new Date().toISOString()};
-  const {error}=await sb.from("participants").insert(row);
-  if(error){msg("加入失敗："+error.message);return}
-  localStorage.setItem("CURRENT_STUDENT",JSON.stringify(row));
-  msg("✅ 加入成功！請回到老師畫面等待遊戲開始。", true);
+  if(!foundStudent){
+    msg("請先查詢學號。");
+    return;
+  }
+
+  const nick = document.getElementById("nickname").value.trim();
+  if(!nick){
+    msg("請輸入遊戲暱稱。");
+    return;
+  }
+
+  const row = {
+    session_id: sessionId,
+    student_id: foundStudent.student_id,
+    name: foundStudent.name || "",
+    nickname: nick,
+    team_name: foundStudent.team_name || "",
+    created_at: new Date().toISOString()
+  };
+
+  setBusy("joinBtn", true, "加入中…", "加入課堂");
+
+  const {error} = await sb
+    .from("participants")
+    .insert(row);
+
+  setBusy("joinBtn", false, "加入中…", "加入課堂");
+
+  if(error){
+    msg("加入失敗：" + error.message);
+    return;
+  }
+
+  localStorage.setItem("CURRENT_STUDENT", JSON.stringify(row));
+
+  document.getElementById("successBox").innerHTML = `
+    <b>✅ 加入成功！</b><br>
+    ${foundStudent.name || ""}｜${foundStudent.team_name || ""}<br>
+    你的排行榜暱稱：<b>${nick}</b>
+  `;
+  document.getElementById("successBox").classList.add("on");
+  msg("請回到老師投影畫面等待遊戲開始。", true);
 }
+
+document.getElementById("passcode").addEventListener("keydown", e => {
+  if(e.key === "Enter") verifyStudent();
+});
+document.getElementById("studentId").addEventListener("keydown", e => {
+  if(e.key === "Enter") verifyStudent();
+});
+document.getElementById("nickname").addEventListener("keydown", e => {
+  if(e.key === "Enter") joinClass();
+});
+
+init();
 </script>
 </body>
 </html>
