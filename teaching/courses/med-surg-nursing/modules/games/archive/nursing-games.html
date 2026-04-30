@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理學習遊戲中心 — 弘光科技大學護理系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c1a; --bg2:#0d1526; --bg3:#111d35;
+  --text:#e2e8f0; --dim:#8892a8; --border:rgba(255,255,255,.08);
+  --gold:#f5c842; --gold2:#ffe07a;
+  --teal:#2dd4bf; --pink:#f472b6; --indigo:#818cf8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 10% 5%,rgba(245,200,66,.07) 0%,transparent 45%),
+             radial-gradient(ellipse at 90% 95%,rgba(45,212,191,.07) 0%,transparent 45%);}
+
+/* ── SCREEN SYSTEM ── */
+.screen{display:none;position:relative;z-index:1;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* ── TOP NAV BAR ── */
+.nav{display:flex;align-items:center;gap:12px;padding:14px 24px;
+  background:rgba(8,12,26,.95);border-bottom:1px solid rgba(245,200,66,.2);
+  position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:var(--gold);
+  display:flex;align-items:center;gap:8px;}
+.nav-logo span{font-size:20px;}
+.nav-back{background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:8px;padding:6px 14px;color:var(--dim);cursor:pointer;
+  font-size:12px;font-weight:600;transition:all .2s;}
+.nav-back:hover{background:rgba(255,255,255,.12);color:var(--text);}
+.nav-spacer{flex:1;}
+.nav-unit-badge{padding:5px 14px;border-radius:100px;font-size:11px;font-weight:700;
+  border:1px solid;}
+
+/* ══════════════ LOBBY ══════════════ */
+.lobby-hero{text-align:center;padding:60px 24px 40px;}
+.lobby-hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);
+  font-weight:700;color:#fff;margin-bottom:8px;}
+.lobby-hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.lobby-hero p{color:var(--dim);font-size:14px;letter-spacing:.05em;}
+.lobby-hero .pulse-dot{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--teal);margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(1.8);}}
+
+/* Game selector cards */
+.game-cards{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;padding:0 24px 40px;}
+.game-card{
+  width:260px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;
+  padding:32px 24px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);
+  text-align:center;position:relative;overflow:hidden;}
+.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gc,#fff);}
+.game-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.5);}
+.game-card:hover .gc-start{opacity:1;transform:translateY(0);}
+.gc-icon{font-size:52px;margin-bottom:16px;display:block;}
+.gc-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;}
+.gc-desc{font-size:12.5px;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+.gc-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 12px;border-radius:100px;
+  background:rgba(255,255,255,.06);color:var(--dim);border:1px solid var(--border);}
+.gc-start{position:absolute;bottom:16px;right:20px;font-size:20px;
+  opacity:0;transform:translateY(6px);transition:all .2s;color:var(--gc,#fff);}
+
+/* SETTINGS PANEL */
+.settings-wrap{display:flex;justify-content:center;padding:0 24px 60px;}
+.settings-card{background:var(--bg2);border:1px solid rgba(245,200,66,.2);
+  border-radius:20px;padding:32px;width:100%;max-width:700px;}
+.settings-card h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--gold);
+  margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.settings-row{margin-bottom:24px;}
+.settings-row label{display:block;font-size:11px;font-weight:700;letter-spacing:.15em;
+  color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
+.unit-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;cursor:pointer;transition:all .2s;text-align:left;}
+.unit-btn:hover{background:rgba(255,255,255,.08);}
+.unit-btn.active{border-color:var(--uc,#fff);background:rgba(255,255,255,.08);}
+.unit-btn .ub-num{font-size:10px;font-weight:700;letter-spacing:.1em;margin-bottom:4px;}
+.unit-btn .ub-name{font-size:13px;font-weight:700;color:#fff;}
+.mode-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.mode-btn{padding:10px 22px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;
+  font-size:13px;font-weight:600;transition:all .2s;font-family:'Noto Sans TC',sans-serif;}
+.mode-btn:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.mode-btn.active{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold);}
+.team-count-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.tc-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;
+  font-size:16px;font-weight:700;transition:all .2s;font-family:'JetBrains Mono',monospace;}
+.tc-btn:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.tc-btn.active{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold);}
+.diff-btn{padding:10px 20px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;
+  font-size:13px;font-weight:600;transition:all .2s;font-family:'Noto Sans TC',sans-serif;}
+.diff-btn:hover{background:rgba(255,255,255,.08);}
+.diff-btn.active{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.4);color:var(--teal);}
+.start-btn{display:block;width:100%;padding:16px;border-radius:14px;
+  background:linear-gradient(135deg,#f5c842,#e6a800);color:#000;border:none;
+  font-size:16px;font-weight:900;cursor:pointer;letter-spacing:.05em;
+  font-family:'Noto Sans TC',sans-serif;transition:all .25s;margin-top:8px;}
+.start-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(245,200,66,.4);}
+
+/* ══════════════ SCORE BAR ══════════════ */
+.score-bar{display:flex;gap:8px;padding:10px 20px;background:rgba(0,0,0,.3);
+  border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap;}
+.team-chip{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:700;
+  border:2px solid;display:flex;align-items:center;gap:8px;transition:all .2s;}
+.team-chip.active-turn{transform:scale(1.1);box-shadow:0 0 20px var(--tc-col,#fff);}
+.team-chip .tc-name{font-size:11px;opacity:.8;}
+.team-chip .tc-score{font-family:'JetBrains Mono',monospace;font-size:16px;}
+
+/* ══════════════ BINGO GAME ══════════════ */
+.bingo-layout{display:grid;grid-template-columns:340px 1fr;gap:0;flex:1;}
+@media(max-width:900px){.bingo-layout{grid-template-columns:1fr;}}
+
+/* LEFT: CALL PANEL */
+.call-panel{background:rgba(0,0,0,.4);border-right:1px solid var(--border);
+  padding:24px;display:flex;flex-direction:column;gap:20px;}
+.call-counter{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--dim);letter-spacing:.2em;text-transform:uppercase;}
+.call-display{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:16px;
+  padding:24px;text-align:center;min-height:140px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;}
+.call-num{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;color:var(--gold);
+  line-height:1;text-shadow:0 0 20px rgba(245,200,66,.4);}
+.call-clue{font-size:15px;color:var(--text);line-height:1.6;font-weight:600;}
+.call-answer{font-size:12px;color:var(--dim);margin-top:4px;padding:6px 14px;
+  background:rgba(255,255,255,.05);border-radius:100px;display:none;}
+.call-answer.show{display:block;}
+.call-btn{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none;
+  border-radius:12px;padding:14px;font-size:15px;font-weight:900;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;letter-spacing:.03em;}
+.call-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,200,66,.4);}
+.call-btn:disabled{opacity:.4;cursor:default;transform:none;}
+.show-answer-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:8px;padding:8px;font-size:12px;color:var(--dim);cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
+.show-answer-btn:hover{background:rgba(255,255,255,.1);}
+.called-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;max-height:260px;}
+.called-list h4{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--dim);
+  text-transform:uppercase;margin-bottom:6px;}
+.called-item{background:rgba(255,255,255,.04);border-radius:6px;padding:7px 12px;
+  font-size:12px;color:var(--dim);border:1px solid var(--border);animation:slideIn .25s ease;}
+.called-item .ci-term{font-weight:700;color:var(--text);margin-right:6px;}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+
+/* RIGHT: BINGO CARDS */
+.cards-area{padding:20px;overflow-y:auto;}
+.cards-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.cards-tab{padding:7px 16px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;
+  font-size:12px;font-weight:700;transition:all .2s;}
+.cards-tab.active{color:#fff;}
+.bingo-card-wrap{display:none;}
+.bingo-card-wrap.active{display:block;}
+.bingo-card-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:.2em;color:var(--dim);margin-bottom:10px;text-transform:uppercase;}
+.bingo-card{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:520px;}
+.bingo-header-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;
+  max-width:520px;margin-bottom:5px;}
+.bh{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:900;
+  text-align:center;padding:8px;border-radius:8px;
+  background:rgba(245,200,66,.12);color:var(--gold);}
+.bc-tile{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;
+  padding:8px 6px;min-height:68px;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:11.5px;font-weight:600;cursor:pointer;
+  transition:all .22s;line-height:1.4;color:var(--text);}
+.bc-tile:hover{background:rgba(255,255,255,.1);}
+.bc-tile.marked{color:#000;font-weight:900;position:relative;overflow:hidden;
+  box-shadow:0 4px 16px rgba(245,200,66,.3);}
+.bc-tile.marked::after{content:'★';position:absolute;top:2px;right:4px;font-size:10px;opacity:.6;}
+.bc-tile.free{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.3);
+  color:var(--teal);font-size:16px;font-weight:900;cursor:default;}
+.bc-tile.free:hover{background:rgba(45,212,191,.12);}
+.bc-tile.win-line{animation:winPulse .5s infinite alternate;}
+@keyframes winPulse{from{filter:brightness(1);}to{filter:brightness(1.4);}}
+.bingo-announce-btn{margin-top:14px;padding:12px 28px;border-radius:12px;
+  background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.4);
+  color:var(--teal);font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;display:none;}
+.bingo-announce-btn:hover{background:rgba(45,212,191,.25);}
+
+/* ══════════════ MEMORY FLIP ══════════════ */
+.memory-wrap{flex:1;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.memory-info{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.memory-stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:10px 18px;display:flex;align-items:center;gap:8px;}
+.memory-stat .ms-label{font-size:11px;color:var(--dim);font-weight:600;}
+.memory-stat .ms-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold);}
+.mem-grid{display:grid;gap:10px;flex:1;}
+.mem-card{cursor:pointer;perspective:1000px;}
+.mem-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.4,.2,.2,1);}
+.mem-card.flipped .mem-card-inner,.mem-card.matched .mem-card-inner{transform:rotateY(180deg);}
+.mem-face,.mem-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;
+  border:1px solid var(--border);}
+.mem-face{background:linear-gradient(135deg,#0d1526,#111d35);cursor:pointer;}
+.mem-face-icon{font-size:28px;filter:drop-shadow(0 0 10px rgba(245,200,66,.4));}
+.mem-back{transform:rotateY(180deg);}
+.mem-back.type-term{background:linear-gradient(135deg,rgba(0,180,216,.15),rgba(0,180,216,.05));
+  border-color:rgba(0,180,216,.3);}
+.mem-back.type-def{background:linear-gradient(135deg,rgba(245,200,66,.12),rgba(245,200,66,.04));
+  border-color:rgba(245,200,66,.3);}
+.mem-back-text{font-size:12px;font-weight:700;line-height:1.45;color:var(--text);}
+.mem-back-label{font-size:9px;font-weight:700;letter-spacing:.1em;margin-bottom:6px;
+  text-transform:uppercase;opacity:.6;}
+.mem-card.matched .mem-back{animation:matchedGlow .4s ease;}
+@keyframes matchedGlow{0%{transform:rotateY(180deg) scale(1);}50%{transform:rotateY(180deg) scale(1.05);}100%{transform:rotateY(180deg) scale(1);}}
+
+/* ══════════════ QUICK QUIZ ══════════════ */
+.quiz-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px 24px;gap:24px;}
+.quiz-clue-card{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:20px;
+  padding:40px 40px;max-width:680px;width:100%;text-align:center;}
+.quiz-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);
+  letter-spacing:.15em;margin-bottom:16px;}
+.quiz-clue-text{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;
+  color:#fff;line-height:1.7;margin-bottom:20px;}
+.quiz-timer{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;}
+.quiz-timer-bar{height:100%;border-radius:3px;transition:width .1s linear;
+  background:linear-gradient(90deg,#f5c842,#e879f9);}
+.quiz-answer-reveal{padding:16px 24px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);
+  border-radius:12px;color:var(--teal);font-size:17px;font-weight:700;
+  text-align:center;display:none;max-width:680px;width:100%;}
+.quiz-buzz-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:680px;width:100%;}
+.buzz-btn{flex:1;min-width:120px;padding:16px 12px;border-radius:12px;border:2px solid;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans TC',sans-serif;}
+.buzz-btn:hover{transform:scale(1.05);}
+.quiz-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.qc-btn{padding:12px 24px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;
+  font-size:13px;font-weight:700;transition:all .2s;font-family:'Noto Sans TC',sans-serif;}
+.qc-btn:hover{background:rgba(255,255,255,.12);}
+.qc-btn.primary{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none;}
+.qc-btn.primary:hover{box-shadow:0 6px 20px rgba(245,200,66,.4);}
+.award-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:680px;width:100%;display:none;}
+.award-btn{padding:10px 16px;border-radius:10px;border:2px solid;
+  font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Noto Sans TC',sans-serif;}
+.award-correct{border-color:var(--teal);background:rgba(45,212,191,.1);color:var(--teal);}
+.award-wrong{border-color:var(--pink);background:rgba(244,114,182,.1);color:var(--pink);}
+
+/* ══════════════ WIN MODAL ══════════════ */
+.win-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.win-overlay.open{display:flex;}
+.win-card{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:24px;
+  padding:48px 40px;text-align:center;max-width:480px;width:90%;
+  animation:winIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes winIn{from{opacity:0;transform:scale(.5) rotate(-5deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+.win-emoji{font-size:72px;display:block;margin-bottom:20px;animation:bounce 1s ease infinite alternate;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-12px);}}
+.win-title{font-family:'Noto Serif TC',serif;font-size:32px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.win-sub{color:var(--dim);font-size:15px;line-height:1.7;margin-bottom:28px;}
+.win-score{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;color:var(--teal);}
+.win-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.wa-btn{padding:12px 28px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;transition:all .2s;border:none;}
+.wa-play{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;}
+.wa-home{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border)!important;}
+.wa-btn:hover{transform:translateY(-2px);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;z-index:300;
+  background:var(--bg3);border:1px solid rgba(255,255,255,.12);border-radius:12px;
+  padding:14px 22px;font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.6);
+  transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.good{border-color:rgba(45,212,191,.4);color:var(--teal);}
+.toast.bad{border-color:rgba(244,114,182,.4);color:var(--pink);}
+
+/* ── CONFETTI CANVAS ── */
+#confetti-canvas{position:fixed;inset:0;z-index:250;pointer-events:none;display:none;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px;}
+
+@media(max-width:640px){
+  .bingo-layout{grid-template-columns:1fr;}
+  .bingo-card{max-width:100%;}
+  .call-panel{border-right:none;border-bottom:1px solid var(--border);}
+  .quiz-clue-text{font-size:17px;}
+  .win-card{padding:32px 24px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<!-- ✅ 匯入學生名單（老師用） -->
+<div style="padding:10px; background:#111; position:sticky; top:0; z-index:999;">
+  <input type="file" id="fileInput" accept=".csv">
+<button onclick="importCSVFromInput()">📂 匯入名單</button>
+  <button onclick="exportScoresCSV()">📥 匯出成績</button>
+  <button onclick="clearScoresOnly()">♻️ 清除成績</button>
+</div>
+<div class="win-overlay" id="winOverlay">
+  <div class="win-card">
+    <span class="win-emoji" id="winEmoji">🎊</span>
+    <div class="win-title" id="winTitle">賓果！</div>
+    <div class="win-sub" id="winSub">恭喜達成五連線！</div>
+    <div class="win-score" id="winScore"></div>
+    <div class="win-actions" style="margin-top:28px;">
+      <button class="wa-btn wa-play" onclick="restartGame()">▶ 再玩一次</button>
+      <button class="wa-btn wa-home" onclick="goLobby()">🏠 回大廳</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ LOBBY ═══════════ -->
+<div id="screen-lobby" class="screen active">
+  <div class="nav">
+    <div class="nav-logo"><span>🏥</span>護理學習遊戲中心</div>
+    <div class="nav-spacer"></div>
+    <div style="padding:10px; background:#111; text-align:center;">
+    <div style="font-size:11px;color:var(--dim);">弘光科技大學護理系</div>
+  </div>
+  <div class="lobby-hero">
+    <h1>內外護理學<br><em>互動學習遊戲</em></h1>
+    <p><span class="pulse-dot"></span>8個單元 · 200組題目 · 個人與小組競賽模式</p>
+  </div>
+  <div class="game-cards">
+    <div class="game-card" style="--gc:#2dd4bf" onclick="selectGame('bingo')">
+      <span class="gc-icon">🎱</span>
+      <div class="gc-title">賓 果 遊 戲</div>
+      <div class="gc-desc">小組競賽 · 叫號猜詞<br>五連線即宣告BINGO！<br>支援2–6組同時進行</div>
+      <div class="gc-badge">2–6組競賽</div>
+      <div class="gc-start">→</div>
+    </div>
+    <div class="game-card" style="--gc:#f5c842" onclick="selectGame('memory')">
+      <span class="gc-icon">🃏</span>
+      <div class="gc-title">翻 翻 樂</div>
+      <div class="gc-desc">記憶配對遊戲<br>翻轉卡片找出術語與定義<br>個人計時或輪流搶分</div>
+      <div class="gc-badge">個人/小組</div>
+      <div class="gc-start">→</div>
+    </div>
+    <div class="game-card" style="--gc:#f472b6" onclick="selectGame('quiz')">
+      <span class="gc-icon">⚡</span>
+      <div class="gc-title">速 問 快 答</div>
+      <div class="gc-desc">限時閃卡問答<br>搶先按下隊伍按鈕<br>答對加分 · 答錯扣分</div>
+      <div class="gc-badge">搶答模式</div>
+      <div class="gc-start">→</div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="settings-wrap" id="settingsWrap" style="display:none;">
+    <div class="settings-card" id="settingsCard">
+      <h2 id="settingsTitle">⚙ 遊戲設定</h2>
+      <div class="settings-row">
+        <label>選擇單元</label>
+        <div class="unit-grid" id="unitGrid"></div>
+      </div>
+      <div class="settings-row" id="modeRow">
+        <label>競賽模式</label>
+        <div class="mode-btns">
+          <button class="mode-btn active" data-mode="group" onclick="selectMode('group')">👥 小組競賽</button>
+          <button class="mode-btn" data-mode="individual" onclick="selectMode('individual')">🧑 個人模式</button>
+        </div>
+      </div>
+      <div class="settings-row" id="teamCountRow">
+        <label>隊伍數量</label>
+        <div class="team-count-row" id="teamCountBtns"></div>
+      </div>
+      <div class="settings-row" id="diffRow" style="display:none;">
+        <label>難度（牌數）</label>
+        <div class="mode-btns">
+          <button class="diff-btn active" data-diff="12" onclick="selectDiff(12)">簡單 3×4（6對）</button>
+          <button class="diff-btn" data-diff="20" onclick="selectDiff(20)">普通 4×5（10對）</button>
+          <button class="diff-btn" data-diff="30" onclick="selectDiff(30)">困難 5×6（15對）</button>
+        </div>
+      </div>
+      <div class="settings-row" id="timerRow" style="display:none;">
+        <label>每題時間</label>
+        <div class="mode-btns">
+          <button class="diff-btn active" data-timer="15" onclick="selectTimer(15)">15秒</button>
+          <button class="diff-btn" data-timer="20" onclick="selectTimer(20)">20秒</button>
+          <button class="diff-btn" data-timer="30" onclick="selectTimer(30)">30秒</button>
+        </div>
+      </div>
+      <button class="start-btn" onclick="startGame()">🚀 開始遊戲！</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ BINGO ═══════════ -->
+<div id="screen-bingo" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goLobby()">← 大廳</button>
+    <div class="nav-logo"><span>🎱</span>賓果遊戲</div>
+    <div class="nav-spacer"></div>
+    <div class="nav-unit-badge" id="bingoUnitBadge"></div>
+  </div>
+  <div class="score-bar" id="bingoScoreBar"></div>
+  <div class="bingo-layout">
+    <!-- CALL PANEL -->
+    <div class="call-panel">
+      <div class="call-counter" id="callCounter">已抽 0 題</div>
+      <div class="call-display">
+        <div class="call-num" id="callNum">—</div>
+        <div class="call-clue" id="callClue">按下「抽題」開始遊戲</div>
+        <div class="call-answer" id="callAnswer"></div>
+      </div>
+      <button class="call-btn" id="callBtn" onclick="drawBingo()">🎲 抽 題</button>
+      <button class="show-answer-btn" id="showAnswerBtn" onclick="toggleAnswer()" style="display:none;">👁 顯示答案</button>
+      <div class="called-list">
+        <h4>已抽題目 <span id="calledCount">0</span>題</h4>
+        <div id="calledItems"></div>
+      </div>
+    </div>
+    <!-- TEAM CARDS -->
+    <div class="cards-area">
+      <div class="cards-tabs" id="bingoCordsTabs"></div>
+      <div id="bingoCardsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MEMORY FLIP ═══════════ -->
+<div id="screen-memory" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goLobby()">← 大廳</button>
+    <div class="nav-logo"><span>🃏</span>翻翻樂</div>
+    <div class="nav-spacer"></div>
+    <div class="nav-unit-badge" id="memoryUnitBadge"></div>
+  </div>
+  <div class="score-bar" id="memoryScoreBar"></div>
+  <div class="memory-wrap">
+    <div class="memory-info">
+      <div class="memory-stat"><span class="ms-label">已配對</span><span class="ms-val" id="memMatchCount">0</span></div>
+      <div class="memory-stat"><span class="ms-label">剩餘</span><span class="ms-val" id="memRemain">0</span></div>
+      <div class="memory-stat" id="memTimerWrap"><span class="ms-label">時間</span><span class="ms-val" id="memTimer">0:00</span></div>
+      <div class="memory-stat" id="memTurnWrap"><span class="ms-label">當前隊伍</span><span class="ms-val" id="memTurnName">—</span></div>
+    </div>
+    <div class="mem-grid" id="memGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════ QUICK QUIZ ═══════════ -->
+<div id="screen-quiz" class="screen">
+  <div class="nav">
+    <button class="nav-back" onclick="goLobby()">← 大廳</button>
+    <div class="nav-logo"><span>⚡</span>速問快答</div>
+    <div class="nav-spacer"></div>
+    <div class="nav-unit-badge" id="quizUnitBadge"></div>
+  </div>
+  <div class="score-bar" id="quizScoreBar"></div>
+  <div class="quiz-wrap">
+    <div class="quiz-clue-card">
+      <div class="quiz-num" id="quizNum">Q 0 / 0</div>
+      <div class="quiz-clue-text" id="quizClue">準備開始…</div>
+      <div class="quiz-timer"><div class="quiz-timer-bar" id="quizTimerBar" style="width:100%"></div></div>
+    </div>
+    <div class="quiz-answer-reveal" id="quizAnswerReveal"></div>
+    <div class="quiz-buzz-row" id="quizBuzzRow"></div>
+    <div class="award-row" id="awardRow"></div>
+    <div class="quiz-controls">
+      <button class="qc-btn" onclick="quizRevealAnswer()">👁 揭曉答案</button>
+      <button class="qc-btn primary" id="quizNextBtn" onclick="nextQuiz()">下一題 →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// GAME DATA — 8 Units × 25 items each
+// t=term (short, for bingo card & memory front)
+// c=clue (definition, for calling & memory back)
+// ============================================================
+const UNITS=[
+{id:1,title:"氧合與活動",en:"Oxygenation & Mobility",color:"#00b4d8",bg:"rgba(0,180,216,.15)",
+items:[
+ {t:"縮唇呼吸",c:"COPD防止小呼吸道塌陷的呼吸技巧"},
+ {t:"SpO₂ 88-92%",c:"COPD病人的給氧目標範圍，避免抑制低氧驅動"},
+ {t:"FEV₁/FVC<70%",c:"阻塞性通氣障礙的肺功能診斷標準"},
+ {t:"呼吸性酸中毒",c:"pH↓ PaCO₂↑ 的酸鹼失衡類型"},
+ {t:"Fowler臥位",c:"心臟衰竭端坐呼吸病人應擺放的體位"},
+ {t:"NYHA Class III",c:"輕微活動就明顯喘的心臟衰竭功能分級"},
+ {t:"監測K⁺",c:"心臟衰竭使用Furosemide必須監測的電解質"},
+ {t:"T值≤-2.5",c:"DEXA掃描骨質疏鬆的診斷標準"},
+ {t:"髖屈曲>90°",c:"全髖關節置換術後最重要的禁忌動作"},
+ {t:"三角枕外展",c:"THR術後維持假體位置防止脫位的護理措施"},
+ {t:"Homans徵象",c:"被動背屈踝關節時小腿痛，懷疑DVT的評估"},
+ {t:"FEV₁",c:"肺功能中測量用力吐氣第一秒量的指標縮寫"},
+ {t:"CPM機器",c:"膝關節置換術後促進軟骨癒合的持續被動運動設備"},
+ {t:"Braden≤12",c:"Braden壓傷風險量表代表高度危險的分數"},
+ {t:"6MWT",c:"評估運動耐受性與功能狀態的六分鐘步行測試"},
+ {t:"BNP>100",c:"提示心臟衰竭的B型利尿鈉肽診斷閾值(pg/mL)"},
+ {t:"HFpEF",c:"射血分數≥50%、舒張功能障礙為主的心臟衰竭"},
+ {t:"PaO₂ 80-100",c:"正常動脈血氧分壓的參考範圍(mmHg)"},
+ {t:"呼吸性鹼中毒",c:"pH↑ PaCO₂↓ 的酸鹼失衡類型"},
+ {t:"缺血性骨壞死",c:"長期使用類固醇引起的嚴重骨骼副作用之一"},
+ {t:"脂肪栓塞症候群",c:"骨折後呼吸困難+意識改變+瘀點的三聯徵"},
+ {t:"Borg量表",c:"評估運動時自覺費力程度的0-10分工具"},
+ {t:"DVT",c:"關節置換術後常見的深部靜脈血栓併發症縮寫"},
+ {t:"頸靜脈壓JVP",c:"評估心臟衰竭液體狀態的非侵入性視診工具"},
+ {t:"Winters公式",c:"代謝性酸中毒時預測代償PaCO₂的計算公式"},
+]},
+{id:2,title:"營養與排泄",en:"Nutrition & Elimination",color:"#f59e0b",bg:"rgba(245,158,11,.15)",
+items:[
+ {t:"幽門螺旋桿菌",c:"消化性潰瘍最常見的致病菌（H. pylori）"},
+ {t:"三合療法",c:"PPI+Clarithromycin+Amoxicillin根除H.pylori"},
+ {t:"食道靜脈瘤出血",c:"肝硬化最常見且最危險的致死性併發症"},
+ {t:"Child-Pugh評分",c:"評估肝硬化嚴重程度的五項指標評分系統"},
+ {t:"補充白蛋白",c:"腹水大量穿刺引流後必須靜脈補充的物質"},
+ {t:"肝性腦病變",c:"肝硬化合併血氨升高引起的神經系統併發症"},
+ {t:"Ileostomy",c:"迴腸造口，排泄物呈液態半液態"},
+ {t:"限制切口1-2mm",c:"更換造口貼片時切口比造口大的正確尺寸"},
+ {t:"B₁₂缺乏",c:"迴腸造口/胃切除術後長期缺乏的維生素"},
+ {t:"TPN中心靜脈",c:"全靜脈營養必須經由中心靜脈輸注的原因（高張性）"},
+ {t:"低磷血症",c:"再喂食症候群(Refeeding syndrome)最危險的電解質異常"},
+ {t:"X光確認",c:"確認鼻胃管位置的黃金標準(Gold standard)"},
+ {t:"Harris-Benedict",c:"計算基礎代謝率考慮性別/體重/身高/年齡的公式"},
+ {t:"傾食症候群",c:"胃切除術後餐後食物快速傾入腸道的症候群"},
+ {t:"胰臟瘺管",c:"Whipple手術後最常見的嚴重外科併發症"},
+ {t:"內在因子缺乏",c:"胃切除術後導致B₁₂無法吸收引起惡性貧血的機制"},
+ {t:"腸音回復",c:"胃腸手術後可開始進食的重要評估徵象"},
+ {t:"中毒性巨結腸",c:"潰瘍性結腸炎(UC)最嚴重的急性致死性併發症"},
+ {t:"造口顏色暗紫",c:"造口出現缺血壞死的緊急警示徵象"},
+ {t:"少尿<400mL",c:"成人每日尿量少於此值定義為少尿(Oliguria)"},
+ {t:"CAUTI預防",c:"每日評估撤除導尿管必要性的院內感染防護措施"},
+ {t:"膀胱過動症OAB",c:"首選抗膽鹼藥（Oxybutynin）治療的排尿異常"},
+ {t:"反射性膀胱",c:"上運動神經元損傷引起的膀胱功能障礙類型"},
+ {t:"草黃綠色引流",c:"膽囊切除術後T型引流管的正常引流液顏色"},
+ {t:"Bristol第7型",c:"最嚴重的水樣腹瀉大便型態分類"},
+]},
+{id:3,title:"感覺知覺",en:"Sensory / Perception",color:"#a78bfa",bg:"rgba(167,139,250,.15)",
+items:[
+ {t:"GCS最高15分",c:"格拉斯哥昏迷量表E4+V5+M6的最高總分"},
+ {t:"GCS最低3分",c:"代表深度昏迷的Glasgow量表最低總分"},
+ {t:"GCS≤8插管",c:"嚴重腦損傷建議氣管插管保護呼吸道的GCS閾值"},
+ {t:"去大腦強直M2",c:"GCS運動反應中伸展反應的得分（Decerebrate）"},
+ {t:"FAST口訣",c:"腦中風快速辨識：臉歪/手臂無力/說話困難/時間"},
+ {t:"rt-PA 4.5小時",c:"缺血性腦中風靜脈溶栓治療的時間窗限制"},
+ {t:"失語症",c:"左腦（優勢半球）中風最常見的語言功能障礙"},
+ {t:"半側忽視",c:"右腦損傷後忽略左側身體和環境的知覺障礙"},
+ {t:"Cushing三聯徵",c:"高血壓+心跳過緩+呼吸不規則=顱內壓升高徵象"},
+ {t:"Mannitol甘露醇",c:"緊急降低顱內壓的高滲性利尿藥物"},
+ {t:"浣熊眼",c:"顱底骨折的特徵性眼眶周圍瘀斑外觀"},
+ {t:"Battle's sign",c:"顱底骨折的耳後乳突區瘀斑徵象"},
+ {t:"Lucid interval",c:"硬膜外血腫在短暫昏迷後的清醒期"},
+ {t:"靜止性震顫",c:"帕金森氏症最典型的靜止時出現的震顫症狀"},
+ {t:"Bradykinesia",c:"帕金森氏症三大主要症狀之一：動作遲緩"},
+ {t:"L-dopa限高蛋白",c:"Levodopa不應與高蛋白食物同服，因競爭吸收"},
+ {t:"吸入性肺炎",c:"帕金森氏症晚期因吞嚥困難引起的最常見死因"},
+ {t:"脊髓休克",c:"脊髓損傷後24-48小時內急性暫時性功能喪失"},
+ {t:"自律神經反射異常",c:"脊髓損傷膀胱脹滿引起的高血壓急症"},
+ {t:"ASIA A級",c:"S4-5無感覺無運動的完全性脊髓損傷分級"},
+ {t:"Status Epilepticus",c:"癲癇發作持續>5分鐘的神經科緊急狀況"},
+ {t:"Lorazepam IV",c:"癲癇持續狀態的首選靜脈藥物治療"},
+ {t:"牙齦增生",c:"長期服用Phenytoin（苯妥英）的口腔副作用"},
+ {t:"Postictal phase",c:"癲癇發作後昏睡期，護理師應側臥保護呼吸道"},
+ {t:"高密度CT影像",c:"出血性腦中風在急性期CT掃描的影像特徵"},
+]},
+{id:4,title:"安全保護",en:"Safety & Protection",color:"#10b981",bg:"rgba(16,185,129,.15)",
+items:[
+ {t:"感染鏈六環節",c:"病原體→感染窩→出口→傳播→入口→易感宿主"},
+ {t:"WHO五大時機",c:"手部衛生Five Moments涵蓋的洗手時機"},
+ {t:"CLABSI Bundle",c:"中央靜脈導管感染預防的集束護理五要素"},
+ {t:"MRSA",c:"甲氧西林抗藥性金黃色葡萄球菌的縮寫"},
+ {t:"接觸傳播隔離",c:"MRSA病人的隔離措施類型（手套+隔離衣）"},
+ {t:"3M空氣傳播",c:"麻疹/水痘/肺結核需要空氣隔離的三種疾病"},
+ {t:"N95口罩",c:"空氣傳播隔離必需的特殊防護裝備"},
+ {t:"蝴蝶斑",c:"SLE橫跨鼻梁、不累及鼻唇溝的特徵性紅斑"},
+ {t:"RA晨僵>1小時",c:"類風濕性關節炎診斷性的關節晨間僵硬時間"},
+ {t:"CD4<200",c:"HIV感染進展為AIDS的免疫學診斷標準"},
+ {t:"PCP",c:"AIDS病人最常見的機會性感染：肺囊蟲肺炎縮寫"},
+ {t:"超急性排斥",c:"器官移植後數分鐘至數小時即發生的最快排斥"},
+ {t:"GvHD",c:"骨髓移植後供體T細胞攻擊宿主的移植物抗宿主病"},
+ {t:"C. diff孢子",c:"需用次氯酸鈉消毒，酒精無法殺滅的菌種"},
+ {t:"VAP Bundle",c:"預防呼吸器相關肺炎的床頭抬高等集束護理"},
+ {t:"PEP 72小時",c:"HIV暴露後預防需在72小時內開始的28天療程"},
+ {t:"狼瘡性腎炎",c:"SLE最嚴重的腎臟侵犯，早期監測蛋白尿"},
+ {t:"類固醇五副作用",c:"向心肥胖/骨鬆/高血糖/感染↑/消化道潰瘍"},
+ {t:"Cyclosporine腎毒",c:"器官移植主要免疫抑制劑Cyclosporine的主要副作用"},
+ {t:"CAUTI排名第一",c:"醫療照護相關感染中最常見的類型縮寫"},
+ {t:"Mupirocin去定殖",c:"鼻腔軟膏去除MRSA帶菌狀態的抗生素"},
+ {t:"標準防護措施",c:"適用所有病人的基本感染預防措施（Standard Precautions）"},
+ {t:"CHG沐浴",c:"氯己定消毒沐浴用於MRSA去定殖的措施"},
+ {t:"急性排斥四徵",c:"移植腎區痛/發燒/肌酐↑/尿量↓的急性排斥表現"},
+ {t:"CH X皮膚消毒",c:"CLABSI Bundle中使用氯己定消毒插管部位皮膚"},
+]},
+{id:5,title:"腫瘤全人照護",en:"Oncology Care",color:"#e879f9",bg:"rgba(232,121,249,.15)",
+items:[
+ {t:"TNM分期",c:"T腫瘤大小/N淋巴轉移/M遠端轉移的癌症分期系統"},
+ {t:"Tis原位癌",c:"TNM分期中原位癌（carcinoma in situ）的表示"},
+ {t:"HER2陽性",c:"標靶藥Trastuzumab赫賽汀的適用乳癌分子條件"},
+ {t:"三陰性乳癌",c:"ER/PR/HER2均陰性、預後較差的乳癌分型"},
+ {t:"前哨淋巴結",c:"判斷乳癌是否淋巴轉移的第一站，陰性可免廓清"},
+ {t:"FN發燒白血球減少",c:"ANC<500且體溫>38.3°C的化療緊急併發症"},
+ {t:"外漏Extravasation",c:"化療藥物滲漏至皮下組織的嚴重護理事件"},
+ {t:"Grade 3黏膜炎",c:"只能進流質、嚴重疼痛的WHO化療口腔分級"},
+ {t:"CIPN手套長襪感",c:"紫杉醇/奧沙利鉑引起的化療誘發周邊神經病變"},
+ {t:"伽瑪刀SBRS",c:"精準少次大劑量的立體定向放射外科療法"},
+ {t:"口腔乾燥症",c:"頭頸部放療損傷腮腺引起的唾液腺分泌減少"},
+ {t:"ALARA原則",c:"放射防護時間最短/距離最遠/屏蔽最完善原則"},
+ {t:"PD-1/PD-L1",c:"免疫檢查點抑制劑阻斷的腫瘤免疫逃脫訊號"},
+ {t:"irAE免疫副作用",c:"免疫檢查點抑制劑引起的免疫相關不良事件"},
+ {t:"CRS細胞激素風暴",c:"CAR-T細胞治療最嚴重的急性副作用縮寫"},
+ {t:"WHO三階梯",c:"非鴉片→弱鴉片→強鴉片的癌症疼痛治療原則"},
+ {t:"Total Pain",c:"Cicely Saunders提出的身/心/社/靈全面疼痛概念"},
+ {t:"嗎啡預防便秘",c:"強鴉片類藥物使用時必須預防性處理的副作用"},
+ {t:"TLS腫瘤溶解",c:"高鉀/高磷/高尿酸/低鈣的腫瘤急症縮寫"},
+ {t:"SCC脊髓壓迫",c:"最早出現背痛警示的腫瘤急症縮寫"},
+ {t:"SVCS上腔靜脈",c:"顏面頸部水腫+頸靜脈怒張+呼吸困難的腫瘤急症"},
+ {t:"ECOG PS2",c:"可自理但無法工作的癌症病人體能狀態評估"},
+ {t:"Nadir 7-14天",c:"化療後骨髓最低點出現的時間，感染風險最高"},
+ {t:"Wet desquamation",c:"放療Grade 3急性皮膚反應：濕性脫皮"},
+ {t:"緩和鎮靜",c:"頑固性症狀臨終前無其他方法時使用的鎮靜措施"},
+]},
+{id:6,title:"家庭文化照護",en:"Family & Cultural Care",color:"#f97316",bg:"rgba(249,115,22,.15)",
+items:[
+ {t:"家系圖Genogram",c:"描繪三代家庭結構、方形=男/圓形=女的評估工具"},
+ {t:"APGAR家庭",c:"評估家庭功能：適應/合作/成長/情感/解決五項"},
+ {t:"生態圖Ecomap",c:"描繪家庭與外部社區系統連結關係的評估工具"},
+ {t:"Leininger理論",c:"文化照護多樣性與普遍性理論的創立者"},
+ {t:"Kleinman 8問",c:"探索病人疾病文化解釋的八個問題評估工具"},
+ {t:"驗證療法",c:"接受失智病人認知現實、不糾正錯誤的照護方式"},
+ {t:"MMSE 21-26分",c:"簡易智能評估輕度失智的分數範圍（滿分30分）"},
+ {t:"5I老年症候群",c:"跌倒/失禁/認知障礙/不動/醫源性的老年特殊問題"},
+ {t:"譫妄急性發作",c:"以小時至天為單位急性發作的認知改變（非失智）"},
+ {t:"長照2.0",c:"台灣2017年擴大的長期照顧服務政策"},
+ {t:"四包錢補助",c:"長照2.0的照顧服務/交通/輔具/環改四類補助"},
+ {t:"ABC旗艦社區",c:"長照A=社區整合型/B=複合型/C=巷弄型三級體系"},
+ {t:"喘息服務",c:"讓主要照顧者暫時休息的長照支持性服務"},
+ {t:"Zarit≥40負荷",c:"Zarit照顧者負荷量表代表中度以上負荷的分數"},
+ {t:"憐憫疲憊",c:"長期照顧創傷者引起的次級創傷應激症候群"},
+ {t:"Frailty衰弱症",c:"Fried表型≥3項（體重/疲憊/握力/步速/活動量）"},
+ {t:"文化安全",c:"尊重文化認同、避免文化強加的跨文化護理原則"},
+ {t:"Campinha-Bacote",c:"文化意識/知識/技能/相遇/渴望五層次文化能力"},
+ {t:"BPSD失智行為",c:"失智症精神行為症狀（焦躁/遊走/幻覺等）縮寫"},
+ {t:"DICE模式",c:"描述→調查→創造→評估的失智BPSD護理四步驟"},
+ {t:"Morse跌倒量表",c:"評估老年病人跌倒風險的常用工具"},
+ {t:"多重用藥≥5種",c:"同時服用五種以上藥物、增加交互作用風險的定義"},
+ {t:"ADL六項",c:"進食/梳洗/如廁/洗澡/穿衣/移位的日常活動評估"},
+ {t:"ABC-X危機模型",c:"事件+感受+資源=X（危機）的家庭危機理論"},
+ {t:"Care manager",c:"評估失能/擬計畫/整合資源的照顧管理專員"},
+]},
+{id:7,title:"靈性照護",en:"Spiritual Care",color:"#818cf8",bg:"rgba(129,140,248,.15)",
+items:[
+ {t:"FICA靈性評估",c:"信仰(F)/重要性(I)/社群(C)/照護指引(A)工具"},
+ {t:"HOPE評估H",c:"HOPE靈性評估工具中H=希望與意義的來源"},
+ {t:"靈性困擾",c:"意義/目的喪失的NANDA護理診斷名稱"},
+ {t:"靈性≠宗教",c:"靈性是更廣泛概念，宗教是靈性的一種表達形式"},
+ {t:"臨終傅油禮",c:"天主教臨終前最重要的宗教儀式"},
+ {t:"Ghusl遺體清洗",c:"伊斯蘭教同性別親屬清洗遺體的宗教儀式"},
+ {t:"佛教助念",c:"佛教臨終時誦念佛號、避免移動遺體的護理配合"},
+ {t:"四道人生",c:"道謝/道愛/道歉/道別的臨終溝通四項對話"},
+ {t:"趙可式教授",c:"台灣推動安寧療護與四道人生概念的護理學者"},
+ {t:"死前視見",c:"臨終病人描述看見已故親人或旅行準備的現象"},
+ {t:"聽覺最後消失",c:"提醒家屬繼續對話，因臨終病人最後喪失的感官"},
+ {t:"死亡嘎嘎聲",c:"臨終分泌物積聚咽喉的正常現象（非痛苦表現）"},
+ {t:"憐憫疲憊",c:"護理師長期照顧臨終病人的次級創傷職業傷害"},
+ {t:"Logotherapy",c:"Viktor Frankl在苦難中尋找生命意義的療法"},
+ {t:"馬斯洛自我實現",c:"靈性需求在馬斯洛需求層次中所屬的最高層次"},
+ {t:"未竟事宜",c:"臨終道歉希望解除的Unfinished business靈性困擾"},
+ {t:"JCAHO靈性篩查",c:"要求入院時常規進行初步靈性評估的醫院評鑑機構"},
+ {t:"正念練習",c:"預防護理師職業耗竭(Burnout)的個人靈性策略"},
+ {t:"臨床督導",c:"提供護理師情緒支持與靈性自我覺察的機制"},
+ {t:"靈性困擾徵象",c:"質疑生命意義、感覺被神靈遺棄的NANDA診斷依據"},
+ {t:"Postmortem care",c:"死後遺體護理應在死後1-2小時內完成"},
+ {t:"Death debriefing",c:"死亡後護理團隊反思照護品質、處理悲傷的機制"},
+ {t:"同儕支持",c:"護理師預防職業耗竭重要的社會支持資源"},
+ {t:"宗教vs靈性",c:"靈性更廣泛，宗教為其表達方式之一的概念區別"},
+ {t:"不傷害契約?",c:"實證不支持、應改用安全計畫替代的過時工具"},
+]},
+{id:8,title:"心理照護",en:"Psychological Care",color:"#f472b6",bg:"rgba(244,114,182,.15)",
+items:[
+ {t:"Lazarus初級評估",c:"壓力因應模式中評估威脅程度的第一步驟"},
+ {t:"GAS三階段",c:"Selye的一般適應症候群：警覺→抵抗→耗竭"},
+ {t:"PHQ-9≥10中度",c:"憂鬱篩查量表代表中度憂鬱的分數閾值"},
+ {t:"Peplau焦慮四級",c:"第III級嚴重焦慮：感知野縮窄+過度換氣+難以集中"},
+ {t:"GAD廣泛焦慮",c:"對多種日常事物持續過度擔憂≥6個月的焦慮症"},
+ {t:"腹式呼吸",c:"護理師協助急性焦慮發作的首要非藥物緩解方式"},
+ {t:"Benzodiazepines",c:"焦慮治療的苯二氮平類藥物，注意成癮與跌倒風險"},
+ {t:"CBT認知行為",c:"暴露/認知重構/放鬆訓練的焦慮心理治療縮寫"},
+ {t:"IS PATH WARM",c:"評估自殺風險的縮寫，I=意念S=物質濫用…"},
+ {t:"C-SSRS",c:"評估自殺意念強度與自殺行為的Columbia量表"},
+ {t:"Safety Planning",c:"取代不傷害契約的六步驟自殺防護工具"},
+ {t:"Roberts七階段",c:"危機介入模型第一步=危機評估(含安全評估)"},
+ {t:"PFA心理急救",c:"看(觀察)/聆聽(傾聽)/連結(資源)的三項基本行動"},
+ {t:"PTSD四症狀群",c:"再體驗/逃避/認知情緒負向/過度警覺的創傷症狀"},
+ {t:"OARS晤談技術",c:"動機式晤談的開放問題/肯定/反映傾聽/摘要四技術"},
+ {t:"TTM改變階段",c:"前思考→思考→準備→行動→維持的行為改變模式"},
+ {t:"認知重構",c:"識別扭曲思維、挑戰不合理信念的心理技術"},
+ {t:"心理彈性",c:"Resilience，在逆境中恢復並適應的心理能力"},
+ {t:"身體意象",c:"個人對自己身體外觀的主觀感知與情感評價"},
+ {t:"BMI<17.5厭食",c:"厭食症(Anorexia nervosa)診斷標準的BMI臨界值"},
+ {t:"鏡像暴露療法",c:"治療身體意象障礙：反覆暴露降低對身體負面感知"},
+ {t:"問題焦點因應",c:"改變壓力源本身（非情緒）的因應策略類型"},
+ {t:"次級創傷",c:"照顧創傷倖存者間接引起的創傷應激反應"},
+ {t:"SAD PERSONS",c:"評估自殺風險的多因子量表(S=男性)"},
+ {t:"危機4-6週",c:"危機介入的時間限制原則；危機也是成長的機會"},
+]},
+];
+
+// ============================================================
+// SHARED STATE
+// ============================================================
+const TEAM_COLORS = ["#2dd4bf","#f5c842","#f472b6","#818cf8","#f97316","#10b981"];
+let st = {
+  game: null, unit: 0, mode: 'group', teamCount: 4, diff: 12, timer: 20,
+  teams: [], bingo: {}, memory: {}, quiz: {}
+};
+
+// ============================================================
+// LOBBY
+// ============================================================
+function initLobby(){
+  const ug = document.getElementById('unitGrid');
+  ug.innerHTML = UNITS.map((u,i)=>`
+    <div class="unit-btn ${i===0?'active':''}" style="--uc:${u.color}" data-idx="${i}"
+      onclick="selectUnit(${i})">
+      <div class="ub-num" style="color:${u.color}">Unit 0${u.id}</div>
+      <div class="ub-name">${u.title}</div>
+    </div>`).join('');
+
+  const tcr = document.getElementById('teamCountBtns');
+  tcr.innerHTML = [2,3,4,5,6].map(n=>`
+    <button class="tc-btn ${n===4?'active':''}" data-n="${n}" onclick="selectTeamCount(${n})">${n}</button>`).join('');
+}
+
+function selectGame(g){
+  st.game = g;
+  document.getElementById('settingsWrap').style.display = 'flex';
+  document.getElementById('settingsTitle').textContent =
+    g==='bingo'?'🎱 賓果遊戲設定':g==='memory'?'🃏 翻翻樂設定':'⚡ 速問快答設定';
+  document.getElementById('diffRow').style.display = g==='memory'?'':'none';
+  document.getElementById('timerRow').style.display = g==='quiz'?'':'none';
+  document.getElementById('modeRow').style.display = g==='bingo'?'none':'';
+  document.getElementById('teamCountRow').style.display = '';
+  document.getElementById('settingsWrap').scrollIntoView({behavior:'smooth'});
+}
+
+function selectUnit(i){
+  st.unit=i;
+  document.querySelectorAll('.unit-btn').forEach((b,j)=>{
+    b.classList.toggle('active',j===i);});
+}
+function selectMode(m){
+  st.mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  document.getElementById('teamCountRow').style.display=m==='individual'?'none':'';
+}
+function selectTeamCount(n){
+  st.teamCount=n;
+  document.querySelectorAll('.tc-btn').forEach(b=>b.classList.toggle('active',+b.dataset.n===n));
+}
+function selectDiff(n){
+  st.diff=n;
+  document.querySelectorAll('.diff-btn[data-diff]').forEach(b=>b.classList.toggle('active',+b.dataset.diff===n));
+}
+function selectTimer(n){
+  st.timer=n;
+  document.querySelectorAll('.diff-btn[data-timer]').forEach(b=>b.classList.toggle('active',+b.dataset.timer===n));
+}
+
+function startGame(){
+  // Build teams（若已匯入CSV，優先使用CSV組名）
+  loadLocalStudents();
+  if(st.mode==='individual'){
+    st.teams = [{ name:'我的成績', score:0, color:TEAM_COLORS[0] }];
+  } else if(Array.isArray(TEAMS) && TEAMS.length){
+    st.teams = TEAMS.slice(0,6).map((team,i)=>({ name:team.team_name||`第${i+1}組`, score:0, color:TEAM_COLORS[i%TEAM_COLORS.length] }));
+    st.teamCount = st.teams.length;
+  } else {
+    const nc = st.teamCount;
+    st.teams = Array.from({length:nc},(_, i)=>({ name:`第${['一','二','三','四','五','六'][i]}組`, score:0, color:TEAM_COLORS[i] }));
+  }
+  if(st.game==='bingo') startBingo();
+  else if(st.game==='memory') startMemory();
+  else startQuiz();
+}
+
+function goLobby(){
+  clearInterval(st.memory.timerInterval);
+  clearInterval(st.quiz.timerInterval);
+  showScreen('lobby');
+}
+function restartGame(){
+  document.getElementById('winOverlay').classList.remove('open');
+  if(st.game==='bingo') startBingo();
+  else if(st.game==='memory') startMemory();
+  else startQuiz();
+}
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+
+// ============================================================
+// SCORE BAR
+// ============================================================
+function renderScoreBar(elId, activeTurn=-1){
+  const el=document.getElementById(elId);
+  el.innerHTML=st.teams.map((t,i)=>`
+    <div class="team-chip ${i===activeTurn?'active-turn':''}"
+      style="--tc-col:${t.color};border-color:${t.color};
+        background:${i===activeTurn?t.color+'30':'rgba(255,255,255,.04)'};">
+      <span class="tc-name">${t.name}</span>
+      <span class="tc-score">${t.score}</span>
+    </div>`).join('');
+}
+
+// ============================================================
+// BINGO GAME
+// ============================================================
+function startBingo(){
+  const u = UNITS[st.unit];
+  const b = st.bingo = {
+    unit: st.unit,
+    pool: shuffle([...u.items]),
+    called: [],
+    cards: st.teams.map(()=>generateBingoCard(u.items)),
+    marked: st.teams.map(()=>new Array(25).fill(false)),
+    calledIdx: 0,
+    teamCount: st.mode==='individual'?1:st.teamCount,
+    currentAnswer: ''
+  };
+  b.marked.forEach(m=>{ m[12]=true; }); // FREE center
+
+  document.getElementById('bingoUnitBadge').textContent='Unit 0'+u.id+' '+u.title;
+  document.getElementById('bingoUnitBadge').style.color=u.color;
+  document.getElementById('bingoUnitBadge').style.borderColor=u.color;
+
+  renderScoreBar('bingoScoreBar');
+  renderBingoCards();
+  document.getElementById('callNum').textContent='—';
+  document.getElementById('callClue').textContent='按下「抽題」開始遊戲';
+  document.getElementById('callAnswer').classList.remove('show');
+  document.getElementById('callCounter').textContent='已抽 0 題';
+  document.getElementById('calledItems').innerHTML='';
+  document.getElementById('calledCount').textContent='0';
+  document.getElementById('callBtn').disabled=false;
+  document.getElementById('showAnswerBtn').style.display='none';
+  showScreen('bingo');
+}
+
+function generateBingoCard(pool){
+  const s = shuffle([...pool]).slice(0,24);
+  s.splice(12,0,{t:'FREE★',c:''});
+  return s;
+}
+
+function renderBingoCards(){
+  const b = st.bingo;
+  const tabsEl = document.getElementById('bingoCordsTabs');
+  const cardsEl = document.getElementById('bingoCardsContainer');
+  tabsEl.innerHTML = st.teams.map((t,i)=>`
+    <button class="cards-tab ${i===0?'active':''}" data-ti="${i}"
+      style="${i===0?'border-color:'+t.color+';color:'+t.color+';background:'+t.color+'20':''};"
+      onclick="switchBingoTeam(${i})">${t.name}</button>`).join('');
+  cardsEl.innerHTML = st.teams.map((t,i)=>`
+    <div class="bingo-card-wrap ${i===0?'active':''}" id="bcard_${i}">
+      <div class="bingo-card-label">${t.name} · 賓果卡</div>
+      <div class="bingo-header-row">${['B','I','N','G','O'].map(l=>`<div class="bh">${l}</div>`).join('')}</div>
+      <div class="bingo-card" id="bcgrid_${i}">
+        ${b.cards[i].map((item,idx)=>`
+          <div class="bc-tile ${idx===12?'free':''} ${b.marked[i][idx]?'marked':''}"
+            data-ti="${i}" data-idx="${idx}"
+            style="${b.marked[i][idx]&&idx!==12?'background:'+t.color+'30;border-color:'+t.color+';color:'+t.color+';':''}"
+            onclick="markBingo(${i},${idx})">${item.t}</div>`).join('')}
+      </div>
+      <button class="bingo-announce-btn" id="bingo_btn_${i}"
+        style="border-color:${t.color};color:${t.color};background:${t.color}15;"
+        onclick="announceBingo(${i})">🎉 宣告 BINGO！</button>
+    </div>`).join('');
+}
+
+function switchBingoTeam(ti){
+  document.querySelectorAll('.bingo-card-wrap').forEach((el,i)=>el.classList.toggle('active',i===ti));
+  document.querySelectorAll('.cards-tab').forEach((el,i)=>{
+    const t=st.teams[i];
+    el.classList.toggle('active',i===ti);
+    el.style.borderColor=i===ti?t.color:'rgba(255,255,255,.08)';
+    el.style.color=i===ti?t.color:'';
+    el.style.background=i===ti?t.color+'20':'';
+  });
+}
+
+function drawBingo(){
+  const b = st.bingo;
+  if(b.calledIdx >= b.pool.length){ showToast('所有題目都抽完了！',''); return; }
+  const item = b.pool[b.calledIdx++];
+  b.called.push(item);
+  b.currentAnswer = item.t;
+
+  document.getElementById('callNum').textContent = '#'+b.calledIdx;
+  document.getElementById('callClue').textContent = item.c;
+  document.getElementById('callAnswer').textContent = '答案：'+item.t;
+  document.getElementById('callAnswer').classList.remove('show');
+  document.getElementById('callCounter').textContent='已抽 '+b.calledIdx+' 題';
+  document.getElementById('calledCount').textContent=b.calledIdx;
+  document.getElementById('showAnswerBtn').style.display='';
+
+  const li = document.createElement('div');
+  li.className='called-item';
+  li.innerHTML=`<span class="ci-term">${item.t}</span>${item.c.substring(0,20)}…`;
+  document.getElementById('calledItems').prepend(li);
+
+  if(b.calledIdx>=b.pool.length) document.getElementById('callBtn').disabled=true;
+}
+
+function toggleAnswer(){
+  const a=document.getElementById('callAnswer');
+  const showing=a.classList.contains('show');
+  a.classList.toggle('show',!showing);
+  document.getElementById('showAnswerBtn').textContent=showing?'👁 顯示答案':'🙈 隱藏答案';
+}
+
+function markBingo(ti, idx){
+  const b=st.bingo;
+  if(idx===12||!b.called.length) return; // FREE or no items called
+  b.marked[ti][idx]=!b.marked[ti][idx];
+  const tile=document.querySelector(`[data-ti="${ti}"][data-idx="${idx}"]`);
+  const t=st.teams[ti];
+  if(tile){
+    tile.classList.toggle('marked',b.marked[ti][idx]);
+    tile.style.background=b.marked[ti][idx]?t.color+'30':'';
+    tile.style.borderColor=b.marked[ti][idx]?t.color:'';
+    tile.style.color=b.marked[ti][idx]?t.color:'';
+  }
+  // Check bingo
+  const hasBingo=checkBingo(b.marked[ti]);
+  document.getElementById('bingo_btn_'+ti).style.display=hasBingo?'':'none';
+}
+
+function checkBingo(marked){
+  // Rows
+  for(let r=0;r<5;r++) if([0,1,2,3,4].every(c=>marked[r*5+c])) return true;
+  // Cols
+  for(let c=0;c<5;c++) if([0,1,2,3,4].every(r=>marked[r*5+c])) return true;
+  // Diags
+  if([0,6,12,18,24].every(i=>marked[i])) return true;
+  if([4,8,12,16,20].every(i=>marked[i])) return true;
+  return false;
+}
+
+function announceBingo(ti){
+  const t=st.teams[ti];
+  t.score += 50;
+  recordScore({game_name:'Bingo', unit_name:UNITS[st.unit].title, question:'BINGO五連線', team_name:t.name, student_name:t.name, student_id:'GROUP', individual_score:0, team_score:50, correct:true});
+  renderScoreBar('bingoScoreBar');
+  document.getElementById('bingo_btn_'+ti).style.display='none';
+  showWin('🎉','BINGO！',t.name+' 達成五連線！\n獲得 50 分！','');
+}
+
+// ============================================================
+// MEMORY FLIP
+// ============================================================
+function startMemory(){
+  clearInterval(st.memory.timerInterval);
+  const u=UNITS[st.unit];
+  const pairCount = st.diff/2;
+  const cols = st.diff===12?4:st.diff===20?5:6;
+  const rows = st.diff===12?3:st.diff===20?4:5;
+  const selected = shuffle([...u.items]).slice(0,pairCount);
+  const cards = shuffle(selected.flatMap(item=>[
+    {id:item.t,type:'term',text:item.t,match:item.t},
+    {id:item.t,type:'def',text:item.c,match:item.t},
+  ]));
+
+  const m = st.memory = {
+    cards, cols, rows,
+    flipped:[], matched:[], lock:false,
+    turnIdx:0, scores:st.teams.map(()=>0),
+    startTime:Date.now(), elapsed:0, timerInterval:null
+  };
+
+  document.getElementById('memoryUnitBadge').textContent='Unit 0'+u.id+' '+u.title;
+  document.getElementById('memoryUnitBadge').style.color=u.color;
+  document.getElementById('memoryUnitBadge').style.borderColor=u.color;
+
+  renderScoreBar('memoryScoreBar', st.mode==='individual'?-1:0);
+  document.getElementById('memMatchCount').textContent='0';
+  document.getElementById('memRemain').textContent=pairCount;
+  document.getElementById('memTimerWrap').style.display=st.mode==='individual'?'':'none';
+  document.getElementById('memTurnWrap').style.display=st.mode==='group'?'':'none';
+
+  if(st.mode==='individual'){
+    m.timerInterval=setInterval(()=>{
+      m.elapsed=Math.floor((Date.now()-m.startTime)/1000);
+      const mm=Math.floor(m.elapsed/60), ss=m.elapsed%60;
+      document.getElementById('memTimer').textContent=mm+':'+(ss<10?'0':'')+ss;
+    },1000);
+  } else {
+    updateMemTurn();
+  }
+
+  renderMemGrid();
+  showScreen('memory');
+}
+
+function renderMemGrid(){
+  const {cards,cols,rows}=st.memory;
+  const grid=document.getElementById('memGrid');
+  const cardH=Math.max(80,Math.min(120,Math.floor((window.innerHeight-240)/rows)));
+  grid.style.gridTemplateColumns=`repeat(${cols},1fr)`;
+  grid.style.gridTemplateRows=`repeat(${rows},${cardH}px)`;
+  grid.innerHTML=cards.map((c,i)=>`
+    <div class="mem-card" id="mc_${i}" onclick="flipMemCard(${i})">
+      <div class="mem-card-inner">
+        <div class="mem-face"><span class="mem-face-icon">🏥</span></div>
+        <div class="mem-back type-${c.type}">
+          <div class="mem-back-label">${c.type==='term'?'術語':'定義'}</div>
+          <div class="mem-back-text">${c.text}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function flipMemCard(i){
+  const m=st.memory;
+  if(m.lock) return;
+  if(m.flipped.includes(i)||m.matched.includes(i)) return;
+  m.flipped.push(i);
+  document.getElementById('mc_'+i).classList.add('flipped');
+  if(m.flipped.length===2){
+    m.lock=true;
+    checkMemMatch();
+  }
+}
+
+function checkMemMatch(){
+  const m=st.memory;
+  const [a,b]=m.flipped;
+  const ca=m.cards[a], cb=m.cards[b];
+  const isMatch=ca.match===cb.match && ca.type!==cb.type;
+  if(isMatch){
+    m.matched.push(a,b);
+    const col=st.mode==='group'?st.teams[m.turnIdx].color:TEAM_COLORS[0];
+    [a,b].forEach(idx=>{
+      const el=document.getElementById('mc_'+idx);
+      el.classList.add('matched');
+      el.querySelector('.mem-back').style.borderColor=col;
+      el.querySelector('.mem-back').style.boxShadow=`0 0 18px ${col}50`;
+    });
+    if(st.mode==='group'){
+      st.teams[m.turnIdx].score+=10;
+      m.scores[m.turnIdx]++;
+      recordScore({game_name:'Memory', unit_name:UNITS[st.unit].title, question:ca.match, team_name:st.teams[m.turnIdx].name, student_name:st.teams[m.turnIdx].name, student_id:'GROUP', individual_score:0, team_score:10, correct:true});
+    }
+    m.flipped=[];
+    m.lock=false;
+    const matched=m.matched.length/2;
+    const pairCount=m.cards.length/2;
+    document.getElementById('memMatchCount').textContent=matched;
+    document.getElementById('memRemain').textContent=pairCount-matched;
+    renderScoreBar('memoryScoreBar',st.mode==='group'?m.turnIdx:-1);
+    showToast('✓ 配對成功！+10分','good');
+    if(matched===pairCount){
+      clearInterval(m.timerInterval);
+      setTimeout(()=>endMemory(),600);
+    }
+  } else {
+    showToast('✗ 不符合，翻回去','bad');
+    setTimeout(()=>{
+      m.flipped.forEach(idx=>document.getElementById('mc_'+idx).classList.remove('flipped'));
+      m.flipped=[];
+      m.lock=false;
+      if(st.mode==='group'){
+        m.turnIdx=(m.turnIdx+1)%st.teams.length;
+        updateMemTurn();
+        renderScoreBar('memoryScoreBar',m.turnIdx);
+      }
+    },1200);
+  }
+}
+
+function updateMemTurn(){
+  const t=st.teams[st.memory.turnIdx];
+  document.getElementById('memTurnName').textContent=t.name;
+  document.getElementById('memTurnName').style.color=t.color;
+}
+
+function endMemory(){
+  if(st.mode==='individual'){
+    const el=st.memory.elapsed;
+    const mm=Math.floor(el/60), ss=el%60;
+    showWin('⏱','完成所有配對！','時間：'+mm+'分'+ss+'秒',mm+'\''+ss+'\"');
+  } else {
+    const winner=st.teams.reduce((a,b)=>a.score>b.score?a:b);
+    showWin('🎊','翻翻樂結束！',winner.name+' 獲得最高分！',winner.score+'分');
+  }
+  launchConfetti();
+}
+
+// ============================================================
+// QUICK QUIZ
+// ============================================================
+function startQuiz(){
+  clearInterval(st.quiz.timerInterval);
+  const u=UNITS[st.unit];
+  const q=st.quiz={
+    pool: shuffle([...u.items]),
+    idx:0, timerPct:100, timerInterval:null,
+    buzzed:false
+  };
+  document.getElementById('quizUnitBadge').textContent='Unit 0'+u.id+' '+u.title;
+  document.getElementById('quizUnitBadge').style.color=u.color;
+  document.getElementById('quizUnitBadge').style.borderColor=u.color;
+
+  renderScoreBar('quizScoreBar');
+  renderQuizBuzz();
+  loadQuizQ();
+  showScreen('quiz');
+}
+
+function renderQuizBuzz(){
+  const row=document.getElementById('quizBuzzRow');
+  row.innerHTML=st.teams.map((t,i)=>`
+    <button class="buzz-btn" style="color:${t.color};border-color:${t.color};background:${t.color}15;"
+      onclick="buzzIn(${i})">${t.name}<br><span style="font-size:11px;opacity:.7;">搶 答</span></button>`).join('');
+}
+
+function loadQuizQ(){
+  const q=st.quiz;
+  clearInterval(q.timerInterval);
+  document.getElementById('quizAnswerReveal').style.display='none';
+  document.getElementById('awardRow').style.display='none';
+  document.getElementById('quizBuzzRow').style.display='flex';
+  q.buzzed=false;
+  document.querySelectorAll('.buzz-btn').forEach(b=>{b.disabled=false;b.style.opacity='1';});
+
+  if(q.idx>=q.pool.length){
+    endQuiz(); return;
+  }
+  const item=q.pool[q.idx];
+  document.getElementById('quizNum').textContent=`Q ${q.idx+1} / ${q.pool.length}`;
+  document.getElementById('quizClue').textContent=item.c;
+  document.getElementById('quizAnswerReveal').textContent='答案：'+item.t;
+  document.getElementById('quizTimerBar').style.transition='none';
+  document.getElementById('quizTimerBar').style.width='100%';
+  q.timerPct=100;
+
+  setTimeout(()=>{
+    document.getElementById('quizTimerBar').style.transition=`width ${st.timer}s linear`;
+    document.getElementById('quizTimerBar').style.width='0%';
+  },50);
+
+  q.timerInterval=setInterval(()=>{
+    q.timerPct-=100/(st.timer*10);
+    if(q.timerPct<=0){ clearInterval(q.timerInterval); timeUpQuiz(); }
+  },100);
+}
+
+function buzzIn(ti){
+  const q=st.quiz;
+  if(q.buzzed) return;
+  q.buzzed=true;
+  clearInterval(q.timerInterval);
+  document.getElementById('quizTimerBar').style.transition='none';
+  document.querySelectorAll('.buzz-btn').forEach((b,i)=>{
+    b.disabled=true; b.style.opacity=i===ti?'1':'.3';
+  });
+  showToast('🔔 '+st.teams[ti].name+' 搶答！','good');
+
+  // Show award buttons
+  const row=document.getElementById('awardRow');
+  row.style.display='flex';
+  row.innerHTML=`
+    <button class="award-btn award-correct" onclick="awardQuiz(${ti},true)">✓ 答對 +10</button>
+    <button class="award-btn award-wrong" onclick="awardQuiz(${ti},false)">✗ 答錯 −5</button>`;
+}
+
+function awardQuiz(ti, correct){
+  const item = st.quiz.pool[st.quiz.idx] || {t:'', c:''};
+  if(correct){
+    st.teams[ti].score+=10;
+    recordScore({game_name:'Quiz', unit_name:UNITS[st.unit].title, question:item.c || item.t, team_name:st.teams[ti].name, student_name:st.teams[ti].name, student_id:'GROUP', individual_score:0, team_score:10, correct:true});
+    showToast('✓ 正確！+10分','good');
+  } else {
+    st.teams[ti].score=Math.max(0,st.teams[ti].score-5);
+    recordScore({game_name:'Quiz', unit_name:UNITS[st.unit].title, question:item.c || item.t, team_name:st.teams[ti].name, student_name:st.teams[ti].name, student_id:'GROUP', individual_score:0, team_score:-5, correct:false});
+    showToast('✗ 答錯 −5分','bad');
+  }
+  renderScoreBar('quizScoreBar');
+  quizRevealAnswer();
+}
+
+function timeUpQuiz(){
+  showToast('⏰ 時間到！','');
+  quizRevealAnswer();
+}
+
+function quizRevealAnswer(){
+  document.getElementById('quizAnswerReveal').style.display='block';
+  document.getElementById('awardRow').style.display='none';
+}
+
+function nextQuiz(){
+  st.quiz.idx++;
+  loadQuizQ();
+}
+
+function endQuiz(){
+  const winner=st.teams.reduce((a,b)=>a.score>b.score?a:b);
+  showWin('⚡','速問快答結束！',winner.name+' 以 '+winner.score+' 分獲勝！',winner.score+'分');
+  launchConfetti();
+}
+
+// ============================================================
+// WIN MODAL
+// ============================================================
+function showWin(emoji, title, sub, score){
+  document.getElementById('winEmoji').textContent=emoji;
+  document.getElementById('winTitle').textContent=title;
+  document.getElementById('winSub').textContent=sub;
+  document.getElementById('winScore').textContent=score;
+  document.getElementById('winOverlay').classList.add('open');
+  launchConfetti();
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  canvas.style.display='block';
+  const colors=['#f5c842','#2dd4bf','#f472b6','#818cf8','#f97316','#10b981'];
+  const particles=Array.from({length:120},()=>({
+    x:Math.random()*canvas.width, y:-20,
+    vx:(Math.random()-.5)*5, vy:Math.random()*4+2,
+    color:colors[Math.floor(Math.random()*colors.length)],
+    size:Math.random()*10+4, rot:Math.random()*360, rs:(Math.random()-.5)*12,
+    shape:Math.random()>.5?'rect':'circle'
+  }));
+  let frame;
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let active=false;
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.rs; p.vy+=0.08;
+      if(p.y<canvas.height+20) active=true;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+      else ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    if(active) frame=requestAnimationFrame(animate);
+    else{ canvas.style.display='none'; cancelAnimationFrame(frame); }
+  }
+  animate();
+  setTimeout(()=>{ canvas.style.display='none'; cancelAnimationFrame(frame); },5000);
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function shuffle(arr){ return arr.sort(()=>Math.random()-.5); }
+
+let toastTimer;
+function showToast(msg, type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(type?' '+type:'');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  initLobby();
+  selectUnit(0);
+  document.getElementById('winOverlay').addEventListener('click',e=>{
+    if(e.target===document.getElementById('winOverlay'))
+      document.getElementById('winOverlay').classList.remove('open');
+  });
+});
+</script>
+<script>
+// ============================================================
+// 本機教學系統：CSV匯入、成績記錄、CSV匯出（免shared資料夾）
+// CSV格式建議：學期,學號,姓名,組別
+// ============================================================
+let STUDENTS = [];
+let TEAMS = [];
+const SCORE_KEY = 'MED_SURG_GAME_SCORE_LOG';
+const STUDENT_KEY = 'MED_SURG_GAME_STUDENTS';
+const TEAM_KEY = 'MED_SURG_GAME_TEAMS';
+function loadLocalStudents(){ try{ STUDENTS=JSON.parse(localStorage.getItem(STUDENT_KEY)||'[]'); TEAMS=JSON.parse(localStorage.getItem(TEAM_KEY)||'[]'); }catch(e){ STUDENTS=[]; TEAMS=[]; } }
+function importCSVFromInput(){ const input=document.getElementById('fileInput'); const file=input&&input.files?input.files[0]:null; if(!file){alert('請先選擇CSV檔');return;} const reader=new FileReader(); reader.onload=function(e){ const text=String(e.target.result||'').replace(/^\uFEFF/,'').trim(); const lines=text.split(/\r?\n/).filter(Boolean); const teamMap={}; STUDENTS=[]; lines.slice(1).forEach(line=>{ const cols=line.split(',').map(x=>x.trim()); let semester,student_id,name,team_name; if(cols.length>=4){[semester,student_id,name,team_name]=cols;}else{semester='1142';[student_id,name,team_name]=cols;} if(!student_id||!name)return; team_name=team_name||'未分組'; const student={semester,student_id,name,team_name}; STUDENTS.push(student); if(!teamMap[team_name])teamMap[team_name]={team_name,members:[]}; teamMap[team_name].members.push(student); }); TEAMS=Object.values(teamMap); localStorage.setItem(STUDENT_KEY,JSON.stringify(STUDENTS)); localStorage.setItem(TEAM_KEY,JSON.stringify(TEAMS)); alert('匯入成功：'+STUDENTS.length+'位學生，'+TEAMS.length+'組。開始遊戲時會自動使用組名。'); }; reader.readAsText(file,'utf-8'); }
+function recordScore(r){ const logs=JSON.parse(localStorage.getItem(SCORE_KEY)||'[]'); logs.push({semester:'1142',time:new Date().toISOString(),...r}); localStorage.setItem(SCORE_KEY,JSON.stringify(logs)); }
+function exportScoresCSV(){ const logs=JSON.parse(localStorage.getItem(SCORE_KEY)||'[]'); if(!logs.length){alert('目前沒有成績紀錄可匯出');return;} const header=['學期','時間','遊戲','單元','題目','學號','姓名/組別','組別','個人成績','團體成績','是否答對']; const rows=logs.map(r=>[r.semester||'',r.time||'',r.game_name||'',r.unit_name||'',String(r.question||'').replace(/,/g,'，'),r.student_id||'',r.student_name||'',r.team_name||'',r.individual_score||0,r.team_score||0,r.correct===false?'否':'是']); const csv='\uFEFF'+[header,...rows].map(row=>row.join(',')).join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='nursing-games-scores.csv'; a.click(); URL.revokeObjectURL(url); }
+function clearScoresOnly(){ if(confirm('確定清除本機成績紀錄？')){ localStorage.removeItem(SCORE_KEY); alert('成績已清除'); } }
+loadLocalStudents();
+</script>
+</body>
+</html>

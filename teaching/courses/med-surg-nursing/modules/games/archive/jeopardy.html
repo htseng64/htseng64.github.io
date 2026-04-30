@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>內外護理 Jeopardy — 弘光科技大學護理系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c1a;
+  --bg2:#0d1526;
+  --bg3:#111d35;
+  --text:#e2e8f0;
+  --dim:#8892a8;
+  --gold:#f5c842;
+  --gold2:#ffe07a;
+  --border:rgba(255,255,255,0.08);
+  --shadow:0 8px 32px rgba(0,0,0,0.6);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* ── BACKGROUND ── */
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 15% 0%,rgba(245,200,66,.06) 0%,transparent 50%),
+             radial-gradient(ellipse at 85% 100%,rgba(0,180,216,.06) 0%,transparent 50%);
+  pointer-events:none;z-index:0;}
+
+/* ── HEADER ── */
+.header{position:relative;z-index:10;background:rgba(8,12,26,.95);
+  border-bottom:2px solid var(--gold);padding:20px 32px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.header-title{display:flex;align-items:center;gap:14px;}
+.header-icon{font-size:36px;filter:drop-shadow(0 0 12px rgba(245,200,66,.6));}
+.header-text h1{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--gold);font-weight:700;line-height:1.2;}
+.header-text p{font-size:12px;color:var(--dim);letter-spacing:.06em;}
+.score-panel{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.team-score{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:8px 14px;cursor:pointer;transition:all .2s;
+  text-align:center;min-width:80px;}
+.team-score:hover{background:rgba(255,255,255,.1);}
+.team-score .ts-name{font-size:10px;color:var(--dim);margin-bottom:3px;font-weight:600;letter-spacing:.08em;}
+.team-score .ts-pts{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold);}
+.score-btn{background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);
+  border-radius:8px;padding:8px 16px;color:var(--gold);font-size:12px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-weight:600;transition:all .2s;}
+.score-btn:hover{background:rgba(245,200,66,.22);}
+
+/* ── UNIT TABS ── */
+.unit-tabs{position:relative;z-index:5;
+  display:flex;gap:6px;padding:16px 20px;overflow-x:auto;
+  background:rgba(0,0,0,.3);border-bottom:1px solid var(--border);
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;}
+.unit-tabs::-webkit-scrollbar{height:3px;}
+.unit-tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px;}
+.unit-tab{
+  flex-shrink:0;padding:8px 16px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;
+  font-size:12px;font-weight:600;transition:all .22s;white-space:nowrap;
+  font-family:'Noto Sans TC',sans-serif;}
+.unit-tab:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.unit-tab.active{color:#fff;font-weight:700;}
+
+/* ── UNIT BOARD ── */
+.unit-board{display:none;position:relative;z-index:1;padding:24px 20px 40px;}
+.unit-board.active{display:block;}
+.unit-header{text-align:center;margin-bottom:24px;}
+.unit-header .uh-num{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;
+  font-weight:700;letter-spacing:.2em;padding:4px 14px;border-radius:100px;
+  margin-bottom:10px;border:1px solid;}
+.unit-header .uh-title{
+  font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:#fff;
+  margin-bottom:4px;}
+.unit-header .uh-en{font-size:13px;color:var(--dim);letter-spacing:.05em;}
+
+/* ── BOARD GRID ── */
+.board{
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:6px;max-width:1200px;margin:0 auto;}
+
+.cat-header{
+  border-radius:10px;padding:14px 8px;text-align:center;
+  font-size:12px;font-weight:700;letter-spacing:.05em;line-height:1.4;
+  min-height:64px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.15);cursor:default;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);}
+
+.tile{
+  border-radius:10px;text-align:center;
+  font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;
+  padding:20px 8px;cursor:pointer;transition:all .22s;
+  border:1px solid rgba(255,255,255,.1);min-height:80px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);text-shadow:0 0 12px rgba(245,200,66,.5);
+  position:relative;overflow:hidden;}
+.tile::before{content:'';position:absolute;inset:0;opacity:0;background:rgba(255,255,255,.08);transition:opacity .2s;}
+.tile:hover::before{opacity:1;}
+.tile:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.tile.used{opacity:.25;cursor:default;pointer-events:none;}
+.tile.used::after{content:'✓';position:absolute;font-size:24px;color:rgba(255,255,255,.3);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--bg2);border-radius:20px;max-width:720px;width:100%;
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 80px rgba(0,0,0,.8);
+  overflow:hidden;animation:modalIn .28s cubic-bezier(.4,0,.2,1);}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal-top{padding:20px 28px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.modal-meta{display:flex;align-items:center;gap:10px;}
+.modal-cat{font-size:11px;font-weight:700;letter-spacing:.12em;padding:3px 12px;border-radius:100px;border:1px solid;}
+.modal-pts{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--gold);}
+.modal-close{font-size:22px;cursor:pointer;color:var(--dim);transition:color .2s;padding:4px;background:none;border:none;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:32px 28px;}
+.modal-label{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--dim);margin-bottom:12px;}
+.modal-clue{
+  font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:#fff;
+  line-height:1.65;margin-bottom:24px;}
+.modal-answer-box{
+  background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.2);
+  border-radius:12px;padding:20px 24px;display:none;}
+.modal-answer-box.revealed{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.modal-answer-label{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);margin-bottom:8px;}
+.modal-answer{font-size:17px;font-weight:600;color:var(--gold2);line-height:1.6;}
+.modal-footer{padding:16px 28px 24px;display:flex;gap:10px;flex-wrap:wrap;}
+.btn-reveal{
+  background:linear-gradient(135deg,#f5c842,#e6a800);color:#000;
+  border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
+.btn-reveal:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,200,66,.4);}
+.btn-award{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:var(--text);border-radius:10px;padding:12px 18px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
+.btn-award:hover{background:rgba(255,255,255,.12);}
+.btn-award.correct{border-color:rgba(45,212,191,.5);color:#2dd4bf;}
+.btn-award.wrong{border-color:rgba(249,115,22,.5);color:#f97316;}
+
+/* ── SCORE MODAL ── */
+.score-modal{
+  background:var(--bg2);border-radius:20px;max-width:480px;width:100%;
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 80px rgba(0,0,0,.8);
+  overflow:hidden;animation:modalIn .28s ease;}
+.score-modal h2{font-family:'Noto Serif TC',serif;padding:24px 28px 0;font-size:22px;color:var(--gold);}
+.score-modal-body{padding:20px 28px 28px;}
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.score-row label{font-size:13px;font-weight:600;color:var(--dim);width:60px;flex-shrink:0;}
+.score-row input{
+  flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;
+  font-family:'Noto Sans TC',sans-serif;}
+.score-row input:focus{outline:none;border-color:rgba(245,200,66,.4);}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  background:var(--bg3);border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;padding:14px 22px;font-size:14px;font-weight:600;
+  box-shadow:0 8px 32px rgba(0,0,0,.6);transform:translateY(80px);opacity:0;
+  transition:all .3s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── FOOTER ── */
+.footer{position:relative;z-index:1;text-align:center;
+  padding:24px;border-top:1px solid var(--border);
+  color:var(--dim);font-size:12px;line-height:1.8;}
+
+@media(max-width:768px){
+  .board{grid-template-columns:repeat(3,1fr);}
+  .modal-clue{font-size:17px;}
+  .tile{font-size:17px;min-height:60px;padding:14px 4px;}
+  .header{padding:14px 16px;}
+  .header-text h1{font-size:17px;}
+  .unit-header .uh-title{font-size:21px;}
+}
+@media(max-width:480px){
+  .board{grid-template-columns:repeat(3,1fr);gap:4px;}
+  .cat-header{font-size:10px;padding:10px 4px;min-height:52px;}
+  .tile{font-size:14px;min-height:52px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title">
+    <div class="header-icon">🏆</div>
+    <div class="header-text">
+      <h1>內外護理學綜論 · Jeopardy!</h1>
+      <p>弘光科技大學護理系 · 114學年第2學期 · 8單元共240題</p>
+    </div>
+  </div>
+  <div class="score-panel" id="scorePanel">
+    <!-- dynamically generated -->
+    <button class="score-btn" onclick="openScoreConfig()">⚙ 設定隊伍</button>
+    <button class="score-btn" onclick="resetScores()">↺ 重置分數</button>
+  </div>
+</div>
+
+<!-- UNIT TABS -->
+<div class="unit-tabs" id="unitTabs"></div>
+
+<!-- UNIT BOARDS (generated by JS) -->
+<div id="boards"></div>
+
+<!-- QUESTION MODAL -->
+<div class="modal-overlay" id="qModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-meta">
+        <span class="modal-cat" id="mCat">類別</span>
+        <span class="modal-pts" id="mPts">100</span>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-label">▶ 題目線索</div>
+      <div class="modal-clue" id="mClue"></div>
+      <div class="modal-answer-box" id="mAnswerBox">
+        <div class="modal-answer-label">✦ 正確答案</div>
+        <div class="modal-answer" id="mAnswer"></div>
+      </div>
+    </div>
+    <div class="modal-footer" id="mFooter"></div>
+  </div>
+</div>
+
+<!-- SCORE CONFIG MODAL -->
+<div class="modal-overlay" id="scoreModal">
+  <div class="score-modal">
+    <h2>⚙ 設定隊伍名稱</h2>
+    <div class="score-modal-body">
+      <div id="teamInputs"></div>
+      <button class="btn-reveal" onclick="saveTeams()" style="margin-top:8px;">儲存設定</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  內外護理學綜論 Jeopardy 互動教學遊戲 · 弘光科技大學 護理系 · 僅供學術教育用途
+</footer>
+
+<script>
+// =============================================
+// DATA: 8 UNITS × 6 CATEGORIES × 5 QUESTIONS
+// =============================================
+const UNITS = [
+{
+  id:1, title:"氧合與活動", en:"Oxygenation & Mobility",
+  color:"#00b4d8", bg:"rgba(0,180,216,.15)",
+  categories:[
+    { name:"COPD護理", color:"#00b4d8", qs:[
+      {pts:100,clue:"COPD病人的給氧目標SpO₂應維持在此範圍，以避免抑制低氧驅動",ans:"88–92%"},
+      {pts:200,clue:"COPD病人使用此呼吸技巧：噘唇緩慢吐氣，可防止小呼吸道塌陷",ans:"縮唇呼吸（Pursed-lip breathing）"},
+      {pts:300,clue:"COPD急性惡化最常見的觸發因素，佔約70–80%",ans:"呼吸道感染（細菌或病毒）"},
+      {pts:400,clue:"COPD阻塞性通氣障礙的肺功能判斷標準：FEV₁/FVC比值必須低於此數值",ans:"70%（0.7）"},
+      {pts:500,clue:"GOLD分期Stage III（重度）的FEV₁佔預測值的百分比範圍",ans:"30–50%"},
+    ]},
+    { name:"ABG判讀", color:"#38bdf8", qs:[
+      {pts:100,clue:"正常動脈血氧分壓（PaO₂）的參考範圍",ans:"80–100 mmHg"},
+      {pts:200,clue:"pH 7.28、PaCO₂ 52、HCO₃⁻ 26 ─ 此ABG的酸鹼失衡診斷",ans:"呼吸性酸中毒（Respiratory Acidosis）"},
+      {pts:300,clue:"pH 7.52、PaCO₂ 30、HCO₃⁻ 24 ─ 此ABG的診斷",ans:"呼吸性鹼中毒（Respiratory Alkalosis）"},
+      {pts:400,clue:"代謝性酸中毒的代償性PaCO₂預測公式（Winters公式）",ans:"PaCO₂ = 1.5 × HCO₃⁻ + 8 ± 2"},
+      {pts:500,clue:"吸入100%純氧時，正常肺泡-動脈氧氣差P(A-a)O₂的上限約為多少mmHg",ans:"約100–150 mmHg"},
+    ]},
+    { name:"心臟衰竭", color:"#e879f9", qs:[
+      {pts:100,clue:"心臟衰竭病人出現端坐呼吸（orthopnea）時，應協助擺放的體位",ans:"高坐臥位（Fowler's position）"},
+      {pts:200,clue:"NYHA功能分級中，「輕微活動就明顯喘」屬於第幾級",ans:"第III級（Class III）"},
+      {pts:300,clue:"心臟衰竭使用Furosemide（速尿）時，必須特別監測的電解質",ans:"鉀離子（K⁺）"},
+      {pts:400,clue:"BNP升高代表心臟衰竭；正常值上限及>此值提示心衰",ans:"正常<100 pg/mL；>100 pg/mL提示心臟衰竭"},
+      {pts:500,clue:"射血分數保留型心臟衰竭（HFpEF）的EF值定義及主要病理機制",ans:"EF ≥ 50%；主要問題為舒張功能障礙"},
+    ]},
+    { name:"關節置換術", color:"#f59e0b", qs:[
+      {pts:100,clue:"全髖關節置換術（THR）後最重要的禁忌動作，以防假體脫位",ans:"髖關節屈曲超過90度（hip flexion > 90°）"},
+      {pts:200,clue:"THR術後使用三角枕的護理目的",ans:"維持髖關節外展位，預防假體脫位"},
+      {pts:300,clue:"膝關節置換術後，Homans' sign 陽性的表現",ans:"被動背屈踝關節時小腿出現疼痛（懷疑DVT）"},
+      {pts:400,clue:"關節置換術預防性抗生素應在切開前幾分鐘給予",ans:"切開前60分鐘內（靜脈注射）"},
+      {pts:500,clue:"CPM（持續被動運動）機器用於膝關節置換術後的作用及每日建議使用時間",ans:"促進軟骨癒合、減少沾黏；術後第1天起每天6–8小時"},
+    ]},
+    { name:"骨骼肌肉", color:"#10b981", qs:[
+      {pts:100,clue:"骨質疏鬆症的DEXA掃描T值診斷標準（骨質疏鬆）",ans:"T值 ≤ −2.5"},
+      {pts:200,clue:"筋膜室症候群「6P」中最早出現且最重要的症狀",ans:"疼痛（Pain），尤其被動牽拉時劇烈疼痛"},
+      {pts:300,clue:"長期使用類固醇引起的兩大骨骼系統併發症",ans:"骨質疏鬆、缺血性骨壞死（Avascular necrosis）"},
+      {pts:400,clue:"骨肉瘤（Osteosarcoma）最好發的部位及年齡層",ans:"股骨遠端/脛骨近端；10–20歲青少年"},
+      {pts:500,clue:"骨折後脂肪栓塞症候群（FES）的三聯徵",ans:"呼吸困難、意識改變、皮膚瘀點（點狀出血疹）"},
+    ]},
+    { name:"評估工具", color:"#818cf8", qs:[
+      {pts:100,clue:"肺功能評估中，測量用力吐氣第一秒量的指標縮寫",ans:"FEV₁（Forced Expiratory Volume in 1 second）"},
+      {pts:200,clue:"6分鐘步行測試（6MWT）正常成人目標距離及臨床意義",ans:"正常成人>500公尺；評估運動耐受性與功能狀態"},
+      {pts:300,clue:"Borg自覺費力程度量表（RPE）0–10分，建議運動維持在幾分",ans:"3–5分（中等偏輕度費力）"},
+      {pts:400,clue:"用於評估心衰病人液體狀態的非侵入性視診工具，正常上限",ans:"頸靜脈壓（JVP）；正常<3 cm水柱"},
+      {pts:500,clue:"Braden壓傷風險量表總分≤12分代表何種危險層級",ans:"高度危險（High risk）"},
+    ]},
+  ]
+},
+{
+  id:2, title:"營養與排泄", en:"Nutrition & Elimination",
+  color:"#f59e0b", bg:"rgba(245,158,11,.15)",
+  categories:[
+    { name:"消化道疾病", color:"#f59e0b", qs:[
+      {pts:100,clue:"消化性潰瘍最常見的致病菌",ans:"幽門螺旋桿菌（Helicobacter pylori）"},
+      {pts:200,clue:"H. pylori根除的標準三合療法組成（Triple therapy）",ans:"PPI + Clarithromycin + Amoxicillin，連續14天"},
+      {pts:300,clue:"克隆氏症（Crohn's disease）最重要的病理特徵（與UC的區別）",ans:"全層病變（Transmural）、跳躍式分布、可侵犯全消化道"},
+      {pts:400,clue:"傾食症候群（Dumping syndrome）晚期症狀的主要原因",ans:"反應性低血糖（大量胰島素分泌後血糖驟降）"},
+      {pts:500,clue:"潰瘍性結腸炎（UC）最嚴重的急性併發症",ans:"中毒性巨結腸（Toxic megacolon）"},
+    ]},
+    { name:"肝臟疾病", color:"#fbbf24", qs:[
+      {pts:100,clue:"肝硬化最常見且首要的死亡原因",ans:"食道靜脈瘤破裂出血"},
+      {pts:200,clue:"肝性腦病變第III期（嚴重混亂期）的特徵表現",ans:"昏睡、大聲喊叫、無法自理、肌肉撲翼震顫（Asterixis）"},
+      {pts:300,clue:"肝性腦病變急性期蛋白質攝取限制的建議量",ans:"0.5–1.2 g/kg/day（急性期限制；慢性可耐受至1.5 g/kg）"},
+      {pts:400,clue:"腹水大量穿刺引流後，應靜脈補充的物質及劑量比例",ans:"白蛋白（Albumin）6–8 g/L腹水"},
+      {pts:500,clue:"Child-Pugh評分的五個評估指標",ans:"腹水、腦病變、血清膽紅素、白蛋白、凝血酶原時間（PT）"},
+    ]},
+    { name:"造口護理", color:"#f97316", qs:[
+      {pts:100,clue:"結腸造口（Colostomy）與迴腸造口（Ileostomy）排泄物型態的差異",ans:"Colostomy：成形糞便；Ileostomy：液態/半液態"},
+      {pts:200,clue:"更換造口貼片時，貼片切口應比造口直徑大多少毫米",ans:"1–2 mm（不超過3 mm）"},
+      {pts:300,clue:"長期迴腸造口病人可能缺乏哪種維生素及原因",ans:"維生素B₁₂；末段迴腸切除後無法吸收（缺乏內在因子受體）"},
+      {pts:400,clue:"造口正常顏色，以及出現暗紫/黑色代表的緊急狀況",ans:"正常=粉紅至紅色；暗紫/黑色=造口缺血壞死，立即通報"},
+      {pts:500,clue:"造口旁疝氣（Parastomal hernia）的三項預防護理重點",ans:"避免腹壓增加（搬重物/便秘）、使用腹帶支撐、維持健康體重"},
+    ]},
+    { name:"營養支持", color:"#fb923c", qs:[
+      {pts:100,clue:"TPN（全靜脈營養）必須從哪種靜脈途徑輸注及原因",ans:"中心靜脈；因TPN高張性，周邊血管無法耐受"},
+      {pts:200,clue:"再喂食症候群（Refeeding syndrome）最危險的電解質異常",ans:"低磷血症（Hypophosphatemia）"},
+      {pts:300,clue:"確認鼻胃管位置的黃金標準（Gold standard）",ans:"X光確認；其次胃液pH<5（顏色法/氣泡法已不建議）"},
+      {pts:400,clue:"Harris-Benedict公式計算基礎代謝率的四個變數",ans:"性別、體重（kg）、身高（cm）、年齡（歲）"},
+      {pts:500,clue:"腸道內營養（EN）優於腸道外營養（PN）的主要原因（三項）",ans:"維持腸道黏膜屏障、減少細菌移位、降低感染風險、費用較低"},
+    ]},
+    { name:"腸胃手術", color:"#ea580c", qs:[
+      {pts:100,clue:"腸胃手術後可開始進食的徵象：聽診腸音回復，通常在術後幾天",ans:"24–72小時（術後第2–3天）"},
+      {pts:200,clue:"膽囊切除術後T型引流管正常引流液的顏色",ans:"黃金色至草黃綠色"},
+      {pts:300,clue:"急性胰臟炎急性期禁食護理的主要目的",ans:"使胰臟休息、減少胰液分泌、防止酵素自我消化"},
+      {pts:400,clue:"Whipple手術後最常見的嚴重外科併發症",ans:"胰臟瘺管（Pancreatic fistula）"},
+      {pts:500,clue:"胃切除術後維生素B₁₂缺乏的機制及後果",ans:"內在因子（Intrinsic factor）分泌缺乏→B₁₂無法吸收→惡性貧血"},
+    ]},
+    { name:"排泄護理", color:"#c2410c", qs:[
+      {pts:100,clue:"成人正常每日尿量範圍及少尿（Oliguria）的定義",ans:"正常1000–2000 mL/day；少尿<400 mL/day（或<0.5 mL/kg/hr）"},
+      {pts:200,clue:"CAUTI預防的四項核心措施",ans:"無菌導尿、每日評估撤除必要性、引流袋低於膀胱、定期會陰護理"},
+      {pts:300,clue:"膀胱過動症（OAB）的首選藥物類型及最常見副作用",ans:"抗膽鹼藥（如Oxybutynin）；口乾、便秘、視力模糊"},
+      {pts:400,clue:"上運動神經元損傷造成的膀胱功能障礙類型及護理",ans:"反射性膀胱（Reflex bladder）；間歇性自我導尿（CIC）"},
+      {pts:500,clue:"Bristol大便型態量表第1型與第7型各代表什麼臨床意義",ans:"第1型=嚴重便秘（堅硬顆粒）；第7型=水樣便（嚴重腹瀉）"},
+    ]},
+  ]
+},
+{
+  id:3, title:"感覺知覺", en:"Sensory / Perception",
+  color:"#a78bfa", bg:"rgba(167,139,250,.15)",
+  categories:[
+    { name:"GCS評估", color:"#a78bfa", qs:[
+      {pts:100,clue:"GCS（格拉斯哥昏迷量表）的三個評估項目",ans:"眼睛睜開（E）、語言反應（V）、運動反應（M）"},
+      {pts:200,clue:"GCS最高分與最低分，最低分代表的意識狀態",ans:"最高15分；最低3分（深度昏迷）"},
+      {pts:300,clue:"GCS E2 V3 M4 合計幾分，代表什麼程度的意識障礙",ans:"9分；中度意識障礙"},
+      {pts:400,clue:"GCS運動反應（M）中，去大腦強直（Decerebrate posturing）得幾分",ans:"M2（伸展反應）"},
+      {pts:500,clue:"GCS ≤ 8的臨床意義及護理人員應採取的緊急措施",ans:"嚴重腦損傷；建議氣管插管保護呼吸道"},
+    ]},
+    { name:"腦中風", color:"#c4b5fd", qs:[
+      {pts:100,clue:"腦中風辨識口訣FAST的四個字母代表的症狀",ans:"F臉歪、A手臂無力、S說話困難、T時間（立即就醫）"},
+      {pts:200,clue:"缺血性腦中風靜脈溶栓（rt-PA/Alteplase）治療的時間窗",ans:"發病後4.5小時內"},
+      {pts:300,clue:"左腦（優勢半球）中風最常見的語言障礙類型",ans:"失語症（Aphasia）"},
+      {pts:400,clue:"半側忽視（Hemineglect）最常見於哪側腦部損傷，護理策略為何",ans:"右腦損傷；從患側接近病人、將環境刺激放置患側"},
+      {pts:500,clue:"缺血性與出血性腦中風的急性期CT影像主要差異",ans:"缺血性：早期正常（6–24小時後低密度）；出血性：立即見高密度白色血塊"},
+    ]},
+    { name:"癲癇護理", color:"#7c3aed", qs:[
+      {pts:100,clue:"癲癇發作時護理師首要的三項安全護理措施",ans:"保護頭部、移除危險物品、勿約束肢體、勿放物品入口腔"},
+      {pts:200,clue:"癲癇持續狀態（Status Epilepticus）的定義",ans:"單次發作>5分鐘，或連續兩次發作中間未完全恢復意識"},
+      {pts:300,clue:"癲癇持續狀態的首選藥物及給藥途徑",ans:"Lorazepam（或Diazepam）靜脈注射（IV）"},
+      {pts:400,clue:"長期服用Phenytoin（苯妥英）最常見的口腔副作用及護理重點",ans:"牙齦增生（Gingival hyperplasia）；加強口腔清潔"},
+      {pts:500,clue:"癲癇發作後的昏睡期正式名稱及護理措施",ans:"發作後期（Postictal phase）；採側臥位保護呼吸道，留守病人側"},
+    ]},
+    { name:"頭部損傷", color:"#6d28d9", qs:[
+      {pts:100,clue:"硬膜外血腫（Epidural hematoma）最典型的三段式臨床表現模式",ans:"短暫失去意識→清醒期（Lucid interval）→再度惡化"},
+      {pts:200,clue:"顱內壓升高（ICP>20 mmHg）的三聯徵（Cushing's triad）",ans:"高血壓、心跳過緩、呼吸不規則"},
+      {pts:300,clue:"降低顱內壓的緊急藥物及給藥方式",ans:"20% Mannitol（甘露醇）快速靜脈滴注（15–20分鐘）"},
+      {pts:400,clue:"顱底骨折的兩個特徵性視覺外觀徵象",ans:"浣熊眼（Raccoon eyes）、Battle's sign（耳後乳突瘀斑）"},
+      {pts:500,clue:"腦疝（Brain herniation）末期除Cheyne-Stokes外最終的呼吸模式",ans:"共濟失調呼吸（Ataxic/Biot's breathing）→呼吸停止"},
+    ]},
+    { name:"帕金森氏症", color:"#8b5cf6", qs:[
+      {pts:100,clue:"帕金森氏症的三大主要運動症狀（Cardinal features）",ans:"靜止性震顫、肌肉強直（Rigidity）、動作遲緩（Bradykinesia）"},
+      {pts:200,clue:"帕金森氏症步態的四大特徵",ans:"小碎步、慌張步態（Festination）、前傾姿勢、手臂擺動減少"},
+      {pts:300,clue:"長期使用Levodopa的三大運動波動副作用",ans:"劑末現象（Wearing-off）、開關現象（On-off）、異動症（Dyskinesia）"},
+      {pts:400,clue:"帕金森氏症飲食護理中，為何Levodopa不應與高蛋白質食物同服",ans:"蛋白質競爭同一腸道轉運蛋白，降低L-dopa吸收率"},
+      {pts:500,clue:"帕金森氏症晚期最常見的死亡原因",ans:"吸入性肺炎（吞嚥困難所致）"},
+    ]},
+    { name:"脊髓損傷", color:"#5b21b6", qs:[
+      {pts:100,clue:"脊髓損傷後24–48小時內可能發生的急性暫時性功能喪失，稱為",ans:"脊髓休克（Spinal shock）"},
+      {pts:200,clue:"自律神經反射異常（Autonomic dysreflexia）最常見的觸發因素及首要護理措施",ans:"膀胱脹滿或直腸阻塞；立即解除誘因、讓病人坐起（降血壓）"},
+      {pts:300,clue:"頸髓損傷C4以上完全損傷病人最需要的呼吸維生支持",ans:"機械通氣（膈肌癱瘓，呼吸中樞以下連結中斷）"},
+      {pts:400,clue:"脊髓損傷病人壓傷的五個高危險區域",ans:"尾骨、坐骨結節、大轉子、外踝、足跟"},
+      {pts:500,clue:"ASIA損傷分級量表A級與B級的關鍵差異",ans:"A=完全損傷（S4–5無感覺無運動）；B=不完全（S4–5有感覺但無運動）"},
+    ]},
+  ]
+},
+{
+  id:4, title:"安全保護", en:"Safety & Protection",
+  color:"#10b981", bg:"rgba(16,185,129,.15)",
+  categories:[
+    { name:"感染預防", color:"#10b981", qs:[
+      {pts:100,clue:"感染鏈的六個環節",ans:"病原體、感染窩（源）、出口、傳播途徑、入口、易感宿主"},
+      {pts:200,clue:"WHO手部衛生五大時機（Five Moments）",ans:"接觸病人前、無菌操作前、接觸體液後、接觸病人後、接觸病人環境後"},
+      {pts:300,clue:"CLABSI預防「集束護理」（Bundle）的五大要素",ans:"手部衛生、最大無菌屏障、氯己定消毒皮膚、最佳插管位置、每日評估撤除必要性"},
+      {pts:400,clue:"VAP（呼吸器相關肺炎）預防集束護理的四項主要措施",ans:"床頭抬高30–45度、每日鎮靜中斷評估、每日評估撤管、口腔氯己定護理"},
+      {pts:500,clue:"感染管制中「去定殖（Decolonization）」治療MRSA鼻咽帶菌的用藥",ans:"莫匹羅星（Mupirocin）鼻腔軟膏 + 氯己定（CHG）沐浴"},
+    ]},
+    { name:"隔離措施", color:"#34d399", qs:[
+      {pts:100,clue:"飛沫傳播隔離（Droplet Precautions）需穿戴的防護裝備",ans:"外科口罩、手套、必要時護目鏡"},
+      {pts:200,clue:"空氣傳播隔離（Airborne Precautions）的三大代表疾病（3M）",ans:"麻疹（Measles）、水痘（Varicella）、肺結核（MTB）"},
+      {pts:300,clue:"接觸傳播隔離的病房要求及入室最低PPE",ans:"單人房（或相同病原隔離）；手套＋隔離衣"},
+      {pts:400,clue:"MDRO（多重抗藥性菌）中，MRSA的全名及主要感染控制措施",ans:"甲氧西林抗藥性金黃色葡萄球菌；接觸隔離＋去定殖"},
+      {pts:500,clue:"正確脫除隔離衣的四步驟順序",ans:"解開腰帶→解開領扣→脫袖（由外翻轉內側）→投入廢棄桶→手部衛生"},
+    ]},
+    { name:"自體免疫", color:"#6ee7b7", qs:[
+      {pts:100,clue:"SLE面部蝴蝶斑（Malar rash）的形態特徵",ans:"橫跨鼻梁的蝴蝶形紅斑，不累及鼻唇溝"},
+      {pts:200,clue:"類風濕性關節炎（RA）晨僵的定義（持續時間），作為診斷意義",ans:"關節僵硬持續>1小時；為RA的特徵性症狀"},
+      {pts:300,clue:"狼瘡性腎炎（SLE腎臟侵犯）的早期監測指標",ans:"尿蛋白（24小時>500 mg）、血尿、血清肌酐酸升高"},
+      {pts:400,clue:"長期使用類固醇的五大副作用",ans:"向心性肥胖、骨質疏鬆、高血糖、感染風險升高、消化道潰瘍"},
+      {pts:500,clue:"類風濕性關節炎的X光典型破壞徵象（兩項）",ans:"骨侵蝕（Erosion）、關節間隙狹窄（Joint space narrowing）"},
+    ]},
+    { name:"HIV/AIDS", color:"#059669", qs:[
+      {pts:100,clue:"HIV感染進展為AIDS的CD4計數診斷標準",ans:"CD4 < 200 cells/μL，或出現AIDS定義性疾病"},
+      {pts:200,clue:"HIV陽性孕婦預防母嬰垂直感染的最重要措施",ans:"孕期持續抗病毒治療（ART），使病毒量降至檢測不到（Undetectable）"},
+      {pts:300,clue:"AIDS病人最常見的機會性感染",ans:"肺囊蟲肺炎（PCP, Pneumocystis jirovecii pneumonia）"},
+      {pts:400,clue:"HIV暴露後預防（PEP）的用藥開始時限及療程",ans:"暴露後72小時內開始；連續服用28天"},
+      {pts:500,clue:"第四代HIV篩查（抗原抗體複合）檢測的視窗期及意義",ans:"約14–21天；可偵測P24抗原，早於第三代抗體檢測"},
+    ]},
+    { name:"器官移植", color:"#047857", qs:[
+      {pts:100,clue:"器官移植後三大排斥反應類型中，發生最快的",ans:"超急性排斥（發生於數分鐘至數小時內）"},
+      {pts:200,clue:"慢性排斥的病理特徵及好發時間",ans:"纖維化、閉塞性血管炎；術後數月至數年"},
+      {pts:300,clue:"腎臟移植後急性排斥的四項早期臨床徵象",ans:"移植腎區疼痛/壓痛、發燒、血清肌酐酸升高、尿量減少"},
+      {pts:400,clue:"移植物抗宿主疾病（GvHD）與一般排斥反應的本質差異",ans:"GvHD：供體T細胞攻擊宿主組織（見於骨髓移植）；排斥：宿主免疫攻擊移植物"},
+      {pts:500,clue:"移植病人使用Cyclosporine（環孢素）的三項主要副作用",ans:"腎毒性、高血壓、多毛症（Hirsutism）及牙齦增生"},
+    ]},
+    { name:"院內感染", color:"#065f46", qs:[
+      {pts:100,clue:"醫療照護相關感染（HAI）中，排名第一的感染類型",ans:"泌尿道感染（UTI），尤其是CAUTI"},
+      {pts:200,clue:"正確外科手術洗手（Surgical scrub）的時間及清洗範圍",ans:"至少3–5分鐘；手指尖至肘關節上方6–8公分"},
+      {pts:300,clue:"艱難梭菌（C. difficile）環境消毒必須使用的消毒劑，及酒精無效原因",ans:"含氯漂白水（次氯酸鈉）；酒精無法殺滅C. diff孢子"},
+      {pts:400,clue:"安全注射（Safe injection）的三大核心原則",ans:"一針一管一病人、不重複使用注射器、避免多劑量藥瓶污染"},
+      {pts:500,clue:"醫院感染率（HAI rate）計算公式",ans:"感染率 = 感染病例數 ÷ 同期危險人口數 × 1000（或100）"},
+    ]},
+  ]
+},
+{
+  id:5, title:"腫瘤全人照護", en:"Oncology Care",
+  color:"#e879f9", bg:"rgba(232,121,249,.15)",
+  categories:[
+    { name:"TNM分期", color:"#e879f9", qs:[
+      {pts:100,clue:"TNM分期系統中T、N、M各代表的意義",ans:"T=腫瘤大小/侵犯程度、N=淋巴結轉移、M=遠端轉移"},
+      {pts:200,clue:"M0與M1在臨床預後上的意義差異",ans:"M0=無遠端轉移；M1=有遠端轉移（通常為IV期）"},
+      {pts:300,clue:"原位癌（Carcinoma in situ）在TNM中的表示方式",ans:"Tis（Tumor in situ）"},
+      {pts:400,clue:"前哨淋巴結切片（Sentinel lymph node biopsy）的臨床意義",ans:"判斷是否有區域淋巴轉移；陰性可免除全腋下淋巴廓清"},
+      {pts:500,clue:"乳癌分子分型中，三陰性乳癌（TNBC）的定義及預後特點",ans:"ER、PR、HER2均陰性；預後較差，缺乏靶向治療標的"},
+    ]},
+    { name:"化療副作用", color:"#d946ef", qs:[
+      {pts:100,clue:"化療骨髓抑制造成的三大血球減少症",ans:"嗜中性白血球減少症、貧血、血小板減少症"},
+      {pts:200,clue:"發燒性嗜中性白血球減少症（FN）的定義",ans:"ANC<500/μL（或<1000且預期降至<500）且體溫>38.3°C或>38°C超過1小時"},
+      {pts:300,clue:"化療藥物外漲（Extravasation）的三個立即護理步驟",ans:"立即停止輸液→回抽藥物→注射解毒劑（Vesicant藥物需抗毒劑）"},
+      {pts:400,clue:"WHO黏膜炎（Mucositis）分級：Grade 3的臨床表現",ans:"僅能進流質、嚴重疼痛、影響進食功能"},
+      {pts:500,clue:"化療誘發周邊神經病變（CIPN）最常見於哪兩類藥物及症狀表現",ans:"紫杉醇（Taxanes）、奧沙利鉑（Oxaliplatin）；手套長襪感覺、麻木刺痛"},
+    ]},
+    { name:"放射治療", color:"#a21caf", qs:[
+      {pts:100,clue:"放射治療急性皮膚反應中，「濕性脫皮（Moist desquamation）」屬於第幾級",ans:"Grade 3"},
+      {pts:200,clue:"放射治療照射皮膚護理的「三不原則」",ans:"不塗非指定藥膏、不用刺激性清潔劑、不曝曬陽光"},
+      {pts:300,clue:"放射線引起口腔乾燥症（Xerostomia）的機制及護理",ans:"腮腺放射損傷→唾液腺分泌減少；增加飲水、人工唾液、口腔護理"},
+      {pts:400,clue:"立體定向放射外科（SBRS/伽瑪刀）與傳統放療的主要差異",ans:"精準定位、少次大劑量（1–5次）；傳統為多次小劑量（25–35次）"},
+      {pts:500,clue:"放射工作人員防護的ALARA原則三要素",ans:"時間（Time）最短化、距離（Distance）最大化、屏蔽（Shielding）最完善"},
+    ]},
+    { name:"標靶免疫", color:"#86198f", qs:[
+      {pts:100,clue:"免疫檢查點抑制劑（ICI）中PD-1/PD-L1抑制劑的作用機制",ans:"阻斷PD-1/PD-L1抑制訊號，解除腫瘤對T細胞的免疫逃脫"},
+      {pts:200,clue:"免疫相關不良事件（irAE）最常見的兩個受影響器官",ans:"皮膚（皮疹、白斑）、結腸（免疫性腸炎/腹瀉）"},
+      {pts:300,clue:"Trastuzumab（赫賽汀）的適用條件及主要心臟毒性",ans:"HER2陽性乳癌；心肌病變（需監測LVEF）"},
+      {pts:400,clue:"EGFR抑制劑（如Erlotinib）最特徵性的皮膚副作用及護理",ans:"痤瘡樣皮疹（Acneiform rash）；保濕、避免刺激、外用抗生素"},
+      {pts:500,clue:"CAR-T細胞治療最嚴重的急性副作用及早期監測徵象",ans:"細胞激素釋放症候群（CRS）；監測發燒、低血壓、低氧血症"},
+    ]},
+    { name:"安寧緩和", color:"#701a75", qs:[
+      {pts:100,clue:"WHO癌症疼痛治療三階梯的第一階梯藥物類型",ans:"非鴉片類止痛藥（NSAIDs、乙醯氨基酚）"},
+      {pts:200,clue:"Cicely Saunders提出的「Total Pain（全面疼痛）」四個面向",ans:"身體疼痛、心理痛苦、社會困擾、靈性苦痛"},
+      {pts:300,clue:"嗎啡（Morphine）用於癌症疼痛時必須預防性處理的主要副作用",ans:"便秘（腸蠕動抑制，必須同時給予通便劑預防）"},
+      {pts:400,clue:"安寧緩和「緩和鎮靜（Palliative sedation）」的適應症",ans:"頑固性症狀且所有治療無效（如難治性疼痛/呼吸困難），臨終前"},
+      {pts:500,clue:"臨終「死亡嘎嘎聲（Death rattle）」的機制及護理措施",ans:"分泌物積聚咽喉無力清除；側臥、口腔護理、止涎藥、家屬心理支持"},
+    ]},
+    { name:"腫瘤評估", color:"#4a044e", qs:[
+      {pts:100,clue:"ECOG體能狀態量表中，「可自理但無法工作」屬於第幾分",ans:"PS 2（2分）"},
+      {pts:200,clue:"脊髓壓迫（SCC）最早且最常見的警示症狀",ans:"背痛（Back pain）"},
+      {pts:300,clue:"腫瘤溶解症候群（TLS）的四大電解質/代謝異常",ans:"高鉀血症、高磷血症、高尿酸血症、低鈣血症"},
+      {pts:400,clue:"上腔靜脈症候群（SVCS）的三大臨床症狀",ans:"顏面頸部水腫、頸靜脈怒張、呼吸困難"},
+      {pts:500,clue:"化療後骨髓抑制「Nadir（最低點）」通常出現的時間及護理意義",ans:"化療後7–14天（依藥物不同）；感染風險最高，嚴格監測血球與感染徵象"},
+    ]},
+  ]
+},
+{
+  id:6, title:"家庭文化照護", en:"Family & Cultural Care",
+  color:"#f97316", bg:"rgba(249,115,22,.15)",
+  categories:[
+    { name:"家庭評估", color:"#f97316", qs:[
+      {pts:100,clue:"家系圖（Genogram）中，方形和圓形各代表什麼",ans:"方形=男性；圓形=女性"},
+      {pts:200,clue:"家庭APGAR量表的五個評估面向（縮寫含義）",ans:"Adaptation適應、Partnership合作、Growth成長、Affection情感、Resolve解決"},
+      {pts:300,clue:"生態圖（Ecomap）與家系圖（Genogram）的主要差異",ans:"家系圖=家庭內部三代結構；生態圖=家庭與外部社區系統的關係"},
+      {pts:400,clue:"Zarit照顧者負荷量表評分≥40分的臨床意義",ans:"中度以上照顧者負荷；需提供支持性介入"},
+      {pts:500,clue:"家庭危機介入ABC-X模型中X代表的意義",ans:"X=危機/崩潰（事件＋資源與感受之間的落差所導致的危機狀態）"},
+    ]},
+    { name:"跨文化護理", color:"#fb923c", qs:[
+      {pts:100,clue:"Leininger文化照護理論的全名",ans:"文化照護多樣性與普遍性理論（Culture Care Diversity and Universality Theory）"},
+      {pts:200,clue:"Kleinman文化評估第一個問題的內容（詢問方向）",ans:"「您認為是什麼造成您的疾病？」（探索病因的文化解釋）"},
+      {pts:300,clue:"穆斯林病人在齋戒月（Ramadan）期間的藥物給藥調整原則",ans:"白天禁食禁飲，盡量調整口服藥至日落後服用；評估電解質"},
+      {pts:400,clue:"台灣原住民族病人的文化安全護理（Cultural safety）三個核心原則",ans:"尊重文化認同、避免文化強加、建立信任關係"},
+      {pts:500,clue:"Campinha-Bacote文化能力模式的五個發展層次",ans:"文化意識、文化知識、文化技能、文化相遇、文化渴望（Desire）"},
+    ]},
+    { name:"失智照護", color:"#ea580c", qs:[
+      {pts:100,clue:"MMSE（簡易智能評估）最高分及輕度失智的分數範圍",ans:"最高30分；輕度失智21–26分"},
+      {pts:200,clue:"失智症三大核心認知症狀（BPSD以外）",ans:"記憶障礙、定向感喪失、執行功能下降"},
+      {pts:300,clue:"「驗證療法（Validation therapy）」在失智照護中的核心原則",ans:"接受並驗證病人的感受與認知現實，不糾正錯誤"},
+      {pts:400,clue:"失智病人走失（Elopement）的三項預防措施",ans:"門禁系統、防走失手環/GPS、活動式曲徑環境設計"},
+      {pts:500,clue:"失智症精神行為症狀（BPSD）護理DICE模式的四個步驟",ans:"描述（Describe）→調查（Investigate）→創造（Create）→評估（Evaluate）"},
+    ]},
+    { name:"照顧者支持", color:"#c2410c", qs:[
+      {pts:100,clue:"主要照顧者最常出現的兩大身體症狀",ans:"疲勞（Fatigue）、睡眠障礙（Insomnia）"},
+      {pts:200,clue:"台灣喘息服務（Respite care）的目的及三種提供方式",ans:"讓照顧者暫時休息；日間照顧、短期住宿、居家喘息服務"},
+      {pts:300,clue:"護理師評估照顧者負荷的三個面向",ans:"身體負荷、心理/情緒負荷、社會/經濟負荷"},
+      {pts:400,clue:"照顧者「憐憫疲憊（Compassion fatigue）」的三個特徵",ans:"次級創傷應激、情感麻木、喪失同理能力"},
+      {pts:500,clue:"家庭照顧者支持計畫的四項主要服務內容",ans:"喘息服務、照顧技巧訓練、心理諮詢/支持團體、財務法律諮詢"},
+    ]},
+    { name:"長照制度", color:"#9a3412", qs:[
+      {pts:100,clue:"台灣長照2.0的服務對象四大族群",ans:"65歲以上老人、50歲以上原住民、任何年齡失能者、55–64歲山地原住民"},
+      {pts:200,clue:"長照2.0「四包錢」補助的四個項目",ans:"照顧及專業服務、交通接送、輔具購買/租借、居家無障礙環境改善"},
+      {pts:300,clue:"長照服務A-B-C三級體系分別代表的服務型態",ans:"A=社區整合型（旗艦店）、B=複合型（專賣店）、C=巷弄型（柑仔店）"},
+      {pts:400,clue:"ADL（日常生活活動）量表涵蓋的六個基本項目",ans:"進食、梳洗、如廁、洗澡、穿衣、行走/移位"},
+      {pts:500,clue:"照顧管理專員（Care manager）的三大主要職責",ans:"評估失能程度、擬定照顧計畫、整合跨專業資源並追蹤評值"},
+    ]},
+    { name:"老年護理", color:"#7c2d12", qs:[
+      {pts:100,clue:"老年病人「5I症候群」的五個I",ans:"Instability跌倒、Incontinence失禁、Intellectual impairment認知障礙、Immobility不動、Iatrogenic醫源性"},
+      {pts:200,clue:"譫妄（Delirium）與失智症（Dementia）的最大鑑別特徵",ans:"發作時間：譫妄=急性（小時至天）；失智=慢性漸進（月至年）"},
+      {pts:300,clue:"老年病人跌倒風險評估的常用工具名稱",ans:"Morse跌倒量表（Morse Fall Scale）"},
+      {pts:400,clue:"多重用藥（Polypharmacy）的定義及三大風險",ans:"同時服用≥5種藥物；藥物交互作用、副作用累積、依從性降低"},
+      {pts:500,clue:"Fried衰弱表型（Frailty phenotype）的五項標準及診斷門檻",ans:"體重下降、疲憊感、肌力下降、步速下降、低活動量；≥3項=衰弱"},
+    ]},
+  ]
+},
+{
+  id:7, title:"靈性照護", en:"Spiritual Care",
+  color:"#818cf8", bg:"rgba(129,140,248,.15)",
+  categories:[
+    { name:"靈性評估", color:"#818cf8", qs:[
+      {pts:100,clue:"FICA靈性評估工具的四個字母各代表的含義",ans:"F信仰（Faith）、I重要性（Importance）、C社群（Community）、A照護指引（Address）"},
+      {pts:200,clue:"HOPE靈性評估工具中，H代表什麼",ans:"H=希望與意義的來源（Sources of Hope, meaning, comfort）"},
+      {pts:300,clue:"靈性困擾（Spiritual distress）的三個主要表現",ans:"意義/目的喪失、與超越性存在的連結斷裂、對生命價值的質疑"},
+      {pts:400,clue:"根據JCAHO要求，靈性評估應在什麼時候進行",ans:"入院時常規進行初步靈性評估（Spiritual screening）"},
+      {pts:500,clue:"靈性健康（Spiritual wellbeing）與宗教信仰的本質關聯",ans:"靈性是更廣泛的概念；宗教是靈性的一種表達；可有靈性而無特定宗教"},
+    ]},
+    { name:"宗教照護", color:"#6366f1", qs:[
+      {pts:100,clue:"天主教臨終前最重要的宗教禮儀名稱",ans:"臨終傅油禮（Anointing of the Sick）"},
+      {pts:200,clue:"佛教臨終護理中，護理師協助「助念」期間的注意事項",ans:"保持環境安靜、避免移動遺體（識神未散）、協助家屬念佛"},
+      {pts:300,clue:"伊斯蘭教（穆斯林）臨終後遺體護理的三項特殊規定",ans:"同性別清洗遺體（Ghusl）、白布裹覆（Kafan）、24小時內盡早安葬"},
+      {pts:400,clue:"耶和華見證人因宗教拒絕輸血時，護理師的倫理處置原則",ans:"尊重自主原則（知情拒絕）、詳細記錄、協助安排無血手術方案"},
+      {pts:500,clue:"台灣基督教/天主教最強調的臨終靈性安撫儀式",ans:"臨終認罪禱告（Confession/Reconciliation）與聖餐禮（Viaticum）"},
+    ]},
+    { name:"臨終護理", color:"#4f46e5", qs:[
+      {pts:100,clue:"臨終病人「死前視見（Nearing death awareness）」的三種常見表現",ans:"描述看見已故親人、談論旅行準備、訴說美麗的地方或光"},
+      {pts:200,clue:"臨終前數天出現的三項生理症狀",ans:"意識模糊、少尿/無尿、四肢發涼發紺、下頜鬆弛、Cheyne-Stokes呼吸"},
+      {pts:300,clue:"護理師告知家屬「聽覺是最後消失的感覺」的臨床護理意義",ans:"鼓勵家屬在病人意識模糊時仍持續對話、表達愛與道別"},
+      {pts:400,clue:"死後遺體護理（Postmortem care）的最佳執行時間窗口及原因",ans:"死亡後立即至1–2小時內（防止屍僵影響姿勢擺正）"},
+      {pts:500,clue:"臨終「死亡嘎嘎聲（Death rattle）」對家屬的心理影響及護理師的回應",ans:"家屬常感恐慌；護理師解釋為正常臨終現象，非痛苦表現，給予陪伴與安慰"},
+    ]},
+    { name:"四道人生", color:"#3730a3", qs:[
+      {pts:100,clue:"「四道人生」概念在台灣的推動先驅（護理/安寧界學者）",ans:"趙可式教授（台灣安寧療護推動者）"},
+      {pts:200,clue:"「四道」指哪四個對話主題",ans:"道謝、道愛、道歉、道別"},
+      {pts:300,clue:"護理師引導無法言語病人完成「道別」的三種替代方式",ans:"書寫代筆、錄音/錄影、繪畫或手語表達"},
+      {pts:400,clue:"「道歉」對臨終病人靈性安適的核心意義",ans:"解除未竟事宜（Unfinished business）、促進關係和解、減少靈性苦痛"},
+      {pts:500,clue:"四道人生對應的NANDA護理診斷（兩個）",ans:"靈性困擾（Spiritual distress）、死亡焦慮（Death anxiety）"},
+    ]},
+    { name:"護理師支持", color:"#1e1b4b", qs:[
+      {pts:100,clue:"護理師長期照顧臨終病人可能出現的職業傷害，學術名稱",ans:"憐憫疲憊（Compassion fatigue）"},
+      {pts:200,clue:"預防護理師職業耗竭（Burnout）的三項個人策略",ans:"正念練習、設定工作邊界、尋求督導/同儕支持"},
+      {pts:300,clue:"「臨床督導（Clinical supervision）」在靈性照護中的主要功能",ans:"提供情緒支持、反思工作壓力、強化靈性自我覺察"},
+      {pts:400,clue:"護理師靈性自我照護（Spiritual self-care）的四項實踐內容",ans:"自我反思、培養意義感、建立支持系統、維持工作生活平衡"},
+      {pts:500,clue:"死亡後反思（Mortality review/Death debriefing）對護理團隊的五個意義",ans:"處理悲傷、反思照護品質、增進臨終照護能力、強化團隊凝聚力、預防PTSD"},
+    ]},
+    { name:"靈性概念", color:"#312e81", qs:[
+      {pts:100,clue:"靈性照護（Spiritual care）的核心定義要素",ans:"協助個案尋找生命意義、目的、與超越性的連結"},
+      {pts:200,clue:"意義治療（Logotherapy）的創始人及核心主張",ans:"Viktor Frankl；即使在苦難中也能找到生命意義"},
+      {pts:300,clue:"馬斯洛需求層次理論中，靈性需求屬於哪個層次",ans:"自我實現（Self-actualization）及超越性（Transcendence）需求"},
+      {pts:400,clue:"「靈性困擾（Spiritual distress）」與「靈性掙扎（Spiritual struggle）」的差異",ans:"困擾=已造成功能障礙；掙扎=仍在探索，可轉化為成長的機會"},
+      {pts:500,clue:"NANDA護理診斷「靈性困擾」的兩個主要定義特徵",ans:"質疑生命意義/目的、表達對神聖存在的憤怒或感覺被神靈遺棄"},
+    ]},
+  ]
+},
+{
+  id:8, title:"心理照護", en:"Psychological Care",
+  color:"#f472b6", bg:"rgba(244,114,182,.15)",
+  categories:[
+    { name:"壓力因應", color:"#f472b6", qs:[
+      {pts:100,clue:"Lazarus壓力因應模式的兩個評估階段名稱",ans:"初級評估（Primary appraisal，威脅程度）、次級評估（Secondary appraisal，因應資源）"},
+      {pts:200,clue:"問題焦點因應與情緒焦點因應的本質差異",ans:"問題焦點：改變壓力源；情緒焦點：管理因壓力引起的情緒反應"},
+      {pts:300,clue:"Selye一般適應症候群（GAS）的三個階段",ans:"警覺（Alarm）→抵抗（Resistance）→耗竭（Exhaustion）"},
+      {pts:400,clue:"「認知重構（Cognitive reframing）」的護理應用步驟",ans:"識別扭曲思維→挑戰不合理信念→以更現實積極的視角重新評估"},
+      {pts:500,clue:"促進病人心理彈性（Resilience）的三項護理策略",ans:"建立社會支持網絡、增強自我效能感、培養問題解決能力"},
+    ]},
+    { name:"焦慮護理", color:"#ec4899", qs:[
+      {pts:100,clue:"Peplau焦慮四級中，第III級（嚴重焦慮）的主要特徵",ans:"感知野縮窄至單一細節、肌肉張力增加、過度換氣、難以集中注意力"},
+      {pts:200,clue:"廣泛性焦慮症（GAD）的核心症狀定義",ans:"對多種日常事物持續過度擔憂，持續≥6個月"},
+      {pts:300,clue:"護理師協助急性焦慮發作的首要非藥物措施（三項）",ans:"保持冷靜陪伴、溫和語調引導腹式呼吸、減少環境刺激"},
+      {pts:400,clue:"苯二氮平類藥物（Benzodiazepines）使用的三項護理注意事項",ans:"成癮性、老年人慎用（跌倒風險）、勿突然停藥"},
+      {pts:500,clue:"焦慮認知行為療法（CBT）的三大核心技術",ans:"暴露療法（Exposure）、認知重構（Cognitive restructuring）、放鬆訓練（Relaxation）"},
+    ]},
+    { name:"自殺防護", color:"#db2777", qs:[
+      {pts:100,clue:"自殺風險評估縮寫IS PATH WARM中，IS各代表什麼",ans:"I=理念/想法（Ideation）、S=物質濫用（Substance abuse）"},
+      {pts:200,clue:"Columbia自殺嚴重度評估量表（C-SSRS）的兩個主要評估面向",ans:"自殺意念（Ideation）強度與自殺行為（Behavior）"},
+      {pts:300,clue:"實證不支持的自殺防護措施，及應使用的替代工具",ans:"不傷害契約（No Harm Contract）；應改用安全計畫（Safety Planning）"},
+      {pts:400,clue:"自殺安全計畫（Safety planning）的六個步驟",ans:"辨識預警徵兆→內部因應→社會分心→聯繫可信任者→聯繫專業資源→致命方式限制"},
+      {pts:500,clue:"照顧自殺嘗試後存活者（Attempt survivors）的四項護理重點",ans:"非評判態度、評估動機與當下風險、轉介心理健康服務、家庭支持介入"},
+    ]},
+    { name:"危機介入", color:"#be185d", qs:[
+      {pts:100,clue:"Roberts七階段危機介入模型的第一個步驟",ans:"危機評估（Assessment），包括安全評估"},
+      {pts:200,clue:"危機（Crisis）的定義中，最核心的缺失",ans:"個人的因應（Coping）能力不足以應對當前挑戰"},
+      {pts:300,clue:"心理急救（PFA）的三個基本行動（縮寫3L）",ans:"看（Look/觀察需求）、聆聽（Listen/陪伴傾聽）、連結（Link/連結資源）"},
+      {pts:400,clue:"創傷後壓力症候群（PTSD）的四大核心症狀群",ans:"再體驗（Intrusion）、逃避（Avoidance）、認知情緒負向改變、過度警覺（Hyperarousal）"},
+      {pts:500,clue:"危機介入的「時間限制原則」及危機被視為機會的原因",ans:"短期4–6週；危機打破原有平衡，可促進個體學習新的因應策略及成長"},
+    ]},
+    { name:"評估工具", color:"#9d174d", qs:[
+      {pts:100,clue:"PHQ-9憂鬱篩查量表總分≥10分代表的程度",ans:"中度憂鬱（Moderate depression）"},
+      {pts:200,clue:"Hamilton焦慮量表（HAM-A）總分>17分的焦慮程度",ans:"中度焦慮"},
+      {pts:300,clue:"動機式晤談（Motivational Interviewing）的OARS四項技術",ans:"O=開放式問題、A=肯定（Affirmation）、R=反映式傾聽、S=摘要"},
+      {pts:400,clue:"改變階段模式（Transtheoretical Model）的五個階段",ans:"前思考→思考→準備→行動→維持（Precontemplation→Contemplation→Preparation→Action→Maintenance）"},
+      {pts:500,clue:"「SAD PERSONS量表」用於評估何種風險及S代表的風險因子",ans:"自殺風險評估；S=性別（Sex；男性風險較高）"},
+    ]},
+    { name:"身體意象", color:"#831843", qs:[
+      {pts:100,clue:"身體意象（Body image）的定義",ans:"個人對自己身體外觀的主觀感知、思想與情感評價"},
+      {pts:200,clue:"術後（乳房切除/造口）病人最常見的四種身體意象困擾表現",ans:"迴避照鏡子、拒絕觸摸傷口、社交退縮、性關係障礙"},
+      {pts:300,clue:"護理師協助身體意象改變病人的三項治療性溝通技巧",ans:"積極傾聽、開放式提問、正常化情緒反應（避免評判語言）"},
+      {pts:400,clue:"厭食症（Anorexia nervosa）診斷標準中BMI的臨界值",ans:"BMI < 17.5 kg/m²（或預期體重的85%以下）"},
+      {pts:500,clue:"「鏡像暴露療法（Mirror exposure therapy）」治療身體意象障礙的心理機制",ans:"反覆暴露於鏡中自我影像，逐漸降低對身體的負面感知，減少迴避行為"},
+    ]},
+  ]
+},
+];
+
+
+// =============================================
+// 本機教學系統：CSV匯入、組名套用、成績記錄、CSV匯出（免shared資料夾）
+// CSV格式建議：學期,學號,姓名,組別
+// =============================================
+let STUDENTS = [];
+let TEAMS = [];
+const SCORE_KEY = 'MED_SURG_GAME_SCORE_LOG';
+const STUDENT_KEY = 'MED_SURG_GAME_STUDENTS';
+const TEAM_KEY = 'MED_SURG_GAME_TEAMS';
+function loadLocalStudents(){ try{ STUDENTS=JSON.parse(localStorage.getItem(STUDENT_KEY)||'[]'); TEAMS=JSON.parse(localStorage.getItem(TEAM_KEY)||'[]'); }catch(e){ STUDENTS=[]; TEAMS=[]; } }
+function importCSVFromInput(){
+ const input=document.getElementById('fileInput'); const file=input&&input.files?input.files[0]:null; if(!file){alert('請先選擇CSV檔');return;}
+ const reader=new FileReader(); reader.onload=function(e){
+  const text=String(e.target.result||'').replace(/^\uFEFF/,'').trim(); const lines=text.split(/\r?\n/).filter(Boolean); const teamMap={}; STUDENTS=[];
+  lines.slice(1).forEach(line=>{ const cols=line.split(',').map(x=>x.trim()); let semester,student_id,name,team_name; if(cols.length>=4){[semester,student_id,name,team_name]=cols;}else{semester='1142';[student_id,name,team_name]=cols;} if(!student_id||!name)return; team_name=team_name||'未分組'; const student={semester,student_id,name,team_name}; STUDENTS.push(student); if(!teamMap[team_name])teamMap[team_name]={team_name,members:[]}; teamMap[team_name].members.push(student); });
+  TEAMS=Object.values(teamMap); localStorage.setItem(STUDENT_KEY,JSON.stringify(STUDENTS)); localStorage.setItem(TEAM_KEY,JSON.stringify(TEAMS)); applyImportedTeams(); renderScores(); alert('匯入成功：'+STUDENTS.length+'位學生，'+TEAMS.length+'組。');
+ }; reader.readAsText(file,'utf-8');
+}
+function applyImportedTeams(){ loadLocalStudents(); if(Array.isArray(TEAMS)&&TEAMS.length){ teams=TEAMS.slice(0,6).map(t=>({name:t.team_name,score:0})); } }
+function recordScore(r){ const logs=JSON.parse(localStorage.getItem(SCORE_KEY)||'[]'); logs.push({semester:'1142',time:new Date().toISOString(),...r}); localStorage.setItem(SCORE_KEY,JSON.stringify(logs)); }
+function exportScoresCSV(){ const logs=JSON.parse(localStorage.getItem(SCORE_KEY)||'[]'); if(!logs.length){alert('目前沒有成績紀錄可匯出');return;} const header=['學期','時間','遊戲','單元','題目','學號','姓名/組別','組別','個人成績','團體成績','是否答對']; const rows=logs.map(r=>[r.semester||'',r.time||'',r.game_name||'',r.unit_name||'',String(r.question||'').replace(/,/g,'，'),r.student_id||'',r.student_name||'',r.team_name||'',r.individual_score||0,r.team_score||0,r.correct===false?'否':'是']); const csv='\uFEFF'+[header,...rows].map(row=>row.join(',')).join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='jeopardy-scores.csv'; a.click(); URL.revokeObjectURL(url); }
+function clearScoresOnly(){ if(confirm('確定清除本機成績紀錄？')){ localStorage.removeItem(SCORE_KEY); showToast('成績紀錄已清除'); } }
+
+// =============================================
+// STATE
+// =============================================
+let teams = [
+  {name:"第一組",score:0},{name:"第二組",score:0},
+  {name:"第三組",score:0},{name:"第四組",score:0},
+  {name:"第五組",score:0},{name:"第六組",score:0},
+];
+let activeUnit = 0;
+let currentTile = null; // {unitIdx, catIdx, qIdx, pts}
+let usedTiles = {}; // "unitIdx-catIdx-qIdx": true
+
+function tileKey(u,c,q){return `${u}-${c}-${q}`;}
+
+// =============================================
+// RENDER SCORE PANEL
+// =============================================
+function renderScores(){
+  const panel = document.getElementById('scorePanel');
+  let html = teams.map((t,i)=>`
+    <div class="team-score" onclick="adjustScore(${i})">
+      <div class="ts-name">${t.name}</div>
+      <div class="ts-pts">${t.score}</div>
+    </div>`).join('');
+  html += `<input type="file" id="fileInput" accept=".csv" style="font-size:12px;max-width:170px;">`;
+  html += `<button class="score-btn" onclick="importCSVFromInput()">📂 匯入名單</button>`;
+  html += `<button class="score-btn" onclick="exportScoresCSV()">📥 匯出成績</button>`;
+  html += `<button class="score-btn" onclick="clearScoresOnly()">♻️ 清除紀錄</button>`;
+  html += `<button class="score-btn" onclick="openScoreConfig()">⚙ 手動隊伍</button>`;
+  html += `<button class="score-btn" onclick="resetScores()">↺ 重置畫面分數</button>`;
+  panel.innerHTML = html;
+}
+
+function adjustScore(idx){
+  const delta = prompt(`${teams[idx].name} — 輸入加減分數（例如 +200 或 -100）:`, '+100');
+  if(!delta) return;
+  const n = parseInt(delta);
+  if(isNaN(n)) return;
+  teams[idx].score += n;
+  renderScores();
+  showToast(`${teams[idx].name} → ${teams[idx].score} 分`);
+}
+
+function resetScores(){
+  if(!confirm('確定要重置所有分數嗎？')) return;
+  teams.forEach(t=>t.score=0);
+  renderScores();
+  showToast('分數已重置');
+}
+
+function openScoreConfig(){
+  const area = document.getElementById('teamInputs');
+  area.innerHTML = teams.map((t,i)=>`
+    <div class="score-row">
+      <label>隊伍${i+1}</label>
+      <input id="tname_${i}" value="${t.name}" placeholder="隊伍名稱">
+    </div>`).join('');
+  document.getElementById('scoreModal').classList.add('open');
+}
+
+function saveTeams(){
+  teams.forEach((t,i)=>{
+    const v = document.getElementById('tname_'+i).value.trim();
+    if(v) t.name=v;
+  });
+  document.getElementById('scoreModal').classList.remove('open');
+  renderScores();
+  showToast('隊伍名稱已更新');
+}
+
+// =============================================
+// RENDER UNIT TABS & BOARDS
+// =============================================
+function renderAll(){
+  const tabsEl = document.getElementById('unitTabs');
+  const boardsEl = document.getElementById('boards');
+  tabsEl.innerHTML = '';
+  boardsEl.innerHTML = '';
+
+  UNITS.forEach((unit,ui)=>{
+    // TAB
+    const tab = document.createElement('button');
+    tab.className = 'unit-tab' + (ui===activeUnit?' active':'');
+    tab.style.borderColor = ui===activeUnit ? unit.color : 'rgba(255,255,255,.08)';
+    tab.style.color = ui===activeUnit ? unit.color : '';
+    tab.style.background = ui===activeUnit ? unit.bg : '';
+    tab.textContent = `U0${unit.id} ${unit.title}`;
+    tab.onclick = ()=>{ activeUnit=ui; renderAll(); };
+    tabsEl.appendChild(tab);
+
+    // BOARD
+    const board = document.createElement('div');
+    board.className = 'unit-board' + (ui===activeUnit?' active':'');
+    board.innerHTML = `
+      <div class="unit-header">
+        <div class="uh-num" style="color:${unit.color};border-color:${unit.color};background:${unit.bg}">Unit 0${unit.id}</div>
+        <div class="uh-title">${unit.title}</div>
+        <div class="uh-en">${unit.en}</div>
+      </div>
+      <div class="board" id="board_${ui}"></div>`;
+    boardsEl.appendChild(board);
+
+    if(ui===activeUnit){
+      const grid = board.querySelector('#board_'+ui);
+      // Category headers
+      unit.categories.forEach(cat=>{
+        const hdr = document.createElement('div');
+        hdr.className = 'cat-header';
+        hdr.style.background = hexWithAlpha(cat.color, .18);
+        hdr.style.borderColor = hexWithAlpha(cat.color, .35);
+        hdr.style.color = cat.color;
+        hdr.textContent = cat.name;
+        grid.appendChild(hdr);
+      });
+      // Tiles (5 rows × 6 cats)
+      for(let qi=0;qi<5;qi++){
+        unit.categories.forEach((cat,ci)=>{
+          const q = cat.qs[qi];
+          const key = tileKey(ui,ci,qi);
+          const tile = document.createElement('div');
+          tile.className = 'tile' + (usedTiles[key]?' used':'');
+          tile.style.background = hexWithAlpha(cat.color,.12);
+          tile.style.borderColor = hexWithAlpha(cat.color,.2);
+          tile.textContent = `$${q.pts}`;
+          tile.dataset.unit = ui;
+          tile.dataset.cat = ci;
+          tile.dataset.q = qi;
+          tile.onclick = ()=>openQuestion(ui,ci,qi);
+          grid.appendChild(tile);
+        });
+      }
+    }
+  });
+}
+
+function hexWithAlpha(hex,a){
+  // convert hex to rgba
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// =============================================
+// OPEN QUESTION MODAL
+// =============================================
+function openQuestion(ui,ci,qi){
+  const key = tileKey(ui,ci,qi);
+  if(usedTiles[key]) return;
+  const unit = UNITS[ui];
+  const cat = unit.categories[ci];
+  const q = cat.qs[qi];
+  currentTile = {ui,ci,qi,pts:q.pts};
+
+  document.getElementById('mCat').textContent = cat.name;
+  document.getElementById('mCat').style.color = cat.color;
+  document.getElementById('mCat').style.borderColor = cat.color;
+  document.getElementById('mCat').style.background = hexWithAlpha(cat.color,.15);
+  document.getElementById('mPts').textContent = `$${q.pts}`;
+  document.getElementById('mClue').textContent = q.clue;
+  document.getElementById('mAnswer').textContent = q.ans;
+  document.getElementById('mAnswerBox').classList.remove('revealed');
+
+  // Footer buttons
+  const footer = document.getElementById('mFooter');
+  footer.innerHTML = `<button class="btn-reveal" onclick="revealAnswer()">🔍 揭曉答案</button>`;
+  teams.forEach((t,ti)=>{
+    footer.innerHTML += `<button class="btn-award correct" onclick="awardTeam(${ti},${q.pts})">+${q.pts} ${t.name}</button>`;
+  });
+  footer.innerHTML += `<button class="btn-award wrong" onclick="closeModal()">✕ 關閉</button>`;
+
+  document.getElementById('qModal').classList.add('open');
+}
+
+function revealAnswer(){
+  document.getElementById('mAnswerBox').classList.add('revealed');
+  document.querySelector('.btn-reveal').textContent = '✅ 已揭曉';
+  document.querySelector('.btn-reveal').disabled = true;
+  document.querySelector('.btn-reveal').style.opacity = '.6';
+}
+
+function awardTeam(ti, pts){
+  teams[ti].score += pts;
+  if(currentTile){
+    const unit = UNITS[currentTile.ui];
+    const cat = unit.categories[currentTile.ci];
+    const q = cat.qs[currentTile.qi];
+    recordScore({game_name:'Jeopardy', unit_name:unit.title, question:q.clue, team_name:teams[ti].name, student_name:teams[ti].name, student_id:'GROUP', individual_score:0, team_score:pts, correct:true});
+  }
+  renderScores();
+  showToast(`+${pts} 分 → ${teams[ti].name}（共 ${teams[ti].score} 分）`);
+  if(currentTile){
+    usedTiles[tileKey(currentTile.ui,currentTile.ci,currentTile.qi)] = true;
+  }
+  closeModal();
+  renderAll();
+}
+
+function closeModal(){
+  if(currentTile){
+    usedTiles[tileKey(currentTile.ui,currentTile.ci,currentTile.qi)] = true;
+  }
+  document.getElementById('qModal').classList.remove('open');
+  renderAll();
+}
+
+// =============================================
+// TOAST
+// =============================================
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded',()=>{
+  applyImportedTeams();
+  renderScores();
+  renderAll();
+
+  // Close score modal on overlay click
+  document.getElementById('scoreModal').addEventListener('click',e=>{
+    if(e.target===document.getElementById('scoreModal'))
+      document.getElementById('scoreModal').classList.remove('open');
+  });
+  document.getElementById('qModal').addEventListener('click',e=>{
+    if(e.target===document.getElementById('qModal')) closeModal();
+  });
+
+  // Keyboard ESC
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      document.getElementById('qModal').classList.remove('open');
+      document.getElementById('scoreModal').classList.remove('open');
+    }
+  });
+});
+</script>
+</body>
+</html>

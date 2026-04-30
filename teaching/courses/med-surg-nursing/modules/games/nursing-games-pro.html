@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>護理學習遊戲中心 Pro — 弘光科技大學護理系</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#080c1a;--bg2:#0d1526;--bg3:#111d35;--tx:#e2e8f0;--dim:#8892a8;--br:rgba(255,255,255,.08);--gold:#f5c842;--teal:#2dd4bf;--pink:#f472b6;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 10% 5%,rgba(245,200,66,.07),transparent 45%),radial-gradient(ellipse at 90% 95%,rgba(45,212,191,.07),transparent 45%);}
+.sc{display:none;position:relative;z-index:1;min-height:100vh;flex-direction:column;}
+.sc.on{display:flex;}
+.nav{display:flex;align-items:center;gap:9px;padding:11px 16px;background:rgba(8,12,26,.96);border-bottom:1px solid rgba(245,200,66,.2);position:sticky;top:0;z-index:50;flex-wrap:wrap;}
+.nav-logo{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:7px;}
+.nav-back{background:rgba(255,255,255,.06);border:1px solid var(--br);border-radius:7px;padding:5px 11px;color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;transition:.2s;}
+.nav-back:hover{background:rgba(255,255,255,.12);color:var(--tx);}
+.sp{flex:1;}
+.ubadge{padding:4px 11px;border-radius:100px;font-size:10px;font-weight:700;border:1px solid;}
+.ribbon{position:fixed;top:0;left:0;right:0;height:4px;z-index:200;pointer-events:none;}
+.ribbon.host{background:linear-gradient(90deg,var(--gold),#d97706);}
+.ribbon.student{background:linear-gradient(90deg,var(--teal),#0891b2);}
+.rbadge{padding:4px 11px;border-radius:100px;font-size:10px;font-weight:900;letter-spacing:.1em;border:1px solid;}
+.rbadge.host{background:rgba(245,200,66,.15);border-color:rgba(245,200,66,.5);color:var(--gold);}
+.rbadge.student{background:rgba(45,212,191,.15);border-color:rgba(45,212,191,.5);color:var(--teal);}
+.qr-btn{background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.35);border-radius:7px;padding:5px 12px;color:var(--teal);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+/* LOBBY */
+.hero{text-align:center;padding:44px 20px 28px;}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(24px,5vw,46px);font-weight:700;color:#fff;margin-bottom:7px;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:var(--dim);font-size:12px;letter-spacing:.05em;}
+.pdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{50%{opacity:.3;transform:scale(1.8);}}
+/* GAME CARDS */
+.gcards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:0 18px 28px;}
+.gc{width:210px;background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:22px 18px;cursor:pointer;transition:.3s;text-align:center;position:relative;overflow:hidden;}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gc,#fff);}
+.gc:hover{transform:translateY(-7px);box-shadow:0 18px 44px rgba(0,0,0,.5);}
+.gc-ico{font-size:40px;margin-bottom:10px;display:block;}
+.gc-name{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;}
+.gc-desc{font-size:11px;color:var(--dim);line-height:1.6;margin-bottom:10px;}
+.gc-tag{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim);border:1px solid var(--br);}
+/* SETTINGS */
+.swrap{display:flex;justify-content:center;padding:0 18px 50px;}
+.scard{background:var(--bg2);border:1px solid rgba(245,200,66,.2);border-radius:16px;padding:24px;width:100%;max-width:700px;}
+.scard h2{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--gold);margin-bottom:18px;}
+.srow{margin-bottom:18px;}
+.srow>label{display:block;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:6px;}
+.ubtn{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:9px;padding:8px 11px;cursor:pointer;transition:.2s;text-align:left;}
+.ubtn:hover{background:rgba(255,255,255,.08);}
+.ubtn.on{border-color:var(--uc,#fff);background:rgba(255,255,255,.08);}
+.ubtn .un{font-size:9px;font-weight:700;letter-spacing:.1em;margin-bottom:3px;}
+.ubtn .ut{font-size:11px;font-weight:700;color:#fff;}
+.mbts{display:flex;gap:7px;flex-wrap:wrap;}
+.mbtn,.dbtn{padding:8px 16px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:12px;font-weight:700;transition:.2s;font-family:inherit;}
+.mbtn:hover,.dbtn:hover{background:rgba(255,255,255,.08);color:var(--tx);}
+.mbtn.on{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold);}
+.dbtn.on{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.4);color:var(--teal);}
+.tcrow{display:flex;gap:9px;flex-wrap:wrap;}
+.tcbtn{width:38px;height:38px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;transition:.2s;}
+.tcbtn:hover{background:rgba(255,255,255,.08);color:var(--tx);}
+.tcbtn.on{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold);}
+.peek-slider{display:flex;align-items:center;gap:10px;}
+.peek-slider input[type=range]{flex:1;}
+.gobtn{display:block;width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#f5c842,#e6a800);color:#000;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;transition:.25s;margin-top:4px;}
+.gobtn:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(245,200,66,.4);}
+/* TEAM PREVIEW */
+.team-preview{margin-bottom:10px;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid var(--br);}
+/* SCORE BAR */
+.sbar{display:flex;gap:6px;padding:8px 14px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--br);overflow-x:auto;flex-wrap:wrap;}
+.tchip{padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;border:2px solid;display:flex;align-items:center;gap:6px;transition:.2s;}
+.tchip.hi{transform:scale(1.1);box-shadow:0 0 16px var(--tc,#fff);}
+.tchip .tn{font-size:10px;opacity:.8;}
+.tchip .ts{font-family:'JetBrains Mono',monospace;font-size:14px;}
+/* RANK PANEL */
+.rank-panel-wrap{position:fixed;right:0;top:0;width:220px;height:100vh;background:var(--bg2);border-left:1px solid var(--br);z-index:30;overflow-y:auto;padding:12px;display:none;}
+.rank-panel-wrap.open{display:block;}
+.rank-section{margin-bottom:16px;}
+.rank-title{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
+.rank-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;background:rgba(255,255,255,.04);margin-bottom:3px;}
+.rank-pos{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--dim);min-width:18px;}
+.rank-name{flex:1;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rank-score{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--gold);}
+.rank-toggle{background:rgba(255,255,255,.06);border:1px solid var(--br);border-radius:7px;padding:5px 11px;color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;}
+/* BINGO */
+.bing-layout{display:grid;grid-template-columns:310px 1fr;flex:1;}
+@media(max-width:820px){.bing-layout{grid-template-columns:1fr;}}
+.cpanel{background:rgba(0,0,0,.4);border-right:1px solid var(--br);padding:16px;display:flex;flex-direction:column;gap:14px;}
+.ccount{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;}
+.cdisplay{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:12px;padding:18px;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;}
+.cnum{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--gold);line-height:1;}
+.cclue{font-size:13px;color:var(--tx);line-height:1.55;font-weight:700;}
+.cans{font-size:11px;color:var(--dim);padding:4px 12px;background:rgba(255,255,255,.05);border-radius:100px;display:none;}
+.cans.on{display:block;}
+.drawbtn{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;transition:.2s;}
+.drawbtn:hover{transform:translateY(-2px);}
+.drawbtn:disabled{opacity:.4;cursor:default;transform:none;}
+.ansbtn{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:7px;padding:6px;font-size:11px;color:var(--dim);cursor:pointer;font-family:inherit;}
+.clist{flex:1;overflow-y:auto;max-height:200px;display:flex;flex-direction:column;gap:3px;}
+.clist h4{font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
+.citem{background:rgba(255,255,255,.04);border-radius:5px;padding:5px 9px;font-size:10px;color:var(--dim);border:1px solid var(--br);}
+.citem b{color:var(--tx);margin-right:4px;}
+.carea{padding:14px;overflow-y:auto;}
+.ctabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
+.ctab{padding:5px 12px;border-radius:7px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;transition:.2s;}
+.ctab.on{color:#fff;}
+.bwrap{display:none;}.bwrap.on{display:block;}
+.blbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--dim);margin-bottom:7px;text-transform:uppercase;}
+.bhrow{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:460px;margin-bottom:4px;}
+.bhr{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:900;text-align:center;padding:6px;border-radius:6px;background:rgba(245,200,66,.12);color:var(--gold);}
+.bgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:460px;}
+.btile{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:7px;padding:6px 4px;min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10.5px;font-weight:700;cursor:pointer;transition:.22s;line-height:1.3;color:var(--tx);}
+.btile:hover{background:rgba(255,255,255,.1);}
+.btile.mk{font-weight:900;}
+.btile.fr{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.3);color:var(--teal);font-size:13px;cursor:default;}
+.bbtn{margin-top:9px;padding:10px 22px;border-radius:10px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.4);color:var(--teal);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:none;}
+/* MEMORY */
+.mwrap{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.minfo{display:flex;gap:10px;flex-wrap:wrap;}
+.mstat{background:var(--bg2);border:1px solid var(--br);border-radius:9px;padding:7px 13px;display:flex;align-items:center;gap:6px;}
+.mstat .ml{font-size:10px;color:var(--dim);}
+.mstat .mv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--gold);}
+.mpeekbar-wrap{height:5px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;display:none;}
+.mpeekfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--gold));}
+.mgrid{display:grid;gap:8px;flex:1;}
+.mcard{cursor:pointer;perspective:1000px;}
+.minner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1);}
+.mcard.fl .minner,.mcard.ok .minner{transform:rotateY(180deg);}
+.mface,.mback{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;padding:9px;border:1px solid var(--br);}
+.mface{background:linear-gradient(135deg,#0d1526,#111d35);}
+.mface-ico{font-size:22px;}
+.mback{transform:rotateY(180deg);}
+.mback.tr{background:linear-gradient(135deg,rgba(0,180,216,.15),rgba(0,180,216,.05));border-color:rgba(0,180,216,.3);}
+.mback.df{background:linear-gradient(135deg,rgba(245,200,66,.12),rgba(245,200,66,.04));border-color:rgba(245,200,66,.3);}
+.mback-lbl{font-size:8px;font-weight:700;letter-spacing:.1em;margin-bottom:4px;text-transform:uppercase;opacity:.6;}
+.mback-txt{font-size:11px;font-weight:700;line-height:1.35;}
+/* QUIZ */
+.qwrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:18px;}
+.qcard{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:16px;padding:30px;max-width:620px;width:100%;text-align:center;}
+.qnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.15em;margin-bottom:10px;}
+.qtext{font-family:'Noto Serif TC',serif;font-size:19px;font-weight:700;color:#fff;line-height:1.7;margin-bottom:15px;}
+.qtbar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;}
+.qtfill{height:100%;border-radius:3px;transition:width .1s linear;background:linear-gradient(90deg,#f5c842,#e879f9);}
+.qans{padding:12px 18px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:11px;color:var(--teal);font-size:15px;font-weight:700;text-align:center;display:none;max-width:620px;width:100%;}
+.qexpl{padding:10px 16px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.25);border-radius:10px;color:#a5b4fc;font-size:13px;line-height:1.6;display:none;max-width:620px;width:100%;}
+.qbrow{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:620px;width:100%;}
+.qbbtn{flex:1;min-width:90px;padding:12px 9px;border-radius:10px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit;}
+.qbbtn:hover{transform:scale(1.04);}
+.award-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:620px;width:100%;}
+.aw-ok{padding:9px 14px;border-radius:9px;border:2px solid var(--teal);background:rgba(45,212,191,.1);color:var(--teal);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.aw-ng{padding:9px 14px;border-radius:9px;border:2px solid var(--pink);background:rgba(244,114,182,.1);color:var(--pink);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.qctrl{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.qcbtn{padding:9px 18px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.06);color:var(--tx);cursor:pointer;font-size:12px;font-weight:700;transition:.2s;font-family:inherit;}
+.qcbtn:hover{background:rgba(255,255,255,.12);}
+.qcbtn.pr{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none;}
+.qrevbtn{padding:9px 20px;border-radius:9px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.4);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:none;}
+/* JEOPARDY */
+.jwrap{flex:1;display:flex;flex-direction:column;}
+.jboard{display:grid;gap:4px;padding:12px;flex:1;auto-rows:auto;}
+.jhead{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:10px 6px;text-align:center;font-size:11px;font-weight:900;color:var(--gold);letter-spacing:.05em;}
+.jtile{background:var(--bg3);border:1px solid var(--br);border-radius:8px;padding:8px 4px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:900;color:var(--gold);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;min-height:56px;}
+.jtile:hover{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.4);}
+.jtile.used{opacity:.3;cursor:default;font-size:14px;color:var(--dim);}
+/* JEOPARDY MODAL */
+.jmodal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;}
+.jmodal.on{display:flex;}
+.jmc{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:36px;max-width:600px;width:92%;text-align:center;}
+.jm-pts{font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.jm-cat{font-size:12px;color:var(--dim);letter-spacing:.1em;margin-bottom:18px;}
+.jm-clue{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:#fff;line-height:1.7;margin-bottom:18px;padding:16px;background:rgba(255,255,255,.04);border-radius:10px;}
+.jm-ans{font-size:15px;font-weight:700;color:var(--teal);padding:12px 18px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:10px;display:none;margin-bottom:14px;}
+.jm-revbtn{padding:10px 22px;border-radius:10px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.4);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:14px;}
+.jarow{display:block;}
+.jm-arow{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+.jbbtn{padding:9px 14px;border-radius:9px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--tx);}
+.jbbtn:hover{background:rgba(255,255,255,.08);}
+.jbbtn-ng{padding:9px 14px;border-radius:9px;border:1px dashed;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--dim);}
+.jm-skip{padding:8px 18px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.05);color:var(--dim);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+/* ROSTER PANEL */
+.roster-modal{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;}
+.roster-modal.on{display:flex;}
+.roster-card{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:18px;padding:28px;max-width:700px;width:94%;max-height:85vh;overflow-y:auto;}
+.roster-card h2{font-family:'Noto Serif TC',serif;font-size:18px;color:var(--gold);margin-bottom:16px;}
+.import-zone{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.ibtn{padding:9px 16px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.06);color:var(--tx);cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;transition:.2s;}
+.ibtn:hover{background:rgba(255,255,255,.12);}
+.ibtn.primary{background:linear-gradient(135deg,#f5c842,#e6a800);color:#000;border:none;}
+.ibtn.export{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.4);color:var(--teal);}
+.roster-count{font-size:11px;color:var(--dim);}
+.roster-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.roster-tbl th{background:rgba(255,255,255,.06);padding:8px 10px;text-align:left;font-weight:700;color:var(--dim);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--br);}
+.roster-tbl td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);}
+.csv-hint{font-size:11px;color:var(--dim);padding:8px 12px;background:rgba(255,255,255,.03);border-radius:7px;border:1px solid var(--br);line-height:1.7;margin-top:10px;}
+/* QR MODAL */
+.qro{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;}
+.qro.on{display:flex;}
+.qrc{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:30px;text-align:center;max-width:380px;width:92%;}
+.qrc-ttl{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:5px;}
+.qrc-sub{color:var(--dim);font-size:11px;margin-bottom:18px;line-height:1.6;}
+#qrbox{display:flex;justify-content:center;margin-bottom:14px;}
+#qrbox canvas,#qrbox img{border-radius:9px;padding:9px;background:#fff;}
+.qrurl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);background:rgba(255,255,255,.05);border-radius:7px;padding:7px 10px;word-break:break-all;margin-bottom:12px;border:1px solid var(--br);text-align:left;}
+.qracts{display:flex;gap:8px;justify-content:center;}
+.qrcopy{padding:9px 18px;border-radius:9px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.35);color:var(--gold);cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;}
+.qrclose{padding:9px 18px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid var(--br);color:var(--dim);cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;}
+/* WIN */
+.wino{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;}
+.wino.on{display:flex;}
+.winc{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:36px 30px;text-align:center;max-width:420px;width:90%;animation:winpop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes winpop{from{opacity:0;transform:scale(.4);}to{opacity:1;transform:scale(1);}}
+.wine{font-size:60px;display:block;margin-bottom:14px;animation:bb 1s ease infinite alternate;}
+@keyframes bb{to{transform:translateY(-11px);}}
+.wint{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.wins{color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:18px;white-space:pre-line;}
+.winsc{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;color:var(--teal);}
+.winacts{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+.wina{padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:.2s;}
+.wina:hover{transform:translateY(-2px);}
+.wa1{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;}
+.wa2{background:rgba(255,255,255,.08);color:var(--tx);border:1px solid var(--br)!important;}
+/* STUDENT */
+.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:26px 18px;text-align:center;}
+.splash h2{font-family:'Noto Serif TC',serif;font-size:22px;color:#fff;}
+.splash h2 em{font-style:normal;color:var(--teal);}
+.splash p{color:var(--dim);font-size:12px;line-height:1.8;max-width:300px;}
+.sgbtns{display:flex;flex-direction:column;gap:9px;width:100%;max-width:340px;}
+.sgbtn{padding:14px 18px;border-radius:12px;border:2px solid;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;display:flex;align-items:center;gap:12px;background:transparent;color:#fff;}
+/* STUDENT BINGO */
+.sbwrap{flex:1;display:flex;flex-direction:column;gap:10px;padding:12px;}
+.sco{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:12px;padding:13px 14px;text-align:center;}
+.scon{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--gold);}
+.scoc{font-size:12px;color:var(--tx);margin-top:4px;line-height:1.5;}
+.sbhr{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:3px;}
+.sbh{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:900;text-align:center;padding:5px;border-radius:5px;background:rgba(245,200,66,.12);color:var(--gold);}
+.sbgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.stile{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:6px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:700;cursor:pointer;padding:4px 3px;line-height:1.3;color:var(--tx);min-height:48px;}
+.stile:hover{background:rgba(255,255,255,.1);}
+.stile.mk{font-weight:900;}
+.stile.fr{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.3);color:var(--teal);font-size:13px;cursor:default;}
+.sbbtn{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--teal),#0891b2);color:#000;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;display:none;}
+/* STUDENT QUIZ */
+.sqwrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px 16px;}
+.sqcard{background:var(--bg2);border:1px solid rgba(245,200,66,.2);border-radius:14px;padding:22px 18px;text-align:center;width:100%;max-width:400px;}
+.sqnum{font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:7px;}
+.sqtext{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:#fff;line-height:1.7;}
+.sqans{font-size:13px;font-weight:700;color:var(--teal);padding:8px 14px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:8px;margin-top:10px;display:none;}
+.sqtbar{height:5px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:10px;}
+.sqtfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--pink));transition:width .1s linear;}
+.sqbuzz{width:100%;max-width:400px;padding:32px 18px;border-radius:15px;border:none;font-size:20px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.04em;background:linear-gradient(135deg,var(--teal),#0891b2);color:#000;transition:transform .1s;}
+.sqbuzz:active{transform:scale(.91);}
+.sqstat{font-size:12px;color:var(--dim);text-align:center;max-width:400px;}
+/* STUDENT MEMORY */
+.smwrap{flex:1;display:flex;flex-direction:column;gap:10px;padding:12px;}
+.sminfo{display:flex;gap:9px;flex-wrap:wrap;}
+.smst{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:5px;}
+.smst .sml{font-size:10px;color:var(--dim);}
+.smst .smv{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--gold);}
+
+/* NICKNAME ENTRY */
+.nick-overlay{position:fixed;inset:0;z-index:800;background:rgba(8,12,26,.98);display:none;align-items:center;justify-content:center;}
+.nick-overlay.on{display:flex;}
+.nick-card{background:var(--bg2);border:1px solid rgba(45,212,191,.3);border-radius:22px;padding:44px 36px;max-width:400px;width:92%;text-align:center;}
+.nick-card h2{font-family:'Noto Serif TC',serif;font-size:24px;color:var(--teal);margin-bottom:8px;}
+.nick-card p{color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:24px;}
+.nick-input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(45,212,191,.4);background:rgba(45,212,191,.06);color:#fff;font-size:16px;font-family:inherit;outline:none;margin-bottom:16px;text-align:center;}
+.nick-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(45,212,191,.15);}
+.nick-submit{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--teal),#0891b2);color:#000;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;transition:.2s;}
+.nick-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,212,191,.4);}
+.nick-tag{display:inline-block;margin-top:12px;padding:6px 16px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:100px;font-size:12px;color:var(--gold);}
+/* RANKING SIDEBAR */
+.rsidebar{position:fixed;right:-260px;top:0;width:256px;height:100vh;background:rgba(8,12,26,.97);border-left:1px solid var(--br);z-index:40;overflow-y:auto;transition:.3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.rsidebar.open{right:0;box-shadow:-8px 0 30px rgba(0,0,0,.5);}
+.rsidebar-head{padding:14px 14px 10px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;}
+.rsidebar-head h3{font-family:'Noto Serif TC',serif;font-size:15px;color:var(--gold);}
+.rsidebar-close{background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;}
+.rsidebar-tabs{display:flex;border-bottom:1px solid var(--br);}
+.rs-tab{flex:1;padding:9px;text-align:center;font-size:11px;font-weight:700;cursor:pointer;color:var(--dim);border:none;background:none;font-family:inherit;transition:.2s;}
+.rs-tab.on{color:var(--gold);border-bottom:2px solid var(--gold);}
+.rs-body{flex:1;padding:10px;overflow-y:auto;}
+.rs-section{margin-bottom:14px;}
+.rs-label{font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:6px;}
+.rs-row{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);margin-bottom:3px;position:relative;overflow:hidden;}
+.rs-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(245,200,66,.08);border-radius:7px;transition:.4s;}
+.rs-pos{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--dim);min-width:16px;position:relative;}
+.rs-name{flex:1;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative;}
+.rs-pts{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);position:relative;}
+.rs-medal{font-size:13px;position:relative;}
+.rs-divider{height:1px;background:var(--br);margin:10px 0;}
+.firebase-badge{padding:4px 10px;border-radius:100px;font-size:9px;font-weight:700;letter-spacing:.08em;background:rgba(255,160,0,.1);border:1px solid rgba(255,160,0,.3);color:#ffa500;margin-left:auto;}
+/* UNIT HISTORY */
+.hist-modal{position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;}
+.hist-modal.on{display:flex;}
+.hist-card{background:var(--bg2);border:1px solid rgba(129,140,248,.3);border-radius:18px;padding:28px;max-width:680px;width:94%;max-height:82vh;overflow-y:auto;}
+.hist-card h2{font-family:'Noto Serif TC',serif;font-size:17px;color:#a5b4fc;margin-bottom:14px;}
+.hist-entry{background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:10px;padding:13px;margin-bottom:9px;}
+.hist-meta{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.hist-game{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;}
+.hist-unit{font-size:11px;color:var(--dim);}
+.hist-time{font-size:10px;color:var(--dim);margin-left:auto;}
+.hist-teams{display:flex;gap:7px;flex-wrap:wrap;}
+.hist-team{font-size:12px;padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.05);}
+.firebase-setup{background:rgba(255,160,0,.06);border:1px solid rgba(255,160,0,.2);border-radius:12px;padding:16px;margin-top:16px;}
+.firebase-setup h4{font-size:13px;font-weight:700;color:#ffa500;margin-bottom:8px;}
+.firebase-setup p{font-size:12px;color:var(--dim);line-height:1.7;margin-bottom:8px;}
+.firebase-setup code{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;color:var(--tx);}
+.firebase-input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,160,0,.3);background:rgba(255,160,0,.05);color:#fff;font-size:11px;font-family:'JetBrains Mono',monospace;outline:none;margin-bottom:7px;}
+.firebase-connect-btn{padding:9px 18px;border-radius:9px;background:rgba(255,160,0,.15);border:1px solid rgba(255,160,0,.4);color:#ffa500;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+/* TOAST / CONFETTI */
+.toast{position:fixed;bottom:18px;right:18px;z-index:700;background:var(--bg3);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:0 8px 26px rgba(0,0,0,.6);transform:translateY(70px);opacity:0;transition:.3s;pointer-events:none;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:rgba(45,212,191,.4);color:var(--teal);}
+.toast.ng{border-color:rgba(244,114,182,.4);color:var(--pink);}
+#cc{position:fixed;inset:0;z-index:550;pointer-events:none;display:none;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px;}
+@media(max-width:820px){.bing-layout{grid-template-columns:1fr;}.cpanel{border-right:none;border-bottom:1px solid var(--br);}}
+@media(max-width:560px){.qtext{font-size:15px;}.jm-clue{font-size:16px;}.winc{padding:24px 16px;}.sqbuzz{padding:24px 14px;font-size:17px;}}
+</style>
+</head>
+<body>
+<div class="ribbon" id="ribbon"></div>
+<canvas id="cc"></canvas>
+<!-- WIN -->
+<div class="wino" id="wino"><div class="winc"><span class="wine" id="wine">🎊</span><div class="wint" id="wint"></div><div class="wins" id="wins"></div><div class="winsc" id="winsc"></div><div class="winacts"><button class="wina wa1" onclick="restartGame()">▶ 再玩一次</button><button class="wina wa2" onclick="goLobby()">🏠 回大廳</button></div></div></div>
+<!-- QR -->
+<div class="qro" id="qro"><div class="qrc"><div class="qrc-ttl">📱 學生掃碼加入</div><div class="qrc-sub" id="qrsub"></div><div id="qrbox"></div><div class="qrurl" id="qrurl"></div><div class="qracts"><button class="qrcopy" onclick="copyQR()">📋 複製連結</button><button class="qrclose" onclick="closeQR()">關閉</button></div></div></div>
+<!-- ROSTER MODAL -->
+<div class="roster-modal" id="rosterModal"><div class="roster-card">
+  <h2>📋 班級名單管理</h2>
+  <div class="import-zone">
+    <input type="file" id="csvFile" accept=".csv" style="font-size:11px;max-width:180px">
+    <button class="ibtn primary" onclick="importRoster(document.getElementById('csvFile').files[0])">📂 匯入CSV</button>
+    <button class="ibtn export" onclick="exportXLSX()">📊 匯出Excel</button>
+    <button class="ibtn" onclick="document.getElementById('rosterModal').classList.remove('on')">關閉</button>
+  </div>
+  <div class="roster-count" id="rosterCount">尚未匯入名單</div>
+  <table class="roster-tbl" style="margin-top:10px"><thead><tr><th>學期</th><th>學號</th><th>姓名</th><th>組別</th><th>暱稱</th></tr></thead><tbody id="rosterTable"></tbody></table>
+  <div class="csv-hint">📄 CSV格式（含標題行）：學期, 學號, 姓名, 組別, 暱稱<br>範例：1142, B11234567, 王小明, 護理一甲第一組, 小明</div>
+</div></div>
+
+<!-- JEOPARDY MODAL -->
+<div class="jmodal" id="jmodal"><div class="jmc">
+  <div class="jm-pts" id="jm-pts">100</div>
+  <div class="jm-cat" id="jm-cat"></div>
+  <div class="jm-clue" id="jm-clue"></div>
+  <div class="jm-ans" id="jm-ans"></div>
+  <button class="jm-revbtn" id="jm-revbtn" onclick="revealJAns()">👁 公布答案</button>
+  <div class="jarow" id="jarow" style="display:none"><div class="jm-arow" id="jm-arow"></div><button class="jm-skip" onclick="skipJTile()">略過此題</button></div>
+</div></div>
+
+<!-- NICKNAME ENTRY -->
+<div class="nick-overlay" id="nickOverlay">
+  <div class="nick-card">
+    <div style="font-size:56px;margin-bottom:12px">👤</div>
+    <h2>請輸入你的暱稱</h2>
+    <p>暱稱將顯示在個人排名上<br>建議使用容易辨識的名字或學號後四碼</p>
+    <input class="nick-input" id="nickInput" type="text" placeholder="例如：小明 或 1234" maxlength="12" onkeydown="if(event.key==='Enter')submitNick()">
+    <button class="nick-submit" onclick="submitNick()">確認，進入遊戲 →</button>
+    <div class="nick-tag" id="nickTag" style="display:none"></div>
+  </div>
+</div>
+
+<!-- RANKING SIDEBAR -->
+<div class="rsidebar" id="rsidebar">
+  <div class="rsidebar-head">
+    <h3>📊 即時排名</h3>
+    <span id="fbBadge" class="firebase-badge" style="display:none">⚡ Firebase</span>
+    <button class="rsidebar-close" onclick="toggleRank()">✕</button>
+  </div>
+  <div class="rsidebar-tabs">
+    <button class="rs-tab on" id="rsTab0" onclick="switchRsTab(0)">🏆 團體</button>
+    <button class="rs-tab" id="rsTab1" onclick="switchRsTab(1)">👤 個人</button>
+    <button class="rs-tab" id="rsTab2" onclick="switchRsTab(2)">📅 紀錄</button>
+  </div>
+  <div class="rs-body" id="rsBody"></div>
+</div>
+
+<!-- UNIT HISTORY MODAL -->
+<div class="hist-modal" id="histModal">
+  <div class="hist-card">
+    <h2>📅 單元成績紀錄</h2>
+    <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;">
+      <button class="ibtn primary" onclick="exportXLSX()">📊 匯出整學期 Excel</button>
+      <button class="ibtn" style="background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.3);color:var(--pink)" onclick="if(confirm('確定清除所有成績紀錄？')){HISTORY=[];lsSave('history',HISTORY);renderHistList();toast('已清除','ng')}">🗑 清除紀錄</button>
+      <button class="ibtn" onclick="document.getElementById('histModal').classList.remove('on')">關閉</button>
+    </div>
+    <div id="histList"></div>
+    <div class="firebase-setup" id="firebaseSetup">
+      <h4>⚡ Firebase 即時同步設定（選配）</h4>
+      <p>填入 Firebase 設定後，學生手機的排名可以和老師電腦即時同步。不填則僅在老師電腦上運作。</p>
+      <p>前往 <code>console.firebase.google.com</code> → 建立專案 → Realtime Database → 取得 Database URL</p>
+      <input class="firebase-input" id="fbUrl" placeholder="https://your-project.firebaseio.com" type="url">
+      <br>
+      <button class="firebase-connect-btn" onclick="connectFirebase()">連線測試</button>
+      <span id="fbStatus" style="font-size:11px;color:var(--dim);margin-left:10px"></span>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ HOST LOBBY ═══ -->
+<div id="s-lobby" class="sc on">
+  <div class="nav">
+    <div class="nav-logo"><span>🏥</span>護理學習遊戲 Pro</div>
+    <div class="sp"></div>
+    <button class="rank-toggle" onclick="toggleRank()">📊 排名</button>
+    <button class="nav-back" onclick="showHistory()">📅 歷程</button>
+    <button class="nav-back" onclick="document.getElementById('rosterModal').classList.add('on');renderRosterTable()">📋 名單</button>
+    <div id="hbadge" class="rbadge host" style="display:none">老師主控</div>
+  </div>
+  <div class="hero">
+    <h1>內外護理學<br><em>互動學習遊戲</em></h1>
+    <p><span class="pdot"></span>8單元 · 4款遊戲 · 個人暨團體排名</p>
+  </div>
+  <div class="gcards">
+    <div class="gc" style="--gc:#2dd4bf" onclick="pickGame('bingo')"><span class="gc-ico">🎱</span><div class="gc-name">賓 果 遊 戲</div><div class="gc-desc">叫號猜詞・五連線BINGO<br>2–6組競賽</div><div class="gc-tag">QR連動</div></div>
+    <div class="gc" style="--gc:#f5c842" onclick="pickGame('memory')"><span class="gc-ico">🃏</span><div class="gc-name">翻 翻 樂</div><div class="gc-desc">術語↔定義記憶配對<br>可設置預覽秒數</div><div class="gc-tag">個人/小組</div></div>
+    <div class="gc" style="--gc:#f472b6" onclick="pickGame('quiz')"><span class="gc-ico">⚡</span><div class="gc-name">速 問 快 答</div><div class="gc-desc">搶答後公布答案再加減分<br>記錄個人+團體排名</div><div class="gc-tag">QR搶答</div></div>
+    <div class="gc" style="--gc:#818cf8" onclick="pickGame('jeopardy')"><span class="gc-ico">📺</span><div class="gc-name">Jeopardy</div><div class="gc-desc">6類別×5題分層挑戰<br>240題完整題庫</div><div class="gc-tag">點格作答</div></div>
+  </div>
+  <div class="swrap" id="swrap" style="display:none"><div class="scard">
+    <h2 id="stitle">⚙ 遊戲設定</h2>
+    <div class="srow" id="teamPreviewRow"><label>已匯入組別</label><div class="team-preview" id="teamPreview"><span style="color:var(--dim);font-size:12px">尚未匯入名單 — 將使用預設第一~六組</span></div></div>
+    <div class="srow"><label>選擇單元</label><div class="ugrid" id="ugrid"></div></div>
+    <div class="srow" id="mrow"><label>競賽模式</label><div class="mbts"><button class="mbtn on" onclick="pickMode('group')">👥 小組競賽</button><button class="mbtn" onclick="pickMode('solo')">🧑 個人計時</button></div></div>
+    <div class="srow" id="tcrow-wrap"><label>隊伍數量</label><div class="tcrow" id="tcrow"></div></div>
+    <div class="srow" id="drow" style="display:none"><label>難度（牌數）</label><div class="mbts"><button class="dbtn on" data-d="12" onclick="pickDiff(12)">簡單 3×4</button><button class="dbtn" data-d="20" onclick="pickDiff(20)">普通 4×5</button><button class="dbtn" data-d="30" onclick="pickDiff(30)">困難 5×6</button></div></div>
+    <div class="srow" id="peekrow" style="display:none"><label>翻翻樂預覽秒數 <span id="peekVal">3秒</span></label><div class="peek-slider"><span style="font-size:11px;color:var(--dim)">1s</span><input type="range" min="1" max="10" value="3" oninput="setPeek(+this.value)" style="flex:1"><span style="font-size:11px;color:var(--dim)">10s</span></div></div>
+    <div class="srow" id="trow" style="display:none"><label>每題時間</label><div class="mbts"><button class="dbtn" data-t="15" onclick="pickTimer(15)">15秒</button><button class="dbtn on" data-t="20" onclick="pickTimer(20)">20秒</button><button class="dbtn" data-t="30" onclick="pickTimer(30)">30秒</button></div></div>
+    <button class="gobtn" onclick="startGame()">🚀 開始遊戲！</button>
+  </div></div>
+</div>
+
+<!-- ═══ BINGO ═══ -->
+<div id="s-bingo" class="sc"><div class="nav" id="nav-bingo"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>🎱</span>賓果遊戲</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="b-ubadge"></div></div>
+<div class="sbar" id="b-sbar"></div>
+<div class="bing-layout"><div class="cpanel"><div class="ccount" id="ccount">已抽 0 題</div><div class="cdisplay"><div class="cnum" id="cnum">—</div><div class="cclue" id="cclue">按「抽題」開始</div><div class="cans" id="cans"></div></div><button class="drawbtn" id="drawbtn" onclick="draw()">🎲 抽 題</button><button class="ansbtn" id="ansbtn" onclick="toggleAns()" style="display:none">👁 顯示答案</button><div class="clist"><h4>已抽 <span id="cnt">0</span> 題</h4><div id="citems"></div></div></div>
+<div class="carea"><div class="ctabs" id="ctabs"></div><div id="ccards"></div></div></div></div>
+
+<!-- ═══ MEMORY ═══ -->
+<div id="s-memory" class="sc"><div class="nav" id="nav-memory"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>🃏</span>翻翻樂</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="m-ubadge"></div></div>
+<div class="sbar" id="m-sbar"></div>
+<div class="mwrap"><div class="minfo"><div class="mstat"><span class="ml">已配對</span><span class="mv" id="mmatch">0</span></div><div class="mstat"><span class="ml">剩餘</span><span class="mv" id="mrem">0</span></div><div class="mstat" id="mtimewrap"><span class="ml">時間</span><span class="mv" id="mtime">0:00</span></div><div class="mstat" id="mturnwrap"><span class="ml">輪到</span><span class="mv" id="mturn">—</span></div></div>
+<div class="mpeekbar-wrap" id="mpeekbar"><div class="mpeekfill" id="mpeekfill"></div></div>
+<div class="mgrid" id="mgrid"></div></div></div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="s-quiz" class="sc"><div class="nav" id="nav-quiz"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>⚡</span>速問快答</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="q-ubadge"></div></div>
+<div class="sbar" id="q-sbar"></div>
+<div class="qwrap">
+  <div class="qcard"><div class="qnum" id="qnum">Q 0 / 0</div><div class="qtext" id="qtext">準備…</div><div class="qtbar"><div class="qtfill" id="qtfill" style="width:100%"></div></div></div>
+  <div class="qans" id="qans"></div>
+  <div class="qexpl" id="qexpl"></div>
+  <div class="qbrow" id="qbrow"></div>
+  <div class="award-row" id="arow" style="display:none"></div>
+  <div class="qctrl">
+    <button class="qrevbtn" id="qrevbtn" onclick="revealAns()">👁 公布答案 ＆ 判分</button>
+    <button class="qcbtn pr" onclick="nextQ()">下一題 →</button>
+  </div>
+</div></div>
+
+<!-- ═══ JEOPARDY ═══ -->
+<div id="s-jeopardy" class="sc"><div class="nav" id="nav-jeopardy"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>📺</span>Jeopardy</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="j-ubadge"></div></div>
+<div class="sbar" id="j-sbar"></div>
+<div class="jwrap"><div class="jboard" id="jboard"></div></div></div>
+
+<!-- ═══ STUDENT LOBBY ═══ -->
+<div id="s-slob" class="sc"><div class="nav"><div class="nav-logo"><span>📱</span>學生遊戲入口</div><div class="sp"></div><div class="rbadge student">學生模式</div></div>
+<div class="splash"><div style="font-size:58px">🎓</div><h2>加入<em>護理學習遊戲</em></h2><p id="swelcome">選擇遊戲</p><div class="sgbtns" id="sgbtns"></div></div></div>
+
+<!-- ═══ STUDENT BINGO ═══ -->
+<div id="s-sbingo" class="sc"><div class="nav"><button class="nav-back" onclick="showSc('s-slob')">← 返回</button><div class="nav-logo"><span>🎱</span>我的賓果卡</div><div class="sp"></div><div class="rbadge student">學生</div></div>
+<div class="sbwrap"><div class="sco"><div class="scon" id="scon">等待老師出題…</div><div class="scoc" id="scoc">定義線索出現在這裡</div></div><div class="sbhr"><div class="sbh">B</div><div class="sbh">I</div><div class="sbh">N</div><div class="sbh">G</div><div class="sbh">O</div></div><div class="sbgrid" id="sbgrid"></div><button class="sbbtn" id="sbbtn" onclick="sBingo()">🎉 我達成 BINGO！</button></div></div>
+
+<!-- ═══ STUDENT QUIZ ═══ -->
+<div id="s-squiz" class="sc"><div class="nav"><button class="nav-back" onclick="showSc('s-slob')">← 返回</button><div class="nav-logo"><span>⚡</span>速問快答</div><div class="sp"></div><div class="rbadge student">學生</div></div>
+<div class="sqwrap"><div class="sqcard"><div class="sqnum" id="sqnum">準備中…</div><div class="sqtext" id="sqtext">等待老師出題</div><div class="sqans" id="sqans"></div><div class="sqtbar"><div class="sqtfill" id="sqtfill" style="width:100%"></div></div></div><button class="sqbuzz" id="sqbuzz" onclick="sBuzz()">搶 答 ！</button><div class="sqstat" id="sqstat">看到定義後搶答</div></div></div>
+
+<!-- ═══ STUDENT MEMORY ═══ -->
+<div id="s-smem" class="sc"><div class="nav"><button class="nav-back" onclick="showSc('s-slob')">← 返回</button><div class="nav-logo"><span>🃏</span>翻翻樂</div><div class="sp"></div><div class="rbadge student">學生</div></div>
+<div class="smwrap"><div class="sminfo"><div class="smst"><span class="sml">已配對</span><span class="smv" id="smmatch">0</span></div><div class="smst"><span class="sml">剩餘</span><span class="smv" id="smrem">0</span></div><div class="smst"><span class="sml">時間</span><span class="smv" id="smtime">0:00</span></div></div><div class="mgrid" id="smgrid"></div></div></div>
+
+<script>
+const QUIZ_UNITS=[
+{id:1,title:"氧合與活動",en:"Oxygenation & Mobility",color:"#00b4d8",bg:"rgba(0,180,216,.15)",
+items:[
+ {t:"縮唇呼吸",c:"COPD防止小呼吸道塌陷的呼吸技巧"},
+ {t:"SpO₂ 88-92%",c:"COPD病人的給氧目標範圍，避免抑制低氧驅動"},
+ {t:"FEV₁/FVC<70%",c:"阻塞性通氣障礙的肺功能診斷標準"},
+ {t:"呼吸性酸中毒",c:"pH↓ PaCO₂↑ 的酸鹼失衡類型"},
+ {t:"Fowler臥位",c:"心臟衰竭端坐呼吸病人應擺放的體位"},
+ {t:"NYHA Class III",c:"輕微活動就明顯喘的心臟衰竭功能分級"},
+ {t:"監測K⁺",c:"心臟衰竭使用Furosemide必須監測的電解質"},
+ {t:"T值≤-2.5",c:"DEXA掃描骨質疏鬆的診斷標準"},
+ {t:"髖屈曲>90°",c:"全髖關節置換術後最重要的禁忌動作"},
+ {t:"三角枕外展",c:"THR術後維持假體位置防止脫位的護理措施"},
+ {t:"Homans徵象",c:"被動背屈踝關節時小腿痛，懷疑DVT的評估"},
+ {t:"FEV₁",c:"肺功能中測量用力吐氣第一秒量的指標縮寫"},
+ {t:"CPM機器",c:"膝關節置換術後促進軟骨癒合的持續被動運動設備"},
+ {t:"Braden≤12",c:"Braden壓傷風險量表代表高度危險的分數"},
+ {t:"6MWT",c:"評估運動耐受性與功能狀態的六分鐘步行測試"},
+ {t:"BNP>100",c:"提示心臟衰竭的B型利尿鈉肽診斷閾值(pg/mL)"},
+ {t:"HFpEF",c:"射血分數≥50%、舒張功能障礙為主的心臟衰竭"},
+ {t:"PaO₂ 80-100",c:"正常動脈血氧分壓的參考範圍(mmHg)"},
+ {t:"呼吸性鹼中毒",c:"pH↑ PaCO₂↓ 的酸鹼失衡類型"},
+ {t:"缺血性骨壞死",c:"長期使用類固醇引起的嚴重骨骼副作用之一"},
+ {t:"脂肪栓塞症候群",c:"骨折後呼吸困難+意識改變+瘀點的三聯徵"},
+ {t:"Borg量表",c:"評估運動時自覺費力程度的0-10分工具"},
+ {t:"DVT",c:"關節置換術後常見的深部靜脈血栓併發症縮寫"},
+ {t:"頸靜脈壓JVP",c:"評估心臟衰竭液體狀態的非侵入性視診工具"},
+ {t:"Winters公式",c:"代謝性酸中毒時預測代償PaCO₂的計算公式"},
+]},
+{id:2,title:"營養與排泄",en:"Nutrition & Elimination",color:"#f59e0b",bg:"rgba(245,158,11,.15)",
+items:[
+ {t:"幽門螺旋桿菌",c:"消化性潰瘍最常見的致病菌（H. pylori）"},
+ {t:"三合療法",c:"PPI+Clarithromycin+Amoxicillin根除H.pylori"},
+ {t:"食道靜脈瘤出血",c:"肝硬化最常見且最危險的致死性併發症"},
+ {t:"Child-Pugh評分",c:"評估肝硬化嚴重程度的五項指標評分系統"},
+ {t:"補充白蛋白",c:"腹水大量穿刺引流後必須靜脈補充的物質"},
+ {t:"肝性腦病變",c:"肝硬化合併血氨升高引起的神經系統併發症"},
+ {t:"Ileostomy",c:"迴腸造口，排泄物呈液態半液態"},
+ {t:"限制切口1-2mm",c:"更換造口貼片時切口比造口大的正確尺寸"},
+ {t:"B₁₂缺乏",c:"迴腸造口/胃切除術後長期缺乏的維生素"},
+ {t:"TPN中心靜脈",c:"全靜脈營養必須經由中心靜脈輸注的原因（高張性）"},
+ {t:"低磷血症",c:"再喂食症候群(Refeeding syndrome)最危險的電解質異常"},
+ {t:"X光確認",c:"確認鼻胃管位置的黃金標準(Gold standard)"},
+ {t:"Harris-Benedict",c:"計算基礎代謝率考慮性別/體重/身高/年齡的公式"},
+ {t:"傾食症候群",c:"胃切除術後餐後食物快速傾入腸道的症候群"},
+ {t:"胰臟瘺管",c:"Whipple手術後最常見的嚴重外科併發症"},
+ {t:"內在因子缺乏",c:"胃切除術後導致B₁₂無法吸收引起惡性貧血的機制"},
+ {t:"腸音回復",c:"胃腸手術後可開始進食的重要評估徵象"},
+ {t:"中毒性巨結腸",c:"潰瘍性結腸炎(UC)最嚴重的急性致死性併發症"},
+ {t:"造口顏色暗紫",c:"造口出現缺血壞死的緊急警示徵象"},
+ {t:"少尿<400mL",c:"成人每日尿量少於此值定義為少尿(Oliguria)"},
+ {t:"CAUTI預防",c:"每日評估撤除導尿管必要性的院內感染防護措施"},
+ {t:"膀胱過動症OAB",c:"首選抗膽鹼藥（Oxybutynin）治療的排尿異常"},
+ {t:"反射性膀胱",c:"上運動神經元損傷引起的膀胱功能障礙類型"},
+ {t:"草黃綠色引流",c:"膽囊切除術後T型引流管的正常引流液顏色"},
+ {t:"Bristol第7型",c:"最嚴重的水樣腹瀉大便型態分類"},
+]},
+{id:3,title:"感覺知覺",en:"Sensory / Perception",color:"#a78bfa",bg:"rgba(167,139,250,.15)",
+items:[
+ {t:"GCS最高15分",c:"格拉斯哥昏迷量表E4+V5+M6的最高總分"},
+ {t:"GCS最低3分",c:"代表深度昏迷的Glasgow量表最低總分"},
+ {t:"GCS≤8插管",c:"嚴重腦損傷建議氣管插管保護呼吸道的GCS閾值"},
+ {t:"去大腦強直M2",c:"GCS運動反應中伸展反應的得分（Decerebrate）"},
+ {t:"FAST口訣",c:"腦中風快速辨識：臉歪/手臂無力/說話困難/時間"},
+ {t:"rt-PA 4.5小時",c:"缺血性腦中風靜脈溶栓治療的時間窗限制"},
+ {t:"失語症",c:"左腦（優勢半球）中風最常見的語言功能障礙"},
+ {t:"半側忽視",c:"右腦損傷後忽略左側身體和環境的知覺障礙"},
+ {t:"Cushing三聯徵",c:"高血壓+心跳過緩+呼吸不規則=顱內壓升高徵象"},
+ {t:"Mannitol甘露醇",c:"緊急降低顱內壓的高滲性利尿藥物"},
+ {t:"浣熊眼",c:"顱底骨折的特徵性眼眶周圍瘀斑外觀"},
+ {t:"Battle's sign",c:"顱底骨折的耳後乳突區瘀斑徵象"},
+ {t:"Lucid interval",c:"硬膜外血腫在短暫昏迷後的清醒期"},
+ {t:"靜止性震顫",c:"帕金森氏症最典型的靜止時出現的震顫症狀"},
+ {t:"Bradykinesia",c:"帕金森氏症三大主要症狀之一：動作遲緩"},
+ {t:"L-dopa限高蛋白",c:"Levodopa不應與高蛋白食物同服，因競爭吸收"},
+ {t:"吸入性肺炎",c:"帕金森氏症晚期因吞嚥困難引起的最常見死因"},
+ {t:"脊髓休克",c:"脊髓損傷後24-48小時內急性暫時性功能喪失"},
+ {t:"自律神經反射異常",c:"脊髓損傷膀胱脹滿引起的高血壓急症"},
+ {t:"ASIA A級",c:"S4-5無感覺無運動的完全性脊髓損傷分級"},
+ {t:"Status Epilepticus",c:"癲癇發作持續>5分鐘的神經科緊急狀況"},
+ {t:"Lorazepam IV",c:"癲癇持續狀態的首選靜脈藥物治療"},
+ {t:"牙齦增生",c:"長期服用Phenytoin（苯妥英）的口腔副作用"},
+ {t:"Postictal phase",c:"癲癇發作後昏睡期，護理師應側臥保護呼吸道"},
+ {t:"高密度CT影像",c:"出血性腦中風在急性期CT掃描的影像特徵"},
+]},
+{id:4,title:"安全保護",en:"Safety & Protection",color:"#10b981",bg:"rgba(16,185,129,.15)",
+items:[
+ {t:"感染鏈六環節",c:"病原體→感染窩→出口→傳播→入口→易感宿主"},
+ {t:"WHO五大時機",c:"手部衛生Five Moments涵蓋的洗手時機"},
+ {t:"CLABSI Bundle",c:"中央靜脈導管感染預防的集束護理五要素"},
+ {t:"MRSA",c:"甲氧西林抗藥性金黃色葡萄球菌的縮寫"},
+ {t:"接觸傳播隔離",c:"MRSA病人的隔離措施類型（手套+隔離衣）"},
+ {t:"3M空氣傳播",c:"麻疹/水痘/肺結核需要空氣隔離的三種疾病"},
+ {t:"N95口罩",c:"空氣傳播隔離必需的特殊防護裝備"},
+ {t:"蝴蝶斑",c:"SLE橫跨鼻梁、不累及鼻唇溝的特徵性紅斑"},
+ {t:"RA晨僵>1小時",c:"類風濕性關節炎診斷性的關節晨間僵硬時間"},
+ {t:"CD4<200",c:"HIV感染進展為AIDS的免疫學診斷標準"},
+ {t:"PCP",c:"AIDS病人最常見的機會性感染：肺囊蟲肺炎縮寫"},
+ {t:"超急性排斥",c:"器官移植後數分鐘至數小時即發生的最快排斥"},
+ {t:"GvHD",c:"骨髓移植後供體T細胞攻擊宿主的移植物抗宿主病"},
+ {t:"C. diff孢子",c:"需用次氯酸鈉消毒，酒精無法殺滅的菌種"},
+ {t:"VAP Bundle",c:"預防呼吸器相關肺炎的床頭抬高等集束護理"},
+ {t:"PEP 72小時",c:"HIV暴露後預防需在72小時內開始的28天療程"},
+ {t:"狼瘡性腎炎",c:"SLE最嚴重的腎臟侵犯，早期監測蛋白尿"},
+ {t:"類固醇五副作用",c:"向心肥胖/骨鬆/高血糖/感染↑/消化道潰瘍"},
+ {t:"Cyclosporine腎毒",c:"器官移植主要免疫抑制劑Cyclosporine的主要副作用"},
+ {t:"CAUTI排名第一",c:"醫療照護相關感染中最常見的類型縮寫"},
+ {t:"Mupirocin去定殖",c:"鼻腔軟膏去除MRSA帶菌狀態的抗生素"},
+ {t:"標準防護措施",c:"適用所有病人的基本感染預防措施（Standard Precautions）"},
+ {t:"CHG沐浴",c:"氯己定消毒沐浴用於MRSA去定殖的措施"},
+ {t:"急性排斥四徵",c:"移植腎區痛/發燒/肌酐↑/尿量↓的急性排斥表現"},
+ {t:"CH X皮膚消毒",c:"CLABSI Bundle中使用氯己定消毒插管部位皮膚"},
+]},
+{id:5,title:"腫瘤全人照護",en:"Oncology Care",color:"#e879f9",bg:"rgba(232,121,249,.15)",
+items:[
+ {t:"TNM分期",c:"T腫瘤大小/N淋巴轉移/M遠端轉移的癌症分期系統"},
+ {t:"Tis原位癌",c:"TNM分期中原位癌（carcinoma in situ）的表示"},
+ {t:"HER2陽性",c:"標靶藥Trastuzumab赫賽汀的適用乳癌分子條件"},
+ {t:"三陰性乳癌",c:"ER/PR/HER2均陰性、預後較差的乳癌分型"},
+ {t:"前哨淋巴結",c:"判斷乳癌是否淋巴轉移的第一站，陰性可免廓清"},
+ {t:"FN發燒白血球減少",c:"ANC<500且體溫>38.3°C的化療緊急併發症"},
+ {t:"外漏Extravasation",c:"化療藥物滲漏至皮下組織的嚴重護理事件"},
+ {t:"Grade 3黏膜炎",c:"只能進流質、嚴重疼痛的WHO化療口腔分級"},
+ {t:"CIPN手套長襪感",c:"紫杉醇/奧沙利鉑引起的化療誘發周邊神經病變"},
+ {t:"伽瑪刀SBRS",c:"精準少次大劑量的立體定向放射外科療法"},
+ {t:"口腔乾燥症",c:"頭頸部放療損傷腮腺引起的唾液腺分泌減少"},
+ {t:"ALARA原則",c:"放射防護時間最短/距離最遠/屏蔽最完善原則"},
+ {t:"PD-1/PD-L1",c:"免疫檢查點抑制劑阻斷的腫瘤免疫逃脫訊號"},
+ {t:"irAE免疫副作用",c:"免疫檢查點抑制劑引起的免疫相關不良事件"},
+ {t:"CRS細胞激素風暴",c:"CAR-T細胞治療最嚴重的急性副作用縮寫"},
+ {t:"WHO三階梯",c:"非鴉片→弱鴉片→強鴉片的癌症疼痛治療原則"},
+ {t:"Total Pain",c:"Cicely Saunders提出的身/心/社/靈全面疼痛概念"},
+ {t:"嗎啡預防便秘",c:"強鴉片類藥物使用時必須預防性處理的副作用"},
+ {t:"TLS腫瘤溶解",c:"高鉀/高磷/高尿酸/低鈣的腫瘤急症縮寫"},
+ {t:"SCC脊髓壓迫",c:"最早出現背痛警示的腫瘤急症縮寫"},
+ {t:"SVCS上腔靜脈",c:"顏面頸部水腫+頸靜脈怒張+呼吸困難的腫瘤急症"},
+ {t:"ECOG PS2",c:"可自理但無法工作的癌症病人體能狀態評估"},
+ {t:"Nadir 7-14天",c:"化療後骨髓最低點出現的時間，感染風險最高"},
+ {t:"Wet desquamation",c:"放療Grade 3急性皮膚反應：濕性脫皮"},
+ {t:"緩和鎮靜",c:"頑固性症狀臨終前無其他方法時使用的鎮靜措施"},
+]},
+{id:6,title:"家庭文化照護",en:"Family & Cultural Care",color:"#f97316",bg:"rgba(249,115,22,.15)",
+items:[
+ {t:"家系圖Genogram",c:"描繪三代家庭結構、方形=男/圓形=女的評估工具"},
+ {t:"APGAR家庭",c:"評估家庭功能：適應/合作/成長/情感/解決五項"},
+ {t:"生態圖Ecomap",c:"描繪家庭與外部社區系統連結關係的評估工具"},
+ {t:"Leininger理論",c:"文化照護多樣性與普遍性理論的創立者"},
+ {t:"Kleinman 8問",c:"探索病人疾病文化解釋的八個問題評估工具"},
+ {t:"驗證療法",c:"接受失智病人認知現實、不糾正錯誤的照護方式"},
+ {t:"MMSE 21-26分",c:"簡易智能評估輕度失智的分數範圍（滿分30分）"},
+ {t:"5I老年症候群",c:"跌倒/失禁/認知障礙/不動/醫源性的老年特殊問題"},
+ {t:"譫妄急性發作",c:"以小時至天為單位急性發作的認知改變（非失智）"},
+ {t:"長照2.0",c:"台灣2017年擴大的長期照顧服務政策"},
+ {t:"四包錢補助",c:"長照2.0的照顧服務/交通/輔具/環改四類補助"},
+ {t:"ABC旗艦社區",c:"長照A=社區整合型/B=複合型/C=巷弄型三級體系"},
+ {t:"喘息服務",c:"讓主要照顧者暫時休息的長照支持性服務"},
+ {t:"Zarit≥40負荷",c:"Zarit照顧者負荷量表代表中度以上負荷的分數"},
+ {t:"憐憫疲憊",c:"長期照顧創傷者引起的次級創傷應激症候群"},
+ {t:"Frailty衰弱症",c:"Fried表型≥3項（體重/疲憊/握力/步速/活動量）"},
+ {t:"文化安全",c:"尊重文化認同、避免文化強加的跨文化護理原則"},
+ {t:"Campinha-Bacote",c:"文化意識/知識/技能/相遇/渴望五層次文化能力"},
+ {t:"BPSD失智行為",c:"失智症精神行為症狀（焦躁/遊走/幻覺等）縮寫"},
+ {t:"DICE模式",c:"描述→調查→創造→評估的失智BPSD護理四步驟"},
+ {t:"Morse跌倒量表",c:"評估老年病人跌倒風險的常用工具"},
+ {t:"多重用藥≥5種",c:"同時服用五種以上藥物、增加交互作用風險的定義"},
+ {t:"ADL六項",c:"進食/梳洗/如廁/洗澡/穿衣/移位的日常活動評估"},
+ {t:"ABC-X危機模型",c:"事件+感受+資源=X（危機）的家庭危機理論"},
+ {t:"Care manager",c:"評估失能/擬計畫/整合資源的照顧管理專員"},
+]},
+{id:7,title:"靈性照護",en:"Spiritual Care",color:"#818cf8",bg:"rgba(129,140,248,.15)",
+items:[
+ {t:"FICA靈性評估",c:"信仰(F)/重要性(I)/社群(C)/照護指引(A)工具"},
+ {t:"HOPE評估H",c:"HOPE靈性評估工具中H=希望與意義的來源"},
+ {t:"靈性困擾",c:"意義/目的喪失的NANDA護理診斷名稱"},
+ {t:"靈性≠宗教",c:"靈性是更廣泛概念，宗教是靈性的一種表達形式"},
+ {t:"臨終傅油禮",c:"天主教臨終前最重要的宗教儀式"},
+ {t:"Ghusl遺體清洗",c:"伊斯蘭教同性別親屬清洗遺體的宗教儀式"},
+ {t:"佛教助念",c:"佛教臨終時誦念佛號、避免移動遺體的護理配合"},
+ {t:"四道人生",c:"道謝/道愛/道歉/道別的臨終溝通四項對話"},
+ {t:"趙可式教授",c:"台灣推動安寧療護與四道人生概念的護理學者"},
+ {t:"死前視見",c:"臨終病人描述看見已故親人或旅行準備的現象"},
+ {t:"聽覺最後消失",c:"提醒家屬繼續對話，因臨終病人最後喪失的感官"},
+ {t:"死亡嘎嘎聲",c:"臨終分泌物積聚咽喉的正常現象（非痛苦表現）"},
+ {t:"憐憫疲憊",c:"護理師長期照顧臨終病人的次級創傷職業傷害"},
+ {t:"Logotherapy",c:"Viktor Frankl在苦難中尋找生命意義的療法"},
+ {t:"馬斯洛自我實現",c:"靈性需求在馬斯洛需求層次中所屬的最高層次"},
+ {t:"未竟事宜",c:"臨終道歉希望解除的Unfinished business靈性困擾"},
+ {t:"JCAHO靈性篩查",c:"要求入院時常規進行初步靈性評估的醫院評鑑機構"},
+ {t:"正念練習",c:"預防護理師職業耗竭(Burnout)的個人靈性策略"},
+ {t:"臨床督導",c:"提供護理師情緒支持與靈性自我覺察的機制"},
+ {t:"靈性困擾徵象",c:"質疑生命意義、感覺被神靈遺棄的NANDA診斷依據"},
+ {t:"Postmortem care",c:"死後遺體護理應在死後1-2小時內完成"},
+ {t:"Death debriefing",c:"死亡後護理團隊反思照護品質、處理悲傷的機制"},
+ {t:"同儕支持",c:"護理師預防職業耗竭重要的社會支持資源"},
+ {t:"宗教vs靈性",c:"靈性更廣泛，宗教為其表達方式之一的概念區別"},
+ {t:"不傷害契約?",c:"實證不支持、應改用安全計畫替代的過時工具"},
+]},
+{id:8,title:"心理照護",en:"Psychological Care",color:"#f472b6",bg:"rgba(244,114,182,.15)",
+items:[
+ {t:"Lazarus初級評估",c:"壓力因應模式中評估威脅程度的第一步驟"},
+ {t:"GAS三階段",c:"Selye的一般適應症候群：警覺→抵抗→耗竭"},
+ {t:"PHQ-9≥10中度",c:"憂鬱篩查量表代表中度憂鬱的分數閾值"},
+ {t:"Peplau焦慮四級",c:"第III級嚴重焦慮：感知野縮窄+過度換氣+難以集中"},
+ {t:"GAD廣泛焦慮",c:"對多種日常事物持續過度擔憂≥6個月的焦慮症"},
+ {t:"腹式呼吸",c:"護理師協助急性焦慮發作的首要非藥物緩解方式"},
+ {t:"Benzodiazepines",c:"焦慮治療的苯二氮平類藥物，注意成癮與跌倒風險"},
+ {t:"CBT認知行為",c:"暴露/認知重構/放鬆訓練的焦慮心理治療縮寫"},
+ {t:"IS PATH WARM",c:"評估自殺風險的縮寫，I=意念S=物質濫用…"},
+ {t:"C-SSRS",c:"評估自殺意念強度與自殺行為的Columbia量表"},
+ {t:"Safety Planning",c:"取代不傷害契約的六步驟自殺防護工具"},
+ {t:"Roberts七階段",c:"危機介入模型第一步=危機評估(含安全評估)"},
+ {t:"PFA心理急救",c:"看(觀察)/聆聽(傾聽)/連結(資源)的三項基本行動"},
+ {t:"PTSD四症狀群",c:"再體驗/逃避/認知情緒負向/過度警覺的創傷症狀"},
+ {t:"OARS晤談技術",c:"動機式晤談的開放問題/肯定/反映傾聽/摘要四技術"},
+ {t:"TTM改變階段",c:"前思考→思考→準備→行動→維持的行為改變模式"},
+ {t:"認知重構",c:"識別扭曲思維、挑戰不合理信念的心理技術"},
+ {t:"心理彈性",c:"Resilience，在逆境中恢復並適應的心理能力"},
+ {t:"身體意象",c:"個人對自己身體外觀的主觀感知與情感評價"},
+ {t:"BMI<17.5厭食",c:"厭食症(Anorexia nervosa)診斷標準的BMI臨界值"},
+ {t:"鏡像暴露療法",c:"治療身體意象障礙：反覆暴露降低對身體負面感知"},
+ {t:"問題焦點因應",c:"改變壓力源本身（非情緒）的因應策略類型"},
+ {t:"次級創傷",c:"照顧創傷倖存者間接引起的創傷應激反應"},
+ {t:"SAD PERSONS",c:"評估自殺風險的多因子量表(S=男性)"},
+ {t:"危機4-6週",c:"危機介入的時間限制原則；危機也是成長的機會"},
+]},
+];
+
+// ============================================================
+
+const JEOP_UNITS = [
+{
+  id:1, title:"氧合與活動", en:"Oxygenation & Mobility",
+  color:"#00b4d8", bg:"rgba(0,180,216,.15)",
+  categories:[
+    { name:"COPD護理", color:"#00b4d8", qs:[
+      {pts:100,clue:"COPD病人的給氧目標SpO₂應維持在此範圍，以避免抑制低氧驅動",ans:"88–92%"},
+      {pts:200,clue:"COPD病人使用此呼吸技巧：噘唇緩慢吐氣，可防止小呼吸道塌陷",ans:"縮唇呼吸（Pursed-lip breathing）"},
+      {pts:300,clue:"COPD急性惡化最常見的觸發因素，佔約70–80%",ans:"呼吸道感染（細菌或病毒）"},
+      {pts:400,clue:"COPD阻塞性通氣障礙的肺功能判斷標準：FEV₁/FVC比值必須低於此數值",ans:"70%（0.7）"},
+      {pts:500,clue:"GOLD分期Stage III（重度）的FEV₁佔預測值的百分比範圍",ans:"30–50%"},
+    ]},
+    { name:"ABG判讀", color:"#38bdf8", qs:[
+      {pts:100,clue:"正常動脈血氧分壓（PaO₂）的參考範圍",ans:"80–100 mmHg"},
+      {pts:200,clue:"pH 7.28、PaCO₂ 52、HCO₃⁻ 26 ─ 此ABG的酸鹼失衡診斷",ans:"呼吸性酸中毒（Respiratory Acidosis）"},
+      {pts:300,clue:"pH 7.52、PaCO₂ 30、HCO₃⁻ 24 ─ 此ABG的診斷",ans:"呼吸性鹼中毒（Respiratory Alkalosis）"},
+      {pts:400,clue:"代謝性酸中毒的代償性PaCO₂預測公式（Winters公式）",ans:"PaCO₂ = 1.5 × HCO₃⁻ + 8 ± 2"},
+      {pts:500,clue:"吸入100%純氧時，正常肺泡-動脈氧氣差P(A-a)O₂的上限約為多少mmHg",ans:"約100–150 mmHg"},
+    ]},
+    { name:"心臟衰竭", color:"#e879f9", qs:[
+      {pts:100,clue:"心臟衰竭病人出現端坐呼吸（orthopnea）時，應協助擺放的體位",ans:"高坐臥位（Fowler's position）"},
+      {pts:200,clue:"NYHA功能分級中，「輕微活動就明顯喘」屬於第幾級",ans:"第III級（Class III）"},
+      {pts:300,clue:"心臟衰竭使用Furosemide（速尿）時，必須特別監測的電解質",ans:"鉀離子（K⁺）"},
+      {pts:400,clue:"BNP升高代表心臟衰竭；正常值上限及>此值提示心衰",ans:"正常<100 pg/mL；>100 pg/mL提示心臟衰竭"},
+      {pts:500,clue:"射血分數保留型心臟衰竭（HFpEF）的EF值定義及主要病理機制",ans:"EF ≥ 50%；主要問題為舒張功能障礙"},
+    ]},
+    { name:"關節置換術", color:"#f59e0b", qs:[
+      {pts:100,clue:"全髖關節置換術（THR）後最重要的禁忌動作，以防假體脫位",ans:"髖關節屈曲超過90度（hip flexion > 90°）"},
+      {pts:200,clue:"THR術後使用三角枕的護理目的",ans:"維持髖關節外展位，預防假體脫位"},
+      {pts:300,clue:"膝關節置換術後，Homans' sign 陽性的表現",ans:"被動背屈踝關節時小腿出現疼痛（懷疑DVT）"},
+      {pts:400,clue:"關節置換術預防性抗生素應在切開前幾分鐘給予",ans:"切開前60分鐘內（靜脈注射）"},
+      {pts:500,clue:"CPM（持續被動運動）機器用於膝關節置換術後的作用及每日建議使用時間",ans:"促進軟骨癒合、減少沾黏；術後第1天起每天6–8小時"},
+    ]},
+    { name:"骨骼肌肉", color:"#10b981", qs:[
+      {pts:100,clue:"骨質疏鬆症的DEXA掃描T值診斷標準（骨質疏鬆）",ans:"T值 ≤ −2.5"},
+      {pts:200,clue:"筋膜室症候群「6P」中最早出現且最重要的症狀",ans:"疼痛（Pain），尤其被動牽拉時劇烈疼痛"},
+      {pts:300,clue:"長期使用類固醇引起的兩大骨骼系統併發症",ans:"骨質疏鬆、缺血性骨壞死（Avascular necrosis）"},
+      {pts:400,clue:"骨肉瘤（Osteosarcoma）最好發的部位及年齡層",ans:"股骨遠端/脛骨近端；10–20歲青少年"},
+      {pts:500,clue:"骨折後脂肪栓塞症候群（FES）的三聯徵",ans:"呼吸困難、意識改變、皮膚瘀點（點狀出血疹）"},
+    ]},
+    { name:"評估工具", color:"#818cf8", qs:[
+      {pts:100,clue:"肺功能評估中，測量用力吐氣第一秒量的指標縮寫",ans:"FEV₁（Forced Expiratory Volume in 1 second）"},
+      {pts:200,clue:"6分鐘步行測試（6MWT）正常成人目標距離及臨床意義",ans:"正常成人>500公尺；評估運動耐受性與功能狀態"},
+      {pts:300,clue:"Borg自覺費力程度量表（RPE）0–10分，建議運動維持在幾分",ans:"3–5分（中等偏輕度費力）"},
+      {pts:400,clue:"用於評估心衰病人液體狀態的非侵入性視診工具，正常上限",ans:"頸靜脈壓（JVP）；正常<3 cm水柱"},
+      {pts:500,clue:"Braden壓傷風險量表總分≤12分代表何種危險層級",ans:"高度危險（High risk）"},
+    ]},
+  ]
+},
+{
+  id:2, title:"營養與排泄", en:"Nutrition & Elimination",
+  color:"#f59e0b", bg:"rgba(245,158,11,.15)",
+  categories:[
+    { name:"消化道疾病", color:"#f59e0b", qs:[
+      {pts:100,clue:"消化性潰瘍最常見的致病菌",ans:"幽門螺旋桿菌（Helicobacter pylori）"},
+      {pts:200,clue:"H. pylori根除的標準三合療法組成（Triple therapy）",ans:"PPI + Clarithromycin + Amoxicillin，連續14天"},
+      {pts:300,clue:"克隆氏症（Crohn's disease）最重要的病理特徵（與UC的區別）",ans:"全層病變（Transmural）、跳躍式分布、可侵犯全消化道"},
+      {pts:400,clue:"傾食症候群（Dumping syndrome）晚期症狀的主要原因",ans:"反應性低血糖（大量胰島素分泌後血糖驟降）"},
+      {pts:500,clue:"潰瘍性結腸炎（UC）最嚴重的急性併發症",ans:"中毒性巨結腸（Toxic megacolon）"},
+    ]},
+    { name:"肝臟疾病", color:"#fbbf24", qs:[
+      {pts:100,clue:"肝硬化最常見且首要的死亡原因",ans:"食道靜脈瘤破裂出血"},
+      {pts:200,clue:"肝性腦病變第III期（嚴重混亂期）的特徵表現",ans:"昏睡、大聲喊叫、無法自理、肌肉撲翼震顫（Asterixis）"},
+      {pts:300,clue:"肝性腦病變急性期蛋白質攝取限制的建議量",ans:"0.5–1.2 g/kg/day（急性期限制；慢性可耐受至1.5 g/kg）"},
+      {pts:400,clue:"腹水大量穿刺引流後，應靜脈補充的物質及劑量比例",ans:"白蛋白（Albumin）6–8 g/L腹水"},
+      {pts:500,clue:"Child-Pugh評分的五個評估指標",ans:"腹水、腦病變、血清膽紅素、白蛋白、凝血酶原時間（PT）"},
+    ]},
+    { name:"造口護理", color:"#f97316", qs:[
+      {pts:100,clue:"結腸造口（Colostomy）與迴腸造口（Ileostomy）排泄物型態的差異",ans:"Colostomy：成形糞便；Ileostomy：液態/半液態"},
+      {pts:200,clue:"更換造口貼片時，貼片切口應比造口直徑大多少毫米",ans:"1–2 mm（不超過3 mm）"},
+      {pts:300,clue:"長期迴腸造口病人可能缺乏哪種維生素及原因",ans:"維生素B₁₂；末段迴腸切除後無法吸收（缺乏內在因子受體）"},
+      {pts:400,clue:"造口正常顏色，以及出現暗紫/黑色代表的緊急狀況",ans:"正常=粉紅至紅色；暗紫/黑色=造口缺血壞死，立即通報"},
+      {pts:500,clue:"造口旁疝氣（Parastomal hernia）的三項預防護理重點",ans:"避免腹壓增加（搬重物/便秘）、使用腹帶支撐、維持健康體重"},
+    ]},
+    { name:"營養支持", color:"#fb923c", qs:[
+      {pts:100,clue:"TPN（全靜脈營養）必須從哪種靜脈途徑輸注及原因",ans:"中心靜脈；因TPN高張性，周邊血管無法耐受"},
+      {pts:200,clue:"再喂食症候群（Refeeding syndrome）最危險的電解質異常",ans:"低磷血症（Hypophosphatemia）"},
+      {pts:300,clue:"確認鼻胃管位置的黃金標準（Gold standard）",ans:"X光確認；其次胃液pH<5（顏色法/氣泡法已不建議）"},
+      {pts:400,clue:"Harris-Benedict公式計算基礎代謝率的四個變數",ans:"性別、體重（kg）、身高（cm）、年齡（歲）"},
+      {pts:500,clue:"腸道內營養（EN）優於腸道外營養（PN）的主要原因（三項）",ans:"維持腸道黏膜屏障、減少細菌移位、降低感染風險、費用較低"},
+    ]},
+    { name:"腸胃手術", color:"#ea580c", qs:[
+      {pts:100,clue:"腸胃手術後可開始進食的徵象：聽診腸音回復，通常在術後幾天",ans:"24–72小時（術後第2–3天）"},
+      {pts:200,clue:"膽囊切除術後T型引流管正常引流液的顏色",ans:"黃金色至草黃綠色"},
+      {pts:300,clue:"急性胰臟炎急性期禁食護理的主要目的",ans:"使胰臟休息、減少胰液分泌、防止酵素自我消化"},
+      {pts:400,clue:"Whipple手術後最常見的嚴重外科併發症",ans:"胰臟瘺管（Pancreatic fistula）"},
+      {pts:500,clue:"胃切除術後維生素B₁₂缺乏的機制及後果",ans:"內在因子（Intrinsic factor）分泌缺乏→B₁₂無法吸收→惡性貧血"},
+    ]},
+    { name:"排泄護理", color:"#c2410c", qs:[
+      {pts:100,clue:"成人正常每日尿量範圍及少尿（Oliguria）的定義",ans:"正常1000–2000 mL/day；少尿<400 mL/day（或<0.5 mL/kg/hr）"},
+      {pts:200,clue:"CAUTI預防的四項核心措施",ans:"無菌導尿、每日評估撤除必要性、引流袋低於膀胱、定期會陰護理"},
+      {pts:300,clue:"膀胱過動症（OAB）的首選藥物類型及最常見副作用",ans:"抗膽鹼藥（如Oxybutynin）；口乾、便秘、視力模糊"},
+      {pts:400,clue:"上運動神經元損傷造成的膀胱功能障礙類型及護理",ans:"反射性膀胱（Reflex bladder）；間歇性自我導尿（CIC）"},
+      {pts:500,clue:"Bristol大便型態量表第1型與第7型各代表什麼臨床意義",ans:"第1型=嚴重便秘（堅硬顆粒）；第7型=水樣便（嚴重腹瀉）"},
+    ]},
+  ]
+},
+{
+  id:3, title:"感覺知覺", en:"Sensory / Perception",
+  color:"#a78bfa", bg:"rgba(167,139,250,.15)",
+  categories:[
+    { name:"GCS評估", color:"#a78bfa", qs:[
+      {pts:100,clue:"GCS（格拉斯哥昏迷量表）的三個評估項目",ans:"眼睛睜開（E）、語言反應（V）、運動反應（M）"},
+      {pts:200,clue:"GCS最高分與最低分，最低分代表的意識狀態",ans:"最高15分；最低3分（深度昏迷）"},
+      {pts:300,clue:"GCS E2 V3 M4 合計幾分，代表什麼程度的意識障礙",ans:"9分；中度意識障礙"},
+      {pts:400,clue:"GCS運動反應（M）中，去大腦強直（Decerebrate posturing）得幾分",ans:"M2（伸展反應）"},
+      {pts:500,clue:"GCS ≤ 8的臨床意義及護理人員應採取的緊急措施",ans:"嚴重腦損傷；建議氣管插管保護呼吸道"},
+    ]},
+    { name:"腦中風", color:"#c4b5fd", qs:[
+      {pts:100,clue:"腦中風辨識口訣FAST的四個字母代表的症狀",ans:"F臉歪、A手臂無力、S說話困難、T時間（立即就醫）"},
+      {pts:200,clue:"缺血性腦中風靜脈溶栓（rt-PA/Alteplase）治療的時間窗",ans:"發病後4.5小時內"},
+      {pts:300,clue:"左腦（優勢半球）中風最常見的語言障礙類型",ans:"失語症（Aphasia）"},
+      {pts:400,clue:"半側忽視（Hemineglect）最常見於哪側腦部損傷，護理策略為何",ans:"右腦損傷；從患側接近病人、將環境刺激放置患側"},
+      {pts:500,clue:"缺血性與出血性腦中風的急性期CT影像主要差異",ans:"缺血性：早期正常（6–24小時後低密度）；出血性：立即見高密度白色血塊"},
+    ]},
+    { name:"癲癇護理", color:"#7c3aed", qs:[
+      {pts:100,clue:"癲癇發作時護理師首要的三項安全護理措施",ans:"保護頭部、移除危險物品、勿約束肢體、勿放物品入口腔"},
+      {pts:200,clue:"癲癇持續狀態（Status Epilepticus）的定義",ans:"單次發作>5分鐘，或連續兩次發作中間未完全恢復意識"},
+      {pts:300,clue:"癲癇持續狀態的首選藥物及給藥途徑",ans:"Lorazepam（或Diazepam）靜脈注射（IV）"},
+      {pts:400,clue:"長期服用Phenytoin（苯妥英）最常見的口腔副作用及護理重點",ans:"牙齦增生（Gingival hyperplasia）；加強口腔清潔"},
+      {pts:500,clue:"癲癇發作後的昏睡期正式名稱及護理措施",ans:"發作後期（Postictal phase）；採側臥位保護呼吸道，留守病人側"},
+    ]},
+    { name:"頭部損傷", color:"#6d28d9", qs:[
+      {pts:100,clue:"硬膜外血腫（Epidural hematoma）最典型的三段式臨床表現模式",ans:"短暫失去意識→清醒期（Lucid interval）→再度惡化"},
+      {pts:200,clue:"顱內壓升高（ICP>20 mmHg）的三聯徵（Cushing's triad）",ans:"高血壓、心跳過緩、呼吸不規則"},
+      {pts:300,clue:"降低顱內壓的緊急藥物及給藥方式",ans:"20% Mannitol（甘露醇）快速靜脈滴注（15–20分鐘）"},
+      {pts:400,clue:"顱底骨折的兩個特徵性視覺外觀徵象",ans:"浣熊眼（Raccoon eyes）、Battle's sign（耳後乳突瘀斑）"},
+      {pts:500,clue:"腦疝（Brain herniation）末期除Cheyne-Stokes外最終的呼吸模式",ans:"共濟失調呼吸（Ataxic/Biot's breathing）→呼吸停止"},
+    ]},
+    { name:"帕金森氏症", color:"#8b5cf6", qs:[
+      {pts:100,clue:"帕金森氏症的三大主要運動症狀（Cardinal features）",ans:"靜止性震顫、肌肉強直（Rigidity）、動作遲緩（Bradykinesia）"},
+      {pts:200,clue:"帕金森氏症步態的四大特徵",ans:"小碎步、慌張步態（Festination）、前傾姿勢、手臂擺動減少"},
+      {pts:300,clue:"長期使用Levodopa的三大運動波動副作用",ans:"劑末現象（Wearing-off）、開關現象（On-off）、異動症（Dyskinesia）"},
+      {pts:400,clue:"帕金森氏症飲食護理中，為何Levodopa不應與高蛋白質食物同服",ans:"蛋白質競爭同一腸道轉運蛋白，降低L-dopa吸收率"},
+      {pts:500,clue:"帕金森氏症晚期最常見的死亡原因",ans:"吸入性肺炎（吞嚥困難所致）"},
+    ]},
+    { name:"脊髓損傷", color:"#5b21b6", qs:[
+      {pts:100,clue:"脊髓損傷後24–48小時內可能發生的急性暫時性功能喪失，稱為",ans:"脊髓休克（Spinal shock）"},
+      {pts:200,clue:"自律神經反射異常（Autonomic dysreflexia）最常見的觸發因素及首要護理措施",ans:"膀胱脹滿或直腸阻塞；立即解除誘因、讓病人坐起（降血壓）"},
+      {pts:300,clue:"頸髓損傷C4以上完全損傷病人最需要的呼吸維生支持",ans:"機械通氣（膈肌癱瘓，呼吸中樞以下連結中斷）"},
+      {pts:400,clue:"脊髓損傷病人壓傷的五個高危險區域",ans:"尾骨、坐骨結節、大轉子、外踝、足跟"},
+      {pts:500,clue:"ASIA損傷分級量表A級與B級的關鍵差異",ans:"A=完全損傷（S4–5無感覺無運動）；B=不完全（S4–5有感覺但無運動）"},
+    ]},
+  ]
+},
+{
+  id:4, title:"安全保護", en:"Safety & Protection",
+  color:"#10b981", bg:"rgba(16,185,129,.15)",
+  categories:[
+    { name:"感染預防", color:"#10b981", qs:[
+      {pts:100,clue:"感染鏈的六個環節",ans:"病原體、感染窩（源）、出口、傳播途徑、入口、易感宿主"},
+      {pts:200,clue:"WHO手部衛生五大時機（Five Moments）",ans:"接觸病人前、無菌操作前、接觸體液後、接觸病人後、接觸病人環境後"},
+      {pts:300,clue:"CLABSI預防「集束護理」（Bundle）的五大要素",ans:"手部衛生、最大無菌屏障、氯己定消毒皮膚、最佳插管位置、每日評估撤除必要性"},
+      {pts:400,clue:"VAP（呼吸器相關肺炎）預防集束護理的四項主要措施",ans:"床頭抬高30–45度、每日鎮靜中斷評估、每日評估撤管、口腔氯己定護理"},
+      {pts:500,clue:"感染管制中「去定殖（Decolonization）」治療MRSA鼻咽帶菌的用藥",ans:"莫匹羅星（Mupirocin）鼻腔軟膏 + 氯己定（CHG）沐浴"},
+    ]},
+    { name:"隔離措施", color:"#34d399", qs:[
+      {pts:100,clue:"飛沫傳播隔離（Droplet Precautions）需穿戴的防護裝備",ans:"外科口罩、手套、必要時護目鏡"},
+      {pts:200,clue:"空氣傳播隔離（Airborne Precautions）的三大代表疾病（3M）",ans:"麻疹（Measles）、水痘（Varicella）、肺結核（MTB）"},
+      {pts:300,clue:"接觸傳播隔離的病房要求及入室最低PPE",ans:"單人房（或相同病原隔離）；手套＋隔離衣"},
+      {pts:400,clue:"MDRO（多重抗藥性菌）中，MRSA的全名及主要感染控制措施",ans:"甲氧西林抗藥性金黃色葡萄球菌；接觸隔離＋去定殖"},
+      {pts:500,clue:"正確脫除隔離衣的四步驟順序",ans:"解開腰帶→解開領扣→脫袖（由外翻轉內側）→投入廢棄桶→手部衛生"},
+    ]},
+    { name:"自體免疫", color:"#6ee7b7", qs:[
+      {pts:100,clue:"SLE面部蝴蝶斑（Malar rash）的形態特徵",ans:"橫跨鼻梁的蝴蝶形紅斑，不累及鼻唇溝"},
+      {pts:200,clue:"類風濕性關節炎（RA）晨僵的定義（持續時間），作為診斷意義",ans:"關節僵硬持續>1小時；為RA的特徵性症狀"},
+      {pts:300,clue:"狼瘡性腎炎（SLE腎臟侵犯）的早期監測指標",ans:"尿蛋白（24小時>500 mg）、血尿、血清肌酐酸升高"},
+      {pts:400,clue:"長期使用類固醇的五大副作用",ans:"向心性肥胖、骨質疏鬆、高血糖、感染風險升高、消化道潰瘍"},
+      {pts:500,clue:"類風濕性關節炎的X光典型破壞徵象（兩項）",ans:"骨侵蝕（Erosion）、關節間隙狹窄（Joint space narrowing）"},
+    ]},
+    { name:"HIV/AIDS", color:"#059669", qs:[
+      {pts:100,clue:"HIV感染進展為AIDS的CD4計數診斷標準",ans:"CD4 < 200 cells/μL，或出現AIDS定義性疾病"},
+      {pts:200,clue:"HIV陽性孕婦預防母嬰垂直感染的最重要措施",ans:"孕期持續抗病毒治療（ART），使病毒量降至檢測不到（Undetectable）"},
+      {pts:300,clue:"AIDS病人最常見的機會性感染",ans:"肺囊蟲肺炎（PCP, Pneumocystis jirovecii pneumonia）"},
+      {pts:400,clue:"HIV暴露後預防（PEP）的用藥開始時限及療程",ans:"暴露後72小時內開始；連續服用28天"},
+      {pts:500,clue:"第四代HIV篩查（抗原抗體複合）檢測的視窗期及意義",ans:"約14–21天；可偵測P24抗原，早於第三代抗體檢測"},
+    ]},
+    { name:"器官移植", color:"#047857", qs:[
+      {pts:100,clue:"器官移植後三大排斥反應類型中，發生最快的",ans:"超急性排斥（發生於數分鐘至數小時內）"},
+      {pts:200,clue:"慢性排斥的病理特徵及好發時間",ans:"纖維化、閉塞性血管炎；術後數月至數年"},
+      {pts:300,clue:"腎臟移植後急性排斥的四項早期臨床徵象",ans:"移植腎區疼痛/壓痛、發燒、血清肌酐酸升高、尿量減少"},
+      {pts:400,clue:"移植物抗宿主疾病（GvHD）與一般排斥反應的本質差異",ans:"GvHD：供體T細胞攻擊宿主組織（見於骨髓移植）；排斥：宿主免疫攻擊移植物"},
+      {pts:500,clue:"移植病人使用Cyclosporine（環孢素）的三項主要副作用",ans:"腎毒性、高血壓、多毛症（Hirsutism）及牙齦增生"},
+    ]},
+    { name:"院內感染", color:"#065f46", qs:[
+      {pts:100,clue:"醫療照護相關感染（HAI）中，排名第一的感染類型",ans:"泌尿道感染（UTI），尤其是CAUTI"},
+      {pts:200,clue:"正確外科手術洗手（Surgical scrub）的時間及清洗範圍",ans:"至少3–5分鐘；手指尖至肘關節上方6–8公分"},
+      {pts:300,clue:"艱難梭菌（C. difficile）環境消毒必須使用的消毒劑，及酒精無效原因",ans:"含氯漂白水（次氯酸鈉）；酒精無法殺滅C. diff孢子"},
+      {pts:400,clue:"安全注射（Safe injection）的三大核心原則",ans:"一針一管一病人、不重複使用注射器、避免多劑量藥瓶污染"},
+      {pts:500,clue:"醫院感染率（HAI rate）計算公式",ans:"感染率 = 感染病例數 ÷ 同期危險人口數 × 1000（或100）"},
+    ]},
+  ]
+},
+{
+  id:5, title:"腫瘤全人照護", en:"Oncology Care",
+  color:"#e879f9", bg:"rgba(232,121,249,.15)",
+  categories:[
+    { name:"TNM分期", color:"#e879f9", qs:[
+      {pts:100,clue:"TNM分期系統中T、N、M各代表的意義",ans:"T=腫瘤大小/侵犯程度、N=淋巴結轉移、M=遠端轉移"},
+      {pts:200,clue:"M0與M1在臨床預後上的意義差異",ans:"M0=無遠端轉移；M1=有遠端轉移（通常為IV期）"},
+      {pts:300,clue:"原位癌（Carcinoma in situ）在TNM中的表示方式",ans:"Tis（Tumor in situ）"},
+      {pts:400,clue:"前哨淋巴結切片（Sentinel lymph node biopsy）的臨床意義",ans:"判斷是否有區域淋巴轉移；陰性可免除全腋下淋巴廓清"},
+      {pts:500,clue:"乳癌分子分型中，三陰性乳癌（TNBC）的定義及預後特點",ans:"ER、PR、HER2均陰性；預後較差，缺乏靶向治療標的"},
+    ]},
+    { name:"化療副作用", color:"#d946ef", qs:[
+      {pts:100,clue:"化療骨髓抑制造成的三大血球減少症",ans:"嗜中性白血球減少症、貧血、血小板減少症"},
+      {pts:200,clue:"發燒性嗜中性白血球減少症（FN）的定義",ans:"ANC<500/μL（或<1000且預期降至<500）且體溫>38.3°C或>38°C超過1小時"},
+      {pts:300,clue:"化療藥物外漲（Extravasation）的三個立即護理步驟",ans:"立即停止輸液→回抽藥物→注射解毒劑（Vesicant藥物需抗毒劑）"},
+      {pts:400,clue:"WHO黏膜炎（Mucositis）分級：Grade 3的臨床表現",ans:"僅能進流質、嚴重疼痛、影響進食功能"},
+      {pts:500,clue:"化療誘發周邊神經病變（CIPN）最常見於哪兩類藥物及症狀表現",ans:"紫杉醇（Taxanes）、奧沙利鉑（Oxaliplatin）；手套長襪感覺、麻木刺痛"},
+    ]},
+    { name:"放射治療", color:"#a21caf", qs:[
+      {pts:100,clue:"放射治療急性皮膚反應中，「濕性脫皮（Moist desquamation）」屬於第幾級",ans:"Grade 3"},
+      {pts:200,clue:"放射治療照射皮膚護理的「三不原則」",ans:"不塗非指定藥膏、不用刺激性清潔劑、不曝曬陽光"},
+      {pts:300,clue:"放射線引起口腔乾燥症（Xerostomia）的機制及護理",ans:"腮腺放射損傷→唾液腺分泌減少；增加飲水、人工唾液、口腔護理"},
+      {pts:400,clue:"立體定向放射外科（SBRS/伽瑪刀）與傳統放療的主要差異",ans:"精準定位、少次大劑量（1–5次）；傳統為多次小劑量（25–35次）"},
+      {pts:500,clue:"放射工作人員防護的ALARA原則三要素",ans:"時間（Time）最短化、距離（Distance）最大化、屏蔽（Shielding）最完善"},
+    ]},
+    { name:"標靶免疫", color:"#86198f", qs:[
+      {pts:100,clue:"免疫檢查點抑制劑（ICI）中PD-1/PD-L1抑制劑的作用機制",ans:"阻斷PD-1/PD-L1抑制訊號，解除腫瘤對T細胞的免疫逃脫"},
+      {pts:200,clue:"免疫相關不良事件（irAE）最常見的兩個受影響器官",ans:"皮膚（皮疹、白斑）、結腸（免疫性腸炎/腹瀉）"},
+      {pts:300,clue:"Trastuzumab（赫賽汀）的適用條件及主要心臟毒性",ans:"HER2陽性乳癌；心肌病變（需監測LVEF）"},
+      {pts:400,clue:"EGFR抑制劑（如Erlotinib）最特徵性的皮膚副作用及護理",ans:"痤瘡樣皮疹（Acneiform rash）；保濕、避免刺激、外用抗生素"},
+      {pts:500,clue:"CAR-T細胞治療最嚴重的急性副作用及早期監測徵象",ans:"細胞激素釋放症候群（CRS）；監測發燒、低血壓、低氧血症"},
+    ]},
+    { name:"安寧緩和", color:"#701a75", qs:[
+      {pts:100,clue:"WHO癌症疼痛治療三階梯的第一階梯藥物類型",ans:"非鴉片類止痛藥（NSAIDs、乙醯氨基酚）"},
+      {pts:200,clue:"Cicely Saunders提出的「Total Pain（全面疼痛）」四個面向",ans:"身體疼痛、心理痛苦、社會困擾、靈性苦痛"},
+      {pts:300,clue:"嗎啡（Morphine）用於癌症疼痛時必須預防性處理的主要副作用",ans:"便秘（腸蠕動抑制，必須同時給予通便劑預防）"},
+      {pts:400,clue:"安寧緩和「緩和鎮靜（Palliative sedation）」的適應症",ans:"頑固性症狀且所有治療無效（如難治性疼痛/呼吸困難），臨終前"},
+      {pts:500,clue:"臨終「死亡嘎嘎聲（Death rattle）」的機制及護理措施",ans:"分泌物積聚咽喉無力清除；側臥、口腔護理、止涎藥、家屬心理支持"},
+    ]},
+    { name:"腫瘤評估", color:"#4a044e", qs:[
+      {pts:100,clue:"ECOG體能狀態量表中，「可自理但無法工作」屬於第幾分",ans:"PS 2（2分）"},
+      {pts:200,clue:"脊髓壓迫（SCC）最早且最常見的警示症狀",ans:"背痛（Back pain）"},
+      {pts:300,clue:"腫瘤溶解症候群（TLS）的四大電解質/代謝異常",ans:"高鉀血症、高磷血症、高尿酸血症、低鈣血症"},
+      {pts:400,clue:"上腔靜脈症候群（SVCS）的三大臨床症狀",ans:"顏面頸部水腫、頸靜脈怒張、呼吸困難"},
+      {pts:500,clue:"化療後骨髓抑制「Nadir（最低點）」通常出現的時間及護理意義",ans:"化療後7–14天（依藥物不同）；感染風險最高，嚴格監測血球與感染徵象"},
+    ]},
+  ]
+},
+{
+  id:6, title:"家庭文化照護", en:"Family & Cultural Care",
+  color:"#f97316", bg:"rgba(249,115,22,.15)",
+  categories:[
+    { name:"家庭評估", color:"#f97316", qs:[
+      {pts:100,clue:"家系圖（Genogram）中，方形和圓形各代表什麼",ans:"方形=男性；圓形=女性"},
+      {pts:200,clue:"家庭APGAR量表的五個評估面向（縮寫含義）",ans:"Adaptation適應、Partnership合作、Growth成長、Affection情感、Resolve解決"},
+      {pts:300,clue:"生態圖（Ecomap）與家系圖（Genogram）的主要差異",ans:"家系圖=家庭內部三代結構；生態圖=家庭與外部社區系統的關係"},
+      {pts:400,clue:"Zarit照顧者負荷量表評分≥40分的臨床意義",ans:"中度以上照顧者負荷；需提供支持性介入"},
+      {pts:500,clue:"家庭危機介入ABC-X模型中X代表的意義",ans:"X=危機/崩潰（事件＋資源與感受之間的落差所導致的危機狀態）"},
+    ]},
+    { name:"跨文化護理", color:"#fb923c", qs:[
+      {pts:100,clue:"Leininger文化照護理論的全名",ans:"文化照護多樣性與普遍性理論（Culture Care Diversity and Universality Theory）"},
+      {pts:200,clue:"Kleinman文化評估第一個問題的內容（詢問方向）",ans:"「您認為是什麼造成您的疾病？」（探索病因的文化解釋）"},
+      {pts:300,clue:"穆斯林病人在齋戒月（Ramadan）期間的藥物給藥調整原則",ans:"白天禁食禁飲，盡量調整口服藥至日落後服用；評估電解質"},
+      {pts:400,clue:"台灣原住民族病人的文化安全護理（Cultural safety）三個核心原則",ans:"尊重文化認同、避免文化強加、建立信任關係"},
+      {pts:500,clue:"Campinha-Bacote文化能力模式的五個發展層次",ans:"文化意識、文化知識、文化技能、文化相遇、文化渴望（Desire）"},
+    ]},
+    { name:"失智照護", color:"#ea580c", qs:[
+      {pts:100,clue:"MMSE（簡易智能評估）最高分及輕度失智的分數範圍",ans:"最高30分；輕度失智21–26分"},
+      {pts:200,clue:"失智症三大核心認知症狀（BPSD以外）",ans:"記憶障礙、定向感喪失、執行功能下降"},
+      {pts:300,clue:"「驗證療法（Validation therapy）」在失智照護中的核心原則",ans:"接受並驗證病人的感受與認知現實，不糾正錯誤"},
+      {pts:400,clue:"失智病人走失（Elopement）的三項預防措施",ans:"門禁系統、防走失手環/GPS、活動式曲徑環境設計"},
+      {pts:500,clue:"失智症精神行為症狀（BPSD）護理DICE模式的四個步驟",ans:"描述（Describe）→調查（Investigate）→創造（Create）→評估（Evaluate）"},
+    ]},
+    { name:"照顧者支持", color:"#c2410c", qs:[
+      {pts:100,clue:"主要照顧者最常出現的兩大身體症狀",ans:"疲勞（Fatigue）、睡眠障礙（Insomnia）"},
+      {pts:200,clue:"台灣喘息服務（Respite care）的目的及三種提供方式",ans:"讓照顧者暫時休息；日間照顧、短期住宿、居家喘息服務"},
+      {pts:300,clue:"護理師評估照顧者負荷的三個面向",ans:"身體負荷、心理/情緒負荷、社會/經濟負荷"},
+      {pts:400,clue:"照顧者「憐憫疲憊（Compassion fatigue）」的三個特徵",ans:"次級創傷應激、情感麻木、喪失同理能力"},
+      {pts:500,clue:"家庭照顧者支持計畫的四項主要服務內容",ans:"喘息服務、照顧技巧訓練、心理諮詢/支持團體、財務法律諮詢"},
+    ]},
+    { name:"長照制度", color:"#9a3412", qs:[
+      {pts:100,clue:"台灣長照2.0的服務對象四大族群",ans:"65歲以上老人、50歲以上原住民、任何年齡失能者、55–64歲山地原住民"},
+      {pts:200,clue:"長照2.0「四包錢」補助的四個項目",ans:"照顧及專業服務、交通接送、輔具購買/租借、居家無障礙環境改善"},
+      {pts:300,clue:"長照服務A-B-C三級體系分別代表的服務型態",ans:"A=社區整合型（旗艦店）、B=複合型（專賣店）、C=巷弄型（柑仔店）"},
+      {pts:400,clue:"ADL（日常生活活動）量表涵蓋的六個基本項目",ans:"進食、梳洗、如廁、洗澡、穿衣、行走/移位"},
+      {pts:500,clue:"照顧管理專員（Care manager）的三大主要職責",ans:"評估失能程度、擬定照顧計畫、整合跨專業資源並追蹤評值"},
+    ]},
+    { name:"老年護理", color:"#7c2d12", qs:[
+      {pts:100,clue:"老年病人「5I症候群」的五個I",ans:"Instability跌倒、Incontinence失禁、Intellectual impairment認知障礙、Immobility不動、Iatrogenic醫源性"},
+      {pts:200,clue:"譫妄（Delirium）與失智症（Dementia）的最大鑑別特徵",ans:"發作時間：譫妄=急性（小時至天）；失智=慢性漸進（月至年）"},
+      {pts:300,clue:"老年病人跌倒風險評估的常用工具名稱",ans:"Morse跌倒量表（Morse Fall Scale）"},
+      {pts:400,clue:"多重用藥（Polypharmacy）的定義及三大風險",ans:"同時服用≥5種藥物；藥物交互作用、副作用累積、依從性降低"},
+      {pts:500,clue:"Fried衰弱表型（Frailty phenotype）的五項標準及診斷門檻",ans:"體重下降、疲憊感、肌力下降、步速下降、低活動量；≥3項=衰弱"},
+    ]},
+  ]
+},
+{
+  id:7, title:"靈性照護", en:"Spiritual Care",
+  color:"#818cf8", bg:"rgba(129,140,248,.15)",
+  categories:[
+    { name:"靈性評估", color:"#818cf8", qs:[
+      {pts:100,clue:"FICA靈性評估工具的四個字母各代表的含義",ans:"F信仰（Faith）、I重要性（Importance）、C社群（Community）、A照護指引（Address）"},
+      {pts:200,clue:"HOPE靈性評估工具中，H代表什麼",ans:"H=希望與意義的來源（Sources of Hope, meaning, comfort）"},
+      {pts:300,clue:"靈性困擾（Spiritual distress）的三個主要表現",ans:"意義/目的喪失、與超越性存在的連結斷裂、對生命價值的質疑"},
+      {pts:400,clue:"根據JCAHO要求，靈性評估應在什麼時候進行",ans:"入院時常規進行初步靈性評估（Spiritual screening）"},
+      {pts:500,clue:"靈性健康（Spiritual wellbeing）與宗教信仰的本質關聯",ans:"靈性是更廣泛的概念；宗教是靈性的一種表達；可有靈性而無特定宗教"},
+    ]},
+    { name:"宗教照護", color:"#6366f1", qs:[
+      {pts:100,clue:"天主教臨終前最重要的宗教禮儀名稱",ans:"臨終傅油禮（Anointing of the Sick）"},
+      {pts:200,clue:"佛教臨終護理中，護理師協助「助念」期間的注意事項",ans:"保持環境安靜、避免移動遺體（識神未散）、協助家屬念佛"},
+      {pts:300,clue:"伊斯蘭教（穆斯林）臨終後遺體護理的三項特殊規定",ans:"同性別清洗遺體（Ghusl）、白布裹覆（Kafan）、24小時內盡早安葬"},
+      {pts:400,clue:"耶和華見證人因宗教拒絕輸血時，護理師的倫理處置原則",ans:"尊重自主原則（知情拒絕）、詳細記錄、協助安排無血手術方案"},
+      {pts:500,clue:"台灣基督教/天主教最強調的臨終靈性安撫儀式",ans:"臨終認罪禱告（Confession/Reconciliation）與聖餐禮（Viaticum）"},
+    ]},
+    { name:"臨終護理", color:"#4f46e5", qs:[
+      {pts:100,clue:"臨終病人「死前視見（Nearing death awareness）」的三種常見表現",ans:"描述看見已故親人、談論旅行準備、訴說美麗的地方或光"},
+      {pts:200,clue:"臨終前數天出現的三項生理症狀",ans:"意識模糊、少尿/無尿、四肢發涼發紺、下頜鬆弛、Cheyne-Stokes呼吸"},
+      {pts:300,clue:"護理師告知家屬「聽覺是最後消失的感覺」的臨床護理意義",ans:"鼓勵家屬在病人意識模糊時仍持續對話、表達愛與道別"},
+      {pts:400,clue:"死後遺體護理（Postmortem care）的最佳執行時間窗口及原因",ans:"死亡後立即至1–2小時內（防止屍僵影響姿勢擺正）"},
+      {pts:500,clue:"臨終「死亡嘎嘎聲（Death rattle）」對家屬的心理影響及護理師的回應",ans:"家屬常感恐慌；護理師解釋為正常臨終現象，非痛苦表現，給予陪伴與安慰"},
+    ]},
+    { name:"四道人生", color:"#3730a3", qs:[
+      {pts:100,clue:"「四道人生」概念在台灣的推動先驅（護理/安寧界學者）",ans:"趙可式教授（台灣安寧療護推動者）"},
+      {pts:200,clue:"「四道」指哪四個對話主題",ans:"道謝、道愛、道歉、道別"},
+      {pts:300,clue:"護理師引導無法言語病人完成「道別」的三種替代方式",ans:"書寫代筆、錄音/錄影、繪畫或手語表達"},
+      {pts:400,clue:"「道歉」對臨終病人靈性安適的核心意義",ans:"解除未竟事宜（Unfinished business）、促進關係和解、減少靈性苦痛"},
+      {pts:500,clue:"四道人生對應的NANDA護理診斷（兩個）",ans:"靈性困擾（Spiritual distress）、死亡焦慮（Death anxiety）"},
+    ]},
+    { name:"護理師支持", color:"#1e1b4b", qs:[
+      {pts:100,clue:"護理師長期照顧臨終病人可能出現的職業傷害，學術名稱",ans:"憐憫疲憊（Compassion fatigue）"},
+      {pts:200,clue:"預防護理師職業耗竭（Burnout）的三項個人策略",ans:"正念練習、設定工作邊界、尋求督導/同儕支持"},
+      {pts:300,clue:"「臨床督導（Clinical supervision）」在靈性照護中的主要功能",ans:"提供情緒支持、反思工作壓力、強化靈性自我覺察"},
+      {pts:400,clue:"護理師靈性自我照護（Spiritual self-care）的四項實踐內容",ans:"自我反思、培養意義感、建立支持系統、維持工作生活平衡"},
+      {pts:500,clue:"死亡後反思（Mortality review/Death debriefing）對護理團隊的五個意義",ans:"處理悲傷、反思照護品質、增進臨終照護能力、強化團隊凝聚力、預防PTSD"},
+    ]},
+    { name:"靈性概念", color:"#312e81", qs:[
+      {pts:100,clue:"靈性照護（Spiritual care）的核心定義要素",ans:"協助個案尋找生命意義、目的、與超越性的連結"},
+      {pts:200,clue:"意義治療（Logotherapy）的創始人及核心主張",ans:"Viktor Frankl；即使在苦難中也能找到生命意義"},
+      {pts:300,clue:"馬斯洛需求層次理論中，靈性需求屬於哪個層次",ans:"自我實現（Self-actualization）及超越性（Transcendence）需求"},
+      {pts:400,clue:"「靈性困擾（Spiritual distress）」與「靈性掙扎（Spiritual struggle）」的差異",ans:"困擾=已造成功能障礙；掙扎=仍在探索，可轉化為成長的機會"},
+      {pts:500,clue:"NANDA護理診斷「靈性困擾」的兩個主要定義特徵",ans:"質疑生命意義/目的、表達對神聖存在的憤怒或感覺被神靈遺棄"},
+    ]},
+  ]
+},
+{
+  id:8, title:"心理照護", en:"Psychological Care",
+  color:"#f472b6", bg:"rgba(244,114,182,.15)",
+  categories:[
+    { name:"壓力因應", color:"#f472b6", qs:[
+      {pts:100,clue:"Lazarus壓力因應模式的兩個評估階段名稱",ans:"初級評估（Primary appraisal，威脅程度）、次級評估（Secondary appraisal，因應資源）"},
+      {pts:200,clue:"問題焦點因應與情緒焦點因應的本質差異",ans:"問題焦點：改變壓力源；情緒焦點：管理因壓力引起的情緒反應"},
+      {pts:300,clue:"Selye一般適應症候群（GAS）的三個階段",ans:"警覺（Alarm）→抵抗（Resistance）→耗竭（Exhaustion）"},
+      {pts:400,clue:"「認知重構（Cognitive reframing）」的護理應用步驟",ans:"識別扭曲思維→挑戰不合理信念→以更現實積極的視角重新評估"},
+      {pts:500,clue:"促進病人心理彈性（Resilience）的三項護理策略",ans:"建立社會支持網絡、增強自我效能感、培養問題解決能力"},
+    ]},
+    { name:"焦慮護理", color:"#ec4899", qs:[
+      {pts:100,clue:"Peplau焦慮四級中，第III級（嚴重焦慮）的主要特徵",ans:"感知野縮窄至單一細節、肌肉張力增加、過度換氣、難以集中注意力"},
+      {pts:200,clue:"廣泛性焦慮症（GAD）的核心症狀定義",ans:"對多種日常事物持續過度擔憂，持續≥6個月"},
+      {pts:300,clue:"護理師協助急性焦慮發作的首要非藥物措施（三項）",ans:"保持冷靜陪伴、溫和語調引導腹式呼吸、減少環境刺激"},
+      {pts:400,clue:"苯二氮平類藥物（Benzodiazepines）使用的三項護理注意事項",ans:"成癮性、老年人慎用（跌倒風險）、勿突然停藥"},
+      {pts:500,clue:"焦慮認知行為療法（CBT）的三大核心技術",ans:"暴露療法（Exposure）、認知重構（Cognitive restructuring）、放鬆訓練（Relaxation）"},
+    ]},
+    { name:"自殺防護", color:"#db2777", qs:[
+      {pts:100,clue:"自殺風險評估縮寫IS PATH WARM中，IS各代表什麼",ans:"I=理念/想法（Ideation）、S=物質濫用（Substance abuse）"},
+      {pts:200,clue:"Columbia自殺嚴重度評估量表（C-SSRS）的兩個主要評估面向",ans:"自殺意念（Ideation）強度與自殺行為（Behavior）"},
+      {pts:300,clue:"實證不支持的自殺防護措施，及應使用的替代工具",ans:"不傷害契約（No Harm Contract）；應改用安全計畫（Safety Planning）"},
+      {pts:400,clue:"自殺安全計畫（Safety planning）的六個步驟",ans:"辨識預警徵兆→內部因應→社會分心→聯繫可信任者→聯繫專業資源→致命方式限制"},
+      {pts:500,clue:"照顧自殺嘗試後存活者（Attempt survivors）的四項護理重點",ans:"非評判態度、評估動機與當下風險、轉介心理健康服務、家庭支持介入"},
+    ]},
+    { name:"危機介入", color:"#be185d", qs:[
+      {pts:100,clue:"Roberts七階段危機介入模型的第一個步驟",ans:"危機評估（Assessment），包括安全評估"},
+      {pts:200,clue:"危機（Crisis）的定義中，最核心的缺失",ans:"個人的因應（Coping）能力不足以應對當前挑戰"},
+      {pts:300,clue:"心理急救（PFA）的三個基本行動（縮寫3L）",ans:"看（Look/觀察需求）、聆聽（Listen/陪伴傾聽）、連結（Link/連結資源）"},
+      {pts:400,clue:"創傷後壓力症候群（PTSD）的四大核心症狀群",ans:"再體驗（Intrusion）、逃避（Avoidance）、認知情緒負向改變、過度警覺（Hyperarousal）"},
+      {pts:500,clue:"危機介入的「時間限制原則」及危機被視為機會的原因",ans:"短期4–6週；危機打破原有平衡，可促進個體學習新的因應策略及成長"},
+    ]},
+    { name:"評估工具", color:"#9d174d", qs:[
+      {pts:100,clue:"PHQ-9憂鬱篩查量表總分≥10分代表的程度",ans:"中度憂鬱（Moderate depression）"},
+      {pts:200,clue:"Hamilton焦慮量表（HAM-A）總分>17分的焦慮程度",ans:"中度焦慮"},
+      {pts:300,clue:"動機式晤談（Motivational Interviewing）的OARS四項技術",ans:"O=開放式問題、A=肯定（Affirmation）、R=反映式傾聽、S=摘要"},
+      {pts:400,clue:"改變階段模式（Transtheoretical Model）的五個階段",ans:"前思考→思考→準備→行動→維持（Precontemplation→Contemplation→Preparation→Action→Maintenance）"},
+      {pts:500,clue:"「SAD PERSONS量表」用於評估何種風險及S代表的風險因子",ans:"自殺風險評估；S=性別（Sex；男性風險較高）"},
+    ]},
+    { name:"身體意象", color:"#831843", qs:[
+      {pts:100,clue:"身體意象（Body image）的定義",ans:"個人對自己身體外觀的主觀感知、思想與情感評價"},
+      {pts:200,clue:"術後（乳房切除/造口）病人最常見的四種身體意象困擾表現",ans:"迴避照鏡子、拒絕觸摸傷口、社交退縮、性關係障礙"},
+      {pts:300,clue:"護理師協助身體意象改變病人的三項治療性溝通技巧",ans:"積極傾聽、開放式提問、正常化情緒反應（避免評判語言）"},
+      {pts:400,clue:"厭食症（Anorexia nervosa）診斷標準中BMI的臨界值",ans:"BMI < 17.5 kg/m²（或預期體重的85%以下）"},
+      {pts:500,clue:"「鏡像暴露療法（Mirror exposure therapy）」治療身體意象障礙的心理機制",ans:"反覆暴露於鏡中自我影像，逐漸降低對身體的負面感知，減少迴避行為"},
+    ]},
+  ]
+},
+];
+
+// ═══════════════════════════════════════════════
+// CONSTANTS & CONFIG
+// ═══════════════════════════════════════════════
+const TC=['#2dd4bf','#f5c842','#f472b6','#818cf8','#f97316','#10b981'];
+const UP=new URLSearchParams(window.location.search);
+const ROLE=(UP.get('role')||'host').toLowerCase();
+const P_UNIT=Math.max(0,Math.min(7,parseInt(UP.get('unit')||'0')));
+const P_GAME=UP.get('game')||'bingo';
+const P_SEED=parseInt(UP.get('seed')||String(Math.floor(Math.random()*99999)));
+const LS='NURSEGAME_';
+
+// ═══════════════════════════════════════════════
+// ROSTER & TEAM STATE
+// ═══════════════════════════════════════════════
+let ROSTER=[];   // [{semester,id,name,group,nickname}]
+let TEAMS=[];    // [{name,score,color,members:[]}]
+let INDV={};     // {id:{name,nickname,group,score,correct,wrong}}
+let HISTORY=[];  // [{ts,game,unit,teamSnap,indvSnap}]
+let PEEK_SEC=3;  // 翻翻樂預覽秒數
+let QUIZ_RANK_ORDER=[]; // team indices sorted by quiz score
+
+function lsSave(key,val){try{localStorage.setItem(LS+key,JSON.stringify(val));}catch(e){}}
+function lsLoad(key,def){try{const v=localStorage.getItem(LS+key);return v?JSON.parse(v):def;}catch(e){return def;}}
+
+function initRoster(){
+  ROSTER=lsLoad('roster',[]);
+  HISTORY=lsLoad('history',[]);
+  buildTeamsFromRoster();
+}
+
+function buildTeamsFromRoster(){
+  if(!ROSTER.length){
+    TEAMS=[
+      {name:'第一組',score:0,color:TC[0],members:[]},
+      {name:'第二組',score:0,color:TC[1],members:[]},
+      {name:'第三組',score:0,color:TC[2],members:[]},
+      {name:'第四組',score:0,color:TC[3],members:[]},
+    ];
+  } else {
+    const grpMap={};
+    ROSTER.forEach(s=>{
+      const g=s.group||'未分組';
+      if(!grpMap[g]) grpMap[g]={name:g,score:0,color:TC[Object.keys(grpMap).length%6],members:[]};
+      grpMap[g].members.push(s);
+    });
+    TEAMS=Object.values(grpMap);
+  }
+  INDV={};
+  ROSTER.forEach(s=>{INDV[s.id]={name:s.name,nickname:s.nickname||s.name,group:s.group,score:0,correct:0,wrong:0};});
+}
+
+function parseCSV(text){
+  const lines=text.replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(Boolean);
+  const students=[];
+  lines.slice(1).forEach(line=>{
+    const cols=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));
+    if(cols.length<3) return;
+    let semester,id,name,group,nickname;
+    if(cols.length>=5){[semester,id,name,group,nickname]=cols;}
+    else if(cols.length===4){[semester,id,name,group]=cols;nickname=name;}
+    else{[id,name,group]=cols;semester='1142';nickname=name;}
+    if(!id||!name) return;
+    students.push({semester:semester||'1142',id,name,group:group||'未分組',nickname:nickname||name});
+  });
+  return students;
+}
+
+function importRoster(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const text=e.target.result||'';
+    ROSTER=parseCSV(text);
+    lsSave('roster',ROSTER);
+    buildTeamsFromRoster();
+    renderRosterTable();
+    renderRankingPanel();
+    toast(`✓ 匯入 ${ROSTER.length} 位學生，${TEAMS.length} 組`,'ok');
+  };
+  reader.readAsText(file,'utf-8');
+}
+
+function addScore(teamIdx, pts, isTeam=true, studentId=null, correct=true){
+  if(isTeam && TEAMS[teamIdx]){
+    TEAMS[teamIdx].score+=pts;
+  }
+  if(studentId && INDV[studentId]){
+    INDV[studentId].score+=pts;
+    if(correct) INDV[studentId].correct++;
+    else INDV[studentId].wrong++;
+  }
+  renderRankingPanel();
+  renderAllScoreBars();
+}
+
+function saveUnitResult(game, unitName){
+  const snap={
+    ts:new Date().toISOString(),
+    game, unit:unitName,
+    teams:TEAMS.map(t=>({name:t.name,score:t.score})),
+    individuals:Object.entries(INDV).map(([id,v])=>({id,...v}))
+  };
+  HISTORY.push(snap);
+  lsSave('history',HISTORY);
+}
+
+function exportXLSX(){
+  if(typeof XLSX==='undefined'){toast('XLSX 庫未載入','ng');return;}
+  const wb=XLSX.utils.book_new();
+  // Sheet 1: 團體排名
+  const teamData=[['組別','總分','成員數'],...TEAMS.map(t=>[t.name,t.score,t.members.length])];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(teamData),'團體排名');
+  // Sheet 2: 個人排名
+  const indvArr=Object.entries(INDV).map(([id,v])=>[id,v.name,v.nickname,v.group,v.score,v.correct,v.wrong]);
+  indvArr.sort((a,b)=>b[4]-a[4]);
+  const indvData=[['學號','姓名','暱稱','組別','個人分數','答對','答錯'],...indvArr];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(indvData),'個人排名');
+  // Sheet 3+: 每單元紀錄
+  HISTORY.forEach((h,i)=>{
+    const rows=[['時間','遊戲','單元'],[h.ts,h.game,h.unit],[''],['組別','分數'],...h.teams.map(t=>[t.name,t.score]),[''],['學號','姓名','暱稱','組別','分數','答對','答錯'],...h.individuals.map(v=>[v.id,v.name,v.nickname,v.group,v.score,v.correct,v.wrong])];
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),`紀錄${i+1}`);
+  });
+  XLSX.writeFile(wb,'護理遊戲成績_'+new Date().toLocaleDateString('zh-TW').replace(/\//g,'')+'.xlsx');
+  toast('✓ XLSX 已匯出','ok');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN SYSTEM
+// ═══════════════════════════════════════════════
+const G={game:null,unit:0,mode:'group',tc:4,diff:12,timer:20};
+
+function showSc(id){
+  document.querySelectorAll('.sc').forEach(s=>{s.classList.remove('on');s.classList.remove('active');});
+  const el=document.getElementById(id);
+  if(el) el.classList.add('on');
+}
+
+function goLobby(){
+  clearInterval(_memInt);clearInterval(_qInt);clearInterval(_sqInt);
+  if(ROLE==='student'){showSc('s-slob');return;}
+  showSc('s-lobby');
+}
+
+function restartGame(){
+  closeWin();
+  if(G.game==='bingo') startBingo();
+  else if(G.game==='memory') startMem();
+  else if(G.game==='quiz') startQuiz();
+  else if(G.game==='jeopardy') startJeopardy();
+}
+
+// ═══════════════════════════════════════════════
+// LOBBY INIT
+// ═══════════════════════════════════════════════
+function initLobby(){
+  const ug=document.getElementById('ugrid');
+  if(!ug) return;
+  ug.innerHTML=QUIZ_UNITS.map((u,i)=>`
+    <div class="ubtn ${i===0?'on':''}" style="--uc:${u.color}" onclick="pickUnit(${i})">
+      <div class="un" style="color:${u.color}">Unit 0${u.id}</div>
+      <div class="ut">${u.title}</div>
+    </div>`).join('');
+  const tc=document.getElementById('tcrow');
+  if(tc) tc.innerHTML=[2,3,4,5,6].map(n=>`
+    <button class="tcbtn ${n===4?'on':''}" onclick="pickTC(${n})">${n}</button>`).join('');
+  updateTeamDisplay();
+}
+
+function pickGame(g){
+  G.game=g;
+  document.getElementById('swrap').style.display='flex';
+  document.getElementById('stitle').textContent=
+    g==='bingo'?'🎱 賓果設定':g==='memory'?'🃏 翻翻樂設定':g==='quiz'?'⚡ 速問快答設定':'📺 Jeopardy設定';
+  document.getElementById('drow').style.display=g==='memory'?'':'none';
+  document.getElementById('trow').style.display=g==='quiz'?'':'none';
+  document.getElementById('peekrow').style.display=g==='memory'?'':'none';
+  document.getElementById('mrow').style.display=(g==='bingo'||g==='jeopardy')?'none':'';
+  document.getElementById('tcrow-wrap').style.display=G.mode==='solo'?'none':'';
+  document.getElementById('swrap').scrollIntoView({behavior:'smooth'});
+}
+
+function pickUnit(i){G.unit=i;document.querySelectorAll('.ubtn').forEach((b,j)=>b.classList.toggle('on',j===i));}
+function pickMode(m){G.mode=m;document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('on',b.textContent.includes(m==='group'?'小組':'個人')));document.getElementById('tcrow-wrap').style.display=m==='solo'?'none':'';}
+function pickTC(n){G.tc=n;document.querySelectorAll('.tcbtn').forEach(b=>b.classList.toggle('on',+b.textContent===n));}
+function pickDiff(n){G.diff=n;document.querySelectorAll('.dbtn[data-d]').forEach(b=>b.classList.toggle('on',+b.dataset.d===n));}
+function pickTimer(n){G.timer=n;document.querySelectorAll('.dbtn[data-t]').forEach(b=>b.classList.toggle('on',+b.dataset.t===n));}
+function setPeek(n){PEEK_SEC=n;document.getElementById('peekVal').textContent=n+'秒';}
+
+function updateTeamDisplay(){
+  const el=document.getElementById('teamPreview');
+  if(!el) return;
+  if(!TEAMS.length){
+    el.innerHTML='<span style="color:var(--dim);font-size:12px">尚未匯入 — 將使用預設組別名稱</span>';
+    return;
+  }
+  el.innerHTML=TEAMS.map(t=>`
+    <span style="display:inline-flex;align-items:center;gap:4px;margin:2px 4px 2px 0;padding:3px 9px;border-radius:100px;border:1px solid ${t.color}44;background:${t.color}12;color:${t.color};font-size:11px;font-weight:700">
+      ${t.name} <span style="opacity:.6;font-size:10px">(${t.members.length}人)</span>
+    </span>`).join('');
+}
+
+function buildGameTeams(){
+  const n=G.mode==='solo'?1:Math.min(G.tc,TEAMS.length||G.tc);
+  if(TEAMS.length){
+    // Use imported team names, reset scores
+    TEAMS.slice(0,n).forEach(t=>t.score=0);
+    if(TEAMS.length<n){
+      for(let i=TEAMS.length;i<n;i++) TEAMS.push({name:`第${['一','二','三','四','五','六'][i]}組`,score:0,color:TC[i],members:[]});
+    }
+  } else {
+    TEAMS=Array.from({length:n},(_,i)=>({name:G.mode==='solo'?'我的成績':`第${['一','二','三','四','五','六'][i]}組`,score:0,color:TC[i],members:[]}));
+  }
+}
+
+function startGame(){
+  buildGameTeams();
+  if(G.game==='bingo') startBingo();
+  else if(G.game==='memory') startMem();
+  else if(G.game==='quiz') startQuiz();
+  else if(G.game==='jeopardy') startJeopardy();
+  if(ROLE==='host') addQRBtn(G.game,G.unit);
+}
+
+// ═══════════════════════════════════════════════
+// NICKNAME SYSTEM
+// ═══════════════════════════════════════════════
+let MY_NICK = '';
+let MY_ID   = 'S_'+Date.now().toString(36);
+let _rsTab  = 0;
+
+function checkNickname(){
+  const saved = lsLoad('my_nick', null);
+  if(saved){ MY_NICK = saved.nick; MY_ID = saved.id||MY_ID; return; }
+  if(ROLE==='student'){
+    document.getElementById('nickOverlay').classList.add('on');
+    document.getElementById('nickInput').focus();
+  }
+}
+
+function submitNick(){
+  const val = document.getElementById('nickInput').value.trim();
+  if(!val){ toast('請輸入暱稱','ng'); return; }
+  MY_NICK = val;
+  lsSave('my_nick',{nick:val,id:MY_ID});
+  document.getElementById('nickOverlay').classList.remove('on');
+  document.getElementById('nickTag').textContent='暱稱：'+val;
+  document.getElementById('nickTag').style.display='';
+  // Push to firebase if connected
+  fbPush('students/'+MY_ID, {nick:MY_NICK,id:MY_ID,score:0,group:''});
+  toast('✓ 歡迎，'+MY_NICK+'！','ok');
+}
+
+// ═══════════════════════════════════════════════
+// SCORE BAR & RANKING SIDEBAR
+// ═══════════════════════════════════════════════
+let _activeTurn = -1;
+
+function renderSbar(id, active=-1){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const n = G.mode==='solo' ? 1 : Math.min(G.tc, TEAMS.length);
+  const maxScore = Math.max(...TEAMS.slice(0,n).map(t=>t.score), 1);
+  el.innerHTML = TEAMS.slice(0,n).map((t,i)=>`
+    <div class="tchip ${i===active?'hi':''}" style="--tc:${t.color};border-color:${t.color};background:${i===active?t.color+'30':'rgba(255,255,255,.04)'}">
+      <span class="tn">${t.name}</span>
+      <span class="ts">${t.score}</span>
+    </div>`).join('');
+}
+
+function renderAllScoreBars(){
+  ['b-sbar','m-sbar','q-sbar','j-sbar'].forEach(id=>renderSbar(id,_activeTurn));
+  renderRankSidebar();
+}
+
+function toggleRank(){
+  document.getElementById('rsidebar').classList.toggle('open');
+}
+
+function switchRsTab(n){
+  _rsTab = n;
+  document.querySelectorAll('.rs-tab').forEach((t,i)=>t.classList.toggle('on',i===n));
+  renderRankSidebar();
+}
+
+function renderRankSidebar(){
+  const body = document.getElementById('rsBody');
+  if(!body) return;
+  if(_rsTab===0) body.innerHTML = renderTeamRank();
+  else if(_rsTab===1) body.innerHTML = renderIndvRank();
+  else body.innerHTML = renderHistSidebar();
+}
+
+function renderTeamRank(){
+  const sorted = [...TEAMS].filter(t=>t.score!==undefined).sort((a,b)=>b.score-a.score);
+  const max = Math.max(...sorted.map(t=>t.score), 1);
+  const medals = ['🥇','🥈','🥉'];
+  let h = '<div class="rs-section"><div class="rs-label">團體排名</div>';
+  h += sorted.map((t,i)=>`
+    <div class="rs-row">
+      <div class="rs-bar" style="width:${Math.round(t.score/max*100)}%;background:${t.color}18"></div>
+      <span class="rs-medal">${medals[i]||''}</span>
+      <span class="rs-pos" style="color:${t.color}">${i+1}</span>
+      <span class="rs-name" style="color:${t.color}">${t.name}</span>
+      <span class="rs-pts" style="color:${t.color}">${t.score}</span>
+    </div>`).join('');
+  return h + '</div>';
+}
+
+function renderIndvRank(){
+  const arr = Object.entries(INDV).map(([id,v])=>({id,...v})).sort((a,b)=>b.score-a.score);
+  if(!arr.length){
+    // Also check firebase students
+    const fbArr = Object.values(_fbStudents||{}).sort((a,b)=>b.score-a.score);
+    if(fbArr.length) return renderFbIndv(fbArr);
+    return '<div style="color:var(--dim);font-size:12px;padding:12px">請匯入名單後顯示個人排名，或學生由手機登入後自動出現。</div>';
+  }
+  const max = Math.max(...arr.map(v=>v.score), 1);
+  const medals = ['🥇','🥈','🥉'];
+  let h = '<div class="rs-section"><div class="rs-label">個人排名（暱稱）</div>';
+  h += arr.slice(0,20).map((v,i)=>`
+    <div class="rs-row">
+      <div class="rs-bar" style="width:${Math.round(v.score/max*100)}%;background:rgba(45,212,191,.12)"></div>
+      <span class="rs-medal">${medals[i]||''}</span>
+      <span class="rs-pos">${i+1}</span>
+      <span class="rs-name">${v.nickname||v.name}</span>
+      <span class="rs-pts" style="color:var(--teal)">${v.score}</span>
+    </div>`).join('');
+  return h + '</div>';
+}
+
+function renderFbIndv(arr){
+  const max = Math.max(...arr.map(v=>v.score), 1);
+  const medals = ['🥇','🥈','🥉'];
+  let h = '<div class="rs-section"><div class="rs-label">⚡ 即時個人排名</div>';
+  h += arr.slice(0,20).map((v,i)=>`
+    <div class="rs-row">
+      <div class="rs-bar" style="width:${Math.round(v.score/max*100)}%;background:rgba(255,160,0,.12)"></div>
+      <span class="rs-medal">${medals[i]||''}</span>
+      <span class="rs-pos">${i+1}</span>
+      <span class="rs-name">${v.nick||v.name||v.id}</span>
+      <span class="rs-pts" style="color:#ffa500">${v.score}</span>
+    </div>`).join('');
+  return h + '</div>';
+}
+
+function renderHistSidebar(){
+  if(!HISTORY.length) return '<div style="color:var(--dim);font-size:12px;padding:12px">尚無單元紀錄</div>';
+  return HISTORY.slice().reverse().slice(0,5).map(h=>`
+    <div style="background:rgba(255,255,255,.03);border-radius:8px;padding:9px;margin-bottom:7px;border:1px solid var(--br)">
+      <div style="font-size:11px;color:var(--gold);font-weight:700">${h.game} · ${h.unit}</div>
+      <div style="font-size:10px;color:var(--dim);margin:3px 0">${new Date(h.ts).toLocaleString('zh-TW')}</div>
+      ${h.teams.map(t=>`<span style="font-size:10px;color:${TEAMS.find(x=>x.name===t.name)?.color||'#fff'};margin-right:6px">${t.name}: ${t.score}</span>`).join('')}
+    </div>`).join('');
+}
+
+function renderRankingPanel(){
+  // legacy — now delegate to sidebar
+  renderRankSidebar();
+}
+
+// ═══════════════════════════════════════════════
+// BINGO
+// ═══════════════════════════════════════════════
+function startBingo(){
+  const u=QUIZ_UNITS[G.unit];
+  const b={pool:shuffle([...u.items]),called:[],calledIdx:0,
+    cards:TEAMS.slice(0,G.tc).map(()=>genCard(u.items)),
+    marked:TEAMS.slice(0,G.tc).map(()=>{const m=new Array(25).fill(false);m[12]=true;return m;})};
+  window._BINGO=b;
+  setBadge('b-ubadge',u);renderSbar('b-sbar');
+  document.getElementById('cnum').textContent='—';
+  document.getElementById('cclue').textContent='按「抽題」開始';
+  document.getElementById('cans').classList.remove('on');
+  document.getElementById('ccount').textContent='已抽 0 題';
+  document.getElementById('cnt').textContent='0';
+  document.getElementById('citems').innerHTML='';
+  document.getElementById('drawbtn').disabled=false;
+  document.getElementById('ansbtn').style.display='none';
+  renderBCards();showSc('s-bingo');
+}
+
+function genCard(pool){const s=shuffle([...pool]).slice(0,24);s.splice(12,0,{t:'FREE★',c:''});return s;}
+
+function renderBCards(){
+  const b=window._BINGO;const n=Math.min(G.tc,TEAMS.length);
+  document.getElementById('ctabs').innerHTML=TEAMS.slice(0,n).map((t,i)=>`
+    <button class="ctab ${i===0?'on':''}" onclick="switchBTab(${i})" style="${i===0?'border-color:'+t.color+';color:'+t.color+';background:'+t.color+'20':''}">${t.name}</button>`).join('');
+  document.getElementById('ccards').innerHTML=TEAMS.slice(0,n).map((t,i)=>`
+    <div class="bwrap ${i===0?'on':''}" id="bw${i}">
+      <div class="blbl">${t.name}</div>
+      <div class="bhrow">${['B','I','N','G','O'].map(l=>`<div class="bhr">${l}</div>`).join('')}</div>
+      <div class="bgrid" id="bg${i}">
+        ${b.cards[i].map((item,idx)=>`
+          <div class="btile ${idx===12?'fr':''} ${b.marked[i][idx]?'mk':''}" onclick="markTile(${i},${idx})"
+            style="${b.marked[i][idx]&&idx!==12?'background:'+t.color+'28;border-color:'+t.color+';color:'+t.color+';':''}">${item.t}</div>`).join('')}
+      </div>
+      <button class="bbtn" id="bb${i}" style="border-color:${t.color};color:${t.color};background:${t.color}18" onclick="annBingo(${i})">🎉 宣告 BINGO！</button>
+    </div>`).join('');
+}
+
+function switchBTab(ti){
+  document.querySelectorAll('.bwrap').forEach((el,i)=>el.classList.toggle('on',i===ti));
+  document.querySelectorAll('.ctab').forEach((el,i)=>{const t=TEAMS[i];el.classList.toggle('on',i===ti);el.style.borderColor=i===ti?t.color:'rgba(255,255,255,.08)';el.style.color=i===ti?t.color:'';el.style.background=i===ti?t.color+'20':'';});
+}
+
+function draw(){
+  const b=window._BINGO;
+  if(b.calledIdx>=b.pool.length){toast('所有題目都抽完了！','');return;}
+  const item=b.pool[b.calledIdx++];b.called.push(item);
+  document.getElementById('cnum').textContent='#'+b.calledIdx;
+  document.getElementById('cclue').textContent=item.c;
+  document.getElementById('cans').textContent='答案：'+item.t;
+  document.getElementById('cans').classList.remove('on');
+  document.getElementById('ccount').textContent='已抽 '+b.calledIdx+' 題';
+  document.getElementById('cnt').textContent=b.calledIdx;
+  document.getElementById('ansbtn').style.display='';document.getElementById('ansbtn').textContent='👁 顯示答案';
+  const li=document.createElement('div');li.className='citem';li.innerHTML=`<b>${item.t}</b>${item.c.slice(0,22)}…`;
+  document.getElementById('citems').prepend(li);
+  if(b.calledIdx>=b.pool.length) document.getElementById('drawbtn').disabled=true;
+}
+
+function toggleAns(){const el=document.getElementById('cans');const s=el.classList.toggle('on');document.getElementById('ansbtn').textContent=s?'🙈 隱藏答案':'👁 顯示答案';}
+
+function markTile(ti,idx){
+  const b=window._BINGO;if(idx===12||!b.called.length) return;
+  b.marked[ti][idx]=!b.marked[ti][idx];
+  const tile=document.querySelector(`#bg${ti} .btile:nth-child(${idx+1})`);
+  const t=TEAMS[ti];
+  if(tile){tile.classList.toggle('mk',b.marked[ti][idx]);tile.style.background=b.marked[ti][idx]?t.color+'28':'';tile.style.borderColor=b.marked[ti][idx]?t.color:'';tile.style.color=b.marked[ti][idx]?t.color:'';}
+  document.getElementById('bb'+ti).style.display=chkBingo(b.marked[ti])?'':'none';
+}
+
+function chkBingo(m){
+  for(let r=0;r<5;r++) if([0,1,2,3,4].every(c=>m[r*5+c])) return true;
+  for(let c=0;c<5;c++) if([0,1,2,3,4].every(r=>m[r*5+c])) return true;
+  return [0,6,12,18,24].every(i=>m[i])||[4,8,12,16,20].every(i=>m[i]);
+}
+
+function annBingo(ti){
+  TEAMS[ti].score+=50;renderAllScoreBars();renderRankingPanel();
+  document.getElementById('bb'+ti).style.display='none';
+  showWin('🎉','BINGO！',TEAMS[ti].name+' 達成五連線！\n+50 分！','');
+}
+
+// ═══════════════════════════════════════════════
+// MEMORY FLIP (with peek time)
+// ═══════════════════════════════════════════════
+let _memInt=null;
+
+function startMem(){
+  clearInterval(_memInt);
+  const u=QUIZ_UNITS[G.unit];
+  const pairs=G.diff/2;
+  const cols=G.diff===12?4:G.diff===20?5:6;
+  const rows=G.diff===12?3:G.diff===20?4:5;
+  const sel=shuffle([...u.items]).slice(0,pairs);
+  const cards=shuffle(sel.flatMap(it=>[{type:'tr',text:it.t,match:it.t},{type:'df',text:it.c,match:it.t}]));
+  window._MEM={cards,cols,rows,flipped:[],matched:[],lock:false,turnIdx:0,start:Date.now(),peeking:false};
+  setBadge('m-ubadge',u);renderSbar('m-sbar',G.mode==='group'?0:-1);
+  document.getElementById('mmatch').textContent='0';document.getElementById('mrem').textContent=String(pairs);
+  document.getElementById('mtimewrap').style.display=G.mode==='solo'?'':'none';
+  document.getElementById('mturnwrap').style.display=G.mode==='group'?'':'none';
+  if(G.mode==='solo'){_memInt=setInterval(()=>{const el=Math.floor((Date.now()-window._MEM.start)/1000);document.getElementById('mtime').textContent=fmt(el);},1000);}
+  else{updateMemTurn();}
+  renderMemGrid(cols,rows,pairs);
+  // Auto-peek for PEEK_SEC seconds
+  startPeek(pairs);
+  showSc('s-memory');
+}
+
+function startPeek(pairs){
+  const m=window._MEM;m.peeking=true;m.lock=true;
+  // Show all cards face-up for PEEK_SEC seconds
+  document.querySelectorAll('#mgrid .mcard').forEach(c=>c.classList.add('fl'));
+  document.getElementById('mpeekbar').style.display='';
+  document.getElementById('mpeekfill').style.transition='none';
+  document.getElementById('mpeekfill').style.width='100%';
+  setTimeout(()=>{
+    document.getElementById('mpeekfill').style.transition=`width ${PEEK_SEC}s linear`;
+    document.getElementById('mpeekfill').style.width='0%';
+  },80);
+  setTimeout(()=>{
+    document.querySelectorAll('#mgrid .mcard:not(.ok)').forEach(c=>c.classList.remove('fl'));
+    m.peeking=false;m.lock=false;
+    document.getElementById('mpeekbar').style.display='none';
+  },PEEK_SEC*1000+100);
+}
+
+function renderMemGrid(cols,rows,pairs){
+  const grid=document.getElementById('mgrid');
+  const h=Math.max(68,Math.min(110,Math.floor((window.innerHeight-240)/rows)));
+  grid.style.gridTemplateColumns=`repeat(${cols},1fr)`;
+  grid.style.gridTemplateRows=`repeat(${rows},${h}px)`;
+  grid.innerHTML=window._MEM.cards.map((c,i)=>`
+    <div class="mcard" id="mc${i}" onclick="flipCard(${i})">
+      <div class="minner">
+        <div class="mface"><span class="mface-ico">🏥</span></div>
+        <div class="mback ${c.type}">
+          <div class="mback-lbl">${c.type==='tr'?'術語':'定義'}</div>
+          <div class="mback-txt">${c.text}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function flipCard(i){
+  const m=window._MEM;
+  if(m.lock||m.peeking||m.flipped.includes(i)||m.matched.includes(i)) return;
+  m.flipped.push(i);document.getElementById('mc'+i).classList.add('fl');
+  if(m.flipped.length===2){m.lock=true;checkPair();}
+}
+
+function checkPair(){
+  const m=window._MEM;const[a,b]=m.flipped;
+  const ca=m.cards[a],cb=m.cards[b];
+  const ok=ca.match===cb.match&&ca.type!==cb.type;
+  if(ok){
+    m.matched.push(a,b);
+    const col=G.mode==='group'?TEAMS[m.turnIdx].color:TC[0];
+    [a,b].forEach(i=>{const el=document.getElementById('mc'+i);el.classList.add('ok');el.querySelector('.mback').style.borderColor=col;});
+    if(G.mode==='group'){TEAMS[m.turnIdx].score+=10;_activeTurn=m.turnIdx;renderAllScoreBars();renderRankingPanel();}
+    m.flipped=[];m.lock=false;
+    const done=m.matched.length/2,tot=m.cards.length/2;
+    document.getElementById('mmatch').textContent=done;document.getElementById('mrem').textContent=tot-done;
+    toast('✓ 配對成功！+10分','ok');
+    if(done===tot){clearInterval(_memInt);setTimeout(endMem,600);}
+  } else {
+    toast('✗ 不符合','ng');
+    setTimeout(()=>{m.flipped.forEach(i=>document.getElementById('mc'+i).classList.remove('fl'));m.flipped=[];m.lock=false;
+      if(G.mode==='group'){m.turnIdx=(m.turnIdx+1)%Math.min(G.tc,TEAMS.length);_activeTurn=m.turnIdx;updateMemTurn();renderAllScoreBars();}
+    },1100);
+  }
+}
+
+function updateMemTurn(){const t=TEAMS[window._MEM.turnIdx];document.getElementById('mturn').textContent=t.name;document.getElementById('mturn').style.color=t.color;}
+
+function endMem(){
+  saveUnitResult('翻翻樂',QUIZ_UNITS[G.unit].title);
+  if(G.mode==='solo'){const el=Math.floor((Date.now()-window._MEM.start)/1000);showWin('⏱','完成所有配對！','時間：'+fmt(el),fmt(el));}
+  else{const w=TEAMS.reduce((a,b)=>a.score>b.score?a:b);showWin('🎊','翻翻樂結束！',w.name+' 獲最高分！',w.score+'分');}
+  confetti();
+}
+
+// ═══════════════════════════════════════════════
+// QUICK QUIZ — answer THEN score
+// ═══════════════════════════════════════════════
+let _qInt=null,_qBuzzed=false,_qAnswerShown=false;
+
+function startQuiz(){
+  clearInterval(_qInt);
+  const u=QUIZ_UNITS[G.unit];
+  window._QUIZ={pool:shuffle([...u.items]),idx:0};
+  setBadge('q-ubadge',u);_activeTurn=-1;renderSbar('q-sbar');
+  renderBuzzRow();loadQ();showSc('s-quiz');
+}
+
+function renderBuzzRow(){
+  const n=Math.min(G.tc,TEAMS.length);
+  document.getElementById('qbrow').innerHTML=TEAMS.slice(0,n).map((t,i)=>`
+    <button class="qbbtn" style="color:${t.color};border-color:${t.color};background:${t.color}18" onclick="buzzIn(${i})">${t.name}<br><span style="font-size:11px;opacity:.7">搶答</span></button>`).join('');
+}
+
+function loadQ(){
+  clearInterval(_qInt);_qBuzzed=false;_qAnswerShown=false;
+  document.getElementById('qans').style.display='none';
+  document.getElementById('arow').style.display='none'; // hidden until answer shown
+  document.getElementById('qbrow').style.display='flex';
+  document.getElementById('qexpl').style.display='none';
+  document.querySelectorAll('.qbbtn').forEach(b=>{b.disabled=false;b.style.opacity='1';});
+  if(window._QUIZ.idx>=window._QUIZ.pool.length){endQuiz();return;}
+  const it=window._QUIZ.pool[window._QUIZ.idx];
+  document.getElementById('qnum').textContent=`Q ${window._QUIZ.idx+1} / ${window._QUIZ.pool.length}`;
+  document.getElementById('qtext').textContent=it.c;
+  document.getElementById('qans').textContent='答案：'+it.t;
+  document.getElementById('qtfill').style.transition='none';document.getElementById('qtfill').style.width='100%';
+  setTimeout(()=>{document.getElementById('qtfill').style.transition=`width ${G.timer}s linear`;document.getElementById('qtfill').style.width='0%';},50);
+  _qInt=setInterval(()=>{clearInterval(_qInt);timeUp();},G.timer*1000);
+}
+
+function buzzIn(ti){
+  if(_qBuzzed) return;
+  _qBuzzed=true;clearInterval(_qInt);
+  document.getElementById('qtfill').style.transition='none';
+  document.querySelectorAll('.qbbtn').forEach((b,i)=>{b.disabled=true;b.style.opacity=i===ti?'1':'.3';});
+  _activeTurn=ti;
+  toast('🔔 '+TEAMS[ti].name+' 搶答！','ok');
+  // Store who buzzed for scoring later
+  window._QUIZ.buzzedTeam=ti;
+  // Prompt teacher to reveal answer
+  document.getElementById('qrevbtn').style.display='';
+}
+
+function revealAns(){
+  _qAnswerShown=true;
+  document.getElementById('qans').style.display='block';
+  document.getElementById('qrevbtn').style.display='none';
+  // NOW show scoring buttons
+  if(_qBuzzed && window._QUIZ.buzzedTeam!==undefined){
+    const ti=window._QUIZ.buzzedTeam;
+    document.getElementById('arow').style.display='flex';
+    document.getElementById('arow').innerHTML=`
+      <div style="font-size:12px;color:var(--dim);width:100%;text-align:center;margin-bottom:4px">判斷 ${TEAMS[ti].name} 的答案：</div>
+      <button class="aw-ok" onclick="awardQ(${ti},true)">✓ 答對 +10</button>
+      <button class="aw-ng" onclick="awardQ(${ti},false)">✗ 答錯 −5</button>`;
+  }
+  // Show explanation button
+  const it=window._QUIZ.pool[window._QUIZ.idx];
+  if(it.expl){
+    document.getElementById('qexpl').style.display='block';
+    document.getElementById('qexpl').textContent='解析：'+it.expl;
+  }
+}
+
+function awardQ(ti,ok){
+  if(ok) TEAMS[ti].score+=10; else TEAMS[ti].score=Math.max(0,TEAMS[ti].score-5);
+  renderAllScoreBars();renderRankingPanel();
+  toast(ok?'✓ 答對 +10':'✗ 答錯 −5',ok?'ok':'ng');
+  document.getElementById('arow').style.display='none';
+}
+
+function timeUp(){toast('⏰ 時間到！','');if(!_qAnswerShown) revealAns();}
+
+function nextQ(){window._QUIZ.idx++;loadQ();}
+
+function endQuiz(){
+  // Record quiz rank order for 翻翻樂 peek bonus
+  QUIZ_RANK_ORDER=[...TEAMS].map((t,i)=>i).sort((a,b)=>TEAMS[b].score-TEAMS[a].score);
+  saveUnitResult('速問快答',QUIZ_UNITS[G.unit].title);
+  const w=TEAMS.reduce((a,b)=>a.score>b.score?a:b);
+  showWin('⚡','速問快答結束！',w.name+' 以 '+w.score+' 分獲勝！',w.score+'分');
+  confetti();
+}
+
+// ═══════════════════════════════════════════════
+// JEOPARDY
+// ═══════════════════════════════════════════════
+let _jUsed={},_jActiveTile=null,_jRevealedAns=false;
+
+function startJeopardy(){
+  _jUsed={};_jActiveTile=null;
+  const u=JEOP_UNITS[G.unit]||JEOP_UNITS[0];
+  setBadge('j-ubadge',u);renderSbar('j-sbar');
+  renderJBoard(u);showSc('s-jeopardy');
+}
+
+function renderJBoard(u){
+  const cats=u.categories;
+  const board=document.getElementById('jboard');
+  board.style.gridTemplateColumns=`repeat(${cats.length},1fr)`;
+  // Header row
+  let html=cats.map(c=>`<div class="jhead" style="border-bottom:3px solid ${c.color||u.color}">${c.name}</div>`).join('');
+  // Question rows (5 rows)
+  for(let qi=0;qi<5;qi++){
+    html+=cats.map((c,ci)=>{
+      const q=c.qs[qi];const key=`${G.unit}-${ci}-${qi}`;
+      return `<div class="jtile ${_jUsed[key]?'used':''}" onclick="openJTile(${ci},${qi})">${_jUsed[key]?'—':q.pts}</div>`;
+    }).join('');
+  }
+  board.innerHTML=html;
+}
+
+function openJTile(ci,qi){
+  const u=JEOP_UNITS[G.unit]||JEOP_UNITS[0];
+  const key=`${G.unit}-${ci}-${qi}`;
+  if(_jUsed[key]) return;
+  const cat=u.categories[ci];const q=cat.qs[qi];
+  _jActiveTile={ci,qi,key,pts:q.pts,ans:q.ans,clue:q.clue};
+  _jRevealedAns=false;
+  document.getElementById('jmodal').classList.add('on');
+  document.getElementById('jm-pts').textContent=q.pts+'分';
+  document.getElementById('jm-cat').textContent=cat.name;
+  document.getElementById('jm-clue').textContent=q.clue;
+  document.getElementById('jm-ans').textContent='答案：'+q.ans;
+  document.getElementById('jm-ans').style.display='none';
+  document.getElementById('jm-revbtn').style.display='';
+  document.getElementById('jarow').style.display='none';
+  document.getElementById('jm-arow').innerHTML='';
+  renderJBuzzBtns();
+}
+
+function renderJBuzzBtns(){
+  const n=Math.min(G.tc,TEAMS.length);
+  document.getElementById('jm-arow').innerHTML=TEAMS.slice(0,n).map((t,i)=>`
+    <button class="jbbtn" style="border-color:${t.color};color:${t.color}" onclick="jBuzz(${i})">${t.name} 答對 +${_jActiveTile.pts}</button>
+    <button class="jbbtn-ng" style="border-color:${t.color}" onclick="jBuzzNg(${i})">${t.name} 答錯 −${Math.floor(_jActiveTile.pts/2)}</button>`).join('');
+}
+
+function revealJAns(){
+  _jRevealedAns=true;
+  document.getElementById('jm-ans').style.display='block';
+  document.getElementById('jm-revbtn').style.display='none';
+  document.getElementById('jarow').style.display='block';
+}
+
+function jBuzz(ti){
+  if(!_jRevealedAns){toast('請先公布答案','ng');return;}
+  TEAMS[ti].score+=_jActiveTile.pts;
+  renderAllScoreBars();renderRankingPanel();
+  _jUsed[_jActiveTile.key]=true;
+  toast(TEAMS[ti].name+' +'+_jActiveTile.pts,'ok');
+  closeJModal();
+}
+function jBuzzNg(ti){
+  if(!_jRevealedAns){toast('請先公布答案','ng');return;}
+  const ded=Math.floor(_jActiveTile.pts/2);
+  TEAMS[ti].score=Math.max(0,TEAMS[ti].score-ded);
+  renderAllScoreBars();renderRankingPanel();
+  toast(TEAMS[ti].name+' −'+ded,'ng');
+  // Don't close - allow another team to answer
+}
+function skipJTile(){_jUsed[_jActiveTile.key]=true;closeJModal();}
+function closeJModal(){
+  document.getElementById('jmodal').classList.remove('on');
+  const u=JEOP_UNITS[G.unit]||JEOP_UNITS[0];renderJBoard(u);
+}
+
+// ═══════════════════════════════════════════════
+// QR & STUDENT LINK
+// ═══════════════════════════════════════════════
+function buildStudentUrl(game,unit,seed){
+  const base=window.location.origin+window.location.pathname;
+  return `${base}?role=student&game=${game}&unit=${unit}&seed=${seed||Math.floor(Math.random()*99999)}`;
+}
+
+function showQR(game,unit){
+  const url=buildStudentUrl(game,unit,Math.floor(Math.random()*99999));
+  const u=QUIZ_UNITS[unit];
+  const gn={'bingo':'賓果','memory':'翻翻樂','quiz':'速問快答','jeopardy':'Jeopardy'}[game]||game;
+  document.getElementById('qrsub').innerHTML=`<b style="color:var(--gold)">Unit 0${u.id} ${u.title} · ${gn}</b><br>學生掃碼或複製連結`;
+  document.getElementById('qrurl').textContent=url;
+  const box=document.getElementById('qrbox');box.innerHTML='';
+  if(window.QRCode) new QRCode(box,{text:url,width:200,height:200,colorDark:'#080c1a',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.M});
+  else box.innerHTML='<p style="padding:16px;color:var(--dim);font-size:12px">請複製下方連結</p>';
+  document.getElementById('qro').classList.add('on');
+}
+function closeQR(){document.getElementById('qro').classList.remove('on');}
+function copyQR(){const url=document.getElementById('qrurl').textContent;if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast('✓ 連結已複製','ok'));else{const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('✓ 已複製','ok');}}
+
+function addQRBtn(game,unit){
+  const navId='nav-'+game;const nav=document.getElementById(navId);
+  if(!nav||nav.querySelector('.qr-btn')) return;
+  const btn=document.createElement('button');btn.className='qr-btn';btn.textContent='📱 學生QR';btn.onclick=()=>showQR(game,unit);
+  const badge=document.createElement('div');badge.className='rbadge host';badge.textContent='老師主控';
+  nav.appendChild(btn);nav.appendChild(badge);
+}
+
+// ═══════════════════════════════════════════════
+// STUDENT SCREENS
+// ═══════════════════════════════════════════════
+function initStudent(){
+  checkNickname();
+  const u=QUIZ_UNITS[P_UNIT];
+  document.getElementById('swelcome').textContent=`單元：${u.title}`;
+  document.getElementById('sgbtns').innerHTML=[
+    {id:'bingo',ico:'🎱',name:'賓果遊戲',col:'#2dd4bf'},
+    {id:'quiz',ico:'⚡',name:'速問快答',col:'#f472b6'},
+    {id:'memory',ico:'🃏',name:'翻翻樂',col:'#f5c842'},
+  ].map(g=>`<button class="sgbtn" onclick="launchS('${g.id}')" style="border-color:${g.col}"><span style="font-size:24px">${g.ico}</span><div style="font-size:14px;font-weight:700">${g.name}</div></button>`).join('');
+  if(P_GAME&&P_GAME!=='lobby') setTimeout(()=>launchS(P_GAME),350);
+}
+
+function launchS(g){
+  if(g==='bingo') startSBingo();
+  else if(g==='quiz') startSQuiz();
+  else startSMem();
+}
+
+// Student Bingo
+const SB={card:[],marked:[]};
+function rng(seed){let s=seed&0x7fffffff;return()=>{s=(s*9301+49297)%233280;return s/233280;};}
+function startSBingo(){
+  const u=QUIZ_UNITS[P_UNIT];const r=rng(P_SEED);
+  const pool=[...u.items].sort(()=>r()-.5).slice(0,24);pool.splice(12,0,{t:'FREE★',c:''});
+  SB.card=pool;SB.marked=new Array(25).fill(false);SB.marked[12]=true;
+  renderSBGrid();showSc('s-sbingo');
+}
+function renderSBGrid(){
+  const col=QUIZ_UNITS[P_UNIT].color;
+  document.getElementById('sbgrid').innerHTML=SB.card.map((it,i)=>{
+    const isF=i===12,isM=SB.marked[i]&&!isF;
+    return `<div class="stile ${isF?'fr':''} ${isM?'mk':''}" onclick="tapST(${i})" style="${isM?`background:${col}25;border-color:${col};color:${col};`:''}">${it.t}</div>`;
+  }).join('');
+  document.getElementById('sbbtn').style.display=chkBingo(SB.marked)?'':'none';
+}
+function tapST(i){if(i===12) return;SB.marked[i]=!SB.marked[i];renderSBGrid();}
+function sBingo(){showWin('🎉','BINGO！','恭喜達成五連線！\n告訴老師宣告得分！','🏆');confetti();}
+
+// Student Quiz
+const SQ={pool:[],idx:0,int:null,done:false};
+let _sqInt=null;
+function startSQuiz(){
+  clearInterval(_sqInt);SQ.pool=shuffle([...QUIZ_UNITS[P_UNIT].items]);SQ.idx=0;
+  loadSQ();showSc('s-squiz');
+}
+function loadSQ(){
+  clearInterval(_sqInt);SQ.done=false;
+  const it=SQ.pool[SQ.idx%SQ.pool.length];
+  document.getElementById('sqnum').textContent=`Q ${SQ.idx+1}`;
+  document.getElementById('sqtext').textContent=it.c;
+  document.getElementById('sqstat').textContent='看到定義後搶答！';
+  document.getElementById('sqans').style.display='none'; // hidden until reveal
+  const btn=document.getElementById('sqbuzz');
+  btn.disabled=false;btn.style.opacity='1';btn.style.background='linear-gradient(135deg,var(--teal),#0891b2)';btn.style.color='#000';
+  document.getElementById('sqtfill').style.transition='none';document.getElementById('sqtfill').style.width='100%';
+  setTimeout(()=>{document.getElementById('sqtfill').style.transition='width 20s linear';document.getElementById('sqtfill').style.width='0%';},50);
+  let left=20;
+  _sqInt=setInterval(()=>{left--;if(left<=0){clearInterval(_sqInt);document.getElementById('sqstat').textContent=`⏰ 時間到！答案：${it.t}`;document.getElementById('sqans').style.display='block';btn.disabled=true;btn.style.opacity='.4';setTimeout(()=>{SQ.idx++;loadSQ();},3000);}},1000);
+}
+function sBuzz(){
+  if(SQ.done) return;clearInterval(_sqInt);SQ.done=true;
+  const it=SQ.pool[SQ.idx%SQ.pool.length];
+  const btn=document.getElementById('sqbuzz');
+  btn.disabled=true;btn.style.background='linear-gradient(135deg,#f5c842,#d97706)';btn.style.color='#000';
+  document.getElementById('sqstat').textContent='🔔 已搶答！等待老師公布答案…';
+  document.getElementById('sqtfill').style.transition='none';
+  toast('🔔 已搶答！','ok');
+  setTimeout(()=>{document.getElementById('sqans').textContent='答案：'+it.t;document.getElementById('sqans').style.display='block';},2000);
+  setTimeout(()=>{SQ.idx++;loadSQ();},4000);
+}
+
+// Student Memory
+const SM={cards:[],fl:[],ok:[],lock:false,int:null,start:0};
+let _smInt=null;
+function startSMem(){
+  clearInterval(_smInt);
+  const u=QUIZ_UNITS[P_UNIT];
+  const sel=shuffle([...u.items]).slice(0,6);
+  SM.cards=shuffle(sel.flatMap(it=>[{type:'tr',text:it.t,match:it.t},{type:'df',text:it.c,match:it.t}]));
+  SM.fl=[];SM.ok=[];SM.lock=false;SM.start=Date.now();
+  document.getElementById('smmatch').textContent='0';document.getElementById('smrem').textContent='6';
+  _smInt=setInterval(()=>{document.getElementById('smtime').textContent=fmt(Math.floor((Date.now()-SM.start)/1000));},1000);
+  renderSMGrid();showSc('s-smem');
+}
+function renderSMGrid(){
+  const g=document.getElementById('smgrid');
+  g.style.gridTemplateColumns='repeat(4,1fr)';g.style.gridTemplateRows='repeat(3,78px)';
+  g.innerHTML=SM.cards.map((c,i)=>`<div class="mcard" id="smc${i}" onclick="flipSM(${i})"><div class="minner"><div class="mface"><span class="mface-ico">🏥</span></div><div class="mback ${c.type}"><div class="mback-lbl">${c.type==='tr'?'術語':'定義'}</div><div class="mback-txt">${c.text}</div></div></div></div>`).join('');
+}
+function flipSM(i){if(SM.lock||SM.fl.includes(i)||SM.ok.includes(i)) return;SM.fl.push(i);document.getElementById('smc'+i).classList.add('fl');if(SM.fl.length===2){SM.lock=true;checkSMPair();}}
+function checkSMPair(){const[a,b]=SM.fl;const ca=SM.cards[a],cb=SM.cards[b];const hit=ca.match===cb.match&&ca.type!==cb.type;if(hit){SM.ok.push(a,b);const col=QUIZ_UNITS[P_UNIT].color;[a,b].forEach(i=>{const el=document.getElementById('smc'+i);el.classList.add('ok');el.querySelector('.mback').style.borderColor=col;});SM.fl=[];SM.lock=false;const done=SM.ok.length/2;document.getElementById('smmatch').textContent=done;document.getElementById('smrem').textContent=6-done;toast('✓ 配對成功！','ok');if(done===6){clearInterval(_smInt);const t=Math.floor((Date.now()-SM.start)/1000);setTimeout(()=>{showWin('⏱','完成！','時間：'+fmt(t),fmt(t));confetti();},500);}}else{toast('✗ 不符合','ng');setTimeout(()=>{SM.fl.forEach(i=>document.getElementById('smc'+i).classList.remove('fl'));SM.fl=[];SM.lock=false;},1100);}}
+
+// ═══════════════════════════════════════════════
+// ROSTER TABLE
+// ═══════════════════════════════════════════════
+function renderRosterTable(){
+  const tb=document.getElementById('rosterTable');
+  if(!tb) return;
+  if(!ROSTER.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--dim);padding:20px">尚未匯入名單</td></tr>';return;}
+  tb.innerHTML=ROSTER.map(s=>`
+    <tr>
+      <td>${s.semester}</td>
+      <td style="font-family:monospace">${s.id}</td>
+      <td>${s.name}</td>
+      <td><span style="color:${TEAMS.find(t=>t.name===s.group)?.color||'#fff'}">${s.group}</span></td>
+      <td>${s.nickname}</td>
+    </tr>`).join('');
+  document.getElementById('rosterCount').textContent=`${ROSTER.length} 位學生 / ${TEAMS.length} 組`;
+}
+
+// ═══════════════════════════════════════════════
+// WIN / CONFETTI / UTILS
+// ═══════════════════════════════════════════════
+function showWin(e,t,s,sc){
+  document.getElementById('wine').textContent=e;document.getElementById('wint').textContent=t;
+  document.getElementById('wins').textContent=s;document.getElementById('winsc').textContent=sc;
+  document.getElementById('wino').classList.add('on');
+}
+function closeWin(){document.getElementById('wino').classList.remove('on');}
+
+function confetti(){
+  const cv=document.getElementById('cc');const ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;cv.style.display='block';
+  const cols=['#f5c842','#2dd4bf','#f472b6','#818cf8','#f97316','#10b981'];
+  const P=Array.from({length:110},()=>({x:Math.random()*cv.width,y:-20,vx:(Math.random()-.5)*5,vy:Math.random()*4+2,col:cols[Math.floor(Math.random()*cols.length)],sz:Math.random()*9+4,rot:Math.random()*360,rs:(Math.random()-.5)*11,sh:Math.random()>.5}));
+  let fr;function run(){ctx.clearRect(0,0,cv.width,cv.height);let alive=false;P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.vy+=.08;if(p.y<cv.height+20)alive=true;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;if(p.sh){ctx.beginPath();ctx.arc(0,0,p.sz/2,0,Math.PI*2);ctx.fill();}else ctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz);ctx.restore();});if(alive)fr=requestAnimationFrame(run);else{cv.style.display='none';cancelAnimationFrame(fr);}}
+  run();setTimeout(()=>{cv.style.display='none';cancelAnimationFrame(fr);},5000);
+}
+
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function setBadge(id,u){const el=document.getElementById(id);if(!el)return;el.textContent='Unit 0'+u.id+' '+u.title;el.style.color=u.color;el.style.borderColor=u.color;}
+let _tt;
+function toast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='toast'+(type?' '+type:'');el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),2200);}
+
+
+// ═══════════════════════════════════════════════
+// FIREBASE OPTIONAL SYNC
+// ═══════════════════════════════════════════════
+let _fbRef = null;
+let _fbStudents = {};
+
+function connectFirebase(){
+  const url = document.getElementById('fbUrl').value.trim().replace(/\/$/,'');
+  if(!url){ toast('請填入 Firebase URL','ng'); return; }
+  lsSave('fb_url', url);
+  initFirebase(url);
+}
+
+function initFirebase(url){
+  if(!url) return;
+  _fbRef = url;
+  document.getElementById('fbBadge').style.display='';
+  document.getElementById('fbStatus').textContent='✓ 已連線';
+  // Poll every 3s for student scores (simple REST polling, no SDK needed)
+  setInterval(()=>{
+    fetch(_fbRef+'/students.json')
+      .then(r=>r.json())
+      .then(d=>{ if(d){ _fbStudents=d; renderRankSidebar(); }})
+      .catch(()=>{});
+  }, 3000);
+  // Listen for game state updates from teacher
+  if(ROLE==='student'){
+    setInterval(()=>{
+      fetch(_fbRef+'/gamestate.json')
+        .then(r=>r.json())
+        .then(d=>{ if(d&&d.question){ updateStudentQuestion(d); }})
+        .catch(()=>{});
+    }, 2000);
+  }
+  toast('⚡ Firebase 已連線','ok');
+}
+
+function fbPush(path, data){
+  if(!_fbRef) return;
+  fetch(_fbRef+'/'+path+'.json',{method:'PUT',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}})
+    .catch(()=>{});
+}
+
+function fbPushScore(nick, id, score, group){
+  fbPush('students/'+id, {nick, id, score, group, ts: Date.now()});
+}
+
+function updateStudentQuestion(d){
+  // Update student quiz question if teacher published it
+  if(d.question && document.getElementById('sqtext')){
+    document.getElementById('sqtext').textContent = d.question;
+    document.getElementById('sqnum').textContent = d.qnum||'';
+  }
+}
+
+// ── Init Firebase from saved URL ──
+const _savedFbUrl = lsLoad('fb_url', null);
+if(_savedFbUrl) setTimeout(()=>initFirebase(_savedFbUrl), 1000);
+
+// ═══════════════════════════════════════════════
+// HISTORY / SEMESTER EXPORT
+// ═══════════════════════════════════════════════
+function renderHistList(){
+  const el = document.getElementById('histList');
+  if(!el) return;
+  if(!HISTORY.length){
+    el.innerHTML = '<div style="color:var(--dim);font-size:13px;padding:12px 0">尚無單元成績紀錄。每次遊戲結束時自動儲存。</div>';
+    return;
+  }
+  const gameColors = {'賓果遊戲':'#2dd4bf','翻翻樂':'#f5c842','速問快答':'#f472b6','Jeopardy':'#818cf8'};
+  el.innerHTML = HISTORY.slice().reverse().map((h,idx)=>`
+    <div class="hist-entry">
+      <div class="hist-meta">
+        <span class="hist-game" style="background:${gameColors[h.game]||'#fff'}22;border:1px solid ${gameColors[h.game]||'#fff'}44;color:${gameColors[h.game]||'#fff'}">${h.game}</span>
+        <span class="hist-unit">${h.unit}</span>
+        <span class="hist-time">${new Date(h.ts).toLocaleString('zh-TW')}</span>
+      </div>
+      <div class="hist-teams">
+        ${h.teams.sort((a,b)=>b.score-a.score).map(t=>`<span class="hist-team" style="color:${TEAMS.find(x=>x.name===t.name)?.color||'#ccc'}">${t.name}: ${t.score}</span>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function showHistory(){
+  document.getElementById('histModal').classList.add('on');
+  renderHistList();
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  initRoster();
+  const ribbon=document.getElementById('ribbon');
+  ribbon.className='ribbon '+ROLE;
+
+  if(ROLE==='student'){
+    document.getElementById('s-lobby').classList.remove('on');
+    document.getElementById('s-lobby').style.display='none';
+    initStudent();showSc('s-slob');
+  } else {
+    document.getElementById('hbadge').style.display='';
+    initLobby();pickUnit(0);pickMode('group');pickTC(4);pickDiff(12);pickTimer(20);
+    renderRosterTable();renderRankSidebar();updateTeamDisplay();
+  }
+
+  document.getElementById('wino').addEventListener('click',e=>{if(e.target===e.currentTarget)closeWin();});
+  document.getElementById('qro').addEventListener('click',e=>{if(e.target===e.currentTarget)closeQR();});
+  document.getElementById('jmodal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeJModal();});
+});
+
+</script>
+</body>
+</html>

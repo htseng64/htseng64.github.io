@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>護理遊戲 — 學生入場</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --bg:#080c1a;--bg2:#0d1526;--bg3:#111d35;
+  --tx:#e2e8f0;--dim:#8892a8;--br:rgba(255,255,255,.08);
+  --gold:#f5c842;--teal:#2dd4bf;--pink:#f472b6;--purple:#818cf8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);}
+body{background-image:radial-gradient(ellipse at 20% 10%,rgba(245,200,66,.06),transparent 50%),radial-gradient(ellipse at 80% 90%,rgba(45,212,191,.06),transparent 50%);}
+
+/* SCREENS */
+.sc{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.sc.on{display:flex;}
+
+/* STEP INDICATOR */
+.steps{display:flex;gap:6px;margin-bottom:28px;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:.3s;}
+.step-dot.done{background:var(--teal);}
+.step-dot.active{background:var(--gold);width:24px;border-radius:4px;}
+
+/* CARD */
+.card{background:var(--bg2);border-radius:22px;padding:36px 28px;width:100%;max-width:400px;text-align:center;}
+.card-icon{font-size:52px;display:block;margin-bottom:14px;}
+.card h2{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.card p{color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:22px;}
+
+/* INPUT */
+.big-input{width:100%;padding:16px 18px;border-radius:14px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#fff;font-size:18px;font-family:'Noto Sans TC',sans-serif;outline:none;text-align:center;margin-bottom:14px;letter-spacing:.08em;transition:.2s;}
+.big-input:focus{border-color:var(--teal);background:rgba(45,212,191,.06);box-shadow:0 0 0 4px rgba(45,212,191,.12);}
+.big-input::placeholder{color:rgba(255,255,255,.2);font-size:14px;letter-spacing:0;}
+
+/* BUTTONS */
+.btn-primary{display:block;width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--teal),#0891b2);color:#000;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;transition:.2s;letter-spacing:.04em;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(45,212,191,.35);}
+.btn-primary:active{transform:scale(.97);}
+.btn-primary:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#d97706);color:#000;}
+.btn-gold:hover{box-shadow:0 10px 28px rgba(245,200,66,.35);}
+.btn-outline{width:100%;padding:13px;border-radius:12px;background:transparent;border:1px solid var(--br);color:var(--dim);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:10px;transition:.2s;}
+.btn-outline:hover{background:rgba(255,255,255,.06);color:var(--tx);}
+
+
+/* STUDENT VERIFY */
+.found-card{display:none;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.32);border-radius:14px;padding:14px 16px;text-align:left;margin:10px 0 16px;line-height:1.8;}
+.found-card.on{display:block;}
+.found-title{font-size:13px;color:var(--teal);font-weight:900;margin-bottom:4px;}
+.found-line{font-size:13px;color:var(--tx);}
+.found-line b{color:var(--gold);}
+.warn-box{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.32);border-radius:12px;padding:10px 12px;color:var(--pink);font-size:12px;line-height:1.6;margin-top:10px;display:none;}
+.warn-box.on{display:block;}
+
+/* UNIT GRID */
+.unit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.unit-opt{padding:12px 10px;border-radius:12px;border:2px solid transparent;background:rgba(255,255,255,.04);cursor:pointer;transition:.2s;text-align:left;}
+.unit-opt:hover{background:rgba(255,255,255,.08);}
+.unit-opt.on{background:rgba(45,212,191,.1);}
+.unit-opt .un{font-size:9px;font-weight:700;letter-spacing:.1em;margin-bottom:3px;}
+.unit-opt .ut{font-size:11px;font-weight:700;color:#fff;}
+
+/* NICK INPUT special */
+.nick-wrap{position:relative;margin-bottom:14px;}
+.nick-wrap .big-input{padding-right:48px;}
+.nick-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;line-height:1;}
+
+/* SUCCESS */
+.success-card{text-align:center;}
+.success-name{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--teal);padding:14px 24px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:12px;display:inline-block;margin-bottom:16px;}
+.info-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;}
+.info-chip{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;border:1px solid;}
+
+/* RANKING LIVE */
+.rank-live{width:100%;max-width:400px;background:var(--bg2);border-radius:16px;padding:16px;margin-top:16px;}
+.rank-live h3{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.rank-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.04);margin-bottom:4px;position:relative;overflow:hidden;}
+.rank-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(45,212,191,.08);transition:.5s;}
+.rank-pos{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);min-width:18px;}
+.rank-name{flex:1;font-size:12px;font-weight:700;}
+.rank-pts{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--teal);}
+.rank-my{color:var(--gold);}
+
+/* TEACHER PANEL */
+.teacher-panel{width:100%;max-width:500px;}
+.session-box{background:var(--bg2);border:1px solid rgba(245,200,66,.2);border-radius:18px;padding:24px;margin-bottom:16px;}
+.session-box h3{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--gold);margin-bottom:14px;}
+.label-row{display:flex;align-items:center;margin-bottom:8px;}
+.field-label{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;min-width:80px;}
+.field-input{flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:#fff;font-size:14px;font-family:inherit;outline:none;}
+.field-input:focus{border-color:var(--gold);}
+#qrWrap{display:none;text-align:center;padding:16px 0;}
+#qrWrap canvas,#qrWrap img{border-radius:10px;padding:10px;background:#fff;margin-bottom:10px;}
+.qr-url-box{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;word-break:break-all;border:1px solid var(--br);text-align:left;margin-top:8px;}
+.joined-list{margin-top:12px;}
+.joined-list h4{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
+.joined-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:8px;margin-bottom:3px;animation:fadeIn .3s;}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.joined-nick{font-size:13px;font-weight:700;flex:1;}
+.joined-unit{font-size:10px;color:var(--dim);}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite;}
+@keyframes pulse{50%{opacity:.3;transform:scale(1.5);}}
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--bg3);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 20px;font-size:13px;font-weight:700;box-shadow:0 8px 26px rgba(0,0,0,.6);opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;z-index:999;}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{border-color:rgba(45,212,191,.4);color:var(--teal);}
+.toast.ng{border-color:rgba(244,114,182,.4);color:var(--pink);}
+</style>
+</head>
+<body>
+
+<!-- ══ SCREEN 0: CONFIG (first-time setup) ══ -->
+<div id="sc-config" class="sc">
+  <div class="card" style="max-width:480px">
+    <span class="card-icon">⚙️</span>
+    <h2>首次設定</h2>
+    <p>填入 Supabase 設定後儲存，之後不需重複設定。<br>設定完成即可產生 QR Code 讓學生掃碼入場。</p>
+    <div style="text-align:left;margin-bottom:14px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin-bottom:6px">Supabase Project URL</div>
+      <input class="big-input" id="cfgUrl" type="url" placeholder="https://xxxx.supabase.co" style="font-size:13px;letter-spacing:0;text-align:left">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin:12px 0 6px">Supabase Anon Key</div>
+      <input class="big-input" id="cfgKey" type="text" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="font-size:11px;letter-spacing:0;text-align:left">
+    </div>
+    <div style="background:rgba(45,212,191,.06);border:1px solid rgba(45,212,66,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--dim);line-height:1.7;text-align:left;margin-bottom:16px">
+      📋 取得方式：Supabase 控制台 → 你的專案 → Settings → API<br>
+      🔒 Anon Key 搭配 RLS 規則後，學生只能讀寫自己的資料<br>
+      💾 設定儲存在本機 localStorage，不會上傳到 GitHub
+    </div>
+    <button class="btn-primary" onclick="saveConfig()">💾 儲存並繼續</button>
+    <button class="btn-outline" onclick="skipConfig()">暫時略過（僅本機模式）</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 1: TEACHER SESSION ══ -->
+<div id="sc-teacher" class="sc">
+  <div class="teacher-panel">
+    <div class="session-box">
+      <h3>🎓 建立今日課堂</h3>
+      <div class="label-row"><span class="field-label">通關密碼</span>
+        <input class="field-input" id="sessPwd" type="text" placeholder="例如：護理0430" maxlength="20" value="">
+      </div>
+      <div class="label-row" style="margin-top:8px"><span class="field-label">課程名稱</span>
+        <input class="field-input" id="sessName" type="text" placeholder="例如：1142內外護理第10週" maxlength="30">
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <button class="btn-primary btn-gold" onclick="createSession()" style="font-size:14px">🚀 建立課堂 + QR</button>
+        <button class="btn-outline" onclick="goStudentMode()" style="margin-top:0;padding:13px;flex:1">學生入場 →</button>
+      </div>
+      <div id="qrWrap">
+        <div id="qrDiv"></div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:6px">請投影在螢幕上，學生掃碼入場</div>
+        <div class="qr-url-box" id="qrUrlBox"></div>
+        <button onclick="copyUrl()" style="margin-top:8px;padding:7px 18px;border-radius:8px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">📋 複製連結</button>
+      </div>
+    </div>
+    <div class="session-box" id="joinedBox" style="display:none">
+      <h3>👥 已加入學生 <span id="joinCount" style="color:var(--teal)">0</span> 人</h3>
+      <div class="joined-list" id="joinedList"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="exportSessionXLSX()" style="font-size:13px;flex:1">📊 匯出本次 Excel</button>
+        <button class="btn-outline" onclick="exportAllXLSX()" style="margin-top:0;flex:1;font-size:12px">📚 匯出整學期</button>
+      </div>
+    </div>
+    <button class="btn-outline" onclick="showScreen('sc-config')">⚙ 重新設定 Supabase</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 2: PASSWORD ══ -->
+<div id="sc-pwd" class="sc">
+  <div class="steps" id="steps-pwd">
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="card">
+    <span class="card-icon">🔑</span>
+    <h2>輸入通關密碼</h2>
+    <p>請輸入老師在課堂上公布的<br>今日通關密碼</p>
+    <input class="big-input" id="pwdInput" type="text" placeholder="輸入密碼…"
+      maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')checkPwd()">
+    <button class="btn-primary" id="pwdBtn" onclick="checkPwd()">確認 →</button>
+    <div id="pwdErr" style="color:var(--pink);font-size:13px;margin-top:10px;display:none">❌ 密碼錯誤，請再試一次</div>
+  </div>
+</div>
+
+
+<!-- ══ SCREEN 2B: STUDENT ID VERIFY ══ -->
+<div id="sc-student" class="sc">
+  <div class="steps">
+    <div class="step-dot done"></div>
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="card">
+    <span class="card-icon">🪪</span>
+    <h2>輸入學號驗證身分</h2>
+    <p>請先輸入學號，系統會比對老師匯入的名單。<br>找到後才可設定遊戲暱稱。</p>
+    <input class="big-input" id="studentIdInput" type="text" placeholder="輸入學號…"
+      maxlength="30" autocomplete="off" onkeydown="if(event.key==='Enter')verifyStudentId()">
+    <button class="btn-primary" id="studentVerifyBtn" onclick="verifyStudentId()">查詢學號 →</button>
+    <div class="found-card" id="studentFoundBox"></div>
+    <button class="btn-primary btn-gold" id="studentNextBtn" onclick="goUnitAfterStudent()" style="display:none">確認是我，下一步 →</button>
+    <div class="warn-box" id="studentVerifyErr">查無此學號，請確認是否輸入正確，或請老師檢查名單。</div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3: UNIT SELECTION ══ -->
+<div id="sc-unit" class="sc">
+  <div class="steps" id="steps-unit">
+    <div class="step-dot done"></div>
+    <div class="step-dot active"></div>
+    <div class="step-dot"></div>
+  </div>
+  <div class="card">
+    <span class="card-icon">📚</span>
+    <h2>選擇本次單元</h2>
+    <p>請選擇今天課堂要練習的單元</p>
+    <div class="unit-grid" id="unitGrid"></div>
+    <button class="btn-primary" id="unitBtn" onclick="confirmUnit()" disabled>確認單元 →</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 4: NICKNAME ══ -->
+<div id="sc-nick" class="sc">
+  <div class="steps">
+    <div class="step-dot done"></div>
+    <div class="step-dot done"></div>
+    <div class="step-dot active"></div>
+  </div>
+  <div class="card">
+    <span class="card-icon">👤</span>
+    <h2>設定遊戲暱稱</h2>
+    <p id="verifiedStudentMsg">暱稱只顯示在排行榜上；老師匯出 Excel 時會還原姓名、學號與組別。</p>
+    <div class="nick-wrap">
+      <input class="big-input" id="nickInput" type="text" placeholder="例如：小明 或 7890"
+        maxlength="12" onkeydown="if(event.key==='Enter')joinGame()">
+      <button class="nick-clear" onclick="document.getElementById('nickInput').value=''">✕</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px" id="savedNicks"></div>
+    <button class="btn-primary btn-gold" onclick="joinGame()">🎮 加入遊戲！</button>
+    <div id="nickErr" style="color:var(--pink);font-size:12px;margin-top:10px;display:none"></div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 5: IN GAME (live ranking) ══ -->
+<div id="sc-game" class="sc">
+  <div class="success-card" style="width:100%;max-width:400px">
+    <div style="font-size:48px;margin-bottom:12px">🎉</div>
+    <div class="success-name" id="myNickDisplay"></div>
+    <div class="info-row" id="myInfoChips"></div>
+    <p style="color:var(--dim);font-size:13px;margin-bottom:4px">跟著老師進行遊戲！</p>
+    <div id="rankLive" class="rank-live">
+      <h3>即時個人排名</h3>
+      <div id="rankRows"><div style="color:var(--dim);font-size:12px;text-align:center;padding:8px">載入排名中…</div></div>
+    </div>
+    <button class="btn-outline" onclick="changeNick()" style="margin-top:12px">更換暱稱</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// UNITS DATA (abbreviated - full 8 units)
+// ══════════════════════════════════════════
+const UNITS_INFO = [
+  {id:1, title:'氧合與活動',    color:'#00b4d8'},
+  {id:2, title:'營養與排泄',    color:'#f59e0b'},
+  {id:3, title:'感覺知覺',      color:'#a78bfa'},
+  {id:4, title:'安全保護',      color:'#10b981'},
+  {id:5, title:'腫瘤全人照護',  color:'#e879f9'},
+  {id:6, title:'家庭文化照護',  color:'#f97316'},
+  {id:7, title:'靈性照護',      color:'#818cf8'},
+  {id:8, title:'心理照護',      color:'#f472b6'},
+];
+
+// ══════════════════════════════════════════
+// CONFIG & SUPABASE
+// ══════════════════════════════════════════
+let SB = null;
+let CFG = {};
+let SESSION = {};   // {id, name, password, created_at}
+let MY = {};        // {id, nick, unit, session_id}
+let VERIFIED_STUDENT = null; // {student_id, name, team_name, semester}
+let _rankInterval = null;
+
+function lsGet(k,d=null){try{const v=localStorage.getItem('NG_'+k);return v?JSON.parse(v):d;}catch{return d;}}
+function lsSet(k,v){try{localStorage.setItem('NG_'+k,JSON.stringify(v));}catch{}}
+
+function initSupabase(url, key){
+  if(!url||!key) return false;
+  try{
+    SB = window.supabase.createClient(url, key);
+    return true;
+  } catch(e){
+    console.error('Supabase init failed:', e);
+    return false;
+  }
+}
+
+function saveConfig(){
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  if(!url||!key){ toast('請填入 URL 和 Anon Key','ng'); return; }
+  CFG = {url, key};
+  lsSet('config', CFG);
+  if(initSupabase(url, key)){
+    toast('✓ Supabase 連線成功','ok');
+    setTimeout(()=>routeOnLoad(), 600);
+  } else {
+    toast('連線失敗，請確認設定','ng');
+  }
+}
+
+function skipConfig(){
+  CFG = {local:true};
+  lsSet('config', CFG);
+  routeOnLoad();
+}
+
+// ══════════════════════════════════════════
+// ROUTING
+// ══════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function routeOnLoad(){
+  const params = new URLSearchParams(location.search);
+  const mode   = params.get('role') || params.get('mode');
+  const sessId = params.get('s');    // session ID from QR
+  const pwd    = params.get('p');    // optional pre-filled password
+
+  if(mode==='teacher'||mode==='host'){
+    showScreen('sc-teacher');
+    return;
+  }
+  // Student flow: check if returning student
+  const saved = lsGet('my_session', null);
+  if(saved && saved.session_id === sessId && saved.nick){
+    MY = saved;
+    SESSION.id = sessId;
+    showScreen('sc-game');
+    startLiveRanking();
+    renderMyInfo();
+    return;
+  }
+  // New student - start entry flow
+  if(sessId){
+    SESSION.id = sessId;
+    if(pwd){ SESSION.pendingPwd = pwd; }
+  }
+  // Check if config needed
+  const savedCfg = lsGet('config', null);
+  if(!savedCfg){
+    showScreen('sc-config');
+  } else {
+    CFG = savedCfg;
+    if(CFG.url && CFG.key) initSupabase(CFG.url, CFG.key);
+    showScreen('sc-pwd');
+    buildUnitGrid();
+  }
+}
+
+function goStudentMode(){
+  showScreen('sc-pwd');
+  buildUnitGrid();
+}
+
+// ══════════════════════════════════════════
+// TEACHER: CREATE SESSION + QR
+// ══════════════════════════════════════════
+async function createSession(){
+  const pwd  = document.getElementById('sessPwd').value.trim();
+  const name = document.getElementById('sessName').value.trim();
+  if(!pwd){ toast('請輸入通關密碼','ng'); return; }
+  const sessId = Date.now().toString(36).toUpperCase();
+  SESSION = {id:sessId, password:pwd, name:name||'課堂 '+new Date().toLocaleDateString('zh-TW'), created_at:new Date().toISOString()};
+  lsSet('current_session', SESSION);
+  // Save to Supabase if connected
+  if(SB){
+    await SB.from('sessions').upsert({id:sessId, password:pwd, name:SESSION.name, created_at:SESSION.created_at});
+  }
+  // Build QR URL
+  const base = location.origin + location.pathname;
+  const url  = `${base}?s=${sessId}`;
+  document.getElementById('qrUrlBox').textContent = url;
+  const qrDiv = document.getElementById('qrDiv');
+  qrDiv.innerHTML = '';
+  new QRCode(qrDiv, {text:url, width:220, height:220, colorDark:'#080c1a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
+  document.getElementById('qrWrap').style.display = '';
+  document.getElementById('joinedBox').style.display = '';
+  toast('✓ 課堂已建立！密碼：'+pwd,'ok');
+  if(SB) startTeacherWatcher(sessId);
+}
+
+function copyUrl(){
+  const url = document.getElementById('qrUrlBox').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast('✓ 連結已複製','ok'));
+  else { const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('✓ 已複製','ok'); }
+}
+
+let _teacherWatchInterval = null;
+function startTeacherWatcher(sessId){
+  clearInterval(_teacherWatchInterval);
+  _teacherWatchInterval = setInterval(async()=>{
+    if(!SB) return;
+    const {data} = await SB.from('participants').select('*').eq('session_id',sessId).order('joined_at');
+    if(data) renderJoinedList(data);
+  }, 3000);
+}
+
+function renderJoinedList(participants){
+  const el = document.getElementById('joinedList');
+  const countEl = document.getElementById('joinCount');
+  countEl.textContent = participants.length;
+  el.innerHTML = participants.map(p=>`
+    <div class="joined-item">
+      <div class="online-dot"></div>
+      <span class="joined-nick">${p.nickname||p.id}<br><small style="color:var(--dim);font-weight:400">${p.student_name||p.name||''} ${p.student_id?('｜'+p.student_id):''} ${p.team_name?('｜'+p.team_name):''}</small></span>
+      <span class="joined-unit" style="color:${UNITS_INFO[p.unit_idx||0]?.color||'#fff'}">
+        Unit 0${(p.unit_idx||0)+1}
+      </span>
+      <span style="font-family:monospace;font-size:12px;color:var(--gold)">${p.score||0}</span>
+    </div>`).join('') || '<div style="color:var(--dim);font-size:12px">等待學生加入…</div>';
+}
+
+// ══════════════════════════════════════════
+// STUDENT STEP 1: PASSWORD
+// ══════════════════════════════════════════
+async function checkPwd(){
+  const val = document.getElementById('pwdInput').value.trim();
+  if(!val) return;
+  const btn = document.getElementById('pwdBtn');
+  btn.disabled = true; btn.textContent = '確認中…';
+  // Check against local session or Supabase
+  const savedSess = lsGet('current_session', null);
+  let ok = false;
+  if(savedSess && savedSess.id === SESSION.id){
+    ok = (savedSess.password === val);
+  } else if(SB && SESSION.id){
+    const {data} = await SB.from('sessions').select('password').eq('id', SESSION.id).single();
+    ok = data && data.password === val;
+    if(data) SESSION.name = data.name;
+  } else {
+    // Offline mode - teacher must share password verbally; trust input
+    ok = val.length >= 2;
+    SESSION.pendingPwd = val;
+  }
+  btn.disabled = false; btn.textContent = '確認 →';
+  if(ok){
+    document.getElementById('pwdErr').style.display = 'none';
+    showScreen('sc-student');
+    setTimeout(()=>document.getElementById('studentIdInput').focus(), 150);
+  } else {
+    document.getElementById('pwdErr').style.display = '';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdInput').focus();
+    toast('密碼錯誤','ng');
+  }
+}
+
+
+// ══════════════════════════════════════════
+// STUDENT STEP 2A: STUDENT ID VERIFY
+// ══════════════════════════════════════════
+function normalizeStudentRow(row){
+  if(!row) return null;
+  return {
+    semester: row.semester || row.term || '1142',
+    student_id: row.student_id || row.id || row.學號 || row.sid || '',
+    name: row.student_name || row.name || row.姓名 || '',
+    team_name: row.team_name || row.group || row.組別 || row.team || '未分組',
+    nickname: row.nickname || row.nick || row.暱稱 || ''
+  };
+}
+
+function getLocalRoster(){
+  const keys = ['NG_roster','NURSEGAME_roster','STUDENTS','students'];
+  for(const key of keys){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) continue;
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr) && arr.length) return arr.map(normalizeStudentRow).filter(x=>x && x.student_id);
+    }catch(e){}
+  }
+  return [];
+}
+
+async function findStudentById(sid){
+  const id = (sid||'').trim();
+  if(!id) return null;
+  // 1) local roster from teacher/game import
+  const local = getLocalRoster();
+  let hit = local.find(s => String(s.student_id).trim().toLowerCase() === id.toLowerCase());
+  if(hit) return hit;
+  // 2) Supabase students table, support both student_id and id column names
+  if(SB){
+    try{
+      let {data, error} = await SB.from('students').select('*').eq('student_id', id).limit(1);
+      if(!error && data && data[0]) return normalizeStudentRow(data[0]);
+    }catch(e){}
+    try{
+      let {data, error} = await SB.from('students').select('*').eq('id', id).limit(1);
+      if(!error && data && data[0]) return normalizeStudentRow(data[0]);
+    }catch(e){}
+  }
+  return null;
+}
+
+async function verifyStudentId(){
+  const sid = document.getElementById('studentIdInput').value.trim();
+  const btn = document.getElementById('studentVerifyBtn');
+  const box = document.getElementById('studentFoundBox');
+  const err = document.getElementById('studentVerifyErr');
+  const next = document.getElementById('studentNextBtn');
+  if(!sid){ toast('請輸入學號','ng'); return; }
+  btn.disabled = true; btn.textContent = '查詢中…';
+  err.classList.remove('on'); box.classList.remove('on'); next.style.display='none';
+  const stu = await findStudentById(sid);
+  btn.disabled = false; btn.textContent = '查詢學號 →';
+  if(!stu){
+    VERIFIED_STUDENT = null;
+    err.classList.add('on');
+    toast('查無此學號','ng');
+    return;
+  }
+  VERIFIED_STUDENT = stu;
+  box.innerHTML = `
+    <div class="found-title">✅ 找到學生資料</div>
+    <div class="found-line">姓名：<b>${stu.name}</b></div>
+    <div class="found-line">學號：<b>${stu.student_id}</b></div>
+    <div class="found-line">組別：<b>${stu.team_name}</b></div>
+  `;
+  box.classList.add('on');
+  next.style.display='';
+  toast('已找到：'+stu.name,'ok');
+}
+
+function goUnitAfterStudent(){
+  if(!VERIFIED_STUDENT){ toast('請先完成學號驗證','ng'); return; }
+  showScreen('sc-unit');
+}
+
+// ══════════════════════════════════════════
+// STUDENT STEP 2: UNIT
+// ══════════════════════════════════════════
+let selectedUnit = -1;
+
+function buildUnitGrid(){
+  const grid = document.getElementById('unitGrid');
+  grid.innerHTML = UNITS_INFO.map((u,i)=>`
+    <div class="unit-opt" id="uopt${i}" style="--uc:${u.color}" onclick="selectUnit(${i})">
+      <div class="un" style="color:${u.color}">Unit 0${u.id}</div>
+      <div class="ut">${u.title}</div>
+    </div>`).join('');
+}
+
+function selectUnit(i){
+  selectedUnit = i;
+  document.querySelectorAll('.unit-opt').forEach((el,j)=>{
+    el.classList.toggle('on', j===i);
+    const u = UNITS_INFO[j];
+    el.style.borderColor = j===i ? u.color : 'transparent';
+  });
+  document.getElementById('unitBtn').disabled = false;
+}
+
+function confirmUnit(){
+  if(selectedUnit<0) return;
+  // Pre-fill nick from saved
+  const prev = lsGet('my_nick', null);
+  if(prev){
+    const savedEl = document.getElementById('savedNicks');
+    savedEl.innerHTML = `<button onclick="useSavedNick('${prev}')" style="padding:7px 16px;border-radius:100px;border:1px solid rgba(45,212,191,.4);background:rgba(45,212,191,.1);color:var(--teal);font-size:12px;font-weight:700;cursor:pointer">上次使用：${prev}</button>`;
+  }
+  if(VERIFIED_STUDENT){
+    document.getElementById('verifiedStudentMsg').innerHTML = `已確認：<b style="color:var(--gold)">${VERIFIED_STUDENT.name}</b>｜${VERIFIED_STUDENT.team_name}<br>排行榜只顯示暱稱；老師匯出 Excel 時會還原姓名、學號與組別。`;
+    if(VERIFIED_STUDENT.nickname){ document.getElementById('nickInput').value = VERIFIED_STUDENT.nickname; }
+  }
+  showScreen('sc-nick');
+  setTimeout(()=>document.getElementById('nickInput').focus(), 200);
+}
+
+function useSavedNick(nick){ document.getElementById('nickInput').value = nick; }
+
+// ══════════════════════════════════════════
+// STUDENT STEP 3: NICKNAME + JOIN
+// ══════════════════════════════════════════
+async function joinGame(){
+  const nick = document.getElementById('nickInput').value.trim();
+  const errEl = document.getElementById('nickErr');
+  if(!nick){ errEl.textContent='請輸入暱稱';errEl.style.display='';return; }
+  if(nick.length<1){ errEl.textContent='暱稱太短';errEl.style.display='';return; }
+  errEl.style.display = 'none';
+  if(!VERIFIED_STUDENT){ errEl.textContent='請先完成學號驗證';errEl.style.display='';return; }
+  // Participant ID is stable per session + student, so nickname can be updated without duplicate rows
+  const pid = (SESSION.id||'local') + '_' + VERIFIED_STUDENT.student_id;
+  MY = {
+    id: pid,
+    student_id: VERIFIED_STUDENT.student_id,
+    name: VERIFIED_STUDENT.name,
+    team_name: VERIFIED_STUDENT.team_name,
+    semester: VERIFIED_STUDENT.semester || '1142',
+    nick,
+    unit_idx:selectedUnit,
+    session_id:SESSION.id||'local',
+    score:0,
+    joined_at:new Date().toISOString()
+  };
+  lsSet('my_session', MY);
+  lsSet('my_nick', nick);
+  // Register in Supabase with real identity stored for teacher export, but leaderboard displays nickname only
+  if(SB && SESSION.id){
+    const row = {
+      id: pid, session_id: SESSION.id,
+      student_id: MY.student_id,
+      student_name: MY.name,
+      name: MY.name,
+      team_name: MY.team_name,
+      semester: MY.semester,
+      nickname: nick, unit_idx: selectedUnit,
+      score: 0, joined_at: MY.joined_at
+    };
+    const {error} = await SB.from('participants').upsert(row, {onConflict:'id'});
+    if(error) console.warn('Supabase upsert participants:', error.message);
+  }
+  showScreen('sc-game');
+  renderMyInfo();
+  startLiveRanking();
+  toast('🎮 歡迎，'+nick+'！','ok');
+}
+
+function renderMyInfo(){
+  document.getElementById('myNickDisplay').textContent = MY.nick || '—';
+  const u = UNITS_INFO[MY.unit_idx||0];
+  document.getElementById('myInfoChips').innerHTML = `
+    <span class="info-chip" style="border-color:${u?.color||'#fff'};color:${u?.color||'#fff'}">Unit 0${(MY.unit_idx||0)+1} ${u?.title||''}</span>
+    <span class="info-chip" style="border-color:var(--dim);color:var(--dim)">${MY.team_name||'未分組'}</span>
+    <span class="info-chip" style="border-color:var(--dim);color:var(--dim)">${SESSION.name||'課堂'}</span>`;
+}
+
+function changeNick(){
+  MY = {}; VERIFIED_STUDENT=null; lsSet('my_session',null);
+  showScreen('sc-student');
+  document.getElementById('studentIdInput').value='';
+}
+
+// ══════════════════════════════════════════
+// LIVE RANKING
+// ══════════════════════════════════════════
+async function fetchRanking(){
+  if(!SB||!SESSION.id) return renderLocalRank();
+  const {data} = await SB.from('participants').select('id,student_id,student_name,name,nickname,team_name,score').eq('session_id',SESSION.id).order('score',{ascending:false}).limit(15);
+  if(data) renderRankRows(data);
+}
+
+function renderLocalRank(){
+  // Offline: show only self
+  renderRankRows([{id:MY.id, nickname:MY.nick, score:MY.score||0}]);
+}
+
+function renderRankRows(rows){
+  const medals = ['🥇','🥈','🥉'];
+  const max = Math.max(...rows.map(r=>r.score||0), 1);
+  const el = document.getElementById('rankRows');
+  el.innerHTML = rows.map((r,i)=>{
+    const isMe = r.id===MY.id;
+    const pct = Math.round((r.score||0)/max*100);
+    return `<div class="rank-item ${isMe?'rank-my':''}">
+      <div class="rank-bar" style="width:${pct}%"></div>
+      <span class="rank-pos">${medals[i]||i+1}</span>
+      <span class="rank-name" style="${isMe?'color:var(--gold)':''}">${r.nickname||r.id}${isMe?' ← 我':''}</span>
+      <span class="rank-pts" style="${isMe?'color:var(--gold)':''}">${r.score||0}</span>
+    </div>`;
+  }).join('');
+}
+
+function startLiveRanking(){
+  clearInterval(_rankInterval);
+  fetchRanking();
+  if(SB && SESSION.id){
+    _rankInterval = setInterval(fetchRanking, 4000);
+    // Supabase Realtime subscription
+    try{
+      SB.channel('ranking').on('postgres_changes',{event:'*',schema:'public',table:'participants',filter:`session_id=eq.${SESSION.id}`},()=>fetchRanking()).subscribe();
+    } catch(e){ console.log('Realtime not available, using polling'); }
+  }
+}
+
+// ══════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════
+async function exportSessionXLSX(){
+  if(typeof XLSX==='undefined'){ toast('XLSX 未載入','ng'); return; }
+  const wb = XLSX.utils.book_new();
+  let data = [];
+  if(SB && SESSION.id){
+    const {data:rows} = await SB.from('participants').select('*').eq('session_id',SESSION.id).order('score',{ascending:false});
+    if(rows) data = rows.map(r=>[r.student_id||'', r.student_name||r.name||'', r.nickname||r.id, r.team_name||'', UNITS_INFO[r.unit_idx||0]?.title||'', r.score||0, r.joined_at]);
+  }
+  const sheet = [['學號','姓名','暱稱','組別','單元','分數','加入時間'],...data];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheet), SESSION.name||'本次課堂');
+  XLSX.writeFile(wb, '護理遊戲_'+new Date().toLocaleDateString('zh-TW').replace(/\//g,'')+'.xlsx');
+  toast('✓ 已匯出','ok');
+}
+
+async function exportAllXLSX(){
+  if(typeof XLSX==='undefined'){ toast('XLSX 未載入','ng'); return; }
+  if(!SB){ toast('需要 Supabase 連線','ng'); return; }
+  const wb = XLSX.utils.book_new();
+  const {data:sessions} = await SB.from('sessions').select('id,name,created_at').order('created_at');
+  if(!sessions?.length){ toast('尚無課堂紀錄','ng'); return; }
+  for(const sess of sessions){
+    const {data:rows} = await SB.from('participants').select('*').eq('session_id',sess.id).order('score',{ascending:false});
+    const sheet = [['學號','姓名','暱稱','組別','單元','分數','加入時間'],...(rows||[]).map(r=>[r.student_id||'', r.student_name||r.name||'', r.nickname||r.id, r.team_name||'', UNITS_INFO[r.unit_idx||0]?.title||'', r.score||0, r.joined_at])];
+    const sheetName = (sess.name||sess.id).slice(0,31).replace(/[/\\?*[\]]/g,'');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheet), sheetName);
+  }
+  XLSX.writeFile(wb, '護理遊戲_整學期_'+new Date().getFullYear()+'.xlsx');
+  toast('✓ 整學期資料已匯出','ok');
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let _tt;
+function toast(msg, type=''){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast'+(type?' '+type:'');
+  el.classList.add('on'); clearTimeout(_tt);
+  _tt = setTimeout(()=>el.classList.remove('on'), 2400);
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', ()=>{
+  // Load config
+  const savedCfg = lsGet('config', null);
+  if(savedCfg){
+    CFG = savedCfg;
+    if(CFG.url && CFG.key) initSupabase(CFG.url, CFG.key);
+  }
+  routeOnLoad();
+  buildUnitGrid();
+});
+</script>
+</body>
+</html>
