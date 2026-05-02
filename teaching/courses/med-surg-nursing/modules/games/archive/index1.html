@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理互動遊戲中心</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#080c1a;--card:#0d1526;--card2:#111d35;--text:#e2e8f0;--dim:#94a3b8;
+  --gold:#f5c842;--teal:#2dd4bf;--pink:#f472b6;--red:#fb7185;--border:rgba(255,255,255,.12)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:Arial,"Noto Sans TC",sans-serif;color:var(--text);
+  background:radial-gradient(circle at 15% 10%,rgba(245,200,66,.12),transparent 34%),
+  radial-gradient(circle at 90% 90%,rgba(45,212,191,.12),transparent 34%),var(--bg)
+}
+.header{
+  padding:14px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
+  background:rgba(8,12,26,.92);position:sticky;top:0;z-index:10
+}
+.back,.topbtn{
+  border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);
+  border-radius:10px;padding:9px 13px;cursor:pointer;font-weight:700
+}
+.wrap{max-width:1220px;margin:0 auto;padding:24px 20px}
+.hero{text-align:center;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:38px;color:#fff}
+.hero p{margin:0;color:var(--dim);font-size:15px}
+.main{
+  display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start
+}
+@media(max-width:980px){.main{grid-template-columns:1fr}.hero h1{font-size:30px}}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+  border:1px solid var(--border);border-radius:22px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)
+}
+.qr-card{text-align:center;min-height:620px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.qr-card h2{font-size:34px;margin:0 0 12px;color:var(--gold)}
+.qr-card p{color:var(--dim);font-size:18px;margin:0 0 24px;line-height:1.7}
+#qrBox{
+  width:360px;height:360px;background:white;border-radius:24px;display:flex;align-items:center;justify-content:center;
+  padding:18px;margin:12px auto 20px;box-shadow:0 24px 80px rgba(0,0,0,.45)
+}
+#qrBox canvas,#qrBox img{width:320px!important;height:320px!important}
+.urlbox{
+  max-width:760px;word-break:break-all;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:14px;padding:14px;color:var(--dim);font-size:14px;line-height:1.6;margin:10px auto
+}
+.bigpass{
+  display:inline-block;margin-top:12px;padding:12px 22px;border-radius:999px;border:1px solid rgba(245,200,66,.45);
+  background:rgba(245,200,66,.1);color:var(--gold);font-size:22px;font-weight:900
+}
+.card h3{margin:0 0 14px;color:var(--gold);font-size:20px}
+label{display:block;font-size:11px;color:var(--dim);font-weight:800;letter-spacing:.08em;margin:12px 0 6px}
+input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:#fff;font-size:14px}
+button{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:900;cursor:pointer}
+.primary{background:linear-gradient(135deg,var(--gold),#d97706);color:#111;width:100%;margin-top:14px;font-size:15px}
+.secondary{background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.35);color:var(--teal)}
+.gray{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.row button{flex:1}
+.small{color:var(--dim);font-size:12px;line-height:1.7}
+.panel{margin-bottom:16px}
+details{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.035);padding:12px;margin-bottom:12px}
+summary{cursor:pointer;font-weight:900;color:var(--teal);font-size:14px}
+.log{
+  background:#030712;border:1px solid var(--border);border-radius:12px;padding:12px;
+  min-height:150px;max-height:230px;overflow:auto;font-size:12px;line-height:1.6;text-align:left;white-space:pre-wrap;margin-top:10px
+}
+.ok{color:var(--teal)}.bad{color:var(--red)}.warn{color:var(--gold)}.muted{color:var(--dim)}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+@media(max-width:780px){.links{grid-template-columns:1fr}#qrBox{width:300px;height:300px}#qrBox canvas,#qrBox img{width:260px!important;height:260px!important}}
+.link-card{padding:17px;border-radius:16px;background:#0d1526;border:1px solid var(--border);text-align:center;cursor:pointer}
+.link-card:hover{background:#111d35}
+.icon{font-size:30px;margin-bottom:8px}
+.hide-teacher .teacher-column{display:none}
+.hide-teacher .main{grid-template-columns:1fr}
+</style>
+</head>
+<body>
+<div class="header">
+  <button class="back" onclick="location.href='../index.html'">← 返回課程模組</button>
+  <div>
+    <button class="topbtn" onclick="toggleTeacher()">老師設定 / 隱藏</button>
+  </div>
+</div>
+
+<div class="wrap" id="pageWrap">
+  <div class="hero">
+    <h1>🎮 護理互動遊戲中心</h1>
+    <p>學生掃描 QR Code，輸入通關密語、學號與暱稱後加入課堂。</p>
+  </div>
+
+  <div class="main">
+    <section class="card qr-card">
+      <h2>📱 學生掃描加入</h2>
+      <p>請用手機掃描 QR Code<br>或使用筆電點下方連結進入</p>
+      <div id="qrBox"><div class="small">請先由老師建立課堂</div></div>
+      <div class="urlbox" id="studentLink">尚未建立課堂。</div>
+      <div id="passDisplay"></div>
+      <div class="row" style="max-width:540px;width:100%;margin-top:18px">
+        <button class="secondary" onclick="copyStudentLink()">📋 複製學生連結</button>
+        <button class="secondary" onclick="openStudent()">開啟學生入口</button>
+      </div>
+      <div class="small" id="status" style="margin-top:14px"></div>
+    </section>
+
+    <aside class="teacher-column">
+      <div class="card panel">
+        <h3>老師設定 1/3：</h3>
+        <label>課堂名稱</label>
+        <input id="sessionName" placeholder="例如：1142 內外科護理 第10週">
+        <label>今日通關密語</label>
+        <input id="passcode" placeholder="例如：1142 或 HKU0430">
+        <button class="primary" onclick="oneClickStart()">🚀 一鍵開課</button>
+        <div class="row">
+          <button class="gray" onclick="reuseLastSession()">顯示上次 QR</button>
+          <button class="gray" onclick="toggleTeacher()">隱藏設定</button>
+        </div>
+      </div>
+
+      <details>
+        <summary>老師設定 2/3：Supabase 設定</summary>
+        <label>Supabase Project URL</label>
+        <input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
+        <label>Supabase Publishable / anon key</label>
+        <input id="supabaseKey" placeholder="eyJhbGciOiJIUzI1Ni...">
+        <button class="secondary" style="width:100%;margin-top:12px" onclick="saveConfigOnly()">💾 儲存設定</button>
+        <div class="small" style="margin-top:8px">第一次設定後會自動記住，之後不用每次重填。</div>
+      </details>
+
+      <details>
+        <summary>老師設定 3/3：連線檢查</summary>
+        <div class="row">
+          <button class="secondary" onclick="debugCheck()">🔍 檢查連線</button>
+          <button class="gray" onclick="clearSaved()">清除記憶</button>
+        </div>
+        <div class="log" id="debugLog">等待檢查...</div>
+      </details>
+    </aside>
+  </div>
+
+  <section class="card" style="margin-top:20px">
+    <h3>教學入口</h3>
+    <div class="links">
+      <div class="link-card" onclick="location.href='nursing-games-pro.html'"><div class="icon">🏆</div><b>Pro 遊戲系統</b><div class="small">Jeopardy / Bingo / Quiz</div></div>
+      <div class="link-card" onclick="openStudent()"><div class="icon">📱</div><b>學生加入</b><div class="small">學號驗證＋暱稱</div></div>
+      <div class="link-card" onclick="location.href='leaderboard.html'"><div class="icon">📊</div><b>即時排行榜</b><div class="small">團體＋個人暱稱</div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+let client=null;
+let currentStudentURL="";
+const KEYS={url:"SUPABASE_URL",key:"SUPABASE_KEY",sessionName:"LAST_SESSION_NAME",passcode:"LAST_PASSCODE",studentUrl:"LAST_STUDENT_URL"};
+
+function log(msg, cls=""){const el=document.getElementById("debugLog"); const line=cls?`<span class="${cls}">${msg}</span>`:msg; el.innerHTML += (el.innerHTML==="等待檢查..."?"":"\n")+line; el.scrollTop=el.scrollHeight;}
+function resetLog(){document.getElementById("debugLog").innerHTML="";}
+function env(){const p=location.protocol,h=location.hostname;if(p==="file:")return"file:/// 本機檔案模式（不建議）";if(h==="localhost"||h==="127.0.0.1")return"localhost 測試模式";if(h.includes("github.io"))return"GitHub Pages 正式模式";return h;}
+
+function toggleTeacher(){document.getElementById("pageWrap").classList.toggle("hide-teacher");}
+
+function loadSaved(){
+ document.getElementById("supabaseUrl").value=localStorage.getItem(KEYS.url)||"";
+ document.getElementById("supabaseKey").value=localStorage.getItem(KEYS.key)||"";
+ document.getElementById("sessionName").value=localStorage.getItem(KEYS.sessionName)||"1142 內外科護理互動課堂";
+ document.getElementById("passcode").value=localStorage.getItem(KEYS.passcode)||"";
+ const old=localStorage.getItem(KEYS.studentUrl)||"";
+ if(old){currentStudentURL=old; showStudentURL(old); document.getElementById("status").innerHTML="✅ 已載入上次學生入口，可直接投影使用。";}
+}
+loadSaved();
+
+function saveConfig(){
+ const url=document.getElementById("supabaseUrl").value.trim();
+ const key=document.getElementById("supabaseKey").value.trim();
+ if(url)localStorage.setItem(KEYS.url,url);
+ if(key)localStorage.setItem(KEYS.key,key);
+ localStorage.setItem(KEYS.sessionName,document.getElementById("sessionName").value.trim());
+ localStorage.setItem(KEYS.passcode,document.getElementById("passcode").value.trim());
+}
+function saveConfigOnly(){saveConfig();document.getElementById("status").innerHTML="✅ Supabase 設定已儲存。";}
+function clearSaved(){localStorage.removeItem(KEYS.url);localStorage.removeItem(KEYS.key);localStorage.removeItem(KEYS.sessionName);localStorage.removeItem(KEYS.passcode);localStorage.removeItem(KEYS.studentUrl);location.reload();}
+
+function getClient(){
+ const url=document.getElementById("supabaseUrl").value.trim();
+ const key=document.getElementById("supabaseKey").value.trim();
+ if(!url||!key){log("❌ 缺少 Supabase URL 或 Publishable key。","bad");alert("請先在老師設定 2/3 填入 Supabase URL 和 key");return null;}
+ saveConfig();
+ return window.supabase.createClient(url,key);
+}
+function makeStudentURL(sessionId){return new URL("student-entry.html",location.href).href+"?session_id="+encodeURIComponent(sessionId);}
+
+async function debugCheck(){
+ resetLog();
+ log("目前環境："+env(),"muted");
+ if(!window.supabase){log("❌ Supabase JS 沒載入。","bad");return;}
+ log("✅ Supabase JS 已載入。","ok");
+ client=getClient(); if(!client)return;
+
+ log("檢查 sessions SELECT...","muted");
+ const sel=await client.from("sessions").select("id,session_name,passcode,created_at").limit(1);
+ if(sel.error){log("❌ sessions SELECT 失敗："+sel.error.message,"bad");log("需要 SELECT policy：using (true)。","warn");}
+ else log("✅ sessions SELECT 正常。","ok");
+
+ log("檢查 sessions INSERT...","muted");
+ const ins=await client.from("sessions").insert({session_name:"debug_test_"+new Date().toISOString(),passcode:"debug",active:false}).select().single();
+ if(ins.error){log("❌ sessions INSERT 失敗："+ins.error.message,"bad");log("需要 INSERT policy：with check (true)。","warn");}
+ else log("✅ sessions INSERT 正常。","ok");
+}
+
+async function oneClickStart(){
+ resetLog();
+ client=getClient(); if(!client)return;
+ const sessionName=document.getElementById("sessionName").value.trim()||"未命名課堂";
+ const passcode=document.getElementById("passcode").value.trim();
+ if(!passcode){alert("請輸入通關密語");return;}
+ saveConfig();
+
+ const {data,error}=await client.from("sessions").insert({session_name:sessionName,passcode:passcode,active:true}).select().single();
+ if(error){
+   log("❌ 建立失敗："+error.message,"bad");
+   document.getElementById("status").innerHTML="❌ 建立失敗，請打開老師設定 3/3 檢查。";
+   return;
+ }
+ currentStudentURL=makeStudentURL(data.id);
+ localStorage.setItem(KEYS.studentUrl,currentStudentURL);
+ showStudentURL(currentStudentURL);
+ document.getElementById("status").innerHTML="✅ 已建立課堂："+sessionName;
+ log("✅ 建立成功："+sessionName,"ok");
+ log("🔑 通關密語："+passcode,"ok");
+}
+
+function showStudentURL(url){
+ document.getElementById("studentLink").textContent=url;
+ document.getElementById("qrBox").innerHTML="";
+ new QRCode(document.getElementById("qrBox"),{text:url,width:320,height:320});
+ const pass=localStorage.getItem(KEYS.passcode)||document.getElementById("passcode").value.trim();
+ document.getElementById("passDisplay").innerHTML=pass?`<div class="bigpass">通關密語：${pass}</div>`:"";
+}
+function reuseLastSession(){
+ const url=localStorage.getItem(KEYS.studentUrl);
+ if(!url){alert("目前沒有上次課堂資料，請先建立課堂。");return;}
+ currentStudentURL=url;showStudentURL(url);document.getElementById("status").innerHTML="✅ 已重新顯示上次 QR。";
+}
+function copyStudentLink(){
+ if(!currentStudentURL)currentStudentURL=document.getElementById("studentLink").textContent;
+ if(!currentStudentURL||currentStudentURL==="尚未建立課堂。"){alert("請先建立課堂");return;}
+ navigator.clipboard.writeText(currentStudentURL);
+ document.getElementById("status").innerHTML="✅ 已複製學生入口連結。";
+}
+function openStudent(){
+ if(currentStudentURL&&currentStudentURL!=="尚未建立課堂。")window.open(currentStudentURL,"_blank");
+ else location.href="student-entry.html";
+}
+</script>
+</body>
+</html>
