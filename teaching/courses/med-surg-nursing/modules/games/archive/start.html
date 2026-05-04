@@ -7,88 +7,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root{
-  --bg:#070b18;--card:#10182b;--text:#e5e7eb;--dim:#94a3b8;
-  --gold:#facc15;--teal:#2dd4bf;--pink:#f472b6;--red:#fb7185;--border:rgba(255,255,255,.12)
-}
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;font-family:Arial,"Noto Sans TC",sans-serif;color:var(--text);
-  background:radial-gradient(circle at 12% 10%,rgba(250,204,21,.13),transparent 35%),
-  radial-gradient(circle at 88% 88%,rgba(45,212,191,.13),transparent 35%),var(--bg)
-}
-.header{
-  padding:16px 24px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;gap:14px;background:rgba(7,11,24,.94)
-}
-.header button{
-  border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);
-  padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer
-}
-.stage{
-  min-height:calc(100vh - 70px);display:grid;grid-template-columns:1.08fr .92fr;gap:24px;
-  max-width:1350px;margin:auto;padding:30px
-}
-@media(max-width:980px){.stage{grid-template-columns:1fr;padding:18px}}
-.card{
-  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));
-  border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.38)
-}
-.hero{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:680px
-}
-h1{font-size:54px;margin:0 0 14px;color:var(--gold);letter-spacing:.02em}
-.subtitle{font-size:23px;color:#dbe4f0;line-height:1.7;margin-bottom:22px}
-#qrBox{
-  width:430px;height:430px;background:white;border-radius:30px;display:flex;align-items:center;justify-content:center;
-  padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.45);margin:12px auto 22px;color:#111;font-weight:900
-}
+:root{--bg:#070b18;--card:#10182b;--text:#e5e7eb;--dim:#94a3b8;--gold:#facc15;--teal:#2dd4bf;--red:#fb7185;--border:rgba(255,255,255,.12)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,"Noto Sans TC",sans-serif;color:var(--text);background:radial-gradient(circle at 12% 10%,rgba(250,204,21,.13),transparent 35%),radial-gradient(circle at 88% 88%,rgba(45,212,191,.13),transparent 35%),var(--bg)}
+.header{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:14px;background:rgba(7,11,24,.94)}
+.header button,.actions button,.primary{border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.stage{min-height:calc(100vh - 70px);display:grid;grid-template-columns:1.08fr .92fr;gap:24px;max-width:1350px;margin:auto;padding:30px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.38)}
+.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:680px}
+h1{font-size:54px;margin:0 0 14px;color:var(--gold)}.subtitle{font-size:23px;color:#dbe4f0;line-height:1.7;margin-bottom:22px}
+#qrBox{width:430px;height:430px;background:white;border-radius:30px;display:flex;align-items:center;justify-content:center;padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.45);margin:12px auto 22px;color:#111;font-weight:900}
 #qrBox canvas,#qrBox img{width:380px!important;height:380px!important}
-.pass{
-  display:inline-block;padding:14px 28px;border-radius:999px;border:1px solid rgba(250,204,21,.45);
-  background:rgba(250,204,21,.12);font-size:30px;font-weight:900;color:var(--gold);margin-top:10px
-}
-.url{
-  max-width:700px;word-break:break-all;color:var(--dim);font-size:14px;line-height:1.6;
-  background:rgba(255,255,255,.05);border:1px solid var(--border);padding:12px;border-radius:14px;margin-top:14px
-}
-.side{display:flex;flex-direction:column;gap:18px}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.kpi{background:rgba(255,255,255,.055);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center}
-.kpi .num{font-size:42px;font-weight:900;color:var(--teal);font-family:Consolas,monospace}
-.kpi .label{color:var(--dim);font-size:13px;margin-top:6px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.actions button,.primary{
-  border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:900;cursor:pointer
-}
-.actions button{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text)}
-.primary{background:linear-gradient(135deg,var(--gold),#d97706);color:#111;width:100%;margin-top:12px}
-.teacher{
-  display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)
-}
-.teacher.on{display:block}
-label{display:block;color:var(--dim);font-size:12px;font-weight:800;margin:12px 0 6px}
-input{
-  width:100%;padding:13px;border-radius:12px;border:1px solid var(--border);
-  background:rgba(255,255,255,.06);color:#fff;font-size:15px
-}
-details{border:1px solid var(--border);border-radius:18px;padding:14px;background:rgba(255,255,255,.035)}
-summary{cursor:pointer;font-weight:900;color:var(--teal)}
-.log{
-  background:#030712;border:1px solid var(--border);border-radius:14px;padding:12px;min-height:130px;
-  max-height:220px;overflow:auto;font-size:12px;line-height:1.6;white-space:pre-wrap;margin-top:10px;color:#dbe4f0
-}
-.joined{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}
-.join-item{display:flex;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
-.name{font-weight:900}.team{color:var(--gold);font-size:12px}
-@media(max-width:700px){
-  h1{font-size:36px}.subtitle{font-size:17px}
-  #qrBox{width:300px;height:300px}#qrBox canvas,#qrBox img{width:260px!important;height:260px!important}
-  .pass{font-size:22px}.kpi-grid,.actions{grid-template-columns:1fr}.hero{min-height:auto}
-}
-@media print{
-  .header,.side{display:none}.stage{display:block}.card{box-shadow:none;border:0}.hero{min-height:100vh}body{background:white;color:#111}h1{color:#111}.subtitle,.url{color:#333}
-}
+.pass{display:inline-block;padding:14px 28px;border-radius:999px;border:1px solid rgba(250,204,21,.45);background:rgba(250,204,21,.12);font-size:30px;font-weight:900;color:var(--gold);margin-top:10px}
+.url{max-width:700px;word-break:break-all;color:var(--dim);font-size:14px;line-height:1.6;background:rgba(255,255,255,.05);border:1px solid var(--border);padding:12px;border-radius:14px;margin-top:14px}
+.side{display:flex;flex-direction:column;gap:18px}.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.kpi{background:rgba(255,255,255,.055);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center}.kpi .num{font-size:42px;font-weight:900;color:var(--teal);font-family:Consolas,monospace}.kpi .label{color:var(--dim);font-size:13px;margin-top:6px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.primary{background:linear-gradient(135deg,var(--gold),#d97706);color:#111;width:100%;margin-top:12px;border:0;font-size:16px}
+.teacher{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}.teacher.on{display:block}
+label{display:block;color:var(--dim);font-size:12px;font-weight:800;margin:12px 0 6px}input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:#fff;font-size:15px}
+details{border:1px solid var(--border);border-radius:18px;padding:14px;background:rgba(255,255,255,.035)}summary{cursor:pointer;font-weight:900;color:var(--teal)}
+.log{background:#030712;border:1px solid var(--border);border-radius:14px;padding:12px;min-height:130px;max-height:220px;overflow:auto;font-size:12px;line-height:1.6;white-space:pre-wrap;margin-top:10px;color:#dbe4f0}
+.joined{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}.join-item{display:flex;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid var(--border);border-radius:12px;padding:10px 12px}.name{font-weight:900}.team{color:var(--gold);font-size:12px}
+@media(max-width:980px){.stage{grid-template-columns:1fr;padding:18px}}@media(max-width:700px){h1{font-size:36px}.subtitle{font-size:17px}#qrBox{width:300px;height:300px}#qrBox canvas,#qrBox img{width:260px!important;height:260px!important}.pass{font-size:22px}.kpi-grid,.actions{grid-template-columns:1fr}.hero{min-height:auto}}
 </style>
 </head>
 <body>
@@ -97,7 +35,6 @@ summary{cursor:pointer;font-weight:900;color:var(--teal)}
   <div style="color:var(--dim);font-size:13px;">開課展示版｜投影用</div>
   <button onclick="toggleTeacher()">老師設定</button>
 </div>
-
 <div class="stage">
   <section class="card hero">
     <h1 id="displayTitle">護理互動課堂</h1>
@@ -106,43 +43,26 @@ summary{cursor:pointer;font-weight:900;color:var(--teal)}
     <div id="passDisplay" class="pass" style="display:none"></div>
     <div id="studentLink" class="url">尚未建立課堂。</div>
   </section>
-
   <aside class="side">
     <section class="card">
       <h2 style="margin:0 0 14px;color:var(--gold)">課堂狀態</h2>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="num" id="joinCount">0</div><div class="label">已加入學生</div></div>
-        <div class="kpi"><div class="num" id="teamCount">0</div><div class="label">組別數</div></div>
-      </div>
+      <div class="kpi-grid"><div class="kpi"><div class="num" id="joinCount">0</div><div class="label">已加入學生</div></div><div class="kpi"><div class="num" id="teamCount">0</div><div class="label">組別數</div></div></div>
       <div class="actions" style="margin-top:14px">
-        <button onclick="copyStudentLink()">複製學生連結</button>
-        <button onclick="openStudent()">開啟學生入口</button>
-        <button onclick="location.href='nursing-games-pro.html'">開遊戲</button>
-        <button onclick="location.href='leaderboard.html'">排行榜</button>
-        <button onclick="location.href='links.html'">評值 QR</button>
-        <button onclick="location.href='report.html'">成果報告</button>
+        <button onclick="copyStudentLink()">複製學生連結</button><button onclick="openStudent()">開啟學生入口</button>
+        <button onclick="location.href='nursing-games-pro.html'">開遊戲</button><button onclick="location.href='leaderboard.html'">排行榜</button>
+        <button onclick="location.href='links.html'">評值 QR</button><button onclick="location.href='report.html'">成果報告</button>
       </div>
     </section>
-
-    <section class="card">
-      <h2 style="margin:0 0 14px;color:var(--gold)">已加入學生</h2>
-      <div id="joinedList" class="joined"><div style="color:var(--dim)">尚無學生加入</div></div>
-    </section>
-
+    <section class="card"><h2 style="margin:0 0 14px;color:var(--gold)">已加入學生</h2><div id="joinedList" class="joined"><div style="color:var(--dim)">尚無學生加入</div></div></section>
     <section class="card teacher" id="teacherPanel">
       <h2 style="margin:0 0 14px;color:var(--gold)">老師設定</h2>
-      <label>課堂名稱</label>
-      <input id="sessionName" placeholder="例如：1142 內外科護理 第10週">
-      <label>今日通關密語</label>
-      <input id="passcode" placeholder="例如：1142 或 HKU0430">
+      <label>課堂名稱</label><input id="sessionName" placeholder="例如：1142 內外科護理 第10週">
+      <label>今日通關密語</label><input id="passcode" placeholder="例如：1142 或 HKU0430">
       <button class="primary" onclick="oneClickStart()">🚀 一鍵開課並產生 QR</button>
-
       <details style="margin-top:14px">
         <summary>Supabase 設定與檢查</summary>
-        <label>Supabase Project URL</label>
-        <input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
-        <label>Supabase Publishable / anon key</label>
-        <input id="supabaseKey" placeholder="eyJhbGciOiJIUzI1Ni...">
+        <label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
+        <label>Supabase Publishable / anon key</label><input id="supabaseKey" placeholder="eyJhbGciOiJIUzI1Ni...">
         <button class="primary" onclick="saveConfigOnly()">儲存設定</button>
         <button class="primary" onclick="debugCheck()" style="background:rgba(45,212,191,.18);color:var(--teal);border:1px solid rgba(45,212,191,.35)">檢查連線</button>
         <div class="log" id="debugLog">等待檢查...</div>
@@ -150,102 +70,27 @@ summary{cursor:pointer;font-weight:900;color:var(--teal)}
     </section>
   </aside>
 </div>
-
 <script>
-let client=null;
-let currentSessionId="";
-let currentStudentURL="";
+let client=null,currentSessionId="",currentStudentURL="";
 const KEYS={url:"SUPABASE_URL",key:"SUPABASE_KEY",sessionName:"LAST_SESSION_NAME",passcode:"LAST_PASSCODE",sessionId:"LAST_SESSION_ID",studentUrl:"LAST_STUDENT_URL"};
-
 function log(msg){const el=document.getElementById("debugLog");el.innerHTML+=(el.innerHTML==="等待檢查..."?"":"\n")+msg;el.scrollTop=el.scrollHeight}
 function resetLog(){document.getElementById("debugLog").innerHTML=""}
 function toggleTeacher(){document.getElementById("teacherPanel").classList.toggle("on")}
-function saveConfig(){
- const url=document.getElementById("supabaseUrl").value.trim();
- const key=document.getElementById("supabaseKey").value.trim();
- if(url)localStorage.setItem(KEYS.url,url);
- if(key)localStorage.setItem(KEYS.key,key);
- localStorage.setItem(KEYS.sessionName,document.getElementById("sessionName").value.trim());
- localStorage.setItem(KEYS.passcode,document.getElementById("passcode").value.trim());
-}
+function saveConfig(){const url=document.getElementById("supabaseUrl").value.trim();const key=document.getElementById("supabaseKey").value.trim();if(url)localStorage.setItem(KEYS.url,url);if(key)localStorage.setItem(KEYS.key,key);localStorage.setItem(KEYS.sessionName,document.getElementById("sessionName").value.trim());localStorage.setItem(KEYS.passcode,document.getElementById("passcode").value.trim())}
 function saveConfigOnly(){saveConfig();alert("已儲存設定")}
-function getClient(){
- const url=document.getElementById("supabaseUrl").value.trim()||localStorage.getItem(KEYS.url);
- const key=document.getElementById("supabaseKey").value.trim()||localStorage.getItem(KEYS.key);
- if(!url||!key){alert("請先打開老師設定，填入 Supabase URL 和 Publishable key");return null}
- localStorage.setItem(KEYS.url,url);localStorage.setItem(KEYS.key,key);
- return window.supabase.createClient(url,key);
-}
-function makeStudentURL(sessionId){return new URL("student-entry.html",location.href).href+"?session_id="+encodeURIComponent(sessionId)}
-function showQR(url){
- document.getElementById("studentLink").textContent=url;
- document.getElementById("qrBox").innerHTML="";
- new QRCode(document.getElementById("qrBox"),{text:url,width:380,height:380});
- const pass=localStorage.getItem(KEYS.passcode)||document.getElementById("passcode").value.trim();
- document.getElementById("passDisplay").style.display=pass?"inline-block":"none";
- document.getElementById("passDisplay").textContent=pass?"通關密語："+pass:"";
-}
-function loadSaved(){
- document.getElementById("supabaseUrl").value=localStorage.getItem(KEYS.url)||"";
- document.getElementById("supabaseKey").value=localStorage.getItem(KEYS.key)||"";
- document.getElementById("sessionName").value=localStorage.getItem(KEYS.sessionName)||"1142 內外科護理互動課堂";
- document.getElementById("passcode").value=localStorage.getItem(KEYS.passcode)||"";
- currentSessionId=localStorage.getItem(KEYS.sessionId)||"";
- currentStudentURL=localStorage.getItem(KEYS.studentUrl)||"";
- if(localStorage.getItem(KEYS.sessionName))document.getElementById("displayTitle").textContent=localStorage.getItem(KEYS.sessionName);
- if(currentStudentURL)showQR(currentStudentURL);
- if(currentSessionId)loadJoined();
-}
+function getClient(){const url=document.getElementById("supabaseUrl").value.trim()||localStorage.getItem(KEYS.url);const key=document.getElementById("supabaseKey").value.trim()||localStorage.getItem(KEYS.key);if(!url||!key){alert("請先打開老師設定，填入 Supabase URL 和 Publishable key");return null}localStorage.setItem(KEYS.url,url);localStorage.setItem(KEYS.key,key);return window.supabase.createClient(url,key)}
+function makeStudentURL(sessionId){const url=localStorage.getItem(KEYS.url);const key=localStorage.getItem(KEYS.key);return new URL("student-entry.html",location.href).href+"?session_id="+encodeURIComponent(sessionId)+"&sb_url="+encodeURIComponent(url)+"&sb_key="+encodeURIComponent(key)}
+function showQR(url){document.getElementById("studentLink").textContent=url;document.getElementById("qrBox").innerHTML="";new QRCode(document.getElementById("qrBox"),{text:url,width:380,height:380});const pass=localStorage.getItem(KEYS.passcode)||document.getElementById("passcode").value.trim();document.getElementById("passDisplay").style.display=pass?"inline-block":"none";document.getElementById("passDisplay").textContent=pass?"通關密語："+pass:""}
+function loadSaved(){document.getElementById("supabaseUrl").value=localStorage.getItem(KEYS.url)||"";document.getElementById("supabaseKey").value=localStorage.getItem(KEYS.key)||"";document.getElementById("sessionName").value=localStorage.getItem(KEYS.sessionName)||"1142 內外科護理互動課堂";document.getElementById("passcode").value=localStorage.getItem(KEYS.passcode)||"";currentSessionId=localStorage.getItem(KEYS.sessionId)||"";currentStudentURL=localStorage.getItem(KEYS.studentUrl)||"";if(localStorage.getItem(KEYS.sessionName))document.getElementById("displayTitle").textContent=localStorage.getItem(KEYS.sessionName);if(currentStudentURL)showQR(currentStudentURL);if(currentSessionId)loadJoined()}
 loadSaved();
-
-async function oneClickStart(){
- client=getClient(); if(!client)return;
- const sessionName=document.getElementById("sessionName").value.trim()||"未命名課堂";
- const passcode=document.getElementById("passcode").value.trim();
- if(!passcode){alert("請輸入通關密語");return}
- saveConfig();
- const {data,error}=await client.from("sessions").insert({session_name:sessionName,passcode:passcode,active:true}).select().single();
- if(error){alert("建立失敗："+error.message);log("建立失敗："+error.message);return}
- currentSessionId=data.id;
- currentStudentURL=makeStudentURL(data.id);
- localStorage.setItem(KEYS.sessionId,currentSessionId);
- localStorage.setItem(KEYS.studentUrl,currentStudentURL);
- document.getElementById("displayTitle").textContent=sessionName;
- showQR(currentStudentURL);
- loadJoined();
- subscribeJoined();
-}
-
-async function debugCheck(){
- resetLog(); client=getClient(); if(!client)return;
- log("檢查 sessions SELECT...");
- const sel=await client.from("sessions").select("id").limit(1);
- log(sel.error?"❌ SELECT 失敗："+sel.error.message:"✅ SELECT 正常");
- log("檢查 sessions INSERT...");
- const ins=await client.from("sessions").insert({session_name:"debug_test",passcode:"debug",active:false}).select().single();
- log(ins.error?"❌ INSERT 失敗："+ins.error.message:"✅ INSERT 正常");
-}
-
-async function loadJoined(){
- client=getClient(); if(!client||!currentSessionId)return;
- const {data,error}=await client.from("participants").select("*").eq("session_id",currentSessionId).order("created_at",{ascending:false});
- if(error){document.getElementById("joinedList").innerHTML="<div style='color:var(--red)'>讀取失敗："+error.message+"</div>";return}
- renderJoined(data||[]);
-}
-function renderJoined(rows){
- const teams=new Set(rows.map(r=>r.team_name).filter(Boolean));
- document.getElementById("joinCount").textContent=rows.length;
- document.getElementById("teamCount").textContent=teams.size;
- document.getElementById("joinedList").innerHTML=rows.length?rows.map(r=>`<div class="join-item"><div><div class="name">${r.nickname||r.name||"同學"}</div><div class="team">${r.team_name||"未分組"}</div></div><div style="color:var(--dim);font-size:12px">${r.student_id||""}</div></div>`).join(""):"<div style='color:var(--dim)'>尚無學生加入</div>";
-}
-function subscribeJoined(){
- client=getClient(); if(!client||!currentSessionId)return;
- client.channel("participants_live_"+currentSessionId).on("postgres_changes",{event:"*",schema:"public",table:"participants"},()=>loadJoined()).subscribe();
-}
+async function oneClickStart(){client=getClient();if(!client)return;const sessionName=document.getElementById("sessionName").value.trim()||"未命名課堂";const passcode=document.getElementById("passcode").value.trim();if(!passcode){alert("請輸入通關密語");return}saveConfig();const {data,error}=await client.from("sessions").insert({session_name:sessionName,passcode:passcode,active:true}).select().single();if(error){alert("建立失敗："+error.message);log("建立失敗："+error.message);return}currentSessionId=data.id;currentStudentURL=makeStudentURL(data.id);localStorage.setItem(KEYS.sessionId,currentSessionId);localStorage.setItem(KEYS.studentUrl,currentStudentURL);document.getElementById("displayTitle").textContent=sessionName;showQR(currentStudentURL);loadJoined();subscribeJoined()}
+async function debugCheck(){resetLog();client=getClient();if(!client)return;log("檢查 sessions SELECT...");const sel=await client.from("sessions").select("id").limit(1);log(sel.error?"❌ SELECT 失敗："+sel.error.message:"✅ SELECT 正常");log("檢查 sessions INSERT...");const ins=await client.from("sessions").insert({session_name:"debug_test",passcode:"debug",active:false}).select().single();log(ins.error?"❌ INSERT 失敗："+ins.error.message:"✅ INSERT 正常")}
+async function loadJoined(){client=getClient();if(!client||!currentSessionId)return;const {data,error}=await client.from("participants").select("*").eq("session_id",currentSessionId).order("created_at",{ascending:false});if(error){document.getElementById("joinedList").innerHTML="<div style='color:var(--red)'>讀取失敗："+error.message+"</div>";return}renderJoined(data||[])}
+function renderJoined(rows){const teams=new Set(rows.map(r=>r.team_name).filter(Boolean));document.getElementById("joinCount").textContent=rows.length;document.getElementById("teamCount").textContent=teams.size;document.getElementById("joinedList").innerHTML=rows.length?rows.map(r=>`<div class="join-item"><div><div class="name">${r.nickname||r.name||"同學"}</div><div class="team">${r.team_name||"未分組"}</div></div><div style="color:var(--dim);font-size:12px">${r.student_id||""}</div></div>`).join(""):"<div style='color:var(--dim)'>尚無學生加入</div>"}
+function subscribeJoined(){client=getClient();if(!client||!currentSessionId)return;client.channel("participants_live_"+currentSessionId).on("postgres_changes",{event:"*",schema:"public",table:"participants"},()=>loadJoined()).subscribe()}
 function copyStudentLink(){if(!currentStudentURL){alert("尚未建立課堂");return}navigator.clipboard.writeText(currentStudentURL);alert("已複製學生連結")}
 function openStudent(){if(currentStudentURL)window.open(currentStudentURL,"_blank");else location.href="student-entry.html"}
-setInterval(()=>{if(currentSessionId)loadJoined()},8000);
-if(currentSessionId)subscribeJoined();
+setInterval(()=>{if(currentSessionId)loadJoined()},8000);if(currentSessionId)subscribeJoined();
 </script>
 </body>
 </html>
