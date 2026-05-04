@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>即時排行榜｜投影版</title>
-<style>
-:root{--bg:#070b18;--card:#10182b;--text:#e5e7eb;--dim:#94a3b8;--gold:#facc15;--teal:#2dd4bf;--pink:#f472b6;--border:rgba(255,255,255,.12)}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans TC",sans-serif;background:radial-gradient(circle at 10% 10%,rgba(250,204,21,.10),transparent 35%),radial-gradient(circle at 90% 90%,rgba(45,212,191,.10),transparent 35%),var(--bg);color:var(--text);min-height:100vh}.header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 32px;border-bottom:1px solid var(--border);background:rgba(7,11,24,.92);position:sticky;top:0;z-index:10}.title h1{margin:0;font-size:34px;color:var(--gold);letter-spacing:.04em}.title p{margin:6px 0 0;color:var(--dim);font-size:15px}.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}button,select{border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:10px;font-size:14px;cursor:pointer}button:hover,select:hover{background:rgba(255,255,255,.12)}.main{padding:28px 32px 36px;display:grid;grid-template-columns:1fr 1fr;gap:24px}@media(max-width:900px){.main{grid-template-columns:1fr;padding:18px}.title h1{font-size:26px}}.card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.35)}.card h2{margin:0 0 18px;font-size:28px;display:flex;align-items:center;justify-content:space-between}.badge{font-size:13px;color:var(--dim);border:1px solid var(--border);padding:5px 12px;border-radius:999px}.rank-list{display:flex;flex-direction:column;gap:12px}.rank-row{display:grid;grid-template-columns:58px 1fr 110px;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);transition:all .25s ease}.rank-row.top1{background:linear-gradient(90deg,rgba(250,204,21,.22),rgba(255,255,255,.05));border-color:rgba(250,204,21,.42);transform:scale(1.015)}.rank-row.top2{background:linear-gradient(90deg,rgba(45,212,191,.17),rgba(255,255,255,.05))}.rank-row.top3{background:linear-gradient(90deg,rgba(244,114,182,.14),rgba(255,255,255,.05))}.rank-num{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:22px;font-weight:900;background:rgba(255,255,255,.10)}.top1 .rank-num{background:var(--gold);color:#111}.top2 .rank-num{background:var(--teal);color:#06201d}.top3 .rank-num{background:var(--pink);color:#250714}.name{font-size:24px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sub{margin-top:5px;font-size:14px;color:var(--dim)}.score{text-align:right;font-size:32px;font-weight:900;color:var(--gold);font-family:Consolas,monospace}.empty{color:var(--dim);text-align:center;padding:48px 12px;border:1px dashed var(--border);border-radius:18px}.footer{padding:0 32px 24px;color:var(--dim);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-</style>
+  <meta charset="UTF-8">
+  <title>排行榜</title>
+  <style>
+    body { font-family: Arial, "Noto Sans TC"; background:#0f172a; color:white; padding:30px; }
+    .card { background:#1e293b; padding:20px; border-radius:16px; margin-bottom:20px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border-bottom:1px solid #334155; padding:10px; text-align:left; }
+  </style>
 </head>
 <body>
-<div class="header"><div class="title"><h1>🏆 即時排行榜｜投影版</h1><p>團體排行＋個人暱稱排行｜適合教室大螢幕展示</p></div><div class="controls"><select id="limitSelect" onchange="renderAll()"><option value="5">顯示前 5 名</option><option value="10">顯示前 10 名</option><option value="999">顯示全部</option></select><button onclick="renderAll()">🔄 重新整理</button><button onclick="toggleAutoRefresh()" id="autoBtn">⏱ 自動刷新：開</button><button onclick="location.href='teacher.html'">← 老師控制台</button></div></div>
-<div class="main"><section class="card"><h2>👥 團體排行 <span class="badge" id="teamCount">0 組</span></h2><div class="rank-list" id="teamList"></div></section><section class="card"><h2>🌟 個人暱稱排行 <span class="badge" id="studentCount">0 人</span></h2><div class="rank-list" id="studentList"></div></section></div>
-<div class="footer"><div>提示：個人排行只顯示暱稱，避免公開真實姓名造成尷尬。</div><div id="lastUpdate">最後更新：--</div></div>
-<script src="shared/students.js"></script>
+
+<h1>即時排行榜</h1>
+
+<div class="card">
+  <h2>小組成績</h2>
+  <table id="teamTable"></table>
+</div>
+
+<div class="card">
+  <h2>個人成績</h2>
+  <table id="studentTable"></table>
+</div>
+
 <script src="shared/scoring.js"></script>
 <script>
-let autoRefresh=true;let refreshTimer=null;
-function safeLoadStudents(){try{if(typeof loadStudents==="function")loadStudents()}catch(e){}}
-function safeLoadScores(){try{if(typeof loadScores==="function")loadScores()}catch(e){}}
-function getScores(){return JSON.parse(localStorage.getItem("SCORE_LOG")||"[]")}
-function getStudents(){return JSON.parse(localStorage.getItem("STUDENTS")||"[]")}
-function nicknameMap(){const students=getStudents();const map={};students.forEach(s=>{if(s.student_id){map[s.student_id]={name:s.name||s.student_name||"",nickname:s.nickname||s.nick||"",team_name:s.team_name||""}}});const current=JSON.parse(localStorage.getItem("CURRENT_STUDENT")||"{}");if(current.student_id){map[current.student_id]={...(map[current.student_id]||{}),name:current.name||map[current.student_id]?.name||"",nickname:current.nickname||map[current.student_id]?.nickname||"",team_name:current.team_name||map[current.student_id]?.team_name||""}}return map}
-function buildTeamRanking(){const scores=getScores();const result={};scores.forEach(r=>{const team=r.team_name||"未分組";if(!result[team])result[team]={name:team,score:0,count:0};result[team].score+=Number(r.team_score||r.individual_score||0);result[team].count+=1});return Object.values(result).sort((a,b)=>b.score-a.score)}
-function buildStudentRanking(){const scores=getScores();const nmap=nicknameMap();const result={};scores.forEach(r=>{const sid=r.student_id||"";if(!sid||sid==="GROUP")return;const info=nmap[sid]||{};if(!result[sid]){result[sid]={student_id:sid,name:info.name||r.student_name||"",nickname:info.nickname||r.nickname||"",team_name:info.team_name||r.team_name||"",score:0,count:0}}result[sid].score+=Number(r.individual_score||0);result[sid].count+=1});return Object.values(result).sort((a,b)=>b.score-a.score)}
-function rowHTML(item,index,type){const cls=index===0?"top1":index===1?"top2":index===2?"top3":"";const medal=index===0?"🥇":index===1?"🥈":index===2?"🥉":index+1;let mainName=item.name;let sub="";if(type==="student"){mainName=item.nickname||"👤同學";sub=`${item.team_name||"未分組"}｜作答 ${item.count||0} 次`}else{sub=`累積紀錄 ${item.count||0} 筆`}return `<div class="rank-row ${cls}"><div class="rank-num">${medal}</div><div><div class="name">${mainName}</div><div class="sub">${sub}</div></div><div class="score">${item.score}</div></div>`}
-function renderTeams(){const limit=Number(document.getElementById("limitSelect").value);const teams=buildTeamRanking();document.getElementById("teamCount").textContent=`${teams.length} 組`;document.getElementById("teamList").innerHTML=teams.length?teams.slice(0,limit).map((t,i)=>rowHTML(t,i,"team")).join(""):`<div class="empty">尚無團體成績。請先進入遊戲加分。</div>`}
-function renderStudents(){const limit=Number(document.getElementById("limitSelect").value);const students=buildStudentRanking();document.getElementById("studentCount").textContent=`${students.length} 人`;document.getElementById("studentList").innerHTML=students.length?students.slice(0,limit).map((s,i)=>rowHTML(s,i,"student")).join(""):`<div class="empty">尚無個人成績。若目前只有小組加分，個人排行會先空白。</div>`}
-function renderAll(){safeLoadStudents();safeLoadScores();renderTeams();renderStudents();document.getElementById("lastUpdate").textContent="最後更新："+new Date().toLocaleString("zh-TW")}
-function toggleAutoRefresh(){autoRefresh=!autoRefresh;document.getElementById("autoBtn").textContent=autoRefresh?"⏱ 自動刷新：開":"⏱ 自動刷新：關";if(autoRefresh){refreshTimer=setInterval(renderAll,3000)}else{clearInterval(refreshTimer)}}
-renderAll();refreshTimer=setInterval(renderAll,3000);
+loadScores();
+
+const teamScores = getTeamScores();
+document.getElementById("teamTable").innerHTML =
+  "<tr><th>組別</th><th>分數</th></tr>" +
+  Object.entries(teamScores)
+    .sort((a,b) => b[1] - a[1])
+    .map(([team, score]) => `<tr><td>${team}</td><td>${score}</td></tr>`)
+    .join("");
+
+const individualScores = getIndividualScores();
+document.getElementById("studentTable").innerHTML =
+  "<tr><th>學號</th><th>姓名</th><th>組別</th><th>分數</th></tr>" +
+  individualScores
+    .sort((a,b) => b.score - a.score)
+    .map(s => `<tr><td>${s.student_id}</td><td>s.nickname || s.name</td><td>${s.team_name}</td><td>${s.score}</td></tr>`)
+    .join("");
 </script>
+
 </body>
 </html>

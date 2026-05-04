@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理互動遊戲中心</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial,"Noto Sans TC",sans-serif;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+.container {
+  text-align:center;
+  max-width:900px;
+}
+
+h1 {
+  font-size:42px;
+  color:#facc15;
+  margin-bottom:10px;
+}
+
+.subtitle {
+  color:#94a3b8;
+  margin-bottom:40px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.card {
+  background:rgba(255,255,255,0.05);
+  padding:25px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.card h2 {
+  margin-bottom:15px;
+  color:#2dd4bf;
+}
+
+button {
+  width:100%;
+  padding:15px;
+  margin:8px 0;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.primary {
+  background:linear-gradient(135deg,#facc15,#f97316);
+  color:black;
+}
+
+.secondary {
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+.student {
+  background:linear-gradient(135deg,#2dd4bf,#0ea5e9);
+  color:black;
+  font-size:18px;
+}
+
+.footer {
+  margin-top:30px;
+  font-size:12px;
+  color:#64748b;
+}
+
+@media(max-width:700px){
+  .grid { grid-template-columns:1fr; }
+  h1 { font-size:30px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🎮 護理互動遊戲中心</h1>
+  <div class="subtitle">Nursing Interactive Learning System</div>
+
+  <div class="grid">
+
+    <!-- 老師 -->
+    <div class="card">
+      <h2>👩‍🏫 老師專區</h2>
+
+      <button class="primary" onclick="go('start.html')">
+        🚀 開課展示
+      </button>
+
+      <button class="secondary" onclick="go('report.html')">
+        📊 成果報告
+      </button>
+
+      <button class="secondary" onclick="go('links.html')">
+        🔗 QR管理
+      </button>
+    </div>
+
+    <!-- 學生 -->
+    <div class="card">
+      <h2>👨‍🎓 學生入口</h2>
+
+      <button class="student" onclick="go('student-entry.html')">
+        📱 進入課堂
+      </button>
+
+      <button class="secondary" onclick="go('leaderboard.html')">
+        🏆 即時排行榜
+      </button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Hungkuang University Nursing Department
+  </div>
+
+</div>
+
+<script>
+function go(page){
+  location.href = page;
+}
+</script>
+
+</body>
+</html>
