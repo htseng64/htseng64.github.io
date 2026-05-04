@@ -319,19 +319,10 @@ body{background-image:
 // ▼▼▼ 老師在這裡填入設定，存檔後上傳 GitHub ▼▼▼
 // ═══════════════════════════════════════════════
 const CONFIG = {
-  supabase_url     : 'https://ibvbvglpknixedzoaraa.supabase.co',   // 貼入：https://xxxx.supabase.co
-  supabase_key     : 'sb_publishable_9zCVCnvL0gQlgbbtllnkCg_JkcCdUcg',   // 貼入：eyJhbGci... (anon key)
-  course_name      : '內外護理學綜論',
-  student_page     : 'student-entry-v2.html',
-
-  // ── 資料表名稱 ──
-  roster_table     : 'roster',       // 學生名單表格
-
-  // ── roster 表的欄位名稱（依 Supabase 實際欄位）──
-  field_student_id : '學號',
-  field_name       : '姓名',
-  field_group      : '組別',
-  field_nickname   : '暱稱',
+  supabase_url : 'https://ibvbvglpknixedzoaraa.supabase.co',   // 貼入：https://xxxx.supabase.co
+  supabase_key : 'sb_publishable_9zCVCnvL0gQlgbbtllnkCg_JkcCdUcg',   // 貼入：eyJhbGci... (anon key)
+  course_name  : '內外護理學綜論',   // 課程名稱（顯示在大標題）
+  student_page : 'student-entry-v2.html', // 學生入場頁面檔名
 };
 // ▲▲▲ 只需改這裡 ▲▲▲
 // ═══════════════════════════════════════════════
@@ -421,21 +412,13 @@ async function runChecks(){
     setCheck('chk-parts','err','✗ '+e.message);
   }
 
-  // Check roster + count + field names
+  // Check roster + count
   try{
-    const tbl = CONFIG.roster_table || 'roster';
-    const fid  = CONFIG.field_student_id || '學號';
-    const {count, error:e3} = await SB.from(tbl).select('*',{count:'exact',head:true});
+    const {data:r, error:e3} = await SB.from('roster').select('id',{count:'exact',head:true});
     if(e3) throw e3;
-    if(count > 0){
-      // Verify the student_id field exists by fetching one row
-      const {data:sample} = await SB.from(tbl).select('*').limit(1).single();
-      const hasField = sample && (fid in sample);
-      setCheck('chk-roster','ok',
-        `✓ ${count} 筆 · 學號欄位「${fid}」${hasField ? '✓':'⚠ 欄位名稱可能不符'}`);
-    } else {
-      setCheck('chk-roster','wait',`⚠ 表格「${tbl}」尚無名單`);
-    }
+    const {count} = await SB.from('roster').select('*',{count:'exact',head:true});
+    setCheck('chk-roster', count>0 ? 'ok' : 'wait',
+      count>0 ? `✓ ${count} 筆` : '⚠ 尚無名單');
   } catch(e){
     setCheck('chk-roster','err','✗ '+e.message);
   }
@@ -464,17 +447,8 @@ function showSetupHint(){
 function makeStudentURL(sessId){
   const {url, key} = getSupabaseConfig();
   const base = new URL(CONFIG.student_page, location.href).href;
-  const params = new URLSearchParams({
-    session_id : sessId,
-    sb_url     : url,
-    sb_key     : key,
-    tbl_roster : CONFIG.roster_table     || 'roster',
-    fld_sid    : CONFIG.field_student_id || '學號',
-    fld_name   : CONFIG.field_name       || '姓名',
-    fld_group  : CONFIG.field_group      || '組別',
-    fld_nick   : CONFIG.field_nickname   || '暱稱',
-  });
-  return `${base}?${params.toString()}`;
+  // Embed sb_url & sb_key in URL so student page works on any device
+  return `${base}?session_id=${encodeURIComponent(sessId)}&sb_url=${encodeURIComponent(url)}&sb_key=${encodeURIComponent(key)}`;
 }
 
 async function oneClickStart(){

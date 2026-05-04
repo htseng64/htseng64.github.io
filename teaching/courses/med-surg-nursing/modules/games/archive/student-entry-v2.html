@@ -424,9 +424,6 @@ function routeOnLoad(){
     return;
   }
   if(sessId) SESSION.id=sessId;
-  // Also read session from URL param name 'session_id' (from start.html)
-  const urlSessId = params.get('session_id');
-  if(urlSessId && !SESSION.id) SESSION.id = urlSessId;
 
   // Check config
   const savedCfg=lsGet('config',null);
@@ -438,7 +435,7 @@ function routeOnLoad(){
   ROSTER=lsGet('roster',[]);
   // If no local roster but Supabase is connected, fetch from server
   if(!ROSTER.length && SB){
-    SB.from(CONFIG.roster_table||'roster').select('*').then(({data})=>{
+    SB.from('roster').select('*').then(({data})=>{
       if(data&&data.length){ ROSTER=data; lsSet('roster',data); }
     });
   }
@@ -500,34 +497,23 @@ async function lookupSid(){
   const btn=document.getElementById('sidBtn');
   btn.disabled=true; btn.textContent='查詢中…';
 
-  // Use config field names
-  const F = {
-    id  : CONFIG.field_student_id || '學號',
-    name: CONFIG.field_name       || '姓名',
-    grp : CONFIG.field_group      || '組別',
-    nick: CONFIG.field_nickname   || '暱稱',
-  };
-  const tbl = CONFIG.roster_table || 'roster';
+  // 1) Check local roster cache first (faster)
+  let found=ROSTER.find(r=>r.id===sid||r.student_id===sid);
 
-  // 1) Check local roster cache (works offline)
-  let found = ROSTER.find(r =>
-    r[F.id]===sid || r.student_id===sid || r['學號']===sid || r.id===sid
-  );
-
-  // 2) Query Supabase
-  if(!found && SB){
-    const {data} = await SB.from(tbl).select('*').eq(F.id, sid).maybeSingle();
-    if(data) found = data;
+  // 2) If not found locally, try Supabase
+  if(!found&&SB){
+    const {data}=await SB.from('roster').select('*').eq('student_id',sid).maybeSingle();
+    if(data) found=data;
   }
 
   btn.disabled=false; btn.textContent='查詢身分 →';
 
   if(found){
     _foundStudent={
-      student_id: found[F.id] || found.student_id || sid,
-      name      : found[F.name] || found.name || found.real_name || '',
-      group     : found[F.grp]  || found.group_name || found.group || '未分組',
-      nickname  : found[F.nick] || found.nickname || found[F.name] || found.name || '',
+      student_id: found.student_id||found.id||sid,
+      name: found.name||found.real_name||'',
+      group: found.group_name||found.group||found['組別']||'未分組',
+      nickname: found.nickname||found['暱稱']||found.name||''
     };
     // Show confirmation
     const grpColor=getGroupColor(_foundStudent.group);
@@ -780,25 +766,14 @@ async function uploadRoster(){
       else if(cols.length===4)[semester,student_id,name,group_name]=cols;
       else[student_id,name,group_name]=cols;
       if(!student_id||!name) return;
-      // Store with BOTH Chinese and English keys for maximum compatibility
-      const row = {};
-      row[CONFIG.field_student_id||'學號'] = student_id;
-      row[CONFIG.field_name||'姓名']       = name;
-      row[CONFIG.field_group||'組別']      = group_name||'未分組';
-      row[CONFIG.field_nickname||'暱稱']   = nickname||name;
-      row[CONFIG.field_semester||'學期']   = semester||'1142';
-      // Also store English aliases for internal use
-      row.student_id = student_id; row.name = name;
-      row.group_name = group_name||'未分組'; row.nickname = nickname||name;
-      rows.push(row);
+      rows.push({student_id,name,group_name:group_name||'未分組',nickname:nickname||name,semester:semester||'1142'});
     });
     // Save locally
     lsSet('roster',rows);
     ROSTER=rows;
     // Upload to Supabase
     if(SB&&rows.length){
-      const tblName = CONFIG.roster_table||'roster';
-    const {error}=await SB.from(tblName).upsert(rows);
+      const {error}=await SB.from('roster').upsert(rows);
       if(error) console.warn('roster upload:',error.message);
     }
     document.getElementById('rosterStatus').textContent=`✓ 已載入 ${rows.length} 位學生（${[...new Set(rows.map(r=>r.group_name))].length} 組）`;
