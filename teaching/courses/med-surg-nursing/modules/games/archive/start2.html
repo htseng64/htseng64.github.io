@@ -321,7 +321,6 @@ body{background-image:
 const CONFIG = {
   supabase_url     : 'https://ibvbvglpknixedzoaraa.supabase.co',   // 貼入：https://xxxx.supabase.co
   supabase_key     : 'sb_publishable_9zCVCnvL0gQlgbbtllnkCg_JkcCdUcg',   // 貼入：eyJhbGci... (anon key)
-  default_password: '1142', // 可預設密碼（上課前不需再輸入）
   course_name      : '內外護理學綜論',
   student_page     : 'student-entry.html',
 
@@ -530,16 +529,16 @@ function showQR(url, pwd){
 async function loadJoined(){
   if(!SB || !currentSessionId) return;
   const {data, error} = await SB.from('participants')
-    .select('id,nickname,student_id,group_name,verified')
+    .select('id,nickname,student_id,team_name,verified')
     .eq('session_id', currentSessionId)
     .order('created_at', {ascending:false});
-  if(error){ console.warn('loadJoined error:', error.message); return; }
+  if(error) return;
   renderJoined(data || []);
 }
 
 function renderJoined(rows){
   document.getElementById('joinCount').textContent = rows.length;
-  const teams = new Set(rows.map(r=>r.group_name||r.team_name).filter(Boolean));
+  const teams = new Set(rows.map(r=>r.team_name).filter(Boolean));
   document.getElementById('teamCount').textContent = teams.size;
 
   const el = document.getElementById('joinedList');
@@ -554,7 +553,7 @@ function renderJoined(rows){
     <div class="joined-item">
       <div class="odot"></div>
       <div class="jname">${r.nickname||'—'} ${r.verified?'<span style="color:var(--teal);font-size:10px">✓</span>':''}</div>
-      <div class="jteam" style="color:${gc(r.group_name||r.team_name)}">${r.group_name||r.team_name||'未分組'}</div>
+      <div class="jteam" style="color:${gc(r.team_name)}">${r.team_name||'未分組'}</div>
       <div class="jid">${r.student_id||''}</div>
     </div>`).join('');
 }
