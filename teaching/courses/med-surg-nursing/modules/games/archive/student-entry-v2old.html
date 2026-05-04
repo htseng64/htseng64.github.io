@@ -411,50 +411,28 @@ function showScreen(id){
 function routeOnLoad(){
   const params=new URLSearchParams(location.search);
   const role=params.get('role')||params.get('mode');
-  // Support both ?s=ID (old) and ?session_id=ID (from start.html QR)
-  const sessId = params.get('s') || params.get('session_id') || '';
+  const sessId=params.get('s');
 
   // Teacher mode
   if(role==='teacher'||role==='host'){showScreen('sc-teacher');return;}
 
-  // Set session ID first
-  if(sessId) SESSION.id = sessId;
-
-  // Student returning (same session, same browser)
+  // Student returning
   const saved=lsGet('my_session',null);
-  if(saved && saved.session_id===SESSION.id && saved.nick){
-    MY=saved;
+  if(saved&&saved.session_id===sessId&&saved.nick){
+    MY=saved; SESSION.id=sessId;
     showScreen('sc-game');renderMyInfo();startLiveRanking();
     return;
   }
+  if(sessId) SESSION.id=sessId;
+  // Also read session from URL param name 'session_id' (from start.html)
+  const urlSessId = params.get('session_id');
+  if(urlSessId && !SESSION.id) SESSION.id = urlSessId;
 
-  // Read Supabase config from URL params (embedded by start.html in QR)
-  const pUrl  = params.get('sb_url');
-  const pKey  = params.get('sb_key');
-
-  if(pUrl && pKey){
-    // Config came via QR — use it directly, no setup screen needed
-    CONFIG.supabase_url     = pUrl;
-    CONFIG.supabase_key     = pKey;
-    CONFIG.roster_table     = params.get('tbl_roster') || CONFIG.roster_table;
-    CONFIG.field_student_id = params.get('fld_sid')    || CONFIG.field_student_id;
-    CONFIG.field_name       = params.get('fld_name')   || CONFIG.field_name;
-    CONFIG.field_group      = params.get('fld_group')  || CONFIG.field_group;
-    CONFIG.field_nickname   = params.get('fld_nick')   || CONFIG.field_nickname;
-    lsSet('config', {url:pUrl, key:pKey}); // cache for next visit
-    initSB(pUrl, pKey);
-  } else if(CONFIG.supabase_url && CONFIG.supabase_key){
-    // Hardcoded config in file
-    initSB(CONFIG.supabase_url, CONFIG.supabase_key);
-  } else {
-    // Fallback: localStorage
-    const savedCfg = lsGet('config', null);
-    if(savedCfg && savedCfg.url && savedCfg.key){
-      CFG = savedCfg; initSB(CFG.url, CFG.key);
-    } else {
-      showScreen('sc-config'); return; // Only show config if truly nothing available
-    }
-  }
+  // Check config
+  const savedCfg=lsGet('config',null);
+  if(!savedCfg){showScreen('sc-config');return;}
+  CFG=savedCfg;
+  if(CFG.url&&CFG.key) initSB(CFG.url,CFG.key);
 
   // Load local roster cache
   ROSTER=lsGet('roster',[]);
@@ -481,20 +459,11 @@ async function checkPwd(){
   let ok=false;
   const savedSess=lsGet('current_session',null);
 
-  if(savedSess&&savedSess.id===SESSION.id&&(savedSess.passcode||savedSess.password)){
-    ok=(savedSess.passcode||savedSess.password)===val;
+  if(savedSess&&savedSess.id===SESSION.id&&savedSess.password){
+    ok=savedSess.password===val;
   } else if(SB&&SESSION.id){
-    // Column name is 'passcode' in sessions table
-    const {data,error}=await SB.from('sessions')
-      .select('passcode,password,session_name,name')
-      .eq('id',SESSION.id).single();
-    if(data){
-      // Support both 'passcode' and 'password' column names
-      const stored = data.passcode || data.password || '';
-      ok = stored===val;
-      SESSION.name = data.session_name || data.name || '';
-    }
-    if(error) console.warn('sessions query error:', error.message);
+    const {data}=await SB.from('sessions').select('password,name').eq('id',SESSION.id).single();
+    if(data){ok=data.password===val; SESSION.name=data.name;}
   } else {
     // Offline: accept any 2+ char password
     ok=val.length>=2;
