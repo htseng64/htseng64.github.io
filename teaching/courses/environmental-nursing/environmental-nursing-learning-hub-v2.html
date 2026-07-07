@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environmental Nursing Learning Hub</title>
+  <style>
+    :root{
+      --forest:#164734; --forest2:#226044; --sage:#7AA58C; --mint:#EAF4EE;
+      --blue:#2F7E9E; --gold:#C99A38; --white:#fff; --ink:#20352B; --muted:#5f7268;
+      --soft:#F7FAF8; --shadow:0 14px 40px rgba(22,71,52,.12); --radius:22px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Arial,'Noto Sans TC',sans-serif;background:var(--soft);color:var(--ink)}
+    a{color:inherit;text-decoration:none}.wrap{max-width:1180px;margin:auto;padding:0 22px}.top{position:sticky;top:0;z-index:10;background:rgba(247,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #dce9e1}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:72px}.brand{display:flex;gap:12px;align-items:center;font-weight:800;color:var(--forest)}.logo{width:44px;height:44px;border-radius:50%;background:var(--forest);display:grid;place-items:center;color:white;font-size:22px}.links{display:flex;gap:8px;flex-wrap:wrap}.links a{padding:10px 12px;border-radius:999px;font-size:14px;color:var(--muted)}.links a:hover{background:var(--mint);color:var(--forest)}
+    .hero{padding:72px 0 44px;background:radial-gradient(circle at 85% 8%,#cce7d7 0,transparent 26%),linear-gradient(135deg,#f8fbf9,#e7f2eb)}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}.tag{display:inline-flex;gap:8px;align-items:center;background:white;border:1px solid #dbe9e0;border-radius:999px;padding:9px 14px;color:var(--forest);font-weight:700;font-size:14px}.hero h1{font-size:clamp(40px,6vw,70px);line-height:1.02;margin:22px 0 14px;color:var(--forest)}.hero p{font-size:20px;line-height:1.6;color:var(--muted);max-width:700px}.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{border:0;border-radius:14px;padding:14px 18px;background:var(--forest);color:white;font-weight:800;box-shadow:var(--shadow)}.btn.secondary{background:white;color:var(--forest);border:1px solid #dbe9e0;box-shadow:none}
+    .visual{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.ward{border-radius:18px;background:linear-gradient(135deg,#eef5f0,#fff);padding:18px;min-height:330px;position:relative;overflow:hidden}.window{position:absolute;right:22px;top:22px;width:180px;height:122px;border-radius:16px;background:linear-gradient(#9bd2ec,#ddf6e7);border:8px solid white;box-shadow:0 8px 18px rgba(0,0,0,.08)}.bed{position:absolute;left:34px;bottom:54px;width:250px;height:70px;background:white;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.09)}.patient{position:absolute;left:75px;bottom:120px;font-size:54px}.plant{position:absolute;right:78px;bottom:38px;font-size:70px}.sun{position:absolute;right:160px;top:44px;font-size:34px}.water{position:absolute;right:28px;bottom:132px;font-size:42px}.caption{position:absolute;left:26px;top:24px;background:rgba(22,71,52,.92);color:white;border-radius:999px;padding:9px 13px;font-weight:800;font-size:13px}
+    section{padding:64px 0}.section-title{font-size:34px;color:var(--forest);margin:0 0 12px}.sub{font-size:17px;line-height:1.7;color:var(--muted);max-width:850px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid #e2eee7}.card h3{margin:0 0 10px;color:var(--forest);font-size:22px}.card p{color:var(--muted);line-height:1.65}.icon{font-size:42px;margin-bottom:12px}.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:center;margin-top:28px}.flowbox{background:white;border-radius:22px;padding:26px;text-align:center;box-shadow:var(--shadow);min-height:170px;border-top:8px solid var(--sage)}.flowbox:nth-child(3){border-top-color:var(--blue)}.flowbox:nth-child(5){border-top-color:var(--gold)}.flowbox .big{font-size:44px}.flowbox h3{color:var(--forest);font-size:24px}.arrow{font-size:34px;color:var(--sage);font-weight:900}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0}.tab{border:1px solid #cfe2d5;background:white;border-radius:999px;padding:12px 16px;color:var(--forest);font-weight:800;cursor:pointer}.tab.active{background:var(--forest);color:white}.panel{display:none;background:white;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}.panel.active{display:block}.module-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}.module{background:white;border-radius:18px;padding:18px;border-left:6px solid var(--sage);box-shadow:0 8px 24px rgba(22,71,52,.08)}.module b{color:var(--forest)}.case{background:linear-gradient(135deg,#164734,#226044);color:white;border-radius:var(--radius);padding:30px;box-shadow:var(--shadow)}.case h2{margin:0 0 10px;color:white}.case p{color:#d7eadf}.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.choice{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:18px;cursor:pointer}.choice:hover{background:rgba(255,255,255,.2)}.choice strong{display:block;color:#fff;margin-bottom:6px}.result{display:none;margin-top:18px;background:white;color:var(--ink);border-radius:18px;padding:18px}.result.show{display:block}.rubric{width:100%;border-collapse:collapse;background:white;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-top:22px}.rubric th{background:var(--forest);color:white;text-align:left}.rubric th,.rubric td{padding:14px;border-bottom:1px solid #e7eee9;vertical-align:top}.rubric td{color:var(--muted)}.quote{font-size:22px;line-height:1.6;color:var(--forest);background:var(--mint);border-left:8px solid var(--sage);padding:22px;border-radius:18px;margin-top:20px}.footer{padding:40px 0;background:var(--forest);color:#d7eadf;text-align:center}
+    @media(max-width:900px){.hero-grid,.cards,.flow,.module-grid,.choices{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}.links{display:none}.visual{order:-1}.flowbox{min-height:auto}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="#home"><span class="logo">🌿</span><span>Environmental Nursing<br><small>Learning Hub</small></span></a>
+      <nav class="links">
+        <a href="#framework">Framework</a><a href="#spaces">Spaces</a><a href="#modules">18 Weeks</a><a href="#case">Case Lab</a><a href="#assessment">Assessment</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="tag">EMI Nursing Course · Healing Environment</span>
+        <h1>Can the Environment Heal?</h1>
+        <p>Explore how green, blue, white, light, color, sound, and air environments shape patient behavior and recovery.</p>
+        <div class="cta"><a class="btn" href="#framework">Start the Framework</a><a class="btn secondary" href="#case">Try the Case Lab</a></div>
+      </div>
+      <div class="visual"><div class="ward"><div class="caption">Healing hospital room</div><div class="window"></div><div class="sun">☀️</div><div class="water">💧</div><div class="bed"></div><div class="patient">🧓</div><div class="plant">🌿</div></div></div>
+    </div>
+  </main>
+
+  <section id="framework">
+    <div class="wrap">
+      <h2 class="section-title">Core Course Framework</h2>
+      <p class="sub">This course uses one simple logic chain. Nurses assess the care environment, predict the patient behavior it may trigger, and design safe interventions that support recovery.</p>
+      <div class="flow" aria-label="Healing Environment to Health Behavior to Recovery">
+        <div class="flowbox"><div class="big">🏥</div><h3>Healing Environment</h3><p>Nature, water, light, color, quiet, air quality, layout, and social space.</p></div>
+        <div class="arrow">→</div>
+        <div class="flowbox"><div class="big">🚶</div><h3>Health Behavior</h3><p>Sleep, mobility, stress regulation, social connection, self-care, and safety.</p></div>
+        <div class="arrow">→</div>
+        <div class="flowbox"><div class="big">❤️</div><h3>Recovery</h3><p>Better comfort, mood, function, patient experience, and sustainable care.</p></div>
+      </div>
+      <div class="quote">Nursing perspective: we do not only provide treatment; we also design conditions that make healthy behavior easier.</div>
+    </div>
+  </section>
+
+  <section id="spaces">
+    <div class="wrap">
+      <h2 class="section-title">Therapeutic Spaces</h2>
+      <p class="sub">Click each tab. These concepts support your EMI demonstrations and the full 18-week course.</p>
+      <div class="tabs">
+        <button class="tab active" onclick="openPanel('green',this)">🌳 Green Space</button>
+        <button class="tab" onclick="openPanel('blue',this)">🌊 Blue Space</button>
+        <button class="tab" onclick="openPanel('white',this)">🤍 White / Quiet Space</button>
+        <button class="tab" onclick="openPanel('color',this)">🎨 Color & Light</button>
+      </div>
+      <div id="green" class="panel active"><h3>Green Space</h3><p>Gardens, trees, indoor plants, and nature views can reduce stress, support mood, encourage walking, and create social connection.</p><b>Example intervention:</b> supervised garden walk after lunch.</div>
+      <div id="blue" class="panel"><h3>Blue Space</h3><p>Water views, fountains, rivers, ponds, and coastal environments can support calmness, restoration, and emotional regulation.</p><b>Example intervention:</b> safe seated rest near a water feature or nature video with water sounds.</div>
+      <div id="white" class="panel"><h3>White / Quiet Space</h3><p>Quiet rooms, uncluttered design, and restorative pause areas reduce sensory overload and support attention, sleep, and reflection.</p><b>Example intervention:</b> protected quiet hour with reduced alarms and dimmed light.</div>
+      <div id="color" class="panel"><h3>Color & Light</h3><p>Soft blue, sage green, warm beige, daylight, and circadian-friendly lighting can influence perceived comfort and sleep-wake rhythm.</p><b>Example intervention:</b> morning daylight exposure and calming color accents.</div>
+    </div>
+  </section>
+
+  <section id="modules">
+    <div class="wrap">
+      <h2 class="section-title">18-Week EMI Course Map</h2>
+      <p class="sub">A modular structure for an Environmental Nursing course: from concept, to assessment, to design, to implementation.</p>
+      <div class="module-grid">
+        <div class="module"><b>Module 1<br>Weeks 1–4</b><p>Foundations: environmental nursing, planetary health, SDGs, health behavior.</p></div>
+        <div class="module"><b>Module 2<br>Weeks 5–8</b><p>Healing environments: color, light, sound, air, thermal comfort, evidence-based design.</p></div>
+        <div class="module"><b>Module 3<br>Weeks 9–13</b><p>Nature-based care: green space, blue space, ecotherapy, healing gardens, mobility.</p></div>
+        <div class="module"><b>Module 4<br>Weeks 14–18</b><p>Sustainable nursing leadership: green hospital project, policy, showcase, reflection.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case">
+    <div class="wrap">
+      <div class="case">
+        <h2>Case Lab: Mr. Chen</h2>
+        <p>Mr. Chen is 72 years old, post-operative day 3 after hip surgery. He feels anxious, sleeps poorly, and is afraid to walk. Your team has five minutes to recommend one environmental nursing intervention.</p>
+        <div class="choices">
+          <div class="choice" onclick="showResult('A')"><strong>A. Healing Garden</strong>Encourage supervised walking.</div>
+          <div class="choice" onclick="showResult('B')"><strong>B. Nature View</strong>Move bed near window.</div>
+          <div class="choice" onclick="showResult('C')"><strong>C. Quiet Space</strong>Reduce night noise.</div>
+          <div class="choice" onclick="showResult('D')"><strong>D. Blue Space Video</strong>Use water-nature relaxation.</div>
+        </div>
+        <div id="caseResult" class="result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="assessment">
+    <div class="wrap">
+      <h2 class="section-title">EMI Activity & Assessment</h2>
+      <p class="sub">Use this for your 15-minute EMI demonstration. Students analyze a case, choose an intervention, explain the behavior pathway, and justify expected recovery outcomes.</p>
+      <table class="rubric">
+        <tr><th>Bloom Level</th><th>Student Task</th><th>Evidence of Learning</th></tr>
+        <tr><td>Understand</td><td>Explain a healing environment factor.</td><td>Uses one keyword accurately.</td></tr>
+        <tr><td>Apply</td><td>Choose one intervention for Mr. Chen.</td><td>Matches intervention to patient need.</td></tr>
+        <tr><td>Analyze</td><td>Connect environment → behavior → recovery.</td><td>Explains the pathway clearly.</td></tr>
+        <tr><td>Evaluate</td><td>Defend why this option is feasible and safe.</td><td>Considers safety, cost, or ward context.</td></tr>
+        <tr><td>Create</td><td>Design one improved nursing care environment.</td><td>Produces a concise team recommendation.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="wrap">Environmental Nursing Learning Hub · Healing Environment → Health Behavior → Recovery</div></footer>
+
+<script>
+function openPanel(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+function showResult(option){
+  const text={
+    A:'Good choice. Healing garden exposure may support walking behavior, reduce anxiety, and promote functional recovery. Safety check: fall risk and vital signs.',
+    B:'Good choice. A nature view is low-cost and feasible for a patient who is not ready to walk. It may reduce stress and support sleep.',
+    C:'Good choice. Quiet space targets sleep behavior directly. It is realistic even in hospitals without gardens.',
+    D:'Good choice. A blue-space video is useful when outdoor access is limited. It may support relaxation before sleep.'
+  };
+  const box=document.getElementById('caseResult');
+  box.innerHTML='<b>Suggested feedback:</b> '+text[option]+'<br><br><b>Sentence frame:</b> We recommend ______ because it may improve ______ by ______.';
+  box.classList.add('show');
+}
+</script>
+</body>
+</html>
