@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environmental Nursing · Learning Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1B4332;
+    --forest-2:#2D5A45;
+    --sage:#6B9C7D;
+    --moss:#9CC5A1;
+    --gold:#C89B3C;
+    --tint:#EEF4EF;
+    --text:#223027;
+    --muted:#5B6B62;
+    --white:#FFFFFF;
+    --card-shadow: 0 6px 20px rgba(27,67,50,0.09);
+    --sidebar-w: 268px;
+    --sidebar-w-collapsed: 76px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Noto Sans TC', sans-serif;
+    color:var(--text);
+    background:var(--tint);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Noto Serif TC', serif;margin:0;color:var(--forest);}
+  p{line-height:1.7;margin:0 0 0.9em 0;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---------- Layout ---------- */
+  .app{display:flex;min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    background:var(--forest);
+    color:var(--white);
+    display:flex;
+    flex-direction:column;
+    transition:width 0.25s ease;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:hidden;
+    z-index:20;
+  }
+  .app.collapsed .sidebar{ width:var(--sidebar-w-collapsed); }
+
+  .brand{
+    display:flex;align-items:center;gap:0.7rem;
+    padding:1.35rem 1.2rem;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    white-space:nowrap;
+  }
+  .brand-mark{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--gold);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:19px;
+  }
+  .brand-text{overflow:hidden;}
+  .brand-text .t1{font-family:'Noto Serif TC',serif;font-weight:700;font-size:1.02rem;line-height:1.25;}
+  .brand-text .t2{font-size:0.72rem;color:var(--moss);letter-spacing:0.03em;}
+  .app.collapsed .brand-text{display:none;}
+
+  .nav{flex:1;padding:0.9rem 0.7rem;overflow-y:auto;}
+  .nav-item{
+    display:flex;align-items:center;gap:0.85rem;
+    width:100%;
+    padding:0.72rem 0.85rem;
+    border:none;background:transparent;color:var(--moss);
+    border-radius:10px;
+    font-size:0.92rem;text-align:left;
+    margin-bottom:0.25rem;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .nav-item .ic{
+    flex-shrink:0;width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.05rem;
+  }
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:var(--white);}
+  .nav-item.active{background:var(--forest-2);color:var(--white);}
+  .nav-item.active .ic{color:var(--gold);}
+  .app.collapsed .nav-item span.label{display:none;}
+  .app.collapsed .nav-item{justify-content:center;}
+
+  .sidebar-foot{
+    padding:1rem;border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .collapse-btn{
+    width:100%;background:var(--forest-2);color:var(--moss);
+    border:none;border-radius:10px;padding:0.6rem;
+    font-size:0.8rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  }
+  .collapse-btn:hover{color:var(--white);}
+
+  /* ---------- Main ---------- */
+  .main{
+    flex:1;min-width:0;
+    padding:2.6rem clamp(1.2rem, 4vw, 3.6rem) 4rem;
+  }
+  .topline{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:2.2rem;
+  }
+  .mobile-toggle{display:none;background:var(--forest);color:var(--white);border:none;border-radius:8px;padding:0.5rem 0.7rem;font-size:1rem;}
+
+  .section{display:none;animation:fadeIn 0.35s ease;}
+  .section.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:0.12em;
+    font-size:0.78rem;font-weight:700;color:var(--sage);
+    margin-bottom:0.5rem;
+  }
+  .page-title{font-size:2.05rem;font-weight:700;margin-bottom:0.6rem;}
+  .page-sub{color:var(--muted);max-width:640px;margin-bottom:2.2rem;font-size:1.02rem;}
+
+  .card{
+    background:var(--white);border-radius:16px;
+    box-shadow:var(--card-shadow);
+    padding:1.5rem 1.6rem;
+  }
+  .grid{display:grid;gap:1.1rem;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-5{grid-template-columns:repeat(5,1fr);}
+  @media (max-width:900px){ .grid-2,.grid-3,.grid-5{grid-template-columns:1fr;} }
+
+  /* ---------- Overview ---------- */
+  .element-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.4rem;}
+  .element-chip{
+    flex:1;min-width:140px;
+    background:var(--forest);color:var(--white);
+    border-radius:14px;padding:1.1rem 1rem;
+    text-align:center;
+  }
+  .element-chip .ic{font-size:1.7rem;margin-bottom:0.4rem;}
+  .element-chip .lbl{font-weight:700;font-size:0.95rem;}
+  .element-chip .sub{font-size:0.78rem;color:var(--moss);margin-top:0.2rem;}
+  .flow{
+    display:flex;align-items:center;justify-content:center;gap:0.6rem;
+    margin-top:1.6rem;flex-wrap:wrap;font-family:'Noto Serif TC',serif;
+    color:var(--forest);font-weight:700;font-size:1.05rem;
+  }
+  .flow .arrow{color:var(--sage);}
+
+  .resource-links{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem;}
+  @media (max-width:900px){.resource-links{grid-template-columns:1fr;}}
+  .res-card{
+    background:var(--white);border-radius:14px;padding:1.2rem 1.3rem;
+    box-shadow:var(--card-shadow);border:1px solid transparent;
+    transition:border-color 0.2s ease, transform 0.15s ease;
+    text-align:left;
+  }
+  .res-card:hover{border-color:var(--sage);transform:translateY(-2px);}
+  .res-card .ic-circle{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--tint);color:var(--forest);
+    display:flex;align-items:center;justify-content:center;font-size:1.25rem;
+    margin-bottom:0.7rem;
+  }
+  .res-card h4{font-size:1.02rem;margin-bottom:0.35rem;}
+  .res-card p{font-size:0.86rem;color:var(--muted);margin:0;}
+
+  /* ---------- Essential Skills ---------- */
+  .skill-row{
+    display:flex;gap:1.1rem;background:var(--white);border-radius:16px;
+    box-shadow:var(--card-shadow);padding:1.3rem 1.4rem;margin-bottom:1rem;
+    align-items:flex-start;
+  }
+  .skill-num{
+    flex-shrink:0;width:38px;height:38px;border-radius:50%;
+    background:var(--forest);color:var(--gold);font-family:'Noto Serif TC',serif;
+    font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .skill-row h4{margin-bottom:0.3rem;font-size:1.05rem;}
+  .skill-row p{margin:0;color:var(--muted);font-size:0.92rem;}
+
+  /* ---------- Vocabulary ---------- */
+  .vocab-controls{display:flex;gap:0.7rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+  .vocab-search{
+    flex:1;min-width:220px;padding:0.65rem 0.9rem;border-radius:10px;
+    border:1.5px solid #DCE6DF;font-size:0.92rem;font-family:inherit;
+  }
+  .vocab-search:focus{outline:none;border-color:var(--sage);}
+  .pill{
+    border:1.5px solid #DCE6DF;background:var(--white);color:var(--muted);
+    padding:0.55rem 1.05rem;border-radius:999px;font-size:0.85rem;font-weight:500;
+  }
+  .pill.active{background:var(--forest);border-color:var(--forest);color:var(--white);}
+  .vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  @media (max-width:900px){.vocab-grid{grid-template-columns:1fr;}}
+  .vocab-card{
+    background:var(--white);border-radius:14px;padding:1.1rem 1.2rem;
+    box-shadow:var(--card-shadow);
+  }
+  .vocab-card .term{font-weight:700;color:var(--forest);font-size:1rem;}
+  .vocab-card .zh{color:var(--sage);font-size:0.88rem;margin-bottom:0.4rem;}
+  .vocab-card .def{font-size:0.86rem;color:var(--muted);margin:0;}
+  .vocab-empty{color:var(--muted);font-style:italic;padding:1rem 0;}
+
+  /* ---------- Color Therapy ---------- */
+  .swatch-strip{display:flex;gap:0.7rem;flex-wrap:wrap;margin-top:1.4rem;}
+  .swatch{
+    flex:1;min-width:150px;border-radius:14px;padding:1.1rem;
+    cursor:pointer;border:2px solid transparent;
+    transition:transform 0.15s ease, border-color 0.15s ease;
+    color:var(--text);
+  }
+  .swatch:hover{transform:translateY(-3px);}
+  .swatch.selected{border-color:var(--forest);}
+  .swatch .name{font-weight:700;font-size:0.95rem;}
+  .swatch .use{font-size:0.78rem;margin-top:0.15rem;opacity:0.85;}
+  .swatch-detail{
+    margin-top:1.3rem;background:var(--white);border-radius:16px;
+    box-shadow:var(--card-shadow);padding:1.4rem 1.6rem;display:none;
+  }
+  .swatch-detail.show{display:block;}
+  .swatch-detail h4{margin-bottom:0.5rem;}
+  .swatch-detail .row{display:flex;gap:0.5rem;margin-bottom:0.35rem;font-size:0.92rem;}
+  .swatch-detail .row b{color:var(--forest);min-width:110px;flex-shrink:0;}
+  .caution{
+    margin-top:0.6rem;background:var(--tint);border-radius:10px;
+    padding:0.7rem 0.9rem;font-size:0.85rem;color:var(--muted);
+  }
+
+  /* ---------- Pre-Assignment ---------- */
+  .task-list{list-style:none;margin:0 0 1.8rem 0;padding:0;}
+  .task-item{
+    display:flex;align-items:flex-start;gap:0.8rem;
+    background:var(--white);border-radius:14px;box-shadow:var(--card-shadow);
+    padding:1rem 1.2rem;margin-bottom:0.8rem;
+  }
+  .task-item input[type=checkbox]{
+    margin-top:0.2rem;width:19px;height:19px;accent-color:var(--sage);flex-shrink:0;
+  }
+  .task-item.done .task-title{text-decoration:line-through;color:var(--muted);}
+  .task-title{font-weight:700;font-size:0.96rem;color:var(--forest);}
+  .task-desc{font-size:0.86rem;color:var(--muted);margin-top:0.15rem;}
+
+  .kwl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  @media (max-width:900px){.kwl-grid{grid-template-columns:1fr;}}
+  .kwl-col h4{font-size:0.92rem;color:var(--forest);margin-bottom:0.5rem;}
+  .kwl-col textarea{
+    width:100%;min-height:150px;border-radius:12px;border:1.5px solid #DCE6DF;
+    padding:0.8rem;font-family:inherit;font-size:0.88rem;resize:vertical;
+  }
+  .kwl-col textarea:focus{outline:none;border-color:var(--sage);}
+  .save-note{font-size:0.78rem;color:var(--muted);margin-top:0.5rem;font-style:italic;}
+
+  /* ---------- Rubric ---------- */
+  .rubric-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow);}
+  .rubric-table th, .rubric-table td{padding:0.85rem 0.9rem;text-align:left;font-size:0.86rem;vertical-align:top;}
+  .rubric-table th{background:var(--forest);color:var(--white);font-weight:700;}
+  .rubric-table tr:nth-child(even) td{background:var(--tint);}
+  .rubric-table td:first-child, .rubric-table th:first-child{font-weight:700;color:var(--forest);width:16%;}
+  .level-tag{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--sage);display:block;margin-bottom:2px;}
+
+  footer.page-foot{margin-top:2.6rem;font-size:0.8rem;color:var(--muted);text-align:center;}
+
+  /* ---------- Responsive: mobile sidebar ---------- */
+  @media (max-width:820px){
+    .sidebar{
+      position:fixed;left:0;top:0;height:100vh;width:var(--sidebar-w);
+      transform:translateX(-100%);transition:transform 0.25s ease;
+    }
+    .app.mobile-open .sidebar{transform:translateX(0);}
+    .app.collapsed .sidebar{width:var(--sidebar-w);}
+    .app.collapsed .brand-text{display:block;}
+    .app.collapsed .nav-item span.label{display:inline;}
+    .main{padding-top:1.6rem;}
+    .mobile-toggle{display:inline-flex;align-items:center;gap:0.4rem;}
+    .sidebar-foot{display:none;}
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--gold); outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌿</div>
+      <div class="brand-text">
+        <div class="t1">Environmental<br>Nursing</div>
+        <div class="t2">LEARNING HUB</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-target="overview"><span class="ic">🏠</span><span class="label">Overview</span></button>
+      <button class="nav-item" data-target="skills"><span class="ic">🎯</span><span class="label">Essential Skills</span></button>
+      <button class="nav-item" data-target="vocab"><span class="ic">📖</span><span class="label">Vocabulary Bank</span></button>
+      <button class="nav-item" data-target="color"><span class="ic">🎨</span><span class="label">Color Therapy</span></button>
+      <button class="nav-item" data-target="pre"><span class="ic">📝</span><span class="label">Pre-Assignment</span></button>
+      <button class="nav-item" data-target="rubric"><span class="ic">📋</span><span class="label">Rubric</span></button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="collapse-btn" id="collapseBtn">‹ Collapse</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topline">
+      <button class="mobile-toggle" id="mobileToggle">☰ <span>Menu</span></button>
+    </div>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="section active" id="overview">
+      <div class="eyebrow">Fundamentals of Nursing · EMI Module</div>
+      <h1 class="page-title">Can the Environment Heal?</h1>
+      <p class="page-sub">This hub gathers everything you need for the Environmental Nursing module — the skills we're building, the vocabulary you'll use, a deep dive into color therapy, your pre-class task, and the rubric your care plan will be scored against.</p>
+
+      <div class="card">
+        <h3 style="margin-bottom:0.9rem;">The Healing Environment Framework</h3>
+        <p style="margin-bottom:0.2rem;">A healing environment brings five factors together to shape how a patient feels and behaves — which in turn shapes recovery.</p>
+        <div class="element-row">
+          <div class="element-chip"><div class="ic">🌳</div><div class="lbl">Nature</div><div class="sub">green space, views</div></div>
+          <div class="element-chip"><div class="ic">💧</div><div class="lbl">Water</div><div class="sub">sound, sight of water</div></div>
+          <div class="element-chip"><div class="ic">☀️</div><div class="lbl">Light</div><div class="sub">daylight, warmth</div></div>
+          <div class="element-chip"><div class="ic">🎨</div><div class="lbl">Color</div><div class="sub">mood, calm</div></div>
+          <div class="element-chip"><div class="ic">🔇</div><div class="lbl">Quiet</div><div class="sub">rest, focus</div></div>
+        </div>
+        <div class="flow">
+          <span>Healing Environment</span><span class="arrow">→</span><span>Health Behavior</span><span class="arrow">→</span><span>Recovery</span>
+        </div>
+      </div>
+
+      <div class="resource-links">
+        <button class="res-card" onclick="showSection('skills')">
+          <div class="ic-circle">🎯</div>
+          <h4>Essential Skills</h4>
+          <p>The five abilities this module is building, from environmental assessment to reflective practice.</p>
+        </button>
+        <button class="res-card" onclick="showSection('vocab')">
+          <div class="ic-circle">📖</div>
+          <h4>Vocabulary Bank</h4>
+          <p>Searchable bilingual terms across framework, sensory, and clinical categories.</p>
+        </button>
+        <button class="res-card" onclick="showSection('color')">
+          <div class="ic-circle">🎨</div>
+          <h4>Color Therapy</h4>
+          <p>An interactive look at how color choices support (or work against) patient recovery.</p>
+        </button>
+        <button class="res-card" onclick="showSection('pre')">
+          <div class="ic-circle">📝</div>
+          <h4>Pre-Assignment</h4>
+          <p>What to complete before class, including a KWL chart that saves as you go.</p>
+        </button>
+        <button class="res-card" onclick="showSection('rubric')">
+          <div class="ic-circle">📋</div>
+          <h4>Rubric</h4>
+          <p>How your Environmental Nursing intervention design will be evaluated.</p>
+        </button>
+      </div>
+
+      <footer class="page-foot">Environmental Nursing Learning Hub · Fundamentals of Nursing (EMI)</footer>
+    </section>
+
+    <!-- ============ ESSENTIAL SKILLS ============ -->
+    <section class="section" id="skills">
+      <div class="eyebrow">What This Module Builds</div>
+      <h1 class="page-title">Essential Skills</h1>
+      <p class="page-sub">By the end of this module, you should be able to do all five of these — not just recall facts about healing environments.</p>
+
+      <div class="skill-row">
+        <div class="skill-num">1</div>
+        <div><h4>Environmental Assessment</h4><p>Notice which parts of a care environment — light, noise, color, greenery — are affecting a specific patient's comfort and recovery.</p></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-num">2</div>
+        <div><h4>Evidence-Based Reasoning</h4><p>Connect an environmental intervention to a supported outcome, rather than relying on intuition alone.</p></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-num">3</div>
+        <div><h4>Care Plan Communication</h4><p>State a recommendation clearly in English, using a reason and an expected outcome that a colleague could act on.</p></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-num">4</div>
+        <div><h4>Resource-Constrained Decision-Making</h4><p>Weigh cost, feasibility, and patient benefit when a budget or setting limits which intervention is realistic.</p></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-num">5</div>
+        <div><h4>Reflective Practice</h4><p>Review your own reasoning afterward and identify one thing you would still like to improve.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ VOCABULARY BANK ============ -->
+    <section class="section" id="vocab">
+      <div class="eyebrow">Bilingual Terms</div>
+      <h1 class="page-title">Vocabulary Bank</h1>
+      <p class="page-sub">Search or filter by category. These are the terms you'll be expected to use accurately in your care plan and class discussion.</p>
+
+      <div class="vocab-controls">
+        <input type="text" class="vocab-search" id="vocabSearch" placeholder="Search a term, e.g. &quot;light&quot; or 療癒...">
+        <button class="pill active" data-cat="all">All</button>
+        <button class="pill" data-cat="framework">Framework</button>
+        <button class="pill" data-cat="sensory">Sensory</button>
+        <button class="pill" data-cat="clinical">Clinical</button>
+      </div>
+
+      <div class="vocab-grid" id="vocabGrid"></div>
+      <p class="vocab-empty" id="vocabEmpty" style="display:none;">No terms match your search.</p>
+    </section>
+
+    <!-- ============ COLOR THERAPY ============ -->
+    <section class="section" id="color">
+      <div class="eyebrow">Healing Environment · One Element</div>
+      <h1 class="page-title">Color Therapy</h1>
+      <p class="page-sub">Chromotherapy is the use of color and light to support mood, comfort, and physiological calm. In nursing practice, it shows up mostly through deliberate choices in wall color, lighting tone, and decor — one small, controllable part of a healing environment.</p>
+
+      <div class="card">
+        <h3 style="margin-bottom:0.6rem;">Why It Matters at the Bedside</h3>
+        <p>Color influences perceived room temperature, alertness, and calm well before a patient consciously notices it. Hospitals increasingly weigh color psychology alongside light and layout — though the evidence works best combined with the other healing-environment factors, not as a stand-alone fix.</p>
+      </div>
+
+      <h3 style="margin:1.8rem 0 0.3rem;">Explore the Palette</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0.2rem;">Click a swatch to see its therapeutic use and any cautions.</p>
+      <div class="swatch-strip" id="swatchStrip"></div>
+      <div class="swatch-detail" id="swatchDetail"></div>
+
+      <div class="card" style="margin-top:1.8rem;">
+        <h3 style="margin-bottom:0.6rem;">Try It: Mr. Chen's Room</h3>
+        <p>Mr. Chen is 72, three days after hip surgery, feeling anxious and sleeping poorly. Which accent color would you recommend for his room, and why? There's no single correct answer — be ready to defend your reasoning using what you know about his condition.</p>
+      </div>
+    </section>
+
+    <!-- ============ PRE-ASSIGNMENT ============ -->
+    <section class="section" id="pre">
+      <div class="eyebrow">Complete Before Class</div>
+      <h1 class="page-title">Pre-Assignment</h1>
+      <p class="page-sub">These four tasks prepare you to work as an Environmental Nursing Consultant in class. Check each one off as you finish — your progress is saved automatically on this device.</p>
+
+      <ul class="task-list" id="taskList"></ul>
+
+      <h3 style="margin-bottom:0.3rem;">KWL Chart: Healing Environments in Nursing Care</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Fill in the first two columns before class. You'll complete the third column afterward.</p>
+      <div class="kwl-grid">
+        <div class="kwl-col">
+          <h4>K — What I Know</h4>
+          <textarea id="kwl-k" placeholder="What do you already know about how the environment affects patients?"></textarea>
+        </div>
+        <div class="kwl-col">
+          <h4>W — What I Want to Know</h4>
+          <textarea id="kwl-w" placeholder="What are you curious about or unsure of?"></textarea>
+        </div>
+        <div class="kwl-col">
+          <h4>L — What I Learned</h4>
+          <textarea id="kwl-l" placeholder="Fill this in after class."></textarea>
+        </div>
+      </div>
+      <div class="save-note" id="kwlSaveNote">Saved automatically as you type.</div>
+    </section>
+
+    <!-- ============ RUBRIC ============ -->
+    <section class="section" id="rubric">
+      <div class="eyebrow">How You'll Be Evaluated</div>
+      <h1 class="page-title">Environmental Nursing Intervention Rubric</h1>
+      <p class="page-sub">This is the same checklist used during the in-class design task and gallery walk. Each criterion is scored from Needs Improvement to Excellent.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="rubric-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th><span class="level-tag">1</span>Needs Improvement</th>
+              <th><span class="level-tag">2</span>Developing</th>
+              <th><span class="level-tag">3</span>Good</th>
+              <th><span class="level-tag">4</span>Excellent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Clarity</td>
+              <td>Intervention is not named or is unclear.</td>
+              <td>Intervention is named but the reason is missing or vague.</td>
+              <td>Intervention and reason are both stated clearly.</td>
+              <td>Intervention and reason are stated clearly and precisely fitted to the patient.</td>
+            </tr>
+            <tr>
+              <td>Evidence Alignment</td>
+              <td>No connection to what was taught about healing environments.</td>
+              <td>A loose or partial connection to course content.</td>
+              <td>A clear, accurate connection to course content.</td>
+              <td>A clear connection, plus reasoning about why it works for this specific case.</td>
+            </tr>
+            <tr>
+              <td>Feasibility</td>
+              <td>Not realistic for the patient's condition or setting.</td>
+              <td>Somewhat realistic, with notable gaps.</td>
+              <td>Realistic for the patient's condition and the ward setting.</td>
+              <td>Realistic, and explicitly accounts for cost, safety, or timing constraints.</td>
+            </tr>
+            <tr>
+              <td>Communication</td>
+              <td>Difficult to follow; sentence frame not used.</td>
+              <td>Understandable, but hesitant or unclear in places.</td>
+              <td>Clear spoken English using the sentence frame.</td>
+              <td>Clear, confident, and persuasive — could convince a colleague to act.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="page-foot">Environmental Nursing Learning Hub · Fundamentals of Nursing (EMI)</footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ---------- Section navigation ----------
+  const app = document.getElementById('app');
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.section');
+
+  function showSection(id){
+    sections.forEach(s => s.classList.toggle('active', s.id === id));
+    navItems.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    localStorage.setItem('envnurse_lastSection', id);
+    app.classList.remove('mobile-open');
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  }
+
+  navItems.forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.target));
+  });
+
+  const savedSection = localStorage.getItem('envnurse_lastSection');
+  if (savedSection && document.getElementById(savedSection)) showSection(savedSection);
+
+  // ---------- Sidebar collapse ----------
+  const collapseBtn = document.getElementById('collapseBtn');
+  function applyCollapsed(val){
+    app.classList.toggle('collapsed', val);
+    collapseBtn.textContent = val ? '›' : '‹ Collapse';
+  }
+  const savedCollapsed = localStorage.getItem('envnurse_collapsed') === 'true';
+  applyCollapsed(savedCollapsed);
+  collapseBtn.addEventListener('click', () => {
+    const next = !app.classList.contains('collapsed');
+    applyCollapsed(next);
+    localStorage.setItem('envnurse_collapsed', String(next));
+  });
+
+  // ---------- Mobile sidebar toggle ----------
+  document.getElementById('mobileToggle').addEventListener('click', () => {
+    app.classList.toggle('mobile-open');
+  });
+
+  // ---------- Vocabulary Bank ----------
+  const vocabulary = [
+    {term:"Healing Environment", zh:"療癒環境", cat:"framework", def:"A physical space intentionally designed to reduce stress and support recovery."},
+    {term:"Biophilic Design", zh:"親生物設計", cat:"framework", def:"Design that connects people with nature indoors, e.g. plants, natural materials, daylight."},
+    {term:"Therapeutic Landscape", zh:"治療性景觀", cat:"framework", def:"An outdoor space intentionally created to promote healing, such as a hospital garden."},
+    {term:"Restorative Environment", zh:"復原性環境", cat:"framework", def:"A setting that helps the mind and body recover from fatigue or stress."},
+    {term:"Evidence-Based Design", zh:"實證設計", cat:"framework", def:"Design decisions grounded in research on health outcomes, not just aesthetics."},
+    {term:"Ambient", zh:"環境的；周遭的", cat:"sensory", def:"Relating to the immediate surroundings of a space, e.g. ambient light or sound."},
+    {term:"Sensory Stimuli", zh:"感官刺激", cat:"sensory", def:"Inputs — light, sound, color, smell — that the body and mind perceive and respond to."},
+    {term:"Circadian Rhythm", zh:"生理時鐘", cat:"sensory", def:"The internal 24-hour cycle that regulates sleep and wakefulness."},
+    {term:"Chromotherapy", zh:"色彩療法", cat:"sensory", def:"Using color to influence mood and physiological response."},
+    {term:"Acoustic Comfort", zh:"聲音舒適度", cat:"sensory", def:"A soundscape quiet enough to support rest, focus, and clear communication."},
+    {term:"Acuity", zh:"病情嚴重度", cat:"clinical", def:"The severity or intensity of a patient's condition."},
+    {term:"Ambulate", zh:"下床活動；行走", cat:"clinical", def:"To walk, especially as a deliberate part of post-operative recovery."},
+    {term:"Care Plan", zh:"照護計畫", cat:"clinical", def:"A structured outline of nursing interventions and goals for a specific patient."},
+    {term:"Holistic Care", zh:"全人照護", cat:"clinical", def:"Care that addresses physical, emotional, and environmental needs together, not just symptoms."},
+    {term:"Feasibility", zh:"可行性", cat:"clinical", def:"Whether an intervention is realistic to carry out given time, cost, and setting."},
+  ];
+
+  const vocabGrid = document.getElementById('vocabGrid');
+  const vocabEmpty = document.getElementById('vocabEmpty');
+  const vocabSearch = document.getElementById('vocabSearch');
+  const catPills = document.querySelectorAll('.pill');
+  let activeCat = 'all';
+
+  function renderVocab(){
+    const q = vocabSearch.value.trim().toLowerCase();
+    const filtered = vocabulary.filter(v => {
+      const matchesCat = activeCat === 'all' || v.cat === activeCat;
+      const matchesQ = !q || v.term.toLowerCase().includes(q) || v.zh.includes(q) || v.def.toLowerCase().includes(q);
+      return matchesCat && matchesQ;
+    });
+    vocabGrid.innerHTML = filtered.map(v => (
+      '<div class="vocab-card"><div class="term">' + v.term + '</div>' +
+      '<div class="zh">' + v.zh + '</div>' +
+      '<p class="def">' + v.def + '</p></div>'
+    )).join('');
+    vocabEmpty.style.display = filtered.length ? 'none' : 'block';
+  }
+
+  vocabSearch.addEventListener('input', renderVocab);
+  catPills.forEach(p => {
+    p.addEventListener('click', () => {
+      catPills.forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      activeCat = p.dataset.cat;
+      renderVocab();
+    });
+  });
+  renderVocab();
+
+  // ---------- Color Therapy swatches ----------
+  const swatches = [
+    {name:"Soft Blue", hex:"#AFCBE0", mood:"Calming, associated with a lower perceived heart rate.", use:"Rooms for anxious, agitated, or post-operative patients.", caution:"Can read as cold if used without any warm accents nearby."},
+    {name:"Sage Green", hex:"#B7CDB0", mood:"Restorative and linked to natural, outdoor settings.", use:"Recovery wards and longer-stay rooms.", caution:"Works best paired with real daylight or a view, not on its own."},
+    {name:"Warm Beige", hex:"#E4D6BC", mood:"Comforting, and softens a clinical, sterile feel.", use:"Waiting areas and family rooms.", caution:"Can feel flat or dull without any brighter accent color."},
+    {name:"Soft Yellow", hex:"#EFDD8E", mood:"Cheerful and energizing in small doses.", use:"Common areas and short visits.", caution:"Use sparingly — bright yellow can overstimulate anxious patients or those with dementia."},
+    {name:"Muted Lavender", hex:"#CBC0DE", mood:"Gently soothing, often linked to rest.", use:"Pediatric and palliative care settings.", caution:"Can feel cold in a large, poorly lit room."},
+    {name:"Clinical White", hex:"#F1F1EC", mood:"Signals cleanliness and order.", use:"Balanced accent in exam and procedure rooms.", caution:"Overused, it can feel sterile and increase a sense of anxiety."},
+  ];
+
+  const swatchStrip = document.getElementById('swatchStrip');
+  const swatchDetail = document.getElementById('swatchDetail');
+
+  swatches.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'swatch';
+    el.style.background = s.hex;
+    el.dataset.index = i;
+    el.innerHTML = '<div class="name">' + s.name + '</div><div class="use">' + s.use.split(',')[0] + '</div>';
+    el.addEventListener('click', () => selectSwatch(i));
+    swatchStrip.appendChild(el);
+  });
+
+  function selectSwatch(i){
+    document.querySelectorAll('.swatch').forEach(el => el.classList.remove('selected'));
+    document.querySelector('.swatch[data-index="' + i + '"]').classList.add('selected');
+    const s = swatches[i];
+    swatchDetail.innerHTML =
+      '<h4>' + s.name + '</h4>' +
+      '<div class="row"><b>Mood</b><span>' + s.mood + '</span></div>' +
+      '<div class="row"><b>Best used for</b><span>' + s.use + '</span></div>' +
+      '<div class="caution"><b>Caution:</b> ' + s.caution + '</div>';
+    swatchDetail.classList.add('show');
+  }
+
+  // ---------- Pre-Assignment tasks ----------
+  const tasks = [
+    {id:"read", title:"Read the Healing Environment overview", desc:"See the Overview tab for the five-factor framework before class."},
+    {id:"kwl", title:"Fill in the K and W columns of the KWL chart below", desc:"You'll complete the L column after class."},
+    {id:"reflect", title:"Reflect on a calming place you've been", desc:"Not a hospital — think of anywhere you felt genuinely calm, and why."},
+    {id:"example", title:"Bring one personal example", desc:"An environmental factor — light, sound, color, or nature — that has affected your own mood or focus."},
+  ];
+
+  const taskList = document.getElementById('taskList');
+  function renderTasks(){
+    taskList.innerHTML = tasks.map(t => {
+      const done = localStorage.getItem('envnurse_task_' + t.id) === 'true';
+      return '<li class="task-item' + (done ? ' done' : '') + '">' +
+        '<input type="checkbox" data-id="' + t.id + '" ' + (done ? 'checked' : '') + '>' +
+        '<div><div class="task-title">' + t.title + '</div><div class="task-desc">' + t.desc + '</div></div>' +
+      '</li>';
+    }).join('');
+    taskList.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        localStorage.setItem('envnurse_task_' + cb.dataset.id, String(cb.checked));
+        renderTasks();
+      });
+    });
+  }
+  renderTasks();
+
+  // ---------- KWL chart persistence ----------
+  ['k','w','l'].forEach(letter => {
+    const ta = document.getElementById('kwl-' + letter);
+    const saved = localStorage.getItem('envnurse_kwl_' + letter);
+    if (saved) ta.value = saved;
+    ta.addEventListener('input', () => {
+      localStorage.setItem('envnurse_kwl_' + letter, ta.value);
+    });
+  });
+</script>
+</body>
+</html>
