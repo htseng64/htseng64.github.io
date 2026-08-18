@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鐵軌上的哲學｜電車難題與倫理三重奏</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d12;
+  --panel:#121822;
+  --panel2:#1a222e;
+  --rail:#2b3644;
+  --line:#28323e;
+  --amber:#e8a33d;
+  --amber-soft:#f2c374;
+  --red:#e2554b;
+  --green:#3ecf8e;
+  --deon:#5b8def;
+  --util:#e8a33d;
+  --virt:#3ecf8e;
+  --contract:#b98ee8;
+  --text:#eef1f5;
+  --muted:#8a97a8;
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC', sans-serif;
+  --mono:'Roboto Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:18px;}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+  line-height:1.75;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important;}
+}
+a{color:inherit;}
+button{font-family:var(--sans);}
+:focus-visible{outline:3px solid var(--amber-soft);outline-offset:3px;}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:.4rem;
+  background:rgba(10,13,18,.9);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:.8rem 1rem;overflow-x:auto;white-space:nowrap;
+}
+nav .brand{font-family:var(--serif);font-weight:900;color:var(--amber-soft);margin-right:.8rem;font-size:1.05rem;letter-spacing:.03em;flex:0 0 auto;}
+nav a.navlink{
+  font-size:.92rem;color:var(--muted);padding:.4rem .8rem;border-radius:999px;
+  border:1px solid transparent;flex:0 0 auto;text-decoration:none;
+}
+nav a.navlink:hover{color:var(--text);border-color:var(--line);}
+.bs-toggle{
+  margin-left:auto;flex:0 0 auto;font-family:var(--mono);font-size:.85rem;font-weight:700;
+  background:transparent;color:var(--amber);border:1px solid var(--amber);border-radius:999px;
+  padding:.45rem .95rem;cursor:pointer;transition:.2s;
+}
+.bs-toggle:hover{background:rgba(232,163,61,.12);}
+.bs-toggle.active{background:var(--amber);color:#1a1204;}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:78vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:3rem 1.2rem 4rem;
+  overflow:hidden;background:
+    radial-gradient(ellipse at 50% -10%, #16202c 0%, var(--bg) 60%);
+}
+.hero .eyebrow{
+  font-family:var(--mono);font-size:.9rem;letter-spacing:.25em;color:var(--amber);
+  text-transform:uppercase;margin-bottom:1rem;
+}
+.hero h1{
+  font-family:var(--serif);font-weight:900;font-size:clamp(2.6rem,6.4vw,4.4rem);
+  margin:0 0 1rem;line-height:1.28;
+  background:linear-gradient(180deg,#fff,#c9d3de);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{max-width:720px;color:var(--muted);font-size:1.25rem;margin:0 auto 2.2rem;}
+.hero-tags{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.6rem;}
+.tag{font-family:var(--mono);font-size:.92rem;padding:.5rem 1.05rem;border-radius:999px;border:1px solid var(--line);color:var(--muted);}
+.tag.deon{border-color:var(--deon);color:var(--deon);}
+.tag.util{border-color:var(--util);color:var(--util);}
+.tag.virt{border-color:var(--virt);color:var(--virt);}
+.scrollcue{font-family:var(--mono);font-size:.88rem;color:var(--muted);animation:bob 2.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+/* signature: rail signage */
+.hero-rail{width:min(720px,92vw);margin-top:1rem;}
+.hero-rail svg{width:100%;height:auto;display:block;}
+
+/* ---------- sections ---------- */
+section.block{padding:5.5rem 1.2rem;border-top:1px solid var(--line);}
+.wrap{max-width:980px;margin:0 auto;}
+.block-head{margin-bottom:2.2rem;}
+.eyebrow-sm{font-family:var(--mono);font-size:.85rem;letter-spacing:.18em;color:var(--amber);text-transform:uppercase;}
+.block h2{font-family:var(--serif);font-size:clamp(1.9rem,4vw,2.8rem);margin:.4rem 0 .6rem;}
+.block p.desc{color:var(--muted);max-width:720px;font-size:1.12rem;}
+
+/* scenario card */
+.scenario{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--line);border-radius:18px;padding:2.2rem;margin-top:1.6rem;
+}
+.scenario .story{font-size:1.42rem;line-height:1.85;margin-bottom:1.8rem;}
+.scenario .story b{color:var(--amber-soft);}
+
+/* track diagram */
+.track-diagram{position:relative;width:100%;height:150px;margin:1.4rem 0 1.8rem;}
+.track-diagram svg{width:100%;height:100%;display:block;overflow:visible;}
+.rail-path{fill:none;stroke:var(--rail);stroke-width:6;stroke-linecap:round;}
+.rail-tie{stroke:#3a4552;stroke-width:3;opacity:.55;}
+.branch-node{fill:var(--amber);}
+.trolley{
+  fill:var(--amber-soft);
+  offset-rotate:0deg;
+  filter:drop-shadow(0 0 6px rgba(232,163,61,.7));
+}
+.trolley.run-upper{animation:runUpper 1.5s cubic-bezier(.4,0,.2,1) forwards;}
+.trolley.run-lower{animation:runLower 1.5s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes runUpper{
+  from{offset-distance:0%;}
+  to{offset-distance:100%;}
+}
+@keyframes runLower{
+  from{offset-distance:0%;}
+  to{offset-distance:100%;}
+}
+.trolley.run-upper{offset-path:path('M 40 90 L 460 30');}
+.trolley.run-lower{offset-path:path('M 40 90 L 460 150');}
+.track-label{font-family:var(--mono);font-size:.9rem;fill:var(--muted);}
+.track-label.count{font-size:1.2rem;fill:var(--text);font-weight:700;}
+
+/* choice buttons */
+.choices{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem;}
+.choice-btn{
+  flex:1 1 240px;background:var(--bg);border:1px solid var(--line);color:var(--text);
+  padding:1.2rem 1.3rem;border-radius:12px;cursor:pointer;text-align:left;
+  font-size:1.14rem;line-height:1.6;transition:.2s border-color, .2s transform;
+}
+.choice-btn:hover:not(:disabled){border-color:var(--amber);transform:translateY(-2px);}
+.choice-btn:disabled{cursor:default;opacity:.5;}
+.choice-btn .k{display:block;font-family:var(--mono);font-size:.82rem;color:var(--amber);margin-bottom:.4rem;letter-spacing:.05em;}
+.choice-btn.picked{border-color:var(--amber-soft);background:#1c1710;}
+
+/* theory analysis cards */
+.analysis{display:none;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.8rem;}
+.analysis.show{display:grid;}
+@media (max-width:760px){.analysis.show{grid-template-columns:1fr;}}
+.acard{
+  background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:1.3rem 1.35rem;
+  border-top:3px solid var(--line);cursor:zoom-in;position:relative;
+}
+.acard::after{content:'🔍';position:absolute;top:.7rem;right:.8rem;font-size:.85rem;opacity:.4;}
+.acard.align{border-top-color:var(--green);}
+.acard .ah{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;padding-right:1.2rem;}
+.acard .ah .name{font-family:var(--serif);font-weight:700;font-size:1.22rem;}
+.acard.deon .name{color:var(--deon);}
+.acard.util .name{color:var(--util);}
+.acard.virt .name{color:var(--virt);}
+.acard .verdict{font-family:var(--mono);font-size:.8rem;color:var(--muted);padding:.2rem .6rem;border:1px solid var(--line);border-radius:999px;}
+.acard.align .verdict{color:var(--green);border-color:var(--green);}
+.acard p{font-size:1.05rem;line-height:1.7;color:#c6cdd6;margin:0;}
+.debate-note{font-size:.95rem;color:var(--muted);margin-top:1.1rem;border-left:2px solid var(--line);padding-left:.9rem;}
+
+/* theory primer */
+.theory-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:1.8rem;}
+@media (max-width:700px){.theory-grid{grid-template-columns:1fr;}}
+.theory-card{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.7rem;border-top:3px solid var(--line);
+  cursor:zoom-in;position:relative;
+}
+.theory-card::after{content:'🔍';position:absolute;top:.9rem;right:1rem;font-size:.9rem;opacity:.4;}
+.theory-card.deon{border-top-color:var(--deon);}
+.theory-card.util{border-top-color:var(--util);}
+.theory-card.virt{border-top-color:var(--virt);}
+.theory-card.contract{border-top-color:var(--contract);}
+.theory-card .th-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.6rem;padding-right:1.4rem;}
+.theory-card .th-icon{font-size:1.6rem;}
+.theory-card .th-name{font-family:var(--serif);font-weight:700;font-size:1.4rem;}
+.theory-card.deon .th-name{color:var(--deon);}
+.theory-card.util .th-name{color:var(--util);}
+.theory-card.virt .th-name{color:var(--virt);}
+.theory-card.contract .th-name{color:var(--contract);}
+.theory-card .th-who{font-family:var(--mono);font-size:.85rem;color:var(--muted);}
+.theory-card .th-core{font-size:1.1rem;line-height:1.7;color:#c6cdd6;margin-bottom:.8rem;}
+.theory-card .th-keyword{display:inline-block;font-family:var(--mono);font-size:.85rem;color:var(--amber);border:1px solid var(--line);padding:.25rem .65rem;border-radius:999px;margin-bottom:.8rem;}
+.theory-card .th-example{font-size:.98rem;line-height:1.65;color:var(--muted);border-left:2px solid var(--line);padding-left:.8rem;}
+
+/* SOFA panel */
+.sofa-panel{margin-top:1.8rem;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:1.7rem 1.7rem 1.8rem;cursor:zoom-in;position:relative;}
+.sofa-panel::after{content:'🔍 點擊放大';position:absolute;top:1rem;right:1.2rem;font-size:.85rem;color:var(--muted);opacity:.6;font-family:var(--mono);}
+.sofa-panel h4{font-family:var(--serif);margin:0 0 .7rem;font-size:1.3rem;color:var(--amber-soft);}
+.sofa-panel p.intro{font-size:1.05rem;line-height:1.75;color:#c6cdd6;margin-bottom:1.3rem;}
+.sofa-table{width:100%;border-collapse:collapse;font-size:.98rem;margin-bottom:1.5rem;}
+.sofa-table th,.sofa-table td{border:1px solid var(--line);padding:.65rem .75rem;text-align:left;}
+.sofa-table th{background:var(--panel);color:var(--amber);font-weight:700;font-size:.92rem;}
+.sofa-table td{color:#c6cdd6;}
+.sofa-table caption{caption-side:top;text-align:left;font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-bottom:.6rem;}
+.sofa-examples{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+@media (max-width:700px){.sofa-examples{grid-template-columns:1fr;}}
+.sofa-patient{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.3rem;}
+.sofa-patient .pname{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin-bottom:.4rem;}
+.sofa-patient .pbreak{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-bottom:.5rem;}
+.sofa-patient .pscore{font-family:var(--mono);font-size:2rem;color:var(--amber-soft);}
+.sofa-patient .pscore span{font-size:1rem;color:var(--muted);}
+.sofa-patient .pnote{font-size:.98rem;line-height:1.65;color:#c6cdd6;margin-top:.7rem;}
+
+/* profile */
+.profile-grid{display:grid;gap:1.2rem;margin-top:1.8rem;}
+.gauge-row{display:grid;grid-template-columns:140px 1fr 80px;align-items:center;gap:.9rem;}
+.gauge-row .glabel{font-family:var(--serif);font-weight:700;font-size:1.2rem;}
+.gauge-row.deon .glabel{color:var(--deon);}
+.gauge-row.util .glabel{color:var(--util);}
+.gauge-row.virt .glabel{color:var(--virt);}
+.gtrack{height:16px;background:var(--panel);border-radius:999px;overflow:hidden;border:1px solid var(--line);}
+.gfill{height:100%;width:0%;border-radius:999px;transition:width 1s ease;}
+.gauge-row.deon .gfill{background:var(--deon);}
+.gauge-row.util .gfill{background:var(--util);}
+.gauge-row.virt .gfill{background:var(--virt);}
+.gcount{font-family:var(--mono);font-size:1.05rem;color:var(--muted);text-align:right;}
+#profileText{margin-top:1.5rem;padding:1.4rem;background:var(--panel);border-radius:12px;border:1px solid var(--line);font-size:1.15rem;line-height:1.8;color:#c6cdd6;}
+
+/* quiz */
+.quiz-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.8rem;margin-top:1.3rem;}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.8rem;}
+.qhead .qnum{font-family:var(--mono);color:var(--amber);font-size:.95rem;}
+.qtext{font-size:1.28rem;line-height:1.7;margin-bottom:1.2rem;cursor:zoom-in;}
+.qopts{display:grid;gap:.7rem;}
+.qopt{
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:.9rem 1.05rem;
+  cursor:pointer;font-size:1.05rem;line-height:1.6;display:flex;gap:.7rem;align-items:flex-start;
+}
+.qopt:hover:not(.locked){border-color:var(--amber);}
+.qopt .qletter{font-family:var(--mono);color:var(--muted);flex:0 0 auto;}
+.qopt.correct{border-color:var(--green);background:#0e1f18;}
+.qopt.wrong{border-color:var(--red);background:#231212;}
+.qfeedback{margin-top:.8rem;font-size:1rem;color:var(--muted);display:none;}
+.qfeedback.show{display:block;}
+#quizScore{margin-top:1.5rem;padding:1.4rem;border-radius:12px;background:var(--panel2);border:1px solid var(--line);display:none;text-align:center;}
+#quizScore.show{display:block;}
+#quizScore .big{font-family:var(--mono);font-size:2.6rem;color:var(--amber-soft);}
+
+/* next-btn */
+.next-cta{display:none;margin-top:1.8rem;text-align:center;}
+.next-cta.show{display:block;}
+.next-cta button{
+  background:var(--amber);color:#1a1204;border:none;padding:.9rem 1.8rem;border-radius:999px;
+  font-weight:700;cursor:pointer;font-size:1.02rem;
+}
+footer{padding:3rem 1.2rem;text-align:center;color:var(--muted);font-size:.92rem;font-family:var(--mono);border-top:1px solid var(--line);}
+
+/* zoom overlay for big-screen reading */
+.zoom-overlay{
+  position:fixed;inset:0;background:rgba(5,7,10,.94);z-index:300;
+  display:none;align-items:center;justify-content:center;padding:4vw;
+}
+.zoom-overlay.show{display:flex;}
+.zoom-content{
+  max-width:1100px;max-height:86vh;overflow-y:auto;background:var(--panel);
+  border:1px solid var(--line);border-radius:20px;padding:3.2rem 3.4rem;position:relative;
+  font-size:1.9rem;line-height:1.85;
+}
+.zoom-content b{color:var(--amber-soft);}
+.zoom-content .ah, .zoom-content .th-head{font-size:1.1em;margin-bottom:1rem;}
+.zoom-close{
+  position:absolute;top:1rem;right:1.2rem;background:none;border:1px solid var(--line);
+  color:var(--text);width:2.6rem;height:2.6rem;border-radius:50%;font-size:1.3rem;cursor:pointer;
+}
+.zoom-close:hover{border-color:var(--amber);color:var(--amber);}
+.zoom-hint{font-family:var(--mono);font-size:.85rem;color:var(--muted);text-align:center;margin-top:2vh;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">🚦鐵軌上的哲學</span>
+  <a class="navlink" href="#s-theory">理論總覽</a>
+  <a class="navlink" href="#s-switch">轉轍器</a>
+  <a class="navlink" href="#s-footbridge">天橋</a>
+  <a class="navlink" href="#s-loop">迴圈</a>
+  <a class="navlink" href="#s-triage">檢傷分類</a>
+  <a class="navlink" href="#s-profile">倫理側寫</a>
+  <a class="navlink" href="#s-quiz">測驗</a>
+  <button class="bs-toggle" id="bigScreenToggle" onclick="toggleBigScreen()">🖥️ 大螢幕模式</button>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">DEONTOLOGY · UTILITARIANISM · VIRTUE ETHICS</div>
+  <h1>鐵軌上的哲學<br>電車難題與倫理三重奏</h1>
+  <p class="lead">同一個煞車失靈的失控電車，義務論、效益論與德行論會給你三種不同的答案。做出你的選擇，再看看三位哲學家怎麼評價你——最後帶進臨床情境，看看護理人員每天面對的資源分配，其實也是一場電車難題。</p>
+  <div class="hero-tags">
+    <span class="tag deon">義務論 · 康德</span>
+    <span class="tag util">效益論 · 邊沁 / 彌爾</span>
+    <span class="tag virt">德行論 · 亞里斯多德</span>
+  </div>
+  <div class="hero-rail">
+    <svg viewBox="0 0 700 140">
+      <path class="rail-path" d="M20,70 L680,70"></path>
+      <g class="rail-tie">
+        <line x1="60" y1="55" x2="60" y2="85"></line>
+        <line x1="140" y1="55" x2="140" y2="85"></line>
+        <line x1="220" y1="55" x2="220" y2="85"></line>
+        <line x1="300" y1="55" x2="300" y2="85"></line>
+        <line x1="380" y1="55" x2="380" y2="85"></line>
+        <line x1="460" y1="55" x2="460" y2="85"></line>
+        <line x1="540" y1="55" x2="540" y2="85"></line>
+        <line x1="620" y1="55" x2="620" y2="85"></line>
+      </g>
+      <circle cx="350" cy="70" r="7" class="branch-node"></circle>
+    </svg>
+  </div>
+  <div class="scrollcue">↓ 開始你的第一個抉擇</div>
+</section>
+
+<section class="block" id="s-theory">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow-sm">Theory Primer</div>
+      <h2>先認識四位哲學家</h2>
+      <p class="desc">在進入每個軌道情境之前，先快速認識這四種倫理推理方式——前三種會在每個情境裡直接對你的選擇提出分析；第四種「正義論」是〈倫理英雄之路〉裡出現過的羅爾斯契約論，放在這裡作為延伸對照。</p>
+    </div>
+    <div class="theory-grid">
+      <div class="theory-card deon zoomable">
+        <div class="th-head"><span class="th-icon">⚖️</span><span class="th-name">義務論</span><span class="th-who">康德 Kant</span></div>
+        <div class="th-keyword">關鍵詞：規則、義務、定言令式</div>
+        <div class="th-core">判斷行為對錯，看的是「這個行為本身」是否符合可以普遍化的道德法則，而不是看結果好壞。人不可以被當作純粹達成目的的工具。</div>
+        <div class="th-example">白話例子：即使說謊能讓大家都開心，義務論者仍認為「說謊」這件事本身就違反了誠實的義務，不能因為結果好就被允許。</div>
+      </div>
+      <div class="theory-card util zoomable">
+        <div class="th-head"><span class="th-icon">🧮</span><span class="th-name">效益論</span><span class="th-who">邊沁 / 彌爾 Bentham / Mill</span></div>
+        <div class="th-keyword">關鍵詞：結果、效益最大化</div>
+        <div class="th-core">只看行為造成的「整體結果」：能為最多人帶來最大幸福、造成最小傷害的選擇，就是對的選擇，行為本身的性質不是重點。</div>
+        <div class="th-example">白話例子：火災現場只能救一個人，效益論者會選擇救「能發明疫苗、拯救更多人」的科學家，而不是憑情感救家人。</div>
+      </div>
+      <div class="theory-card virt zoomable">
+        <div class="th-head"><span class="th-icon">🏺</span><span class="th-name">德行論</span><span class="th-who">亞里斯多德 Aristotle</span></div>
+        <div class="th-keyword">關鍵詞：品格、中庸之道、實踐智慧</div>
+        <div class="th-core">不問「規則是什麼」也不問「結果如何」，而是問「一個有德行的人，在這個情境下會怎麼做」。美德通常是兩個極端之間的中庸，例如勇氣是魯莽與懦弱之間的平衡。</div>
+        <div class="th-example">白話例子：面對十倍敵軍，魯莽衝鋒是過度，臨陣脫逃是不及，唯有拿捏分寸、審慎應戰,才是真正的勇氣。</div>
+      </div>
+      <div class="theory-card contract zoomable">
+        <div class="th-head"><span class="th-icon">🌌</span><span class="th-name">正義論（契約論）</span><span class="th-who">羅爾斯 Rawls</span></div>
+        <div class="th-keyword">關鍵詞：無知之幕、公平正義</div>
+        <div class="th-core">想像你在設計社會制度時，並不知道自己出生後會是強者還是弱者（這叫「無知之幕」）。在這種不確定下，理性的人會選擇保障底層、對每個人都公平的制度，而不是賭一把「強者全拿」。</div>
+        <div class="th-example">白話例子：〈倫理英雄之路〉裡「轉世前投票決定新社會制度」的橋段，就是羅爾斯契約論的核心情境——你不知道投胎後會是誰，所以會選擇對所有人都公平的規則。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENARIO SECTIONS (populated by JS) ===================== -->
+<section class="block" id="s-switch"><div class="wrap" id="mount-switch"></div></section>
+<section class="block" id="s-footbridge"><div class="wrap" id="mount-footbridge"></div></section>
+<section class="block" id="s-loop"><div class="wrap" id="mount-loop"></div></section>
+<section class="block" id="s-triage"><div class="wrap" id="mount-triage"></div></section>
+
+<section class="block" id="s-profile">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow-sm">Ethics Profile</div>
+      <h2>你的倫理側寫</h2>
+      <p class="desc">四個情境走完了。看看你的選擇，整體而言最貼近哪一種倫理推理方式——沒有標準答案，這是一份反思的起點，不是評分。</p>
+    </div>
+    <div class="profile-grid">
+      <div class="gauge-row deon">
+        <div class="glabel">義務論</div>
+        <div class="gtrack"><div class="gfill" id="gfill-deon"></div></div>
+        <div class="gcount" id="gcount-deon">0 / 4</div>
+      </div>
+      <div class="gauge-row util">
+        <div class="glabel">效益論</div>
+        <div class="gtrack"><div class="gfill" id="gfill-util"></div></div>
+        <div class="gcount" id="gcount-util">0 / 4</div>
+      </div>
+      <div class="gauge-row virt">
+        <div class="glabel">德行論</div>
+        <div class="gtrack"><div class="gfill" id="gfill-virt"></div></div>
+        <div class="gcount" id="gcount-virt">0 / 4</div>
+      </div>
+    </div>
+    <div id="profileText">完成上面四個情境後，這裡會出現你的倫理推理側寫。</div>
+  </div>
+</section>
+
+<section class="block" id="s-quiz"><div class="wrap" id="mount-quiz"></div></section>
+
+<footer>鐵軌上的哲學 · 護理倫理互動教學 · 設計用於課堂前後測與自學</footer>
+
+<div class="zoom-overlay" id="zoomOverlay" onclick="if(event.target===this) closeZoom()">
+  <div class="zoom-content" id="zoomContent">
+    <button class="zoom-close" onclick="closeZoom()" aria-label="關閉放大檢視">✕</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1. 情境資料：義務論 / 效益論 / 德行論 對同一情境的分析
+   ============================================================ */
+const scenarios = [
+  {
+    id: 'switch',
+    tagIndex: 1,
+    eyebrow: 'Scenario 01 · 經典轉轍器',
+    title: '失控電車，兩條軌道',
+    story: '你站在轉轍器旁。一輛失控電車正衝向前方軌道上的 <b>五名工人</b>，他們來不及躲避。你手邊有一根拉桿，拉下去電車會轉向另一條岔軌，但那條岔軌上站著 <b>一名工人</b>。',
+    upperCount: '5 人 · 直行軌道',
+    lowerCount: '1 人 · 岔軌',
+    choices: [
+      { id:'pull', label:'拉下拉桿，電車轉向岔軌', k:'A', track:'lower' },
+      { id:'stay', label:'不介入，電車維持直行', k:'B', track:'upper' }
+    ],
+    theories: {
+      deon: { expected:'pull', text:'依「雙重效果原則」，轉向本身的意圖是「讓電車改道」而非「殺死那一人」——那人的死亡是可預見但非蓄意的副作用，因此多數義務論者認為轉向可被允許；但也有義務論者堅持「不可主動介入造成死亡」，兩派仍有爭論。' },
+      util:  { expected:'pull', text:'效益論只計算結果：犧牲一人、拯救五人，整體傷害最小、淨效益最大，因此轉向是唯一理性的選擇——不論行為本身的性質，只看後果。' },
+      virt:  { expected:'pull', text:'具備實踐智慧（phronesis）的人會衡量情境全貌：在資訊有限、時間急迫下，選擇能減少整體傷害的行動，同時對「奪走一條生命」保持應有的沉重與不安，避免冷血計算式的果斷。' }
+    }
+  },
+  {
+    id: 'footbridge',
+    tagIndex: 2,
+    eyebrow: 'Scenario 02 · 天橋變形',
+    title: '天橋上的胖子',
+    story: '你站在跨越軌道的天橋上，電車即將撞向下方 <b>五名工人</b>。你身旁站著一位體型高大的陌生人——只要把他推下天橋，他的身體足以擋停電車，五人獲救，但他會當場身亡。你沒有拉桿，唯一能做的是親手把他推下去。',
+    upperCount: '5 人 · 軌道上',
+    lowerCount: '1 人 · 被推下天橋',
+    choices: [
+      { id:'push', label:'親手推下陌生人，擋停電車', k:'A', track:'lower' },
+      { id:'nopush', label:'不推，電車繼續衝向五人', k:'B', track:'upper' }
+    ],
+    theories: {
+      deon: { expected:'nopush', text:'康德式義務論的核心是「不可把人單純當作工具」。把陌生人推下天橋，是把他的身體當成「煞車裝置」來利用——他的死亡是達成目的的「手段」，而非可預見的副作用，這正是義務論最不能接受的地方，即使結果一樣是五換一。' },
+      util:  { expected:'push', text:'效益論者會說：轉轍器案例和天橋案例在數學上完全相同——一命換五命。人們對「親手推」感到抗拒，只是心理直覺，不是理性論證；嚴格效益計算下，推下去仍是正確選擇。' },
+      virt:  { expected:'nopush', text:'德行論者關注「這個行為展現了什麼樣的人格」。親手把一個無辜的人當作物品使用，即使結果良善，也違反了對人的尊重與正義感；一個有德行的人會在道德直覺與理性計算衝突時，正視直覺背後的價值。' }
+    }
+  },
+  {
+    id: 'loop',
+    tagIndex: 3,
+    eyebrow: 'Scenario 03 · 迴圈變形',
+    title: '迴圈軌道',
+    story: '岔軌其實是一個迴圈，會繞回原本的主線。如果沒有人擋住，電車會繞一圈回來，照樣撞上 <b>五名工人</b>。岔軌上恰好站著一位體型足夠壯碩的工人——他的身體會被電車撞停，電車因此停下，不會繼續繞回主線。',
+    upperCount: '5 人 · 迴圈盡頭',
+    lowerCount: '1 人 · 迴圈上（撞擊即停）',
+    choices: [
+      { id:'divert', label:'轉向迴圈，讓電車撞上那名工人以停下', k:'A', track:'lower' },
+      { id:'nodivert', label:'不轉向，電車繼續衝向五人', k:'B', track:'upper' }
+    ],
+    theories: {
+      deon: { expected:'nodivert', text:'和天橋案例類似：這裡「那名工人的身體」正是讓電車停下的原因，他的死亡不再是單純的副作用，而是必要的手段。許多義務論者認為這與轉轍器案例已經不同，反而更接近天橋案例，因此傾向不轉向。' },
+      util:  { expected:'divert', text:'效益論的立場不變：無論死亡是「副作用」還是「手段」，結果同樣是一命換五命，總效益最大化才是唯一考量，因此仍主張轉向。' },
+      virt:  { expected:'nodivert', text:'德行論者會指出，這個情境刻意設計成「利用他的身體」，與轉轍器案例的道德質地不同。一個有德行的人會察覺這種細微差異，而不是只看數字結果，因而傾向不轉向。' }
+    }
+  },
+  {
+    id: 'triage',
+    tagIndex: 4,
+    eyebrow: 'Scenario 04 · 臨床變形：災難檢傷',
+    title: 'ICU 床位只剩一張',
+    story: '大規模災難湧入急診，加護病床只剩 <b>一張</b>，卻有 <b>多位</b> 病況危急的傷患等待。身為護理人員，你必須協助決定床位分配方式：是嚴格依照 SOFA 評分（存活可能性、器官衰竭指標）分配，還是依照送達急診的先後順序分配？',
+    upperCount: '依到院順序分配',
+    lowerCount: '依 SOFA 評分分配',
+    choices: [
+      { id:'sofa', label:'依 SOFA 評分，優先給存活機會最高者', k:'A', track:'lower' },
+      { id:'order', label:'依到院先後順序，公平排隊分配', k:'B', track:'upper' }
+    ],
+    theories: {
+      deon: { expected:'order', text:'義務論重視「程序正義」與規則的一致適用：不論身分、病況預後，只要規則（如先到先服務）被公平地套用在每一個人身上，就是符合義務的做法，避免用「誰更值得活」來做判斷。' },
+      util:  { expected:'sofa', text:'效益論的立場是把有限資源用在能救回最多生命年數的地方——SOFA 評分制度本質上就是效益計算：優先分配給存活機率高、能帶來最大整體效益的病人。' },
+      virt:  { expected:'sofa', text:'具備實踐智慧的護理人員通常支持以 SOFA 這類結構化工具為基礎，但同時保有專業裁量與同理心——工具協助判斷，而不是取代人性化的溝通與對家屬的關懷，這正是德行論強調「規則之上仍需智慧」之處。' }
+    },
+    extraHTML: `
+      <div class="sofa-panel zoomable">
+        <h4>📋 SOFA 評分是什麼？</h4>
+        <p class="intro">SOFA（Sequential Organ Failure Assessment，序列器官衰竭評估）是加護病房常用的臨床工具，針對六大器官系統各評 0～4 分，加總後分數愈高，代表器官衰竭愈嚴重、存活機率愈低。總分範圍是 0～24 分。在資源極度有限的災難情境中，SOFA 常被用來輔助判斷「誰的存活機會較高」，是效益論思維在臨床上最具體的展現。</p>
+        <table class="sofa-table">
+          <caption>六大器官系統評分標準（簡化版）</caption>
+          <thead>
+            <tr><th>器官系統</th><th>評估指標</th><th>0 分（正常）</th><th>2 分（中度異常）</th><th>4 分（嚴重異常）</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>呼吸系統</td><td>PaO₂/FiO₂ 比值</td><td>≥ 400</td><td>100–199</td><td>&lt; 100（需呼吸器）</td></tr>
+            <tr><td>凝血功能</td><td>血小板（×10³/µL）</td><td>≥ 150</td><td>20–49</td><td>&lt; 20</td></tr>
+            <tr><td>肝臟功能</td><td>膽紅素（mg/dL）</td><td>&lt; 1.2</td><td>2.0–5.9</td><td>&gt; 12</td></tr>
+            <tr><td>心血管系統</td><td>平均動脈壓／升壓劑</td><td>MAP ≥ 70</td><td>需中劑量升壓劑</td><td>需高劑量升壓劑</td></tr>
+            <tr><td>中樞神經</td><td>GCS 昏迷指數</td><td>15</td><td>10–12</td><td>&lt; 6</td></tr>
+            <tr><td>腎臟功能</td><td>肌酸酐／尿量</td><td>&lt; 1.2 mg/dL</td><td>2.0–3.4 mg/dL</td><td>&gt; 5.0 或無尿</td></tr>
+          </tbody>
+        </table>
+        <p class="intro" style="margin-bottom:1rem;">用兩位病患的範例實際算一次，會更清楚分數怎麼影響分配優先順序：</p>
+        <div class="sofa-examples">
+          <div class="sofa-patient">
+            <div class="pname">病患甲</div>
+            <div class="pbreak">呼吸2＋凝血0＋肝臟0＋心血管1＋中樞神經1＋腎臟0</div>
+            <div class="pscore">4 <span>/ 24 分</span></div>
+            <div class="pnote">器官功能大致穩定，存活機率相對較高，屬於 SOFA 制度下會被優先分配 ICU 床位的病患。</div>
+          </div>
+          <div class="sofa-patient">
+            <div class="pname">病患乙</div>
+            <div class="pbreak">呼吸4＋凝血2＋肝臟2＋心血管4＋中樞神經3＋腎臟3</div>
+            <div class="pscore">18 <span>/ 24 分</span></div>
+            <div class="pnote">多重器官嚴重衰竭，預後極差。若嚴格依 SOFA 分配，這類病患可能排在後面——這正是效益論式分配引發倫理爭議的地方：分數不是懲罰，卻直接關係到誰能得到床位。</div>
+          </div>
+        </div>
+      </div>`
+  }
+];
+
+/* ============================================================
+   2. 產生情境區塊 HTML
+   ============================================================ */
+const theoryMeta = {
+  deon: { name:'義務論', who:'康德' },
+  util: { name:'效益論', who:'邊沁／彌爾' },
+  virt: { name:'德行論', who:'亞里斯多德' }
+};
+
+function trackSVG(sc){
+  return `
+  <div class="track-diagram">
+    <svg viewBox="0 0 500 170" aria-hidden="true">
+      <path class="rail-path" d="M 40 90 L 460 30"></path>
+      <path class="rail-path" d="M 40 90 L 460 150"></path>
+      <circle cx="40" cy="90" r="6" class="branch-node"></circle>
+      <text x="470" y="26" class="track-label count" text-anchor="start">${sc.upperCount}</text>
+      <text x="470" y="154" class="track-label count" text-anchor="start">${sc.lowerCount}</text>
+      <circle id="trolley-${sc.id}" class="trolley" cx="0" cy="0" r="9"></circle>
+    </svg>
+  </div>`;
+}
+
+function scenarioHTML(sc){
+  const choicesHTML = sc.choices.map(c => `
+    <button class="choice-btn" data-track="${c.track}" data-choice="${c.id}" onclick="handleChoice('${sc.id}','${c.id}','${c.track}')">
+      <span class="k">選項 ${c.k}</span>${c.label}
+    </button>`).join('');
+
+  const analysisHTML = ['deon','util','virt'].map(key => `
+    <div class="acard ${key} zoomable" id="acard-${sc.id}-${key}">
+      <div class="ah">
+        <span class="name">${theoryMeta[key].name}</span>
+        <span class="verdict" id="verdict-${sc.id}-${key}">—</span>
+      </div>
+      <p>${sc.theories[key].text}</p>
+    </div>`).join('');
+
+  return `
+    <div class="block-head">
+      <div class="eyebrow-sm">${sc.eyebrow}</div>
+      <h2>${sc.title}</h2>
+    </div>
+    <div class="scenario">
+      <div class="story zoomable">${sc.story}</div>
+      ${trackSVG(sc)}
+      <div class="choices" id="choices-${sc.id}">${choicesHTML}</div>
+      <div class="analysis" id="analysis-${sc.id}">${analysisHTML}</div>
+      <div class="debate-note">💬 以上是哲學史上常見的立場整理，簡化以利教學，實際上三個學派內部都存在不同意見——歡迎在課堂上挑戰這些分析。</div>
+      ${sc.extraHTML || ''}
+    </div>`;
+}
+
+scenarios.forEach(sc => {
+  document.getElementById('mount-' + sc.id).innerHTML = scenarioHTML(sc);
+});
+
+/* ============================================================
+   3. 互動邏輯：選擇 → 動畫 → 顯示三方分析 → 計分
+   ============================================================ */
+const profileScore = { deon:0, util:0, virt:0 };
+const completed = new Set();
+
+function handleChoice(scId, choiceId, track){
+  const sc = scenarios.find(s => s.id === scId);
+  if(!sc || completed.has(scId)) return;
+
+  // lock buttons
+  const group = document.getElementById('choices-' + scId);
+  [...group.children].forEach(btn => {
+    btn.disabled = true;
+    if(btn.dataset.choice === choiceId) btn.classList.add('picked');
+  });
+
+  // run trolley animation
+  const dot = document.getElementById('trolley-' + scId);
+  dot.classList.add(track === 'upper' ? 'run-upper' : 'run-lower');
+
+  // reveal analysis + score alignment
+  const panel = document.getElementById('analysis-' + scId);
+  ['deon','util','virt'].forEach(key => {
+    const aligns = sc.theories[key].expected === choiceId;
+    const card = document.getElementById(`acard-${scId}-${key}`);
+    const verdict = document.getElementById(`verdict-${scId}-${key}`);
+    if(aligns){
+      card.classList.add('align');
+      verdict.textContent = '與你的選擇一致';
+      profileScore[key]++;
+    } else {
+      verdict.textContent = '與你的選擇不同';
+    }
+  });
+  setTimeout(() => panel.classList.add('show'), 250);
+
+  completed.add(scId);
+  if(completed.size === scenarios.length) updateProfile();
+}
+
+function updateProfile(){
+  const total = scenarios.length;
+  ['deon','util','virt'].forEach(key => {
+    const pct = Math.round((profileScore[key] / total) * 100);
+    document.getElementById('gfill-' + key).style.width = pct + '%';
+    document.getElementById('gcount-' + key).textContent = profileScore[key] + ' / ' + total;
+  });
+  const top = Object.keys(profileScore).reduce((a,b) => profileScore[a] >= profileScore[b] ? a : b);
+  const texts = {
+    deon: '你的選擇整體上比較貼近<b>義務論</b>：你重視行為本身是否符合原則與規則，即使結果看起來效益較低，也不願意把人當作純粹的工具或手段。',
+    util: '你的選擇整體上比較貼近<b>效益論</b>：面對兩難時，你傾向計算整體結果，選擇能讓最多人受益、傷害最小的行動，即使過程令人不安。',
+    virt: '你的選擇整體上比較貼近<b>德行論</b>：你在意的不只是規則或結果，而是「這個選擇展現了什麼樣的人格特質」，願意在每個情境中重新拿捏分寸。'
+  };
+  const maxVal = Math.max(profileScore.deon, profileScore.util, profileScore.virt);
+  const tiedKeys = Object.keys(profileScore).filter(k => profileScore[k] === maxVal);
+  let msg;
+  if(tiedKeys.length > 1){
+    msg = '你的選擇在幾種倫理學派之間相當平均——這說明電車難題本來就沒有標準答案，你正在依情境脈絡切換推理方式，這其實正是臨床倫理決策中常見也可貴的能力。';
+  } else {
+    msg = texts[top];
+  }
+  document.getElementById('profileText').innerHTML = msg;
+}
+
+/* ============================================================
+   4. 五題測驗（可直接複製到 TronClass 單選題）
+   ============================================================ */
+const quiz = [
+  {
+    q: '「電車難題」中，選擇讓電車轉向、犧牲一人拯救五人的行為，最符合以下哪一種倫理學派的核心精神？',
+    opts: ['義務論（強調行為本身是否符合規則）','效益論（強調結果的整體效益最大化）','德行論（強調行動者的品格）','以上皆非'],
+    a: 1
+  },
+  {
+    q: '康德的義務論主張，判斷一個行為是否道德，主要應該依據：',
+    opts: ['行為所產生的最終結果','行動者的個人情感與直覺','行為本身是否符合可普遍化的道德法則','多數人的意見與社會習俗'],
+    a: 2
+  },
+  {
+    q: '在「天橋難題」中，多數人不願意親手把陌生人推下天橋，即使結果同樣是「犧牲一人救五人」。這個現象最能說明：',
+    opts: ['人們的道德判斷會受「親手造成傷害」與「結果相同」之間的差異影響，不完全依循效益計算','人們完全不理解效益主義的內容','這證明義務論是唯一正確的理論','電車難題與心理學無關'],
+    a: 0
+  },
+  {
+    q: '亞里斯多德的德行倫理學認為「勇氣」是介於哪兩個極端之間的中庸？',
+    opts: ['誠實與說謊','魯莽與懦弱','自由與服從','效益與義務'],
+    a: 1
+  },
+  {
+    q: '大量傷患湧入、加護病床數量有限時，護理人員依 SOFA 評分等標準決定優先順序，這種資源分配的倫理考量最接近：',
+    opts: ['效益論中「整體效益最大化」的思考','純粹的義務論規則遵循，與結果無關','與倫理學完全無關的行政程序','德行論中對「誠實」美德的強調'],
+    a: 0
+  }
+];
+
+function quizHTML(){
+  const cards = quiz.map((item, i) => {
+    const opts = item.opts.map((opt, j) => `
+      <div class="qopt" data-qi="${i}" data-oi="${j}" onclick="answerQuiz(${i},${j})">
+        <span class="qletter">${String.fromCharCode(65+j)}</span><span>${opt}</span>
+      </div>`).join('');
+    return `
+    <div class="quiz-card">
+      <div class="qhead"><span class="qnum">Q${i+1} / ${quiz.length}</span></div>
+      <div class="qtext zoomable">${item.q}</div>
+      <div class="qopts" id="qopts-${i}">${opts}</div>
+      <div class="qfeedback" id="qfeedback-${i}"></div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="block-head">
+      <div class="eyebrow-sm">Self Check</div>
+      <h2>五題自我測驗</h2>
+      <p class="desc">這五題也可以直接整理成 TronClass 單選題，作為課堂前測 / 後測使用（頁面下方已附純文字版本方便複製）。</p>
+    </div>
+    ${cards}
+    <div id="quizScore"><div class="big" id="quizScoreBig">0 / ${quiz.length}</div><div>本次測驗結果</div></div>
+  `;
+}
+document.getElementById('mount-quiz').innerHTML = quizHTML();
+
+const quizState = new Array(quiz.length).fill(null);
+function answerQuiz(qi, oi){
+  if(quizState[qi] !== null) return;
+  quizState[qi] = oi;
+  const item = quiz[qi];
+  const opts = document.getElementById('qopts-' + qi).children;
+  [...opts].forEach((el, j) => {
+    el.classList.add('locked');
+    if(j === item.a) el.classList.add('correct');
+    else if(j === oi) el.classList.add('wrong');
+  });
+  const fb = document.getElementById('qfeedback-' + qi);
+  fb.textContent = (oi === item.a) ? '✅ 答對了。' : ('❌ 答錯了，正確答案是 ' + String.fromCharCode(65+item.a) + '。');
+  fb.classList.add('show');
+
+  if(quizState.every(v => v !== null)){
+    const correct = quizState.filter((v,i) => v === quiz[i].a).length;
+    document.getElementById('quizScoreBig').textContent = correct + ' / ' + quiz.length;
+    document.getElementById('quizScore').classList.add('show');
+  }
+}
+
+/* ============================================================
+   5. 大螢幕模式 + 點擊放大（適合投影／教室後排閱讀）
+   ============================================================ */
+let bigScreenOn = false;
+function toggleBigScreen(){
+  bigScreenOn = !bigScreenOn;
+  document.documentElement.style.fontSize = bigScreenOn ? '24px' : '18px';
+  const btn = document.getElementById('bigScreenToggle');
+  btn.textContent = bigScreenOn ? '🖥️ 恢復一般大小' : '🖥️ 大螢幕模式';
+  btn.classList.toggle('active', bigScreenOn);
+}
+
+const zoomOverlay = document.getElementById('zoomOverlay');
+const zoomContent = document.getElementById('zoomContent');
+
+function openZoom(innerHTML){
+  zoomContent.innerHTML = '<button class="zoom-close" onclick="closeZoom()" aria-label="關閉放大檢視">✕</button>' + innerHTML +
+    '<div class="zoom-hint">點擊灰色背景或按 ESC 關閉</div>';
+  zoomOverlay.classList.add('show');
+}
+function closeZoom(){
+  zoomOverlay.classList.remove('show');
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeZoom();
+});
+document.addEventListener('click', e => {
+  const el = e.target.closest('.zoomable');
+  if(!el) return;
+  if(e.target.closest('.zoom-overlay')) return; // ignore clicks already inside the modal
+  openZoom(el.innerHTML);
+});
+</script>
+</body>
+</html>

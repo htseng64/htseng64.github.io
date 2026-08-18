@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>倫理英雄之路｜四個沒有標準答案的抉擇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050607;
+  --card:#121317;
+  --card2:#181a20;
+  --line:#26292f;
+  --accent:#00e5f0;
+  --accent-soft:#7df3fa;
+  --warn:#ef5350;
+  --gold:#e8b84b;
+  --text:#f2f4f6;
+  --muted:#8d97a3;
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC','PingFang TC', sans-serif;
+  --mono:'Roboto Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:18px;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.75;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
+:focus-visible{outline:3px solid var(--accent-soft);outline-offset:3px;}
+
+/* nav */
+nav{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.4rem;
+  background:rgba(5,6,7,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  padding:.8rem 1.1rem;overflow-x:auto;white-space:nowrap;
+}
+nav .brand{font-family:var(--serif);font-weight:900;color:var(--accent-soft);margin-right:.8rem;font-size:1.05rem;flex:0 0 auto;}
+nav a{font-size:.9rem;color:var(--muted);padding:.4rem .8rem;border-radius:999px;border:1px solid transparent;text-decoration:none;flex:0 0 auto;}
+nav a:hover{color:var(--text);border-color:var(--line);}
+
+/* hero */
+.hero{min-height:76vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.2rem;background:radial-gradient(ellipse at 50% -10%, #10151a 0%, var(--bg) 60%);}
+.hero .eyebrow{font-family:var(--mono);font-size:.85rem;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:1rem;}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.3rem,5.6vw,3.8rem);line-height:1.35;margin:0 0 1.2rem;
+  background:linear-gradient(180deg,#fff,#c6ced6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.lead{max-width:680px;color:var(--muted);font-size:1.2rem;margin:0 auto 1.6rem;}
+.hero .rule-box{
+  max-width:640px;margin:1.2rem auto 0;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:12px;padding:1.3rem 1.5rem;text-align:left;font-size:1.02rem;color:#d3d9df;
+}
+.hero .rule-box b{color:var(--accent-soft);}
+.scrollcue{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-top:2rem;animation:bob 2.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+/* stage sections */
+section.stage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:4.5rem 1.2rem;border-top:1px solid var(--line);}
+.container{background:var(--card);padding:2.6rem 2.8rem;border-radius:22px;max-width:840px;width:100%;border:1px solid var(--line);}
+.stage-tag{font-family:var(--mono);font-size:.85rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem;}
+.container h2{font-family:var(--serif);font-size:clamp(1.6rem,3.4vw,2.2rem);margin:0 0 1.4rem;}
+.scenario{font-size:1.24rem;line-height:1.9;color:#dfe4e9;margin-bottom:.6rem;}
+.scenario b{color:var(--accent-soft);}
+.prompt{font-family:var(--serif);font-weight:700;font-size:1.32rem;color:var(--gold);margin:1.4rem 0 1.6rem;}
+
+.btn-group{display:flex;flex-direction:column;gap:.9rem;margin:0 0 1.6rem;}
+button.opt{
+  padding:1.1rem 1.4rem;font-size:1.08rem;line-height:1.6;border-radius:12px;border:1px solid #3a3f47;
+  cursor:pointer;transition:.25s;background:transparent;color:var(--text);text-align:left;font-family:var(--sans);
+}
+button.opt:hover:not(:disabled){border-color:var(--accent);box-shadow:0 0 18px rgba(0,229,240,.18);}
+button.opt:disabled{opacity:.35;cursor:not-allowed;}
+button.opt.picked{border-color:var(--accent-soft);background:rgba(0,229,240,.08);}
+
+.feedback{
+  display:none;background:#1a1c22;padding:1.6rem 1.8rem;border-radius:14px;margin-top:.6rem;
+  border-left:5px solid var(--accent);text-align:left;line-height:1.85;font-size:1.08rem;color:#dfe4e9;
+  animation:slideUp .4s ease forwards;
+}
+.feedback.show{display:block;}
+.feedback .fb-who{font-family:var(--serif);font-weight:700;color:var(--accent-soft);font-size:1.1rem;display:block;margin-bottom:.5rem;}
+.feedback .fb-tag{display:inline-block;font-family:var(--mono);font-size:.78rem;color:var(--muted);border:1px solid var(--line);padding:.15rem .55rem;border-radius:999px;margin-bottom:.7rem;}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+.next-btn{display:none;background:var(--accent);color:#04191b;margin:1.8rem auto 0;padding:.9rem 2rem;border-radius:999px;border:none;font-weight:700;font-size:1.02rem;cursor:pointer;}
+.next-btn.show{display:block;}
+.next-btn:hover{box-shadow:0 0 18px rgba(0,229,240,.35);}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin:.9rem 0;max-width:420px;margin-left:auto;margin-right:auto;font-size:1.08rem;}
+input.pt{background:#20232a;border:1px solid #3a3f47;color:var(--text);padding:.6rem;border-radius:8px;width:90px;text-align:center;font-size:1.1rem;font-family:var(--mono);}
+#hint{font-weight:700;color:var(--accent);text-align:center;font-size:1.05rem;}
+
+.shake{animation:shake .5s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+footer{padding:3rem 1.2rem;text-align:center;color:var(--muted);font-size:.9rem;font-family:var(--mono);border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">🧭 倫理英雄之路</span>
+  <a href="#s1">義務論</a>
+  <a href="#s2">效益論</a>
+  <a href="#s3">德行論</a>
+  <a href="#s4">正義論</a>
+  <a href="#s5">命運配點</a>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">A JOURNEY THROUGH FOUR ETHICAL LENSES</div>
+  <h1>倫理英雄之路<br>四個沒有標準答案的抉擇</h1>
+  <p class="lead">接下來你會走過四段情境，每一段都要在毫無提示的情況下做出選擇。</p>
+  <div class="rule-box">
+    <b>這次的規則不一樣：</b>選項本身不會告訴你「這是義務論的答案」或「這樣做才勇敢」。你要憑自己的判斷選下去——<b>選擇之後</b>，畫面才會揭曉康德、邊沁、亞里斯多德、羅爾斯會怎麼分析你的決定。這不是選標準答案的測驗，而是一面照見你自己倫理直覺的鏡子。
+  </div>
+  <div class="scrollcue">↓ 從第一個抉擇開始</div>
+</section>
+
+<section class="stage" id="s1">
+  <div class="container">
+    <div class="stage-tag">Stage 01 · 義務論 Deontology</div>
+    <h2>🛡️ 監考老師的提問</h2>
+    <div class="scenario">
+      期末考當天，你發現坐在隔壁、認識多年的好友正低頭抄你的答案卡。你來不及提醒他，監考老師已經注意到你們兩人之間的異樣。考試結束前五分鐘，老師走到你身邊，壓低聲音問：<b>「剛剛，有人作弊嗎？」</b>你知道，說出真相會讓朋友被記過，甚至可能被退學；但你也知道，說謊會讓自己背負欺騙的重量，而且老師的眼神顯示他其實已經有所察覺。
+    </div>
+    <div class="prompt">面對老師的提問，你會怎麼回答？</div>
+    <div class="btn-group" id="grp-kant">
+      <button class="opt" onclick="handleAct('kant','truth','s1')">誠實回答：「有，是他抄我的。」</button>
+      <button class="opt" onclick="handleAct('kant','lie','s1')">回答：「沒有，我沒看到任何異常。」</button>
+    </div>
+    <div id="fb-kant" class="feedback"></div>
+    <button id="next-kant" class="next-btn" onclick="go('s2')">繼續前進 ↓</button>
+  </div>
+</section>
+
+<section class="stage" id="s2">
+  <div class="container">
+    <div class="stage-tag">Stage 02 · 效益論 Utilitarianism</div>
+    <h2>⚖️ 十字路口的濃煙</h2>
+    <div class="scenario">
+      深夜，化學工廠突然起火，濃煙迅速蔓延整條逃生走廊。你站在走廊盡頭的十字路口：<b>左邊房間</b>裡是你從小一起長大的弟弟；<b>右邊實驗室</b>裡，是一位正在進行癌症疫苗最終試驗的科學家——她畢生的研究資料只存在她隨身攜帶的隨身碟裡，一旦她罹難，這項可能造福數百萬病患的研究將付諸東流。濃煙已經逼近，你只有時間打開一扇門。
+    </div>
+    <div class="prompt">你會衝進哪一扇門？</div>
+    <div class="btn-group" id="grp-util">
+      <button class="opt" onclick="handleAct('util','fam','s2')">衝進左邊房間，救出弟弟</button>
+      <button class="opt" onclick="handleAct('util','sci','s2')">衝進右邊實驗室，救出科學家</button>
+    </div>
+    <div id="fb-util" class="feedback"></div>
+    <button id="next-util" class="next-btn" onclick="go('s3')">繼續前進 ↓</button>
+  </div>
+</section>
+
+<section class="stage" id="s3">
+  <div class="container">
+    <div class="stage-tag">Stage 03 · 德行論 Virtue Ethics</div>
+    <h2>🏺 邊境上的將軍</h2>
+    <div class="scenario">
+      邊境戰事爆發，敵軍規模是你麾下部隊的十倍。你是這支部隊唯一的將軍，士兵們望著你，等待命令——身後是你必須守護的家園與百姓，眼前是一場幾乎注定失敗的戰局，但拖延下去，敵軍很快就會直逼城鎮。
+    </div>
+    <div class="prompt">身為將軍，你會下達什麼命令？</div>
+    <div class="btn-group" id="grp-virtue">
+      <button class="opt" onclick="handleAct('virtue','reckless','s3')">下令全軍立即正面衝鋒，速戰速決</button>
+      <button class="opt" onclick="handleAct('virtue','brave','s3')">召集將領評估情勢，選擇有利地形防守，伺機反擊</button>
+      <button class="opt" onclick="handleAct('virtue','coward','s3')">下令全軍立刻撤離戰場，放棄陣地</button>
+    </div>
+    <div id="fb-virtue" class="feedback"></div>
+    <button id="next-virtue" class="next-btn" onclick="go('s4')">繼續前進 ↓</button>
+  </div>
+</section>
+
+<section class="stage" id="s4">
+  <div class="container">
+    <div class="stage-tag">Stage 04 · 正義論 Theory of Justice</div>
+    <h2>🌌 投胎前的一票</h2>
+    <div class="scenario">
+      你即將轉世投胎到一個全新的社會。神秘的使者告訴你，你將參與制定這個社會最根本的分配規則——但你完全不知道自己投胎後會出生在什麼樣的家庭：可能是含著金湯匙的富豪之子，也可能是三餐不繼的貧困孩子。使者遞給你一張選票，請你在完全不知道自己命運的情況下，投票決定新社會該採用哪一種制度。
+    </div>
+    <div class="prompt">你會投給哪一種制度？</div>
+    <div class="btn-group" id="grp-rawls">
+      <button class="opt" onclick="handleAct('rawls','win','s4')">資源與機會完全依照個人競爭與能力分配</button>
+      <button class="opt" onclick="handleAct('rawls','fair','s4')">設立社會安全網，確保無論出身如何都有基本保障</button>
+    </div>
+    <div id="fb-rawls" class="feedback"></div>
+    <button id="next-rawls" class="next-btn" onclick="go('s5')">進入轉世配點 ↓</button>
+  </div>
+</section>
+
+<section class="stage" id="s5">
+  <div class="container">
+    <div class="stage-tag">Stage 05 · 命運配點與人格報告</div>
+    <h2>🎲 命運配點</h2>
+    <div class="scenario">
+      投胎前的最後一關：分配 100 點天賦點數，決定你這一世的起始條件。分配完成後，系統會結合你前面四個抉擇，產生一份完整的倫理人格報告。
+    </div>
+    <div class="row">💰 財富：<input class="pt" type="number" id="w" value="25" oninput="calc()"></div>
+    <div class="row">❤️ 健康：<input class="pt" type="number" id="h" value="25" oninput="calc()"></div>
+    <div class="row">🧠 智慧：<input class="pt" type="number" id="s" value="25" oninput="calc()"></div>
+    <div class="row">🍀 運氣：<input class="pt" type="number" id="l" value="25" oninput="calc()"></div>
+    <p id="hint">剩餘點數：0</p>
+    <button id="final-btn" class="next-btn show" style="background:var(--gold);color:#241a04;" onclick="showResult()">揭曉命運報告</button>
+    <div id="fb-final" class="feedback">
+      <h3 id="fate-title" style="font-family:var(--serif);color:var(--gold);margin:0 0 .6rem;"></h3>
+      <p id="fate-desc"></p>
+      <hr style="border:0.5px solid #333;margin:1.2rem 0;">
+      <p id="analysis-text" style="font-size:1.05rem;"></p>
+    </div>
+  </div>
+</section>
+
+<footer>倫理英雄之路 · 教學互動版 · 選擇之後才是學習的開始</footer>
+
+<script>
+let state = { kant:'', util:'', virtue:'', rawls:'' };
+
+/* 回饋內容：只有在按下選項之後才會出現，選項本身完全不透露「標準答案」 */
+const responses = {
+  kant: {
+    truth: {
+      who: '康德的回應', tag: '與義務論的立場一致',
+      html: '你選擇了誠實。義務論者會說：說謊這件事，不論出發點多麼良善，都不能被普遍化為所有人都應遵守的規則——如果「為了保護朋友而說謊」被允許，誠實與信任的社會基礎就會瓦解。康德重視的不是這個決定造成的後果（朋友受罰、友誼可能受傷），而是「說出真話」這個行為本身是否符合可普遍化的道德法則。'
+    },
+    lie: {
+      who: '康德的回應', tag: '與義務論的立場相反',
+      html: '你選擇了保護朋友。這是很有人情味的決定，但康德會指出：一旦「為了保護朋友而說謊」成為可以被普遍遵守的規則，誠實作為社會信任的基礎就會被削弱——每個人都可以用「善意」當理由說謊。義務論並不因為動機良善，就免除「說謊」這個行為本身違反道德法則的事實。'
+    }
+  },
+  util: {
+    sci: {
+      who: '邊沁與彌爾的回應', tag: '與效益論的立場一致',
+      html: '你選擇了科學家。效益論只計算一件事：這個決定能為最多人帶來最大幸福、造成最小傷害。救回能完成疫苗研究、未來可能拯救數百萬病患的科學家，整體效益遠大於救回一位親人——即使這個計算聽起來冷酷，卻正是效益論的核心精神：不論行為本身的性質，只看結果的加總。'
+    },
+    fam: {
+      who: '邊沁與彌爾的回應', tag: '與效益論的立場相反',
+      html: '你選擇了弟弟。這是人之常情，但嚴格的效益論者會指出：從整體效益的角度衡量，犧牲一項可能拯救數百萬人的醫學研究，去換回一條生命，總效益是下降的。效益論並不否定親情的珍貴，但它要求你把「情感的份量」也放進計算式裡——這正是效益論最常受到批評、也最引發爭議的地方。'
+    }
+  },
+  virtue: {
+    reckless: {
+      who: '亞里斯多德的回應', tag: '過度（魯莽）',
+      html: '正面衝鋒展現了氣魄，但亞里斯多德會說：面對十倍敵軍仍不評估情勢就正面對決,這是「過度」的勇氣——魯莽。真正的美德不是情緒的宣洩，而是理性拿捏後的判斷；魯莽和怯懦一樣,都不是德行,只是站在光譜的另一端而已。'
+    },
+    brave: {
+      who: '亞里斯多德的回應', tag: '中庸（勇氣）',
+      html: '召集將領評估情勢、選擇有利地形防守並伺機反擊，這正是亞里斯多德所說的「中庸之道」：勇氣不是不顧一切地衝鋒，也不是逃避，而是在魯莽與怯懦兩個極端之間，依情境拿捏出最恰當的行動。這需要長期累積的「實踐智慧」（phronesis），不是靠一條規則就能套用的答案。'
+    },
+    coward: {
+      who: '亞里斯多德的回應', tag: '不足（怯懦）',
+      html: '撤退保存實力有時候是明智的策略，但如果背後的原因只是被恐懼支配、放棄了原本還能守住的陣地與百姓，亞里斯多德會將此判斷為「不足」——怯懦。德行論提醒我們：同一個行為（撤退）在不同的情境和動機下，可能是審慎，也可能是怯懦，關鍵在於行動者的品格與判斷,而不是行為表面的樣子。'
+    }
+  },
+  rawls: {
+    win: {
+      who: '羅爾斯的回應', tag: '與正義論的立場相反',
+      html: '你選擇了自由競爭制度。羅爾斯會提醒你：你正站在「無知之幕」後面投票——你完全不知道投胎後會是贏家還是輸家。在這種不確定下，一個理性、風險趨避的人，通常不會賭上「我一定會是強者」，因為一旦成為輸家，這個制度不會給你任何保障。（也有哲學家如諾齊克會反駁：只要規則公平，自由競爭本身就是正義的展現——這是一個至今仍在爭論的問題。）'
+    },
+    fair: {
+      who: '羅爾斯的回應', tag: '與正義論的立場一致',
+      html: '你選擇了保障底層的社會安全網。這正是羅爾斯「無知之幕」思想實驗想引導出的結論：當你不知道自己投胎後會落在社會的哪個位置時，理性的自利計算會讓你傾向選擇一個「即使我是最不利的人，也能被基本保障」的制度——這被稱為最大化最小值（maximin）原則,是正義論分配資源的核心邏輯。'
+    }
+  }
+};
+
+function handleAct(st, ch, id){
+  if(state[st]) return; // 已作答則鎖定
+  state[st] = ch;
+  const fb = document.getElementById(`fb-${st}`);
+  const sec = document.getElementById(id);
+  const group = document.getElementById(`grp-${st}`);
+
+  [...group.children].forEach(btn => {
+    btn.disabled = true;
+    if(btn.getAttribute('onclick').includes(`'${ch}'`)) btn.classList.add('picked');
+  });
+
+  const r = responses[st][ch];
+  fb.innerHTML = `<span class="fb-who">${r.who}</span><span class="fb-tag">${r.tag}</span><div>${r.html}</div>`;
+  fb.classList.add('show');
+
+  // 視覺提醒：不代表「答錯」，只是提示這個選擇與該理論的經典立場方向不同，值得課堂上進一步討論
+  const divergent = (
+    (st==='kant' && ch==='lie') ||
+    (st==='util' && ch==='fam') ||
+    (st==='virtue' && ch!=='brave') ||
+    (st==='rawls' && ch==='win')
+  );
+  if(divergent){
+    sec.classList.add('shake');
+    setTimeout(() => sec.classList.remove('shake'), 500);
+  }
+
+  document.getElementById(`next-${st}`).classList.add('show');
+}
+
+function calc(){
+  const t = ['w','h','s','l'].reduce((a,b) => a + parseInt(document.getElementById(b).value || 0), 0);
+  document.getElementById('hint').innerText = `剩餘點數：${100 - t}`;
+  document.getElementById('final-btn').disabled = (t !== 100);
+}
+
+function showResult(){
+  const lucky = Math.random() > 0.7;
+  document.getElementById('fate-title').innerText = lucky ? '🌟 傳奇豪門開局' : '🏚️ 平民開局';
+
+  const rawlsFair = state.rawls === 'fair';
+  let desc;
+  if(!rawlsFair && !lucky){
+    desc = '你投票支持了自由競爭制度，而這一世你抽中了平民開局——沒有安全網,你必須完全靠自己求生。這正是羅爾斯想讓你體會的風險：投票時的「無知之幕」一旦揭開，賭輸的人沒有退路。';
+  } else if(!rawlsFair && lucky){
+    desc = '你投票支持了自由競爭制度，這一世你幸運地抽中了豪門開局——但別忘了，這只是機率站在你這邊，換一世結果可能完全不同，這正是自由競爭制度下風險的真實樣貌。';
+  } else if(rawlsFair && !lucky){
+    desc = '你投票支持了保障底層的制度，這一世你抽中了平民開局——但因為社會安全網的存在，即使起點不高，你仍然擁有基本的保障與往上爬的機會。';
+  } else {
+    desc = '你投票支持了保障底層的制度，這一世你也幸運地抽中了豪門開局——制度的保障加上幸運，讓你的起點格外穩固。';
+  }
+  document.getElementById('fate-desc').innerText = desc;
+
+  const summary = {
+    kant:   state.kant === 'truth' ? '在義務論情境中選擇了誠實' : '在義務論情境中選擇了保護朋友',
+    util:   state.util === 'sci' ? '在效益論情境中選擇了整體效益較高的一方' : '在效益論情境中選擇了個人情感優先的一方',
+    virtue: state.virtue === 'brave' ? '在德行論情境中選擇了中庸而審慎的做法' : (state.virtue === 'reckless' ? '在德行論情境中選擇了較為衝動的做法' : '在德行論情境中選擇了較為保守的做法'),
+    rawls:  state.rawls === 'fair' ? '在正義論情境中選擇了保障底層的制度' : '在正義論情境中選擇了自由競爭的制度'
+  };
+  document.getElementById('analysis-text').innerHTML =
+    `回顧這一路的抉擇，你${summary.kant}、${summary.util}、${summary.virtue}、${summary.rawls}。` +
+    `<br><br>這四個選擇沒有一組是「滿分答案」——義務論、效益論、德行論、正義論彼此之間本來就存在真實的張力。真正值得帶回課堂討論的，不是你選了哪一邊，而是：<b>當四種倫理推理彼此衝突時，你會如何在其中做出屬於自己的判斷？</b>`;
+
+  document.getElementById('fb-final').classList.add('show');
+}
+
+function go(id){ document.getElementById(id).scrollIntoView({ behavior:'smooth' }); }
+</script>
+</body>
+</html>
