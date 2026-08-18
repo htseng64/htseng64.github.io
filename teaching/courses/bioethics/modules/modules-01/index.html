@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生命倫理學｜Module 01 教材索引</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d12;
+  --panel:#121822;
+  --panel2:#1a222e;
+  --line:#28323e;
+  --amber:#e8a33d;
+  --amber-soft:#f2c374;
+  --cyan:#00e5f0;
+  --green:#3ecf8e;
+  --text:#eef1f5;
+  --muted:#8a97a8;
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC', sans-serif;
+  --mono:'Roboto Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{font-size:18px;}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+  line-height:1.75;min-height:100vh;
+}
+a{color:inherit;text-decoration:none;}
+:focus-visible{outline:3px solid var(--amber-soft);outline-offset:3px;}
+
+header{
+  padding:4.5rem 1.2rem 3rem;text-align:center;
+  background:radial-gradient(ellipse at 50% -10%, #16202c 0%, var(--bg) 60%);
+  border-bottom:1px solid var(--line);
+}
+.eyebrow{font-family:var(--mono);font-size:.85rem;letter-spacing:.25em;color:var(--amber);text-transform:uppercase;margin-bottom:1rem;}
+header h1{
+  font-family:var(--serif);font-weight:900;font-size:clamp(2rem,5vw,3rem);margin:0 0 1rem;
+  background:linear-gradient(180deg,#fff,#c9d3de);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+header p{max-width:620px;margin:0 auto;color:var(--muted);font-size:1.1rem;}
+
+main{max-width:960px;margin:0 auto;padding:3.5rem 1.2rem 5rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.4rem;}
+
+.card{
+  display:block;background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--line);border-radius:18px;padding:1.9rem 1.9rem 2.1rem;
+  border-top:3px solid var(--line);transition:.2s border-color,.2s transform;
+}
+.card:hover{border-color:var(--amber);transform:translateY(-3px);}
+.card .icon{font-size:2.2rem;margin-bottom:.9rem;display:block;}
+.card h2{font-family:var(--serif);font-size:1.35rem;margin:0 0 .6rem;color:var(--amber-soft);}
+.card p{color:#c6cdd6;font-size:.98rem;margin:0 0 1.1rem;}
+.card .tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.card .tag{font-family:var(--mono);font-size:.72rem;color:var(--muted);border:1px solid var(--line);padding:.2rem .6rem;border-radius:999px;}
+.card .go{font-family:var(--mono);font-size:.85rem;color:var(--amber);display:flex;align-items:center;gap:.4rem;}
+.card .go::after{content:'→';transition:.2s transform;}
+.card:hover .go::after{transform:translateX(4px);}
+
+footer{padding:3rem 1.2rem;text-align:center;color:var(--muted);font-size:.85rem;font-family:var(--mono);border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">BIOETHICS · MODULE 01</div>
+  <h1>生命倫理學教材索引</h1>
+  <p>這個模組收錄了三份互動教材，從古典倫理學理論出發，一路延伸到臨床情境的實際應用。點選卡片開始學習。</p>
+</header>
+
+<main>
+  <div class="grid">
+
+    <a class="card" href="./hero-journey.html">
+      <span class="icon">🧭</span>
+      <h2>倫理英雄之路</h2>
+      <p>走過四段沒有標準答案的情境抉擇，選擇之後才會揭曉康德、邊沁、亞里斯多德、羅爾斯會怎麼分析你的決定。</p>
+      <div class="tags">
+        <span class="tag">義務論</span><span class="tag">效益論</span><span class="tag">德行論</span><span class="tag">正義論</span>
+      </div>
+      <span class="go">開始互動情境</span>
+    </a>
+
+    <a class="card" href="./trolley-ethics.html">
+      <span class="icon">🚦</span>
+      <h2>鐵軌上的哲學</h2>
+      <p>電車難題與三種變形，結合 ICU 檢傷分類與 SOFA 評分，看義務論、效益論、德行論如何分析同一個抉擇，並附五題自我測驗。</p>
+      <div class="tags">
+        <span class="tag">電車難題</span><span class="tag">SOFA 評分</span><span class="tag">自我測驗</span>
+      </div>
+      <span class="go">開始互動情境</span>
+    </a>
+
+    <a class="card" href="./ethics-case.html">
+      <span class="icon">📋</span>
+      <h2>倫理案例讀本</h2>
+      <p>案例式的倫理情境教材，搭配前面兩份互動練習使用，作為課堂討論與延伸閱讀的素材。</p>
+      <div class="tags">
+        <span class="tag">案例研讀</span>
+      </div>
+      <span class="go">開始閱讀</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>生命倫理學 Module 01 · 護理倫理互動教學</footer>
+
+</body>
+</html>
