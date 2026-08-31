@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#07182f" name="theme-color"/>
+<title>AI 研究偵探｜Hybrid Learning Hub｜TronClass × Open Learning</title>
+<style>
+:root{
+ --bg:#07182f; --panel:#0e2747; --panel2:#14375f; --text:#f6f9ff; --muted:#c9d8eb;
+ --gold:#ffd66b; --mint:#79efca; --red:#ff8e8e; --line:#31547d;
+ --fs:20px; --h1:clamp(2rem,4.2vw,4.4rem); --h2:clamp(1.6rem,3vw,3rem); --h3:clamp(1.25rem,2vw,2rem);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#06162b,#0a2242 48%,#07182f);color:var(--text);
+ font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;font-size:var(--fs);line-height:1.7}
+body.classroom{--fs:28px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(5,19,38,.94);backdrop-filter:blur(12px);
+ border-bottom:1px solid var(--line);padding:.65rem max(1rem,3vw);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.brand{font-weight:900;margin-right:auto;letter-spacing:.03em}
+.ctrl{border:1px solid var(--line);background:#123456;color:#fff;padding:.55rem .8rem;border-radius:999px;font-weight:800}
+.ctrl:hover{border-color:var(--gold)}
+main{width:min(1500px,94vw);margin:auto}
+.hero{padding:5.5rem 0 3rem;min-height:72vh;display:grid;align-content:center;gap:1.3rem}
+.kicker{color:var(--mint);font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:var(--h1);line-height:1.08;margin:.1rem 0;max-width:1150px}
+h2{font-size:var(--h2);line-height:1.2}
+h3{font-size:var(--h3);line-height:1.3}
+.lead{font-size:1.22em;color:var(--muted);max-width:1050px}
+.case-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin:2rem 0 5rem}
+.case-card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:24px;padding:1.25rem;
+ min-height:260px;display:flex;flex-direction:column;box-shadow:0 14px 45px rgba(0,0,0,.18)}
+.case-card .num{color:var(--gold);font-weight:900;font-size:1.3em}
+.case-card p{color:var(--muted);font-size:.9em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:0;border-radius:14px;padding:.75rem 1rem;
+ background:var(--gold);color:#10233c;font-weight:900;text-decoration:none}
+.btn.alt{background:#163d68;color:#fff;border:1px solid var(--line)}
+.btn.mint{background:var(--mint);color:#082a29}
+.section{padding:2.4rem 0 5rem;border-top:1px solid rgba(255,255,255,.1)}
+.case-head{display:grid;grid-template-columns:1.2fr .8fr;gap:1.2rem;align-items:start}
+.case-meta,.roadmap,.scenario,.activity,.reflection,.video-box{background:rgba(14,39,71,.88);border:1px solid var(--line);border-radius:22px;padding:1.15rem}
+.roadmap{border-left:7px solid var(--gold)}
+.drive{font-size:1.1em;font-weight:800}
+.round-tabs{display:flex;gap:.6rem;flex-wrap:wrap;margin:1.3rem 0}
+.round-tab{background:#102f53;color:#fff;border:1px solid var(--line);padding:.7rem 1rem;border-radius:14px;font-weight:900}
+.round-tab.active{background:var(--gold);color:#10233c}
+.round-panel{display:none}
+.round-panel.active{display:block}
+.round-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+.video-box{min-height:330px;display:grid;align-content:center;text-align:center;background:linear-gradient(145deg,#0a203c,#102d50)}
+.video-placeholder{border:2px dashed #5d7fa4;border-radius:18px;padding:2rem 1rem;color:var(--muted)}
+.video-frame{width:100%;aspect-ratio:16/9;border:0;border-radius:15px;background:#000;display:none}
+.video-tools{display:grid;grid-template-columns:1fr auto auto;gap:.5rem;margin-top:.7rem}
+.video-tools input{min-width:0;background:#071a30;color:#fff;border:1px solid var(--line);padding:.65rem;border-radius:12px}
+.focus-btn{position:absolute;right:1rem;top:1rem}
+.focusable{position:relative}
+.focusable.focus{position:fixed;inset:0;z-index:100;background:#07182f;border-radius:0;padding:clamp(1rem,3vw,3rem);overflow:auto;
+ display:block;max-width:none;margin:0}
+.focusable.focus .focus-btn{position:fixed;z-index:110}
+.focusable.focus h3{font-size:clamp(2rem,4vw,4rem)}
+.activity{margin-top:1rem}
+.question{font-weight:900;font-size:1.08em}
+.choice,.map-row{display:flex;gap:.75rem;align-items:flex-start;background:#0a213d;border:1px solid var(--line);border-radius:14px;
+ padding:.7rem;margin:.55rem 0}
+.choice:hover{border-color:#70a9df}
+.choice input{transform:scale(1.5);margin-top:.4rem}
+.map-row{display:grid;grid-template-columns:1fr minmax(180px,.45fr)}
+.map-row select{background:#071a30;color:#fff;border:1px solid var(--line);padding:.6rem;border-radius:10px}
+.feedback{display:none;margin-top:.8rem;padding:.9rem;border-radius:14px;font-weight:800}
+.feedback.ok{display:block;background:#113e3b;border:1px solid #3fd4aa}
+.feedback.bad{display:block;background:#4a2530;border:1px solid #ff8e8e}
+.check-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem}
+.note{width:100%;min-height:130px;background:#06172c;color:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem}
+.progress-wrap{height:16px;background:#082038;border-radius:99px;overflow:hidden;border:1px solid var(--line);margin:.7rem 0}
+.progress{height:100%;background:linear-gradient(90deg,var(--mint),var(--gold));width:0}
+.footer{padding:3rem 0 5rem;color:var(--muted);text-align:center}
+.badge{display:inline-block;padding:.25rem .55rem;border-radius:999px;background:#153b66;color:var(--mint);font-weight:900;font-size:.85em}
+.mobile-dock{display:none}
+@media(max-width:1100px){.case-grid{grid-template-columns:repeat(2,1fr)}.case-head,.round-grid{grid-template-columns:1fr}}
+@media(max-width:680px){
+ body{--fs:18px}
+ body.classroom{--fs:23px}
+ main{width:min(94vw,760px)}
+ .hero{padding-top:3rem;min-height:auto}
+ .case-grid{grid-template-columns:1fr}
+ .topbar{gap:.35rem}.brand{width:100%;font-size:.95em}
+ .ctrl{padding:.48rem .65rem;font-size:.88em}
+ .video-tools{grid-template-columns:1fr 1fr}.video-tools input{grid-column:1/-1}
+ .map-row{grid-template-columns:1fr}
+ .mobile-dock{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:45;background:#06172cee;border-top:1px solid var(--line);padding:.45rem;gap:.45rem}
+ .mobile-dock button{flex:1}
+ .footer{padding-bottom:6rem}
+}
+@media print{.topbar,.mobile-dock,.focus-btn,.video-tools,.btn{display:none!important} body{background:white;color:black}.section{page-break-before:always}.case-meta,.roadmap,.scenario,.activity,.reflection,.video-box{background:white;color:black}}
+
+.mode-banner{margin:1.2rem 0 2rem;padding:1rem 1.2rem;border:1px solid var(--line);border-radius:20px;background:rgba(20,55,95,.75);display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+.mode-pill{display:inline-flex;align-items:center;gap:.45rem;border-radius:999px;padding:.55rem .8rem;background:#0b2748;border:1px solid var(--line);font-weight:900}
+.mode-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin:1.2rem 0 2.2rem}
+.mode-card{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,#15385f,#0c2544);padding:1.35rem;box-shadow:0 16px 44px rgba(0,0,0,.16)}
+.mode-card h3{margin:.2rem 0 .5rem}.mode-card p{color:var(--muted)}
+.tronclass-panel{display:none;border:1px solid var(--line);border-radius:20px;background:#0c294c;padding:1.2rem}
+.tronclass-panel .official{color:var(--mint);font-weight:900}
+.open-video-panel{display:none}
+body.mode-open .open-video-panel{display:block}
+body.mode-tronclass .tronclass-panel{display:block}
+body.mode-tronclass .open-video-panel{display:none}
+body.mode-open .tronclass-panel{display:none}
+body.mode-tronclass .video-tools,body.mode-open .video-tools{display:none}
+.mode-switch{border:1px solid var(--line);background:#14375f;color:#fff;padding:.55rem .8rem;border-radius:999px;font-weight:900}
+.mode-switch.active{background:var(--gold);color:#10233c;border-color:var(--gold)}
+.tc-btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+.hybrid-note{font-size:.9em;color:var(--muted);margin-top:.7rem}
+@media(max-width:760px){.mode-picker{grid-template-columns:1fr}.mode-banner{align-items:flex-start}}
+
+
+.eval-section{
+  margin:2.2rem 0;
+  padding:1.5rem;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:linear-gradient(180deg,#11345a,#0a2442);
+}
+.eval-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1.1rem;
+  margin-top:1rem;
+}
+.eval-card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1.2rem;
+  background:#0d2b4f;
+}
+.eval-card h3{margin:.2rem 0 .5rem}
+.eval-card p{color:var(--muted)}
+.eval-btn.disabled{
+  opacity:.58;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+.sop-section{
+  margin:2rem 0;
+  padding:1.35rem;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#0b294a;
+}
+.sop-flow{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.8rem;
+  margin-top:1rem;
+}
+.sop-step{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:.9rem;
+  background:#102f53;
+}
+.sop-step b{display:block;color:var(--gold);margin-bottom:.3rem}
+@media(max-width:760px){
+  .eval-grid,.sop-flow{grid-template-columns:1fr}
+}
+
+
+/* ===== v4 Student Learning Record / Save / Import / PDF ===== */
+.record-tools{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap}
+.record-tools .ctrl{white-space:nowrap}
+.learning-record{
+  margin:1.2rem 0 1.6rem;padding:1.2rem;border:1px solid var(--line);border-radius:22px;
+  background:linear-gradient(180deg,#12385f,#0b2949)
+}
+.record-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-top:.8rem}
+.record-field label{display:block;font-size:.84em;color:var(--muted);font-weight:800;margin-bottom:.25rem}
+.record-field input{width:100%;background:#071a30;color:#fff;border:1px solid var(--line);padding:.65rem;border-radius:11px}
+.stats-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin:.9rem 0}
+.stat-box{background:#0a213d;border:1px solid var(--line);border-radius:15px;padding:.75rem;text-align:center}
+.stat-box b{display:block;font-size:1.35em;color:var(--gold)}
+.save-status{color:var(--mint);font-size:.9em;font-weight:800}
+.round-mini-stats{display:flex;gap:.55rem;flex-wrap:wrap;margin:.65rem 0 .1rem}
+.round-mini-stats span{font-size:.85em;background:#0a213d;border:1px solid var(--line);border-radius:999px;padding:.28rem .55rem}
+#learningReport{display:none;background:#fff;color:#111;padding:28px;max-width:1100px;margin:0 auto}
+#learningReport h1,#learningReport h2,#learningReport h3{color:#111}
+.report-table{width:100%;border-collapse:collapse;font-size:14px}
+.report-table th,.report-table td{border:1px solid #aaa;padding:7px;vertical-align:top;text-align:left}
+.report-table th{background:#eee}
+.report-note{white-space:pre-wrap}
+.report-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 18px}
+.report-meta div{border:1px solid #aaa;padding:8px}
+.pdf-help{font-size:.86em;color:var(--muted)}
+@media(max-width:900px){.record-grid,.stats-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.record-grid,.stats-strip{grid-template-columns:1fr}}
+@media print{
+  body *{visibility:hidden !important}
+  #learningReport,#learningReport *{visibility:visible !important}
+  #learningReport{display:block !important;position:absolute;left:0;top:0;width:100%;max-width:none;padding:12mm}
+  @page{size:A4;margin:12mm}
+}
+
+
+.case-report-tools{
+  display:flex;gap:.55rem;flex-wrap:wrap;margin:.9rem 0 1rem;
+  padding:.75rem;border:1px dashed var(--line);border-radius:14px;background:#0a213d
+}
+.case-report-tools .btn{font-size:.9em}
+
+
+/* ===== Universal Device Layer v6.3 ===== */
+:root{
+  --touch: 48px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{overflow-x:hidden;padding-bottom:calc(84px + var(--safe-bottom))}
+button,.btn,a.btn,input,select,textarea{min-height:var(--touch)}
+button,.btn,a.btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+input,select,textarea{font-size:16px!important;max-width:100%;box-sizing:border-box}
+img,svg,video,iframe{max-width:100%}
+iframe{width:100%;aspect-ratio:16/9;height:auto;border:0}
+.record-grid,.eval-grid,.case-grid,.round-grid{min-width:0}
+.record-field,.eval-card,.case-card,.round-card{min-width:0}
+.mobile-only{display:none}
+
+.device-backup-card{
+  margin-top:1rem;padding:1rem;border:1px solid var(--line);border-radius:16px;background:var(--card);
+}
+.device-backup-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:.75rem}
+.device-note{font-size:.92rem;color:var(--muted);line-height:1.55}
+
+@media (max-width: 900px){
+  .record-grid,.eval-grid,.case-grid,.round-grid{grid-template-columns:1fr!important}
+  .container,.wrap,main{width:min(100%,100%)!important;max-width:100%!important}
+  body{font-size:16px}
+  h1{font-size:clamp(1.75rem,7vw,2.55rem)!important;line-height:1.12}
+  h2{font-size:clamp(1.35rem,5vw,1.9rem)!important}
+  h3{font-size:clamp(1.12rem,4.5vw,1.45rem)!important}
+  .btn,button{padding:.82rem 1rem!important;font-size:1rem!important}
+  .mode-banner{align-items:flex-start!important}
+  .record-field>div{width:100%}
+  #learningId{width:100%;min-width:0!important;font-size:1.05rem!important}
+  .device-backup-actions>.btn{flex:1 1 220px}
+  .case-report-tools{display:grid!important;grid-template-columns:1fr!important}
+  .case-report-tools .btn{width:100%!important}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media (max-width: 560px){
+  body{padding-left:0;padding-right:0}
+  .container,.wrap,main,section{padding-left:.8rem!important;padding-right:.8rem!important}
+  .mode-banner{padding:.85rem!important}
+  .btn,button{width:100%;justify-content:center}
+  #learningIdReady{display:grid!important;grid-template-columns:1fr!important}
+  #learningIdEmpty{display:grid!important;grid-template-columns:1fr!important}
+  .device-backup-actions{display:grid;grid-template-columns:1fr}
+  .mobile-only{display:block}
+  .desktop-only{display:none!important}
+}
+/* landscape phone/tablet */
+@media (orientation:landscape) and (max-height:650px){
+  h1{font-size:1.8rem!important}
+  .hero{padding-top:.7rem!important;padding-bottom:.7rem!important}
+}
+/* iOS safe areas */
+@supports (padding:max(0px)){
+  body{padding-left:max(0px,env(safe-area-inset-left));padding-right:max(0px,env(safe-area-inset-right))}
+}
+
+
+/* ===== FINAL-STABLE-1 mode/header fix ===== */
+@media (max-width:1100px){
+  header .topbar, .topbar, header .bar, .hero-top{
+    flex-wrap:wrap!important;
+    gap:.65rem!important;
+  }
+  .mode-switch, .mode-buttons, .top-actions{
+    flex-wrap:wrap!important;
+    max-width:100%!important;
+  }
+}
+@media (max-width:700px){
+  .mode-switch .btn, .mode-buttons .btn,
+  button[onclick*="setMode"], .mode-btn{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
+
+
+/* ===== FINAL-STABLE-1 stable playback / quick-save ===== */
+.open-save-quick{
+  display:none;
+  margin:1rem 0;
+  padding:1rem 1.15rem;
+  border:1px solid #3b82a0;
+  border-radius:18px;
+  background:rgba(5,150,105,.11);
+  gap:.8rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+body.mode-open .open-save-quick{display:flex}
+body.mode-tronclass .open-save-quick{display:none}
+.open-save-quick > div:first-child{flex:1 1 360px}
+.open-save-quick .save-status{flex-basis:100%}
+.open-video-panel iframe.video-frame{
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:16/9;
+  min-height:360px;
+  border:0;
+  border-radius:18px;
+}
+.youtube-fallback{margin-top:.65rem;text-align:center}
+@media(max-width:700px){
+  .open-video-panel iframe.video-frame{min-height:220px}
+  .open-save-quick .btn{width:100%}
+}
+
+
+/* ===== FINAL-STABLE-1 local-test / cloud-submit clarity ===== */
+.local-video-notice{
+  display:none;
+  padding:1rem;
+  margin:.7rem 0;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;
+  background:rgba(255,193,7,.10);
+}
+
+
+.youtube-direct{
+  font-weight:800!important;
+  font-size:1.05em!important;
+}
+.open-save-quick .btn.mint,
+.open-save-quick button{
+  min-height:54px;
+}
+
+
+.video-link-check{margin-top:.55rem;font-size:.85em;opacity:.72;overflow-wrap:anywhere}
+
+/* ===== FINAL STABLE STUDENT UI ===== */
+.open-video-panel iframe.open-frame{
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:16/9;
+  min-height:360px;
+  border:0;
+  border-radius:18px;
+}
+.youtube-fallback{margin-top:.65rem;text-align:center}
+.open-save-quick{margin-top:1rem}
+@media(max-width:700px){
+  .open-video-panel iframe.open-frame{min-height:220px}
+}
+
+</style>
+<meta content="telephone=no" name="format-detection"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+</head>
+<body>
+<div class="topbar">
+<div class="brand">🕵️ AI 研究偵探｜Interactive Learning Hub</div>
+<button class="mode-switch" id="modeBtnTron" onclick="setMode('tronclass')">🎓 TronClass Mode</button>
+<button class="mode-switch" id="modeBtnOpen" onclick="setMode('open')">🌏 Open Learning</button>
+<button class="ctrl" onclick="goHome()">⌂ 首頁</button>
+<button class="ctrl" onclick="toggleClassroom()">🔎 教室大字</button>
+<button class="ctrl" onclick="changeFont(1)">A＋</button>
+<button class="ctrl" onclick="changeFont(-1)">A－</button>
+<button class="ctrl" onclick="document.documentElement.requestFullscreen?.()">⛶ 全螢幕</button>
+<button class="ctrl" onclick="resetProgress()">↺ 重設進度</button>
+</div>
+<main>
+<section class="hero" id="home">
+<div class="kicker">Research &amp; Evidence-Based Nursing · PBL · Flipped Learning</div>
+<h1>AI 研究偵探<br/>5 CASE 互動自學與翻轉教學中心</h1>
+<p class="lead">適合課前自主學習、手機操作與實體教室投影。每個 CASE 依 <b>Explore → Experience → Solve</b> 三階梯展開；每一輪都有影片位置、臨床任務、互動關卡、即時回饋與個人解題筆記。</p>
+<div>
+<span class="badge">📱 Mobile First</span>
+<span class="badge">🖥 Classroom View</span>
+<span class="badge">🎬 15 Video Slots</span>
+<span class="badge">💾 Local Progress</span>
+</div>
+<div class="progress-wrap"><div class="progress" id="globalProgress"></div></div>
+<div id="progressText">學習進度 0 / 15 rounds</div>
+</section>
+<section>
+<h2>選擇案件｜Choose Your Case</h2>
+<section class="learning-record" id="studentRecordPanel">
+<div class="mode-banner" style="margin-bottom:1rem">
+<span class="mode-pill">PRIVACY BY DESIGN</span>
+<span><b>WEB learning-process data uses only a random Learning ID.</b> 姓名、學號、Email 與正式成績不在本網站蒐集。</span>
+</div>
+<div class="kicker">STUDENT LEARNING RECORD</div>
+<h2 style="margin:.15rem 0 .35rem">🗂️ 我的學習歷程暫存與繳交</h2>
+<p style="margin:.2rem 0;color:var(--muted)">
+    本頁會在目前瀏覽器自動暫存學習進度。若要換電腦或保留備份，請先「匯出進度」；
+    回來後可「匯入進度」。每個 CASE 都可各自產生學習報告 PDF；全部完成後，也可產生完整學習 Portfolio，再以瀏覽器「列印 → 另存為 PDF」後繳交至 TronClass。
+  </p>
+<div class="record-grid">
+<div class="record-field" style="grid-column:1/-1">
+<label>Learning ID｜個人去識別學習代碼</label>
+<div id="learningIdEmpty" style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+<button class="btn" onclick="createLearningId()" type="button">🪪 產生我的 Learning ID</button>
+<small>第一次使用請按此產生。每位學習者都會取得不同 ID。</small>
+</div>
+<div id="learningIdReady" style="display:none;gap:.6rem;flex-wrap:wrap;align-items:center">
+<input aria-label="Learning ID" id="learningId" readonly="" style="font-weight:800;letter-spacing:.08em;min-width:240px"/>
+<button class="btn" onclick="copyLearningId()" type="button">📋 複製 ID</button>
+<button class="btn alt" onclick="shareOrSaveLearningId()" type="button">📱 分享／儲存 ID</button>
+</div>
+<small><b>請用同一個 Learning ID 完成所有 CASE。</b> 同一瀏覽器會自動記住；若改用另一支手機、平板、iOS／Android／PC，請先備份完整學習資料，再於新裝置「匯入先前進度」。網站不要求姓名、學號、Email 或 TronClass 帳號。</small>
+</div>
+<div class="record-field"><label>學習歷程狀態</label><div class="save-status" id="saveStatus">自動暫存已啟用</div></div>
+</div>
+<div class="device-backup-card">
+<b>📱 裝置通用備份｜iPhone・iPad・Android・PC</b>
+<div class="device-note">
+      手機可能更換瀏覽器、清除網站資料或更換裝置。建議每完成一個 CASE 就備份一次。
+      「分享／儲存完整學習資料」會保留同一個 Learning ID 與目前進度；在任何裝置以「匯入先前進度」即可接續。
+    </div>
+<div class="device-backup-actions">
+<button class="btn alt" onclick="shareOrSaveProgress()" type="button">📤 分享／儲存完整學習資料</button>
+<button class="btn alt" onclick="document.getElementById('progressImport').click()" type="button">📥 匯入先前進度</button>
+</div>
+</div>
+<div class="mode-banner" style="margin-top:1rem"><span class="mode-pill">IMPORTANT</span><span>第一次使用：先產生 Learning ID → 再開始 CASE。之後所有 CASE、手機／平板／PC 的進度與 Portfolio 都必須沿用同一 ID。每完成一個 CASE 建議備份一次完整學習資料。</span></div>
+<div class="case-report-tools" style="margin-top:1rem">
+<button class="btn alt" onclick="manualSave()">💾 暫存全部進度</button>
+<button class="btn alt" onclick="exportProgress()">⬇ 匯出全部進度</button>
+<button class="btn alt" onclick="document.getElementById('progressImport').click()">⬆ 匯入先前進度</button>
+<button class="btn mint" onclick="printLearningReport()">📚 完整 Portfolio / PDF</button>
+<input accept=".json,application/json" id="progressImport" onchange="importProgressFile(this.files[0]);this.value=''" style="display:none" type="file"/>
+</div>
+<div class="stats-strip">
+<div class="stat-box"><b id="statRounds">0 / 15</b>完成 Round</div>
+<div class="stat-box"><b id="statWatch">00:00:00</b>網頁影片觀看時間</div>
+<div class="stat-box"><b id="statAnswered">0 / 15</b>已作答 Checkpoint</div>
+<div class="stat-box"><b id="statAttempts">0</b>總作答次數</div>
+</div>
+<div class="pdf-help">
+    ※「網頁影片觀看時間」只計算在本網站內實際播放的 YouTube 影片；若學生在 TronClass 內觀看，
+    正式觀看紀錄仍以 TronClass Learning Analytics 為準。
+  </div>
+</section>
+<div class="mode-picker" id="modePicker">
+<div class="mode-card">
+<div class="kicker">FOR ENROLLED STUDENTS</div>
+<h3>🎓 我是本課修課學生｜TronClass Mode</h3>
+<p>正式影片觀看紀錄、測驗、作業與討論留在 TronClass；本網站負責臨床情境、PBL Checkpoint、即時回饋與反思。</p>
+<button class="btn" onclick="setMode('tronclass');document.getElementById('caseGrid').scrollIntoView({behavior:'smooth'})">進入 TronClass Mode →</button>
+</div>
+<div class="mode-card">
+<div class="kicker">OPEN SELF-LEARNING</div>
+<h3>🌏 我要公開自學｜Open Learning Mode</h3>
+<p>不需要 TronClass 帳號。直接觀看 YouTube（Unlisted）影片，依序完成 Explore → Experience → Solve 與互動任務。</p>
+<button class="btn mint" onclick="setMode('open');document.getElementById('caseGrid').scrollIntoView({behavior:'smooth'})">進入 Open Learning →</button>
+</div>
+</div>
+<div class="mode-banner"><span class="mode-pill" id="modeLabel">尚未選擇模式</span><span id="modeHelp">請先選擇學習入口。之後可隨時從上方切換。</span></div>
+<div class="mode-banner" style="margin-top:.8rem"><span class="mode-pill">CURRENT SCOPE</span><span>本網站目前涵蓋 18 週課程中的 5 個數位介入單元：W05、W08、W13、W14、W16；架構可擴充至其他週次。</span></div>
+<div class="case-grid" id="caseGrid"></div>
+</section>
+<div id="caseSections"></div>
+<section class="eval-section" id="evaluation">
+<div class="kicker">TEACHING &amp; LEARNING EVALUATION</div>
+<h2>📝 數位教學與教材整體回饋</h2>
+<p>本課修課學生之正式課程回饋、計分活動與正式學習紀錄以 TronClass 為準。公開自學者未來可使用相同核心題項的 Open Learning 回饋版本，以利教學改善與跨情境比較。</p>
+<div class="eval-grid"><div class="eval-card"><div class="badge">📘 Combined Evaluation</div><h3>教學設計 × 教材內容 × 學習結果</h3><p>整合教學設計、教材內容、學習信心、整體滿意度、持續使用意願與質性建議。正式研究用途須另依 IRB 核准、研究參與程序與去識別化資料管理辦理。</p><a aria-disabled="true" class="btn eval-btn disabled" id="evalCombined">TronClass 學生端評值連結待設定</a></div></div>
+</section>
+<section aria-hidden="true" id="learningReport">
+<h1>AI 研究偵探｜完整學習歷程 Portfolio</h1>
+<p>Research &amp; Evidence-Based Nursing AI Detective — Learning Process Report</p>
+<p><b>Privacy:</b> 本學習報告以隨機 Learning ID 識別；不含姓名、學號或 Email。若由本課學生上傳至 TronClass，正式身分由 TronClass 帳號辨識。</p>
+<div id="reportContent"></div>
+<p style="margin-top:24px;font-size:12px">
+    本報告由學習網站依本機暫存紀錄產生；網站內影片觀看時間僅代表此頁 YouTube 播放紀錄。
+    TronClass 內之正式影片觀看紀錄、測驗與作業結果仍以 TronClass 系統紀錄為準。
+  </p>
+<p style="font-size:12px">網頁設計｜弘光科技大學 曾惠楨 老師</p>
+</section>
+
+<section class="section" id="openEvaluation">
+<div class="section-head">
+<div>
+<span class="eyebrow">OPEN LEARNING</span>
+<h2>📝 數位教學與教材整體回饋｜30-item Evaluation</h2>
+<p>公開自學者完成學習後，可在此填寫整體評值。修課學生請回 TronClass 完成正式課程評值。Open learner 的學習歷程與評值以 Learning ID 連結。</p>
+</div>
+</div>
+<div class="mode-banner">
+<span class="mode-pill">PRIVACY</span>
+<span>本表使用您的 Learning ID 串接學習歷程。Q25–Q30 請勿填寫姓名、學號、Email、醫院／病房、病人姓名或其他可辨識個人身分的資訊。</span>
+</div>
+<div class="device-backup-card" id="evaluationModeNotice"></div>
+<form id="openEvaluationForm"></form>
+<div class="device-backup-actions">
+<button class="btn mint" onclick="submitOpenEvaluation()" type="button">📨 送出 30 題評值</button>
+<button class="btn alt" onclick="saveEvaluationLocally()" type="button">💾 暫存評值</button>
+</div>
+<div class="save-status" id="evaluationSubmitStatus" style="margin-top:.8rem"></div>
+</section>
+<footer class="footer"><p>本網站為學生教學與自學使用；教學設計、平台架構與成果說明另以教師版文件保存。</p>
+<b>AI 研究偵探｜研究與實證護理概論</b><br/>
+ 網頁設計｜弘光科技大學 曾惠楨 老師
+</footer>
+</main>
+<div class="mobile-dock">
+<button class="ctrl" onclick="goHome()">⌂ CASE</button>
+<button class="ctrl" onclick="toggleClassroom()">🔎 大字</button>
+<button class="ctrl" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ TOP</button>
+</div>
+<script>
+const CASES = [{"id": "case1", "week": "W05", "title": "CASE 01｜PICO 臨床問題轉化", "subtitle": "從床邊困惑到檢索密碼", "theme": "PICO / Ask", "pain": "把臨床零碎對話轉化為可被資料庫搜尋的結構化實證問題。", "drive": "臨床每天遇到這麼多繁雜問題，我們該如何把口語直覺與零碎醫護對白，轉化為具備科學結構、且醫學資料庫能精準檢索回答的實證問題？", "road": "臨床困惑 → PICO 結構化 → 對話雜訊過濾 → 模糊結局指標化 → 布林邏輯檢索 → 精準尋獲實證", "rounds": [{"n": 1, "mode": "Explore 探究", "title": "概念建構與結構化破障", "goal": "辨識 P、I、C、O，分清介入手段與可測量結局。", "scenario": "85 歲住院長者失眠，家屬要求安眠藥。護理師思考：睡前非藥物放鬆是否更安全有效？如何把「睡前放鬆有沒有效」改造成可搜尋問題？", "qtype": "mapping", "prompt": "將四個語句歸入正確 PICO 欄位。", "items": [["接受人工髖關節置換術之高齡住院病人", "P"], ["術後 24 小時內提早下床活動", "I"], ["傳統常規臥床 3–5 天照護", "C"], ["日常生活活動功能量表得分（Barthel Index）", "O"]], "options": ["P", "I", "C", "O"], "feedback": "P 是研究對象、I 是介入、C 是比較、O 是結果。提早下床是手段，活動功能改善是結果。"}, {"n": 2, "mode": "Experience 實境", "title": "臨床鑑識與線索除雷", "goal": "從護理站對話中過濾背景雜訊，並把模糊結局轉為可測量指標。", "scenario": "骨科交班同時出現便當太鹹、換床、高齡骨折、術後第一天下床與『恢復得比較好』等訊息。", "qtype": "multi", "prompt": "哪些屬於與研究決策無關的背景雜訊？（複選）", "items": [["便當太油、太鹹", true], ["高齡 82 歲且有骨質疏鬆", false], ["要求換到靠近茶水間的病床", true], ["術後第一天使用助行器下床", false]], "feedback": "便當與床位是背景雜訊；年齡/疾病特徵屬 P，早期下床屬 I。『恢復較好』應進一步指標化為 Barthel Index、住院天數或併發症等。"}, {"n": 3, "mode": "Solve 解謎", "title": "檢索策略與資料庫對話", "goal": "用 OR 串同義詞、AND 串不同概念，建立基本搜尋式。", "scenario": "PICO 已完成，但完整中文句子不能直接變成高品質資料庫檢索式。", "qtype": "single", "prompt": "哪一個搜尋式邏輯最正確？", "items": [["older adults AND elderly AND early ambulation", false], ["(older adults OR elderly OR aged) AND (early ambulation OR early mobilization)", true], ["older adults OR elderly AND early ambulation", false]], "feedback": "同一概念的同義詞用 OR 擴大網羅；不同核心概念用 AND 聚焦；OR 群組應以括號保護。"}]}, {"id": "case2", "week": "W08", "title": "CASE 02｜證據等級與評析入門", "subtitle": "看穿金字塔背後的真實品質", "theme": "6S / CASP", "pain": "面對大量文獻，先知道去哪裡找，再判斷研究類型與真實品質。", "drive": "找到一篇研究，就代表找到最好的證據了嗎？高層級設計是否等同品質保證？如何快速篩選並診斷文獻真實價值？", "road": "文獻資訊超載 → 6S / Top-Down → 摘要方法鑑識 → CASP 快速三問 → 臨床實證決策", "rounds": [{"n": 1, "mode": "Explore 探究", "title": "6S 證據導航與檢索路徑", "goal": "理解證據來源層次，採 Top-Down 找證據。", "scenario": "壓傷預防搜尋結果同時出現個人部落格、單篇 RCT、Cochrane 系統性回顧。", "qtype": "mapping", "prompt": "將三項證物放到正確位置。", "items": [["單篇減壓敷料 RCT（80人）", "Studies"], ["Cochrane 系統性回顧與統合分析", "Syntheses"], ["護理專家個人部落格心得", "金字塔之外"]], "options": ["Studies", "Syntheses", "金字塔之外"], "feedback": "單篇原始研究屬 Studies；系統性回顧屬 Syntheses；未經同儕審查的個人經驗不屬正規實證資源。"}, {"n": 2, "mode": "Experience 實境", "title": "摘要線索鑑識箱", "goal": "不看標題，從 Methods 判斷 SR 與單篇 RCT。", "scenario": "文獻 A：檢索多資料庫、納入 12 篇 RCT、合併數據。文獻 B：招募 80 位患者、隨機分派兩組、前後比較。", "qtype": "mapping", "prompt": "判斷兩篇研究的身分。", "items": [["文獻 A", "Systematic Review / Syntheses"], ["文獻 B", "Individual RCT / Studies"]], "options": ["Systematic Review / Syntheses", "Individual RCT / Studies"], "feedback": "A 的研究對象是已發表文獻；B 的研究對象是真人樣本並接受介入。"}, {"n": 3, "mode": "Solve 解謎", "title": "實證論文診斷室", "goal": "用 CASP 快速三問：Validity、Results、Applicability。", "scenario": "高階研究設計也可能搜尋粗糙；結果顯著也可能沒有完整統計；高品質研究也可能不適用本地病房。", "qtype": "mapping", "prompt": "將方法學陷阱配對到 CASP 三問。", "items": [["只用 Google 搜 1 頁，納入 3 篇極小樣本研究", "Validity"], ["未提供均值、標準差、效應量與 p 值", "Results"], ["設備昂貴、病房無法安裝", "Applicability"]], "options": ["Validity", "Results", "Applicability"], "feedback": "Validity 看方法可信度；Results 看結果資訊；Applicability 看能否用在自己的臨床情境。"}]}, {"id": "case3", "week": "W13", "title": "CASE 03｜質性研究", "subtitle": "聽見病人的聲音：從口述到主題", "theme": "Qualitative / Coding", "pain": "同樣疼痛 6 分，數字無法呈現病人的失落、自我認同與生命意義。", "drive": "當量表無法反映真實生命經驗時，如何科學地聽見病人心聲，並把逐字稿轉化為具信實度的主題？", "road": "冰冷數字 → 質性典範 → 聆聽重要語句 → Coding → Category → Theme → 個別化照護", "rounds": [{"n": 1, "mode": "Explore 探究", "title": "質性典範與科學嚴謹性", "goal": "區分現象學與紮根理論，掌握經驗、意義、過程與脈絡。", "scenario": "兩位乳癌病人疼痛都是 6 分，但對生活、自我認同與疾病經驗的意義完全不同。", "qtype": "mapping", "prompt": "判斷研究問題最符合哪一種質性學派。", "items": [["乳房切除後身體意象改變的『生活經驗』", "Phenomenology"], ["ICU 新進護理師臨床決策與適應的『逐步形成與轉變歷程』", "Grounded Theory"]], "options": ["Phenomenology", "Grounded Theory"], "feedback": "現象學聚焦生活經驗的本質；紮根理論聚焦過程、變化與理論模式建構。"}, {"n": 2, "mode": "Experience 實境", "title": "病患經驗解密卡", "goal": "從病人語句辨識深層主觀意義，不停留在症狀或表面情緒。", "scenario": "林女士：『我現在連拿茶杯手都會發抖，水灑得滿地都是。我覺得自己突然變成了一個沒用的廢人……』", "qtype": "single", "prompt": "這段話最深層的生病經驗與主觀意義是什麼？", "items": [["病人有潔癖，看到茶水弄髒地板而焦慮", false], ["周邊神經病變造成運動失調，所以只需轉介復健", false], ["自理功能喪失導致尊嚴瓦解與自我認同危機", true]], "feedback": "質性分析不只描述症狀，而要理解症狀對當事人的存在性意義與自我認同衝擊。"}, {"n": 3, "mode": "Solve 解謎", "title": "Coding → Category → Theme", "goal": "把重要語句轉為 Code，再聚合為 Category 與 Theme。", "scenario": "『一想到明天又要回診抽血，我的腳底就發涼、發麻，那種痛突然加劇，像火在燒。』", "qtype": "single", "prompt": "最能揭示核心意義的初步 Code 是？", "items": [["討厭打針與抽血疼痛", false], ["癌症復發恐懼之身心投影（Fear of Recurrence）", true], ["周邊神經痛隨機惡化", false]], "feedback": "Code 不是縮短句子，而是提煉意義。多個 Code 可再聚合為 Category，最後形成能統整經驗的 Theme。"}]}, {"id": "case4", "week": "W14", "title": "CASE 04｜非實驗性研究", "subtitle": "關聯的迷霧：相關不等於因果", "theme": "Correlation / Bias / r & p", "pain": "把顯著相關直接說成因果，是常見而危險的研究解讀錯誤。", "drive": "兩件事情一起發生，就代表其中一件造成另一件嗎？當 r 很高且 p < .05，我們到底能宣稱什麼、不能宣稱什麼？", "road": "聳動因果標題 → 相關≠因果 → 調查偏誤除雷 → r 與 p 值判讀 → 拒絕過度推論", "rounds": [{"n": 1, "mode": "Explore 探究", "title": "破除因果推論迷霧", "goal": "辨識方向性問題、第三變項與缺乏控制。", "scenario": "調查發現獨居老人社交參與越少、憂鬱得分越高；有人因此宣稱『強制增加社交就一定能治癒憂鬱』。", "qtype": "single", "prompt": "這個因果推論是否正確？", "items": [["正確，強烈負相關就是直接因果", false], ["不正確，相關只能說明共變，不能直接證明因果", true]], "feedback": "可能存在反向方向性，也可能有慢性病、行動不便等第三變項，同時影響社交與憂鬱。"}, {"n": 2, "mode": "Experience 實境", "title": "非實驗研究找碴除雷室", "goal": "辨識 Selection Bias、Recall Bias 與 Temporal Ambiguity。", "scenario": "VIP 病房 30 位自願者；要求回想三年前疲憊程度；同時間點測量疲憊與失誤。", "qtype": "mapping", "prompt": "將三項問題配對到最主要的方法學偏誤。", "items": [["VIP 病房 30 位自願者", "Selection Bias"], ["回想三年前發生失誤當週的疲憊", "Recall Bias"], ["同一時間點測量疲憊與失誤", "Temporal Ambiguity"]], "options": ["Selection Bias", "Recall Bias", "Temporal Ambiguity"], "feedback": "先問資料如何收集，再看統計結果；樣本代表性、記憶誤差與時間順序都會影響推論。"}, {"n": 3, "mode": "Solve 解謎", "title": "數據攻防終極法庭", "goal": "正確解讀 r 的方向/強度與 p 值，不越界宣稱因果。", "scenario": "研究結果 r = 0.68, p < .05。", "qtype": "single", "prompt": "哪一個結論最嚴謹？", "items": [["p < .05 證明疲憊直接造成失誤，而且假設有 95% 以上為真", false], ["r = .68 且顯著，所以改善疲憊就能完全消除失誤", false], ["疲憊與失誤呈中度至高度正相關，但橫斷面設計不能確認因果", true]], "feedback": "統計顯著不是因果保證；在觀察性橫斷面設計下，應限制結論在『關聯』層次。"}]}, {"id": "case5", "week": "W16", "title": "CASE 05｜實驗性研究", "subtitle": "嚴謹的臨床測試：真實病房裡的公平比較", "theme": "RCT / Internal Validity", "pain": "RCT 不只要隨機分配；進入真實病房後還要防止額外關注、污染與測量偏誤。", "drive": "怎樣的比較才公平？紙上完美的 RCT 走進病房後，如何防堵臨床混雜因素破壞起跑線一致性？", "road": "不公平比較 → RCT 三金鑰 → 真實病房干擾 → 內部效度診斷 → 防護罩配對 → 因果證據", "rounds": [{"n": 1, "mode": "Explore 探究", "title": "RCT 三大金鑰與起跑線拉平", "goal": "掌握 Manipulation、Control、Randomization，區分隨機抽樣與隨機分配。", "scenario": "新研究讓病人與家屬自行選擇實驗組或對照組，再比較防摔氣墊衣成效。", "qtype": "single", "prompt": "最致命、最需要立即修正的研究地雷是？", "items": [["不應使用氣墊防護衣", false], ["不應設立對照組", false], ["讓病人與家屬自由選組，破壞隨機分配", true]], "feedback": "自由選組造成 Selection Bias，兩組起跑線不再公平。隨機分配是平衡已知與未知干擾的重要工具。"}, {"n": 2, "mode": "Experience 實境", "title": "虛擬臨床模擬器", "goal": "辨識研究執行中的 Treatment Contamination。", "scenario": "對照組護理師看到實驗組防跌警示圖卡有效，便偷偷影印貼到對照組床頭。", "qtype": "single", "prompt": "這會造成什麼效度威脅？", "items": [["對照組跌倒率必定上升", false], ["Treatment Contamination，模糊兩組界線並縮小成效差異", true], ["完全不影響，因為一開始已經隨機分配", false]], "feedback": "隨機化不是一次做完就萬事大吉；研究執行全程都要維持除了介入外其他條件盡量一致。"}, {"n": 3, "mode": "Solve 解謎", "title": "研究防護罩配對挑戰", "goal": "把內部效度威脅配對到具體防禦策略。", "scenario": "額外關注、處置外洩、結局評估者知道分組，都可能扭曲研究結果。", "qtype": "mapping", "prompt": "將威脅配對到適合的防護罩。", "items": [["霍桑效應：實驗組因天天陪伴而行為改變", "Attention Control"], ["處置外洩：警示卡被跨組模仿", "Cluster Isolation"], ["測量偏誤：評估者知道分組", "Blinded Outcome Assessment"]], "options": ["Attention Control", "Cluster Isolation", "Blinded Outcome Assessment"], "feedback": "對照接觸拉平額外關注；物理/叢集隔離降低污染；盲法結局評估降低主觀測量偏誤。"}]}];
+const KEY='ai_detective_hub_v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'{}');
+if(!state.done) state.done={};
+if(!state.notes) state.notes={};
+
+if(!state.watchSeconds) state.watchSeconds={};
+if(!state.questionStats) state.questionStats={};
+if(!state.responses) state.responses={};
+// Privacy-by-design identity: no name/student ID is required on the learning web.
+if(state.student){ delete state.student; } // purge legacy identifiable fields from prior versions
+if(!state.learner) state.learner={learningId:"", cohort:""};
+if(!state.lastSaved) state.lastSaved="";
+
+const DEFAULT_VIDEOS = {"case1_r1": "https://youtu.be/dwtdOhbDL_E", "case1_r2": "https://youtu.be/-eCYDCZ6K2E", "case1_r3": "https://youtu.be/FHKlmQI8f-M", "case2_r1": "https://youtu.be/VIutmCK1tVw", "case2_r2": "https://youtu.be/K3hfSgGM4bs", "case2_r3": "https://youtu.be/X4T5a8pvzSQ", "case3_r1": "https://youtu.be/n6Yss-OYIz4", "case3_r2": "https://youtu.be/kuz3i2jkFOM", "case3_r3": "https://youtu.be/0bZoCmvfTCQ", "case4_r1": "https://youtu.be/x963xCLkM24", "case4_r2": "https://youtu.be/3SMr-vNHnJs", "case4_r3": "https://youtu.be/xG54AFq2rQU", "case5_r1": "https://youtu.be/5G76t7qLFkc", "case5_r2": "https://youtu.be/sgcqxvnp9Gg", "case5_r3": "https://youtu.be/_iFnHOt3ogQ"};
+
+const OFFICIAL_YOUTUBE = {
+  "W05_R1":"https://youtu.be/dwtdOhbDL_E","W05_R2":"https://youtu.be/-eCYDCZ6K2E","W05_R3":"https://youtu.be/FHKlmQI8f-M",
+  "W08_R1":"https://youtu.be/VIutmCK1tVw","W08_R2":"https://youtu.be/K3hfSgGM4bs","W08_R3":"https://youtu.be/X4T5a8pvzSQ",
+  "W13_R1":"https://youtu.be/n6Yss-OYIz4","W13_R2":"https://youtu.be/kuz3i2jkFOM","W13_R3":"https://youtu.be/0bZoCmvfTCQ",
+  "W14_R1":"https://youtu.be/x963xCLkM24","W14_R2":"https://youtu.be/3SMr-vNHnJs","W14_R3":"https://youtu.be/xG54AFq2rQU",
+  "W16_R1":"https://youtu.be/5G76t7qLFkc","W16_R2":"https://youtu.be/sgcqxvnp9Gg","W16_R3":"https://youtu.be/_iFnHOt3ogQ"
+};
+function officialVideoFor(rid){
+  const map={
+    "case1r1":"https://youtu.be/dwtdOhbDL_E","case1r2":"https://youtu.be/-eCYDCZ6K2E","case1r3":"https://youtu.be/FHKlmQI8f-M",
+    "case2r1":"https://youtu.be/VIutmCK1tVw","case2r2":"https://youtu.be/K3hfSgGM4bs","case2r3":"https://youtu.be/X4T5a8pvzSQ",
+    "case3r1":"https://youtu.be/n6Yss-OYIz4","case3r2":"https://youtu.be/kuz3i2jkFOM","case3r3":"https://youtu.be/0bZoCmvfTCQ",
+    "case4r1":"https://youtu.be/x963xCLkM24","case4r2":"https://youtu.be/3SMr-vNHnJs","case4r3":"https://youtu.be/xG54AFq2rQU",
+    "case5r1":"https://youtu.be/5G76t7qLFkc","case5r2":"https://youtu.be/sgcqxvnp9Gg","case5r3":"https://youtu.be/_iFnHOt3ogQ"
+  };
+  return map[String(rid||"").toLowerCase()] || "";
+}
+
+if(!state.videos) state.videos={};
+// FINAL-STABLE-1: official course videos are fixed; migrate away any stale saved URLs from earlier test versions.
+state.videos = Object.assign({}, DEFAULT_VIDEOS);
+save();
+
+// 可在日後貼入 15 個 TronClass 影片活動的直接網址；目前先保持空白。
+
+// 通用評值連結：未來只要把 Google Forms 或 TronClass 內建回饋網址貼入即可。
+const EVALUATION_LINKS = { combined_evaluation: "" };
+
+const RESEARCH_CONFIG = {
+  mode: "TEACHING_MODE",
+  researchEnabled: false,
+  protocolNo: "",
+  endpoint: ""
+};
+
+const TRONCLASS_LINKS = {
+  case1_r1:"",case1_r2:"",case1_r3:"",
+  case2_r1:"",case2_r2:"",case2_r3:"",
+  case3_r1:"",case3_r2:"",case3_r3:"",
+  case4_r1:"",case4_r2:"",case4_r3:"",
+  case5_r1:"",case5_r2:"",case5_r3:""
+};
+
+let learningMode=localStorage.getItem('ai_detective_mode')||'';
+
+
+function setupEvaluationLinks(){
+  const map = [ ['evalCombined','combined_evaluation'] ];
+  map.forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const url=EVALUATION_LINKS[key];
+    if(url){
+      el.href=url;
+      el.target='_blank';
+      el.rel='noopener';
+      el.classList.remove('disabled');
+      el.removeAttribute('aria-disabled');
+      el.textContent='前往填寫 →';
+    }else{
+      el.removeAttribute('href');
+      el.classList.add('disabled');
+      el.setAttribute('aria-disabled','true');
+      el.textContent='評值連結待設定';
+    }
+  });
+}
+
+function setMode(mode){
+  learningMode=mode;
+  localStorage.setItem('ai_detective_mode',mode);
+  document.body.classList.toggle('mode-tronclass',mode==='tronclass');
+  document.body.classList.toggle('mode-open',mode==='open');
+  const a=document.getElementById('modeBtnTron'),b=document.getElementById('modeBtnOpen');
+  if(a) a.classList.toggle('active',mode==='tronclass');
+  if(b) b.classList.toggle('active',mode==='open');
+  const label=document.getElementById('modeLabel'),help=document.getElementById('modeHelp');
+  if(label) label.textContent=mode==='tronclass'?'🎓 TronClass Mode｜正式修課':'🌏 Open Learning｜公開自學';
+  if(help) help.textContent=mode==='tronclass'
+    ?'先在 TronClass 完成本 Round 影片觀看以保留正式學習紀錄，再回本頁完成互動任務。'
+    :'直接在本頁觀看 YouTube 影片，完成情境、Checkpoint 與反思；CASE 進度可隨時保存至雲端。';
+  if(typeof refreshOpenSyncVisibility==='function') refreshOpenSyncVisibility();
+
+  document.querySelectorAll('.tronclass-panel').forEach(p=>{
+    const id=p.dataset.rid,link=TRONCLASS_LINKS[id],btn=p.querySelector('.tc-btn');
+    if(!btn) return;
+    if(link){
+      btn.href=link;
+      btn.removeAttribute('aria-disabled');
+      btn.textContent='前往 TronClass 完成本輪影片 →';
+    }else{
+      btn.removeAttribute('href');
+      btn.setAttribute('aria-disabled','true');
+      btn.textContent='請至 TronClass 對應 '+p.dataset.week+' Round '+p.dataset.round+' 影片活動';
+    }
+  });
+}
+function save(){
+  state.lastSaved=new Date().toISOString();
+  localStorage.setItem(KEY,JSON.stringify(state));
+  updateProgress();
+  updateLearningStats();
+  updateRoundStats();
+  const s=document.getElementById('saveStatus');
+  if(s) s.textContent='已自動暫存｜'+new Date().toLocaleTimeString('zh-TW',{hour12:false});
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+function build(){
+ const grid=document.getElementById('caseGrid'), holder=document.getElementById('caseSections');
+ CASES.forEach((c,ci)=>{
+  const card=document.createElement('article'); card.className='case-card';
+  card.innerHTML=`<div class="num">${c.week} · CASE 0${ci+1}</div><h3>${esc(c.title.replace(/^CASE \d+｜/,''))}</h3><p>${esc(c.subtitle)}</p><div style="margin-top:auto"><button class="btn" onclick="openCase('${c.id}')">進入案件 →</button></div>`;
+  grid.appendChild(card);
+
+  const sec=document.createElement('section'); sec.className='section'; sec.id=c.id;
+  sec.innerHTML=`
+   <div class="case-head">
+    <div><span class="badge">${c.week} · ${esc(c.theme)}</span><h2>${esc(c.title)}<br><span style="color:var(--gold)">${esc(c.subtitle)}</span></h2>
+      <p class="drive">${esc(c.drive)}</p></div>
+    <div class="case-meta"><b>臨床痛點</b><p>${esc(c.pain)}</p></div>
+   </div>
+   <div class="roadmap"><b>學習路徑 Roadmap</b><div>${esc(c.road)}</div></div>
+   <div class="open-save-quick" data-case="${ci+1}">
+     <div><b>☁️ Open Learning｜CASE ${ci+1} 雲端學習歷程</b><br><span><b>「暫存 CASE」只存在本機；「送出 CASE 進度到 Supabase」才會傳到教師端資料庫。</b> Round 1、2 或 3 任一階段都可送出，不必等整個 CASE 完成。</span></div>
+     <button class="btn mint" type="button" onclick="syncOpenCaseProcess(${ci+1})">📤 送出 CASE 進度到雲端</button>
+     <div id="caseQuickSyncStatus${ci+1}" class="save-status"></div>
+   </div>
+   <div class="case-report-tools">
+     <button class="btn alt" onclick="saveCaseProgress(${ci+1})">💾 暫存本機 CASE ${ci+1}</button>
+     <button class="btn alt" onclick="exportCaseProgress(${ci+1})">⬇ 匯出 CASE ${ci+1} 進度</button>
+     <button class="btn mint" onclick="printCaseReport(${ci+1})">📄 CASE ${ci+1} 學習報告 / PDF</button>
+     <div class="mode-banner" style="margin-top:.8rem"><span class="mode-pill">ASSESSMENT</span><span>WEB Checkpoint 為形成性練習，可重試且不作為正式成績；本課學生之正式計分與完成紀錄請回 TronClass 完成。</span></div>
+   </div>
+   <div class="round-tabs">${c.rounds.map((r,ri)=>`<button class="round-tab ${ri===0?'active':''}" onclick="showRound('${c.id}',${ri},this)">ROUND ${r.n} · ${r.mode}</button>`).join('')}</div>
+   <div class="round-holder"></div>`;
+  holder.appendChild(sec);
+  const rh=sec.querySelector('.round-holder');
+  c.rounds.forEach((r,ri)=>rh.appendChild(makeRound(c,r,ri)));
+ });
+ updateProgress();
+}
+
+function makeRound(c,r,ri){
+ const d=document.createElement('div'); d.className='round-panel '+(ri===0?'active':'');
+ const rid=`${c.id}r${r.n}`, done=!!state.done[rid];
+ d.innerHTML=`
+  <div class="round-grid">
+   <div class="focusable scenario">
+    <button class="ctrl focus-btn" onclick="focusBox(this)">⛶ 放大</button>
+    <div class="badge">ROUND ${r.n} · ${esc(r.mode)}</div>
+    <h3>${esc(r.title)}</h3>
+    <p><b>學習目標：</b>${esc(r.goal)}</p>
+    <p><b>Clinical Mystery / Scenario</b></p><p>${esc(r.scenario)}</p>
+   </div>
+   <div class="focusable video-box">
+    <button class="ctrl focus-btn" onclick="focusBox(this)">⛶ 放大</button>
+
+    <div class="tronclass-panel" data-rid="${rid}" data-week="${c.week}" data-round="${r.n}">
+      <div class="official">🎓 正式修課學生｜TronClass Learning Record</div>
+      <h3>${c.week} · ROUND ${r.n}｜先完成正式影片觀看</h3>
+      <p>請先在 TronClass 的本 Round 影片學習活動完成觀看，以保留正式觀看紀錄；之後回到本頁完成 Clinical Scenario、Web Checkpoint 與反思。</p>
+      <a class="btn tc-btn" target="_blank" rel="noopener" aria-disabled="true">前往 TronClass</a>
+      <p class="hybrid-note">若老師尚未設定直接活動連結，請回 TronClass 課程首頁，依 ${c.week} → ROUND ${r.n} 找到對應影片活動。</p>
+      <button class="btn alt" style="margin-top:.4rem" onclick="showReviewVideo(this)">需要複習？顯示 YouTube 影片</button>
+      <div class="review-wrap" style="display:none;margin-top:1rem">
+        <div class="video-frame review-frame yt-player-host review-player-host" data-rid="${rid}"></div>
+      </div>
+    </div>
+
+    <div class="open-video-panel">
+      <div class="badge">🌏 Open Learning｜YouTube Unlisted</div>
+      <iframe class="video-frame open-frame"
+        data-rid="${rid}"
+        data-youtube-url="${esc(officialVideoFor(rid))}"
+        src="${toEmbed(officialVideoFor(rid))}"
+        title="${c.week} Round ${r.n} teaching video"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+      <div class="youtube-fallback"><button class="btn alt" type="button" onclick="openOfficialYouTube('${rid}')">↗ 無法播放？開啟 YouTube</button></div>
+    </div>
+
+    <div class="video-tools" style="display:none">
+      <input value="${esc(state.videos[rid]||'')}">
+      <button class="btn mint">播放</button>
+    </div>
+   </div>
+  </div>
+  <div class="focusable activity" data-rid="${rid}">
+    <button class="ctrl focus-btn" onclick="focusBox(this)">⛶ 放大</button>
+    <h3>💻 Web Checkpoint</h3>
+    <div class="round-mini-stats">
+      <span class="watch-mini" data-watch-rid="${rid}">影片觀看 00:00</span>
+      <span class="question-mini" data-q-rid="${rid}">作答 0 次</span>
+    </div>
+    <div class="question">${esc(r.prompt)}</div>
+    <div class="answers">${renderAnswers(r,rid)}</div>
+    <div class="check-row"><button class="btn" onclick="checkAnswer(this,'${c.id}',${ri})">送出答案 / Check</button>
+       <button class="btn alt" onclick="markDone('${rid}',true)">✓ 標記本輪完成</button></div>
+    <div class="feedback">${state.questionStats?.[rid]?.correct ? '✅ <b>先前已破案成功；作答紀錄已保留。</b>' : ''}</div>
+  </div>
+  <div class="reflection">
+    <h3>📝 我的偵探筆記</h3>
+    <textarea class="note" placeholder="寫下：我發現的關鍵線索／最容易犯的錯／我如何向同學解釋……" oninput="saveNote('${rid}',this.value)">${esc(state.notes[rid]||'')}</textarea>
+    <label class="choice" style="margin-top:.8rem"><input type="checkbox" ${done?'checked':''} onchange="markDone('${rid}',this.checked)">我已完成本輪影片、互動任務與自我檢核。</label>
+  </div>`;
+ if(state.videos[rid]) setTimeout(()=>loadRoundVideo(d,state.videos[rid]),0);
+ return d;
+}
+
+function renderAnswers(r,rid){
+ if(r.qtype==='single') return r.items.map((it,i)=>`<label class="choice"><input type="radio" name="${rid}" value="${i}" ${String(state.responses?.[rid]??'')===String(i)?'checked':''} onchange="saveResponse('${rid}','single',this)"><span>${esc(it[0])}</span></label>`).join('');
+ if(r.qtype==='multi') return r.items.map((it,i)=>`<label class="choice"><input type="checkbox" name="${rid}" value="${i}" ${Array.isArray(state.responses?.[rid])&&state.responses[rid].includes(i)?'checked':''} onchange="saveResponse('${rid}','multi',this)"><span>${esc(it[0])}</span></label>`).join('');
+ if(r.qtype==='mapping') return r.items.map((it,i)=>`<div class="map-row"><div>${esc(it[0])}</div><select data-map="${i}" onchange="saveResponse('${rid}','mapping',this)"><option value="">— 請選擇 —</option>${r.options.map(o=>`<option ${state.responses?.[rid]?.[i]===o?'selected':''}>${esc(o)}</option>`).join('')}</select></div>`).join('');
+ return '';
+}
+
+function saveResponse(rid,type,el){
+  if(!state.responses) state.responses={};
+  const panel=el.closest('.activity');
+  if(type==='single'){
+    state.responses[rid]=el.value;
+  }else if(type==='multi'){
+    state.responses[rid]=[...panel.querySelectorAll(`input[name="${rid}"]:checked`)].map(x=>Number(x.value));
+  }else if(type==='mapping'){
+    state.responses[rid]=[...panel.querySelectorAll('select[data-map]')].map(x=>x.value);
+  }
+  save();
+}
+
+function checkAnswer(btn,cid,ri){
+ const c=CASES.find(x=>x.id===cid), r=c.rounds[ri], box=btn.closest('.activity'), fb=box.querySelector('.feedback'); let ok=false;
+ const rid=box.dataset.rid;
+ if(!state.questionStats[rid]) state.questionStats[rid]={attempts:0,answered:false,correct:false};
+ state.questionStats[rid].attempts++;
+ state.questionStats[rid].answered=true;
+ if(r.qtype==='single'){
+  const v=box.querySelector('input[type=radio]:checked'); ok=!!v && r.items[+v.value][1]===true;
+ }else if(r.qtype==='multi'){
+  ok=r.items.every((it,i)=>box.querySelector(`input[value="${i}"]`).checked===it[1]);
+ }else if(r.qtype==='mapping'){
+  const sels=[...box.querySelectorAll('select[data-map]')];
+  ok=sels.every((s,i)=>s.value===r.items[i][1]);
+ }
+ fb.className='feedback '+(ok?'ok':'bad');
+ fb.innerHTML=(ok?'✅ <b>破案成功！</b> ':'❗ <b>再看一次線索。</b> ')+esc(r.feedback);
+ if(ok){state.questionStats[rid].correct=true; markDone(box.dataset.rid,true);}else{save();}
+}
+
+function showRound(cid,ri,btn){
+ const sec=document.getElementById(cid); sec.querySelectorAll('.round-tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active'); sec.querySelectorAll('.round-panel').forEach((x,i)=>x.classList.toggle('active',i===ri));
+ sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openCase(cid){document.getElementById(cid).scrollIntoView({behavior:'smooth',block:'start'});}
+function goHome(){document.getElementById('home').scrollIntoView({behavior:'smooth'});}
+function focusBox(btn){
+ const box=btn.closest('.focusable'); const on=box.classList.toggle('focus'); btn.textContent=on?'← 返回':'⛶ 放大';
+ document.body.style.overflow=on?'hidden':'';
+}
+function toggleClassroom(){document.body.classList.toggle('classroom');}
+function changeFont(dir){
+ const cur=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs'))||20;
+ document.documentElement.style.setProperty('--fs',Math.max(16,Math.min(38,cur+dir*2))+'px');
+}
+function saveNote(id,val){state.notes[id]=val; save();}
+function markDone(id,val){
+ state.done[id]=val; save();
+ document.querySelectorAll(`[data-rid="${id}"]`).forEach(()=>{});
+ document.querySelectorAll('.round-panel').forEach(p=>{
+   const a=p.querySelector('.activity'); if(a?.dataset.rid===id){const cb=p.querySelector('.reflection input[type=checkbox]'); if(cb) cb.checked=val;}
+ });
+}
+function updateProgress(){
+ const done=Object.values(state.done).filter(Boolean).length, total=15;
+ document.getElementById('globalProgress').style.width=(done/total*100)+'%';
+ document.getElementById('progressText').textContent=`學習進度 ${done} / ${total} rounds（${Math.round(done/total*100)}%）`;
+}
+function resetProgress(){if(confirm('確定要清除本裝置上的完成進度、筆記、影片觀看時間與作答紀錄？')){localStorage.removeItem(KEY);location.reload();}}
+
+
+const ytPlayers={};
+const ytPlaying={};
+let ytApiReady=false;
+let watchTicker=null;
+
+function getYouTubeId(url){
+  if(!url) return '';
+  try{
+    const u=new URL(url, location.href);
+    if(u.hostname.includes('youtu.be')) return u.pathname.replace(/^\//,'').split('/')[0];
+    if(u.hostname.includes('youtube.com') || u.hostname.includes('youtube-nocookie.com')){
+      if(u.searchParams.get('v')) return u.searchParams.get('v');
+      const m=u.pathname.match(/\/(?:embed|shorts)\/([\w-]+)/);
+      if(m) return m[1];
+    }
+  }catch(e){}
+  const m=String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]+)/);
+  return m?m[1]:'';
+}
+function toEmbed(url){
+  const id=getYouTubeId(url);
+  if(id) return 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&playsinline=1';
+  const vm=String(url||'').match(/vimeo\.com\/(\d+)/);
+  if(vm) return 'https://player.vimeo.com/video/'+vm[1];
+  return url||'';
+}
+function isLocalFileTest(){ return location.protocol==='file:'; }
+
+function openOfficialYouTube(rid){
+  const url=officialVideoFor(rid);
+  if(!url){
+    alert(`找不到此 Round 的 YouTube 連結。
+Round ID: ${rid}`);
+    return;
+  }
+  window.open(url,"_blank","noopener,noreferrer");
+}
+function ensureYouTubeAPI(){
+  if(window.YT && window.YT.Player){ytApiReady=true;initAllYouTubePlayers();return;}
+  if(document.getElementById('ytIframeApiScript')) return;
+  const tag=document.createElement('script');
+  tag.id='ytIframeApiScript';
+  tag.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+}
+window.onYouTubeIframeAPIReady=function(){
+  ytApiReady=true;
+  initAllYouTubePlayers();
+};
+function initAllYouTubePlayers(){
+  document.querySelectorAll('.yt-player-host').forEach(host=>{
+    if(host.dataset.initialized==='1') return;
+    const rid=host.dataset.rid;
+    const vid=getYouTubeId(officialVideoFor(rid));
+    if(!vid) return;
+    initPlayerHost(host,rid,vid);
+  });
+}
+function initPlayerHost(host,rid,videoId){
+  if(!ytApiReady || !(window.YT&&YT.Player)) return;
+  host.dataset.initialized='1';
+  const key=rid+'_'+Math.random().toString(36).slice(2,7);
+  ytPlayers[key]=new YT.Player(host,{
+    videoId,
+    playerVars:{rel:0,playsinline:1},
+    events:{
+      onStateChange:(e)=>{
+        ytPlaying[key]=(e.data===YT.PlayerState.PLAYING);
+        if(e.data===YT.PlayerState.ENDED){ytPlaying[key]=false;save();}
+      }
+    }
+  });
+  if(!watchTicker){
+    watchTicker=setInterval(()=>{
+      let changed=false;
+      Object.entries(ytPlaying).forEach(([k,playing])=>{
+        if(!playing) return;
+        const pl=ytPlayers[k];
+        try{
+          const iframe=pl.getIframe();
+          const rid2=iframe?.parentElement?.dataset?.rid || iframe?.dataset?.rid;
+          // YT replaces the host div with iframe; preserve rid on iframe if possible.
+          const rid=iframe?.getAttribute('data-rid') || pl.__rid;
+          const useRid=rid || Object.keys(DEFAULT_VIDEOS).find(x=>k.startsWith(x+'_'));
+          if(useRid){
+            state.watchSeconds[useRid]=(state.watchSeconds[useRid]||0)+1;
+            changed=true;
+          }
+        }catch(err){}
+      });
+      if(changed){
+        updateLearningStats();
+        updateRoundStats();
+        if(Math.floor(totalWatchSeconds())%10===0) save();
+      }
+    },1000);
+  }
+  ytPlayers[key].__rid=rid;
+  setTimeout(()=>{
+    try{ytPlayers[key].getIframe().setAttribute('data-rid',rid);}catch(err){}
+  },500);
+}
+function loadRoundVideo(panel,url){
+  const frame=panel.querySelector('.open-frame');
+  if(frame && frame.tagName==='IFRAME'){
+    const src=toEmbed(url);
+    if(src && frame.src!==src) frame.src=src;
+    frame.style.display='block';
+  }
+}
+function showReviewVideo(btn){
+  const panel=btn.closest('.round-panel');
+  const wrap=btn.parentElement.querySelector('.review-wrap');
+  const host=wrap.querySelector('.review-frame');
+  const rid=panel.querySelector('.activity').dataset.rid;
+  const show=wrap.style.display==='none';
+  wrap.style.display=show?'block':'none';
+  btn.textContent=show?'隱藏複習影片':'需要複習？顯示 YouTube 影片';
+  if(show && host && host.dataset.initialized!=='1'){
+    host.style.display='block';
+    ensureYouTubeAPI();
+    if(ytApiReady){
+      const vid=getYouTubeId(officialVideoFor(rid));
+      if(vid) initPlayerHost(host,rid,vid);
+    }
+  }
+}
+
+function saveVideo(btn,id){const input=btn.parentElement.querySelector('input'); state.videos[id]=input.value.trim();save(); loadVideo(btn.parentElement.querySelector('.mint'));}
+function loadVideo(btn){
+ const box=btn.closest('.video-box'), input=box.querySelector('input'), frame=box.querySelector('.video-frame'), ph=box.querySelector('.video-placeholder');
+ let url=input.value.trim(); if(!url) return;
+ let src=url;
+ const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+ if(yt) src='https://www.youtube.com/embed/'+yt[1];
+ const vm=url.match(/vimeo\.com\/(\d+)/); if(vm) src='https://player.vimeo.com/video/'+vm[1];
+ frame.src=src; frame.style.display='block'; ph.style.display='none';
+}
+
+function fmtTime(sec){
+  sec=Math.max(0,Math.floor(Number(sec)||0));
+  const h=String(Math.floor(sec/3600)).padStart(2,'0');
+  const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+function fmtShort(sec){
+  sec=Math.max(0,Math.floor(Number(sec)||0));
+  const m=String(Math.floor(sec/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  return `${m}:${s}`;
+}
+function totalWatchSeconds(){
+  return Object.values(state.watchSeconds||{}).reduce((a,b)=>a+(Number(b)||0),0);
+}
+function generateLearningId(){
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let token="";
+  if(window.crypto && window.crypto.getRandomValues){
+    const a=new Uint32Array(10); window.crypto.getRandomValues(a);
+    for(let i=0;i<10;i++) token+=chars[a[i]%chars.length];
+  }else{
+    for(let i=0;i<10;i++) token+=chars[Math.floor(Math.random()*chars.length)];
+  }
+  return `LRN-${token.slice(0,5)}-${token.slice(5)}`;
+}
+function renderLearningId(){
+  if(!state.learner) state.learner={learningId:"",cohort:""};
+  const has=!!state.learner.learningId;
+  const empty=document.getElementById("learningIdEmpty");
+  const ready=document.getElementById("learningIdReady");
+  const input=document.getElementById("learningId");
+  if(empty) empty.style.display=has?"none":"flex";
+  if(ready) ready.style.display=has?"flex":"none";
+  if(input) input.value=has?state.learner.learningId:"";
+}
+function createLearningId(){
+  if(!state.learner) state.learner={learningId:"",cohort:""};
+  if(state.learner.learningId){ renderLearningId(); if(typeof buildOpenEvaluation==='function') buildOpenEvaluation(); if(typeof addCaseSyncControls==='function') addCaseSyncControls(); if(typeof refreshOpenSyncVisibility==='function') refreshOpenSyncVisibility(); return state.learner.learningId; }
+  state.learner.learningId=generateLearningId();
+  save();
+  renderLearningId();
+  alert(`已建立您的 Learning ID：${state.learner.learningId}\n\n請使用同一個 ID 完成所有 CASE。建議按「儲存 ID 到我的電腦」備份。`);
+  return state.learner.learningId;
+}
+function ensureLearningId(){
+  // Do NOT auto-generate on page load. Only restore an existing ID.
+  if(!state.learner) state.learner={learningId:"",cohort:""};
+  renderLearningId();
+  return state.learner.learningId||"";
+}
+function copyLearningId(){
+  const id=state.learner?.learningId;
+  if(!id){ alert("請先按「產生我的 Learning ID」。"); return; }
+  if(navigator.clipboard) navigator.clipboard.writeText(id);
+  alert(`Learning ID 已複製：${id}`);
+}
+async function shareOrSaveLearningId(){
+  const id=state.learner?.learningId;
+  if(!id){ alert("請先按「產生我的 Learning ID」。"); return; }
+  const content=`AI Research Detective - Learning ID\n${id}\n\n請用同一個 Learning ID 完成所有 CASE。\n建議同時使用「分享／儲存完整學習資料」備份進度。\n`;
+  const file=new File([content],`AI_Detective_Learning_ID_${id}.txt`,{type:"text/plain"});
+  try{
+    if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+      await navigator.share({title:"AI Research Detective Learning ID",text:`Learning ID: ${id}`,files:[file]});
+      return;
+    }
+  }catch(e){ if(e?.name==="AbortError") return; }
+  try{
+    if(navigator.share){
+      await navigator.share({title:"AI Research Detective Learning ID",text:`Learning ID: ${id}`});
+      return;
+    }
+  }catch(e){ if(e?.name==="AbortError") return; }
+  const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`AI_Detective_Learning_ID_${id}.txt`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function saveStudentMeta(){ ensureLearningId(); }  // legacy compatibility
+function loadStudentMeta(){ ensureLearningId(); }
+function updateLearningStats(){
+  const done=Object.values(state.done||{}).filter(Boolean).length;
+  const qs=Object.values(state.questionStats||{});
+  const answered=qs.filter(x=>x&&x.answered).length;
+  const attempts=qs.reduce((a,x)=>a+(x?.attempts||0),0);
+  const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};
+  set('statRounds',`${done} / 15`);
+  set('statWatch',fmtTime(totalWatchSeconds()));
+  set('statAnswered',`${answered} / 15`);
+  set('statAttempts',String(attempts));
+}
+function updateRoundStats(){
+  document.querySelectorAll('[data-watch-rid]').forEach(e=>{
+    const rid=e.dataset.watchRid;e.textContent='影片觀看 '+fmtShort(state.watchSeconds?.[rid]||0);
+  });
+  document.querySelectorAll('[data-q-rid]').forEach(e=>{
+    const rid=e.dataset.qRid, q=state.questionStats?.[rid]||{};
+    e.textContent=`作答 ${q.attempts||0} 次${q.correct?'｜✓ 正確':''}`;
+  });
+}
+function manualSave(){
+  save();
+  alert('已暫存目前學習進度於此瀏覽器。若要換電腦，請再按「匯出進度」下載備份檔。');
+}
+function exportProgress(){
+  save();
+  const payload={
+    format:'AI_RESEARCH_DETECTIVE_PROGRESS_V1',
+    exportedAt:new Date().toISOString(),
+    state
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  const sid=(state.learner?.learningId||'learner').replace(/[^\w-]/g,'_');
+  a.href=URL.createObjectURL(blob);
+  a.download=`AI_Detective_Progress_${sid}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importProgressFile(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const obj=JSON.parse(reader.result);
+      const imported=(obj&&obj.state)?obj.state:obj;
+      if(!imported || typeof imported!=='object') throw new Error('invalid');
+      if(!confirm('要匯入此進度檔並取代目前瀏覽器中的學習進度嗎？')) return;
+      state=Object.assign({},state,imported);
+      if(!state.done) state.done={};
+      if(!state.notes) state.notes={};
+      if(!state.watchSeconds) state.watchSeconds={};
+      if(!state.questionStats) state.questionStats={};
+if(!state.responses) state.responses={};
+      if(!state.learner) state.learner={learningId:'',cohort:''}; ensureLearningId();
+      localStorage.setItem(KEY,JSON.stringify(state));
+      location.reload();
+    }catch(err){
+      alert('無法讀取此進度檔。請確認是由本學習網站匯出的 JSON 檔。');
+    }
+  };
+  reader.readAsText(file,'utf-8');
+}
+function roundLabel(rid){
+  const m=rid.match(/^case(\d+)_r(\d+)$/);
+  if(!m) return rid;
+  const ci=Number(m[1])-1, rn=Number(m[2]);
+  const c=CASES[ci];
+  return `${c?.week||''}｜CASE ${m[1]}｜Round ${rn}`;
+}
+function buildLearningReport(){
+  saveStudentMeta();
+  const rows=[];
+  Object.keys(DEFAULT_VIDEOS).forEach(rid=>{
+    const q=state.questionStats?.[rid]||{};
+    rows.push(`<tr>
+      <td>${esc(roundLabel(rid))}</td>
+      <td>${state.done?.[rid]?'完成':'未完成'}</td>
+      <td>${fmtTime(state.watchSeconds?.[rid]||0)}</td>
+      <td>${q.answered?'已作答':'未作答'}</td>
+      <td>${q.attempts||0}</td>
+      <td>${q.correct?'✓':'—'}</td>
+      <td class="report-note">${esc(state.notes?.[rid]||'')}</td>
+    </tr>`);
+  });
+  const qvals=Object.values(state.questionStats||{});
+  const answered=qvals.filter(x=>x?.answered).length;
+  const correct=qvals.filter(x=>x?.correct).length;
+  const attempts=qvals.reduce((a,x)=>a+(x?.attempts||0),0);
+  const done=Object.values(state.done||{}).filter(Boolean).length;
+  const now=new Date();
+  const html=`
+    <div class="report-meta">
+      <div><b>Learning ID：</b>${esc(state.learner?.learningId||'尚未產生')}</div>
+      <div><b>資料識別：</b>去識別學習代碼；本報告不含姓名/學號</div>
+      <div><b>報告產生時間：</b>${now.toLocaleString('zh-TW',{hour12:false})}</div>
+      <div><b>完成進度：</b>${done} / 15 Round</div>
+      <div><b>網站影片觀看時間：</b>${fmtTime(totalWatchSeconds())}</div>
+      <div><b>Checkpoint 已作答：</b>${answered} / 15</div>
+      <div><b>總作答次數 / 正確：</b>${attempts} 次 / ${correct} Round</div>
+    </div>
+    <h2>學習歷程明細</h2>
+    <table class="report-table">
+      <thead><tr><th>單元</th><th>完成</th><th>影片觀看</th><th>Checkpoint</th><th>作答次數</th><th>答對</th><th>偵探筆記 / Reflection</th></tr></thead>
+      <tbody>${rows.join('')}</tbody>
+    </table>`;
+  const box=document.getElementById('reportContent');
+  if(box) box.innerHTML=html;
+}
+
+function getCaseByNumber(caseNum){
+  return CASES[Number(caseNum)-1];
+}
+function getCaseRoundIds(caseNum){
+  const c=getCaseByNumber(caseNum);
+  if(!c) return [];
+  return [1,2,3].map(r=>`${c.id}r${r}`);
+}
+function caseStats(caseNum){
+  const rids=getCaseRoundIds(caseNum);
+  const done=rids.filter(rid=>!!state.done?.[rid]).length;
+  const watch=rids.reduce((a,rid)=>a+(Number(state.watchSeconds?.[rid])||0),0);
+  const qvals=rids.map(rid=>state.questionStats?.[rid]||{});
+  return {
+    done,
+    watch,
+    answered:qvals.filter(x=>x?.answered).length,
+    attempts:qvals.reduce((a,x)=>a+(x?.attempts||0),0),
+    correct:qvals.filter(x=>x?.correct).length
+  };
+}
+function saveCaseProgress(caseNum){
+  save();
+  const c=getCaseByNumber(caseNum);
+  alert(`CASE ${caseNum}${c?.week?'｜'+c.week:''} 已暫存於目前瀏覽器。`);
+}
+function exportCaseProgress(caseNum){
+  save();
+  const c=getCaseByNumber(caseNum);
+  const rids=getCaseRoundIds(caseNum);
+  const subset={
+    format:'AI_RESEARCH_DETECTIVE_CASE_PROGRESS_V1',
+    caseNumber:Number(caseNum),
+    week:c?.week||'',
+    title:c?.title||'',
+    exportedAt:new Date().toISOString(),
+    learner:state.learner||{learningId:''},
+    done:Object.fromEntries(rids.map(rid=>[rid,!!state.done?.[rid]])),
+    watchSeconds:Object.fromEntries(rids.map(rid=>[rid,Number(state.watchSeconds?.[rid])||0])),
+    questionStats:Object.fromEntries(rids.map(rid=>[rid,state.questionStats?.[rid]||{}])),
+    notes:Object.fromEntries(rids.map(rid=>[rid,state.notes?.[rid]||'']))
+  };
+  const blob=new Blob([JSON.stringify(subset,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  const sid=(state.learner?.learningId||'learner').replace(/[^\w-]/g,'_');
+  a.href=URL.createObjectURL(blob);
+  a.download=`AI_Detective_CASE${caseNum}_${c?.week||''}_${sid}_Progress.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function buildCaseReport(caseNum){
+  saveStudentMeta();
+  const c=getCaseByNumber(caseNum);
+  if(!c) return;
+  const rids=getCaseRoundIds(caseNum);
+  const s=caseStats(caseNum);
+  const rows=rids.map((rid,idx)=>{
+    const q=state.questionStats?.[rid]||{};
+    return `<tr>
+      <td>Round ${idx+1}</td>
+      <td>${state.done?.[rid]?'完成':'未完成'}</td>
+      <td>${fmtTime(state.watchSeconds?.[rid]||0)}</td>
+      <td>${q.answered?'已作答':'未作答'}</td>
+      <td>${q.attempts||0}</td>
+      <td>${q.correct?'✓':'—'}</td>
+      <td class="report-note">${esc(state.notes?.[rid]||'')}</td>
+    </tr>`;
+  }).join('');
+  const now=new Date();
+  const html=`
+    <h1>AI 研究偵探｜CASE ${caseNum} 學習歷程報告</h1>
+    <p><b>${esc(c.week||'')}</b>｜${esc(c.title||'')}</p>
+    <div class="report-meta">
+      <div><b>Learning ID：</b>${esc(state.learner?.learningId||'尚未產生')}</div>
+      <div><b>資料識別：</b>去識別學習代碼；本報告不含姓名/學號</div>
+      <div><b>報告產生時間：</b>${now.toLocaleString('zh-TW',{hour12:false})}</div>
+      <div><b>CASE 完成進度：</b>${s.done} / 3 Round</div>
+      <div><b>CASE 網站影片觀看時間：</b>${fmtTime(s.watch)}</div>
+      <div><b>Checkpoint 已作答：</b>${s.answered} / 3</div>
+      <div><b>總作答次數 / 正確：</b>${s.attempts} 次 / ${s.correct} Round</div>
+    </div>
+    <h2>CASE ${caseNum} 學習歷程明細</h2>
+    <table class="report-table">
+      <thead><tr>
+        <th>Round</th><th>完成</th><th>影片觀看</th><th>Checkpoint</th>
+        <th>作答次數</th><th>答對</th><th>偵探筆記 / Reflection</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p style="margin-top:20px;font-size:12px">
+      本報告由學習網站依本機暫存紀錄產生；網站影片觀看時間僅代表此頁 YouTube 播放紀錄。
+      TronClass 內正式影片觀看紀錄、測驗與作業結果仍以 TronClass 系統紀錄為準。
+    </p>
+    <p style="font-size:12px">網頁設計｜弘光科技大學 曾惠楨 老師</p>`;
+  const box=document.getElementById('reportContent');
+  if(box) box.innerHTML=html;
+}
+function printCaseReport(caseNum){
+  ensureLearningId();
+  buildCaseReport(caseNum);
+  setTimeout(()=>window.print(),120);
+}
+
+
+function printLearningReport(){
+  ensureLearningId();
+  buildLearningReport();
+  setTimeout(()=>window.print(),120);
+}
+
+build();
+loadStudentMeta();
+updateLearningStats();
+updateRoundStats();
+setupEvaluationLinks();
+setMode(learningMode||'open');
+ensureYouTubeAPI();
+
+function researchSafeEventExample(){
+  return {learning_id:ensureLearningId(),cohort:null,case_id:null,round_id:null,video_completion_pct:null,checkpoint_attempts:null,first_response_correct:null,final_response_correct:null,reflection_completed:null,case_completed:null,event_time:null};
+}
+function canTransmitResearchData(){
+  return RESEARCH_CONFIG.mode==="IRB_RESEARCH_MODE" && RESEARCH_CONFIG.researchEnabled===true && !!RESEARCH_CONFIG.protocolNo && !!RESEARCH_CONFIG.endpoint;
+}
+
+async function shareOrSaveProgress(){
+  const id=state.learner?.learningId;
+  if(!id){ alert("請先產生 Learning ID，再備份學習資料。"); return; }
+  const payload={
+    version:"v6.3-universal",
+    exportedAt:new Date().toISOString(),
+    learner:state.learner||{learningId:id},
+    state:state
+  };
+  const json=JSON.stringify(payload,null,2);
+  const file=new File([json],`AI_Detective_Progress_${id}.json`,{type:"application/json"});
+  try{
+    if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+      await navigator.share({
+        title:"AI Research Detective 學習進度",
+        text:`Learning ID: ${id}｜請保存此檔供下次匯入續學。`,
+        files:[file]
+      });
+      return;
+    }
+  }catch(e){ if(e?.name==="AbortError") return; }
+  const blob=new Blob([json],{type:"application/json;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`AI_Detective_Progress_${id}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  alert("已建立完整學習資料備份檔。iPhone/iPad 可在「檔案」App 的下載項目找到；Android/PC 通常在 Downloads。");
+}
+
+
+/* ===== v6.5 Open Learner Evaluation + Supabase-ready layer =====
+   Teaching site remains usable when Supabase is not configured.
+   Never put a service-role/secret key in this HTML.
+*/
+const OPEN_DATA_CONFIG = {
+  enabled: true,
+  supabaseUrl: "https://szaxhnjjggfbplcknkab.supabase.co",
+  publishableKey: "sb_publishable_EIqF3wfdBvRxcBM2UeX6FQ_VvQjWcrh",
+  evaluationTable: "course_evaluation",
+  completionTable: "case_completion",
+  processTable: "learning_process"
+};
+
+const EVAL_ITEMS = [
+[1,"我清楚知道本單元希望我學會什麼。","likert"],
+[2,"Explore → Experience → Solve 的學習順序有助於我逐步理解內容。","likert"],
+[3,"臨床案例能幫助我把抽象概念與護理實務連結。","likert"],
+[4,"互動任務促使我思考，而不只是被動觀看影片。","likert"],
+[5,"Checkpoint 的即時回饋能幫助我發現並修正錯誤理解。","likert"],
+[6,"每一階段的資訊量與難度適當。","likert"],
+[7,"此學習設計讓我能依自己的速度完成學習。","likert"],
+[8,"此學習方式提升我持續完成單元的意願。","likert"],
+[9,"線上自學活動有助於我準備後續課堂討論或活動。","likert"],
+[10,"整體而言，此數位教學設計有助於我的學習。","likert"],
+[11,"教材內容正確且可信。","likert"],
+[12,"重要概念的說明清楚易懂。","likert"],
+[13,"教材難度符合我的學習階段。","likert"],
+[14,"教材內容具有清楚的組織與邏輯。","likert"],
+[15,"教材內容與護理臨床問題具有明確關聯。","likert"],
+[16,"學習後，我更能將相關概念應用於實際問題。","likert"],
+[17,"教學影片有助於我掌握重要概念。","likert"],
+[18,"圖像、文字與畫面呈現有助於理解。","likert"],
+[19,"網頁互動題目能有效檢查我是否真正理解教材。","likert"],
+[20,"整體而言，我認為本數位教材具有良好的學習價值。","likert"],
+[21,"完成本單元後，我有信心運用所學分析類似的研究或臨床問題。","likert"],
+[22,"整體而言，我對本次「數位教學設計」的滿意程度為何？","ten"],
+[23,"整體而言，我對本次「數位教材內容」的滿意程度為何？","ten"],
+[24,"如果未來其他護理課程採用類似的數位學習方式，我願意再次使用。","likert"],
+[25,"哪一項教學設計最能幫助你的學習？為什麼？","text"],
+[26,"哪一個學習步驟最需要改善？為什麼？","text"],
+[27,"哪一項教材內容對你的學習最有幫助？為什麼？","text"],
+[28,"哪一個概念仍然不夠清楚或需要增加說明？","text"],
+[29,"你建議增加、刪除或修改哪些教材或學習活動？","text"],
+[30,"如果只能給老師一項建議，讓下一屆學生學得更好，你會建議什麼？","text"]
+];
+
+
+function normalizeCaseId(caseNumber){
+  const map={1:"W05",2:"W08",3:"W13",4:"W14",5:"W16"};
+  return map[caseNumber]||String(caseNumber||"");
+}
+function getQuestionStatsForCase(caseNumber){
+  const ids=(typeof getCaseRoundIds==="function")?getCaseRoundIds(caseNumber):[];
+  let attempts=0, firstCorrect=0, finalCorrect=0, answered=0;
+  ids.forEach(rid=>{
+    const qs=state.questionStats?.[rid];
+    if(!qs) return;
+    attempts+=Number(qs.attempts||0);
+    answered+=qs.answered?1:0;
+    if(qs.first_response_correct===true) firstCorrect++;
+    if(qs.final_response_correct===true || qs.correct===true) finalCorrect++;
+  });
+  return {attempts,firstCorrect,finalCorrect,answered,total:ids.length};
+}
+function getCaseProcessSnapshot(caseNumber){
+  const ids=(typeof getCaseRoundIds==="function")?getCaseRoundIds(caseNumber):[];
+  const q=getQuestionStatsForCase(caseNumber);
+  let watchSeconds=0, completedRounds=0;
+  ids.forEach(rid=>{
+    watchSeconds+=Number(state.watchSeconds?.[rid]||0);
+    if(state.done?.[rid]) completedRounds++;
+  });
+  const noteText=ids.map(rid=>state.notes?.[rid]||"").join(" ").trim();
+  return {
+    learning_id:state.learner?.learningId||"",
+    cohort:"open_web",
+    case_id:normalizeCaseId(caseNumber),
+    rounds_completed:completedRounds,
+    rounds_total:ids.length,
+    watch_seconds:Math.round(watchSeconds),
+    checkpoint_attempts:q.attempts,
+    checkpoint_answered:q.answered,
+    checkpoint_total:q.total,
+    first_response_correct_count:q.firstCorrect,
+    final_response_correct_count:q.finalCorrect,
+    reflection_completed:noteText.length>0,
+    case_completed:completedRounds===ids.length && ids.length>0,
+    updated_at:new Date().toISOString()
+  };
+}
+async function postSupabaseRow(table,payload,prefer="return=minimal"){
+  const url=`${OPEN_DATA_CONFIG.supabaseUrl}/rest/v1/${table}`;
+  const res=await fetch(url,{
+    method:"POST",
+    headers:{
+      "apikey":OPEN_DATA_CONFIG.publishableKey,
+      "Content-Type":"application/json",
+      "Prefer":prefer
+    },
+    body:JSON.stringify(payload)
+  });
+  if(!res.ok) throw new Error(await res.text());
+  return true;
+}
+async function syncOpenCaseProcess(caseNumber,{silent=false}={}){
+  if(learningMode!=="open"){
+    if(!silent) alert("請先切換到 🌏 Open Learning Mode。");
+    return false;
+  }
+  const id=state.learner?.learningId;
+  if(!id){
+    if(!silent) alert("請先產生 Learning ID。");
+    return false;
+  }
+  const snap=getCaseProcessSnapshot(caseNumber);
+
+  // Always keep a local teaching-evidence snapshot.
+  localStorage.setItem(`aiDetectiveProcess_${id}_${snap.case_id}`,JSON.stringify(snap));
+
+  if(!OPEN_DATA_CONFIG.enabled || !OPEN_DATA_CONFIG.supabaseUrl || !OPEN_DATA_CONFIG.publishableKey){
+    if(!silent) alert("目前資料庫尚未啟用；本 CASE 學習歷程已暫存在此裝置。");
+    return false;
+  }
+  try{
+    await postSupabaseRow(OPEN_DATA_CONFIG.processTable,snap);
+    if(!silent){
+      [document.getElementById(`caseSyncStatus${caseNumber}`),document.getElementById(`caseQuickSyncStatus${caseNumber}`)].forEach(el=>{
+        if(el){
+          el.textContent=`✅ 已成功送出到雲端｜${snap.case_id}｜完成 ${snap.rounds_completed}/${snap.rounds_total} rounds`;
+          el.style.fontWeight="800";
+        }
+      });
+    }
+    return true;
+  }catch(e){
+    console.error(e);
+    localStorage.setItem(`aiDetectiveLastSyncError_${id}`,String(e?.message||e));
+    if(!silent){
+      [document.getElementById(`caseSyncStatus${caseNumber}`),document.getElementById(`caseQuickSyncStatus${caseNumber}`)].forEach(el=>{
+        if(el){
+          el.textContent=`✕ 雲端保存失敗：${String(e?.message||e).slice(0,180)}`;
+          el.style.fontWeight="800";
+        }
+      });
+    }
+    return false;
+  }
+}
+function addCaseSyncControls(){
+  for(let n=1;n<=5;n++){
+    const sec=document.querySelector(`[data-case="${n}"]`) || document.getElementById(`case${n}`);
+    if(!sec || sec.querySelector(".open-case-sync")) continue;
+    const box=document.createElement("div");
+    box.className="open-case-sync device-backup-card";
+    box.innerHTML=`
+      <b>🌏 Open learner｜CASE ${n} 學習歷程</b>
+      <div class="device-note">公開自學者可保存本 CASE 的去識別學習歷程；不傳送姓名、學號、Email 或反思全文。</div>
+      <div class="device-backup-actions">
+        <button class="btn alt" type="button" onclick="syncOpenCaseProcess(${n})">📤 送出此 CASE 進度到雲端</button>
+      </div>
+      <div id="caseSyncStatus${n}" class="save-status"></div>`;
+    sec.appendChild(box);
+  }
+  refreshOpenSyncVisibility();
+}
+function refreshOpenSyncVisibility(){
+  const isOpen=(typeof learningMode!=="undefined" && learningMode==="open");
+  document.querySelectorAll(".open-case-sync").forEach(el=>{
+    el.style.display=isOpen?"block":"none";
+  });
+  document.querySelectorAll(".open-save-quick").forEach(el=>{
+    el.style.display=isOpen?"flex":"none";
+  });
+}
+
+function buildOpenEvaluation(){
+  const form=document.getElementById("openEvaluationForm");
+  if(!form) return;
+  const isOpen=(typeof learningMode!=="undefined" && learningMode==="open");
+  const notice=document.getElementById("evaluationModeNotice");
+  if(notice){
+    notice.innerHTML=isOpen
+      ? "<b>🌏 Open Learning Mode</b><div class='device-note'>可填寫本頁評值。送出時以 Learning ID 儲存；目前若尚未設定資料庫，會先保存在本裝置。</div>"
+      : "<b>🎓 TronClass Mode</b><div class='device-note'>本課修課學生請回 TronClass 填寫正式 30 題課程評值；本頁不作正式提交。</div>";
+  }
+  form.innerHTML="";
+  EVAL_ITEMS.forEach(([n,q,type])=>{
+    const box=document.createElement("div");
+    box.className="device-backup-card";
+    let control="";
+    if(type==="likert"){
+      control=`<select name="q${n}" ${isOpen?"":"disabled"} required>
+        <option value="">請選擇</option><option value="1">1 非常不同意</option><option value="2">2 不同意</option>
+        <option value="3">3 普通</option><option value="4">4 同意</option><option value="5">5 非常同意</option></select>`;
+    }else if(type==="ten"){
+      control=`<select name="q${n}" ${isOpen?"":"disabled"} required><option value="">請選擇</option>${Array.from({length:10},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join("")}</select>`;
+    }else{
+      control=`<textarea name="q${n}" rows="4" ${isOpen?"":"disabled"} placeholder="請勿輸入可辨識個人身分的資訊"></textarea>`;
+    }
+    box.innerHTML=`<label><b>Q${n}.</b> ${q}</label><div style="margin-top:.55rem">${control}</div>`;
+    form.appendChild(box);
+  });
+  restoreEvaluationLocal();
+}
+
+function collectEvaluation(){
+  const form=document.getElementById("openEvaluationForm");
+  if(!form) return null;
+  const fd=new FormData(form), answers={};
+  for(let n=1;n<=30;n++) answers[`q${String(n).padStart(2,"0")}`]=(fd.get(`q${n}`)||"").toString().trim();
+  return answers;
+}
+function saveEvaluationLocally(){
+  if(learningMode!=="open"){ alert("修課學生請回 TronClass 完成正式評值。"); return; }
+  const id=state.learner?.learningId;
+  if(!id){ alert("請先產生 Learning ID。"); return; }
+  localStorage.setItem(`aiDetectiveEval_${id}`,JSON.stringify({learning_id:id,answers:collectEvaluation(),saved_at:new Date().toISOString()}));
+  document.getElementById("evaluationSubmitStatus").textContent="評值已暫存在此裝置。";
+}
+function restoreEvaluationLocal(){
+  const id=state.learner?.learningId; if(!id) return;
+  const raw=localStorage.getItem(`aiDetectiveEval_${id}`); if(!raw) return;
+  try{
+    const obj=JSON.parse(raw), form=document.getElementById("openEvaluationForm");
+    Object.entries(obj.answers||{}).forEach(([k,v])=>{
+      const n=Number(k.replace("q","")), el=form?.querySelector(`[name="q${n}"]`); if(el) el.value=v;
+    });
+  }catch(e){}
+}
+function evaluationPayload(){
+  const id=state.learner?.learningId;
+  const a=collectEvaluation();
+  return {learning_id:id,cohort:"open_web",...a,submitted_at:new Date().toISOString()};
+}
+async function submitOpenEvaluation(){
+  if(state?.mode!=="open"){ alert("修課學生請回 TronClass 完成正式 30 題課程評值。"); return; }
+  const id=state.learner?.learningId;
+  if(!id){ alert("請先產生 Learning ID。"); return; }
+  const form=document.getElementById("openEvaluationForm");
+  if(!form.reportValidity()) return;
+  saveEvaluationLocally();
+  const status=document.getElementById("evaluationSubmitStatus");
+  if(!OPEN_DATA_CONFIG.enabled || !OPEN_DATA_CONFIG.supabaseUrl || !OPEN_DATA_CONFIG.publishableKey){
+    status.textContent="目前資料庫尚未啟用：評值已安全暫存在本裝置，尚未傳送給教師。";
+    return;
+  }
+  try{
+    const url=`${OPEN_DATA_CONFIG.supabaseUrl}/rest/v1/${OPEN_DATA_CONFIG.evaluationTable}`;
+    const res=await fetch(url,{
+      method:"POST",
+      headers:{
+        "apikey":OPEN_DATA_CONFIG.publishableKey,
+        "Content-Type":"application/json",
+        "Prefer":"return=minimal"
+      },
+      body:JSON.stringify(evaluationPayload())
+    });
+    if(!res.ok) throw new Error(await res.text());
+    status.textContent="✓ 評值已送出。謝謝您的回饋。";
+    localStorage.setItem(`aiDetectiveEvalSubmitted_${id}`,"1");
+  }catch(e){
+    status.textContent=`✕ 評值送出失敗：${String(e?.message||e).slice(0,180)}`;
+    console.error(e);
+  }
+}
+
+// rebuild when page is ready
+window.addEventListener("load",()=>setTimeout(()=>{
+  if(learningMode) setMode(learningMode);
+  buildOpenEvaluation();
+  addCaseSyncControls();
+},0));
+
+</script>
+
+<div class="final-version-note" style="text-align:center;opacity:.65;font-size:.85em;margin:2rem 0 1rem">
+AI 研究偵探｜Interactive Learning Hub
+</div>
+
+</body>
+</html>
