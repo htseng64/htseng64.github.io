@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethics Galaxy - 教師儀表板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #4527a0 100%);
+            color: #e8eaf6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(30, 39, 73, 0.6);
+            border-radius: 15px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #ffd740;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #c5cae9;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5e35b1, #7e57c2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 53, 177, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00bfa5, #00e676);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(30, 39, 73, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #00bfa5;
+        }
+
+        .stat-card.warning {
+            border-left-color: #ffd740;
+        }
+
+        .stat-card.danger {
+            border-left-color: #f44336;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00e676;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #c5cae9;
+        }
+
+        .section {
+            background: rgba(30, 39, 73, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #ffd740;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: rgba(94, 53, 177, 0.3);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(197, 202, 233, 0.2);
+        }
+
+        th {
+            color: #ffd740;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(94, 53, 177, 0.2);
+        }
+
+        .progress-bar-container {
+            background: rgba(30, 39, 73, 0.6);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00e676, #00bfa5);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(0, 230, 118, 0.3);
+            color: #00e676;
+        }
+
+        .badge-warning {
+            background: rgba(255, 215, 64, 0.3);
+            color: #ffd740;
+        }
+
+        .badge-danger {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+        }
+
+        .chart-container {
+            background: rgba(30, 39, 73, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .bar-chart {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            height: 200px;
+            padding: 10px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(0deg, #5e35b1, #7e57c2);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            min-height: 20px;
+        }
+
+        .bar:hover {
+            transform: scaleY(1.05);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #c5cae9;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            color: #ffd740;
+        }
+
+        .student-card {
+            background: rgba(30, 39, 73, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .student-card:hover {
+            transform: translateX(5px);
+            background: rgba(94, 53, 177, 0.3);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00e676;
+        }
+
+        .planet-progress {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .planet-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(30, 39, 73, 0.6);
+            border-radius: 8px;
+        }
+
+        .planet-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .planet-name {
+            font-size: 0.75rem;
+            color: #c5cae9;
+            margin-bottom: 5px;
+        }
+
+        .planet-percent {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .export-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .export-card {
+            background: rgba(30, 39, 73, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .export-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .export-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd740;
+        }
+
+        .export-desc {
+            color: #c5cae9;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a237e, #4527a0);
+            border: 2px solid #5e35b1;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #e8eaf6;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .planet-progress {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        .import-area {
+            border: 2px dashed #5e35b1;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .import-area:hover {
+            border-color: #7e57c2;
+            background: rgba(94, 53, 177, 0.1);
+        }
+
+        .import-area input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 標題 -->
+        <div class="header">
+            <h1>🎓 Ethics Galaxy 教師儀表板</h1>
+            <p>學生進度追蹤與班級分析系統</p>
+        </div>
+
+        <!-- 控制按鈕 -->
+        <div class="controls">
+            <button class="btn btn-success" onclick="generateDemoData()">📊 生成示範資料</button>
+            <button class="btn" onclick="importStudentData()">📥 匯入學生資料</button>
+            <button class="btn" onclick="exportClassReport()">📤 匯出班級報告</button>
+            <button class="btn btn-danger" onclick="clearData()">🗑️ 清除所有資料</button>
+        </div>
+
+        <!-- 統計卡片 -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-students">0</div>
+                <div class="stat-label">學生總數</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avg-progress">0%</div>
+                <div class="stat-label">平均完成度</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-number" id="completed-students">0</div>
+                <div class="stat-label">完成所有星球</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-number" id="inactive-students">0</div>
+                <div class="stat-label">尚未開始</div>
+            </div>
+        </div>
+
+        <!-- 班級整體進度 -->
+        <div class="section">
+            <div class="section-title">
+                📊 班級整體進度分布
+            </div>
+            <div class="chart-container">
+                <div class="bar-chart" id="progress-chart"></div>
+            </div>
+        </div>
+
+        <!-- 星球完成率 -->
+        <div class="section">
+            <div class="section-title">
+                🌟 各星球完成率
+            </div>
+            <div class="chart-container">
+                <div class="bar-chart" id="planet-chart"></div>
+            </div>
+        </div>
+
+        <!-- 學生清單 -->
+        <div class="section">
+            <div class="section-title">
+                👥 學生詳細進度
+            </div>
+            <div id="student-list"></div>
+        </div>
+
+        <!-- 匯出選項 -->
+        <div class="section">
+            <div class="section-title">
+                📤 匯出報告選項
+            </div>
+            <div class="export-section">
+                <div class="export-card">
+                    <div class="export-icon">📊</div>
+                    <div class="export-title">Excel 報表</div>
+                    <div class="export-desc">包含所有學生的詳細進度數據，可用於進一步分析</div>
+                    <button class="btn" onclick="exportToExcel()">匯出 Excel</button>
+                </div>
+                <div class="export-card">
+                    <div class="export-icon">📄</div>
+                    <div class="export-title">PDF 報告</div>
+                    <div class="export-desc">包含圖表和統計分析的完整班級報告</div>
+                    <button class="btn" onclick="exportToPDF()">匯出 PDF</button>
+                </div>
+                <div class="export-card">
+                    <div class="export-icon">💾</div>
+                    <div class="export-title">JSON 資料</div>
+                    <div class="export-desc">原始資料格式，可用於備份或匯入其他系統</div>
+                    <button class="btn" onclick="exportToJSON()">匯出 JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 匯入區域（隱藏的文件輸入） -->
+        <input type="file" id="file-input" accept=".json" onchange="handleFileImport(event)" style="display: none;">
+    </div>
+
+    <!-- 學生詳情對話框 -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="student-detail"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全域資料
+        let teacherData = {
+            students: [],
+            lastUpdate: null
+        };
+
+        const PLANETS = {
+            autonomy: { name: '自主星球', icon: '🔵', color: '#3d5afe' },
+            beneficence: { name: '行善星球', icon: '🟢', color: '#00e676' },
+            nonmaleficence: { name: '不傷害月球', icon: '🟡', color: '#ffd740' },
+            justice: { name: '公義星雲', icon: '🟣', color: '#9c27b0' },
+            fidelity: { name: '忠誠太空站', icon: '🔴', color: '#f44336' }
+        };
+
+        // 初始化
+        function init() {
+            loadTeacherData();
+            updateDashboard();
+        }
+
+        // 載入資料
+        function loadTeacherData() {
+            const saved = localStorage.getItem('ethicsGalaxyTeacherData');
+            if (saved) {
+                teacherData = JSON.parse(saved);
+            }
+        }
+
+        // 儲存資料
+        function saveTeacherData() {
+            teacherData.lastUpdate = new Date().toISOString();
+            localStorage.setItem('ethicsGalaxyTeacherData', JSON.stringify(teacherData));
+            updateDashboard();
+        }
+
+        // 生成示範資料
+        function generateDemoData() {
+            if (teacherData.students.length > 0 && !confirm('這將覆蓋現有資料，確定要繼續嗎？')) {
+                return;
+            }
+
+            const names = [
+                '王小明', '李小華', '張大偉', '陳美玲', '林志強',
+                '黃淑芬', '吳建國', '鄭雅婷', '劉俊傑', '許雅筠',
+                '楊佳穎', '蔡明宏', '賴怡君', '洪偉翔', '周欣怡',
+                '蕭雅萍', '呂家豪', '江淑娟', '徐國強', '謝佩君'
+            ];
+
+            teacherData.students = names.map((name, index) => {
+                const progress = generateRandomProgress();
+                return {
+                    id: `STU${String(index + 1).padStart(3, '0')}`,
+                    name: name,
+                    email: `student${index + 1}@example.com`,
+                    ...progress,
+                    lastActive: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
+                };
+            });
+
+            saveTeacherData();
+            alert('✅ 已生成 20 位學生的示範資料！');
+        }
+
+        function generateRandomProgress() {
+            const planets = Object.keys(PLANETS);
+            const unlockedCount = Math.floor(Math.random() * 6); // 0-5顆星球
+            const unlockedPlanets = planets.slice(0, unlockedCount);
+            
+            const completedModules = {};
+            const earnedBadges = {};
+            
+            unlockedPlanets.forEach(planet => {
+                const moduleCount = Math.floor(Math.random() * 6); // 0-5個模組
+                completedModules[planet] = Array.from({length: moduleCount}, (_, i) => i + 1);
+                earnedBadges[planet] = Array.from({length: moduleCount}, (_, i) => i + 1);
+            });
+
+            return {
+                unlockedPlanets,
+                completedModules,
+                earnedBadges
+            };
+        }
+
+        // 更新儀表板
+        function updateDashboard() {
+            updateStats();
+            updateProgressChart();
+            updatePlanetChart();
+            updateStudentList();
+        }
+
+        // 更新統計卡片
+        function updateStats() {
+            const total = teacherData.students.length;
+            document.getElementById('total-students').textContent = total;
+
+            if (total === 0) {
+                document.getElementById('avg-progress').textContent = '0%';
+                document.getElementById('completed-students').textContent = '0';
+                document.getElementById('inactive-students').textContent = '0';
+                return;
+            }
+
+            // 計算平均完成度
+            let totalProgress = 0;
+            let completedCount = 0;
+            let inactiveCount = 0;
+
+            teacherData.students.forEach(student => {
+                const progress = calculateStudentProgress(student);
+                totalProgress += progress;
+                
+                if (progress === 100) completedCount++;
+                if (progress === 0) inactiveCount++;
+            });
+
+            const avgProgress = Math.round(totalProgress / total);
+            document.getElementById('avg-progress').textContent = avgProgress + '%';
+            document.getElementById('completed-students').textContent = completedCount;
+            document.getElementById('inactive-students').textContent = inactiveCount;
+        }
+
+        // 計算學生進度
+        function calculateStudentProgress(student) {
+            let completed = 0;
+            Object.values(student.completedModules || {}).forEach(modules => {
+                completed += modules.length;
+            });
+            return Math.round((completed / 25) * 100);
+        }
+
+        // 更新進度分布圖
+        function updateProgressChart() {
+            const ranges = [
+                { label: '0%', min: 0, max: 0, count: 0 },
+                { label: '1-20%', min: 1, max: 20, count: 0 },
+                { label: '21-40%', min: 21, max: 40, count: 0 },
+                { label: '41-60%', min: 41, max: 60, count: 0 },
+                { label: '61-80%', min: 61, max: 80, count: 0 },
+                { label: '81-99%', min: 81, max: 99, count: 0 },
+                { label: '100%', min: 100, max: 100, count: 0 }
+            ];
+
+            teacherData.students.forEach(student => {
+                const progress = calculateStudentProgress(student);
+                const range = ranges.find(r => progress >= r.min && progress <= r.max);
+                if (range) range.count++;
+            });
+
+            const maxCount = Math.max(...ranges.map(r => r.count), 1);
+            const chartHTML = ranges.map(range => {
+                const height = (range.count / maxCount) * 100;
+                return `
+                    <div class="bar" style="height: ${height}%;">
+                        <div class="bar-value">${range.count}</div>
+                        <div class="bar-label">${range.label}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('progress-chart').innerHTML = chartHTML;
+        }
+
+        // 更新星球完成率圖
+        function updatePlanetChart() {
+            const planetStats = {};
+            Object.keys(PLANETS).forEach(planet => {
+                planetStats[planet] = 0;
+            });
+
+            teacherData.students.forEach(student => {
+                Object.keys(student.completedModules || {}).forEach(planet => {
+                    if (student.completedModules[planet].length === 5) {
+                        planetStats[planet]++;
+                    }
+                });
+            });
+
+            const total = teacherData.students.length || 1;
+            const chartHTML = Object.keys(PLANETS).map(planetId => {
+                const planet = PLANETS[planetId];
+                const count = planetStats[planetId];
+                const percentage = Math.round((count / total) * 100);
+                
+                return `
+                    <div class="bar" style="height: ${percentage}%; background: linear-gradient(0deg, ${planet.color}, ${planet.color}cc);">
+                        <div class="bar-value">${count}</div>
+                        <div class="bar-label">${planet.icon}<br>${planet.name}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('planet-chart').innerHTML = chartHTML;
+        }
+
+        // 更新學生清單
+        function updateStudentList() {
+            if (teacherData.students.length === 0) {
+                document.getElementById('student-list').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #c5cae9;">
+                        <p style="font-size: 1.2rem; margin-bottom: 20px;">尚無學生資料</p>
+                        <p>請點擊「生成示範資料」或「匯入學生資料」開始使用</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const studentsHTML = teacherData.students.map(student => {
+                const progress = calculateStudentProgress(student);
+                let badgeClass = 'badge-success';
+                if (progress < 40) badgeClass = 'badge-danger';
+                else if (progress < 80) badgeClass = 'badge-warning';
+
+                const planetProgressHTML = Object.keys(PLANETS).map(planetId => {
+                    const planet = PLANETS[planetId];
+                    const modules = student.completedModules?.[planetId] || [];
+                    const planetProgress = Math.round((modules.length / 5) * 100);
+                    const isUnlocked = student.unlockedPlanets?.includes(planetId);
+
+                    return `
+                        <div class="planet-item" style="opacity: ${isUnlocked ? 1 : 0.3};">
+                            <div class="planet-icon">${planet.icon}</div>
+                            <div class="planet-name">${planet.name}</div>
+                            <div class="planet-percent" style="color: ${planet.color};">${planetProgress}%</div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="student-card" onclick="showStudentDetail('${student.id}')">
+                        <div class="student-header">
+                            <div>
+                                <div class="student-name">${student.name}</div>
+                                <div style="color: #9fa8da; font-size: 0.9rem;">${student.id} • ${student.email}</div>
+                            </div>
+                            <div>
+                                <span class="badge ${badgeClass}">${progress}% 完成</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${progress}%;">${progress}%</div>
+                        </div>
+                        <div class="planet-progress">
+                            ${planetProgressHTML}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('student-list').innerHTML = studentsHTML;
+        }
+
+        // 顯示學生詳情
+        function showStudentDetail(studentId) {
+            const student = teacherData.students.find(s => s.id === studentId);
+            if (!student) return;
+
+            const progress = calculateStudentProgress(student);
+            const detailHTML = `
+                <h2 style="color: #ffd740; margin-bottom: 20px;">${student.name} 的學習詳情</h2>
+                
+                <div style="background: rgba(30, 39, 73, 0.6); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <p><strong>學號：</strong>${student.id}</p>
+                    <p><strong>Email：</strong>${student.email}</p>
+                    <p><strong>整體進度：</strong>${progress}%</p>
+                    <p><strong>最後活動：</strong>${new Date(student.lastActive).toLocaleString('zh-TW')}</p>
+                </div>
+
+                <h3 style="color: #00e676; margin: 20px 0 15px;">各星球詳細進度</h3>
+                ${Object.keys(PLANETS).map(planetId => {
+                    const planet = PLANETS[planetId];
+                    const modules = student.completedModules?.[planetId] || [];
+                    const isUnlocked = student.unlockedPlanets?.includes(planetId);
+                    const badges = student.earnedBadges?.[planetId] || [];
+
+                    return `
+                        <div style="background: rgba(30, 39, 73, 0.6); padding: 20px; border-radius: 10px; margin-bottom: 15px; opacity: ${isUnlocked ? 1 : 0.5};">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <span style="font-size: 2rem;">${planet.icon}</span>
+                                <div>
+                                    <div style="font-size: 1.2rem; font-weight: bold; color: ${planet.color};">${planet.name}</div>
+                                    <div style="color: #c5cae9; font-size: 0.9rem;">
+                                        ${isUnlocked ? `${modules.length}/5 個模組完成` : '🔒 尚未解鎖'}
+                                    </div>
+                                </div>
+                            </div>
+                            ${isUnlocked ? `
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    ${[1,2,3,4,5].map(i => {
+                                        const completed = modules.includes(i);
+                                        return `
+                                            <div style="padding: 8px 15px; background: ${completed ? 'rgba(0, 230, 118, 0.3)' : 'rgba(30, 39, 73, 0.6)'}; border-radius: 8px; color: ${completed ? '#00e676' : '#666'};">
+                                                ${completed ? '✓' : '○'} Module ${i}
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('')}
+            `;
+
+            document.getElementById('student-detail').innerHTML = detailHTML;
+            document.getElementById('student-modal').classList.add('show');
+        }
+
+        // 關閉對話框
+        function closeModal() {
+            document.getElementById('student-modal').classList.remove('show');
+        }
+
+        // 匯入學生資料
+        function importStudentData() {
+            document.getElementById('file-input').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.students && Array.isArray(data.students)) {
+                        if (confirm(`確定要匯入 ${data.students.length} 位學生的資料嗎？這將覆蓋現有資料。`)) {
+                            teacherData = data;
+                            saveTeacherData();
+                            alert('✅ 資料匯入成功！');
+                        }
+                    } else {
+                        alert('❌ 檔案格式錯誤！');
+                    }
+                } catch (err) {
+                    alert('❌ 檔案讀取失敗：' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // 匯出功能
+        function exportClassReport() {
+            alert('📊 即將下載班級報告...');
+            exportToJSON();
+        }
+
+        function exportToJSON() {
+            const dataStr = JSON.stringify(teacherData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            downloadFile(blob, `ethics-galaxy-班級資料-${new Date().toISOString().split('T')[0]}.json`);
+        }
+
+        function exportToExcel() {
+            // 生成 CSV 格式
+            let csv = '學號,姓名,Email,整體進度,自主星球,行善星球,不傷害月球,公義星雲,忠誠太空站,最後活動時間\n';
+            
+            teacherData.students.forEach(student => {
+                const progress = calculateStudentProgress(student);
+                const planetProgress = Object.keys(PLANETS).map(planetId => {
+                    const modules = student.completedModules?.[planetId] || [];
+                    return `${modules.length}/5`;
+                });
+
+                csv += `${student.id},"${student.name}",${student.email},${progress}%,${planetProgress.join(',')},${new Date(student.lastActive).toLocaleString('zh-TW')}\n`;
+            });
+
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            downloadFile(blob, `ethics-galaxy-學生進度-${new Date().toISOString().split('T')[0]}.csv`);
+        }
+
+        function exportToPDF() {
+            alert('📄 PDF 匯出功能\n\n提示：您可以使用瀏覽器的「列印」功能（Ctrl+P 或 Cmd+P），選擇「另存為 PDF」來保存此頁面為 PDF 報告。');
+            window.print();
+        }
+
+        function downloadFile(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 清除資料
+        function clearData() {
+            if (confirm('⚠️ 確定要清除所有資料嗎？此操作無法復原！')) {
+                if (confirm('⚠️ 再次確認：這將刪除所有學生的進度資料！')) {
+                    teacherData = { students: [], lastUpdate: null };
+                    saveTeacherData();
+                    alert('✅ 所有資料已清除！');
+                }
+            }
+        }
+
+        // 初始化
+        window.onload = init;
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('student-modal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

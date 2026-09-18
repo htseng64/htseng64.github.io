@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理法律責任團體競賽</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7e22ce 50%, #312e81 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-reset {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        /* Teams Section */
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .team-card {
+            background: #1e40af;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .team-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin: 10px 0;
+        }
+
+        .score-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-score {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-plus {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-minus {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-score:hover {
+            transform: scale(1.1);
+        }
+
+        /* Game Board */
+        .game-board {
+            background: #1e40af;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .category-header {
+            background: #1e3a8a;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #fbbf24;
+            border: 2px solid #fbbf24;
+        }
+
+        .question-cell {
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fbbf24;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #fbbf24;
+        }
+
+        .question-cell:hover {
+            transform: scale(1.05);
+            background: linear-gradient(145deg, #2563eb, #1e40af);
+        }
+
+        .question-cell.answered {
+            background: #374151;
+            color: #6b7280;
+            cursor: not-allowed;
+            border-color: #6b7280;
+        }
+
+        .question-cell.answered:hover {
+            transform: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1e40af;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .current-team-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-title {
+            color: #fbbf24;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-box {
+            background: #1e3a8a;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .answer-box {
+            background: #065f46;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .answer-label {
+            color: #fbbf24;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .answer-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-show-answer {
+            background: #fbbf24;
+            color: #1e3a8a;
+        }
+
+        .btn-correct {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-incorrect {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-cancel, .btn-skip {
+            background: #6b7280;
+            color: white;
+        }
+
+        /* Team Selector */
+        .team-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .team-selector-btn {
+            padding: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            color: white;
+        }
+
+        .team-selector-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Team Colors */
+        .team-red { background: #dc2626; }
+        .team-blue { background: #2563eb; }
+        .team-green { background: #16a34a; }
+        .team-purple { background: #9333ea; }
+        .team-yellow { background: #ca8a04; }
+        .team-pink { background: #db2777; }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: #1e40af;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-title {
+            color: #fbbf24;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leaderboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .leaderboard-item {
+            background: #1e3a8a;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .rank {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .team-name-display {
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .score-display {
+            color: #fde047;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Game Finished Modal */
+        .finished-modal .modal-content {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            text-align: center;
+        }
+
+        .trophy-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .finished-title {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .final-rankings {
+            background: #1e3a8a;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .ranking-title {
+            color: #fbbf24;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .ranking-item.gold {
+            background: #fbbf24;
+            color: #1e3a8a;
+        }
+
+        .ranking-item.silver {
+            background: #d1d5db;
+            color: #1e3a8a;
+        }
+
+        .ranking-item.bronze {
+            background: #fb923c;
+            color: #1e3a8a;
+        }
+
+        .ranking-item.other {
+            background: #1e40af;
+            color: white;
+        }
+
+        .ranking-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ranking-position {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .ranking-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: #1e40af;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .instructions-title {
+            color: #fbbf24;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Study Guide */
+        .study-guide {
+            background: #7e22ce;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .study-section h4 {
+            color: #fde047;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .study-section ul {
+            list-style: none;
+        }
+
+        .study-section li {
+            margin-bottom: 5px;
+        }
+
+        /* Progress */
+        .progress-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .progress-box {
+            background: #1e40af;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .progress-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 15px;
+            background: #1e3a8a;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #fbbf24;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .category-header, .question-cell {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .question-cell {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>護理法律責任團體競賽</h1>
+            <h2>危險邊緣遊戲 - 六組對戰</h2>
+            <button class="btn btn-reset" onclick="resetGame()">🔄 重新開始遊戲</button>
+        </div>
+
+        <!-- Teams Section -->
+        <div class="teams-grid" id="teamsGrid"></div>
+
+        <!-- Game Board -->
+        <div class="game-board">
+            <div class="categories-grid" id="gameBoard"></div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <div class="leaderboard-title">🏆 即時排行榜</div>
+            <div class="leaderboard-grid" id="leaderboard"></div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <div class="instructions-title">👥 團體遊戲規則</div>
+            <p>• <strong>遊戲準備：</strong>將班級分成6組，每組可自訂組名</p>
+            <p>• <strong>選題方式：</strong>各組輪流或搶答選擇題目</p>
+            <p>• <strong>回答流程：</strong>點擊題目 → 選擇回答組別 → 該組討論後回答 → 顯示正確答案 → 老師判定對錯給分</p>
+            <p>• <strong>計分規則：</strong>答對加分，答錯扣分，可手動微調分數</p>
+            <p>• <strong>勝利條件：</strong>完成所有題目後分數最高的組別獲勝</p>
+            <p>• <strong>教學建議：</strong>鼓勵組內討論，答錯後可由老師補充說明</p>
+        </div>
+
+        <!-- Study Guide -->
+        <div class="study-guide">
+            <div class="leaderboard-title">📚 重要考點提醒</div>
+            <div class="study-grid">
+                <div class="study-section">
+                    <h4>🏥 執業相關：</h4>
+                    <ul>
+                        <li>• 教考用三步驟取得執業資格</li>
+                        <li>• 每6年繼續教育更新執照</li>
+                        <li>• 執業地點以一處為限</li>
+                        <li>• 必須加入當地護理師公會</li>
+                    </ul>
+                </div>
+                <div class="study-section">
+                    <h4>⚖️ 法律責任：</h4>
+                    <ul>
+                        <li>• 刑事：業務過失傷害/致死罪</li>
+                        <li>• 民事：債務不履行、侵權行為</li>
+                        <li>• 行政：停業、廢照、罰鍰</li>
+                        <li>• 通報義務：24小時內通報</li>
+                    </ul>
+                </div>
+                <div class="study-section">
+                    <h4>🔒 保密義務：</h4>
+                    <ul>
+                        <li>• 不得洩漏病人秘密</li>
+                        <li>• 證照不得租借他人</li>
+                        <li>• 虛偽陳述的法律後果</li>
+                    </ul>
+                </div>
+                <div class="study-section">
+                    <h4>🚨 緊急處理：</h4>
+                    <ul>
+                        <li>• 病人危急應立即聯絡醫師</li>
+                        <li>• 必要時可先緊急救護</li>
+                        <li>• 家暴、傳染病通報義務</li>
+                        <li>• 兒少保護通報責任</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-section">
+            <div class="progress-box">
+                <div class="progress-text">遊戲進度: <span id="progressText">0 / 25</span> 題</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Selector Modal -->
+    <div class="modal" id="teamSelectorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="question-title">請選擇回答的組別</h3>
+            </div>
+            <div class="team-selector-grid" id="teamSelector"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeTeamSelector()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Modal -->
+    <div class="modal" id="questionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="currentTeamBadge" class="current-team-badge"></div>
+                <h3 class="question-title" id="questionTitle"></h3>
+                <div class="question-box">
+                    <p class="question-text" id="questionText"></p>
+                </div>
+            </div>
+
+            <div id="answerSection" style="display: none;">
+                <div class="answer-box">
+                    <div class="answer-label">正確答案：</div>
+                    <p class="answer-text" id="answerText"></p>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-show-answer" id="showAnswerBtn" onclick="showAnswer()">顯示答案</button>
+                <button class="btn btn-skip" id="skipBtn" onclick="skipQuestion()">跳過題目</button>
+                <button class="btn btn-correct" id="correctBtn" style="display: none;" onclick="markCorrect()">✓ 答對</button>
+                <button class="btn btn-incorrect" id="incorrectBtn" style="display: none;" onclick="markIncorrect()">✗ 答錯</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Finished Modal -->
+    <div class="modal finished-modal" id="finishedModal">
+        <div class="modal-content">
+            <div class="trophy-icon">🏆</div>
+            <h3 class="finished-title">遊戲結束！</h3>
+            <div class="final-rankings">
+                <div class="ranking-title">🏆 最終排行榜</div>
+                <div id="finalRankings"></div>
+            </div>
+            <button class="btn btn-reset" onclick="resetGame()">開始新遊戲</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let teams = [
+            { name: '第一組', score: 0, color: 'team-red' },
+            { name: '第二組', score: 0, color: 'team-blue' },
+            { name: '第三組', score: 0, color: 'team-green' },
+            { name: '第四組', score: 0, color: 'team-purple' },
+            { name: '第五組', score: 0, color: 'team-yellow' },
+            { name: '第六組', score: 0, color: 'team-pink' }
+        ];
+
+        let answeredQuestions = new Set();
+        let currentQuestion = null;
+        let currentTeam = 0;
+
+        const categories = {
+            '護理人員權利': {
+                100: {
+                    question: '護理人員要取得執業資格需要哪三個步驟？',
+                    answer: '教（養成教育-專業學校畢業）、考（考試及格-領有護理師證書）、用（申請執業登記並加入當地公會）'
+                },
+                200: {
+                    question: '護理人員執業執照需要多久更新一次？',
+                    answer: '每6年需接受一定時數繼續教育，始得辦理執業執照更新'
+                },
+                300: {
+                    question: '護理人員可以在幾個地點執業？',
+                    answer: '護理人員執業登記之處所，以一處為限'
+                },
+                400: {
+                    question: '哪些護理機構可以申請開業權？',
+                    answer: '公立護理機構、財團法人護理機構、私立護理機構（需由資深護理人員申請）'
+                },
+                500: {
+                    question: '不得發給執業執照的三種情形是什麼？',
+                    answer: '1. 經撤銷或廢止護理人員證書 2. 經廢止護理人員執業執照未滿1年 3. 有客觀事實認定不能執行業務'
+                }
+            },
+            '護理業務範圍': {
+                100: {
+                    question: '護理業務範圍包括哪四項？',
+                    answer: '1. 健康問題之護理評估 2. 預防保健之護理措施 3. 護理指導及諮詢 4. 醫療輔助行為'
+                },
+                200: {
+                    question: '護理人員可以獨立操作的業務有幾項？',
+                    answer: '前3項（健康問題護理評估、預防保健護理措施、護理指導及諮詢）可獨立操作'
+                },
+                300: {
+                    question: '醫療輔助行為必須在什麼條件下進行？',
+                    answer: '必須在醫師指示下行之'
+                },
+                400: {
+                    question: '列舉五項醫療輔助行為',
+                    answer: '輔助侵入性檢查、侵入性治療、各項手術、分娩、放射線檢查治療、化學治療、氧氣療法、藥物投與、心理行為治療、生命徵象監測等'
+                },
+                500: {
+                    question: '無醫囑擅自為醫療行為的例外情況是什麼？',
+                    answer: '必要時之緊急救護處理'
+                }
+            },
+            '法定義務': {
+                100: {
+                    question: '護理人員執行業務時必須製作什麼？保存多久？',
+                    answer: '應製作護理紀錄，由該護理人員執業之機構保存七年以上'
+                },
+                200: {
+                    question: '護理人員遇有病人危急時應如何處理？',
+                    answer: '應立即聯絡醫師，但必要時得先行給予緊急救護處理'
+                },
+                300: {
+                    question: '護理人員停業或歇業時須在多久內報請備查？',
+                    answer: '應自事實發生之日起30日內，報請原發執業執照機關備查'
+                },
+                400: {
+                    question: '家庭暴力防治法規定醫事人員發現疑似家庭暴力須在多久內通報？',
+                    answer: '至遲不得逾24小時通報當地主管機關'
+                },
+                500: {
+                    question: '兒童及少年福利與權益保障法規定的通報時限是多久？',
+                    answer: '應立即向直轄市、縣（市）主管機關通報，至遲不得超過24小時'
+                }
+            },
+            '法律責任': {
+                100: {
+                    question: '過失的兩種類型是什麼？',
+                    answer: '無認識的過失和有認識的過失'
+                },
+                200: {
+                    question: '業務過失傷害罪的刑罰是什麼？',
+                    answer: '處1年以下有期徒刑、拘役或10萬元以下罰金'
+                },
+                300: {
+                    question: '業務過失致死罪的刑罰是什麼？',
+                    answer: '處5年以下有期徒刑、拘役，或50萬元以下罰金'
+                },
+                400: {
+                    question: '洩漏業務秘密罪的刑罰是什麼？',
+                    answer: '處1年以下有期徒刑、拘役或5萬元以下罰金'
+                },
+                500: {
+                    question: '護理過失民事賠償的兩項主要原因是什麼？',
+                    answer: '債務不履行及侵權行為'
+                }
+            },
+            '違法懲處': {
+                100: {
+                    question: '違反申請執業執照規定的罰鍰金額是多少？',
+                    answer: '處新臺幣6千元以上3萬元以下罰鍰'
+                },
+                200: {
+                    question: '將證照租借予不具護理人員資格者使用的懲處是什麼？',
+                    answer: '廢止其護理人員證書'
+                },
+                300: {
+                    question: '違反傳染病防治法通報規定的罰鍰是多少？',
+                    answer: '處新台幣9萬元以上45萬元以下罰鍰'
+                },
+                400: {
+                    question: '護理人員於業務上有違法或不正當行為的懲處是什麼？',
+                    answer: '處1個月以上1年以下之停業處分；情節重大者，得廢止其執業執照'
+                },
+                500: {
+                    question: '無照護理（密護）的刑罰是什麼？',
+                    answer: '處3年以下有期徒刑，得併科新台幣3萬元以上15萬元以下罰金'
+                }
+            }
+        };
+
+        // Initialize game
+        function initGame() {
+            renderTeams();
+            renderGameBoard();
+            updateLeaderboard();
+            updateProgress();
+        }
+
+        // Render teams
+        function renderTeams() {
+            const teamsGrid = document.getElementById('teamsGrid');
+            teamsGrid.innerHTML = '';
+
+            teams.forEach((team, index) => {
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card';
+                teamCard.innerHTML = `
+                    <div class="team-name" onclick="editTeamName(${index})">${team.name}</div>
+                    <div class="team-score">${team.score}</div>
+                    <div class="score-controls">
+                        <button class="btn-score btn-plus" onclick="adjustScore(${index}, 100)">+</button>
+                        <button class="btn-score btn-minus" onclick="adjustScore(${index}, -100)">-</button>
+                    </div>
+                `;
+                teamsGrid.appendChild(teamCard);
+            });
+        }
+
+        // Render game board
+        function renderGameBoard() {
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+
+            // Add category headers
+            Object.keys(categories).forEach(category => {
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.textContent = category;
+                gameBoard.appendChild(header);
+            });
+
+            // Add question cells
+            const points = [100, 200, 300, 400, 500];
+            points.forEach(point => {
+                Object.keys(categories).forEach(category => {
+                    const cell = document.createElement('div');
+                    const questionId = `${category}-${point}`;
+                    cell.className = 'question-cell';
+                    
+                    if (answeredQuestions.has(questionId)) {
+                        cell.classList.add('answered');
+                    }
+                    
+                    cell.textContent = `$${point}`;
+                    cell.onclick = () => handleQuestionClick(category, point);
+                    gameBoard.appendChild(cell);
+                });
+            });
+        }
+
+        // Handle question click
+        function handleQuestionClick(category, points) {
+            const questionId = `${category}-${points}`;
+            if (answeredQuestions.has(questionId)) return;
+
+            currentQuestion = {
+                category,
+                points,
+                ...categories[category][points]
+            };
+
+            showTeamSelector();
+        }
+
+        // Show team selector
+        function showTeamSelector() {
+            const modal = document.getElementById('teamSelectorModal');
+            const selector = document.getElementById('teamSelector');
+            selector.innerHTML = '';
+
+            teams.forEach((team, index) => {
+                const btn = document.createElement('button');
+                btn.className = `team-selector-btn ${team.color}`;
+                btn.innerHTML = `
+                    <div>${team.name}</div>
+                    <div style="font-size: 0.9rem; margin-top: 5px;">目前分數: ${team.score}</div>
+                `;
+                btn.onclick = () => selectTeam(index);
+                selector.appendChild(btn);
+            });
+
+            modal.classList.add('show');
+        }
+
+        // Close team selector
+        function closeTeamSelector() {
+            document.getElementById('teamSelectorModal').classList.remove('show');
+            currentQuestion = null;
+        }
+
+        // Select team
+        function selectTeam(teamIndex) {
+            currentTeam = teamIndex;
+            document.getElementById('teamSelectorModal').classList.remove('show');
+            showQuestion();
+        }
+
+        // Show question
+        function showQuestion() {
+            const modal = document.getElementById('questionModal');
+            const badge = document.getElementById('currentTeamBadge');
+            badge.className = `current-team-badge ${teams[currentTeam].color}`;
+            badge.textContent = `${teams[currentTeam].name} 回答中`;
+
+            document.getElementById('questionTitle').textContent = 
+                `${currentQuestion.category} - $${currentQuestion.points}`;
+            document.getElementById('questionText').textContent = currentQuestion.question;
+            document.getElementById('answerText').textContent = currentQuestion.answer;
+
+            document.getElementById('answerSection').style.display = 'none';
+            document.getElementById('showAnswerBtn').style.display = 'inline-block';
+            document.getElementById('skipBtn').style.display = 'inline-block';
+            document.getElementById('correctBtn').style.display = 'none';
+            document.getElementById('incorrectBtn').style.display = 'none';
+
+            modal.classList.add('show');
+        }
+
+        // Show answer
+        function showAnswer() {
+            document.getElementById('answerSection').style.display = 'block';
+            document.getElementById('showAnswerBtn').style.display = 'none';
+            document.getElementById('skipBtn').style.display = 'none';
+            document.getElementById('correctBtn').style.display = 'inline-block';
+            document.getElementById('incorrectBtn').style.display = 'inline-block';
+
+            const correctBtn = document.getElementById('correctBtn');
+            const incorrectBtn = document.getElementById('incorrectBtn');
+            correctBtn.textContent = `✓ ${teams[currentTeam].name} 答對 (+$${currentQuestion.points})`;
+            incorrectBtn.textContent = `✗ ${teams[currentTeam].name} 答錯 (-$${currentQuestion.points})`;
+        }
+
+        // Skip question
+        function skipQuestion() {
+            document.getElementById('questionModal').classList.remove('show');
+            currentQuestion = null;
+        }
+
+        // Mark correct
+        function markCorrect() {
+            const questionId = `${currentQuestion.category}-${currentQuestion.points}`;
+            answeredQuestions.add(questionId);
+            teams[currentTeam].score += currentQuestion.points;
+
+            closeQuestionModal();
+            checkGameFinished();
+        }
+
+        // Mark incorrect
+        function markIncorrect() {
+            const questionId = `${currentQuestion.category}-${currentQuestion.points}`;
+            answeredQuestions.add(questionId);
+            teams[currentTeam].score = Math.max(0, teams[currentTeam].score - currentQuestion.points);
+
+            closeQuestionModal();
+            checkGameFinished();
+        }
+
+        // Close question modal
+        function closeQuestionModal() {
+            document.getElementById('questionModal').classList.remove('show');
+            currentQuestion = null;
+            renderGameBoard();
+            renderTeams();
+            updateLeaderboard();
+            updateProgress();
+        }
+
+        // Check if game finished
+        function checkGameFinished() {
+            const totalQuestions = Object.keys(categories).length * 5;
+            if (answeredQuestions.size === totalQuestions) {
+                showGameFinished();
+            }
+        }
+
+        // Show game finished
+        function showGameFinished() {
+            const modal = document.getElementById('finishedModal');
+            const rankings = document.getElementById('finalRankings');
+            
+            const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+            rankings.innerHTML = '';
+
+            sortedTeams.forEach((team, index) => {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                
+                if (index === 0) item.classList.add('gold');
+                else if (index === 1) item.classList.add('silver');
+                else if (index === 2) item.classList.add('bronze');
+                else item.classList.add('other');
+
+                const emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                
+                item.innerHTML = `
+                    <div class="ranking-left">
+                        <div class="ranking-position">${emoji}</div>
+                        <div style="font-weight: bold;">${team.name}</div>
+                    </div>
+                    <div class="ranking-score">${team.score}</div>
+                `;
+                rankings.appendChild(item);
+            });
+
+            modal.classList.add('show');
+        }
+
+        // Update leaderboard
+        function updateLeaderboard() {
+            const leaderboard = document.getElementById('leaderboard');
+            const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+            
+            leaderboard.innerHTML = '';
+            sortedTeams.forEach((team, index) => {
+                const item = document.createElement('div');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <div class="rank">#${index + 1}</div>
+                    <div class="team-name-display">${team.name}</div>
+                    <div class="score-display">${team.score}</div>
+                `;
+                leaderboard.appendChild(item);
+            });
+        }
+
+        // Update progress
+        function updateProgress() {
+            const total = Object.keys(categories).length * 5;
+            const current = answeredQuestions.size;
+            document.getElementById('progressText').textContent = `${current} / ${total}`;
+            document.getElementById('progressFill').style.width = `${(current / total) * 100}%`;
+        }
+
+        // Edit team name
+        function editTeamName(index) {
+            const newName = prompt('請輸入新的組名：', teams[index].name);
+            if (newName && newName.trim()) {
+                teams[index].name = newName.trim();
+                renderTeams();
+                updateLeaderboard();
+            }
+        }
+
+        // Adjust score
+        function adjustScore(index, amount) {
+            teams[index].score = Math.max(0, teams[index].score + amount);
+            renderTeams();
+            updateLeaderboard();
+        }
+
+        // Reset game
+        function resetGame() {
+            if (confirm('確定要重新開始遊戲嗎？所有分數和進度將被清除。')) {
+                teams.forEach(team => team.score = 0);
+                answeredQuestions.clear();
+                currentQuestion = null;
+                document.getElementById('finishedModal').classList.remove('show');
+                initGame();
+            }
+        }
+
+        // Initialize on load
+        initGame();
+    </script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tarasoff 互動情境學習｜Scenes × 六模型</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --muted:#9aa6c2; --text:#e9eeff;
+      --red:#e53935; --blue:#1e88e5; --yellow:#fbc02d; --green:#43a047;
+      --line:rgba(255,255,255,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#080c18, #0b1020);color:var(--text)}
+    header{padding:18px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,16,32,.92);backdrop-filter:blur(6px);z-index:10}
+    header h1{margin:0;font-size:18px}
+    header .sub{margin-top:6px;color:var(--muted);font-size:12px}
+    main{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:14px}
+    .row{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:920px){ .row{grid-template-columns:1.15fr .85fr} }
+    .card{background:rgba(18,26,51,.86);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .tag{display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+    .pill{padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+    .title{font-size:16px;margin:6px 0 10px 0}
+    .sceneText{white-space:pre-wrap;line-height:1.6;color:#f2f5ff}
+    .btns{display:grid;gap:8px;margin-top:10px}
+    button{
+      border:1px solid var(--line);background:#0f1630;color:var(--text);
+      padding:10px 12px;border-radius:12px;cursor:pointer;text-align:left;
+      transition:.15s transform,.15s background,.15s border-color
+    }
+    button:hover{transform:translateY(-1px);background:#101c3e;border-color:rgba(255,255,255,.22)}
+    .small{font-size:12px;color:var(--muted)}
+    .bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .fill{height:100%;width:0%}
+    .statRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:8px}
+    .k{color:var(--muted);font-size:12px}
+    .right{display:flex;gap:8px;flex-wrap:wrap}
+    .accent-red{color:var(--red)} .accent-blue{color:var(--blue)} .accent-yellow{color:var(--yellow)} .accent-green{color:var(--green)}
+    .divider{border-top:1px solid var(--line);margin:12px 0}
+    .grid2{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:920px){ .grid2{grid-template-columns:1fr 1fr} }
+    textarea, input{
+      width:100%;border-radius:12px;border:1px solid var(--line);background:#0f1630;color:var(--text);
+      padding:10px 12px;outline:none
+    }
+    textarea{min-height:110px;resize:vertical;line-height:1.5}
+    .models{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:920px){ .models{grid-template-columns:1fr 1fr} }
+    details{border:1px solid var(--line);border-radius:14px;background:#0f1630;padding:10px 12px}
+    summary{cursor:pointer;font-weight:700}
+    .hint{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.5}
+    .checklist label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.12)}
+    .checklist label:last-child{border-bottom:none}
+    .topActions{display:flex;gap:8px;flex-wrap:wrap}
+    .ghost{background:transparent}
+    .ok{border-color:rgba(67,160,71,.35)}
+    .warn{border-color:rgba(229,57,53,.35)}
+    .note{font-size:12px;color:var(--muted);line-height:1.6}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Tarasoff 互動情境學習｜Scenes × 六模型</h1>
+  <div class="sub">課堂投影 / 遠距自學皆可（本機保存，不需伺服器）</div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="topActions">
+      <button class="ghost" onclick="resetAll()">重設本機資料</button>
+      <button class="ghost" onclick="exportJSON()">匯出我的作答 JSON</button>
+      <span class="pill">建議流程：Scene1 → Scene2 → 六模型 → 觸發點 → 反思</span>
+    </div>
+    <div class="note">
+      若要「全班即時統計同步」，需加後端或改用 Mentimeter/Google Form；目前版本可做：情境互動、個人作答、課堂討論、遠距自學、作業上傳。
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- LEFT: Scenes -->
+    <section class="card" id="scenesCard">
+      <div class="tag"><span class="pill">互動</span><span class="pill">Scenes</span><span class="pill">投票</span></div>
+      <h2 class="title">一、情境互動（Scenes）</h2>
+
+      <div class="card" style="margin-top:10px" id="scene1">
+        <div class="tag"><span class="pill">Scene 1</span><span class="pill">舞會曖昧（情緒層）</span></div>
+        <div class="sceneText" id="scene1Text"></div>
+        <div class="divider"></div>
+        <div class="small">你會怎麼反應？（選一個最接近的直覺）</div>
+        <div class="btns" id="scene1Btns"></div>
+        <div class="divider"></div>
+        <div class="small">我的選擇：<span id="scene1Mine" class="accent-yellow">尚未作答</span></div>
+      </div>
+
+      <div class="card" style="margin-top:10px" id="scene2">
+        <div class="tag"><span class="pill">Scene 2</span><span class="pill">臨床 confession（專業切換）</span></div>
+        <div class="sceneText" id="scene2Text"></div>
+        <div class="divider"></div>
+        <div class="small">你會怎麼做？（選一個最可能的第一步）</div>
+        <div class="btns" id="scene2Btns"></div>
+        <div class="divider"></div>
+        <div class="small">我的選擇：<span id="scene2Mine" class="accent-yellow">尚未作答</span></div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Teacher panel / quick stats -->
+    <aside class="card">
+      <div class="tag"><span class="pill">教學</span><span class="pill">討論引導</span></div>
+      <h2 class="title">二、討論引導（老師可直接念）</h2>
+      <div class="note">
+        <b>轉場金句：</b><br>
+        「剛剛你可以只為自己負責；現在你必須為<b class="accent-red">他人生命</b>負責。」<br><br>
+        <b>討論三問（3–5 分鐘）：</b>
+        <ol>
+          <li>如果你選擇「保密／只安撫」，最壞情境會是什麼？</li>
+          <li>如果你選擇「通報／警告」，你犧牲了什麼（信任、關係、隱私）？</li>
+          <li>哪一個選擇讓你最不舒服？為什麼？</li>
+        </ol>
+      </div>
+      <div class="divider"></div>
+      <div class="note">
+        <b>課堂提醒（避免受害者責備）：</b><br>
+        Tarasoff 的核心不是「受害者做了什麼」，而是「專業人員面對可信暴力威脅時，如何平衡保密與保護」。
+      </div>
+    </aside>
+  </div>
+
+  <!-- Models -->
+  <section class="card">
+    <div class="tag"><span class="pill">六模型</span><span class="pill">逐步展開</span></div>
+    <h2 class="title">三、六模型同場對話（點開即是「模型在乎什麼」）</h2>
+    <div class="models" id="modelsWrap"></div>
+  </section>
+
+  <!-- Trigger points -->
+  <section class="card">
+    <div class="tag"><span class="pill">互動</span><span class="pill">Tarasoff 警告觸發點</span></div>
+    <h2 class="title">四、找出「警告觸發點」</h2>
+    <div class="note">勾選你認為已構成「可信暴力風險」的語言線索（可複選）。</div>
+    <div class="divider"></div>
+    <div class="checklist" id="triggerList"></div>
+    <div class="divider"></div>
+    <div class="note">
+      ✅ 勾到「必然性語言」或「合理化行動」通常就需要升級處理（通報/團隊/流程），而不只是安撫。<br>
+      這一區可用來引導 Jonsen → Curtin / Silva 的轉換。
+    </div>
+  </section>
+
+  <!-- Reflection -->
+  <section class="card">
+    <div class="tag"><span class="pill">反思</span><span class="pill">作業</span></div>
+    <h2 class="title">五、我的反思（可當遠距作業）</h2>
+    <div class="grid2">
+      <div>
+        <div class="small">我在 Scene 1 的情緒反應是什麼？（1–2 句）</div>
+        <textarea id="ref1" placeholder="例：我感到不舒服但又不想掃興..."></textarea>
+      </div>
+      <div>
+        <div class="small">我在 Scene 2 的專業掙扎是什麼？（1–2 句）</div>
+        <textarea id="ref2" placeholder="例：我擔心保密與他人安全衝突..."></textarea>
+      </div>
+      <div>
+        <div class="small">我最想用哪個模型來說明我的決策？為什麼？</div>
+        <textarea id="ref3" placeholder="例：Curtin，因為法律責任與可交代性..."></textarea>
+      </div>
+      <div>
+        <div class="small">一句話總結（帶走一句）</div>
+        <input id="ref4" placeholder="例：倫理不是選對答案，而是承擔後果與責任。" />
+      </div>
+    </div>
+    <div class="divider"></div>
+    <button onclick="saveReflection()" class="ok">儲存反思</button>
+    <div class="small" id="saveMsg"></div>
+  </section>
+
+  <section class="card">
+    <div class="tag"><span class="pill">教學者</span><span class="pill">提示</span></div>
+    <h2 class="title">六、遠距教學建議（最省力版本）</h2>
+    <div class="note">
+      <ol>
+        <li>把此頁放到 GitHub Pages（或校內網站），貼到 TronClass「教材連結」。</li>
+        <li>遠距：學生完成作答與反思後按「匯出 JSON」，貼到作業區/表單即可。</li>
+        <li>課堂：你投影此頁，讓學生用手機各自作答，再進入討論（三問）。</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const DATA = {
+    scene1: {
+      text:
+`你在一場舞會中，音樂很大、燈光很暗。
+有人靠近你、想更親密，並低聲說：
+「我其實對你，比對其他人更有興趣。」
+
+（提醒：這不是 Tarasoff 本人的原始情節，而是用來引發「界線被誤讀」的教學情境。）`,
+      options: [
+        "A. 覺得被欣賞，開心接受",
+        "B. 覺得曖昧，但保持距離",
+        "C. 覺得不舒服，想離開",
+        "D. 感到困惑，不知道怎麼反應"
+      ]
+    },
+    scene2: {
+      text:
+`幾天後，你是護理人員／治療團隊成員。
+同一個人坐在你面前，語氣冷靜地說：
+「我最近一直在想一件事，停不下來。
+如果沒有人阻止，事情一定會發生。」
+
+你會怎麼做？（選最可能的「第一步」）`,
+      options: [
+        "A. 先安撫並維持保密，繼續談下去",
+        "B. 立即升級：通知主管/醫師/團隊並啟動機構流程",
+        "C. 先做風險評估（具體對象、計畫、時間、可近性），同時尋求團隊協助",
+        "D. 直接對外警告潛在受害者（不先走流程）"
+      ]
+    },
+    models: [
+      { name:"Jonsen 四項分析", focus:"先把問題拆清楚（醫療、病人偏好、生活品質、情境因素）。", use:"用來『分析結構』，不直接裁決價值。"},
+      { name:"Joseph 情境倫理", focus:"哪一個行動最有愛（Agape）？", use:"用來討論『價值判準』，不是法律工具。"},
+      { name:"Curtin 模式", focus:"能否對社會與法律交代？（責任/可交代性）", use:"用來處理 Duty to Warn / 法律與社會責任。"},
+      { name:"Aroskar 模式", focus:"時間拖不起：現在不做會更糟嗎？", use:"用來強調『不決定也是決定』與即時風險。"},
+      { name:"Thompson 模式", focus:"能否制度化：若每次都這樣做，公平嗎？", use:"用來思考一致標準、資源與制度正義。"},
+      { name:"Silva 模式", focus:"在組織中怎麼做：流程、團隊、事後評值。", use:"用來落地執行（資料→問題→方案→決策→評值）。"}
+    ],
+    triggers: [
+      { id:"t1", text:"「每天都在想，想到停不下來」＝持續性、侵入性想法" },
+      { id:"t2", text:"「有些事情不是等一等就會過去」＝否定等待與治療" },
+      { id:"t3", text:"「不是傷害誰，只是修正錯的地方」＝合理化行動" },
+      { id:"t4", text:"「如果沒有人阻止，事情一定會發生」＝必然性語言（高風險）" },
+      { id:"t5", text:"「你沒有站在我這邊」＝對立化、治療關係破裂" }
+    ]
+  };
+
+  const LS_KEY = "tarasoff_interactive_v1";
+  const state = loadState();
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : { answers:{}, triggers:{}, reflection:{} };
+    }catch(e){
+      return { answers:{}, triggers:{}, reflection:{} };
+    }
+  }
+  function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+  function mountScenes(){
+    document.getElementById("scene1Text").textContent = DATA.scene1.text;
+    document.getElementById("scene2Text").textContent = DATA.scene2.text;
+
+    mountButtons("scene1Btns", "scene1", DATA.scene1.options);
+    mountButtons("scene2Btns", "scene2", DATA.scene2.options);
+
+    document.getElementById("scene1Mine").textContent = state.answers.scene1 ?? "尚未作答";
+    document.getElementById("scene2Mine").textContent = state.answers.scene2 ?? "尚未作答";
+  }
+
+  function mountButtons(containerId, sceneKey, options){
+    const el = document.getElementById(containerId);
+    el.innerHTML = "";
+    options.forEach(opt=>{
+      const b = document.createElement("button");
+      b.textContent = opt;
+      b.onclick = ()=>selectAnswer(sceneKey, opt);
+      el.appendChild(b);
+    });
+  }
+
+  function selectAnswer(sceneKey, opt){
+    state.answers[sceneKey] = opt;
+    saveState();
+    document.getElementById(sceneKey+"Mine").textContent = opt;
+  }
+
+  function mountModels(){
+    const wrap = document.getElementById("modelsWrap");
+    wrap.innerHTML = "";
+    DATA.models.forEach(m=>{
+      const d = document.createElement("details");
+      d.innerHTML = `
+        <summary>${m.name}</summary>
+        <div class="hint"><b class="accent-yellow">在乎：</b>${m.focus}</div>
+        <div class="hint"><b class="accent-blue">在本案例可用來：</b>${m.use}</div>
+      `;
+      wrap.appendChild(d);
+    });
+  }
+
+  function mountTriggers(){
+    const wrap = document.getElementById("triggerList");
+    wrap.innerHTML = "";
+    DATA.triggers.forEach(t=>{
+      const label = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state.triggers[t.id];
+      cb.onchange = ()=>{ state.triggers[t.id]=cb.checked; saveState(); };
+      const span = document.createElement("div");
+      span.textContent = t.text;
+      label.appendChild(cb);
+      label.appendChild(span);
+      wrap.appendChild(label);
+    });
+  }
+
+  function mountReflection(){
+    const r = state.reflection || {};
+    document.getElementById("ref1").value = r.ref1 || "";
+    document.getElementById("ref2").value = r.ref2 || "";
+    document.getElementById("ref3").value = r.ref3 || "";
+    document.getElementById("ref4").value = r.ref4 || "";
+  }
+
+  function saveReflection(){
+    state.reflection = {
+      ref1: document.getElementById("ref1").value.trim(),
+      ref2: document.getElementById("ref2").value.trim(),
+      ref3: document.getElementById("ref3").value.trim(),
+      ref4: document.getElementById("ref4").value.trim()
+    };
+    saveState();
+    const el = document.getElementById("saveMsg");
+    el.textContent = "已儲存（保存在此裝置瀏覽器）";
+    setTimeout(()=>el.textContent="", 1500);
+  }
+
+  function exportJSON(){
+    const payload = {
+      meta:{ version:"v1", exportedAt:new Date().toISOString() },
+      answers: state.answers,
+      triggers: state.triggers,
+      reflection: state.reflection
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "tarasoff_learning_export.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetAll(){
+    if(!confirm("確定要清除本機作答與反思？")) return;
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  }
+
+  // init
+  mountScenes();
+  mountModels();
+  mountTriggers();
+  mountReflection();
+</script>
+</body>
+</html>

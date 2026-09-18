@@ -1,0 +1,293 @@
+<style>
+    /* 全局背景 (讓網頁背景變成深空黑，更沉浸) */
+    body {
+        background-color: #000; /* 確保旁邊留白處是黑的 */
+        margin: 0;
+        display: flex;
+        justify-content: center; /* 水平置中 */
+        align-items: center;     /* 垂直置中 */
+        min-height: 100vh;       /* 確保高度撐滿 */
+    }
+
+    /* 遊戲主機本體 */
+    .game-console {
+        font-family: 'Microsoft JhengHei', 'Heiti TC', sans-serif;
+        background: #0b0d17;
+        border: 4px solid #00f2ff;
+        border-radius: 20px;
+        padding: 2vh 2vw; /* 彈性內距 */
+        color: white;
+        box-shadow: 0 0 100px rgba(0, 242, 255, 0.2); /* 加強光暈 */
+        
+        /* === 關鍵修改：全螢幕適配 === */
+        width: 95vw;             /* 佔據 95% 視窗寬度 */
+        aspect-ratio: 16 / 9;    /* 強制鎖定 16:9 電影比例 */
+        max-height: 95vh;        /* 高度最多佔 95%，避免要捲動 */
+        margin: auto;            /* 置中 */
+        
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    /* 頂部標題列 */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #334155;
+        padding-bottom: 1vh;
+        margin-bottom: 2vh;
+        flex-shrink: 0;
+    }
+
+    .title-text {
+        margin: 0;
+        color: #00f2ff;
+        text-transform: uppercase;
+        /* 字體隨視窗寬度放大：最小 24px，最大 80px */
+        font-size: clamp(24px, 4vw, 80px); 
+        font-weight: 900;
+        text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+    }
+
+    /* 按鈕群組 */
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 2vh;
+        flex-shrink: 0;
+        height: 15%; /* 讓按鈕佔據固定比例的高度 */
+    }
+
+    .char-btn {
+        flex: 1; /* 平均分配 */
+        background: #1e293b;
+        border: 2px solid #475569;
+        color: white;
+        cursor: pointer;
+        border-radius: 12px;
+        /* 字體隨高度縮放 */
+        font-size: clamp(14px, 1.5vw, 24px); 
+        font-weight: bold;
+        transition: 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .char-btn:hover { background: #334155; transform: scale(1.02); box-shadow: 0 0 15px currentColor; }
+    .char-btn small { font-size: 0.6em; opacity: 0.8; margin-top: 5px;}
+
+    /* 情境切換按鈕 */
+    .scenario-btn {
+        border: none;
+        color: #000;
+        padding: 10px 2vw;
+        cursor: pointer;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: clamp(14px, 1.2vw, 20px);
+        margin-left: 10px;
+    }
+
+    /* 顯示區塊 */
+    #profile-display {
+        background: rgba(255,255,255,0.05);
+        border: 2px solid #555;
+        padding: 3vh 3vw;
+        border-radius: 15px;
+        flex-grow: 1; /* 佔滿中間剩餘空間 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto; /* 如果文字真的太多，允許內部捲動 */
+    }
+
+    /* 文字自動放大 */
+    .huge-text { font-size: clamp(30px, 5vh, 60px); font-weight: bold; margin-bottom: 2vh; line-height: 1.1; }
+    .big-text { font-size: clamp(16px, 2.5vh, 32px); line-height: 1.5; }
+    
+    /* 決策區塊 */
+    #decision-prompt {
+        margin-top: 2vh;
+        padding: 2vh;
+        background: #222;
+        border-left: 1vw solid #ef4444;
+        border-radius: 8px;
+        font-size: clamp(16px, 2vh, 28px);
+        line-height: 1.5;
+        flex-shrink: 0;
+    }
+
+    /* === 手機版專用 (直式) === */
+    @media (max-aspect-ratio: 16/9), (max-width: 768px) {
+        body { display: block; } /* 手機版不需要垂直置中 */
+        .game-console {
+            width: 100%;
+            height: auto;
+            max-height: none; /* 解除高度限制 */
+            aspect-ratio: auto; /* 解除比例限制 */
+            border-radius: 0;
+            border: none;
+            border-top: 2px solid #00f2ff;
+        }
+        .btn-group {
+            flex-wrap: wrap;
+            height: auto;
+        }
+        .char-btn {
+            flex: 1 1 45%; /* 變成兩欄 */
+            padding: 15px;
+        }
+        .top-bar { flex-direction: column; gap: 10px; align-items: stretch; }
+        .scenario-btn { flex: 1; text-align: center; width: 100%; margin: 5px 0; }
+    }
+</style>
+<div class="game-console">
+
+    <div class="top-bar">
+        <div>
+            <h2 class="title-text">⚠️ 決策介面</h2>
+        </div>
+        <div class="scenario-group">
+            <button onclick="setMode('abandon')" class="scenario-btn" style="background:#ef4444; color: white;">情境 A</button>
+            <button onclick="setMode('survive')" class="scenario-btn" style="background:#fbbf24;">情境 B</button>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button onclick="viewProfile('vance')" class="char-btn" style="border-color: #22d3ee;">👨‍⚕️ Dr. Vance<br><small>醫師</small></button>
+        <button onclick="viewProfile('miller')" class="char-btn" style="border-color: #ef4444;">🛡️ Miller<br><small>恩人</small></button>
+        <button onclick="viewProfile('sarah')" class="char-btn" style="border-color: #22c55e;">🌱 Sarah<br><small>環境/孕婦</small></button>
+        <button onclick="viewProfile('brown')" class="char-btn" style="border-color: #00f2ff;">🧪 Dr. Brown<br><small>疫苗</small></button>
+        <button onclick="viewProfile('chen')" class="char-btn" style="border-color: #fbbf24;">🧭 Lt. Chen<br><small>導航</small></button>
+    </div>
+
+    <div id="profile-display">
+        <div style="text-align: center; color: #aaa;">
+            <p class="big-text">◀ 請點擊按鈕掃描生還者數據</p>
+        </div>
+    </div>
+
+    <div id="decision-prompt">
+        <strong style="color: #ef4444;">[等待指令]</strong> 
+        <span style="color: #ddd;">請選擇情境模式 (Scenario A / B) 以啟動模擬。</span>
+    </div>
+
+</div>
+
+<button onclick="toggleFullScreen()" style="background: #333; color: white; border: 1px solid #555; cursor: pointer; padding: 5px 10px;">📺 Full Screen</button>
+
+<script>
+   
+// 加在 script 標籤裡
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+ // 定義角色資料 (含大字體 HTML)
+    const profiles = {
+        vance: {
+            name: "Dr. Vance",
+            color: "#22d3ee",
+            content: `
+                <div class="huge-text" style="color:#22d3ee">Dr. Vance</div>
+                <div class="big-text">
+                    <p>❤️ 狀態: <span style="color:#22c55e">良好</span> | ⚕️ 價值: <span style="color:gold">唯一的醫師</span></p>
+                    <hr style="border-color:#555">
+                    <p>他主張<b>理性效益</b>。如果沒有他，受傷的人和孕婦 Sarah 可能都會死。</p>
+                    <p style="background:#333; padding:10px; border-radius:5px; color:#aaa"><i>"別感情用事。沒有醫生，這艘船就是會飛的棺材。"</i></p>
+                </div>`
+        },
+        miller: {
+            name: "Sgt. Miller",
+            color: "#ef4444",
+            content: `
+                <div class="huge-text" style="color:#ef4444">Sgt. Miller</div>
+                <div class="big-text">
+                    <p>❤️ 狀態: <span style="color:red">垂危 (10%)</span> | 🎖️ 價值: <span style="color:gold">救命恩人</span></p>
+                    <hr style="border-color:#555">
+                    <p>他在火場救了大家，現在重傷。丟下他是<b>忘恩負義</b>，留下他是<b>拖累團隊</b>。</p>
+                    <p style="background:#333; padding:10px; border-radius:5px; color:#aaa"><i>"我有覺悟了...把我扔出去，讓能活的人活下去。"</i></p>
+                </div>`
+        },
+        sarah: {
+            name: "Sarah",
+            color: "#22c55e",
+            content: `
+                <div class="huge-text" style="color:#22c55e">Sarah</div>
+                <div class="big-text">
+                    <p>❤️ 狀態: <span style="color:#22c55e">良好</span> | 🤰 價值: <span style="color:#f472b6">懷孕 (兩條命)</span></p>
+                    <hr style="border-color:#555">
+                    <p>她是唯一的農業專家。沒有她，到了新星球也會餓死。她代表<b>未來的希望</b>。</p>
+                    <p style="background:#333; padding:10px; border-radius:5px; color:#aaa"><i>"求求你...孩子是無辜的..."</i></p>
+                </div>`
+        },
+        brown: {
+            name: "Dr. Brown",
+            color: "#00f2ff",
+            content: `
+                <div class="huge-text" style="color:#00f2ff">Dr. Brown</div>
+                <div class="big-text">
+                    <p>❤️ 狀態: <span style="color:#22c55e">良好</span> | 🧪 價值: <span style="color:gold">疫苗 (救500萬人)</span></p>
+                    <hr style="border-color:#555">
+                    <p>手握救世疫苗。若他犧牲，母星上數百萬人將死亡。這是<b>最大效益</b>的選擇。</p>
+                    <p style="background:#333; padding:10px; border-radius:5px; color:#aaa"><i>"我的命不重要，但這瓶疫苗不能毀在這裡！"</i></p>
+                </div>`
+        },
+        chen: {
+            name: "Lt. Chen",
+            color: "#fbbf24",
+            content: `
+                <div class="huge-text" style="color:#fbbf24">Lt. Chen (She)</div>
+                <div class="big-text">
+                    <p>❤️ 狀態: <span style="color:#22c55e">輕傷</span> | 🚀 價值: <span style="color:gold">唯一的駕駛</span></p>
+                    <hr style="border-color:#555">
+                    <p>她是唯一會開船的人。如果選了醫生或科學家，但沒人會開船，結局也是墜毀。</p>
+                    <p style="background:#333; padding:10px; border-radius:5px; color:#aaa"><i>"Miller 救過我...我怎麼能親手按按鈕殺他？"</i></p>
+                </div>`
+        }
+    };
+
+    function viewProfile(id) {
+        document.getElementById('profile-display').innerHTML = profiles[id].content;
+        document.getElementById('profile-display').style.borderColor = profiles[id].color;
+    }
+
+    // === 雙擊切換邏輯 (A1/A2) ===
+    let clickCount = 0; 
+
+    function setMode(mode) {
+        const box = document.getElementById('decision-prompt');
+        
+        if (mode === 'abandon') {
+            clickCount++;
+            if (clickCount % 2 !== 0) {
+                // A1: 溫和版
+                box.innerHTML = `
+                    <strong style="color: #fbbf24;">[情境 A1] 座位不足 (Resource Scarcity)</strong> 
+                    <br><span style="color: #ddd;">只有 4 個座位，必須留下 1 人。Miller 傷勢最重，留下他最合理？</span>`;
+                box.style.borderLeftColor = "#fbbf24";
+            } else {
+                // A2: 殘酷版
+                box.innerHTML = `
+                    <strong style="color: #ef4444;">[情境 A2] 主動拋棄 (Active Killing)</strong> 
+                    <br><span style="color: #ddd;">超重警報！必須<u style="color:red">親手按下按鈕</u>把一人推出艙外。你下得了手推恩人嗎？</span>`;
+                box.style.borderLeftColor = "#ef4444";
+            }
+        } else if (mode === 'survive') {
+            clickCount = 0;
+            box.innerHTML = `
+                <strong style="color: #00f2ff;">[情境 B] 僅存一人 (Sole Survivor)</strong> 
+                <br><span style="color: #ddd;">只剩 1 個位子。Brown (救世疫苗)、Sarah (未來糧食)、Chen (生存駕駛)。誰活下來最有意義？</span>`;
+            box.style.borderLeftColor = "#00f2ff";
+
+        }
+    }
+</script>

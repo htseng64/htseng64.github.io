@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>經典電車難題：義務論 vs 效益論</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #0ea5e9;
+            --danger: #ef4444;
+            --success: #10b981;
+            --kant-gold: #fbbf24;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 { color: var(--primary); margin-bottom: 10px; }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; }
+
+        .scenario-box {
+            background: var(--panel-bg);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+
+        .scenario-title {
+            font-size: 1.4rem;
+            color: var(--kant-gold);
+            margin-top: 0;
+            border-left: 4px solid var(--kant-gold);
+            padding-left: 10px;
+        }
+
+        .visual-area {
+            background: #000;
+            height: 200px;
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #334155;
+        }
+
+        .track-img {
+            font-size: 4rem;
+            letter-spacing: 20px;
+        }
+
+        .action-area {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-do-nothing { background: #475569; color: white; }
+        .btn-do-nothing:hover { background: #334155; }
+        
+        .btn-action { background: var(--danger); color: white; }
+        .btn-action:hover { background: #dc2626; }
+
+        .analysis-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            border-radius: 4px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .theory-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .badge-util { background: rgba(14, 165, 233, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+        .badge-deon { background: rgba(251, 191, 36, 0.2); color: var(--kant-gold); border: 1px solid var(--kant-gold); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>經典倫理思想實驗：電車難題</h1>
+        <div class="subtitle">探討護理決策中的「義務論」與「效益論」衝突</div>
+    </header>
+
+    <div class="scenario-box" id="scenario-1">
+        <h2 class="scenario-title">情境一：失控的電車與轉轍器</h2>
+        <p>一輛失控的電車正高速駛來。前方軌道上有 <b>5 名</b> 無法動彈的工人。如果你什麼都不做，這 5 人必死無疑。<br>
+        你站在一個轉轍器（拉桿）旁。如果你拉下它，電車會切換到備用軌道，但那條軌道上有 <b>1 名</b> 無辜的工人。</p>
+        
+        <div class="visual-area">
+            <div class="track-img" id="visual-1">🚋 💨 ...... 🛤️👨‍🔧👨‍🔧👨‍🔧👨‍🔧👨‍🔧 / 🛤️👨‍🔧</div>
+        </div>
+
+        <div class="action-area">
+            <button class="btn-do-nothing" onclick="makeChoice(1, 'nothing')">什麼都不做 (死 5 人)</button>
+            <button class="btn-action" onclick="makeChoice(1, 'pull')">拉下拉桿 (死 1 人)</button>
+        </div>
+
+        <div class="analysis-panel" id="analysis-1"></div>
+    </div>
+
+    <div class="scenario-box" id="scenario-2" style="display: none; border-color: rgba(251, 191, 36, 0.3);">
+        <h2 class="scenario-title">情境二：天橋上的胖子 (義務論的核心考驗)</h2>
+        <p>同樣一輛失控的電車，前方軌道上有 <b>5 名</b> 工人。這次沒有轉轍器。<br>
+        你站在橫跨軌道的天橋上，旁邊站著一個體型非常壯碩的陌生人。如果你把他推下橋，他的體重足以阻擋電車，雖然他會死，但能救下那 5 人。</p>
+        
+        <div class="visual-area">
+            <div class="track-img" id="visual-2">🌉🧍‍♂️(你) 🧍‍♂️(胖子) ... 🚋 💨 ... 👨‍🔧👨‍🔧👨‍🔧👨‍🔧👨‍🔧</div>
+        </div>
+
+        <div class="action-area">
+            <button class="btn-do-nothing" onclick="makeChoice(2, 'nothing')">什麼都不做 (死 5 人)</button>
+            <button class="btn-action" onclick="makeChoice(2, 'push')">把他推下去 (死 1 人)</button>
+        </div>
+
+        <div class="analysis-panel" id="analysis-2"></div>
+    </div>
+
+</div>
+
+<script>
+    function makeChoice(scenario, action) {
+        const visual = document.getElementById(`visual-${scenario}`);
+        const analysis = document.getElementById(`analysis-${scenario}`);
+        
+        let resultText = "";
+        let visualText = "";
+
+        if (scenario === 1) {
+            if (action === 'nothing') {
+                visualText = "💥 5 人死亡。你選擇不干預。";
+                resultText = `
+                    <span class="theory-badge badge-deon">義務論 (Deontology) 視角</span>
+                    <p>你選擇了不作為。在嚴格的義務論看來，我們有「不殺人」的絕對義務。拉下拉桿是一種「主動殺人」的行為，而什麼都不做則是「讓他們死亡」。義務論者會認為，你沒有主動違反不殺人的道德法則。</p>
+                `;
+            } else {
+                visualText = "💥 1 人死亡。你切換了軌道。";
+                resultText = `
+                    <span class="theory-badge badge-util">效益論 (Utilitarianism) 視角</span>
+                    <p>你選擇了拉下拉桿。這是標準的「效益論」決策：追求最大多數人的最大利益（犧牲 1 人救 5 人，淨存活人數 +4）。在醫療資源分配（如急診檢傷分類）中，我們經常使用這種邏輯。</p>
+                `;
+            }
+            // 顯示第二個情境
+            setTimeout(() => {
+                document.getElementById('scenario-2').style.display = 'block';
+                document.getElementById('scenario-2').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+
+        } else if (scenario === 2) {
+            if (action === 'nothing') {
+                visualText = "💥 5 人死亡。你拒絕推人。";
+                resultText = `
+                    <span class="theory-badge badge-deon">義務論 (Deontology) 視角</span>
+                    <p>雖然死傷較多，但這完美體現了康德的義務論核心：<b>「人是目的，不能僅僅作為手段」</b>。你不推他，因為你拒絕將這個無辜的人當作「擋車的工具（手段）」。這在醫療上如同：我們不能殺害一個健康的人，取他的器官來救五個重症病患。</p>
+                `;
+            } else {
+                visualText = "💥 1 人死亡。你把他推下橋。";
+                resultText = `
+                    <span class="theory-badge badge-util">極端效益論 視角</span>
+                    <p>在數學上，這跟情境一（死1救5）完全一樣，但絕大多數人在情境一會拉桿，在情境二卻推不下手。如果你推了，代表你貫徹了絕對的效益論。這引發了我們對「主動傷害他人以達成整體利益」的道德恐懼。</p>
+                `;
+            }
+        }
+
+        visual.innerHTML = visualText;
+        analysis.innerHTML = resultText;
+        analysis.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

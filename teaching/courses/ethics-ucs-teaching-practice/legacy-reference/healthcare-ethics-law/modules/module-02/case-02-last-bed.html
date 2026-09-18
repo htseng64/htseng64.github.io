@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例二：最後一張床 (四段完整版)</title>
+    <style>
+        :root { --bg-color: #1a1a1a; --left-bg: #ffffff; --right-bg: #2c3e50; --text-main: #2c3e50; --text-light: #ffffff; --highlight: #f39c12; --btn-blue: #2980b9; --nurse-bg: #d4efdf; --npc-bg: #f2f3f4; --jit-color: #d35400; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        #stage-container { width: 100vw; height: 100vh; background-color: #fff; display: flex; flex-direction: row; position: relative; }
+        #story-panel { width: 60%; background-color: var(--left-bg); display: flex; flex-direction: column; padding: 20px; border-right: 5px solid #bdc3c7; position: relative; }
+        #mood-badge { position: absolute; top: 20px; left: 20px; background-color: #8e44ad; color: white; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; z-index: 5; }
+        #vocab-btn { position: absolute; top: 20px; right: 20px; background-color: var(--highlight); color: #2c3e50; border: 3px solid #fff; padding: 10px 20px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; z-index: 100; transition: transform 0.2s; }
+        #vocab-btn:hover { transform: scale(1.05); }
+        #dialogue-box { flex: 1; overflow-y: auto; padding: 80px 20px 20px 20px; display: flex; flex-direction: column; gap: 25px; scroll-behavior: smooth; }
+        .msg { max-width: 90%; padding: 25px 35px; border-radius: 20px; font-size: 2rem; line-height: 1.6; animation: fadeIn 0.5s ease; position: relative; }
+        .msg-npc { align-self: flex-start; background-color: var(--npc-bg); border-left: 10px solid #c0392b; }
+        .msg-player { align-self: flex-end; background-color: var(--nurse-bg); border-right: 10px solid #27ae60; }
+        .msg strong { display: block; font-size: 1.6rem; margin-bottom: 10px; opacity: 0.8; }
+        .jit-term { color: var(--jit-color); font-weight: bold; border-bottom: 3px dotted var(--jit-color); cursor: help; position: relative; display: inline-block; }
+        #global-tooltip { position: fixed; display: none; background-color: #34495e; color: #fff; padding: 20px; border-radius: 12px; max-width: 350px; font-size: 1.4rem; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; border: 2px solid #fff; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+        #global-tooltip strong { display: block; color: #f1c40f; font-size: 1.6rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+        #analysis-panel { width: 40%; background-color: var(--right-bg); color: var(--text-light); display: flex; flex-direction: column; padding: 30px; overflow-y: auto; }
+        .section-box { margin-bottom: 25px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; border-left: 6px solid var(--highlight); flex-shrink: 0; }
+        .section-title { font-size: 1.4rem; color: var(--highlight); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .section-content { font-size: 1.5rem; line-height: 1.6; color: #fff; }
+        .ui-hint { text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; flex-shrink: 0; }
+        #controls-area { margin-top: auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; flex-shrink: 0; }
+        .btn { background-color: var(--btn-blue); color: white; border: 2px solid rgba(255,255,255,0.2); padding: 25px; font-size: 1.8rem; border-radius: 15px; cursor: pointer; text-align: left; }
+        .btn:hover { background-color: #2980b9; transform: translateY(-2px); }
+        #feedback-box { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; font-size: 1.6rem; margin-top: 20px; margin-bottom: 20px; text-align: center; border: 3px solid white; flex-shrink: 0; }
+        #vocab-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
+        #vocab-content { background-color: #fff; width: 80%; max-width: 900px; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 40px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        #vocab-content h2 { color: #2c3e50; border-bottom: 3px solid var(--highlight); padding-bottom: 10px; }
+        .vocab-item { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .vocab-term { font-size: 1.8rem; font-weight: bold; color: #2980b9; margin-bottom: 5px; }
+        .vocab-def { font-size: 1.5rem; color: #555; line-height: 1.6; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; }
+        @media (max-width: 1024px) or (orientation: portrait) {
+            body { overflow-y: auto; height: auto; }
+            #stage-container { flex-direction: column; height: auto; width: 100%; }
+            #story-panel { width: 100%; height: 50vh; border-right: none; border-bottom: 5px solid #bdc3c7; }
+            #analysis-panel { width: 100%; min-height: 50vh; padding: 20px; padding-bottom: 80px; }
+            .msg { font-size: 1.3rem; padding: 15px; } .btn { font-size: 1.4rem; padding: 15px; }
+            #global-tooltip { max-width: 80%; font-size: 1.2rem; bottom: 20px !important; top: auto !important; left: 50% !important; transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+<div id="global-tooltip"></div>
+<div id="vocab-modal">
+    <div id="vocab-content"><span class="close-btn" onclick="toggleVocab()">×</span><h2>📖 專業詞彙速查</h2>
+        <div class="vocab-item"><div class="vocab-term">分配正義</div><div class="vocab-def">Distributive Justice。在資源稀缺時，如何公平合理分配資源。</div></div>
+        <div class="vocab-item"><div class="vocab-term">醫療效用</div><div class="vocab-def">Medical Utility。指醫療介入能帶來的最大效益（如存活機率）。</div></div>
+        <div class="vocab-item"><div class="vocab-term">社會價值</div><div class="vocab-def">Social Worth。依據道德行為(如酒駕)分配資源，在倫理中被視為不公。</div></div>
+        <div class="vocab-item"><div class="vocab-term">SOFA Score</div><div class="vocab-def">器官衰竭評估分數。分數越高，死亡率越高。</div></div>
+        <div class="vocab-item"><div class="vocab-term">不離棄</div><div class="vocab-def">Non-abandonment。即使無法提供最理想的資源，仍承諾提供當下最好的替代照護。</div></div>
+    </div>
+</div>
+<div id="stage-container">
+    <button id="vocab-btn" onclick="toggleVocab()">📖 知識速查</button>
+    <div id="story-panel"><div id="mood-badge">Segment 1</div><div id="dialogue-box"></div></div>
+    <div id="analysis-panel">
+        <div class="ui-hint">💡 提示：點擊 <span class="jit-term" data-def="JIT: Just-in-Time Learning">橘色螢光字</span> 可即時查看定義</div>
+        <div class="section-box"><div class="section-title">🎯 Objectives</div><div class="section-content" id="obj-text"></div></div>
+        <div class="section-box"><div class="section-title">❓ Question</div><div class="section-content" id="question-text"></div></div>
+        <div class="section-box"><div class="section-title">📝 Task</div><div class="section-content" id="task-text"></div></div>
+        <div id="feedback-box"></div><div id="controls-area"></div>
+    </div>
+</div>
+<script>
+    const chatBox = document.getElementById('dialogue-box'); const controls = document.getElementById('controls-area'); const moodBadge = document.getElementById('mood-badge'); const objText = document.getElementById('obj-text'); const qText = document.getElementById('question-text'); const taskText = document.getElementById('task-text'); const feedbackBox = document.getElementById('feedback-box'); const vocabModal = document.getElementById('vocab-modal'); const tooltip = document.getElementById('global-tooltip');
+    function toggleVocab() { vocabModal.style.display = vocabModal.style.display === 'flex' ? 'none' : 'flex'; }
+    function enableJIT() { const terms = document.querySelectorAll('.jit-term'); terms.forEach(term => { term.addEventListener('mouseenter', (e) => showTooltip(e, term)); term.addEventListener('mousemove', (e) => moveTooltip(e)); term.addEventListener('mouseleave', hideTooltip); term.addEventListener('click', (e) => showTooltip(e, term)); }); }
+    function showTooltip(e, term) { const def = term.getAttribute('data-def'); const title = term.innerText; tooltip.innerHTML = `<strong>${title}</strong>${def}`; tooltip.style.display = 'block'; requestAnimationFrame(() => { tooltip.style.opacity = '1'; moveTooltip(e); }); }
+    function moveTooltip(e) { const w = window.innerWidth; const h = window.innerHeight; let x = e.clientX + 15; let y = e.clientY + 15; if (x + 300 > w) x = e.clientX - 320; if (y + 150 > h) y = e.clientY - 160; if(w > 1024) { tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px'; } }
+    function hideTooltip() { tooltip.style.opacity = '0'; setTimeout(() => { tooltip.style.display = 'none'; }, 200); }
+
+    const scenes = {
+        start: { segment: "Segment 1: 倫理敏感度", objectives: "覺察偏見 (Bias Detection)", questions: "面對有限資源，您的第一直覺選擇了誰？", tasks: "請誠實面對直覺：您是否受到「<span class='jit-term' data-def='社會價值：依據個人的道德瑕疵(如酒駕)來決定資源分配，容易導致不公。'>社會價值</span>」影響而忽略了客觀數據？", messages: [{ role: "system", text: "【情境】ICU 剩一床。兩人同時急需：<br>A: 75歲退休教授 (心衰竭)<br>B: 25歲酒駕肇事者 (多重外傷)" }, { role: "npc", name: "急診醫師", text: "護理師，剩一張床要給誰？教授貢獻大；年輕人傷重但他是酒駕..." }], choices: [{ text: "A. 直覺：給教授 (因為酒駕者不值得救)。", next: "wrong_s1" }, { text: "B. 直覺：給年輕人 (因為他存活機率可能較高)。", next: "correct_s1" }] },
+        wrong_s1: { feedback: "⚠️ 覺察提示：您使用了「社會價值」判斷。醫療決策應基於「誰能活下來」，而不是「誰是好人」。", repeat_scene: "start" },
+        correct_s1: { feedback: "🎉 很好！您暫時放下了對酒駕的成見，嘗試從「醫療效用」的角度切入。", next_scene: "seg2_intro" },
+        seg2_intro: { segment: "Segment 2: 倫理推理", objectives: "運用正義原則 (Justice)", questions: "在資源稀缺時，應採用效益主義還是平權主義？", tasks: "請依據「<span class='jit-term' data-def='醫療效用：指醫療介入能帶來的最大效益，如存活率。'>醫療效用</span>」數據做出選擇。", messages: [{ role: "system", text: "【數據分析】<br>A (教授): <span class='jit-term' data-def='SOFA 12分：死亡率極高。'>SOFA 12分</span><br>B (酒駕): SOFA 8分 (預後較佳)" }, { role: "player", text: "（我看著數據，必須做出符合分配正義的決定...）" }], choices: [{ text: "A. 選擇 A (教授)：基於敬老尊賢與社會地位。", next: "wrong_s2" }, { text: "B. 選擇 B (年輕人)：基於最大醫療效益。", next: "correct_s2" }] },
+        wrong_s2: { feedback: "⚠️ 推理提示：雖然敬老是美德，但在ICU床位分配中，A 的死亡率過高，給予床位可能無法達成「救活病人」的目標。", repeat_scene: "seg2_intro" },
+        correct_s2: { feedback: "🎉 推理正確！依據器官功能分數 (SOFA)，B 的存活機率較高。這是基於客觀數據的「分配正義」。", next_scene: "seg3_intro" },
+        seg3_intro: { segment: "Segment 3: 專業行動", objectives: "處理道德困擾", questions: "當決策正確但情感痛苦時，如何面對家屬的憤怒？", tasks: "請選擇展現「<span class='jit-term' data-def='不離棄：即使無法提供ICU床位，仍承諾提供當下最好的急診照護。'>不離棄</span>」精神的溝通策略。", messages: [{ role: "system", text: "【情境】團隊決定收治 B。A 的家屬衝來護理站大罵。" }, { role: "npc", name: "A 家屬", text: "你們搞什麼！那個酒駕垃圾可以住 ICU，我爸貢獻一輩子卻在急診等死？" }], choices: [{ text: "A. 【防衛回應】這是主任決定的，我也沒辦法。", next: "action_bad" }, { text: "B. 【專業回應】學長，我理解您的憤怒。但我們會在急診盡全力照顧爸爸。", next: "action_good" }] },
+        action_bad: { segment: "Segment 3: 結果", objectives: "反思", questions: "推卸責任能安撫家屬嗎？", tasks: "檢討：防衛性回應只會讓家屬感到更無助與被遺棄。", messages: [{ role: "npc", name: "A 家屬", text: "你們太冷血了！我絕不原諒你們！" }, { role: "system", text: "❌ 結果：家屬感到被遺棄，痛苦加劇。" }], choices: [{ text: "再試一次", next: "seg3_intro" }] },
+        action_good: { segment: "Segment 3: 結局", objectives: "確認安全", questions: "如何緩解傷害？", tasks: "確認您對家屬的回應。", messages: [{ role: "npc", name: "A 家屬", text: "......(握拳痛哭) 我知道數據是對的，但我真的很不甘心。" }, { role: "system", text: "✨ 成功：您接住了家屬的情緒，並堅守了分配正義的立場。" }], choices: [{ text: "進入反思與評值", next: "seg4_intro" }] },
+        
+        // --- Segment 4: 反思與評值 (修正後) ---
+        seg4_intro: { 
+            segment: "Segment 4: 反思與評值", 
+            objectives: "學習遷移", 
+            questions: "這次經驗教會了您什麼？", 
+            tasks: "請反思：如何在系統限制下，仍保持護理的溫度？", 
+            messages: [
+                { role: "system", text: "【案例總結】<br>您雖然無法改變床位不足的事實，但您改變了「照顧的溫度」。" },
+                { role: "player", text: "（看著教授家屬慢慢平靜下來，我知道我盡力了...）" }
+            ], 
+            choices: [
+                { text: "🔄 重新練習：我想再試一次溝通。", next: "start", restart: true },
+                { text: "✅ 完成案例：我已理解資源分配的正義。", next: "start", restart: true } 
+            ] 
+        }
+    };
+    function renderScene(sceneId) { const scene = scenes[sceneId]; if (scene.feedback) { feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = scene.next_scene ? '#27ae60' : '#e67e22'; feedbackBox.innerHTML = scene.feedback; controls.innerHTML = ''; const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = scene.restart ? "重新開始 ↻" : (scene.repeat_scene ? "🔙 返回重選" : "下一階段 ➔"); btn.onclick = () => { feedbackBox.style.display = 'none'; renderScene(scene.next_scene || scene.repeat_scene); }; controls.appendChild(btn); return; } moodBadge.innerText = scene.segment; objText.innerHTML = scene.objectives; qText.innerHTML = scene.questions; taskText.innerHTML = scene.tasks; controls.innerHTML = ''; chatBox.innerHTML = ''; let delay = 0; scene.messages.forEach((msg, index) => { setTimeout(() => { const div = document.createElement('div'); div.className = msg.role === 'system' ? 'msg msg-player' : (msg.role === 'npc' ? 'msg msg-npc' : 'msg msg-player'); if(msg.role === 'system') { div.style.backgroundColor = '#fff3cd'; div.style.color = '#856404'; div.style.border = 'none'; } div.innerHTML = (msg.role === 'npc' ? `<strong>${msg.name}</strong>` : '') + msg.text; chatBox.appendChild(div); chatBox.scrollTop = chatBox.scrollHeight; enableJIT(); if (index === scene.messages.length - 1) { scene.choices.forEach(c => { const btn = document.createElement('button'); btn.className = 'btn'; btn.innerHTML = c.text; btn.onclick = () => renderScene(c.next); controls.appendChild(btn); }); setTimeout(enableJIT, 100); } }, delay); delay += 800; }); }
+    renderScene('start');
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理倫理互動學習網：義務論專題</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --kant-blue: #2980b9;
+            --accent: #e74c3c;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; margin: 0; background: var(--bg); color: #333; scroll-behavior: smooth; }
+        
+        nav { background: var(--primary); color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; }
+
+        header { background: linear-gradient(135deg, var(--primary), var(--kant-blue)); color: white; padding: 60px 20px; text-align: center; }
+        
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+
+        .section-card { background: var(--white); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { border-left: 6px solid var(--kant-blue); padding-left: 15px; color: var(--primary); margin-top: 0; }
+
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .comp-item { padding: 20px; border-radius: 10px; border: 1px solid #ddd; }
+        .vs-label { text-align: center; font-weight: bold; color: var(--accent); margin: 10px 0; }
+
+        /* 問答區 */
+        .qa-box { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
+        .qa-q { background: #f9f9f9; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .qa-a { padding: 20px; display: none; border-top: 1px solid #eee; background: white; }
+
+        /* 測驗區 */
+        .quiz-item { background: #fff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .option-label { display: block; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; }
+        .option-label:hover { background: #ebf5fb; }
+        
+        #score-display { display: none; text-align: center; padding: 30px; background: var(--kant-blue); color: white; border-radius: 15px; margin-top: 20px; }
+
+        .btn-submit { background: var(--kant-blue); color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 18px; cursor: pointer; width: 100%; font-weight: bold; }
+
+        @media (max-width: 768px) { .comparison-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#kant">康德重點</a>
+    <a href="#vs">義務 vs 效益</a>
+    <a href="#qa">案例思考</a>
+    <a href="#quiz">自測練習</a>
+</nav>
+
+<header>
+    <h1>義務論與護理倫理實務</h1>
+    <p>康德哲學觀點：責任、尊嚴與絕對準則</p>
+</header>
+
+<div class="container">
+
+    <section id="kant" class="section-card">
+        <h2>康德 (Immanuel Kant) 核心主張</h2>
+        <div class="comparison-grid">
+            <div class="comp-item" style="background:#eef7ff">
+                <h3>1. 定言令式</h3>
+                <p>這是一種絕對的命令。不問結果，只問這個行為是否應成為每個人都遵守的普遍法則。</p>
+            </div>
+            <div class="comp-item" style="background:#eef7ff">
+                <h3>2. 人是目的</h3>
+                <p>病人不應被視為床號或疾病，而是擁有完整自主權與尊嚴的個體。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="vs" class="section-card">
+        <h2>倫理大觀點：效益論 vs. 義務論</h2>
+        <div class="comparison-grid">
+            <div class="comp-item">
+                <h4 style="color:var(--kant-blue)">義務論 (Deontology)</h4>
+                <ul>
+                    <li>重點：行為的本質與動機</li>
+                    <li>原則：無論如何，都應說實話、守承諾</li>
+                    <li>口號：義務即是真理</li>
+                </ul>
+            </div>
+            <div class="comp-item">
+                <h4 style="color:#e67e22">效益論 (Utilitarianism)</h4>
+                <ul>
+                    <li>重點：行為的結果</li>
+                    <li>原則：若說謊能救更多人，則可以說謊</li>
+                    <li>口號：最大幸福為先</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="qa" class="section-card">
+        <h2>臨床案例思考 (展開查看)</h2>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q1: 病人癌末，家屬要求隱瞞真相，義務論者會如何選擇？ <span>▼</span></div>
+            <div class="qa-a">義務論者主張絕對誠實，認為病人擁有得知真相的權利。隱瞞真相是將病人視為「防止情緒崩潰」的手段，違反了「人是目的」的原則。</div>
+        </div>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q2: 在災難現場，義務論者會如何看待優先救年輕人的做法？ <span>▼</span></div>
+            <div class="qa-a">義務論者會感到掙扎。他們強調每個人都有平等的被照護權。相較於計算效益，他們更傾向於公平分配資源，或依照病情的緊急程度而非社會價值來決策。</div>
+        </div>
+    </section>
+
+    <section id="quiz" class="section-card">
+        <h2>單選題自測 (10題)</h2>
+        <form id="quiz-form">
+            <div id="quiz-list"></div>
+            <button type="button" class="btn-submit" onclick="submitQuiz()">提交測驗並計算成績</button>
+        </form>
+        <div id="score-display"></div>
+    </section>
+
+</div>
+
+<script>
+    function toggleQA(el) {
+        const a = el.querySelector('.qa-a');
+        const s = el.querySelector('span');
+        if (a.style.display === "block") {
+            a.style.display = "none";
+            s.innerText = "▼";
+        } else {
+            a.style.display = "block";
+            s.innerText = "▲";
+        }
+    }
+
+    const questions = [
+        { q: "義務論的創始人與代表人物是誰？", a: 1, o: ["邊沁", "康德", "彌爾", "南丁格爾"] },
+        { q: "義務論判斷行為正確與否的標準是？", a: 0, o: ["行為的動機與責任", "行為的結果", "行為帶來的幸福量", "法律的規範"] },
+        { q: "康德主張「人是目的，而非手段」，在護理上是指？", a: 2, o: ["把病人當作學習樣本", "病人只是達成業績的對象", "尊重病人的自主性與人格", "為了醫學進步可以犧牲病患"] },
+        { q: "「無論結果如何，都不應該說謊」，這符合哪種思維？", a: 3, o: ["行為效益論", "準則效益論", "利己主義", "義務論"] },
+        { q: "定言令式 (Categorical Imperative) 的意思是？", a: 0, o: ["無條件的、絕對必須遵守的道德命令", "看情況而定的規範", "為了快樂而做的行為", "社會大眾的投票結果"] },
+        { q: "在護理隱私維護上，義務論認為？", a: 1, o: ["如果洩漏隱私有好處就可以洩漏", "保護隱私是絕對的責任與權利", "隱私不重要", "看家屬是否同意再決定"] },
+        { q: "義務論與效益論最大的衝突點在於？", a: 2, o: ["是否要救人", "是否要收費", "動機重要還是結果重要", "是否需要家屬簽名"] },
+        { q: "依照康德的普遍法則原則，我們應該？", a: 1, o: ["只做對自己有利的事", "只做可以成為普世價值的事", "只做大家都喜歡的事", "不做任何事"] },
+        { q: "下列何者最符合義務論的護理行為？", a: 3, o: ["為了省時間而簡略消毒", "因為病人預後差而放棄解釋病情", "因為病人是死刑犯而態度惡劣", "不論病患背景，皆提供等質的照護"] },
+        { q: "護理中的「知情同意」最能體現義務論中的哪一部分？", a: 0, o: ["尊重病人是獨立的目的", "計算最大幸福", "考慮家屬的方便", "追求醫療成本最低化"] }
+    ];
+
+    const quizList = document.getElementById('quiz-list');
+    questions.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `<p><strong>${idx + 1}. ${item.q}</strong></p>
+            ${item.o.map((opt, oIdx) => `<label class="option-label"><input type="radio" name="q${idx}" value="${oIdx}"> ${opt}</label>`).join('')}`;
+        quizList.appendChild(div);
+    });
+
+    function submitQuiz() {
+        let score = 0;
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            if (selected && parseInt(selected.value) === item.a) score += 10;
+        });
+        const display = document.getElementById('score-display');
+        display.style.display = 'block';
+        display.innerHTML = `<h2>您的得分：${score} / 100</h2><p>${score >= 80 ? "優秀！您對義務論有深刻的掌握。" : "加油！康德的理論很嚴謹，建議再多研讀思考。"}</p>`;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>

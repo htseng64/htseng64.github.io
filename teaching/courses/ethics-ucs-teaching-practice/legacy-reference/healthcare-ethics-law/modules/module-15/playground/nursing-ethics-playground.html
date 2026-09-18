@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理倫理四大原則互動學習樂園</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .principle-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .principle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .principle-card:hover::before {
+            opacity: 1;
+        }
+
+        .principle-card.autonomy { --accent-color: #ff6b6b; }
+        .principle-card.justice { --accent-color: #4ecdc4; }
+        .principle-card.beneficence { --accent-color: #45b7d1; }
+        .principle-card.non-maleficence { --accent-color: #f9ca24; }
+
+        .principle-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            background: var(--accent-color);
+        }
+
+        .principle-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .principle-description {
+            text-align: center;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .game-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .game-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .game-tab {
+            background: #f8f9fa;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .game-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .game-content {
+            display: none;
+        }
+
+        .game-content.active {
+            display: block;
+        }
+
+        .scenario-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #667eea;
+        }
+
+        .scenario-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .scenario-text {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: #667eea;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .next-btn.show {
+            display: inline-block;
+        }
+
+        .principle-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .principle-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .quiz-container {
+            text-align: center;
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .bounce-animation {
+            animation: bounce 1s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .game-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 護理倫理四大原則互動學習樂園 🎮</h1>
+        <p>通過互動遊戲深入理解護理倫理核心原則</p>
+    </div>
+
+    <div class="container">
+        <!-- 四大原則卡片 -->
+        <div class="principles-grid">
+            <div class="principle-card autonomy" onclick="openPrincipleModal('autonomy')">
+                <div class="principle-icon">🙋‍♂️</div>
+                <h3 class="principle-title">自主原則 Autonomy</h3>
+                <p class="principle-description">尊重病人的自主決定權，確保知情同意</p>
+            </div>
+            
+            <div class="principle-card justice" onclick="openPrincipleModal('justice')">
+                <div class="principle-icon">⚖️</div>
+                <h3 class="principle-title">公平原則 Justice</h3>
+                <p class="principle-description">公平分配醫療資源，確保平等對待</p>
+            </div>
+            
+            <div class="principle-card beneficence" onclick="openPrincipleModal('beneficence')">
+                <div class="principle-icon">💚</div>
+                <h3 class="principle-title">行善原則 Beneficence</h3>
+                <p class="principle-description">積極為病人謀求最大健康福祉</p>
+            </div>
+            
+            <div class="principle-card non-maleficence" onclick="openPrincipleModal('non-maleficence')">
+                <div class="principle-icon">🛡️</div>
+                <h3 class="principle-title">不傷害原則 Non-maleficence</h3>
+                <p class="principle-description">避免對病人造成不必要的傷害</p>
+            </div>
+        </div>
+
+        <!-- 遊戲區域 -->
+        <div class="game-section">
+            <div class="game-tabs">
+                <button class="game-tab active" onclick="switchGame('scenario')">情境挑戰</button>
+                <button class="game-tab" onclick="switchGame('quiz')">快問快答</button>
+                <button class="game-tab" onclick="switchGame('case')">案例分析</button>
+            </div>
+
+            <div class="score-display">得分: <span id="score">0</span> / <span id="total">0</span></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <!-- 情境挑戰遊戲 -->
+            <div id="scenario-game" class="game-content active">
+                <div class="quiz-container">
+                    <div class="question-counter">
+                        題目 <span id="scenario-current">1</span> / <span id="scenario-total">5</span>
+                    </div>
+                    <div id="scenario-question"></div>
+                    <button class="next-btn" id="scenario-next" onclick="nextScenario()">下一題</button>
+                </div>
+            </div>
+
+            <!-- 快問快答遊戲 -->
+            <div id="quiz-game" class="game-content">
+                <div class="quiz-container">
+                    <div class="question-counter">
+                        題目 <span id="quiz-current">1</span> / <span id="quiz-total">10</span>
+                    </div>
+                    <div id="quiz-question"></div>
+                    <button class="next-btn" id="quiz-next" onclick="nextQuiz()">下一題</button>
+                </div>
+            </div>
+
+            <!-- 案例分析遊戲 -->
+            <div id="case-game" class="game-content">
+                <div class="quiz-container">
+                    <div class="question-counter">
+                        案例 <span id="case-current">1</span> / <span id="case-total">3</span>
+                    </div>
+                    <div id="case-question"></div>
+                    <button class="next-btn" id="case-next" onclick="nextCase()">下一個案例</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 原則詳情模態框 -->
+    <div id="principle-modal" class="principle-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closePrincipleModal()">×</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // 遊戲狀態
+        let currentGame = 'scenario';
+        let gameStates = {
+            scenario: { current: 0, score: 0, answered: false },
+            quiz: { current: 0, score: 0, answered: false },
+            case: { current: 0, score: 0, answered: false }
+        };
+
+        // 情境挑戰題目
+        const scenarioQuestions = [
+            {
+                title: "知情同意的困境",
+                text: "82歲的李爺爺患有輕度失智，需要進行髖關節手術。他的女兒堅持要代替父親決定，但李爺爺表示自己可以理解手術內容。作為護理師，你應該：",
+                options: [
+                    { text: "直接讓女兒簽署同意書，因為病人有失智症", correct: false },
+                    { text: "評估李爺爺的意思能力，若具備則尊重他的自主決定", correct: true },
+                    { text: "拒絕進行手術，避免法律糾紛", correct: false },
+                    { text: "讓醫師決定就好，這不是護理師的責任", correct: false }
+                ],
+                feedback: "正確！根據自主原則，應評估病人的意思能力。即使有輕度失智，若病人仍具備理解、評估和表達決定的能力，就應尊重其自主權。"
+            },
+            {
+                title: "醫療資源分配",
+                text: "加護病房只剩一張病床，同時有兩位病人需要：75歲心肌梗塞病人（預後良好）和35歲車禍外傷病人（預後較差但年輕）。根據公平原則，應該：",
+                options: [
+                    { text: "給年輕的病人，因為他還有很長的人生", correct: false },
+                    { text: "給年長的病人，因為預後較好，資源利用效益高", correct: true },
+                    { text: "抽籤決定，完全公平", correct: false },
+                    { text: "給先到的病人", correct: false }
+                ],
+                feedback: "正確！在稀有資源分配中，依據預後分配是重要的公平原則之一。將資源分配給治癒成功率較高的病人，可最大化醫療資源效益。"
+            },
+            {
+                title: "行善與自主的衝突",
+                text: "65歲糖尿病患者王阿姨拒絕截肢手術，雖然不截肢可能導致敗血症死亡。她說：「我寧願死也不要殘廢。」你應該：",
+                options: [
+                    { text: "尊重病人決定，提供安寧照護", correct: true },
+                    { text: "說服家屬同意手術，挽救生命", correct: false },
+                    { text: "強制執行手術，因為救命最重要", correct: false },
+                    { text: "不理會病人的意見，醫師說了算", correct: false }
+                ],
+                feedback: "正確！雖然截肢可能救命（行善原則），但病人有明確表達拒絕意願，且具備決定能力。自主原則要求我們尊重病人的選擇，即使我們不同意。"
+            },
+            {
+                title: "疼痛管理的兩難",
+                text: "末期癌症病人需要大劑量嗎啡止痛，但可能加速死亡。根據不傷害原則，你應該：",
+                options: [
+                    { text: "拒絕給予嗎啡，避免加速死亡", correct: false },
+                    { text: "給予適當劑量嗎啡止痛，接受可能的副作用", correct: true },
+                    { text: "只給一般劑量，安全第一", correct: false },
+                    { text: "讓醫師自己決定，護理師不參與", correct: false }
+                ],
+                feedback: "正確！這符合複式影響原則。給予嗎啡的主要目的是止痛（善意），加速死亡是可預知但非故意的副作用。這是倫理可接受的行為。"
+            },
+            {
+                title: "文化差異與護理倫理",
+                text: "印尼籍移工患者家屬要求隱瞞癌症診斷，認為告知會讓病人失去求生意志。但病人詢問自己的病情，你應該：",
+                options: [
+                    { text: "尊重文化差異，配合家屬隱瞞", correct: false },
+                    { text: "直接告知病人真相，不管文化背景", correct: false },
+                    { text: "評估病人的意願，了解他是否想知道病情", correct: true },
+                    { text: "請社工處理這個文化衝突", correct: false }
+                ],
+                feedback: "正確！應該先評估病人本人的意願。如果病人明確表示想知道病情，就應該尊重其知情權。文化敏感性重要，但不能違背病人的自主權。"
+            }
+        ];
+
+        // 快問快答題目
+        const quizQuestions = [
+            {
+                question: "知情同意的四大要素不包括下列何者？",
+                options: ["病人能力", "病情說明", "病人理解", "家屬同意"],
+                correct: 3,
+                explanation: "知情同意四大要素：病人能力、病情說明、病人理解、自願性。家屬同意不是必要要素。"
+            },
+            {
+                question: "下列何者屬於「程序性公平」？",
+                options: ["門診先來先服務", "依醫療需求分配", "平等分配資源", "依預後分配"],
+                correct: 0,
+                explanation: "程序性公平強調過程的公平性，如門診採先來先服務的順序。"
+            },
+            {
+                question: "行善原則的核心是：",
+                options: ["避免傷害", "尊重自主", "為病人謀福祉", "公平分配"],
+                correct: 2,
+                explanation: "行善原則要求醫護人員積極為病人謀求最大的健康福祉。"
+            },
+            {
+                question: "不傷害原則源自於：",
+                options: ["南丁格爾誓詞", "希波克拉底誓言", "護理師法", "醫師法"],
+                correct: 1,
+                explanation: "不傷害原則源於希波克拉底誓言中的'never do harm to anyone'。"
+            },
+            {
+                question: "完全行為能力的條件是：",
+                options: ["年滿16歲", "年滿18歲且未受禁治產宣告", "年滿20歲", "已婚者"],
+                correct: 1,
+                explanation: "完全行為能力：年滿18歲且未受禁治產宣告者。"
+            },
+            {
+                question: "分配性公平主要關注：",
+                options: ["懲罰制度", "程序公正", "資源分配", "平等權利"],
+                correct: 2,
+                explanation: "分配性公平指應用原則和規則以達成公平的資源分配。"
+            },
+            {
+                question: "複式影響原則適用於：",
+                options: ["故意傷害", "預期的間接傷害", "意外事故", "醫療疏失"],
+                correct: 1,
+                explanation: "複式影響原則適用於正當行為產生的間接且可預知的有害影響。"
+            },
+            {
+                question: "告知說明義務可免除的情況不包括：",
+                options: ["緊急情況", "病人明示免除", "治療特權", "家屬反對"],
+                correct: 3,
+                explanation: "家屬反對不是免除告知說明義務的合法理由。"
+            },
+            {
+                question: "意思能力的四個要素不包括：",
+                options: ["表達決定", "了解資訊", "評價重要性", "家屬支持"],
+                correct: 3,
+                explanation: "意思能力四要素：表達決定、了解資訊、評價資訊重要性、邏輯分析能力。"
+            },
+            {
+                question: "權衡利害原則強調：",
+                options: ["絕對不傷害", "利益大於傷害", "完全避免風險", "家屬滿意"],
+                correct: 1,
+                explanation: "權衡利害原則要求好處的效益必須大於傷害程度。"
+            }
+        ];
+
+        // 案例分析題目
+        const caseQuestions = [
+            {
+                title: "李大明的透析選擇",
+                background: "82歲的李大明罹患末期腎衰竭，醫師詳細說明血液透析治療的重要性及不同透析頻率的差異。李大明在獨立判斷後同意每週透析三次。",
+                questions: [
+                    {
+                        question: "這個案例主要體現了哪個倫理原則？",
+                        options: ["自主原則", "公平原則", "行善原則", "不傷害原則"],
+                        correct: 0,
+                        explanation: "這個案例體現了自主原則，病人在充分了解資訊後，依自己的意志做出醫療決定。"
+                    },
+                    {
+                        question: "醫師的行為符合知情同意的哪個要素？",
+                        options: ["病人能力評估", "充分說明", "確認理解", "以上皆是"],
+                        correct: 3,
+                        explanation: "醫師詳細說明治療方案，病人獨立判斷並做決定，這符合知情同意的所有要素。"
+                    }
+                ]
+            },
+            {
+                title: "COVID-19疫苗分配",
+                background: "在COVID-19疫情期間，台灣制定公費疫苗接種順序：第一類為第一線醫護人員，第二類為高風險老人，第三類為維持社會運作人員。",
+                questions: [
+                    {
+                        question: "這種分配方式主要體現了哪種公平原則？",
+                        options: ["形式公平", "程序公平", "分配公平", "報應公平"],
+                        correct: 2,
+                        explanation: "疫苗分配體現了分配性公平，依據醫療需求、風險程度和社會功能進行分配。"
+                    },
+                    {
+                        question: "優先給予醫護人員疫苗的理由是：",
+                        options: ["年齡較輕", "社會地位較高", "工具價值考量", "先來先服務"],
+                        correct: 2,
+                        explanation: "優先給予醫護人員疫苗是基於工具價值考量，確保醫療體系正常運作。"
+                    }
+                ]
+            },
+            {
+                title: "嗎啡止痛的倫理考量",
+                background: "50歲王先生鼻咽癌骨轉移，疼痛難忍。護理人員依醫囑給予強效止痛劑嗎啡，雖然嗎啡可能有呼吸抑制副作用，但目的是為了止痛。",
+                questions: [
+                    {
+                        question: "這個案例體現了哪個倫理原則？",
+                        options: ["複式影響原則", "權衡利害原則", "以上皆是", "以上皆非"],
+                        correct: 2,
+                        explanation: "這個案例同時體現了複式影響原則（副作用非故意）和權衡利害原則（止痛利益大於副作用風險）。"
+                    },
+                    {
+                        question: "「兩害相權取其輕」的做法符合：",
+                        options: ["自主原則", "公平原則", "行善原則", "不傷害原則"],
+                        correct: 3,
+                        explanation: "在無法完全避免傷害時，選擇較小的傷害來避免更大的傷害，這符合不傷害原則的權衡利害概念。"
+                    }
+                ]
+            }
+        ];
+
+        // 原則詳細資訊
+        const principleDetails = {
+            autonomy: {
+                title: "自主原則 (Autonomy)",
+                icon: "🙋‍♂️",
+                color: "#ff6b6b",
+                content: `
+                    <h4>💡 核心概念</h4>
+                    <p>自主原則源於希臘文「自己」與「規則」，強調個人自我決定的權利。包含自由意志（不受外力干擾）和行動能力（能實現自己意願）兩個核心要件。</p>
+                    
+                    <h4>🎯 三個層面</h4>
+                    <ul>
+                        <li><strong>思想自主：</strong>情緒穩定，具備理性思考能力</li>
+                        <li><strong>意願自主：</strong>依自己意願行事，不受不當影響</li>
+                        <li><strong>行動自主：</strong>依自己價值觀做正確判斷</li>
+                    </ul>
+                    
+                    <h4>📋 知情同意四要素</h4>
+                    <ol>
+                        <li><strong>病人能力：</strong>評估意識、認知、行為能力</li>
+                        <li><strong>病情說明：</strong>用病人能理解的語言充分說明</li>
+                        <li><strong>病人理解：</strong>確認病人理解並回答疑問</li>
+                        <li><strong>自願性：</strong>無脅迫情況下自由決定</li>
+                    </ol>
+                    
+                    <h4>⚠️ 告知義務免除情況</h4>
+                    <ul>
+                        <li>緊急情況：生命危急且來不及告知</li>
+                        <li>病人明示免除：主動放棄知情權</li>
+                        <li>治療特權：告知可能造成重大傷害</li>
+                        <li>法律特別規定：公共衛生考量</li>
+                    </ul>
+                `
+            },
+            justice: {
+                title: "公平原則 (Justice)",
+                icon: "⚖️",
+                color: "#4ecdc4",
+                content: `
+                    <h4>💡 核心概念</h4>
+                    <p>來自亞里斯多德的「平者待之以平，不平者待之以不平」，強調公道、公正與資源分配的適當性。</p>
+                    
+                    <h4>🎯 三個層面</h4>
+                    <ul>
+                        <li><strong>平等：</strong>同樣個案以同樣方式治療</li>
+                        <li><strong>公道：</strong>考慮道德認可差異的彈性平等</li>
+                        <li><strong>不平等：</strong>避免基於不當因素的歧視</li>
+                    </ul>
+                    
+                    <h4>📊 稀有資源分配原則</h4>
+                    <ol>
+                        <li><strong>醫療需求：</strong>給最需要治療的病人</li>
+                        <li><strong>預後考量：</strong>給成功率最高的病人</li>
+                        <li><strong>市場機制：</strong>自費購買醫療服務</li>
+                        <li><strong>先來後到：</strong>時間順序分配</li>
+                        <li><strong>工具價值：</strong>維持社會功能者優先</li>
+                        <li><strong>平等分配：</strong>不分背景平等享有</li>
+                    </ol>
+                    
+                    <h4>🏥 臨床應用</h4>
+                    <ul>
+                        <li><strong>宏觀分配：</strong>政府層面的整體資源規劃</li>
+                        <li><strong>微觀分配：</strong>醫療機構的具體資源配置</li>
+                    </ul>
+                `
+            },
+            beneficence: {
+                title: "行善原則 (Beneficence)",
+                icon: "💚",
+                color: "#45b7d1",
+                content: `
+                    <h4>💡 核心概念</h4>
+                    <p>履行仁慈善行的責任，醫護人員應以良善為出發點，盡力為病人謀求最大健康福祉，包括治療疾病、減輕痛苦、延長生命。</p>
+                    
+                    <h4>🎯 三個實踐層面</h4>
+                    <ol>
+                        <li><strong>預防傷害：</strong>預測危險因子，採取預防措施</li>
+                        <li><strong>去除傷害：</strong>不造成傷害，減輕既有損傷</li>
+                        <li><strong>為病人作善事：</strong>提供正面效果的護理活動</li>
+                    </ol>
+                    
+                    <h4>⚖️ 權衡利害原則</h4>
+                    <p>行善概念是做好事且不讓病人受傷害。因行善對病人造成的傷害不能遠超過對病人的益處。</p>
+                    
+                    <h4>💡 臨床範例</h4>
+                    <ul>
+                        <li><strong>預防跌倒：</strong>評估高危險群，執行防跌措施</li>
+                        <li><strong>截肢手術：</strong>雖有傷害但避免更大生命威脅</li>
+                        <li><strong>治療照護：</strong>積極提供治療和健康教育</li>
+                        <li><strong>化療副作用管理：</strong>權衡治療效益與副作用</li>
+                    </ul>
+                `
+            },
+            "non-maleficence": {
+                title: "不傷害原則 (Non-maleficence)",
+                icon: "🛡️",
+                color: "#f9ca24",
+                content: `
+                    <h4>💡 核心概念</h4>
+                    <p>源於希波克拉底誓言「never do harm to anyone」及南丁格爾誓詞，指不讓病人身心靈受到傷害，通常比行善原則更優先考量。</p>
+                    
+                    <h4>🎯 重要特性</h4>
+                    <ul>
+                        <li><strong>非絕對原則：</strong>臨床處置常有風險，應將傷害減至最低</li>
+                        <li><strong>權衡利害：</strong>好處效益必須大於傷害程度</li>
+                        <li><strong>風險評估：</strong>選擇風險少、優點最多的方案</li>
+                    </ul>
+                    
+                    <h4>🔄 複式影響原則</h4>
+                    <p>正當行為產生間接且可預知的有害影響，但此影響非故意造成，為倫理可接受的行為。</p>
+                    
+                    <h4>💡 臨床應用</h4>
+                    <ul>
+                        <li><strong>截肢手術：</strong>雖有傷害但預防更大危險</li>
+                        <li><strong>乳房切除：</strong>雖造成身心影響但有效治癒疾病</li>
+                        <li><strong>強效止痛：</strong>主要目的止痛，副作用非故意</li>
+                        <li><strong>兩害相權：</strong>選擇較小傷害避免更大傷害</li>
+                    </ul>
+                `
+            }
+        };
+
+        // 初始化遊戲
+        function initGame() {
+            loadGame(currentGame);
+            updateProgress();
+        }
+
+        // 切換遊戲
+        function switchGame(gameType) {
+            // 更新標籤樣式
+            document.querySelectorAll('.game-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 切換內容
+            document.querySelectorAll('.game-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${gameType}-game`).classList.add('active');
+
+            currentGame = gameType;
+            loadGame(gameType);
+            updateProgress();
+        }
+
+        // 載入遊戲
+        function loadGame(gameType) {
+            const state = gameStates[gameType];
+            state.current = 0;
+            state.score = 0;
+            state.answered = false;
+
+            switch(gameType) {
+                case 'scenario':
+                    loadScenario();
+                    break;
+                case 'quiz':
+                    loadQuiz();
+                    break;
+                case 'case':
+                    loadCase();
+                    break;
+            }
+            updateProgress();
+        }
+
+        // 載入情境題
+        function loadScenario() {
+            const state = gameStates.scenario;
+            const question = scenarioQuestions[state.current];
+            
+            document.getElementById('scenario-current').textContent = state.current + 1;
+            document.getElementById('scenario-total').textContent = scenarioQuestions.length;
+
+            const questionHTML = `
+                <div class="scenario-card">
+                    <h3 class="scenario-title">${question.title}</h3>
+                    <p class="scenario-text">${question.text}</p>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectScenarioOption(${index})">
+                                ${option.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="scenario-feedback"></div>
+                </div>
+            `;
+            
+            document.getElementById('scenario-question').innerHTML = questionHTML;
+            document.getElementById('scenario-next').classList.remove('show');
+        }
+
+        // 選擇情境選項
+        function selectScenarioOption(optionIndex) {
+            const state = gameStates.scenario;
+            if (state.answered) return;
+
+            const question = scenarioQuestions[state.current];
+            const options = document.querySelectorAll('#scenario-game .option');
+            const feedback = document.getElementById('scenario-feedback');
+
+            state.answered = true;
+
+            // 標記所有選項
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add(question.options[index].correct ? 'correct' : 'incorrect');
+                } else if (question.options[index].correct) {
+                    option.classList.add('correct');
+                }
+            });
+
+            // 顯示回饋
+            const isCorrect = question.options[optionIndex].correct;
+            if (isCorrect) {
+                state.score++;
+                feedback.className = 'feedback show correct';
+            } else {
+                feedback.className = 'feedback show incorrect';
+            }
+            
+            feedback.innerHTML = question.feedback;
+
+            // 顯示下一題按鈕
+            document.getElementById('scenario-next').classList.add('show');
+            updateProgress();
+
+            // 添加動畫效果
+            if (isCorrect) {
+                options[optionIndex].classList.add('bounce-animation');
+            }
+        }
+
+        // 下一個情境題
+        function nextScenario() {
+            const state = gameStates.scenario;
+            state.current++;
+            state.answered = false;
+
+            if (state.current < scenarioQuestions.length) {
+                loadScenario();
+            } else {
+                showGameComplete('scenario');
+            }
+        }
+
+        // 載入快問快答
+        function loadQuiz() {
+            const state = gameStates.quiz;
+            const question = quizQuestions[state.current];
+            
+            document.getElementById('quiz-current').textContent = state.current + 1;
+            document.getElementById('quiz-total').textContent = quizQuestions.length;
+
+            const questionHTML = `
+                <div class="scenario-card">
+                    <h3 class="scenario-title">快問快答</h3>
+                    <p class="scenario-text">${question.question}</p>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectQuizOption(${index})">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="quiz-feedback"></div>
+                </div>
+            `;
+            
+            document.getElementById('quiz-question').innerHTML = questionHTML;
+            document.getElementById('quiz-next').classList.remove('show');
+        }
+
+        // 選擇快問快答選項
+        function selectQuizOption(optionIndex) {
+            const state = gameStates.quiz;
+            if (state.answered) return;
+
+            const question = quizQuestions[state.current];
+            const options = document.querySelectorAll('#quiz-game .option');
+            const feedback = document.getElementById('quiz-feedback');
+
+            state.answered = true;
+
+            // 標記選項
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add(index === question.correct ? 'correct' : 'incorrect');
+                } else if (index === question.correct) {
+                    option.classList.add('correct');
+                }
+            });
+
+            // 顯示回饋
+            const isCorrect = optionIndex === question.correct;
+            if (isCorrect) {
+                state.score++;
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = `✅ 答對了！${question.explanation}`;
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `❌ 答錯了！${question.explanation}`;
+            }
+
+            document.getElementById('quiz-next').classList.add('show');
+            updateProgress();
+        }
+
+        // 下一個快問快答
+        function nextQuiz() {
+            const state = gameStates.quiz;
+            state.current++;
+            state.answered = false;
+
+            if (state.current < quizQuestions.length) {
+                loadQuiz();
+            } else {
+                showGameComplete('quiz');
+            }
+        }
+
+        // 載入案例分析
+        function loadCase() {
+            const state = gameStates.case;
+            const caseData = caseQuestions[state.current];
+            
+            document.getElementById('case-current').textContent = state.current + 1;
+            document.getElementById('case-total').textContent = caseQuestions.length;
+
+            let questionHTML = `
+                <div class="scenario-card">
+                    <h3 class="scenario-title">${caseData.title}</h3>
+                    <p class="scenario-text"><strong>案例背景：</strong>${caseData.background}</p>
+                </div>
+            `;
+
+            caseData.questions.forEach((question, qIndex) => {
+                questionHTML += `
+                    <div class="scenario-card">
+                        <h4 class="scenario-title">問題 ${qIndex + 1}</h4>
+                        <p class="scenario-text">${question.question}</p>
+                        <div class="options">
+                            ${question.options.map((option, oIndex) => `
+                                <div class="option" onclick="selectCaseOption(${qIndex}, ${oIndex})">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="feedback" id="case-feedback-${qIndex}"></div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('case-question').innerHTML = questionHTML;
+            document.getElementById('case-next').classList.remove('show');
+            
+            // 重置案例狀態
+            if (!gameStates.case.caseAnswers) {
+                gameStates.case.caseAnswers = [];
+            }
+            gameStates.case.caseAnswers[state.current] = new Array(caseData.questions.length).fill(false);
+        }
+
+        // 選擇案例選項
+        function selectCaseOption(questionIndex, optionIndex) {
+            const state = gameStates.case;
+            const caseData = caseQuestions[state.current];
+            
+            if (state.caseAnswers[state.current][questionIndex]) return;
+
+            const question = caseData.questions[questionIndex];
+            const options = document.querySelectorAll(`#case-game .scenario-card:nth-child(${questionIndex + 2}) .option`);
+            const feedback = document.getElementById(`case-feedback-${questionIndex}`);
+
+            state.caseAnswers[state.current][questionIndex] = true;
+
+            // 標記選項
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add(index === question.correct ? 'correct' : 'incorrect');
+                } else if (index === question.correct) {
+                    option.classList.add('correct');
+                }
+            });
+
+            // 顯示回饋
+            const isCorrect = optionIndex === question.correct;
+            if (isCorrect) {
+                state.score++;
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = `✅ 正確！${question.explanation}`;
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `❌ 不正確！${question.explanation}`;
+            }
+
+            // 檢查是否所有問題都回答了
+            if (state.caseAnswers[state.current].every(answered => answered)) {
+                document.getElementById('case-next').classList.add('show');
+            }
+
+            updateProgress();
+        }
+
+        // 下一個案例
+        function nextCase() {
+            const state = gameStates.case;
+            state.current++;
+
+            if (state.current < caseQuestions.length) {
+                loadCase();
+            } else {
+                showGameComplete('case');
+            }
+        }
+
+        // 顯示遊戲完成
+        function showGameComplete(gameType) {
+            const state = gameStates[gameType];
+            let totalQuestions;
+            
+            switch(gameType) {
+                case 'scenario':
+                    totalQuestions = scenarioQuestions.length;
+                    break;
+                case 'quiz':
+                    totalQuestions = quizQuestions.length;
+                    break;
+                case 'case':
+                    totalQuestions = caseQuestions.reduce((sum, c) => sum + c.questions.length, 0);
+                    break;
+            }
+
+            const percentage = Math.round((state.score / totalQuestions) * 100);
+            let message = '';
+            let emoji = '';
+
+            if (percentage >= 90) {
+                message = '太棒了！你對護理倫理四大原則掌握得非常好！';
+                emoji = '🏆';
+            } else if (percentage >= 70) {
+                message = '做得很好！你對護理倫理有不錯的理解！';
+                emoji = '👏';
+            } else if (percentage >= 50) {
+                message = '還不錯！繼續學習會更進步！';
+                emoji = '💪';
+            } else {
+                message = '需要再加強喔！建議複習相關概念！';
+                emoji = '📚';
+            }
+
+            const gameNames = {
+                scenario: '情境挑戰',
+                quiz: '快問快答', 
+                case: '案例分析'
+            };
+
+            const completionHTML = `
+                <div class="scenario-card" style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">${emoji}</div>
+                    <h3 class="scenario-title">${gameNames[gameType]}完成！</h3>
+                    <div style="font-size: 2rem; margin: 1rem 0; color: #667eea;">
+                        ${state.score} / ${totalQuestions} 
+                    </div>
+                    <div style="font-size: 1.5rem; margin: 1rem 0; color: #667eea;">
+                        得分率：${percentage}%
+                    </div>
+                    <p class="scenario-text">${message}</p>
+                    <button class="next-btn show" onclick="restartGame('${gameType}')" style="margin: 1rem;">
+                        再玩一次
+                    </button>
+                    <button class="next-btn show" onclick="switchToNextGame('${gameType}')" style="margin: 1rem;">
+                        挑戰其他遊戲
+                    </button>
+                </div>
+            `;
+
+            document.getElementById(`${gameType}-question`).innerHTML = completionHTML;
+            document.getElementById(`${gameType}-next`).classList.remove('show');
+        }
+
+        // 重新開始遊戲
+        function restartGame(gameType) {
+            loadGame(gameType);
+        }
+
+        // 切換到下一個遊戲
+        function switchToNextGame(gameType) {
+            const games = ['scenario', 'quiz', 'case'];
+            const currentIndex = games.indexOf(gameType);
+            const nextGame = games[(currentIndex + 1) % games.length];
+            
+            // 點擊對應的標籤
+            const tabs = document.querySelectorAll('.game-tab');
+            tabs[games.indexOf(nextGame)].click();
+        }
+
+        // 更新進度
+        function updateProgress() {
+            const state = gameStates[currentGame];
+            let current, total;
+
+            switch(currentGame) {
+                case 'scenario':
+                    current = state.current;
+                    total = scenarioQuestions.length;
+                    break;
+                case 'quiz':
+                    current = state.current;
+                    total = quizQuestions.length;
+                    break;
+                case 'case':
+                    current = state.current;
+                    total = caseQuestions.length;
+                    break;
+            }
+
+            document.getElementById('score').textContent = state.score;
+            
+            // 計算總題數
+            let totalQuestions = 0;
+            switch(currentGame) {
+                case 'scenario':
+                    totalQuestions = scenarioQuestions.length;
+                    break;
+                case 'quiz':
+                    totalQuestions = quizQuestions.length;
+                    break;
+                case 'case':
+                    totalQuestions = caseQuestions.reduce((sum, c) => sum + c.questions.length, 0);
+                    break;
+            }
+            
+            document.getElementById('total').textContent = totalQuestions;
+            
+            const progress = current > 0 ? (current / total) * 100 : 0;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        // 開啟原則模態框
+        function openPrincipleModal(principle) {
+            const modal = document.getElementById('principle-modal');
+            const modalBody = document.getElementById('modal-body');
+            const details = principleDetails[principle];
+            
+            modalBody.innerHTML = `
+                <div class="modal-title" style="color: ${details.color};">
+                    ${details.icon} ${details.title}
+                </div>
+                ${details.content}
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        // 關閉原則模態框
+        function closePrincipleModal() {
+            document.getElementById('principle-modal').classList.remove('show');
+        }
+
+        // 點擊模態框外部關閉
+        document.getElementById('principle-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePrincipleModal();
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initGame();
+        });
+    </script>
+</body>
+</html>

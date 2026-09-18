@@ -1,0 +1,11 @@
+{
+  "tronclass": {
+    "courseUrl": "__CONFIGURE_OFFICIAL_TRONCLASS_URL__",
+    "note": "Do not replace until official course URL is confirmed."
+  },
+  "research": {
+    "ai5ce": "NOT_DEPLOYED_VERSION_UNRESOLVED",
+    "collectIdentifiers": false
+  },
+  "storage": "localStorage only for student drafts"
+}

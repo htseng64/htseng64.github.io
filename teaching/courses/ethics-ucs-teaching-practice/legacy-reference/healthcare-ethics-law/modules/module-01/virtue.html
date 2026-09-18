@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理倫理互動學習網：德行論專題</title>
+    <style>
+        :root {
+            --primary: #1e3a34;
+            --virtue-green: #27ae60;
+            --accent: #f1c40f;
+            --bg: #f9fbf9;
+            --white: #ffffff;
+        }
+
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.6; margin: 0; background: var(--bg); color: #333; scroll-behavior: smooth; }
+        
+        nav { background: var(--primary); color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; }
+
+        header { background: linear-gradient(135deg, var(--primary), var(--virtue-green)); color: white; padding: 60px 20px; text-align: center; }
+        
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+
+        .section-card { background: var(--white); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { border-left: 6px solid var(--virtue-green); padding-left: 15px; color: var(--primary); margin-top: 0; }
+
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .comp-item { padding: 20px; border-radius: 10px; border: 1px solid #ddd; }
+
+        /* 中道示意圖 */
+        .mean-bar { height: 20px; background: #ddd; border-radius: 10px; margin: 20px 0; position: relative; }
+        .mean-point { width: 30px; height: 30px; background: var(--accent); border-radius: 50%; position: absolute; left: 50%; top: -5px; transform: translateX(-50%); border: 3px solid white; }
+
+        /* 問答區 */
+        .qa-box { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
+        .qa-q { background: #f0f7f4; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .qa-a { padding: 20px; display: none; border-top: 1px solid #eee; background: white; }
+
+        /* 測驗區 */
+        .quiz-item { background: #fff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .option-label { display: block; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; }
+        .option-label:hover { background: #e8f6ef; }
+        
+        #score-display { display: none; text-align: center; padding: 30px; background: var(--virtue-green); color: white; border-radius: 15px; margin-top: 20px; }
+
+        .btn-submit { background: var(--virtue-green); color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 18px; cursor: pointer; width: 100%; font-weight: bold; }
+
+        @media (max-width: 768px) { .comparison-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#philosophy">核心哲學</a>
+    <a href="#mean">中道原則</a>
+    <a href="#qa">案例思考</a>
+    <a href="#quiz">自測練習</a>
+</nav>
+
+<header>
+    <h1>德行論與護理倫理實務</h1>
+    <p>亞里斯多德觀點：品格、實踐智慧與生命的中道</p>
+</header>
+
+<div class="container">
+
+    <section id="philosophy" class="section-card">
+        <h2>亞里斯多德 (Aristotle) 核心主張</h2>
+        <div class="comparison-grid">
+            <div class="comp-item" style="background:#f0f9f4">
+                <h3>1. 重點在「人」</h3>
+                <p>不只是做正確的事（義務），或產生好的結果（效益），而是要成為一個良善的人。</p>
+            </div>
+            <div class="comp-item" style="background:#f0f9f4">
+                <h3>2. 實踐智慧 (Phronesis)</h3>
+                <p>護理師在複雜的病房情境中，能綜合經驗與感性，做出最適切的彈性判斷。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="mean" class="section-card">
+        <h2>美德的「中道」原則</h2>
+        <p>美德通常位於兩個極端之間（不足 vs. 過度）：</p>
+        <div style="text-align: center; font-weight: bold;">
+            <span>【不足：懦弱】</span>
+            <span style="margin: 0 15% color:var(--virtue-green)">● 美德：勇敢</span>
+            <span>【過度：莽撞】</span>
+        </div>
+        <div class="mean-bar"><div class="mean-point"></div></div>
+        <p>在護理工作中，這代表在冷漠（不足）與過度介入（過度）之間，找到最具專業溫度的「中道」。</p>
+    </section>
+
+    <section id="qa" class="section-card">
+        <h2>德行論案例思考 (展開查看)</h2>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q1: 當護理師面對不合理的醫療要求時，德行論者會如何表現？ <span>▼</span></div>
+            <div class="qa-a">護理師會發揮「勇氣」的美德，基於對病人的守護（正義感），以實踐智慧與專業的方式與醫師或行政端溝通，而非盲目服從或情緒衝動。</div>
+        </div>
+        <div class="qa-box" onclick="toggleQA(this)">
+            <div class="qa-q">Q2: 德行論如何看待「護理臨床實習」？ <span>▼</span></div>
+            <div class="qa-a">德行論非常重視「榜樣」。實習不僅是學技術，更是在觀察資深前輩如何展現同理心與冷靜判斷，透過觀察與模擬，將優良品格內化。</div>
+        </div>
+    </section>
+
+    <section id="quiz" class="section-card">
+        <h2>單選題自測 (10題)</h2>
+        <form id="quiz-form">
+            <div id="quiz-list"></div>
+            <button type="button" class="btn-submit" onclick="submitQuiz()">提交測驗並計算成績</button>
+        </form>
+        <div id="score-display"></div>
+    </section>
+
+</div>
+
+<script>
+    function toggleQA(el) {
+        const a = el.querySelector('.qa-a');
+        const s = el.querySelector('span');
+        if (a.style.display === "block") {
+            a.style.display = "none";
+            s.innerText = "▼";
+        } else {
+            a.style.display = "block";
+            s.innerText = "▲";
+        }
+    }
+
+    const questions = [
+        { q: "德行論主要關心的核心問題是什麼？", a: 2, o: ["我應該遵守什麼規則？", "行為結果好嗎？", "我應該成為什麼樣的人？", "法律怎麼規定？"] },
+        { q: "德行論最具代表性的哲學家是？", a: 1, o: ["康德", "亞里斯多德", "邊沁", "彌爾"] },
+        { q: "所謂「中道」原則是指美德位於何處？", a: 0, o: ["過度與不足之間", "法律與情感之間", "生與死之間", "醫生與病人家屬之間"] },
+        { q: "德行論強調美德是透過什麼方式獲得的？", a: 3, o: ["天生遺傳", "看書背誦", "法律強制", "實踐與習慣養成"] },
+        { q: "下列何者屬於護理專業中的「實踐智慧」？", a: 1, o: ["背誦標準操作流程", "在複雜情況下靈活判斷最適合病人的方案", "一字不差地執行醫師醫囑", "只要病人開心就好"] },
+        { q: "如果一位護理師在病床邊展現出適度的關懷，不過度介入也不冷漠，這是體現？", a: 2, o: ["義務論", "效益論", "中道原則", "絕對命令"] },
+        { q: "在德行論中，學習護理倫理的最佳方式通常是？", a: 0, o: ["觀察優良前輩的典範", "單純練習選擇題", "研究判例法", "不理會任何規則"] },
+        { q: "「勇氣」作為美德，其極端不足的表現是？", a: 3, o: ["莽撞", "誠實", "慈悲", "懦弱"] },
+        { q: "德行論認為一個人的行為之所以道德，是因為？", a: 1, o: ["他怕被罰", "這是他內化品格的自然流露", "他想獲得獎金", "這符合最大幸福"] },
+        { q: "護理中的「仁慈」美德在德行論中如何體現？", a: 2, o: ["給每個病人一樣的藥", "完成工作後立即離開", "真誠地關懷病人的身心痛苦", "只對態度好的病人微笑"] }
+    ];
+
+    const quizList = document.getElementById('quiz-list');
+    questions.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `<p><strong>${idx + 1}. ${item.q}</strong></p>
+            ${item.o.map((opt, oIdx) => `<label class="option-label"><input type="radio" name="q${idx}" value="${oIdx}"> ${opt}</label>`).join('')}`;
+        quizList.appendChild(div);
+    });
+
+    function submitQuiz() {
+        let score = 0;
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            if (selected && parseInt(selected.value) === item.a) score += 10;
+        });
+        const display = document.getElementById('score-display');
+        display.style.display = 'block';
+        display.innerHTML = `<h2>您的得分：${score} / 100</h2><p>${score >= 80 ? "太棒了！您具備了良好的德行論思維。" : "再接再厲！德行論強調的是人格的成長與平衡。"}</p>`;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>

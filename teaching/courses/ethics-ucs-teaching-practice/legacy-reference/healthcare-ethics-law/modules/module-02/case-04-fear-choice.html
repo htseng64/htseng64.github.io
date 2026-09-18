@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例四：恐懼的總和 (清晰修復版)</title>
+    <style>
+        /* --- 全域設定 --- */
+        :root {
+            --bg-color: #1a1a1a;
+            --left-bg: #ffffff;
+            --right-bg: #2c3e50;
+            --text-main: #2c3e50;
+            --text-light: #ffffff;
+            --highlight: #e74c3c;
+            --btn-blue: #c0392b;
+            --nurse-bg: #d4efdf;
+            --npc-bg: #f2f3f4;
+            --jit-bg: rgba(243, 156, 18, 0.25);
+            --jit-border: #d35400;
+        }
+
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; -webkit-font-smoothing: antialiased; }
+        
+        #stage-container { width: 100vw; height: 100vh; background-color: #fff; display: flex; flex-direction: row; position: relative; }
+        #story-panel { width: 60%; background-color: var(--left-bg); display: flex; flex-direction: column; padding: 20px; border-right: 5px solid #bdc3c7; position: relative; }
+        #mood-badge { position: absolute; top: 20px; left: 20px; background-color: #34495e; color: white; padding: 10px 30px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; z-index: 5; }
+        
+        #vocab-btn { position: absolute; top: 20px; right: 20px; background-color: var(--highlight); color: #fff; border: 3px solid #fff; padding: 10px 20px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; z-index: 100; box-shadow: 0 4px 5px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        #vocab-btn:hover { transform: scale(1.05); }
+
+        #dialogue-box { flex: 1; overflow-y: auto; padding: 80px 20px 20px 20px; display: flex; flex-direction: column; gap: 25px; scroll-behavior: smooth; }
+        .msg { max-width: 90%; padding: 25px 35px; border-radius: 20px; font-size: 2rem; line-height: 1.6; animation: fadeIn 0.5s ease; position: relative; }
+        .msg-npc { align-self: flex-start; background-color: var(--npc-bg); border-left: 10px solid #c0392b; color: var(--text-main); }
+        .msg-player { align-self: flex-end; background-color: var(--nurse-bg); border-right: 10px solid #27ae60; color: #0e6655; }
+        .msg strong { display: block; font-size: 1.6rem; margin-bottom: 10px; opacity: 0.8; }
+
+        /* JIT 樣式修復：螢光筆風格，確保清晰 */
+        .jit-term {
+            color: var(--text-main);
+            background-color: var(--jit-bg);
+            border-bottom: 2px solid var(--jit-border); /* 實線確保不模糊 */
+            padding: 2px 5px;
+            border-radius: 4px;
+            cursor: help;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .jit-term:hover { background-color: rgba(243, 156, 18, 0.5); color: #000; }
+
+        #global-tooltip { position: fixed; display: none; background-color: #34495e; color: #fff; padding: 20px; border-radius: 12px; max-width: 350px; font-size: 1.4rem; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; border: 2px solid #fff; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+        #global-tooltip strong { display: block; color: #f1c40f; font-size: 1.6rem; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+
+        #analysis-panel { width: 40%; background-color: var(--right-bg); color: var(--text-light); display: flex; flex-direction: column; padding: 30px; overflow-y: auto; }
+        .section-box { margin-bottom: 25px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; border-left: 6px solid var(--highlight); flex-shrink: 0; }
+        .section-title { font-size: 1.4rem; color: var(--highlight); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .section-content { font-size: 1.5rem; line-height: 1.6; color: #fff; }
+        .ui-hint { text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; flex-shrink: 0; }
+        #controls-area { margin-top: auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; flex-shrink: 0; }
+        .btn { background-color: var(--btn-blue); color: white; border: 2px solid rgba(255,255,255,0.2); padding: 25px; font-size: 1.8rem; border-radius: 15px; cursor: pointer; text-align: left; }
+        .btn:hover { background-color: #922b21; transform: translateY(-2px); }
+        #feedback-box { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; font-size: 1.6rem; margin-top: 20px; margin-bottom: 20px; text-align: center; border: 3px solid white; flex-shrink: 0; }
+        
+        #vocab-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
+        #vocab-content { background-color: #fff; width: 80%; max-width: 900px; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 40px; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        #vocab-content h2 { color: #2c3e50; border-bottom: 3px solid var(--highlight); padding-bottom: 10px; }
+        .vocab-item { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .vocab-term { font-size: 1.8rem; font-weight: bold; color: #2980b9; margin-bottom: 5px; }
+        .vocab-def { font-size: 1.5rem; color: #555; line-height: 1.6; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; }
+
+        @media (max-width: 1024px) or (orientation: portrait) {
+            body { overflow-y: auto; height: auto; }
+            #stage-container { flex-direction: column; height: auto; width: 100%; }
+            #story-panel { width: 100%; height: 50vh; border-right: none; border-bottom: 5px solid #bdc3c7; }
+            #analysis-panel { width: 100%; min-height: 50vh; padding: 20px; padding-bottom: 80px; }
+            .msg { font-size: 1.3rem; padding: 15px; } .btn { font-size: 1.4rem; padding: 15px; }
+            #global-tooltip { max-width: 80%; font-size: 1.2rem; bottom: 20px !important; top: auto !important; left: 50% !important; transform: translateX(-50%); }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div id="global-tooltip"></div>
+<div id="vocab-modal">
+    <div id="vocab-content"><span class="close-btn" onclick="toggleVocab()">×</span><h2>📖 專業詞彙速查</h2>
+        <div class="vocab-item"><div class="vocab-term">醫療暴力 (Medical Violence)</div><div class="vocab-def">對醫護人員進行言語侮辱、威脅或肢體攻擊，法律採取「零容忍」原則。</div></div>
+        <div class="vocab-item"><div class="vocab-term">照護義務 (Duty to Care)</div><div class="vocab-def">提供照護是職責，但當自身安全受威脅時，非無限上綱。</div></div>
+        <div class="vocab-item"><div class="vocab-term">決策能力 (Decision-making Capacity)</div><div class="vocab-def">酒醉或腦傷可能導致暫時性失能，無法行使自主權。</div></div>
+        <div class="vocab-item"><div class="vocab-term">降階技巧 (De-escalation)</div>
+            <div class="vocab-def">
+                透過語言和非語言策略降低情緒張力。<br>
+                <strong>具體行動：</strong><br>
+                - 保持安全距離 (2倍手臂長)<br>
+                - 語氣溫和、語速放慢<br>
+                - 避免直視眼睛 (減少挑釁感)<br>
+                - 開放式肢體語言 (手掌攤開)
+            </div>
+        </div>
+        <div class="vocab-item"><div class="vocab-term">醫療避難 (Withdrawal of Care)</div><div class="vocab-def">在極端暴力威脅下，暫時撤離以求自保，不違反倫理。</div></div>
+    </div>
+</div>
+<div id="stage-container">
+    <button id="vocab-btn" onclick="toggleVocab()">📖 知識速查</button>
+    <div id="story-panel"><div id="mood-badge">Segment 1</div><div id="dialogue-box"></div></div>
+    <div id="analysis-panel">
+        <div class="ui-hint">💡 提示：點擊 <span class="jit-term" data-def="這就是 JIT！清楚、不模糊。">橘色螢光字</span> 可即時查看定義</div>
+        <div class="section-box"><div class="section-title">🎯 Objectives</div><div class="section-content" id="obj-text"></div></div>
+        <div class="section-box"><div class="section-title">❓ Question</div><div class="section-content" id="question-text"></div></div>
+        <div class="section-box"><div class="section-title">📝 Task</div><div class="section-content" id="task-text"></div></div>
+        <div id="feedback-box"></div><div id="controls-area"></div>
+    </div>
+</div>
+<script>
+    const chatBox = document.getElementById('dialogue-box'); const controls = document.getElementById('controls-area'); const moodBadge = document.getElementById('mood-badge'); const objText = document.getElementById('obj-text'); const qText = document.getElementById('question-text'); const taskText = document.getElementById('task-text'); const feedbackBox = document.getElementById('feedback-box'); const vocabModal = document.getElementById('vocab-modal'); const tooltip = document.getElementById('global-tooltip');
+    function toggleVocab() { vocabModal.style.display = vocabModal.style.display === 'flex' ? 'none' : 'flex'; }
+    function enableJIT() { const terms = document.querySelectorAll('.jit-term'); terms.forEach(term => { term.addEventListener('mouseenter', (e) => showTooltip(e, term)); term.addEventListener('mousemove', (e) => moveTooltip(e)); term.addEventListener('mouseleave', hideTooltip); term.addEventListener('click', (e) => showTooltip(e, term)); }); }
+    function showTooltip(e, term) { const def = term.getAttribute('data-def'); const title = term.innerText; tooltip.innerHTML = `<strong>${title}</strong>${def}`; tooltip.style.display = 'block'; requestAnimationFrame(() => { tooltip.style.opacity = '1'; moveTooltip(e); }); }
+    function moveTooltip(e) { const w = window.innerWidth; const h = window.innerHeight; let x = e.clientX + 15; let y = e.clientY + 15; if (x + 300 > w) x = e.clientX - 320; if (y + 150 > h) y = e.clientY - 160; if(w > 1024) { tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px'; } }
+    function hideTooltip() { tooltip.style.opacity = '0'; setTimeout(() => { tooltip.style.display = 'none'; }, 200); }
+
+    const scenes = {
+        start: { segment: "Segment 1: 倫理敏感度", objectives: "辨識倫理衝突", questions: "當病人具有攻擊性時，首要職責是什麼？", tasks: "請分析：護理師面臨哪兩種義務的拉扯？", messages: [{ role: "system", text: "【情境】酒醉病人頭部流血，您要換藥。" }, { role: "npc", name: "病人", text: "(推開您) 滾開！別碰我！(作勢打人)" }, { role: "player", text: "（他需要治療，但他有攻擊性...）" }], choices: [{ text: "A. <span class='jit-term' data-def='照護義務 (Duty to Care)：醫療人員有責任提供照護。'>照護義務</span> vs. <span class='jit-term' data-def='自我保護 (Non-maleficence)：避免自己遭受暴力傷害是執業前提。'>自我保護</span>", next: "correct_s1" }, { text: "B. 公平原則 vs. 誠實原則", next: "wrong_s1" }] },
+        wrong_s1: { feedback: "⚠️ 提示：衝突點在於「想救他」與「怕受傷」之間。", repeat_scene: "start" },
+        correct_s1: { feedback: "🎉 正確！在暴力現場，安全永遠是第一優先。", next_scene: "seg2_intro" },
+        seg2_intro: { segment: "Segment 2: 倫理推理", objectives: "評估決策能力", questions: "病人拒絕治療，應尊重嗎？", tasks: "評估病人的「<span class='jit-term' data-def='決策能力 (Capacity)：酒醉或腦傷可能導致暫時失能。'>決策能力</span>」與風險。", messages: [{ role: "system", text: "【演變】病人大吼大叫，拒絕縫合，出血不止。" }, { role: "npc", name: "病人", text: "我要回家！誰攔我揍誰！" }], choices: [{ text: "A. 尊重自主：簽 AAD 讓他走。", next: "wrong_s2" }, { text: "B. 評估失能：他缺乏決策力且危險，不能放行。", next: "correct_s2" }] },
+        wrong_s2: { feedback: "⚠️ 鷹架：酒醉且頭部外傷者可能無法理性判斷，放任離開恐有醫療疏失。", repeat_scene: "seg2_intro" },
+        correct_s2: { feedback: "🎉 分析正確！病人暫時喪失決策能力，不適用一般自主原則。", next_scene: "seg3_intro" },
+        seg3_intro: { segment: "Segment 3: 專業行動", objectives: "執行安全防護", questions: "面對暴力，該採取什麼策略？", tasks: "選擇正確的應對順序。", messages: [{ role: "system", text: "【危機】病人舉起點滴架揮舞，步步進逼。" }], choices: [{ text: "A. 【硬碰硬】大聲喝斥：「先生冷靜！」", next: "action_bad" }, { text: "B. 【安全撤離】保持距離，使用<span class='jit-term' data-def='降階技巧 (De-escalation)：溫和語氣，保持安全距離，給予空間。'>降階技巧</span>，同時求助。", next: "action_good" }] },
+        action_bad: { segment: "Segment 3: 結果", objectives: "反思", questions: "為何衝突升級？", tasks: "檢討：權威式喝斥反而會激怒失控的病人。", messages: [{ role: "npc", name: "病人", text: "妳敢兇我？！(揮舞點滴架)" }, { role: "system", text: "❌ 結果：護理師受傷，場面失控。" }], choices: [{ text: "再試一次", next: "seg3_intro" }] },
+        action_good: { segment: "Segment 3: 總結", objectives: "完成", questions: "安全是執業的前提。", tasks: "恭喜完成演練。", messages: [{ role: "npc", name: "警衛", text: "(警衛趕到) 護理師，你們先退後。" }, { role: "system", text: "✨ 成功：您優先確保了自身安全(<span class='jit-term' data-def='醫療避難 (Withdrawal of Care)：極端威脅下暫時撤離。'>醫療避難</span>)，並啟動求助。" }], choices: [{ text: "進入反思階段", next: "seg4_intro" }] },
+        seg4_intro: { segment: "Segment 4: 反思與評值", objectives: "處理道德殘餘", questions: "撤離後，您是否感到內疚？", tasks: "請面對您的情緒，並認識「道德殘餘」。", messages: [{ role: "player", text: "（雖然我沒受傷，但看著病人被壓制流血，我心裡還是怪怪的...）" }], choices: [{ text: "A. 自我責備：我覺得自己很失敗，沒有盡到護理責任。", next: "reflect_growth" }, { text: "B. 專業調適：我知道這是為了安全必須做的，我已經盡力了。", next: "reflect_success" }] },
+        reflect_growth: { feedback: "🌱 這是正常的「道德殘餘」感受。請記住，照顧好自己才能照顧病人。您做得很好。", next_scene: "start", restart: true },
+        reflect_success: { feedback: "🌟 很好的心理素質！理解「安全前提」是專業的一部分。恭喜完成演練！", next_scene: "start", restart: true }
+    };
+    function renderScene(sceneId) { const scene = scenes[sceneId]; if (scene.feedback) { feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = scene.next_scene ? '#27ae60' : '#e67e22'; feedbackBox.innerHTML = scene.feedback; controls.innerHTML = ''; const btn = document.createElement('button'); btn.className = 'btn'; btn.innerText = scene.restart ? "重新開始 ↻" : (scene.repeat_scene ? "🔙 返回重選" : "下一階段 ➔"); btn.onclick = () => { feedbackBox.style.display = 'none'; renderScene(scene.next_scene || scene.repeat_scene); }; controls.appendChild(btn); return; } moodBadge.innerText = scene.segment; objText.innerHTML = scene.objectives; qText.innerHTML = scene.questions; taskText.innerHTML = scene.tasks; controls.innerHTML = ''; chatBox.innerHTML = ''; let delay = 0; scene.messages.forEach((msg, index) => { setTimeout(() => { const div = document.createElement('div'); div.className = msg.role === 'system' ? 'msg msg-player' : (msg.role === 'npc' ? 'msg msg-npc' : 'msg msg-player'); if(msg.role === 'system') { div.style.backgroundColor = '#fff3cd'; div.style.color = '#856404'; div.style.border = 'none'; } div.innerHTML = (msg.role === 'npc' ? `<strong>${msg.name}</strong>` : '') + msg.text; chatBox.appendChild(div); chatBox.scrollTop = chatBox.scrollHeight; enableJIT(); if (index === scene.messages.length - 1) { scene.choices.forEach(c => { const btn = document.createElement('button'); btn.className = 'btn'; btn.innerHTML = c.text; btn.onclick = () => renderScene(c.next); controls.appendChild(btn); }); setTimeout(enableJIT, 100); } }, delay); delay += 800; }); }
+    renderScene('start');
+</script>
+</body>
+</html>

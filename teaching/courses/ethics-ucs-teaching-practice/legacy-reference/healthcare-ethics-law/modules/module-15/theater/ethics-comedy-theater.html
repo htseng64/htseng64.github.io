@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>護理倫理決策喜劇院 🎭</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', '微軟雅黑', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .theater-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .theater-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .theater-title {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #ff6b6b, 0 0 15px #ff6b6b; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #ff6b6b, 0 0 30px #ff6b6b; }
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .model-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .model-card:hover::before {
+            animation: shine 0.6s ease-in-out;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+        
+        .model-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .model-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .model-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .model-year {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        .model-description {
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .comedy-preview {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            font-style: italic;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .stage-container {
+            background: rgba(0,0,0,0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            display: none;
+            position: relative;
+        }
+        
+        .stage-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .stage-title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .character-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .character-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+        }
+        
+        .character-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(238, 90, 36, 0.6);
+        }
+        
+        .character-btn.active {
+            background: linear-gradient(45deg, #ffd700, #f39c12);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+        
+        .scenario-display {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+        
+        .steps-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .step-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+        
+        .step-card:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateX(5px);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #ffd700;
+            color: #000;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .dialogue-box {
+            background: rgba(0,0,0,0.6);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ff6b6b;
+            font-style: italic;
+        }
+        
+        .back-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .quiz-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .quiz-question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .quiz-option {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: #ffd700;
+        }
+        
+        .quiz-option.correct {
+            background: rgba(46, 204, 113, 0.3);
+            border-color: #2ecc71;
+        }
+        
+        .quiz-option.wrong {
+            background: rgba(231, 76, 60, 0.3);
+            border-color: #e74c3c;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(52, 152, 219, 0.3);
+            border-left: 4px solid #3498db;
+        }
+
+        .comedy-effect {
+            position: relative;
+        }
+        
+        .comedy-effect::after {
+            content: '😂';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(-50%); }
+            40% { transform: translateY(-60%); }
+            60% { transform: translateY(-55%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="theater-container">
+        <div class="theater-header">
+            <h1 class="theater-title">🎭 護理倫理決策喜劇院 🎭</h1>
+            <p class="subtitle">透過幽默小品學習六大倫理決策模式！</p>
+        </div>
+
+        <div id="mainStage" class="models-grid">
+            <div class="model-card" onclick="showModel('curtin')">
+                <span class="model-icon">👨‍⚖️</span>
+                <h3 class="model-name">柯廷倫理決策模式</h3>
+                <p class="model-year">(Curtin, 1978)</p>
+                <p class="model-description">系統性的六步驟分析法，從背景資料收集到最終解決方案</p>
+                <div class="comedy-preview comedy-effect">
+                    "柯廷偵探事務所：倫理案件無難事！"
+                </div>
+            </div>
+
+            <div class="model-card" onclick="showModel('aroskar')">
+                <span class="model-icon">⚖️</span>
+                <h3 class="model-name">阿洛斯卡倫理決策模式</h3>
+                <p class="model-year">(Aroskar, 1980)</p>
+                <p class="model-description">強調時間效率與價值系統，結合三大倫理理論</p>
+                <div class="comedy-preview comedy-effect">
+                    "阿羅三兄弟的倫理餐廳：結果論、義務論、德行論套餐！"
+                </div>
+            </div>
+
+            <div class="model-card" onclick="showModel('thompson')">
+                <span class="model-icon">🔍</span>
+                <h3 class="model-name">湯普森生倫理決策模式</h3>
+                <p class="model-year">(Thompson, 1981)</p>
+                <p class="model-description">詳細的十步驟流程，注重環境因素與持續評值</p>
+                <div class="comedy-preview comedy-effect">
+                    "湯普森十全大補湯：一步一腳印的倫理旅程！"
+                </div>
+            </div>
+
+            <div class="model-card" onclick="showModel('joseph')">
+                <span class="model-icon">⚔️</span>
+                <h3 class="model-name">約瑟夫倫理決策模式</h3>
+                <p class="model-year">(Joseph, 1985)</p>
+                <p class="model-description">強調正反兩面論證，價值排序與偏誤檢視</p>
+                <div class="comedy-preview comedy-effect">
+                    "約瑟夫辯論社：正反兩方激烈交鋒！"
+                </div>
+            </div>
+
+            <div class="model-card" onclick="showModel('silva')">
+                <span class="model-icon">🧩</span>
+                <h3 class="model-name">西娃倫理決策模式</h3>
+                <p class="model-year">(Silva, 1990)</p>
+                <p class="model-description">五步驟系統評估，結合多層面因素分析</p>
+                <div class="comedy-preview comedy-effect">
+                    "西娃拼圖工作坊：五片拼圖解決倫理難題！"
+                </div>
+            </div>
+
+            <div class="model-card" onclick="showModel('johnsen')">
+                <span class="model-icon">🏥</span>
+                <h3 class="model-name">約翰森臨床倫理決策模式</h3>
+                <p class="model-year">(Johnsen, 2002)</p>
+                <p class="model-description">四象限分析法，台灣臨床機構最常用的模式</p>
+                <div class="comedy-preview comedy-effect">
+                    "約翰森四格漫畫：醫療、病人、品質、情境！"
+                </div>
+            </div>
+        </div>
+
+        <div id="stageShow" class="stage-container">
+            <div class="stage-header">
+                <h2 class="stage-title" id="currentModelTitle"></h2>
+                <div class="character-selection">
+                    <button class="character-btn" onclick="selectCharacter('nurse')">🩺 護理師小美</button>
+                    <button class="character-btn" onclick="selectCharacter('patient')">🤒 病人阿明</button>
+                    <button class="character-btn" onclick="selectCharacter('doctor')">👨‍⚕️ 醫師大雄</button>
+                    <button class="character-btn" onclick="selectCharacter('family')">👨‍👩‍👧 家屬代表</button>
+                </div>
+            </div>
+
+            <div class="scenario-display" id="scenarioDisplay">
+                <h3>🎬 情境設定</h3>
+                <p id="scenarioText">請選擇角色開始互動學習！</p>
+            </div>
+
+            <div class="steps-container" id="stepsContainer"></div>
+
+            <div class="quiz-container" id="quizContainer" style="display: none;"></div>
+
+            <button class="back-btn" onclick="backToMain()">🔙 返回主舞台</button>
+        </div>
+    </div>
+
+    <script>
+        let currentModel = '';
+        let currentCharacter = '';
+
+        const models = {
+            curtin: {
+                title: '柯廷倫理決策模式 - 偵探事務所',
+                steps: [
+                    { number: 1, title: '背景資料收集', content: '收集完整相關資料，了解是否為特殊情形' },
+                    { number: 2, title: '倫理議題確認', content: '從背景資料識別相關倫理問題' },
+                    { number: 3, title: '倫理決策者分析', content: '評估相關人員的權利、義務及責任' },
+                    { number: 4, title: '各種可行方案', content: '考量所有意見及可能的解決行動' },
+                    { number: 5, title: '應用倫理原則', content: '運用倫理原則排除不合倫理的意見' },
+                    { number: 6, title: '解決倫理議題', content: '採取最合適的行動方案' }
+                ]
+            },
+            aroskar: {
+                title: '阿洛斯卡倫理決策模式 - 三兄弟餐廳',
+                steps: [
+                    { number: 1, title: '收集相關資料', content: '確定倫理問題存在，分析涉及的人事物' },
+                    { number: 2, title: '決策理論分析', content: '確定參與決策的人員和最終決定者' },
+                    { number: 3, title: '採取行動依據', content: '根據結果論、義務論、德行論選擇行動' }
+                ]
+            },
+            thompson: {
+                title: '湯普森生倫理決策模式 - 十全大補湯',
+                steps: [
+                    { number: 1, title: '檢視情境', content: '確認健康問題和需要的決策' },
+                    { number: 2, title: '收集相關資料', content: '包括個人、心理、社會、法律、文化資料' },
+                    { number: 3, title: '確認倫理議題', content: '識別相關的倫理問題' },
+                    { number: 4, title: '個人專業立場', content: '確認個人及專業的道德立場' },
+                    { number: 5, title: '關鍵人物立場', content: '了解關鍵人物的價值觀' },
+                    { number: 6, title: '價值衝突分析', content: '確認環境中產生的價值衝突' },
+                    { number: 7, title: '決定決策者', content: '確定誰應該做最終決定' },
+                    { number: 8, title: '行動範圍評估', content: '確認可能的決策及預期結果' },
+                    { number: 9, title: '做決定執行', content: '選擇行動方案並付諸實施' },
+                    { number: 10, title: '評值結果', content: '評估決策結果是否達成預期' }
+                ]
+            },
+            joseph: {
+                title: '約瑟夫倫理決策模式 - 辯論社',
+                steps: [
+                    { number: 1, title: '實務環境分析', content: '分析機構環境中存在的兩難或情境' },
+                    { number: 2, title: '背景資料收集', content: '收集實證資料和倫理研究資源' },
+                    { number: 3, title: '正反論證', content: '從事實、倫理、法律面提出正反觀點' },
+                    { number: 4, title: '價值判斷', content: '進行價值評量並排定優先順序' },
+                    { number: 5, title: '偏誤檢視', content: '檢視是否存在偏誤並修正選擇' },
+                    { number: 6, title: '立場表明', content: '陳述理由並提出合理解釋' }
+                ]
+            },
+            silva: {
+                title: '西娃倫理決策模式 - 拼圖工作坊',
+                steps: [
+                    { number: 1, title: '收集評估資料', content: '評估情境、健康小組、組織因素' },
+                    { number: 2, title: '確立問題', content: '區分倫理因素和非倫理因素' },
+                    { number: 3, title: '擬定行為措施', content: '從結果論和義務論角度擬定方案' },
+                    { number: 4, title: '抉擇決定過程', content: '考量內外在因素做出決定' },
+                    { number: 5, title: '評值決策品質', content: '評估所採取的決定和行動' }
+                ]
+            },
+            johnsen: {
+                title: '約翰森臨床倫理決策模式 - 四格漫畫',
+                steps: [
+                    { number: 1, title: '醫療因素考量', content: '行善與不傷害原則 - 醫療問題、治療目標、成功率' },
+                    { number: 2, title: '病人意向考量', content: '尊重自主原則 - 心智狀態、知情同意、個人意向' },
+                    { number: 3, title: '生命品質考量', content: '行善、不傷害、自主原則 - 生活願景、功能障礙' },
+                    { number: 4, title: '其他情境考量', content: '守信與公平正義原則 - 家庭、經濟、宗教文化因素' }
+                ]
+            }
+        };
+
+        const scenarios = {
+            curtin: {
+                nurse: "小美護理師發現同事在給藥時出錯，但該同事請求保密...",
+                patient: "阿明病人看到護理師給藥有問題，不知道該不該說出來...",
+                doctor: "大雄醫師發現護理師的作業流程有疏失，考慮如何處理...",
+                family: "家屬代表發現照護品質問題，猶豫是否該投訴..."
+            },
+            aroskar: {
+                nurse: "小美面臨時間壓力，必須在三種倫理理論間快速選擇...",
+                patient: "阿明需要在結果論、義務論、德行論中選擇治療方式...",
+                doctor: "大雄醫師必須平衡效率與價值觀的衝突...",
+                family: "家屬在三種倫理觀點間搖擺不定..."
+            },
+            thompson: {
+                nurse: "小美按照十個步驟詳細分析複雜的倫理情境...",
+                patient: "阿明被邀請參與完整的十步驟決策過程...",
+                doctor: "大雄醫師帶領團隊進行系統性的環境評估...",
+                family: "家屬參與全面性的價值衝突分析..."
+            },
+            joseph: {
+                nurse: "小美在辯論社中為護理專業立場進行辯護...",
+                patient: "阿明學習如何為自己的權益進行正反論證...",
+                doctor: "大雄醫師主持正反雙方的激烈辯論...",
+                family: "家屬代表參與價值觀的排序辯論..."
+            },
+            silva: {
+                nurse: "小美像拼拼圖一樣，一片片組合倫理決策要素...",
+                patient: "阿明參與五步驟的系統性評估過程...",
+                doctor: "大雄醫師協助整合多層面的分析結果...",
+                family: "家屬學習如何進行全面性的因素評估..."
+            },
+            johnsen: {
+                nurse: "小美運用四象限分析法處理臨床倫理問題...",
+                patient: "阿明的案例被分析到四個不同象限中...",
+                doctor: "大雄醫師運用最實用的臨床決策模式...",
+                family: "家屬參與四個面向的全方位考量..."
+            }
+        };
+
+        const comedyDialogues = {
+            curtin: {
+                nurse: [
+                    "🕵️ 柯廷偵探：「小美，我們來調查這個倫理案件！第一步，收集證據！」",
+                    "👩‍⚕️ 小美：「偵探，我發現了可疑的給藥行為！」",
+                    "🕵️ 柯廷偵探：「很好！現在確認這是否為倫理問題...嗯，涉及病人安全，確實是！」",
+                    "👩‍⚕️ 小美：「那我們該找誰來決策呢？」",
+                    "🕵️ 柯廷偵探：「護理長、醫師、還有你自己都有責任！來看看有什麼解決方案...」",
+                    "👩‍⚕️ 小美：「我想到三個方案：直接舉報、私下提醒、或是找護理長討論」",
+                    "🕵️ 柯廷偵探：「用倫理原則檢驗一下...為了病人安全，最符合不傷害原則的是...」",
+                    "👩‍⚕️ 小美：「我決定先私下與同事溝通，再向護理長報告！」"
+                ]
+            },
+            aroskar: {
+                nurse: [
+                    "🍽️ 阿羅大哥（結果論）：「小美，點我們的『結果套餐』吧！只看最終效果！」",
+                    "⚖️ 阿羅二哥（義務論）：「不對！要點『義務套餐』，做對的事最重要！」",
+                    "💝 阿羅三弟（德行論）：「拜託，『品德套餐』才是王道，要培養美德！」",
+                    "👩‍⚕️ 小美：「三位老闆，我時間很趕，能不能快點決定？」",
+                    "🍽️ 阿羅大哥：「那就看結果，舉報能防止更多錯誤！」",
+                    "⚖️ 阿羅二哥：「錯！護理師有義務保護病人安全！」",
+                    "💝 阿羅三弟：「都錯！要培養誠實勇敢的品格！」",
+                    "👩‍⚕️ 小美：「我全都要！結合三種理論做決定！」"
+                ]
+            }
+        };
+
+        function showModel(modelKey) {
+            currentModel = modelKey;
+            document.getElementById('mainStage').style.display = 'none';
+            document.getElementById('stageShow').style.display = 'block';
+            document.getElementById('currentModelTitle').textContent = models[modelKey].title;
+            
+            // Reset character selection
+            document.querySelectorAll('.character-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            showSteps();
+        }
+
+        function selectCharacter(character) {
+            currentCharacter = character;
+            document.querySelectorAll('.character-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update scenario
+            document.getElementById('scenarioText').textContent = scenarios[currentModel][character];
+            
+            showSteps();
+            showQuiz();
+        }
+
+        function showSteps() {
+            const stepsContainer = document.getElementById('stepsContainer');
+            const modelData = models[currentModel];
+            
+            stepsContainer.innerHTML = '';
+            
+            modelData.steps.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step-card';
+                stepDiv.style.animationDelay = `${index * 0.1}s`;
+                
+                let dialogueContent = '';
+                if (currentCharacter && comedyDialogues[currentModel] && comedyDialogues[currentModel][currentCharacter]) {
+                    const dialogue = comedyDialogues[currentModel][currentCharacter][index];
+                    if (dialogue) {
+                        dialogueContent = `<div class="dialogue-box">${dialogue}</div>`;
+                    }
+                }
+                
+                stepDiv.innerHTML = `
+                    <h4><span class="step-number">${step.number}</span>${step.title}</h4>
+                    <p>${step.content}</p>
+                    ${dialogueContent}
+                `;
+                
+                stepsContainer.appendChild(stepDiv);
+            });
+        }
+
+        function showQuiz() {
+            if (!currentCharacter) return;
+            
+            const quizContainer = document.getElementById('quizContainer');
+            const quizData = getQuizForModel(currentModel);
+            
+            quizContainer.style.display = 'block';
+            quizContainer.innerHTML = `
+                <h3 class="quiz-question">${quizData.question}</h3>
+                <div class="quiz-options">
+                    ${quizData.options.map((option, index) => `
+                        <div class="quiz-option" onclick="selectQuizOption(${index}, ${quizData.correct})" data-index="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="quizFeedback" class="feedback" style="display: none;"></div>
+            `;
+        }
+
+        function getQuizForModel(modelKey) {
+            const quizzes = {
+                curtin: {
+                    question: "🕵️ 柯廷偵探問：「在柯廷模式中，第一步應該做什麼？」",
+                    options: [
+                        "🎯 直接確認倫理議題",
+                        "📋 收集背景資料",
+                        "⚖️ 應用倫理原則",
+                        "🎭 找決策者開會"
+                    ],
+                    correct: 1,
+                    feedback: "正確！🎉 就像偵探辦案一樣，必須先收集完整的背景資料才能判斷案情！"
+                },
+                aroskar: {
+                    question: "🍽️ 阿羅三兄弟問：「我們餐廳有幾種倫理理論套餐？」",
+                    options: [
+                        "🥗 兩種：結果論和義務論",
+                        "🍜 三種：結果論、義務論、德行論",
+                        "🍕 四種：還包括關懷倫理學",
+                        "🍰 五種：包括所有倫理學派"
+                    ],
+                    correct: 1,
+                    feedback: "太棒了！🎊 阿羅三兄弟分別代表結果論、義務論和德行論，這是阿洛斯卡模式的核心！"
+                },
+                thompson: {
+                    question: "🍲 湯普森大廚問：「我的十全大補湯有幾個步驟？」",
+                    options: [
+                        "🔢 8個步驟",
+                        "🔢 10個步驟",
+                        "🔢 12個步驟",
+                        "🔢 6個步驟"
+                    ],
+                    correct: 1,
+                    feedback: "完美！✨ 湯普森模式確實有10個詳細步驟，就像十全大補湯一樣營養全面！"
+                },
+                joseph: {
+                    question: "⚔️ 約瑟夫辯論社長問：「辯論的核心是什麼？」",
+                    options: [
+                        "🗣️ 只提出支持的論點",
+                        "❌ 只找反對的理由",
+                        "⚖️ 提出正反兩方的論證",
+                        "🤷 看心情決定立場"
+                    ],
+                    correct: 2,
+                    feedback: "優秀！🏆 約瑟夫模式強調要同時考慮正反兩方的觀點，這樣才能做出平衡的決策！"
+                },
+                silva: {
+                    question: "🧩 西娃拼圖師問：「我的拼圖有幾片？」",
+                    options: [
+                        "🧩 3片拼圖",
+                        "🧩 5片拼圖",
+                        "🧩 7片拼圖",
+                        "🧩 10片拼圖"
+                    ],
+                    correct: 1,
+                    feedback: "讚！🌟 西娃模式有5個步驟，就像5片拼圖組成完整的倫理決策圖案！"
+                },
+                johnsen: {
+                    question: "📚 約翰森漫畫家問：「我的四格漫畫包含哪些象限？」",
+                    options: [
+                        "🏥 只有醫療因素",
+                        "👤 醫療因素和病人意向",
+                        "🌟 醫療、病人、品質三個面向",
+                        "🎯 醫療、病人、品質、情境四象限"
+                    ],
+                    correct: 3,
+                    feedback: "棒極了！🎨 約翰森模式的四象限包括：醫療因素、病人意向、生命品質和其他情境，是最實用的臨床模式！"
+                }
+            };
+            
+            return quizzes[modelKey];
+        }
+
+        function selectQuizOption(selectedIndex, correctIndex) {
+            const options = document.querySelectorAll('.quiz-option');
+            const feedback = document.getElementById('quizFeedback');
+            
+            options.forEach((option, index) => {
+                option.style.pointerEvents = 'none';
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    option.classList.add('wrong');
+                }
+            });
+            
+            const quizData = getQuizForModel(currentModel);
+            feedback.style.display = 'block';
+            feedback.textContent = quizData.feedback;
+            
+            setTimeout(() => {
+                showCelebration();
+            }, 1000);
+        }
+
+        function showCelebration() {
+            // Add celebration animation
+            const celebration = document.createElement('div');
+            celebration.innerHTML = '🎉🎊✨';
+            celebration.style.position = 'fixed';
+            celebration.style.top = '50%';
+            celebration.style.left = '50%';
+            celebration.style.transform = 'translate(-50%, -50%)';
+            celebration.style.fontSize = '4em';
+            celebration.style.zIndex = '1000';
+            celebration.style.animation = 'celebrationPop 2s ease-out forwards';
+            
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.remove();
+            }, 2000);
+        }
+
+        function backToMain() {
+            document.getElementById('mainStage').style.display = 'grid';
+            document.getElementById('stageShow').style.display = 'none';
+            currentModel = '';
+            currentCharacter = '';
+            
+            // Reset quiz
+            document.getElementById('quizContainer').style.display = 'none';
+        }
+
+        // Add some additional CSS animations
+        const additionalStyles = `
+            <style>
+                @keyframes celebrationPop {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+                }
+                
+                .step-card {
+                    animation: slideInUp 0.6s ease-out forwards;
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                
+                @keyframes slideInUp {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .model-card:nth-child(1) { animation-delay: 0.1s; }
+                .model-card:nth-child(2) { animation-delay: 0.2s; }
+                .model-card:nth-child(3) { animation-delay: 0.3s; }
+                .model-card:nth-child(4) { animation-delay: 0.4s; }
+                .model-card:nth-child(5) { animation-delay: 0.5s; }
+                .model-card:nth-child(6) { animation-delay: 0.6s; }
+                
+                .model-card {
+                    animation: fadeInUp 0.8s ease-out forwards;
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                
+                @keyframes fadeInUp {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .dialogue-box {
+                    animation: typewriter 0.5s ease-in-out;
+                }
+                
+                @keyframes typewriter {
+                    from { width: 0; }
+                    to { width: 100%; }
+                }
+                
+                .comedy-preview:hover {
+                    animation: wiggle 0.5s ease-in-out;
+                }
+                
+                @keyframes wiggle {
+                    0%, 100% { transform: rotate(0deg); }
+                    25% { transform: rotate(-2deg); }
+                    75% { transform: rotate(2deg); }
+                }
+            </style>
+        `;
+        
+        document.head.insertAdjacentHTML('beforeend', additionalStyles);
+        
+        // Add some interactive sound effects (text-based)
+        function playSound(type) {
+            const soundDiv = document.createElement('div');
+            soundDiv.style.position = 'fixed';
+            soundDiv.style.top = '20px';
+            soundDiv.style.right = '20px';
+            soundDiv.style.fontSize = '2em';
+            soundDiv.style.zIndex = '1000';
+            soundDiv.style.animation = 'soundPop 1s ease-out forwards';
+            
+            const sounds = {
+                click: '🔊',
+                success: '🎵',
+                error: '🔇',
+                celebration: '🎶'
+            };
+            
+            soundDiv.textContent = sounds[type] || '🔊';
+            document.body.appendChild(soundDiv);
+            
+            setTimeout(() => {
+                soundDiv.remove();
+            }, 1000);
+        }
+        
+        // Add sound effects to interactions
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('model-card') || 
+                e.target.classList.contains('character-btn') ||
+                e.target.classList.contains('quiz-option')) {
+                playSound('click');
+            }
+        });
+
+        // Add loading animation for steps
+        function showSteps() {
+            const stepsContainer = document.getElementById('stepsContainer');
+            const modelData = models[currentModel];
+            
+            stepsContainer.innerHTML = '<div style="text-align: center; padding: 20px;">🎭 準備舞台中...</div>';
+            
+            setTimeout(() => {
+                stepsContainer.innerHTML = '';
+                
+                modelData.steps.forEach((step, index) => {
+                    setTimeout(() => {
+                        const stepDiv = document.createElement('div');
+                        stepDiv.className = 'step-card';
+                        stepDiv.style.animationDelay = `${index * 0.1}s`;
+                        
+                        let dialogueContent = '';
+                        if (currentCharacter && comedyDialogues[currentModel] && comedyDialogues[currentModel][currentCharacter]) {
+                            const dialogue = comedyDialogues[currentModel][currentCharacter][index];
+                            if (dialogue) {
+                                dialogueContent = `<div class="dialogue-box">${dialogue}</div>`;
+                            }
+                        }
+                        
+                        stepDiv.innerHTML = `
+                            <h4><span class="step-number">${step.number}</span>${step.title}</h4>
+                            <p>${step.content}</p>
+                            ${dialogueContent}
+                        `;
+                        
+                        stepsContainer.appendChild(stepDiv);
+                        playSound('success');
+                    }, index * 200);
+                });
+            }, 500);
+        }
+    </script>
+</body>
+</html>

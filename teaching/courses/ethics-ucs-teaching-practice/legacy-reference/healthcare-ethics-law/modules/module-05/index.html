@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <title>Module 05｜Tarasoff 情境互動學習</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg,#0b1020,#0e1535);
+      color:#eef2ff;
+    }
+    header{
+      padding:24px;
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+    }
+    header p{
+      margin:8px 0 0;
+      color:#b8c1ff;
+      font-size:14px;
+      line-height:1.6;
+    }
+    main{
+      max-width:960px;
+      margin:0 auto;
+      padding:24px;
+      display:grid;
+      gap:20px;
+    }
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:16px;
+      padding:20px;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .card p{
+      margin:0 0 14px;
+      color:#c7d2fe;
+      font-size:14px;
+      line-height:1.6;
+    }
+    a.btn{
+      display:inline-block;
+      text-decoration:none;
+      color:white;
+      padding:12px 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.2);
+      background:#1e2a6d;
+      transition:.15s;
+      font-weight:600;
+    }
+    a.btn:hover{
+      background:#27358f;
+      transform:translateY(-1px);
+    }
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      margin-right:6px;
+      border:1px solid rgba(255,255,255,.25);
+      color:#dbe4ff;
+    }
+    footer{
+      text-align:center;
+      padding:18px;
+      font-size:12px;
+      color:#9aa6ff;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Module 05｜Tarasoff 情境互動學習</h1>
+  <p>
+    以 Tarasoff 案為核心，透過 <b>情境互動 → 即時投票 → 倫理模型對話</b>，
+    引導學生理解「警告義務（Duty to Warn）」的倫理與法律意涵。
+  </p>
+</header>
+
+<main>
+
+  <!-- 老師投影 -->
+  <section class="card">
+    <span class="tag">老師用</span>
+    <span class="tag">投影</span>
+    <h2>① 課堂即時互動（老師投影版）</h2>
+    <p>
+      老師操作版本，包含：
+      <br>・Scene 1 / Scene 2 情境
+      <br>・全班即時統計
+      <br>・六倫理模型逐步揭示
+      <br>・Tarasoff 警告觸發點提示
+    </p>
+    <a class="btn" href="./tarasoff-live-teacher-panel.html">
+      進入 老師投影互動版
+    </a>
+  </section>
+
+  <!-- 學生即時 -->
+  <section class="card">
+    <span class="tag">學生用</span>
+    <span class="tag">即時投票</span>
+    <h2>② 課堂即時投票（學生版）</h2>
+    <p>
+      學生使用手機或電腦作答：
+      <br>・參與 Scene 1 / Scene 2 投票
+      <br>・答案即時納入全班統計
+      <br>・適合同步課堂討論
+    </p>
+    <a class="btn" href="./tarasoff-live.html">
+      進入 學生即時作答版
+    </a>
+  </section>
+
+  <!-- 離線作業 -->
+  <section class="card">
+    <span class="tag">作業用</span>
+    <span class="tag">離線</span>
+    <h2>③ 個人反思作業（離線版）</h2>
+    <p>
+      不需即時連線，適合遠距或課後作業：
+      <br>・完整情境與倫理模型分析
+      <br>・可匯出 JSON 作為作業繳交
+    </p>
+    <a class="btn" href="./tarasoff-local.html">
+      進入 離線反思作業版
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  Healthcare Ethics & Law｜Module 05｜Tarasoff Case
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生醫倫理四大原則 | 護理倫理教學</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1B2E5E; --navy2:#243775; --gold:#C8933A; --goldl:#E8B96A; --goldp:#FBF3E4;
+  --bg:#F4F3EF; --white:#fff; --text:#1a1a2e; --muted:#5a6a8a;
+  --A:#2563EB; --Al:#DBEAFE; --Am:#3B82F6;
+  --B:#059669; --Bl:#D1FAE5; --Bm:#10B981;
+  --N:#DC2626; --Nl:#FEE2E2; --Nm:#EF4444;
+  --J:#7C3AED; --Jl:#EDE9FE; --Jm:#8B5CF6;
+  --r:12px; --rl:20px;
+  --sh:0 4px 20px rgba(27,46,94,.10);
+  --shl:0 8px 40px rgba(27,46,94,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;font-size:16px}
+
+/* HEADER */
+header{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.28)}
+.htop{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.logo{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--goldl);font-weight:700}
+.logo span{color:rgba(255,255,255,.45);font-size:12px;font-weight:300;display:block}
+.hbg{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.hbg span{display:block;width:22px;height:2px;background:#fff;margin:5px 0;border-radius:2px;transition:.3s}
+nav{display:flex;padding:0 12px;overflow-x:auto;scrollbar-width:none;gap:0}
+nav::-webkit-scrollbar{display:none}
+nav button{background:none;border:none;color:rgba(255,255,255,.6);padding:10px 14px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:500;white-space:nowrap;
+  border-bottom:3px solid transparent;transition:.2s;display:flex;align-items:center;gap:5px}
+nav button:hover{color:#fff}
+nav button.active{color:#fff;border-bottom-color:var(--gold)}
+nav button .dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#1e3a8a 100%);
+  color:#fff;padding:52px 20px 44px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 25% 40%,rgba(200,147,58,.13) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 60%,rgba(37,99,235,.14) 0%,transparent 50%);pointer-events:none}
+.hbadge{display:inline-block;background:rgba(200,147,58,.18);border:1px solid rgba(200,147,58,.4);
+  color:var(--goldl);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  padding:5px 16px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(24px,5vw,42px);font-weight:900;line-height:1.25;margin-bottom:6px}
+.hero h1 em{font-style:normal;color:var(--goldl)}
+.hero-sub{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:36px}
+.pcards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:880px;margin:0 auto}
+.pcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);
+  padding:18px 12px;cursor:pointer;transition:.25s;text-align:center;backdrop-filter:blur(4px)}
+.pcard:hover{background:rgba(255,255,255,.14);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.pcard .ico{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin:0 auto 10px}
+.pcard h3{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
+.pcard p{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* SECTIONS */
+.sw{display:none;animation:fi .38s ease}
+.sw.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ca{max-width:1080px;margin:0 auto;padding:36px 18px}
+
+/* SECTION HEADER */
+.sec-hd{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:18px;
+  border-bottom:2px solid rgba(0,0,0,.07)}
+.sec-ico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;font-size:26px;flex-shrink:0}
+.sec-title h2{font-family:'Noto Serif TC',serif;font-size:clamp(20px,3.5vw,28px);font-weight:900}
+.sec-title p{font-size:13.5px;color:var(--muted);margin-top:2px}
+
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:24px;background:rgba(0,0,0,.06);border-radius:10px;
+  padding:4px;width:fit-content;flex-wrap:wrap}
+.tb{background:none;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:500;color:var(--muted);transition:.2s;white-space:nowrap}
+.tb.active{background:#fff;color:var(--text);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tc{display:none}.tc.active{display:block}
+
+/* CARDS */
+.card{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:18px}
+.card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.card p,.card li{color:#374151;font-size:14.5px;line-height:1.85}
+.card ul{padding-left:18px}.card li{margin-bottom:5px}
+
+/* CONCEPT BOX */
+.cb{border-left:4px solid;background:#fff;border-radius:0 var(--r) var(--r) 0;
+  padding:18px 22px;margin-bottom:14px;box-shadow:var(--sh)}
+.cb .lb{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.cb h3{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;margin-bottom:7px}
+.cb p{font-size:14px;color:#374151}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* HIGHLIGHT BOXES */
+.hb{border-radius:var(--r);padding:16px 18px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start}
+.hb .hi{font-size:20px;flex-shrink:0;margin-top:2px}
+.hb .hc h4{font-weight:700;font-size:14.5px;margin-bottom:3px}
+.hb .hc p{font-size:13.5px}
+.tip{background:#FFFBEB;border:1px solid #FDE68A}
+.law{background:#EFF6FF;border:1px solid #BFDBFE}
+.warn{background:#FFF5F5;border:1px solid #FED7D7}
+.ok{background:#F0FFF4;border:1px solid #C6F6D5}
+.purple{background:#F5F3FF;border:1px solid #DDD6FE}
+
+/* CASE CARD */
+.cc{background:#fff;border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px}
+.ch{padding:16px 22px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px}
+.ch:hover{filter:brightness(.97)}
+.chl{display:flex;align-items:center;gap:12px}
+.ctag{background:rgba(0,0,0,.15);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  padding:3px 9px;border-radius:5px;white-space:nowrap}
+.ch h3{font-family:'Noto Serif TC',serif;font-weight:700;font-size:16px;color:#fff}
+.cto{background:rgba(255,255,255,.2);border:none;width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .3s;
+  color:#fff;font-size:14px;flex-shrink:0}
+.cto.open{transform:rotate(180deg)}
+.cb2{padding:0 22px;max-height:0;overflow:hidden;transition:max-height .5s ease,padding .3s ease}
+.cb2.open{max-height:2000px;padding:22px}
+.scen{background:#F8F7F5;border-radius:10px;padding:16px;margin-bottom:14px;border-left:4px solid #E5E7EB}
+.scen .sl{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.scen p{font-size:14px;color:#374151}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ai{background:#fff;border-radius:9px;padding:13px;border:1px solid #E5E7EB}
+.ai .al{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.ai p{font-size:13px;color:#374151;line-height:1.7}
+.res{background:var(--goldp);border:1px solid #E8D5A3;border-radius:10px;padding:15px}
+.res .rl{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.res p{font-size:13.5px;color:#574624}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh);margin-bottom:18px;font-size:13.5px}
+.tbl th{padding:11px 14px;text-align:left;font-weight:700;font-size:12px}
+.tbl td{padding:11px 14px;border-top:1px solid #F3F4F6;vertical-align:top}
+.tbl tr:hover td{background:#FAFAFA}
+
+/* SUMMARY PILLS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.sp{border-radius:var(--rl);padding:22px 14px;text-align:center;color:#fff}
+.sp .si{font-size:28px;margin-bottom:8px}
+.sp .sz{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;margin-bottom:3px}
+.sp .se{font-size:10.5px;opacity:.7;margin-bottom:8px}
+.sp .sk{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700}
+
+/* STEP BOX */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #F3F4F6;align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step-num{background:var(--navy);color:#fff;width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px}
+.step-body h4{font-size:14.5px;font-weight:700;margin-bottom:3px}
+.step-body p{font-size:13.5px;color:#374151}
+
+/* CONFLICT */
+.conf{background:#fff;border-radius:var(--rl);padding:26px;box-shadow:var(--sh);margin-bottom:18px}
+.conf h3{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;margin-bottom:14px}
+.cvs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:16px}
+.cs{border-radius:11px;padding:14px;text-align:center}
+.cs .csl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;opacity:.8}
+.cs p{font-size:13.5px;font-weight:500;line-height:1.5}
+.vsbadge{width:36px;height:36px;background:#F3F4F6;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--muted);flex-shrink:0}
+
+/* QUIZ */
+.qwrap{max-width:720px;margin:0 auto}
+.qpbar{height:6px;background:#E5E7EB;border-radius:3px;margin-bottom:24px;overflow:hidden}
+.qpfill{height:100%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:3px;transition:width .4s}
+.qcard{background:#fff;border-radius:var(--rl);padding:28px;box-shadow:var(--shl);margin-bottom:14px}
+.qmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.qnum{font-size:12.5px;font-weight:600;color:var(--muted)}
+.qtag{font-size:10.5px;font-weight:700;letter-spacing:.08em;padding:3px 9px;border-radius:11px}
+.qq{font-family:'Noto Serif TC',serif;font-size:clamp(15px,2.3vw,18px);font-weight:700;
+  line-height:1.65;margin-bottom:20px;color:var(--text)}
+.qopts{display:flex;flex-direction:column;gap:9px}
+.qo{background:#F8F9FA;border:2px solid #E5E7EB;border-radius:9px;padding:13px 16px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:13.5px;text-align:left;transition:.2s;
+  display:flex;align-items:center;gap:11px;width:100%}
+.qo:hover:not(:disabled){border-color:var(--navy2);background:#EFF2FF}
+.ql{width:26px;height:26px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:.2s}
+.qo.cor{border-color:var(--B);background:var(--Bl)}.qo.cor .ql{background:var(--B);color:#fff}
+.qo.wrg{border-color:var(--N);background:var(--Nl)}.qo.wrg .ql{background:var(--N);color:#fff}
+.qo:disabled{cursor:default}
+.qexp{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:9px;padding:14px;
+  margin-top:14px;font-size:13.5px;color:#065F46;display:none}
+.qexp.show{display:block}
+.qexp.we{background:#FFF7ED;border-color:#FED7AA;color:#7C2D12}
+.qnav{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
+
+/* BUTTONS */
+.bp{background:var(--navy);color:#fff;border:none;padding:11px 24px;border-radius:9px;cursor:pointer;
+  font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;transition:.2s;display:flex;align-items:center;gap:5px}
+.bp:hover{background:var(--navy2);transform:translateY(-1px)}
+.bs{background:transparent;color:var(--muted);border:2px solid #E5E7EB;padding:11px 20px;border-radius:9px;
+  cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:600;transition:.2s}
+.bs:hover{border-color:var(--navy);color:var(--navy)}
+
+/* SCORE */
+.sr{display:none;text-align:center;padding:44px 28px;background:#fff;border-radius:var(--rl);box-shadow:var(--shl)}
+.sr.show{display:block}
+.sring{width:130px;height:130px;border-radius:50%;border:8px solid;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;margin:0 auto 22px}
+.sn{font-family:'Noto Serif TC',serif;font-size:40px;font-weight:700}
+.st{font-size:12px;color:var(--muted)}
+.sm{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;margin-bottom:6px}
+.ss{font-size:14px;color:var(--muted);margin-bottom:24px}
+.sbd{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.bi{border-radius:9px;padding:13px 8px;text-align:center}
+.bn{font-size:11px;font-weight:700;margin-bottom:5px}
+.bsc{font-size:20px;font-weight:800}.bt{font-size:10.5px;color:var(--muted)}
+
+/* DISCUSSION */
+.dc{background:#fff;border-radius:var(--rl);padding:22px;box-shadow:var(--sh);margin-bottom:18px;border-top:4px solid}
+.dtag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:3px 11px;border-radius:20px;margin-bottom:12px}
+.dc h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.dsc{background:#F8F7F5;border-radius:9px;padding:14px;font-size:14px;color:#374151;margin-bottom:12px}
+.dpts{list-style:none;padding:0}
+.dpts li{display:flex;align-items:flex-start;gap:9px;padding:7px 0;font-size:13.5px;
+  color:var(--muted);border-bottom:1px solid #F3F4F6}
+.dpts li:last-child{border-bottom:none}
+.dpts li::before{content:'💬';flex-shrink:0;margin-top:2px}
+
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:20px;background:#F3F4F6;color:var(--muted)}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.45);text-align:center;padding:22px;font-size:12.5px;margin-top:36px}
+footer strong{color:var(--goldl)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hbg{display:block}
+  nav{display:none;flex-direction:column;padding:6px 14px 12px}
+  nav.open{display:flex}
+  nav button{padding:11px 6px;border-bottom:1px solid rgba(255,255,255,.08);border-left:3px solid transparent}
+  nav button.active{border-bottom-color:rgba(255,255,255,.08);border-left-color:var(--gold)}
+  .pcards,.g2,.g3,.g4,.ag,.sg{grid-template-columns:1fr 1fr}
+  .sbd{grid-template-columns:repeat(2,1fr)}
+  .cvs{grid-template-columns:1fr}
+  .vsbadge{display:none}
+  .qcard{padding:18px}
+  .tbl{font-size:12.5px}.tbl th,.tbl td{padding:9px 11px}
+}
+@media(max-width:480px){
+  .pcards,.sg{grid-template-columns:1fr 1fr}
+  .g2,.g3,.g4,.ag{grid-template-columns:1fr}
+  .hero{padding:36px 14px 30px}
+  .ca{padding:22px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="htop">
+    <div class="logo">生醫倫理四大原則 <span>護理倫理| 曾惠楨</span></div>
+    <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+  </div>
+  <nav id="nav">
+    <button class="active" onclick="go('ov',this)"><span class="dot" style="background:var(--gold)"></span>📋 總覽</button>
+    <button onclick="go('A',this)"><span class="dot" style="background:var(--A)"></span>🧭 自主原則</button>
+    <button onclick="go('B',this)"><span class="dot" style="background:var(--B)"></span>❤️ 行善原則</button>
+    <button onclick="go('N',this)"><span class="dot" style="background:var(--N)"></span>🛡️ 不傷害原則</button>
+    <button onclick="go('J',this)"><span class="dot" style="background:var(--J)"></span>⚖️ 公平原則</button>
+    <button onclick="go('CF',this)"><span class="dot" style="background:#F59E0B"></span>⚔️ 原則衝突</button>
+    <button onclick="go('QZ',this)"><span class="dot" style="background:#EC4899"></span>📝 測驗</button>
+    <button onclick="go('DI',this)"><span class="dot" style="background:#06B6D4"></span>💬 討論</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hbadge">Biomedical Ethics · 生醫倫理</div>
+  <h1>生醫倫理的<em>四大支柱</em></h1>
+  <p class="hero-sub">Beauchamp & Childress — 護理臨床決策的核心準則</p>
+  <div class="pcards">
+    <div class="pcard" onclick="go('A',document.querySelectorAll('nav button')[1])">
+      <div class="ico" style="background:var(--Al)">🧭</div>
+      <h3>尊重自主</h3><p>Autonomy</p>
+    </div>
+    <div class="pcard" onclick="go('B',document.querySelectorAll('nav button')[2])">
+      <div class="ico" style="background:var(--Bl)">❤️</div>
+      <h3>行善</h3><p>Beneficence</p>
+    </div>
+    <div class="pcard" onclick="go('N',document.querySelectorAll('nav button')[3])">
+      <div class="ico" style="background:var(--Nl)">🛡️</div>
+      <h3>不傷害</h3><p>Non-maleficence</p>
+    </div>
+    <div class="pcard" onclick="go('J',document.querySelectorAll('nav button')[4])">
+      <div class="ico" style="background:var(--Jl)">⚖️</div>
+      <h3>公平正義</h3><p>Justice</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     總覽 OVERVIEW
+══════════════════════════════ -->
+<div class="sw active" id="sw-ov"><div class="ca">
+  <div class="sg">
+    <div class="sp" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">
+      <div class="si">🧭</div><div class="sz">自主原則</div><div class="se">Autonomy</div><div class="sk">知情同意</div>
+    </div>
+    <div class="sp" style="background:linear-gradient(135deg,#065F46,#10B981)">
+      <div class="si">❤️</div><div class="sz">行善原則</div><div class="se">Beneficence</div><div class="sk">促進健康</div>
+    </div>
+    <div class="sp" style="background:linear-gradient(135deg,#991B1B,#EF4444)">
+      <div class="si">🛡️</div><div class="sz">不傷害原則</div><div class="se">Non-maleficence</div><div class="sk">避免傷害</div>
+    </div>
+    <div class="sp" style="background:linear-gradient(135deg,#4C1D95,#8B5CF6)">
+      <div class="si">⚖️</div><div class="sz">公平原則</div><div class="se">Justice</div><div class="sk">資源分配</div>
+    </div>
+  </div>
+  <div class="card"><h3>📖 四大原則起源與意義</h3>
+    <p>美國倫理學家 Beauchamp 和 Childress 在1979年出版《生醫倫理原則》（Principles of Biomedical Ethics），提出四大原則作為醫療照護倫理決策的核心架構。這四項原則並非互相排斥，而是相輔相成，護理師需依臨床情境靈活運用並衡量取捨。</p>
+  </div>
+  <table class="tbl">
+    <thead><tr style="background:var(--navy);color:#fff">
+      <th>原則</th><th>核心意涵</th><th>臨床最常應用</th><th>關鍵關鍵字</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--A)">🧭 自主</strong></td><td>尊重個人自我決定的權利</td><td>知情同意、拒絕治療、隱私保護</td><td>行為能力、意思能力、DNR</td></tr>
+      <tr><td><strong style="color:var(--B)">❤️ 行善</strong></td><td>主動促進病人健康福祉</td><td>預防跌倒、去除傷害、出院衛教</td><td>權衡利害、最大利益</td></tr>
+      <tr><td><strong style="color:var(--N)">🛡️ 不傷害</strong></td><td>避免對病人身心靈造成傷害</td><td>謹慎執行醫療、風險評估、弱勢保護</td><td>複式影響、Do No Harm</td></tr>
+      <tr><td><strong style="color:var(--J)">⚖️ 公平</strong></td><td>公平適當地分配醫療資源</td><td>急診分診、ICU分配、資源不足時決策</td><td>形式公平、實質公平、SOFA</td></tr>
+    </tbody>
+  </table>
+  <div class="hb tip"><div class="hi">💡</div><div class="hc"><h4>學習重點提示</h4>
+    <p>四大原則在臨床上<strong>常常互相衝突</strong>——例如「行善」要求積極治療，但病人行使「自主」拒絕治療。護理師的專業核心不是死背原則，而是能在衝突中分析、判斷，並說得出道德依據。</p>
+  </div></div>
+</div></div>
+
+<!-- ══════════════════════════════
+     自主原則 AUTONOMY
+══════════════════════════════ -->
+<div class="sw" id="sw-A"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:var(--Al)">🧭</div>
+    <div class="sec-title"><h2 style="color:var(--A)">自主原則</h2><p>Respect for Autonomy | 尊重個人自我決定的基本權利</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb active" onclick="st(this,'a1')">📚 概念與定義</button>
+    <button class="tb" onclick="st(this,'a2')">⚖️ 行為能力 & 意思能力</button>
+    <button class="tb" onclick="st(this,'a3')">📋 知情同意</button>
+    <button class="tb" onclick="st(this,'a4')">🏥 臨床案例</button>
+  </div>
+
+  <!-- TAB a1 概念與定義 -->
+  <div class="tc active" id="a1">
+    <div class="cb" style="border-color:var(--A)">
+      <div class="lb" style="color:var(--A)">詞源 Etymology</div>
+      <h3>自主的意義</h3>
+      <p>源於希臘文「<strong>autos（自己）</strong>」＋「<strong>nomos（規則或法律）</strong>」，意指「自我約束、自我規範、自我管理」。核心是指個人能依據自身信念獨立做判斷、做選擇的能力。</p>
+    </div>
+    <div class="g2">
+      <div>
+        <div class="cb" style="border-color:var(--A)">
+          <div class="lb" style="color:var(--A)">彌爾（Mill）觀點</div>
+          <h3>思想自由與不干涉</h3>
+          <p>個體受保護，不受他人干擾，有權利依其信念做選擇。自主的人有自由意志，可依照自己的理解和信念做決定，他人（包括醫療人員）不應強加干涉。</p>
+        </div>
+        <div class="cb" style="border-color:var(--A)">
+          <div class="lb" style="color:var(--A)">自主的兩個要件</div>
+          <h3>核心構成要素</h3>
+          <p>① <strong>自由意志（Liberty）</strong>：不受外力強迫或不當影響<br>
+          ② <strong>行動能力（Agency）</strong>：能夠理解並實現自己的意願</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-left:4px solid var(--A)">
+          <h3>盧（2019）的三種自主</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">1</div>
+              <div class="step-body">
+                <h4>思想自主</h4>
+                <p>一個人情緒正常穩定，且具備正確理性的思考能力，能對資訊進行分析推理。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">2</div>
+              <div class="step-body">
+                <h4>意願自主</h4>
+                <p>能依據自己的意願及有目的地行事，不受任何壓力或他人不當影響，做出真實反映自身價值觀的決定。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">3</div>
+              <div class="step-body">
+                <h4>行動自主</h4>
+                <p>個人在採取行動時，依照自己的價值觀做正確判斷，並有能力將決定付諸實踐。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🏛️ 病人的基本權利——里斯本宣言（1981年，1995年修訂）</h3>
+      <p style="margin-bottom:14px">世界醫學會確立了病人在醫療關係中應享有的基本權利：</p>
+      <div class="g3">
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>接受良好醫療照護的權利</strong><br>無歧視地接受符合其需求的適當醫療服務</div>
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>自由選擇醫療的權利</strong><br>病人可選擇醫師、醫療團隊及醫療機構</div>
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>自主決定的權利</strong><br>知悉病情後，自主做出醫療決策，包括拒絕治療</div>
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>知情的權利</strong><br>了解自己的健康狀況、治療選項及預後</div>
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>隱私與保密的權利</strong><br>病人資料應保密，即使病人過世後仍應保密</div>
+        <div style="background:var(--Al);border-radius:8px;padding:12px;font-size:13.5px"><strong>尊嚴與宗教的權利</strong><br>接受人道照護，保有個人信仰與尊嚴</div>
+      </div>
+    </div>
+    <div class="hb law"><div class="hi">📜</div><div class="hc"><h4>台灣《病人自主權利法》（2019年7月施行）</h4>
+      <p>台灣第一部以病人為主體的醫療法規，保障病人的<strong>醫療自主權</strong>與<strong>善終權益</strong>，讓病人可透過「預立醫療照護諮商（ACP）」表達在特定臨床條件下的醫療意願，醫療人員有義務遵守。</p>
+    </div></div>
+  </div>
+
+  <!-- TAB a2 行為能力&意思能力 -->
+  <div class="tc" id="a2">
+    <div class="g2">
+      <div>
+        <div class="cb" style="border-color:var(--A)">
+          <div class="lb" style="color:var(--A)">法律概念</div>
+          <h3>行為能力（Capacity to make juridical acts）</h3>
+          <p>法律上能夠<strong>獨立依照自己的意思取得權利、負擔義務</strong>的資格。判斷依據：是否具備理解、分析和表達的能力。</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--A)">
+          <h3>民法三類行為能力</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num" style="background:var(--B)">✓</div>
+              <div class="step-body"><h4>完全行為能力</h4><p>年滿18歲且未受監護宣告者。可獨立進行所有法律行為。</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:#F59E0B)">△</div>
+              <div class="step-body"><h4>限制行為能力</h4><p>7歲以上未滿18歲，且未結婚、未受監護宣告者。重大法律行為需法定代理人同意。</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--N)">✗</div>
+              <div class="step-body"><h4>無行為能力</h4><p>未滿7歲，或受監護宣告者。所有法律行為需由父母或監護人代行。</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="hb tip"><div class="hi">🧠</div><div class="hc"><h4>皮亞傑認知發展與行為能力評估</h4>
+          <p>進行<strong>複雜知情同意溝通</strong>，至少需具備「形式運思期」（約12歲以上）的認知能力，才能理解、分析複雜的醫療情況並做出判斷。簡單易懂的說明則具體運思期（7-11歲）即可理解。</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="cb" style="border-color:var(--A)">
+          <div class="lb" style="color:var(--A)">心理概念</div>
+          <h3>意思能力（Decision-making capacity）</h3>
+          <p>「對於自己的行為及其效果，能正常判斷、識別及預期的精神能力。」意思能力缺損<strong>≠</strong>具有精神疾病；有精神症狀的病人仍可能具有意思能力。</p>
+        </div>
+        <div class="card">
+          <h3>意思能力的四個評估要素（吳, 2010）</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">1</div>
+              <div class="step-body"><h4>表達決定的能力</h4><p>病人能否清楚溝通並表達自己的醫療決定？例：病人說「我想知道所有選項」。</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">2</div>
+              <div class="step-body"><h4>了解資訊的能力</h4><p>病人能否理解醫師提供的醫療資訊？可能受疾病、高度緊張、藥物影響。例：病人能用自己的話說明診斷。</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">3</div>
+              <div class="step-body"><h4>評估資訊重要性的能力</h4><p>病人能否評估病情資訊對自己的重要性？了解不治療的後果。例：「我知道不開刀可能感染擴散」。</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num" style="background:var(--A)">4</div>
+              <div class="step-body"><h4>論理推分析的能力</h4><p>病人能否運用資訊依據自身價值觀做出合理決定？例：「雖然化療很痛苦，但我想活著看到女兒畢業」。</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="hb warn"><div class="hi">⚠️</div><div class="hc"><h4>重要觀念</h4>
+          <p>有精神疾病診斷<strong>不等於</strong>意思能力缺損。即使被診斷精神疾病，病人仍有可能具備意思能力，應個別評估，醫護人員不能一概剝奪其自主決定的權利。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB a3 知情同意 -->
+  <div class="tc" id="a3">
+    <div class="card" style="border-top:4px solid var(--A)">
+      <h3>📋 知情同意的意義（Informed Consent）</h3>
+      <p style="margin-bottom:14px">知情同意是<strong>尊重病人自主最具體的表現方式</strong>，也是醫療行為合法化的重要條件，由兩個核心要素構成：</p>
+      <div class="g2">
+        <div style="background:var(--Al);border-radius:10px;padding:16px">
+          <div style="font-weight:700;color:var(--A);margin-bottom:6px;font-size:14.5px">知情（Informed）</div>
+          <p style="font-size:13.5px">病人或其法定代理人能清楚了解：疾病診斷、治療方法、預後、風險副作用、替代方案及不治療的後果等相關醫療資訊。</p>
+        </div>
+        <div style="background:var(--Al);border-radius:10px;padding:16px">
+          <div style="font-weight:700;color:var(--A);margin-bottom:6px;font-size:14.5px">同意（Consent）</div>
+          <p style="font-size:13.5px">在完全理解資訊後，<strong>自願地</strong>同意接受侵入性檢查、治療或臨床試驗，不受任何強迫或不當影響。</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>醫護人員應評估的四大要素</h3>
+      <div class="ag" style="margin-top:12px">
+        <div class="ai"><div class="al" style="color:var(--A)">① 病人的能力（Competence）</div><p>說明內容的複雜度是否適合病人理解？需評估意識狀態（清醒/昏迷）、認知能力（年齡、智能）、慣用語言、受教育程度。</p></div>
+        <div class="ai"><div class="al" style="color:var(--A)">② 病情的說明（Disclosure）</div><p>使用病人能理解的語言，充分說明，<strong>避免醫學術語</strong>，可輔以圖示、模型、影片等視覺輔助工具，確認病人真的理解（不只是點頭）。</p></div>
+        <div class="ai"><div class="al" style="color:var(--A)">③ 病人是否了解（Comprehension）</div><p>說明後請病人<strong>用自己的話複述</strong>重點，確認真正理解。若未理解，應改用不同方式重新說明，直到確認理解為止。</p></div>
+        <div class="ai"><div class="al" style="color:var(--A)">④ 自願性（Voluntariness）</div><p>病人必須在<strong>未受任何強迫或不當影響</strong>（包括家屬壓力、醫師權威壓力）的情況下，自由做出決定。</p></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <h3>告知說明應包含的內容</h3>
+        <ul style="margin-top:8px">
+          <li>疾病診斷及目前病況</li>
+          <li>各種檢驗項目名稱與目的</li>
+          <li>建議可行的治療方案及成功率</li>
+          <li>各替代方案的優缺點比較</li>
+          <li>治療的風險、副作用、可能併發症</li>
+          <li>預後說明（含接受/拒絕治療後的結果）</li>
+          <li>病人可隨時撤回同意的權利</li>
+        </ul>
+      </div>
+      <div>
+        <div class="hb warn"><div class="hi">⚠️</div><div class="hc"><h4>四種可免除告知義務的情況</h4>
+          <p>① <strong>緊急情況：</strong>危及生命，病人無意識且無法聯繫家屬<br>
+          ② <strong>病人自動放棄：</strong>病人明示不想知道詳情<br>
+          ③ <strong>治療上的特權：</strong>告知會導致病人喪失求生意志，造成更大健康傷害<br>
+          ④ <strong>法律另有規定：</strong>如傳染病防治法強制隔離、精神衛生法強制就醫</p>
+        </div></div>
+        <div class="hb law"><div class="hi">⚖️</div><div class="hc"><h4>醫療父權主義（Medical Paternalism）</h4>
+          <p><strong>強醫主（Full Paternalism）：</strong>完全由醫師專業主導，未必事先告知（例：糖尿病用藥選擇）<br><strong>弱醫主（Weak Paternalism）：</strong>重大決策給予充分說明後徵詢同意再執行（例：手術、人體試驗）</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB a4 臨床案例 -->
+  <div class="tc" id="a4">
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,var(--A),#1e40af)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 A1</span><h3>王奶奶因宗教信仰拒絕輸血</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>王奶奶，85歲，因骨折術後大量出血需要輸血。她是虔誠的某宗教信徒，意識清楚，明確表示因宗教信仰拒絕輸血。其子女非常焦急，要求護理師「勸說她接受輸血，救命比信仰重要」。</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--A)">🧭 自主原則分析</div><p>王奶奶意識清楚、年滿18歲，具<strong>完全行為能力</strong>，有法律上的權利拒絕任何醫療處置，包括輸血。她的宗教信仰屬於個人價值觀，醫護人員應予尊重。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 行善原則角度</div><p>輸血確實可挽救生命，是對病人有益的醫療行為。但「為病人好」不代表可以凌駕其自主決定。<strong>行善需在尊重自主的前提下進行。</strong></p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 護理行動</div><p>① 詳細記錄病人拒絕輸血的意願及理由<br>② 立即通知主治醫師<br>③ 確認病人了解拒絕的後果<br>④ 與倫理委員會討論<br>⑤ 積極尋求替代治療方案（手術止血等）</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 倫理結論</div><p>家屬雖有關心，但<strong>有行為能力的成人病人，家屬無法代替其做醫療決定</strong>。護理師不應「說服」病人接受違背其意願的治療，這反而違反倫理。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 建議護理行動</div><p>尊重王奶奶的決定，做好完整紀錄；安撫家屬情緒並解釋法律與倫理依據；積極尋求不需輸血的替代方案；提供心理支持與靈性照顧；必要時會請安寧緩和醫療團隊協助。</p></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#1e40af,#1d4ed8)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 A2</span><h3>末期病人詢問「我還能活多久？」</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>林先生，58歲，末期肺癌。家屬提前拜託醫護人員「千萬不要告訴他病情有多嚴重，他承受不了」。但林先生意識清楚，今日獨自詢問護理師：「護理師，我還能活多久？」</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--A)">🧭 知情權</div><p>林先生有<strong>知情的法律權利</strong>——了解自己的病況是行使後續醫療決策（如預立意願書、安排後事、與家人道別）的基礎。知情同意包含「知情」的主動義務。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">👨‍👩‍👧 家屬善意隱瞞</div><p>家屬出發點是保護病人，但「善意隱瞞」可能<strong>剝奪病人自主決定的機會</strong>，也可能違背誠實的倫理義務。台灣文化中家屬介入醫療決策的情況普遍，需謹慎平衡。</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 護理師的兩難</div><p>護理師既不能違背家屬的托付，也不能直接欺騙病人。正確做法：<strong>不直接告知，也不否認</strong>，而是回應「這個問題非常重要，我們一起去問主治醫師好嗎？」</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 建構支持環境</div><p>安排「家庭會議」，讓醫師、病人、家屬共同討論；評估林先生的心理準備程度；先問他「您希望了解到什麼程度？」讓他掌握知情的節奏。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 正確護理回應</div><p>護理師可說：「林先生，您問的這個問題非常重要，讓我們一起請主治醫師來跟您詳細說明，好嗎？您有沒有希望家人也一起在場？」——這樣既不欺騙病人，也為後續正式告知鋪路，兼顧病人的知情權與家庭支持。</p></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#1D4ED8,#2563EB)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 A3</span><h3>智能障礙病人的手術同意</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>小明，22歲，中度智能障礙（心智年齡約8-9歲），需要進行盲腸炎手術。他本人說「我不要手術，會痛」，但他的監護人（母親）已簽署手術同意書。護理師應如何看待這個情況？</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--A)">🧭 行為能力評估</div><p>小明雖成年（22歲），但中度智能障礙的心智年齡約8-9歲，屬於「具體運思期」，難以理解複雜醫療情況。法院可依法宣告其為<strong>受輔助宣告或受監護宣告之人</strong>。</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 代理決策</div><p>若已有監護宣告，監護人有權代行法律行為，包括簽署手術同意書。監護人的決定應以<strong>「小明的最佳利益」</strong>為考量，而非監護人自身的方便。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 尊重殘存自主</div><p>即使法律上由監護人代決，護理師仍應盡量<strong>以小明能理解的方式說明</strong>（如：「打一針，肚子的壞蟲就消滅了」），給予他能理解層次的選擇感與心理準備。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 護理倫理要點</div><p>護理師不應忽視小明的拒絕，應評估：他的拒絕是出於<strong>恐懼（可處理）</strong>還是真實意願（需進一步評估）；提供充分的術前情緒安撫與心理準備。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 護理建議</div><p>確認監護宣告的法律文件；用簡單圖畫或玩偶說明手術過程；評估小明拒絕的原因（疼痛恐懼？不了解？）；給予術前安撫及陪伴；術後充分給予疼痛控制，實現對病人最大的照顧。</p></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     行善原則 BENEFICENCE
+══════════════════════════════ -->
+<div class="sw" id="sw-B"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:var(--Bl)">❤️</div>
+    <div class="sec-title"><h2 style="color:var(--B)">行善原則</h2><p>Beneficence | 主動促進病人的健康與福祉</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb active" onclick="st(this,'b1')">📚 概念與定義</button>
+    <button class="tb" onclick="st(this,'b2')">⚖️ 權衡利害原則</button>
+    <button class="tb" onclick="st(this,'b3')">🏥 臨床案例</button>
+  </div>
+
+  <!-- TAB b1 -->
+  <div class="tc active" id="b1">
+    <div class="cb" style="border-color:var(--B)">
+      <div class="lb" style="color:var(--B)">定義 Definition</div>
+      <h3>行善的意義（Beneficence）</h3>
+      <p>行善（beneficence）是指履行仁慈、善行，亦是一種<strong>義務與責任</strong>，而非只是「想做就做的好事」。醫療照護的目的是恢復並促進健康；護理師應以良善為出發點，盡力為病人謀求最大的健康福祉，包括治療疾病、減輕痛苦、延長生命。</p>
+    </div>
+    <div class="hb ok"><div class="hi">❤️</div><div class="hc"><h4>行善包含兩個主要觀念</h4>
+      <p>① <strong>提供有益病人的事</strong>——主動做對病人有正面效益的事<br>② <strong>權衡利益和傷害得失</strong>——行善不能讓造成的傷害遠超過帶來的益處</p>
+    </div></div>
+    <div class="g3">
+      <div class="card" style="border-top:3px solid var(--B)">
+        <div style="font-size:26px;margin-bottom:8px">🔮</div>
+        <h3 style="font-size:15px;color:var(--B)">做法一：預防病人受傷害</h3>
+        <p style="font-size:13.5px">事先預測疾病的危險因子，採取適當預防措施，<strong>在傷害發生之前</strong>就採取行動。</p>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：跌倒風險評估</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：褥瘡預防翻身</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：預防感染措施</span></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--B)">
+        <div style="font-size:26px;margin-bottom:8px">🚑</div>
+        <h3 style="font-size:15px;color:var(--B)">做法二：去除病人傷害</h3>
+        <p style="font-size:13.5px">不對病人造成傷害，且要積極減輕傷害，<strong>排除既有的損傷或傷害情況</strong>，即使手段本身需要造成某種程度的痛苦。</p>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：截肢避免敗血症</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：引流排除膿腫</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：傷口清創</span></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--B)">
+        <div style="font-size:26px;margin-bottom:8px">✨</div>
+        <h3 style="font-size:15px;color:var(--B)">做法三：為病人做善事</h3>
+        <p style="font-size:13.5px">做對病人有利的事，提供有正面效果的護理活動，積極促進病人的健康與生活品質。</p>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：出院護理指導</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：健康衛教</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Bl);color:var(--B)">例：心理支持</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📌 行善原則的臨床範例（PPT 原始案例）</h3>
+      <div class="ag">
+        <div class="ai"><div class="al" style="color:var(--B)">範例2-1：王強的跌倒預防</div><p>王強（70歲，虛弱）因急性闌尾炎入院，護理師評估為跌倒高危險群。<br>→ <strong>預防傷害</strong>：執行防跌措施（床欄、呼叫鈴、防滑鞋、加強巡視）。</p></div>
+        <div class="ai"><div class="al" style="color:var(--B)">範例2-2：李莉的截肢</div><p>李莉（76歲）糖尿病足壞疽惡臭。醫師建議膝下截肢以避免敗血症死亡。<br>→ <strong>去除傷害</strong>：截肢雖痛苦，但目的是去除更大的傷害（死亡威脅）。</p></div>
+        <div class="ai"><div class="al" style="color:var(--B)">範例2-3：阿蒂的出院指導</div><p>阿蒂（印尼籍）確診開放性肺結核，服藥2週AFB轉陰後出院。<br>→ <strong>為病人做善事</strong>：提供完整出院護理指導，包括持續服藥的重要性、感染控制。</p></div>
+        <div class="ai"><div class="al" style="color:var(--B)">範例2-4：王美美的化療副作用</div><p>王美美（62歲）乳癌第二期，化療期間出現口腔黏膜炎副作用。<br>→ <strong>權衡利害</strong>：化療能延長生命（大利），副作用可積極處理（小害），照會牙科處理口腔問題。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB b2 -->
+  <div class="tc" id="b2">
+    <div class="cb" style="border-color:var(--gold)">
+      <div class="lb" style="color:var(--gold)">核心概念</div>
+      <h3>權衡利害原則（Weighing Benefits vs Harms）</h3>
+      <p>行善的概念是做好事，但<strong>因行善對病人造成的傷害不能遠超過對病人的益處</strong>。護理師需仔細評估每項醫療行為的「利與害」，選擇利益最大化、傷害最小化的方案。</p>
+    </div>
+    <div class="card">
+      <h3>如何進行利害權衡？</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>確認行為的主要目的</h4><p>這項護理行為的主要目的是什麼？是為了病人的最大利益嗎？</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>評估可能的益處</h4><p>治療可帶來哪些好處？延長生命、減輕疼痛、恢復功能、預防併發症？</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>評估可能的傷害</h4><p>治療可能造成哪些傷害？副作用、疼痛、功能喪失、心理衝擊、費用負擔？</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>與病人共同決定</h4><p>在充分告知的基礎上，讓病人參與利害權衡的決定——什麼對他最重要？</p></div></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="hb tip"><div class="hi">💊</div><div class="hc"><h4>例：化療的利害權衡</h4>
+        <p><strong>利：</strong>延長生命、控制腫瘤、可能達到緩解<br><strong>害：</strong>嘔吐、脫髮、骨髓抑制、口腔炎、疲憊<br><strong>結論：</strong>若長期存活率提高，且副作用可有效處理，化療在倫理上是合理的。同時應積極處理副作用。</p>
+      </div></div>
+      <div class="hb tip"><div class="hi">🔪</div><div class="hc"><h4>例：截肢的利害權衡</h4>
+        <p><strong>利：</strong>去除壞死組織、預防敗血症擴散至全身、保住生命<br><strong>害：</strong>永久性肢體喪失、手術風險、心理創傷、需要復健<br><strong>結論：</strong>存活（大利）遠大於截肢（可接受的害），倫理上合理。</p>
+      </div></div>
+      <div class="hb ok"><div class="hi">💉</div><div class="hc"><h4>例：止痛嗎啡的利害權衡</h4>
+        <p><strong>利：</strong>有效緩解癌症疼痛、改善生活品質<br><strong>害：</strong>可能造成輕微呼吸抑制（副作用）、長期可能耐藥性<br><strong>結論：</strong>止痛的主要目的良善，副作用是已知且非故意的，屬複式影響原則，倫理上可接受。</p>
+      </div></div>
+      <div class="hb warn"><div class="hi">🚫</div><div class="hc"><h4>例：不合理的「行善」</h4>
+        <p>在末期病人已放棄急救意願的情況下，強制插管「延命」——這不是行善，而是<strong>強加傷害</strong>（痛苦延長、違背自主），造成的傷害已大於益處，違反行善原則。</p>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- TAB b3 -->
+  <div class="tc" id="b3">
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,var(--B),#047857)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 B1</span><h3>術後拒絕翻身的張先生</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>張先生，55歲，腦中風術後，物理治療師每日安排復健。但張先生因術後疼痛，多次大力拒絕翻身，說「太痛了！讓我躺著就好！你們護理師在折磨我！」護理師應如何處理？</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 行善觀點</div><p>翻身是預防褥瘡（壓力性損傷）的必要護理措施。<strong>不翻身的後果</strong>：皮膚壞死、傷口感染、敗血症——對病人傷害更大。護理師執行翻身是「預防傷害」的善行。</p></div>
+          <div class="ai"><div class="al" style="color:var(--A)">🧭 自主觀點</div><p>病人有表達不適的權利，護理師應<strong>了解拒絕背後的原因</strong>。是疼痛控制不足？是恐懼？是不了解翻身的重要性？針對原因介入，而非強制執行。</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 行善≠強迫</div><p>護理師不應強制翻身。正確做法：先評估疼痛程度並給予適當止痛；向張先生解釋不翻身會造成褥瘡的嚴重後果；取得其同意後協助翻身，同時給予疼痛管理。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 臨床技巧</div><p>可說：「張先生，我知道您很痛，我先幫您調整止痛藥，等痛減輕一點，我們再一起翻身，只要2分鐘。這樣可以防止皮膚壞掉，您說好嗎？」——溫柔堅持、說明理由、尊重病人。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 行善的正確方式</div><p>行善是「溫柔堅持並說明理由」，而不是「強制執行」。真正的行善讓病人感覺護理師站在他那邊，是夥伴而非強迫者。</p></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#065F46,#059669)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 B2</span><h3>糖尿病老人拒絕飲食控制衛教</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>陳阿公，75歲，第二型糖尿病血糖控制不良，住院期間護理師要進行糖尿病飲食衛教。陳阿公說：「我都75歲了，吃了一輩子，不要管我吃什麼！你講的我聽不懂，又不想聽！」護理師應如何回應？</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 行善目標</div><p>糖尿病飲食控制可改善血糖、預防腎衰竭、視網膜病變、足部壞疽等嚴重併發症。護理師提供衛教是「為病人做善事」的具體實踐。</p></div>
+          <div class="ai"><div class="al" style="color:var(--A)">🧭 自主考量</div><p>陳阿公有權決定是否接受衛教。護理師需理解其拒絕理由：是聽不懂（教育方式問題）？是覺得沒用（信念問題）？是曾有不好的經驗？</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 調整策略</div><p>① 先建立關係，從陳阿公感興趣的話題切入<br>② 改用圖卡、食物模型等視覺輔助<br>③ 從「一個最重要的概念」開始，而非一次講完<br>④ 邀請家屬一起參與，家屬可在家中持續提醒</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 底線</div><p>若陳阿公充分了解後仍拒絕，護理師應<strong>記錄告知過程</strong>，並在後續接觸中持續提供機會。不可強迫，但也不放棄創造改變的機會。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 行善的藝術</div><p>行善不是「給病人他應該得到的東西」，而是「讓病人願意接受對他好的東西」。護理師需要有創意、有耐心、有彈性，找到病人能接受的方式來促進其健康。</p></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     不傷害原則 NON-MALEFICENCE
+══════════════════════════════ -->
+<div class="sw" id="sw-N"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:var(--Nl)">🛡️</div>
+    <div class="sec-title"><h2 style="color:var(--N)">不傷害原則</h2><p>Non-maleficence | 不讓病人的身心靈受到傷害</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb active" onclick="st(this,'n1')">📚 概念與定義</button>
+    <button class="tb" onclick="st(this,'n2')">🔄 三個次原則</button>
+    <button class="tb" onclick="st(this,'n3')">🏥 臨床案例</button>
+  </div>
+
+  <!-- TAB n1 -->
+  <div class="tc active" id="n1">
+    <div class="cb" style="border-color:var(--N)">
+      <div class="lb" style="color:var(--N)">歷史依據</div>
+      <h3>不傷害的意義（Non-maleficence）</h3>
+      <p>不傷害是指<strong>不讓病人的身體、心理及心靈受到傷害</strong>，包括不殺害病人。這是醫療倫理最古老的準則，源自：<br>
+      • <strong>希波克拉底誓言（Hippocratic Oath）：</strong>「Primum non nocere」—首先，不要傷害（First, do no harm）<br>
+      • <strong>南丁格爾誓詞：</strong>「勿為有損之事，勿取服或故用有害之藥」</p>
+    </div>
+    <div class="hb warn"><div class="hi">⚠️</div><div class="hc"><h4>重要優先順序</h4>
+      <p>不傷害原則的優先性<strong>高於行善原則</strong>——因為我們有責任不傷害他人，而「促進他人利益」雖然重要，但屬於較高層次的道德義務。換言之：<strong>先確保不傷害，再來談如何行善。</strong></p>
+    </div></div>
+    <div class="g2">
+      <div>
+        <div class="card">
+          <h3>不傷害的三個面向</h3>
+          <div class="steps">
+            <div class="step"><div class="step-num" style="background:var(--N)">身</div><div class="step-body"><h4>身體的傷害</h4><p>因不當操作、疏忽、錯誤用藥、院內感染等造成的生理傷害。例：給藥錯誤導致過敏反應。</p></div></div>
+            <div class="step"><div class="step-num" style="background:#7C3AED">心</div><div class="step-body"><h4>心理的傷害</h4><p>因不當溝通、不尊重、隱私侵害等造成的心理創傷。例：在病房公開討論病人隱私。</p></div></div>
+            <div class="step"><div class="step-num" style="background:#0891B2">靈</div><div class="step-body"><h4>靈性的傷害</h4><p>違背病人的宗教信仰、價值觀或尊嚴。例：末期病人希望安靜有尊嚴地離世，卻被強制急救。</p></div></div>
+          </div>
+        </div>
+        <div class="hb tip"><div class="hi">👥</div><div class="hc"><h4>特別需要保護的弱勢族群</h4>
+          <p>護理師有義務維護<strong>無法保護自己</strong>的病人的安全：<br>👶 兒童 ｜ 👴 高齡長者 ｜ 🧠 意識不清者 ｜ 😴 昏迷病人 ｜ ♿ 心智障礙者</p>
+        </div></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>護理師可能違反不傷害原則的行為</h3>
+          <ul>
+            <li><strong>給藥錯誤：</strong>劑量錯誤、藥物交互作用疏忽、給錯病人</li>
+            <li><strong>操作技術不當：</strong>置入導尿管不夠無菌、侵入性操作技術欠佳</li>
+            <li><strong>不適當的約束：</strong>過度使用身體約束，造成病人身心傷害</li>
+            <li><strong>隱私侵犯：</strong>隨意洩漏病人資料、在公開場合討論病情</li>
+            <li><strong>延誤通報：</strong>發現病情變化未及時通報醫師</li>
+            <li><strong>不充分監測：</strong>高風險病人巡視不足</li>
+            <li><strong>情緒傷害：</strong>態度冷漠、輕蔑、或言詞不當造成心理創傷</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB n2 -->
+  <div class="tc" id="n2">
+    <div class="g3">
+      <div class="card" style="border-top:3px solid var(--N)">
+        <div style="font-size:24px;margin-bottom:8px">❶</div>
+        <h3 style="font-size:15px;color:var(--N)">非絕對原則</h3>
+        <p style="font-size:13.5px;margin-bottom:10px">臨床醫療存在一定風險，<strong>完全不傷害難以達成</strong>。目標是以病人為中心，運用專業知識，將傷害減至最低，而非完全避免所有痛苦。</p>
+        <div class="hb warn" style="margin-bottom:0;padding:12px 14px"><div class="hi">🔪</div><div class="hc"><p style="font-size:13px">糖尿病足截肢手術：造成永久肢體損失，但目的是預防更大的傷害（敗血症死亡）。→ <strong>倫理上可接受</strong></p></div></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--N)">
+        <div style="font-size:24px;margin-bottom:8px">❷</div>
+        <h3 style="font-size:15px;color:var(--N)">權衡利害原則</h3>
+        <p style="font-size:13.5px;margin-bottom:10px">著重於<strong>風險與利益分析</strong>，好處效益須大於傷害程度。衡量醫療處置利弊，選擇「風險少、優點多」的方案，減少不必要的傷害。</p>
+        <div class="hb warn" style="margin-bottom:0;padding:12px 14px"><div class="hi">🏥</div><div class="hc"><p style="font-size:13px">乳癌全乳切除手術：雖對身心有影響，但能大幅減少死亡危險，可義乳重建，→ <strong>將傷害減至最小</strong></p></div></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--N)">
+        <div style="font-size:24px;margin-bottom:8px">❸</div>
+        <h3 style="font-size:15px;color:var(--N)">複式影響原則</h3>
+        <p style="font-size:13.5px;margin-bottom:10px">某行動<strong>間接產生可預知的有害影響</strong>，但非故意所致，是正當行為的附帶影響，在倫理上可接受（四個條件需同時滿足）。</p>
+        <div class="hb warn" style="margin-bottom:0;padding:12px 14px"><div class="hi">💊</div><div class="hc"><p style="font-size:13px">嗎啡止痛：主要目的是緩解疼痛（善），雖知有輕微呼吸抑制副作用，非故意造成→<strong>倫理上可接受</strong></p></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📋 複式影響原則（Principle of Double Effect）的四個條件</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>行為本身是中立或良善的</h4><p>該行為本身（如給予嗎啡止痛）在道德上是中立或良善的，而非本身就是惡的行為。</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>行為者的意圖是良善的</h4><p>醫護人員的意圖是追求良善的效果（止痛、延長生命），並非蓄意造成有害的效果（呼吸抑制）。</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>良善效果不是透過有害效果達成的</h4><p>止痛是直接透過藥物作用達成，而非透過先造成呼吸抑制才達到止痛。</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>良善效果的利益大於有害效果</h4><p>緩解癌末病人的劇烈疼痛（巨大利益），遠大於輕微呼吸抑制的風險（可接受的害）。</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB n3 -->
+  <div class="tc" id="n3">
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,var(--N),#7F1D1D)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 N1</span><h3>打針很痛，算不傷害嗎？</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>小美，6歲，需要施打流感疫苗。她非常恐懼，哭鬧說「護理師要傷害我！」。家長也問護理師：「打針會痛，這樣對小孩好嗎？」</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 不傷害分析</div><p>打針確實造成身體疼痛（<strong>短暫、可預知的傷害</strong>），但目的是預防疾病（長期利益）。符合複式影響原則：主要目的良善（預防疾病），疼痛是已知的附帶影響，非故意造成。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 行善分析</div><p>疫苗接種是主動促進健康的行為；不打疫苗讓小美暴露在疾病風險中，反而違背行善原則。<strong>短暫疼痛換來長期保護</strong>——利益明顯大於傷害。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 減少傷害策略</div><p>① 誠實說明「會有一點點痛，很快就好了」<br>② 使用麻醉貼片減少疼痛<br>③ 提供分散注意力的物品（玩具、影片）<br>④ 讓家長陪伴並給予支持<br>⑤ 事後給予正向鼓勵（貼紙、稱讚）</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 底線</div><p>護理師應<strong>誠實告知</strong>會有疼痛，而不是欺騙說「不痛的」。不誠實同樣是一種傷害（信任的傷害）。有正當理由的必要疼痛 = <strong>負責任的照護</strong>，不是殘忍。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#B91C1C,#DC2626)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 N2</span><h3>意外錯誤給藥——護理師怎麼辦？</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>護理師小王在忙碌的夜班中，不小心將302床的降血壓藥給了303床的病人。303床病人血壓原本正常，給藥後開始出現頭暈、血壓下降。護理師發現了錯誤，但害怕被懲罰，猶豫是否要通報。</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 違反不傷害</div><p>給藥錯誤直接對病人造成身體傷害（低血壓、頭暈），這是<strong>違反不傷害原則</strong>的行為。護理師有責任承認錯誤並立即採取行動減少傷害。</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">⚠️ 不通報的後果</div><p>若不通報，病人可能繼續惡化（跌倒、休克）；隱瞞錯誤本身造成<strong>進一步的傷害</strong>；更違反了護理倫理的誠實義務。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 正確做法</div><p>① 立即評估病人狀況（血壓、意識）<br>② <strong>立即通報醫師</strong>，說明情況<br>③ 執行醫囑（如臥床休息、監測生命徵象）<br>④ 填寫<strong>不良事件報告</strong>（incident report）<br>⑤ 向病人誠實說明並道歉</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 系統思維</div><p>不良事件通報的目的不是懲罰個人，而是找出<strong>系統漏洞</strong>（為什麼會拿錯藥？）並改善流程，預防下次再發生——這本身就是保護所有病人的「行善行為」。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 倫理結論</div><p>護理師的勇敢誠實通報，雖然短期內可能面臨懲處，但長期保護了病人安全，也維護了護理專業的誠信。隱瞞錯誤才是更嚴重的倫理違反。</p></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     公平原則 JUSTICE
+══════════════════════════════ -->
+<div class="sw" id="sw-J"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:var(--Jl)">⚖️</div>
+    <div class="sec-title"><h2 style="color:var(--J)">公平原則</h2><p>Justice | 公平適當地分配醫療資源與照護</p></div>
+  </div>
+  <div class="tabs">
+    <button class="tb active" onclick="st(this,'j1')">📚 概念與類別</button>
+    <button class="tb" onclick="st(this,'j2')">🏥 稀少資源分配</button>
+    <button class="tb" onclick="st(this,'j3')">🦠 COVID-19 實例</button>
+    <button class="tb" onclick="st(this,'j4')">🧩 臨床案例</button>
+  </div>
+
+  <!-- TAB j1 -->
+  <div class="tc active" id="j1">
+    <div class="cb" style="border-color:var(--J)">
+      <div class="lb" style="color:var(--J)">亞里斯多德觀點</div>
+      <h3>公平的核心意涵</h3>
+      <p>公平（Justice）強調<strong>資源分配的適當性</strong>，並非「人人完全相同」，而是「依照需求與情境，給予應得的分配」。<br>亞里斯多德：「<strong>平等的人要平等對待，不平等的人（需求不同）要不平等對待</strong>」——這種「不平等對待」不是歧視，而是比例原則（proportionality）。</p>
+    </div>
+    <div class="g2">
+      <div class="hb ok"><div class="hi">📐</div><div class="hc"><h4>形式公平（Formal Justice／程序公平）</h4>
+        <p>每個人在相同規則下被對待，無偏袒、無歧視。注重過程和程序的一致性。<br><em>✅ 例：法律面前人人平等，不分性別、種族、財富。台灣急診採「到診順序＋分診嚴重度」的制度化流程。</em></p>
+      </div></div>
+      <div class="hb ok"><div class="hi">🌱</div><div class="hc"><h4>實質公平（Material Justice／結果公平）</h4>
+        <p>根據個人需求、情境與能力，給予不同比例的資源。重點是最終達到公正的結果。<br><em>✅ 例：身障者需要更多復健資源；偏遠地區居民需要更多醫療資源補貼——這是合理的差異對待。</em></p>
+      </div></div>
+    </div>
+    <div class="g3">
+      <div class="card" style="border-top:3px solid var(--J)">
+        <div style="font-size:24px;margin-bottom:8px">🏛️</div>
+        <h3 style="font-size:15px;color:var(--J)">報應性公平（Retributive Justice）</h3>
+        <p style="font-size:13.5px">「善有善報，罰有應得」。用於獎勵與懲罰情境，確保行為有相應的結果。</p>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：醫師違法開藥被懲處</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：護理師績效考核制度</span></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--J)">
+        <div style="font-size:24px;margin-bottom:8px">⚙️</div>
+        <h3 style="font-size:15px;color:var(--J)">程序性公平（Procedural Justice）</h3>
+        <p style="font-size:13.5px">資源分配的「過程」要公開、透明、公正，讓所有相關人可以理解和接受決策過程。</p>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：急診分診制度</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：器官移植候補名單</span></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--J)">
+        <div style="font-size:24px;margin-bottom:8px">🌍</div>
+        <h3 style="font-size:15px;color:var(--J)">分配性公平（Distributive Justice）</h3>
+        <p style="font-size:13.5px">依原則和規則達到公平分配，確保資源依需求合理分配到社會各群體。</p>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：台灣全民健保（1995）</span></div>
+        <div class="tags"><span class="tag" style="background:var(--Jl);color:var(--J)">例：偏鄉醫療補助</span></div>
+      </div>
+    </div>
+    <div class="hb law"><div class="hi">🏥</div><div class="hc"><h4>台灣全民健保——分配性公平的具體實踐</h4>
+      <p>1995年實施，不分男女、宗教、年齡、階級、社會地位、職業等，享有適當醫療服務保障。這是一種<strong>齊頭式均等的醫療權利</strong>——基本醫療的平等近用（access to healthcare），尤其在基本及稀少醫療資源分配上。</p>
+    </div></div>
+  </div>
+
+  <!-- TAB j2 -->
+  <div class="tc" id="j2">
+    <div class="card" style="border-top:4px solid var(--J)">
+      <h3>⚖️ 稀少醫療資源的六種分配方法</h3>
+      <table class="tbl" style="margin-top:14px;box-shadow:none;border:1px solid #E5E7EB">
+        <thead><tr style="background:var(--Jl)">
+          <th style="color:var(--J)">分配方法</th><th style="color:var(--J)">核心邏輯</th><th style="color:var(--J)">臨床例子</th><th style="color:var(--J)">優/缺點</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>①醫療急迫性</strong><br><small>Medical Need</small></td><td>最需要的病人優先</td><td>急性腎衰竭優先使用洗腎機（vs慢性腎衰竭末期）</td><td>✅符合醫療邏輯<br>⚠️「最需要」定義模糊</td></tr>
+          <tr><td><strong>②依預後</strong><br><small>Prognosis</small></td><td>預後最好、存活率最高者優先</td><td>COVID-19期間SOFA評分較低者優先入住ICU</td><td>✅最大化存活人數<br>⚠️對末期病人不公平</td></tr>
+          <tr><td><strong>③市場機制</strong><br><small>Market</small></td><td>依自由市場交易</td><td>自費升等特別病房、私人醫療保險優先</td><td>✅尊重選擇自由<br>⚠️對弱勢族群不公平</td></tr>
+          <tr><td><strong>④先來先服務</strong><br><small>First-Come</small></td><td>依到達或登記順序</td><td>急診領號、門診掛號、器官等候名單</td><td>✅簡單透明公平<br>⚠️忽略嚴重度差異</td></tr>
+          <tr><td><strong>⑤工具價值</strong><br><small>Instrumental</small></td><td>依社會影響力或特定功能</td><td>醫護人員優先接種COVID-19疫苗</td><td>✅維持醫療系統運作<br>⚠️誰的社會貢獻更大？</td></tr>
+          <tr><td><strong>⑥平等分配</strong><br><small>Equal Share</small></td><td>不分身份，人人均等</td><td>全民健保基本醫療同等保障</td><td>✅最公平<br>⚠️忽略個別差異與需求</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="hb tip"><div class="hi">💡</div><div class="hc"><h4>重要觀念：沒有完美的分配方法</h4>
+      <p>每種分配方法都有其倫理依據，也都有局限。實際臨床中，通常需要<strong>結合多種方法</strong>，並通過透明、公開的程序來達到可接受的公平分配。</p>
+    </div></div>
+  </div>
+
+  <!-- TAB j3 -->
+  <div class="tc" id="j3">
+    <div class="card" style="border-top:4px solid var(--J)">
+      <h3>🦠 COVID-19疫情期間——加護病房資源分配倫理指南</h3>
+      <p style="margin-bottom:14px">世界多國在疫情期間制定倫理指南，使用<strong>客觀評估工具</strong>確保加護病房資源公平分配：</p>
+      <div class="card" style="background:#F9F9F9;box-shadow:none;border:1px solid #E5E7EB">
+        <h3 style="font-size:15px">SOFA 評估系統（Sequential Organ Failure Assessment）</h3>
+        <p style="font-size:13.5px;margin-bottom:10px">測量病人入院前72小時內的急性生理不穩定性，綜合評估短期死亡風險：</p>
+        <div class="g4">
+          <div style="background:var(--Nl);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-weight:800;color:var(--N);font-size:16px">1分</div>
+            <div style="font-size:12px;margin-top:4px">死亡率 &lt;25%</div>
+          </div>
+          <div style="background:#FEF3C7;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-weight:800;color:#D97706;font-size:16px">2分</div>
+            <div style="font-size:12px;margin-top:4px">死亡率 25-49%</div>
+          </div>
+          <div style="background:#FFEDD5;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-weight:800;color:#EA580C;font-size:16px">3分</div>
+            <div style="font-size:12px;margin-top:4px">死亡率 50-75%</div>
+          </div>
+          <div style="background:#FEE2E2;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-weight:800;color:var(--N);font-size:16px">4分</div>
+            <div style="font-size:12px;margin-top:4px">死亡率 &gt;75%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="g3" style="margin-bottom:18px">
+      <div style="background:#FEE2E2;border-radius:12px;padding:18px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">🔴</div>
+        <div style="font-weight:800;font-size:18px;color:var(--N)">紅色優先</div>
+        <div style="font-size:12.5px;color:#7F1D1D;margin-top:6px">SOFA總分 1-3<br>最高優先入住ICU</div>
+      </div>
+      <div style="background:#FEF3C7;border-radius:12px;padding:18px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">🟡</div>
+        <div style="font-weight:800;font-size:18px;color:#D97706">黃色次要</div>
+        <div style="font-size:12.5px;color:#78350F;margin-top:6px">SOFA總分 4-5<br>次要優先考慮</div>
+      </div>
+      <div style="background:#D1FAE5;border-radius:12px;padding:18px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">🟢</div>
+        <div style="font-weight:800;font-size:18px;color:var(--B)">綠色最低</div>
+        <div style="font-size:12.5px;color:#064E3B;margin-top:6px">SOFA總分 6-8<br>最低優先或尋求替代照護</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>平等性修正標準——三種可獲得「優先分數減分」的情況</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num" style="background:var(--J)">1</div><div class="step-body"><h4>疫情前線工作者</h4><p>包括前線醫療人員、商店店員、公車/計程車司機等。疫情期間承擔風險高於其他職業，給予「優先分數-1」的補償機制。</p></div></div>
+        <div class="step"><div class="step-num" style="background:var(--J)">2</div><div class="step-body"><h4>矯正社會結構不平等</h4><p>因種族、社會弱勢等因素導致慢性病治療不良者。納入「區域剝削指數（ADI）」評估：若ADI分數8-10（最弱勢），則「優先分數-1」。</p></div></div>
+        <div class="step"><div class="step-num" style="background:var(--J)">3</div><div class="step-body"><h4>完成生命週期機會較少者</h4><p>主張每人應有機會經歷人生完整階段。資源不足且其他條件相同時，以<strong>年齡</strong>作為決勝點，優先給予年輕人。若仍無法決定，則<strong>抽籤</strong>。</p></div></div>
+      </div>
+    </div>
+    <div class="hb warn"><div class="hi">⚠️</div><div class="hc"><h4>重要原則：對未獲資源的病人</h4>
+      <p>對未能獲得加護病房資源的病人，<strong>應積極給予症狀控制及心理支持</strong>，有需要者應盡快照會安寧緩和醫療團隊共同照顧——這樣才是完整的「公平照護」，而非直接放棄。</p>
+    </div></div>
+  </div>
+
+  <!-- TAB j4 -->
+  <div class="tc" id="j4">
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,var(--J),#4C1D95)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 J1</span><h3>加護病房只剩一床——急性vs慢性</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>急診同時送來兩位病人：A先生（62歲，急性心肌梗塞，病情危急但可治癒）；B先生（45歲，末期慢性多器官衰竭，預後極差，預期存活不超過一週）。加護病房只剩最後一個床位。</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--J)">⚖️ 依醫療急迫性</div><p>兩人都需急救，但A先生為「急性可逆性」損傷，有明確的治療方向；B先生為末期「不可逆性」衰竭，即使入住ICU也無法改變預後。</p></div>
+          <div class="ai"><div class="al" style="color:var(--J)">📊 依預後考量</div><p>A先生積極治療後存活並恢復的機率較高；B先生不論是否入住ICU，預後均差。從「最大化存活人數」來看，A先生優先在倫理上合理。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 對B先生的行善</div><p>B先生不入住ICU並不代表「放棄他」。應<strong>立即照會安寧緩和醫療團隊</strong>，提供舒適照護、疼痛控制、心理靈性支持，讓他有尊嚴地度過最後時光。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">🌟 程序公平</div><p>此決定不應由單一護理師或醫師主觀決定，應透過<strong>建立標準化分流程序</strong>（分流團隊、客觀評分工具）來確保決策過程透明、公正、可說明。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 倫理結論</div><p>依醫療急迫性與預後，A先生優先入住ICU符合公平原則；B先生轉介安寧緩和照護，保持舒適與尊嚴。此決定須通過標準化程序，不能以個人喜好或社會地位決定。</p></div>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="ch" style="background:linear-gradient(135deg,#6D28D9,#7C3AED)" onclick="tc2(this)">
+        <div class="chl"><span class="ctag">案例 J2</span><h3>「有錢人排第一」——公平嗎？</h3></div>
+        <button class="cto">▼</button>
+      </div>
+      <div class="cb2">
+        <div class="scen"><div class="sl">📖 臨床情境</div>
+          <p>病房護理師發現，某主任醫師習慣讓有錢的VIP病人「插隊」安排加護病房床位，而病情相似但無背景的普通病人卻一直等待。護理師應如何看待這個情況？</p>
+        </div>
+        <div class="ag">
+          <div class="ai"><div class="al" style="color:var(--J)">⚖️ 違反公平</div><p>這是明顯違反<strong>程序性公平與形式公平</strong>的行為——資源分配未依客觀標準（病情嚴重度、預後），而依病人的財富或人際關係，屬於歧視性對待。</p></div>
+          <div class="ai"><div class="al" style="color:var(--N)">🛡️ 對普通病人的傷害</div><p>等候期間病情可能惡化；這種制度性的不公平對弱勢族群造成<strong>系統性的傷害</strong>，違反不傷害原則。</p></div>
+          <div class="ai"><div class="al" style="color:var(--B)">❤️ 護理師的責任</div><p>護理師發現此問題，有倫理責任<strong>提出異議</strong>：向護理長或科主任反映；若無效，可透過醫院倫理委員會或院內申訴管道提出。這是維護公平的專業責任。</p></div>
+          <div class="ai"><div class="al" style="color:#F59E0B">💡 系統層面</div><p>醫院應建立<strong>明確、公開的床位分配標準</strong>（如：嚴重度評分系統），並定期稽核，避免個人因素影響資源分配的公正性。</p></div>
+        </div>
+        <div class="res"><div class="rl">✅ 護理倫理行動</div><p>護理師不應沉默，應依循醫院的倫理申訴程序提出；若情況嚴重，可尋求護理師公會或衛生主管機關的協助。維護公平正義，是護理師的職業責任。</p></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     原則衝突 CONFLICTS
+══════════════════════════════ -->
+<div class="sw" id="sw-CF"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:#FEF3C7;font-size:28px">⚔️</div>
+    <div class="sec-title"><h2 style="color:#B45309">原則的衝突與權衡</h2><p>四大原則在臨床上常常互相衝突，護理師需依情境分析取捨</p></div>
+  </div>
+  <div class="hb tip"><div class="hi">💡</div><div class="hc"><h4>倫理判斷的核心能力</h4>
+    <p>護理師面對原則衝突時，問的不是「哪個原則最大」，而是「在<em>這個特定情境</em>中，哪個原則的影響最深？」並要能說出理由——<strong>那才是專業的倫理判斷。</strong></p>
+  </div></div>
+
+  <div class="conf">
+    <h3>⚔️ 衝突一：自主 vs 行善</h3>
+    <div class="cvs">
+      <div class="cs" style="background:var(--Al)"><div class="csl" style="color:var(--A)">🧭 自主原則</div><p style="color:#1E3A8A">病人有權拒絕治療，哪怕可能導致嚴重後果</p></div>
+      <div class="vsbadge">VS</div>
+      <div class="cs" style="background:var(--Bl)"><div class="csl" style="color:var(--B)">❤️ 行善原則</div><p style="color:#065F46">積極治療對病人有益，醫護人員認為應介入</p></div>
+    </div>
+    <div class="scen"><div class="sl">🏥 案例情境</div>
+      <p>老張（72歲）確診心臟病需手術，但他說「我老了，不想開刀」。家屬和醫師認為不開刀很危險，希望護理師去「說服他」。</p>
+    </div>
+    <div class="res"><div class="rl">💡 倫理分析</div>
+      <p>當病人具完全行為能力且意識清楚時，<strong>自主原則通常優先</strong>。護理師不應替病人做決定或「說服」他接受不願意的治療——這反而違反倫理。正確做法：確認老張已充分了解不手術的後果、記錄意願、安排家庭溝通會議、提供安寧照護選項。</p>
+    </div>
+  </div>
+
+  <div class="conf">
+    <h3>⚔️ 衝突二：自主（DNR）vs 家屬意願</h3>
+    <div class="cvs">
+      <div class="cs" style="background:var(--Al)"><div class="csl" style="color:var(--A)">🧭 病人意願（DNR）</div><p style="color:#1E3A8A">病人預立書面意願：不希望插管急救，要求自然死亡</p></div>
+      <div class="vsbadge">VS</div>
+      <div class="cs" style="background:#FFF7ED"><div class="csl" style="color:#C2410C">👨‍👩‍👧 家屬要求</div><p style="color:#7C2D12">家屬情緒激動，要求醫護一定要插管急救</p></div>
+    </div>
+    <div class="scen"><div class="sl">🏥 案例情境</div>
+      <p>黃阿公，78歲，肺癌末期，三個月前已簽署「預立醫療決定書（AD）」。今日呼吸困難，女兒衝進護理站大喊「一定要救他！一定要插管！」</p>
+    </div>
+    <div class="res"><div class="rl">💡 倫理分析</div>
+      <p>《病人自主權利法》（2019）明確保障病人的預立醫療決策。有效的AD具法律效力，<strong>應尊重並執行病人的預立意願</strong>。家屬關心值得尊重，但不能凌駕病人法律權利。護理師應：安撫家屬情緒、解釋法律依據、提供陪伴支持、轉介社工師協助——這是護理師在這個情境中最重要的角色。</p>
+    </div>
+  </div>
+
+  <div class="conf">
+    <h3>⚔️ 衝突三：行善 vs 不傷害（治療本身造成傷害）</h3>
+    <div class="cvs">
+      <div class="cs" style="background:var(--Bl)"><div class="csl" style="color:var(--B)">❤️ 行善</div><p style="color:#065F46">化療可延長生命、控制癌症，對病人有益</p></div>
+      <div class="vsbadge">VS</div>
+      <div class="cs" style="background:var(--Nl)"><div class="csl" style="color:var(--N)">🛡️ 不傷害</div><p style="color:#7F1D1D">化療同時造成嚴重副作用：嘔吐、脫髮、口腔炎</p></div>
+    </div>
+    <div class="res"><div class="rl">💡 倫理分析</div>
+      <p>行善與不傷害是一體兩面。護理師應：① 確保病人充分理解治療的利弊；② 積極處理副作用，將傷害減至最小；③ 依「權衡利害」原則，只要整體利益大於傷害，治療在倫理上合理；④ 持續評估病人的承受程度，必要時重新評估治療計畫。</p>
+    </div>
+  </div>
+
+  <div class="conf">
+    <h3>⚔️ 衝突四：公平（稀少資源）vs 個別病人行善</h3>
+    <div class="cvs">
+      <div class="cs" style="background:var(--Jl)"><div class="csl" style="color:var(--J)">⚖️ 公平原則</div><p style="color:#4C1D95">資源有限，需客觀標準分配，不能讓所有人都獲得最好的資源</p></div>
+      <div class="vsbadge">VS</div>
+      <div class="cs" style="background:var(--Bl)"><div class="csl" style="color:var(--B)">❤️ 行善原則</div><p style="color:#065F46">護理師對眼前的每一位病人，都想盡力給予最好的照護</p></div>
+    </div>
+    <div class="res"><div class="rl">💡 倫理分析</div>
+      <p>資源有限時，個別病人的最大利益（行善）必須在整體公平分配的框架下實踐。護理師的角色是：① 依客觀標準執行分配決策；② 對未獲資源的病人，仍盡力提供其他形式的最佳照護（安寧緩和等）；③ 若認為分配不公，透過正式管道提出異議，而非私自改變。</p>
+    </div>
+  </div>
+
+  <div class="card" style="border-top:4px solid var(--gold)">
+    <h3>🛠️ 倫理衝突的處理工具</h3>
+    <div class="g3" style="margin-top:14px">
+      <div style="text-align:center;padding:16px;background:#FFFBEB;border-radius:10px">
+        <div style="font-size:26px;margin-bottom:6px">📊</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:5px">四象限分析法</div>
+        <div style="font-size:12.5px;color:#6B7280">從醫療指示、病人意願、生活品質、情境背景四面向分析，找出各方利益衝突點</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:#FFFBEB;border-radius:10px">
+        <div style="font-size:26px;margin-bottom:6px">🏛️</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:5px">醫院倫理委員會</div>
+        <div style="font-size:12.5px;color:#6B7280">複雜案例可申請倫理委員會協助，由跨專業團隊集體討論形成共識</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:#FFFBEB;border-radius:10px">
+        <div style="font-size:26px;margin-bottom:6px">🤝</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:5px">家庭會議</div>
+        <div style="font-size:12.5px;color:#6B7280">整合醫師、護理師、社工師、病人、家屬的意見，達成各方可接受的共識</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     測驗 QUIZ
+══════════════════════════════ -->
+<div class="sw" id="sw-QZ"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:#FCE7F3;font-size:26px">📝</div>
+    <div class="sec-title"><h2 style="color:#DB2777">即時測驗</h2><p>16 題 | 四原則各4題 | 選後即時顯示解析</p></div>
+  </div>
+  <div class="qwrap">
+    <div class="qpbar"><div class="qpfill" id="qpf" style="width:6.25%"></div></div>
+    <div id="qa"></div>
+    <div class="sr" id="sr">
+      <div class="sring" id="sring"><div class="sn" id="sn">-</div><div class="st">/ 16</div></div>
+      <div class="sm" id="sm"></div><div class="ss" id="ss"></div>
+      <div class="sbd" id="sbd"></div>
+      <button class="bp" onclick="restart()" style="margin:0 auto">🔄 重新測驗</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════════════════════════
+     討論 DISCUSSION
+══════════════════════════════ -->
+<div class="sw" id="sw-DI"><div class="ca">
+  <div class="sec-hd">
+    <div class="sec-ico" style="background:#CFFAFE;font-size:26px">💬</div>
+    <div class="sec-title"><h2 style="color:#0891B2">臨床倫理討論</h2><p>8個討論情境 | 小組討論 | 無標準答案，只有最適合當下情境的決定</p></div>
+  </div>
+  <div class="hb tip"><div class="hi">🎯</div><div class="hc"><h4>討論活動指南</h4>
+    <p>每題請小組（3-4人）先閱讀情境，用<strong>四大原則框架分析</strong>，最後提出「護理行動建議」。重點：你能說出你選擇這樣做的<strong>倫理理由</strong>嗎？能識別這個情境涉及哪些原則的衝突嗎？</p>
+  </div></div>
+
+  <!-- A -->
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--A);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--A)">🧭 自主原則相關討論</h3>
+  <div class="dc" style="border-color:var(--A)">
+    <div class="dtag" style="background:var(--Al);color:var(--A)">自主原則 討論一</div>
+    <h3>「護理師，我還能活多久？」——你第一句話說什麼？</h3>
+    <div class="dsc">陳太太，45歲，乳癌末期，意識清楚。她的丈夫事先跟所有醫護說「千萬不要告訴她真實病況，她承受不了」。今天你是值班護理師，陳太太獨自問你：「護理師，我的病況很嚴重嗎？我還能活多久？」</div>
+    <ul class="dpts">
+      <li>陳太太有沒有知情的權利？護理師如何在「告知」與「保護」之間找到平衡？</li>
+      <li>丈夫的「善意隱瞞」在倫理上是否合理？這樣做對誰更好？對誰更壞？</li>
+      <li>角色扮演：你是護理師，你現在的<strong>第一句話</strong>會說什麼？（不能直接告知，也不能說謊）</li>
+      <li>台灣《病人自主權利法》在這個情境中提供什麼指引？家屬有無代替病人決定知情範圍的權利？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--A)">
+    <div class="dtag" style="background:var(--Al);color:var(--A)">自主原則 討論二</div>
+    <h3>精神科病人拒絕服藥，護理師能強制給藥嗎？</h3>
+    <div class="dsc">小偉，28歲，思覺失調症，入院後拒絕服藥：「那些藥讓我變笨，我不要吃！」醫師知道若不服藥，他可能再次出現幻覺、傷害自己或他人。請問：護理師能強制給藥嗎？</div>
+    <ul class="dpts">
+      <li>小偉有沒有拒絕服藥的自主權？他的「意思能力（判斷能力）」是否完整？</li>
+      <li>強制給藥是「行善（保護他人安全）」還是「違反不傷害（侵犯自主）」？</li>
+      <li>《精神衛生法》在此提供什麼法律框架？什麼情況下可以強制治療？</li>
+      <li>如何在尊重病人自主與保護社會安全之間找到平衡？護理師的角色是什麼？</li>
+    </ul>
+  </div>
+
+  <!-- B -->
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--B);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--B)">❤️ 行善原則相關討論</h3>
+  <div class="dc" style="border-color:var(--B)">
+    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善原則 討論一</div>
+    <h3>「強迫病人復健」是真正的行善嗎？</h3>
+    <div class="dsc">林太太，65歲，髖關節置換手術後，物理治療師安排每日復健。但林太太因疼痛和疲憊，每次都強烈拒絕：「我就想休息，你們一直來煩我！」護理師認為不復健會導致關節沾黏，對她的長期恢復很不利。</div>
+    <ul class="dpts">
+      <li>護理師認為復健對林太太「有益」，但林太太不願意——誰的判斷才是「行善」的標準？</li>
+      <li>行善原則是否允許護理師在病人不情願的情況下，仍堅持執行對其有益的照護？</li>
+      <li>如果是你，如何在「尊重林太太的當下意願」和「促進她的長期健康利益」之間取得平衡？</li>
+      <li>討論：「行善」和「強迫」的界線在哪裡？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--B)">
+    <div class="dtag" style="background:var(--Bl);color:var(--B)">行善原則 討論二</div>
+    <h3>癌末病人：「不要再化療了」——我們還能為他做什麼？</h3>
+    <div class="dsc">王先生，58歲，胰臟癌第四期，已進行三次化療但效果有限，且副作用嚴重（嘔吐、極度疲憊、無法進食）。他跟家人說「我不要再化療了，我只想好好陪你們度過剩下的日子」。主治醫師希望再嘗試一次新的化療方案。</div>
+    <ul class="dpts">
+      <li>王先生不願意繼續化療，這是他的自主決定。醫師建議繼續化療，這是行善。誰應該優先？</li>
+      <li>繼續化療的利害如何評估？停止化療後，護理師如何繼續「行善」？</li>
+      <li>安寧緩和照護（Palliative Care）如何體現行善原則？「放棄治療」等於「放棄病人」嗎？</li>
+      <li>護理師如何在這個情境中支持王先生和他的家人？</li>
+    </ul>
+  </div>
+
+  <!-- N -->
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--N);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--N)">🛡️ 不傷害原則相關討論</h3>
+  <div class="dc" style="border-color:var(--N)">
+    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害原則 討論一</div>
+    <h3>發現同事護理疏失——你要通報嗎？</h3>
+    <div class="dsc">你觀察到同事阿美護理師，今天夜班因疲勞，巡視不夠頻繁，高風險病人床欄沒有拉起，且有一次差點給藥錯誤（被你攔截）。阿美是你的好朋友，明天就要輪班考核了。你會怎麼處理？</div>
+    <ul class="dpts">
+      <li>阿美的行為是否違反不傷害原則？護理師對同事的疏失有通報義務嗎？</li>
+      <li>「友誼」和「保護病人安全」發生衝突時，你如何取捨？</li>
+      <li>如果你選擇沉默，而後來真的有病人因此受傷——你的道德責任是什麼？</li>
+      <li>討論：醫療機構的「不良事件通報文化」對病人安全的重要性？如何在不懲罰個人的前提下促進安全文化？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--N)">
+    <div class="dtag" style="background:var(--Nl);color:var(--N)">不傷害原則 討論二</div>
+    <h3>大量出血急救vs子宮外孕胎兒：「兩害相權取其輕」</h3>
+    <div class="dsc">小莉，30歲，子宮外孕大量出血，危及生命，需要緊急手術切除輸卵管（胎兒也會因此死亡）。她本人無意識，家屬（丈夫）哭著問：「我是要選孩子，還是選太太？」你是負責護理師，如何支持這個家庭？</div>
+    <ul class="dpts">
+      <li>手術會造成胎兒死亡（傷害），但不手術母親會死亡（更大傷害）——這是典型的「兩害相權取其輕」，如何分析？</li>
+      <li>複式影響原則如何解釋這個情境？（手術的主要目的是什麼？胎兒死亡是故意的嗎？）</li>
+      <li>丈夫沒有「選孩子還是選太太」的真正選擇空間——護理師如何在危急情境中提供情緒支持而不是空話？</li>
+      <li>事後，護理師如何協助這個家庭處理失去孩子的悲傷？</li>
+    </ul>
+  </div>
+
+  <!-- J -->
+  <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;color:var(--J);margin:28px 0 16px;padding-left:12px;border-left:4px solid var(--J)">⚖️ 公平原則相關討論</h3>
+  <div class="dc" style="border-color:var(--J)">
+    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平原則 討論一</div>
+    <h3>疫情高峰：只剩一台呼吸器，給誰？</h3>
+    <div class="dsc">COVID-19高峰，加護病房資源耗盡，只剩最後一台呼吸器。此時同時有兩個病人需要：A 是55歲的資深護理長（SOFA評分3）；B 是23歲的大學生（SOFA評分2）。你是分流小組成員。</div>
+    <ul class="dpts">
+      <li>依SOFA評分，B的存活率較高，應優先——但A是護理長（有工具價值），又是前線工作者。你如何決定？</li>
+      <li>「工具價值」（護理長對醫療系統的貢獻）可以成為分配標準嗎？這樣的標準是否公平？</li>
+      <li>如果你是評分相同、只能用年齡決勝的情境，你接受「年輕者優先」的標準嗎？為什麼？</li>
+      <li>分流決定做出後，護理師如何向未獲得呼吸器的病人及家屬說明？說什麼？</li>
+    </ul>
+  </div>
+  <div class="dc" style="border-color:var(--J)">
+    <div class="dtag" style="background:var(--Jl);color:var(--J)">公平原則 討論二（分組角色扮演）</div>
+    <h3>DNR vs 家屬堅持急救——你是護理師怎麼做？</h3>
+    <div class="dsc">黃阿公，78歲，肺癌末期，三個月前在醫師見證下簽署「預立醫療決定書（AD）」，明確表示希望自然死亡、不插管急救。今日病情急轉直下，女兒衝進護理站大喊：「他是我爸爸！我要你們救他！一定要插管！你們要讓他死嗎！」</div>
+    <ul class="dpts">
+      <li>角色扮演：<strong>A組</strong>扮演護理師，<strong>B組</strong>扮演女兒，<strong>C組</strong>扮演觀察者提供回饋。</li>
+      <li>護理師如何依據四大原則及法律，同時安撫家屬並維護病人意願？說什麼？怎麼說？</li>
+      <li>護理師的情緒管理：面對憤怒、恐懼的家屬，如何保持專業且不失去同理心？</li>
+      <li>觀察者回饋：護理師說了什麼有幫助？什麼可以做得更好？</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border-top:4px solid #6B7280;text-align:center;padding:26px;margin-top:8px">
+    <div style="font-size:26px;margin-bottom:10px">🤔</div>
+    <h3 style="margin-bottom:10px;font-family:'Noto Serif TC',serif">期末反思題</h3>
+    <p style="max-width:580px;margin:0 auto;font-size:14.5px;color:#374151;line-height:1.9">
+      「你覺得臨床上哪一個原則最常被護理師<strong>忽略</strong>？為什麼？<br>
+      如果你是病人，你最希望護理師特別強調哪個原則？<br>
+      這兩個答案如果不同，代表什麼？」
+    </p>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">請寫下250字以上的反思，準備在課堂分享</p>
+  </div>
+</div></div>
+
+<footer>
+  <strong>生醫倫理四大原則</strong> | 醫療與生命倫理 | 弘光科技大學護理系<br>
+  曾惠楨 ✉ htseng@hk.edu.tw  
+</footer>
+
+<script>
+// NAV
+function go(id,btn){
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  const t=document.getElementById('sw-'+id);
+  if(t)t.classList.add('active');
+  if(btn)btn.classList.add('active');
+  const nav=document.getElementById('nav');
+  if(nav.classList.contains('open'))nav.classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('hbg').addEventListener('click',()=>{
+  document.getElementById('nav').classList.toggle('open');
+});
+
+// TABS
+function st(btn,id){
+  const con=btn.closest('.sw')||document;
+  const tg=btn.closest('.tabs');
+  if(!tg)return;
+  const par=tg.parentElement;
+  par.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  par.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  const t=par.querySelector('#'+id);
+  if(t)t.classList.add('active');
+}
+
+// CASE ACCORDION
+function tc2(hd){
+  const body=hd.nextElementSibling;
+  const tog=hd.querySelector('.cto');
+  body.classList.toggle('open');
+  if(tog)tog.classList.toggle('open');
+}
+
+// ── QUIZ DATA ──────────────────────────────────────
+const Qs=[
+  // 自主 (4)
+  {q:"王奶奶（85歲，意識清楚）因宗教信仰明確拒絕輸血，家屬希望護理師「勸說她接受救命」。最符合倫理的護理行動是？",opts:["積極勸說王奶奶改變決定，因救命最重要","尊重王奶奶的決定，詳細記錄並通知醫師","直接安排輸血，事後再跟她解釋","等醫師來處理，護理師不介入"],c:1,p:"自主",pc:"#2563EB",
+   ex:"✅ 王奶奶意識清楚、具完全行為能力，有法律權利拒絕任何醫療處置。護理師尊重其決定並記錄，才是正確做法。家屬無法代替有行為能力的成人病人做醫療決定。"},
+  {q:"以下哪一項「不是」知情同意的四大評估要素？",opts:["病人的能力（Competence）","病情的說明（Disclosure）","病人的年齡（Age）","自願性（Voluntariness）"],c:2,p:"自主",pc:"#2563EB",
+   ex:"✅ 知情同意的四大要素是：①能力、②說明、③了解（Comprehension）、④自願性。年齡影響行為能力判斷，但它本身不是知情同意的構成要素。"},
+  {q:"依民法規定，未滿幾歲的人為「無行為能力人」，所有法律行為需由法定代理人代行？",opts:["未滿7歲","未滿12歲","未滿16歲","未滿18歲"],c:0,p:"自主",pc:"#2563EB",
+   ex:"✅ 依民法§13：未滿7歲者為無行為能力人；7歲以上未滿18歲為限制行為能力人；年滿18歲為完全行為能力人。"},
+  {q:"「強醫主（Full Paternalism）」的定義是？",opts:["醫療決策完全由醫師透過專業主導，未必告知病人","重大決策告知病人後再徵詢同意才執行","護理師替醫師做臨床決策","病人完全主導所有醫療決定"],c:0,p:"自主",pc:"#2563EB",
+   ex:"✅ 強醫主（Full Paternalism）：醫療決策完全由醫師主導。相對的，弱醫主（Weak Paternalism）在重大決策上會先告知並徵詢病人/家屬同意。"},
+  // 行善 (4)
+  {q:"護理師評估王強（70歲，急性闌尾炎）為跌倒高危險群，最符合行善原則的行動是？",opts:["等他真的跌倒再處理","執行預防性跌倒措施並向病人說明危險","限制所有病人行動確保零跌倒","告知家屬讓家屬負責照顧"],c:1,p:"行善",pc:"#059669",
+   ex:"✅ 行善原則的具體做法之一是「預防病人受傷害」——事先預測危險因子並採取適當措施。同時告知病人，兼顧行善與尊重自主。"},
+  {q:"行善原則包含哪兩個主要觀念？",opts:["遵從醫師指示；維護護理師的工作效率","提供有益病人的事；權衡利益和傷害得失","預防疾病；治療疾病","尊重自主；促進公平"],c:1,p:"行善",pc:"#059669",
+   ex:"✅ 行善原則的兩個主要觀念：①提供有益病人的事（主動促進健康福祉）；②權衡利益和傷害得失（行善對病人的傷害不能遠超過益處）。"},
+  {q:"王美美（62歲）乳癌化療期間出現口腔黏膜炎副作用。護理師的正確處理符合哪個倫理概念？",opts:["直接停止化療，避免繼續傷害","仔細評估化療的利益和傷害，並積極處理副作用","告訴病人副作用是必然的，忍耐就好","這不是護理師的責任，請醫師處理"],c:1,p:"行善",pc:"#059669",
+   ex:"✅ 這是「權衡利害原則」的應用：化療可延長生命（大利），但有副作用（害）。只要利益大於傷害，治療是合理的；同時應積極處理副作用，以行善的精神將傷害減至最小。"},
+  {q:"行善原則中，「去除病人傷害」的臨床例子是？",opts:["預防高齡病人跌倒","為糖尿病足壞疽病人進行截肢手術以防敗血症","提供出院衛教指導","安排術前心理準備"],c:1,p:"行善",pc:"#059669",
+   ex:"✅「去除病人傷害」是指積極排除既有的損傷狀況。截肢手術雖造成肢體喪失，但目的是去除壞疽組織、預防敗血症這個更大的傷害——是行善原則中「去除傷害」的典型案例。"},
+  // 不傷害 (4)
+  {q:"不傷害原則在臨床上的正確理解是？",opts:["護理師必須完全避免對病人造成任何疼痛","護理師應將傷害減至最低，有正當理由的必要性傷害是可接受的","只要病人沒有明確抱怨就沒有傷害","不傷害原則比行善原則更次要"],c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 不傷害不是「完全不能造成任何痛苦」，而是「將傷害減至最低」。有正當理由的必要性傷害（打針、手術、清創）是可接受的。且不傷害原則的優先性高於行善原則。"},
+  {q:"癌末病人使用嗎啡止痛，雖知有輕微呼吸抑制副作用，仍給藥。這符合哪個原則？",opts:["強醫主（Full Paternalism）","複式影響原則（Principle of Double Effect）","違反不傷害原則","分配性公平原則"],c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 複式影響原則（Double Effect）：行為主要目的良善（止痛），附帶有害影響（輕微呼吸抑制）非故意造成，且利益大於傷害，在倫理上可接受。四個條件同時滿足。"},
+  {q:"護理師發現自己剛才給藥錯誤，應立即採取的行動是？",opts:["先觀察病人狀況，若沒事就算了，下次注意","立即評估病人、通知醫師、填寫不良事件報告並誠實告知病人","跟同事說好不要聲張，避免被懲罰","只通知護理長，不需要告知病人"],c:1,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 發現給藥錯誤應立即：①評估病人→②通知醫師→③執行醫囑→④填寫不良事件報告→⑤誠實告知病人。隱瞞錯誤才是更嚴重的倫理違反——它剝奪了及時補救的機會，造成更大傷害。"},
+  {q:"不傷害原則中，「複式影響原則（Double Effect）」的倫理可接受性需滿足幾個條件？",opts:["只需要1個條件：主要目的良善","2個條件：目的良善＋傷害非故意","4個條件：行為本身良善、意圖良善、善果非透過害果達成、利大於害","只需醫師簽署同意書即可"],c:2,p:"不傷害",pc:"#DC2626",
+   ex:"✅ 複式影響原則需同時滿足四個條件：①行為本身是中立或良善的；②意圖是良善的；③良善效果不是透過有害效果達成的；④良善效果的利益大於有害效果。缺少任何一條件都不能以此原則辯護。"},
+  // 公平 (4)
+  {q:"急診室採用「先到先診治」但重症病人可優先的制度，體現了哪種公平？",opts:["分配性公平（Distributive Justice）","報應性公平（Retributive Justice）","程序性公平（Procedural Justice）","形式公平原則"],c:2,p:"公平",pc:"#7C3AED",
+   ex:"✅ 程序性公平強調資源分配「過程」的重要性：建立明確公開的處理程序（分診制度）以保障個人權益。急診的標準化分診系統是程序性公平的典型應用。"},
+  {q:"亞里斯多德提出的公平核心概念是？",opts:["所有人一律平等，分配完全相同的資源","平等的人要平等對待，不平等的人要不平等對待（比例原則）","有錢的人可以獲得更好的醫療資源","只有醫師才能決定誰獲得醫療資源"],c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ 亞里斯多德的公平核心：「平等的人要平等對待，不平等的人（需求不同）要不平等對待」——這種差異對待不是歧視，而是比例原則（proportionality），是實質公平的基礎。"},
+  {q:"COVID-19疫情期間，醫護人員優先接種疫苗，依據哪種資源分配方法？",opts:["依醫療急迫性（Medical Need）","依工具價值（Instrumental Values）","平等分配原則（Equal Share）","依市場機制（Market Approach）"],c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ 依工具價值分配：根據個人具有的特定社會功能或能發揮的重要作用決定分配順序。醫護人員維持醫療系統運作，優先接種可保護最多人——符合工具價值分配原則。"},
+  {q:"SOFA評分系統用於加護病房資源分配，評分越高代表？",opts:["病人病況越穩定，越需要優先入住ICU","病人的住院死亡率越高，優先程度越低","病人的社會貢獻越大","病人的年齡越大"],c:1,p:"公平",pc:"#7C3AED",
+   ex:"✅ SOFA評分越高，代表住院中死亡率越高、預後越差。在「優先存活率高者」的分配原則下，SOFA分數低（死亡率低、預後好）的病人反而獲得優先分配資源的機會，以最大化存活人數。"}
+];
+
+let cur=0,sc=0,ans=new Array(Qs.length).fill(false);
+const ps={"自主":{s:0,t:0},"行善":{s:0,t:0},"不傷害":{s:0,t:0},"公平":{s:0,t:0}};
+const ls=['A','B','C','D'];
+
+function bq(i){
+  const q=Qs[i];
+  return `<div class="qcard" id="qc${i}">
+    <div class="qmeta">
+      <div class="qnum">第 ${i+1} 題 / 共 ${Qs.length} 題</div>
+      <span class="qtag" style="background:${q.pc}20;color:${q.pc}">${q.p}原則</span>
+    </div>
+    <div class="qq">${q.q}</div>
+    <div class="qopts" id="op${i}">
+      ${q.opts.map((o,j)=>`<button class="qo" onclick="sa(${i},${j})" id="o${i}${j}">
+        <span class="ql">${ls[j]}</span>${o}</button>`).join('')}
+    </div>
+    <div class="qexp" id="ex${i}"></div>
+    <div class="qnav">
+      <button class="bs" onclick="${i>0?'gq('+(i-1)+')':'void(0)'}" style="opacity:${i>0?1:.3}">← 上一題</button>
+      <button class="bp" id="nb${i}" onclick="gq(${i+1})" style="display:none">
+        ${i<Qs.length-1?'下一題 →':'查看結果 🎯'}
+      </button>
+    </div>
+  </div>`;
+}
+
+function sa(qi,oi){
+  if(ans[qi])return;
+  ans[qi]=true;
+  const q=Qs[qi];
+  const btns=document.querySelectorAll(`#op${qi} .qo`);
+  btns.forEach(b=>b.disabled=true);
+  const ok=oi===q.c;
+  if(ok){sc++;ps[q.p].s++;}
+  btns[oi].classList.add(ok?'cor':'wrg');
+  if(!ok)btns[q.c].classList.add('cor');
+  ps[q.p].t++;
+  const ex=document.getElementById('ex'+qi);
+  ex.textContent=q.ex;ex.classList.add('show');
+  if(!ok)ex.classList.add('we');
+  const nb=document.getElementById('nb'+qi);
+  if(nb)nb.style.display='flex';
+  const pct=Math.round(((qi+1)/Qs.length)*100);
+  document.getElementById('qpf').style.width=pct+'%';
+}
+
+function gq(i){
+  if(i>=Qs.length){showR();return;}
+  document.getElementById('qa').innerHTML=bq(i);
+  cur=i;
+  window.scrollTo({top:document.getElementById('sw-QZ').offsetTop-80,behavior:'smooth'});
+}
+
+function showR(){
+  document.getElementById('qa').style.display='none';
+  document.getElementById('qpf').style.width='100%';
+  const r=document.getElementById('sr');r.classList.add('show');
+  const pct=sc/Qs.length;
+  document.getElementById('sn').textContent=sc;
+  let col,msg,sub;
+  if(pct>=.875){col='#059669';msg='🏆 優秀！完全掌握四大原則';sub='你對生醫倫理四大原則有深入掌握，臨床應用能力優秀！';}
+  else if(pct>=.7){col='#2563EB';msg='👍 良好！基本概念清晰';sub='基本概念掌握良好，建議複習答錯的題目。';}
+  else if(pct>=.5){col='#D97706';msg='📚 尚可，需要複習';sub='部分概念尚不夠清晰，建議重新閱讀各原則說明。';}
+  else{col='#DC2626';msg='💪 再努力！重新學習';sub='建議重新學習四大原則，再次挑戰測驗。';}
+  const ring=document.getElementById('sring');
+  ring.style.borderColor=col;
+  document.getElementById('sm').textContent=msg;
+  document.getElementById('sm').style.color=col;
+  document.getElementById('ss').textContent=sub;
+  const pcs={"自主":"#2563EB","行善":"#059669","不傷害":"#DC2626","公平":"#7C3AED"};
+  const pls={"自主":"#DBEAFE","行善":"#D1FAE5","不傷害":"#FEE2E2","公平":"#EDE9FE"};
+  let bd='';
+  for(let p in ps){const d=ps[p];if(!d.t)continue;
+    bd+=`<div class="bi" style="background:${pls[p]}"><div class="bn" style="color:${pcs[p]}">${p}</div>
+    <div class="bsc" style="color:${pcs[p]}">${d.s}</div><div class="bt">/ ${d.t}</div></div>`;}
+  document.getElementById('sbd').innerHTML=bd;
+}
+
+function restart(){
+  sc=0;cur=0;ans=new Array(Qs.length).fill(false);
+  for(let p in ps)ps[p]={s:0,t:0};
+  document.getElementById('qa').style.display='block';
+  document.getElementById('sr').classList.remove('show');
+  document.getElementById('qa').innerHTML=bq(0);
+  document.getElementById('qpf').style.width='6.25%';
+}
+
+restart();
+</script>
+</body>
+</html>
