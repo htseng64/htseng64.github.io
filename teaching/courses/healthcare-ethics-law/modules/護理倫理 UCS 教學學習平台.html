@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理倫理 UCS 教學學習平台</title>
+<style>
+:root{
+  --purple1:#667eea; --purple2:#764ba2; --pink1:#f093fb; --pink2:#f5576c;
+  --gold:#d4af37; --gold-dark:#b8912a;
+  --ink:#2b2b38; --muted:#6b6b7b; --line:#e6e6ee;
+  --card:#ffffff; --bg:#f4f4fa;
+  --ok:#2e9e6b; --warn:#c77b00;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",Arial,sans-serif;
+  background:linear-gradient(135deg,var(--purple1) 0%,var(--purple2) 100%);
+  color:var(--ink); line-height:1.75; min-height:100vh;
+}
+a{color:inherit;}
+.wrap{max-width:1180px;margin:0 auto;padding:16px;}
+header.top{
+  background:linear-gradient(135deg,var(--purple1) 0%,var(--purple2) 100%);
+  color:#fff; padding:26px 90px 18px; text-align:center;
+  position:relative;
+}
+header.top h1{margin:0 0 6px; font-size:1.9em;}
+header.top p.sub{margin:0; opacity:.92; font-size:1.02em;}
+.brand-logo{
+  position:absolute; top:16px; left:18px; font-weight:900; font-size:1.3em;
+  background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.4);
+  border-radius:10px; padding:4px 12px; letter-spacing:.03em;
+}
+.header-status{
+  position:absolute; top:16px; right:18px; font-size:.8em; text-align:right;
+  background:rgba(255,255,255,.14); border-radius:10px; padding:6px 10px; max-width:220px;
+}
+@media (max-width:640px){
+  header.top{padding:50px 14px 16px;}
+  .brand-logo{top:10px; left:10px; font-size:1.05em; padding:3px 9px;}
+  .header-status{position:static; display:block; margin:10px auto 0; max-width:none;}
+}
+.login-bar{
+  max-width:1180px;margin:14px auto 0; background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.35); border-radius:14px; padding:12px 16px;
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center;
+}
+.login-bar input[type=text]{
+  padding:9px 12px; border-radius:8px; border:none; font-size:1em; width:200px; max-width:60vw;
+}
+.login-bar button, .btn{
+  background:var(--gold); color:#3a2c00; border:none; padding:9px 16px; border-radius:8px;
+  font-weight:700; cursor:pointer; font-size:.95em;
+}
+.login-bar button:hover, .btn:hover{background:var(--gold-dark);}
+.login-bar .status{color:#fff; font-size:.9em; opacity:.95;}
+.btn.secondary{background:rgba(255,255,255,.9); color:var(--purple2);}
+.btn.ghost{background:transparent; color:#fff; border:1px solid rgba(255,255,255,.6);}
+.btn.small{padding:6px 12px; font-size:.85em;}
+.btn:disabled{opacity:.5; cursor:not-allowed;}
+
+nav.tabs{
+  max-width:1180px;margin:14px auto 0; display:flex; flex-wrap:wrap; gap:8px;
+  justify-content:center; padding:0 12px;
+}
+nav.tabs button{
+  background:rgba(255,255,255,.9); border:none; padding:10px 16px; border-radius:20px;
+  font-weight:700; color:var(--purple2); cursor:pointer; font-size:.92em;
+  transition:.2s;
+}
+nav.tabs button.active{background:var(--gold); color:#3a2c00;}
+nav.tabs button .badge{
+  display:inline-block; margin-left:6px; background:var(--ok); color:#fff; border-radius:10px;
+  padding:1px 7px; font-size:.75em;
+}
+
+main{max-width:1180px;margin:16px auto 100px; padding:0 12px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.card{
+  background:var(--card); border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,.15);
+  padding:22px 24px; margin-bottom:18px;
+}
+.card h2{color:var(--purple2); margin-top:0; border-bottom:3px solid var(--purple1); padding-bottom:10px;}
+.card h3{color:var(--purple2); margin:18px 0 8px;}
+.intro-box{
+  background:#f8f7ff; border-left:4px solid var(--purple1); border-radius:8px; padding:14px 18px; margin:12px 0;
+}
+.progress-track{background:#eceafc; border-radius:10px; height:12px; overflow:hidden; margin:8px 0 4px;}
+.progress-fill{background:linear-gradient(90deg,var(--purple1),var(--pink2)); height:100%; border-radius:10px; transition:width .3s;}
+.grid-modules{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-top:14px;}
+.mod-tile{
+  background:#faf9ff; border:1px solid var(--line); border-radius:12px; padding:16px; cursor:pointer;
+}
+.mod-tile:hover{border-color:var(--purple1);}
+.mod-tile h4{margin:0 0 6px; color:var(--purple2);}
+.mod-tile .count{font-size:.85em; color:var(--muted);}
+
+details.case-block{
+  border:1px solid var(--line); border-radius:12px; margin-bottom:14px; overflow:hidden;
+}
+details.case-block summary{
+  list-style:none; cursor:pointer; padding:16px 18px; background:linear-gradient(135deg,var(--purple1),var(--purple2));
+  color:#fff; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+details.film-block summary{background:linear-gradient(135deg,var(--pink1),var(--pink2));}
+details.case-block summary::-webkit-details-marker{display:none;}
+details.case-block summary .tag{background:rgba(255,255,255,.28); border-radius:12px; padding:2px 10px; font-size:.8em; margin-right:8px;}
+details.case-block summary .prog{font-size:.8em; background:rgba(0,0,0,.2); padding:2px 8px; border-radius:10px;}
+.case-body{padding:18px 20px;}
+.seg{border-top:1px dashed var(--line); padding-top:14px; margin-top:14px;}
+.seg:first-child{border-top:none; margin-top:0; padding-top:0;}
+.seg h4{margin:0 0 8px; color:#4a3b7a; font-size:1.05em;}
+.seg h4 .stage-tag{
+  display:inline-block; font-size:.72em; background:var(--purple1); color:#fff; border-radius:8px; padding:2px 8px; margin-right:6px;
+  vertical-align:middle;
+}
+.seg-content{font-size:.97em;}
+.seg-content p{margin:6px 0;}
+.seg-content strong{color:#4a3b7a;}
+.field{margin:10px 0;}
+.field label{display:block; font-weight:700; font-size:.9em; margin-bottom:4px; color:#4a3b7a;}
+.field textarea, .field input[type=text]{
+  width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.95em;
+  resize:vertical;
+}
+.field textarea{min-height:64px;}
+.checkrow{display:flex; flex-wrap:wrap; gap:12px; font-size:.92em; margin:6px 0;}
+.checkrow label{font-weight:400; display:flex; align-items:center; gap:5px;}
+.rating-row{display:flex; align-items:center; gap:10px; margin:8px 0; flex-wrap:wrap;}
+.rating-row label{min-width:180px; font-weight:600; font-size:.9em; color:#4a3b7a;}
+.rating-row input[type=range]{flex:1; min-width:120px;}
+.rating-row .val{font-weight:700; color:var(--purple2); width:20px; text-align:center;}
+
+.ai-box{
+  margin-top:14px; border:1px dashed var(--gold-dark); border-radius:12px; padding:12px 14px; background:#fffaf0;
+}
+.ai-box .ai-head{display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;}
+.ai-log{max-height:260px; overflow-y:auto; margin:10px 0; font-size:.92em;}
+.ai-msg{padding:8px 12px; border-radius:10px; margin-bottom:8px; white-space:pre-wrap;}
+.ai-msg.user{background:#ece8ff; margin-left:20%;}
+.ai-msg.assistant{background:#fff2d9; margin-right:10%;}
+.ai-input-row{display:flex; gap:8px;}
+.ai-input-row input{flex:1; padding:8px 10px; border-radius:8px; border:1px solid var(--line);}
+
+.toolbar{
+  position:fixed; right:16px; bottom:16px; left:auto; background:#1f1a33; color:#fff;
+  padding:12px; display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+  box-shadow:0 6px 24px rgba(0,0,0,.35); z-index:50; border-radius:16px; max-width:260px;
+}
+.toolbar .status{font-size:.78em; opacity:.85; text-align:right;}
+.toolbar button, .toolbar label.btn{width:100%; text-align:center;}
+@media (max-width:640px){
+  .toolbar{right:8px; bottom:8px; left:8px; max-width:none; flex-direction:row; flex-wrap:wrap; justify-content:center;}
+  .toolbar button, .toolbar label.btn{width:auto;}
+}
+.teacher-table{width:100%; border-collapse:collapse; font-size:.92em;}
+.teacher-table th,.teacher-table td{border:1px solid var(--line); padding:8px 10px; text-align:left;}
+.teacher-table th{background:#f3f1ff;}
+.note{font-size:.85em; color:var(--muted);}
+.hidden{display:none !important;}
+
+@media (max-width:720px){
+  header.top h1{font-size:1.5em;}
+  nav.tabs button{padding:8px 12px; font-size:.85em;}
+  .card{padding:16px 14px;}
+  .rating-row label{min-width:130px;}
+}
+
+@media print{
+  body{background:#fff !important;}
+  header.top, .login-bar, nav.tabs, .toolbar, .ai-box, details.case-block summary{ }
+  .toolbar, .ai-box, .login-bar{display:none !important;}
+  nav.tabs{display:none !important;}
+  .panel{display:block !important; page-break-after:always;}
+  details.case-block{border:1px solid #999; break-inside:avoid;}
+  .card{box-shadow:none; border:1px solid #ccc;}
+  summary{color:#000 !important; background:#eee !important;}
+}
+.btn.ghost-dark{background:#f0f0f0; color:#b23; border:1px solid #d9baba;}
+.btn.ghost-dark:hover{background:#f6dede;}
+.login-bar .clearbtn{background:rgba(255,255,255,.25); color:#fff; border:1px solid rgba(255,255,255,.5); padding:9px 12px; border-radius:8px; cursor:pointer; font-weight:700;}
+.login-bar .clearbtn:hover{background:rgba(255,255,255,.4);}
+.field label{display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.fcode{font-size:.68em; font-weight:400; color:#a89bd6; background:#f1eefc; border-radius:6px; padding:1px 6px;}
+.seg-content p.story{background:#f8f7ff; border-left:3px solid var(--purple1); padding:8px 12px; border-radius:6px;}
+.seg-content p.focus{color:#4a3b7a;}
+.unit-list{list-style:none; padding:0; margin:8px 0 16px;}
+.unit-list li{padding:7px 4px; border-bottom:1px solid var(--line); font-size:.94em;}
+.toolbar button{white-space:nowrap;}
+.uidwrap{display:flex; align-items:center; gap:6px;}
+.uidwrap input{width:70px; padding:9px 10px; border-radius:8px; border:none; font-size:1em;}
+.week-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-top:14px;}
+.week-card{background:#faf9ff; border:1px solid var(--line); border-radius:12px; padding:14px;}
+.week-card .wk-label{font-weight:800; color:var(--purple2); font-size:1.05em;}
+.week-card .wk-topic{font-size:.9em; margin:6px 0 10px; min-height:2.6em;}
+.week-card .wk-actions{display:flex; gap:6px; flex-wrap:wrap;}
+.export-one{margin:10px 0;}
+.uidwrap label{white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand-logo">UCS</div>
+  <h1>護理倫理 Unfolding Case Study 教學學習平台</h1>
+  <p class="sub" id="headerSub">以演變型情境案例建構護理學生三階倫理能力｜敏感度 → 推理 → 行動力</p>
+  <div class="header-status" id="capNote"></div>
+</header>
+
+<div class="login-bar">
+  <span class="uidwrap">
+    <label style="color:#fff;font-weight:700;">UCS-</label>
+    <input type="text" id="uidInput" maxlength="3" inputmode="numeric" placeholder="請填三位數字" autocomplete="off">
+  </span>
+  <button class="btn" id="enterBtn">進入課程 / 載入我的紀錄</button>
+</div>
+
+<nav class="tabs hidden" id="appNav">
+  <button data-tab="home" class="active">首頁（18週總覽）</button>
+  <button data-tab="A">Module A 敏感度暖身<span class="badge">0%</span></button>
+  <button data-tab="B">Module B 演變型案例<span class="badge">0%</span></button>
+  <button data-tab="C">Module C 電影推理<span class="badge">0%</span></button>
+  <button data-tab="D">Module D 綜合行動<span class="badge">0%</span></button>
+  <button data-tab="E">Module E 課程講義</button>
+  <button data-tab="teacher">教師檢視</button>
+</nav>
+
+<main id="appMain" class="hidden">
+  <div class="panel active" id="panel-home"></div>
+  <div class="panel" id="panel-A"></div>
+  <div class="panel" id="panel-B"></div>
+  <div class="panel" id="panel-C"></div>
+  <div class="panel" id="panel-D"></div>
+  <div class="panel" id="panel-E"></div>
+  <div class="panel" id="panel-teacher"></div>
+</main>
+
+<div class="toolbar hidden" id="appToolbar">
+  <span class="status" id="saveStatus">尚未載入</span>
+  <button class="btn secondary" id="finishBtn">✅ 完成並雙重存檔（雲端＋TronClass無研究碼PDF）</button>
+  <button class="btn ghost" id="exportPdfBtn">🖨️ 匯出整學期報表PDF</button>
+  <button class="btn ghost" id="exportJsonBtn">⬇️ 匯出 JSON 備份</button>
+  <label class="btn ghost" style="cursor:pointer;">⬆️ 匯入備份<input type="file" id="importJsonInput" accept=".json" hidden></label>
+  <button class="btn ghost" id="weeklySnapshotBtn">🗓️ 儲存本週進度快照</button>
+  <button class="btn ghost" id="gasConfigBtn">⚙ 雲端設定</button>
+  <button class="btn ghost" id="gasSyncBtn">☁ 同步至Google雲端</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ Content ============ */
+const CONTENT = {
+  "CASES": [
+    {
+      "id": "case1",
+      "no": 1,
+      "code": "C01",
+      "week": "W3–W4",
+      "title": "預立醫囑的兩難",
+      "resources": [
+        "自主、行善、不傷害、公平／正義",
+        "四象限：醫學指標、病人意願、生活品質、情境背景",
+        "學習檢索：預立醫療決定、病人自主、家屬溝通"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "68 歲林先生罹患末期肺癌，因呼吸困難再次住院。入院紀錄顯示他意識清楚時曾多次表示：「如果病情走到最後，我希望舒服，不要再插管。」當晚病況突然惡化，女兒哭著要求一定要救他；林先生在清醒片刻仍搖頭拒絕侵入性處置。",
+          "focus": "先分開病人的既有意願、家屬的推論與你自己的情緒；誰的聲音最容易被忽略？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "女兒認為父親以前只是怕痛，真正危急時一定會想活下去；兒子則拿出父親兩個月前再次表達不希望插管的錄音。醫師評估侵入性呼吸支持可能短暫延長生命，但無法逆轉癌症進程。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "林先生短暫恢復清醒，握住護理師的手說：「請照我原來說的做，也請幫我跟孩子說。」女兒仍要求至少插管一次看看。",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    },
+    {
+      "id": "case2",
+      "no": 2,
+      "code": "C02",
+      "week": "W5–W6",
+      "title": "行善與不傷害的衝突",
+      "resources": [
+        "義務論與結果論／功利主義",
+        "行善、不傷害、兒童最佳利益",
+        "學習檢索：兒科決策、兒童意願、家庭會議"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "8 歲小宇罹患復發性白血病。團隊提出高風險治療，可能帶來緩解機會，也可能造成嚴重感染、器官損傷與長期住院。父親希望只要有一點機會就治療，母親擔心孩子已承受太多痛苦；小宇問護理師：「如果我不想再做，可以嗎？」",
+          "focus": "先分開「想救孩子」與「減少痛苦」背後的價值；孩子自己的聲音是否被成人立場蓋過？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "治療成功機率有限；若不治療，可轉向症狀控制與緩和照護。小宇私下說害怕父親失望，因此不敢在父親面前說不想治療。父母各自要求護理師幫忙說服對方。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "團隊準備召開家庭會議。小宇希望護理師陪同，並說：「我想自己說，但我怕爸爸生氣。」",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    },
+    {
+      "id": "case3",
+      "no": 3,
+      "code": "C03",
+      "week": "W7–W8",
+      "title": "專業偏見與情緒理解",
+      "resources": [
+        "德行倫理：同理、誠實、審慎、勇氣、公正",
+        "四象限與當下決策能力",
+        "學習檢索：精神健康汙名、偏見、決策能力"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "32 歲陳小姐有思覺失調症病史，因腹痛至急診。有人說她可能只是想太多，但護理師注意到她一直護著右下腹。她要求不要聯絡家人，希望自己決定檢查。",
+          "focus": "先分開臨床觀察、推論與標籤；精神疾病診斷是否讓某些聲音較容易被忽略？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "陳小姐能清楚說明症狀、檢查目的與可能風險，但因過去曾被強制處置而高度不信任醫療人員。檢驗顯示感染指標升高；家屬到院後要求團隊不要聽她的，直接處理。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "影像檢查前，陳小姐說：「我不是不做，我只是很怕又被控制，給我五分鐘。」現場忙碌，同事催促盡快完成。",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    },
+    {
+      "id": "case4",
+      "no": 4,
+      "code": "C04",
+      "week": "W9、W11",
+      "title": "誠信與服從衝突",
+      "resources": [
+        "義務論、角色倫理、德行倫理",
+        "病人安全、誠信、忠誠、倫理勇氣",
+        "學習檢索：錯誤醫囑、組織倫理、升級通報"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "夜班護理師怡君準備執行醫囑時，發現一項藥物劑量明顯高於平常範圍。再次核對仍覺得不合理。值班醫師說照醫囑做即可，資深同事提醒她不要每件事都挑戰醫師。",
+          "focus": "先分開可核對的病人安全事實、階層文化帶來的推論與自己的害怕；病人的聲音在哪裡？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "怡君查到病人腎功能惡化，該劑量可能增加嚴重不良反應。醫師仍要求照做；另一名護理師表示以前也遇過類似情況，但最後都沒事。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "給藥時間逼近。病人問：「這顆藥跟昨天不一樣，是不是有問題？」怡君必須決定是否暫緩、如何說明、如何啟動院內溝通與通報。",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    },
+    {
+      "id": "case5",
+      "no": 5,
+      "code": "C05",
+      "week": "W12–W13",
+      "title": "病人善終選擇與家屬衝突",
+      "resources": [
+        "自主、行善、不傷害、公平／正義",
+        "善終情境完整四象限",
+        "學習檢索：病人自主權法、DNR、安寧緩和、家屬衝突"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "82 歲王先生罹患末期肺癌，先前已表達 DNR 與安寧緩和意願。病況惡化時，家屬因不捨要求插管與急救。護理師同時面對病人既有意願、家屬情緒與團隊即時處置壓力。",
+          "focus": "先分開病人已表達的意願、家屬在危機中的希望與團隊的醫療判斷；誰能代表病人的價值？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "團隊重新確認病人先前意願與相關紀錄。家屬認為「現在情況不同」，希望再積極搶救；團隊則需要重新整理治療效益、負擔、病人意願、生活品質與家庭情境。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "病況持續惡化。護理師需要協助家屬理解善終選擇、支持團隊溝通，並提出可執行、可追蹤且尊重病人意願的照護方案。",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    },
+    {
+      "id": "case6",
+      "no": 6,
+      "code": "C06",
+      "week": "W14–W15",
+      "title": "災難資源分配與 ICU 決策",
+      "resources": [
+        "分配正義、公平、行善、不傷害",
+        "危機情境完整四象限",
+        "學習檢索：災難倫理、ICU 資源配置、危機標準"
+      ],
+      "segments": [
+        {
+          "seg": 1,
+          "label": "SEGMENT I｜SEE 看見線索",
+          "story": "重大地震後，多名重症病人同時需要 ICU 與呼吸器，但資源不足。團隊必須在時間壓力下進行資源配置，家屬希望自己的親人優先獲得治療。",
+          "focus": "先分開臨床條件、對誰『比較值得救』的推論與面對稀缺資源的情緒；哪些聲音容易因壓力被忽略？"
+        },
+        {
+          "seg": 2,
+          "label": "SEGMENT II｜REASON 重建推理",
+          "story": "團隊取得更多臨床資訊，包括急性病況、預後與治療反應，必須討論哪些臨床判準可以一致適用，以及哪些因素不應成為差別待遇的理由。",
+          "focus": "新資訊加入後：指出哪個判斷被改變，補充不同角色觀點，整理仍不確定之處。"
+        },
+        {
+          "seg": 3,
+          "label": "SEGMENT III｜ACT 專業行動",
+          "story": "資源仍不足。團隊需要形成透明、可說明、可重新評估的配置與溝通流程，並向未能立即取得資源的病人與家屬說明後續照護。",
+          "focus": "形成行動：提出至少三個可行方案，比較好處與風險，寫出優先行動與專業溝通。"
+        }
+      ]
+    }
+  ],
+  "FILMS": [
+    {
+      "id": "film1",
+      "title": "姊姊的守護者（My Sister's Keeper）",
+      "focus": "自主權、家庭壓力、最佳利益",
+      "content": "<h3>一、Uncover：情境揭示</h3>\n<p>小芸從小就知道，自己被生下來是為了挽救罹患重病的姊姊小琪。父母在她尚未出生時便決定透過人工生殖技術，選擇與姊姊配對的胚胎。\n多年來，小芸被多次抽血、取骨髓，現在姊姊病情惡化，需要腎臟移植。但小芸開始思考自己的身體自主權，並質疑是否仍願意繼續犧牲。\n家人情感與道德壓力、生命與自由的抉擇，使得醫療團隊也陷入兩難。</p><h3>二、Connect：連結觀點與倫理原則</h3>\n<p>此案例牽涉的倫理原則：</p>\n<p>• 自主：小芸是否有權說『不』？</p>\n<p>• 家庭壓力：父母是否出於愛還是控制？</p>\n<p>• 最佳利益：小琪的生命 vs 小芸的完整成長</p>\n<p>• 知情與同意：器官捐贈是否真的出於自願？</p>\n<p>角色觀點：</p>\n<p>• 小芸：開始思考身體自主、選擇與界線</p>\n<p>• 父母：希望救姊姊生命，將家庭視為整體</p>\n<p>• 醫師：是否應順從父母安排？或保護小芸意願？</p><h3>三、Synthesize：統整與行動建議</h3>\n<p>小組任務：</p>\n<p>1️⃣ 小芸是否有選擇不捐腎的權利？該怎麼判斷『自主』是否存在？</p>\n<p>2️⃣ 若你是醫師，會如何處理家庭壓力與未成年者意願的衝突？</p>\n<p>3️⃣ 擬定「未成年身體捐贈倫理守則」草案，至少包括：</p>\n<p>   - 如何評估自主意願</p>\n<p>   - 如何讓孩子不因家庭壓力被犧牲</p>\n<p>   - 醫療團隊與倫理審查角色為何</p>\n<h3>"
+    },
+    {
+      "id": "film2",
+      "title": "超越極限（Extreme Measures）",
+      "focus": "醫療研究倫理、行善 vs 不傷害",
+      "content": "<h3>一、Uncover：情境揭示</h3>\n<p>一位年輕醫師在急診中救回一位身體異常的男子，卻發現他失蹤多年、身體有明顯的實驗痕跡。進一步調查發現，他可能是被秘密帶去進行高風險神經實驗的遊民。\n該實驗標榜可治癒脊椎損傷，但過程未經充分知情同意。負責團隊強調『為了造福數百萬癱瘓者的未來』，研究領導人相信這是值得的犧牲。\n年輕醫師開始質疑：行善的終極目的是否可以凌駕基本倫理原則？</p><h3>二、Connect：連結觀點與倫理原則</h3>\n<p>此案例牽涉的倫理原則：</p>\n<p>• 知情同意：無法得知是否取得真實同意。</p>\n<p>• 行善 vs 不傷害：研究潛在助人，但傷害在眼前。</p>\n<p>• 弱勢保護：遊民是否因弱勢而被剝奪權利？</p>\n<p>• 專業誠信：醫師應揭發還是保護研究成果？</p>\n<p>角色觀點：</p>\n<p>• 年輕醫師：陷入誠信與壓力之間的選擇。</p>\n<p>• 研究者：強調未來利益，忽略個人傷害。</p>\n<p>• 社會觀點：是否允許犧牲少數，造福多數？</p><h3>三、Synthesize：統整與行動建議</h3>\n<p>小組任務：</p>\n<p>1️⃣ 這種高風險研究是否合理？是否需要絕對同意？</p>\n<p>2️⃣ 弱勢族群如何受到倫理保護？遊民是否有選擇權？</p>\n<p>3️⃣ 擬定「臨床研究倫理四守則」，至少包含：</p>\n<p>   - 同意程序與語言理解</p>\n<p>   - 對象選擇公平性原則</p>\n<p>   - 高風險研究應有何限制？</p>\n<p>   - 醫師與研究者的誠信與揭露義務</p>\n<h3>"
+    },
+    {
+      "id": "film3",
+      "title": "為你,我學會相信（The Children Act）",
+      "focus": "法律、宗教、未成年自主",
+      "content": "<h3>一、Uncover：情境揭示</h3>\n<p>17歲少年小傑罹患血癌，病情惡化急需輸血，但他與父母皆為虔誠教徒，堅決拒絕輸血治療，認為會玷污身體與靈魂。\n醫院方提請法院聲請緊急處分，法官親自前往病房會談。小傑語氣堅定、態度成熟，表示即使死亡也不願接受。\n法官需在『尊重信仰自由與未成年保護』之間做出裁決，醫療團隊也面臨道德困境：是否應強行輸血救命？</p><h3>二、Connect：連結觀點與倫理原則</h3>\n<p>此案例牽涉的倫理原則：</p>\n<p>• 自主權：未成年人是否具足夠判斷力？</p>\n<p>• 宗教信仰自由：是否可作為拒絕治療依據？</p>\n<p>• 法律與倫理：法院是否可凌駕家庭與個人意願？</p>\n<p>• 最佳利益原則：拯救生命是否一定『最好』？</p>\n<p>角色觀點：</p>\n<p>• 小傑：堅信信仰，選擇面對死亡。</p>\n<p>• 父母：支持孩子信念，尊重宗教傳統。</p>\n<p>• 醫師：憂心失去年輕生命，對信仰無力介入。</p>\n<p>• 法官：在制度與情感間，試圖平衡人權與保護義務。</p><h3>三、Synthesize：統整與行動建議</h3>\n<p>小組任務：</p>\n<p>1️⃣ 若你是醫師，會尊重還是挑戰其宗教選擇？</p>\n<p>2️⃣ 法律介入是否侵犯了宗教與家庭自主？</p>\n<p>3️⃣ 請草擬「未成年病患宗教拒治處理原則」，至少含：</p>\n<p>   - 如何確認其意願是否自主形成？</p>\n<p>   - 如何讓醫療與宗教對話而非對抗？</p>\n<p>   - 法律介入的最低門檻與決策流程</p>\n<h3>"
+    }
+  ],
+  "PRE_STORY": "<p>護生小安在實習首日觀察到指導護理師小林遭家屬情緒性指責。小林面露難色、情緒壓抑，但仍維持專業應對。小安在旁默默觀察，未主動介入或事後詢問。\n數日後，小安值班時遭遇同一病人家屬對她投以批判與不滿，小安感到驚慌與委屈，心中浮現「我現在知道當時小林的感受了……」她開始思考自己該怎麼辦。</p>",
+  "PPTX_UNITS": [
+    {
+      "unit": "Unit1-1",
+      "group": 1,
+      "num": 1,
+      "title": "倫理的概念與意義"
+    },
+    {
+      "unit": "Unit1-2",
+      "group": 1,
+      "num": 2,
+      "title": "什麼是專業倫理"
+    },
+    {
+      "unit": "Unit1-3",
+      "group": 1,
+      "num": 3,
+      "title": "規範倫理學 義務論"
+    },
+    {
+      "unit": "Unit1-4",
+      "group": 1,
+      "num": 4,
+      "title": "規範倫理學 效益論"
+    },
+    {
+      "unit": "Unit1-5",
+      "group": 1,
+      "num": 5,
+      "title": "規範倫理學 德行論"
+    },
+    {
+      "unit": "Unit1-6",
+      "group": 1,
+      "num": 6,
+      "title": "三理論的對話與整合"
+    },
+    {
+      "unit": "Unit1-7",
+      "group": 1,
+      "num": 7,
+      "title": "非規範倫理學簡介"
+    },
+    {
+      "unit": "Unit1-8",
+      "group": 1,
+      "num": 8,
+      "title": "Applied Ethics Scope"
+    },
+    {
+      "unit": "Unit2-1",
+      "group": 2,
+      "num": 1,
+      "title": "基本人權與自主原則導論"
+    },
+    {
+      "unit": "Unit2-10",
+      "group": 2,
+      "num": 10,
+      "title": "四原則的整合應用"
+    },
+    {
+      "unit": "Unit2-2",
+      "group": 2,
+      "num": 2,
+      "title": "行為能力與意思能力"
+    },
+    {
+      "unit": "Unit2-3",
+      "group": 2,
+      "num": 3,
+      "title": "知情同意的理論與實務"
+    },
+    {
+      "unit": "Unit2-4",
+      "group": 2,
+      "num": 4,
+      "title": "特殊情境的知情同意"
+    },
+    {
+      "unit": "Unit2-5",
+      "group": 2,
+      "num": 5,
+      "title": "病人的權利"
+    },
+    {
+      "unit": "Unit2-6",
+      "group": 2,
+      "num": 6,
+      "title": "公平原則導論 (9)"
+    },
+    {
+      "unit": "Unit2-7",
+      "group": 2,
+      "num": 7,
+      "title": "醫療資源分配的倫理"
+    },
+    {
+      "unit": "Unit2-8",
+      "group": 2,
+      "num": 8,
+      "title": "行善原則"
+    },
+    {
+      "unit": "Unit2-9",
+      "group": 2,
+      "num": 9,
+      "title": "不傷害原則"
+    },
+    {
+      "unit": "Unit3-1",
+      "group": 3,
+      "num": 1,
+      "title": "倫理道德與法律的關係"
+    },
+    {
+      "unit": "Unit3-2",
+      "group": 3,
+      "num": 2,
+      "title": "我國法律體系概論"
+    },
+    {
+      "unit": "Unit3-3",
+      "group": 3,
+      "num": 3,
+      "title": "法律的制裁"
+    },
+    {
+      "unit": "Unit3-4",
+      "group": 3,
+      "num": 4,
+      "title": "護理人員的權利"
+    },
+    {
+      "unit": "Unit3-5",
+      "group": 3,
+      "num": 5,
+      "title": "護理人員的業務範圍與義務"
+    },
+    {
+      "unit": "Unit3-6",
+      "group": 3,
+      "num": 6,
+      "title": "護理過失與責任"
+    },
+    {
+      "unit": "Unit3-7",
+      "group": 3,
+      "num": 7,
+      "title": "臨床倫理議題 拒絕輸血"
+    },
+    {
+      "unit": "Unit3-8",
+      "group": 3,
+      "num": 8,
+      "title": "臨床倫理議題 居家隔離"
+    },
+    {
+      "unit": "Unit7-1",
+      "group": 7,
+      "num": 1,
+      "title": "倫理決策導論"
+    },
+    {
+      "unit": "Unit7-2",
+      "group": 7,
+      "num": 2,
+      "title": "意思能力受損病人的決策"
+    },
+    {
+      "unit": "Unit7-3",
+      "group": 7,
+      "num": 3,
+      "title": "倫理決策模式一 Curtin Aroskar"
+    },
+    {
+      "unit": "Unit7-4",
+      "group": 7,
+      "num": 4,
+      "title": "倫理決策模式二 Thompson Joseph"
+    },
+    {
+      "unit": "Unit7-5",
+      "group": 7,
+      "num": 5,
+      "title": "倫理決策模式三 Silva Jonsen"
+    },
+    {
+      "unit": "Unit7-6",
+      "group": 7,
+      "num": 6,
+      "title": "案例分析一 醫療資源"
+    },
+    {
+      "unit": "Unit7-7",
+      "group": 7,
+      "num": 7,
+      "title": "案例分析二 愛滋病人"
+    },
+    {
+      "unit": "Unit7-8",
+      "group": 7,
+      "num": 8,
+      "title": "總結 建立個人倫理決策能力"
+    }
+  ]
+};
+const CASES = CONTENT.CASES;       // v5: {id,no,code,week,title,resources[],segments[{seg,label,story,focus}]}
+const FILMS = CONTENT.FILMS;
+const PRE_STORY = CONTENT.PRE_STORY;
+const PPTX_UNITS = CONTENT.PPTX_UNITS;
+
+/* ============ 18-week schedule map (course calendar) ============ */
+const WEEK_MAP = [
+  {week:1,  label:"W1",  topic:"課程介紹與倫理敏感度前測", type:"moduleA"},
+  {week:2,  label:"W2",  topic:"電影一｜"+FILMS[0].title, type:"film", ref:"film1"},
+  {week:3,  label:"W3",  topic:CASES[0].code+"｜"+CASES[0].title+"（上）", type:"case", ref:"case1"},
+  {week:4,  label:"W4",  topic:CASES[0].code+"｜"+CASES[0].title+"（下）", type:"case", ref:"case1"},
+  {week:5,  label:"W5",  topic:CASES[1].code+"｜"+CASES[1].title+"（上）", type:"case", ref:"case2"},
+  {week:6,  label:"W6",  topic:CASES[1].code+"｜"+CASES[1].title+"（下）", type:"case", ref:"case2"},
+  {week:7,  label:"W7",  topic:CASES[2].code+"｜"+CASES[2].title+"（上）", type:"case", ref:"case3"},
+  {week:8,  label:"W8",  topic:CASES[2].code+"｜"+CASES[2].title+"（下）", type:"case", ref:"case3"},
+  {week:9,  label:"W9",  topic:CASES[3].code+"｜"+CASES[3].title+"（上）", type:"case", ref:"case4"},
+  {week:10, label:"W10", topic:"電影二｜"+FILMS[1].title, type:"film", ref:"film2"},
+  {week:11, label:"W11", topic:CASES[3].code+"｜"+CASES[3].title+"（下）", type:"case", ref:"case4"},
+  {week:12, label:"W12", topic:CASES[4].code+"｜"+CASES[4].title+"（上）", type:"case", ref:"case5"},
+  {week:13, label:"W13", topic:CASES[4].code+"｜"+CASES[4].title+"（下）", type:"case", ref:"case5"},
+  {week:14, label:"W14", topic:CASES[5].code+"｜"+CASES[5].title+"（上）", type:"case", ref:"case6"},
+  {week:15, label:"W15", topic:CASES[5].code+"｜"+CASES[5].title+"（下）", type:"case", ref:"case6"},
+  {week:16, label:"W16", topic:"電影三｜"+FILMS[2].title, type:"film", ref:"film3"},
+  {week:17, label:"W17", topic:"綜合行動與整合評量（上）", type:"moduleD"},
+  {week:18, label:"W18", topic:"綜合行動與整合評量（下）", type:"moduleD"}
+];
+
+const FIELD_DEFS = [
+  {key:"original", label:"個人原始判斷", hint:"個人先寫：此刻只根據目前資訊，我怎麼看？先不要急著找標準答案。"},
+  {key:"evidence", label:"個人原始判斷依據／倫理線索", hint:"個人先寫：我看到什麼？哪些是事實、哪些是我的推論？哪些線索讓我在意？"},
+  {key:"peer", label:"同儕不同觀點", hint:"討論後記錄：同學／其他角色提出了什麼與我不同的觀點？哪一點值得我再想？"},
+  {key:"revision", label:"新想法：我改變／保留什麼？為什麼？", hint:"討論後再寫：我改變了什麼、仍保留什麼？請指出讓你改變或保留的具體理由。"}
+];
+
+/* Film worksheet fields — based on grant Appendix 9 (Film-Based Ethical Reflection Worksheet),
+   plus theory/four-principles linkage and nursing-clinical linkage questions. */
+const FILM_FIELDS = [
+  {key:"keyScene", label:"一、電影中最觸動我的一幕", hint:"描述該片段，並說明為什麼觸動你。"},
+  {key:"ethicalIssues", label:"二、此劇情中的倫理問題（請列出至少三個）", hint:""},
+  {key:"patientNeed", label:"三之1、病人的需求與利益", hint:""},
+  {key:"patientConflict", label:"三之2、病人可能的價值衝突", hint:""},
+  {key:"familyNeed", label:"三之3、家屬的需求與利益", hint:""},
+  {key:"familyConflict", label:"三之4、家屬可能的價值衝突", hint:""},
+  {key:"teamNeed", label:"三之5、醫療團隊的需求與利益", hint:""},
+  {key:"teamConflict", label:"三之6、醫療團隊可能的價值衝突", hint:""},
+  {key:"reason_emotionButEthical", label:"四之1、我的推理句型", hint:"我的情緒是＿＿，但我認為最合乎倫理的做法是＿＿，因為＿＿。"},
+  {key:"reason_ifIWereRole", label:"四之2、若我是這個角色", hint:"若我是＿＿（角色），我會＿＿，原因是＿＿。"},
+  {key:"reason_emotionInfluence", label:"四之3、情緒如何影響我的判斷", hint:"此情緒如何影響你的判斷？是否能轉化為專業洞察？"},
+  {key:"reason_alternatives", label:"四之4、可能的替代方案", hint:"可能的替代方案包括＿＿。"},
+  {key:"actionPlan", label:"五之1、我的行動方案", hint:"若此情境發生在臨床，你會採取什麼行動？"},
+  {key:"actionReason", label:"五之2、行動理由", hint:""},
+  {key:"learned_conflict", label:"六之1、在情緒與倫理衝突中，我學會了…", hint:""},
+  {key:"learned_future", label:"六之2、我未來希望在專業上更能做到…", hint:""},
+  {key:"theoryPrincipleLink", label:"連結三理論與四原則", hint:"這個情境最適合用哪個倫理理論（義務論／效益論／德行論）與哪些四原則（自主、行善、不傷害、公平正義）分析？請說明理由。"},
+  {key:"clinicalLink", label:"與護理臨床的連結", hint:"若這發生在你未來的護理臨床工作中，你會如何連結今天所學到的護理專業角色與責任？"}
+];
+
+/* Appendix 7 — UCS Student Self-Assessment Rubric (倫理敏感度×推理×行動規劃), one-time survey. */
+const STUDENT_RUBRIC_LIKERT = [
+  {key:"q1", dim:"倫理敏感度", text:"我能辨識情境中不同的倫理線索。"},
+  {key:"q2", dim:"倫理敏感度", text:"我能理解事件中角色的情緒與價值觀不同。"},
+  {key:"q3", dim:"倫理敏感度", text:"我能察覺自己在此情境中的情緒反應。"},
+  {key:"q4", dim:"倫理推理", text:"我能運用倫理理論（義務論、結果論、德行論）進行判斷。"},
+  {key:"q5", dim:"倫理推理", text:"我能應用四大原則與四象限做倫理分析。"},
+  {key:"q6", dim:"倫理推理", text:"我能提出不同角色可能的觀點與看法。"},
+  {key:"q7", dim:"專業行動", text:"我能針對此情境設計合理的行動方案。"},
+  {key:"q8", dim:"專業行動", text:"我能預測行動的風險與效益。"},
+  {key:"q9", dim:"專業行動", text:"我能思考與誰溝通、如何追蹤與說明。"}
+];
+const STUDENT_RUBRIC_TEXT = [
+  {key:"q10", text:"本次學習活動中，我最有收穫的部分是"},
+  {key:"q11", text:"我覺得自己還需要進步的地方是"},
+  {key:"q12", text:"若分數較低，是什麼原因影響了我的學習？（選填）"},
+  {key:"q13", text:"我對本次課程的建議"}
+];
+
+/* Appendix 12 — AI-5C+E Competency Scale, administered pre (W1) and post (W18). */
+const AI5CE_STRUCTURE = [
+  {code:"COLLAB", name:"（一）合作傾向 Collaboration", items:[
+    "在小組活動中，我相信所有成員會盡最大的努力完成任務。",
+    "我相信我們能透過合作順利完成任務。",
+    "當同伴提出想法時，我不會懷疑他們的動機。",
+    "在合作時，我通常能與同伴建立良好溝通。",
+    "在團隊中，我們通常能將任務適當分配給各成員。",
+    "當團隊使用 AI 工具時，我能與他人協作並共享資訊。",
+    "我願意與他人一起探索 AI 如何改善我們的任務品質。"
+  ]},
+  {code:"COMM", name:"（二）溝通傾向 Communication", items:[
+    "和別人說話時，我會努力讓他們感到愉悅。",
+    "我會讓他人感覺到自己很重要。",
+    "我會以熱情的語氣與他人溝通。",
+    "和他人說話時，我會顧及他們的感受。",
+    "我會用語言與行動支持他人。",
+    "我能理解他人傳達資訊中的隱含意義。",
+    "我會以誠意回應他人，如同他人對我的態度。",
+    "我能清楚向他人解釋 AI 工具的使用方式與限制。",
+    "使用 AI 時，我能保持透明，讓他人知道 AI 參與了哪些部分。"
+  ]},
+  {code:"CPS", name:"（三）複雜問題解決 Complex Problem-Solving", reverse:[5], items:[
+    "我相信自己有能力解決所遇到的問題。",
+    "我有信心能靠自己解決問題。",
+    "我曾成功解決遇到的問題。",
+    "當遇到問題時，我願意面對與處理它。",
+    "我不會逃避我所遇到的問題。（反向題）",
+    "我會盡最大努力解決遇到的問題。",
+    "我能運用 AI 工具來分析問題或產出可能的解決方案。",
+    "在使用 AI 解題前，我會先評估問題是否適合使用 AI。"
+  ]},
+  {code:"META", name:"（四）後設認知察覺 Metacognitive Awareness", items:[
+    "我會定期檢視自己是否達成目標。",
+    "我會定期檢視，以幫助自己了解重要的關係性。",
+    "我會定期檢視自己的認知狀態。",
+    "完成任務後，我會檢查自己是否達到預期目標。",
+    "完成任務後，我會問自己從中學到的是否足夠。",
+    "在使用 AI 工具後，我會反思 AI 的輸出是否影響了我的思考品質。",
+    "我能辨識哪些部分應由 AI 協助，哪些應由我自行思考。"
+  ]},
+  {code:"CREA", name:"（五）創造力 Creativity", items:[
+    "我喜歡問一些別人沒想到的問題。",
+    "我喜歡想像我想做或想知道的事。",
+    "我喜歡想像那些從未發生在我身上的事。",
+    "我喜歡嘗試做沒人做過的事情。",
+    "我常想像自己是故事、小說或節目中的角色。",
+    "我喜歡提出新想法，不論是否立即有用。",
+    "我會用 AI 工具激發新點子或創意方向。",
+    "AI 讓我更能探索不同可能性與創造性表達方式。"
+  ]},
+  {code:"CIVIC", name:"（六）公民素養與倫理責任 Citizenship / Ethics", items:[
+    "我關注 AI 在社會中的影響，例如隱私、公平、倫理風險。",
+    "我願意理解 AI 技術如何影響不同族群與弱勢者。",
+    "使用 AI 時，我會主動避免抄襲、造假或侵害他人權益。",
+    "當使用 AI 完成作業或任務時，我會適當揭露 AI 的使用程度。",
+    "我會依據倫理原則（如誠實、公平）判斷 AI 的使用是否恰當。",
+    "我認為 AI 可以促進社會公益（如醫療、教育、弱勢服務）。",
+    "我願意學習如何負責任地使用 AI 來改善社會或幫助他人。"
+  ]}
+];
+
+/* Appendix 6 & 8 — teacher grading rubrics. Teacher-facing only; never rendered on the student pages. */
+const TEACHER_RUBRIC_HTML = `
+<h3>附件六｜倫理能力專業評量規準（總分建議 12 分，每項 4 分）</h3>
+<table class="teacher-table"><tr><th></th><th>4分（優秀）</th><th>3分（良好）</th><th>2分（待加強）</th><th>1分（需改善）</th></tr>
+<tr><td><b>倫理敏感度</b></td><td>能辨識多條倫理線索，掌握衝突與脆弱點</td><td>能辨識主要問題</td><td>僅表層觀察</td><td>未辨識倫理議題</td></tr>
+<tr><td><b>倫理推理</b></td><td>推理完整，多元視角，善用倫理原則</td><td>推理基本完整，但深度不足</td><td>推理片段、不一致</td><td>無推理，只有結論</td></tr>
+<tr><td><b>專業行動力</b></td><td>具體可行、可追蹤、符合病人最佳利益</td><td>可行但不夠完整</td><td>模糊或缺乏執行性</td><td>無行動或不當行動</td></tr>
+</table>
+<h3>附件八｜UCS 教師評量 Rubric（細項）</h3>
+<p class="note">一、倫理敏感度構面</p>
+<table class="teacher-table"><tr><th>等級</th><th>描述</th><th>倫理線索辨識</th><th>價值衝突明確度</th><th>情緒覺察與角色視角</th></tr>
+<tr><td>4分</td><td>全面且深入</td><td>辨識多元線索且具體</td><td>能清楚指出複數價值衝突</td><td>展現高覺察，能同理不同角色</td></tr>
+<tr><td>3分</td><td>多數清楚</td><td>辨識主要線索</td><td>能提出基本價值衝突</td><td>有基本情緒反思與角色視角</td></tr>
+<tr><td>2分</td><td>描述片面</td><td>只列出1–2線索或不明確</td><td>衝突描述模糊</td><td>缺乏情緒連結或他人觀點</td></tr>
+<tr><td>1分</td><td>內容貧乏</td><td>無辨識關鍵倫理訊號</td><td>價值衝突未提或錯誤</td><td>無情緒覺察與角色理解</td></tr>
+</table>
+<p class="note">二、倫理推理構面</p>
+<table class="teacher-table"><tr><th>等級</th><th>描述</th><th>理論架構運用（3理論/4原則）</th><th>四象限運用</th><th>推理邏輯與多元視角</th></tr>
+<tr><td>4分</td><td>邏輯嚴謹具深度</td><td>能整合使用三理論與原則</td><td>四象限分析完整</td><td>具備不同角色觀點與不確定反思</td></tr>
+<tr><td>3分</td><td>基本完整</td><td>有使用至少2種倫理工具</td><td>象限分析基本齊備</td><td>有多元觀點但較片段</td></tr>
+<tr><td>2分</td><td>內容片段</td><td>工具引用不清或表面</td><td>象限使用不足</td><td>視角侷限或欠缺邏輯</td></tr>
+<tr><td>1分</td><td>缺乏推理</td><td>未能運用理論架構</td><td>未使用四象限</td><td>未表達多元視角</td></tr>
+</table>
+<p class="note">三、專業行動構面</p>
+<table class="teacher-table"><tr><th>等級</th><th>描述</th><th>行動目標設定</th><th>方案可行性與風險辨識</th><th>溝通與後續追蹤意識</th></tr>
+<tr><td>4分</td><td>具專業深度與實用性</td><td>明確具體、可操作</td><td>能提出三方案含利弊分析</td><td>能設想完整追蹤與溝通語句</td></tr>
+<tr><td>3分</td><td>合理且具發展潛力</td><td>有明確目標</td><td>提供2方案並說明基本風險</td><td>有後續規劃初步意識</td></tr>
+<tr><td>2分</td><td>模糊不具體</td><td>行動描述含混</td><td>僅有1方案或無風險說明</td><td>溝通內容不具體</td></tr>
+<tr><td>1分</td><td>缺乏可執行性</td><td>未提出具體行動</td><td>無選項分析</td><td>未考慮後續步驟</td></tr>
+</table>
+<p class="note">建議完整施測案例 1、3、5、6；案例 2、4 採形成性／完成制評量；W17/W18 另做整合評量。</p>
+`;
+
+/* ============ Field research-code mapping ============ */
+function fieldCode(path){
+  let m;
+  if((m = path.match(/^cases\.case(\d)\.s(\d)\.(\w+)$/))) return "C0"+m[1]+"_S"+m[2]+"_"+m[3];
+  if((m = path.match(/^cases\.case(\d)\.rubric\.(\w+)$/))) return "C0"+m[1]+"_RB_"+m[2];
+  if((m = path.match(/^films\.film(\d)\.rating\.(\w+)$/))) return "F"+m[1]+"_RB_"+m[2];
+  if((m = path.match(/^films\.film(\d)\.(\w+)$/))) return "F"+m[1]+"_"+m[2];
+  if((m = path.match(/^moduleA\.rating\.(\w+)$/))) return "MA_RB_"+m[1];
+  if((m = path.match(/^moduleA\.(\w+)$/))) return "MA_"+m[1];
+  if((m = path.match(/^moduleD\.(\w+)$/))) return "MD_"+m[1];
+  if((m = path.match(/^studentRubric\.(\w+)$/))) return "SR_"+m[1];
+  if((m = path.match(/^ai5ce\.(pre|post)\.(\w+)$/))) return "AI5CE_"+m[1].toUpperCase()+"_"+m[2];
+  return path;
+}
+function codeToPath(code){
+  let m;
+  if((m = code.match(/^C0(\d)_S(\d)_(\w+)$/))) return "cases.case"+m[1]+".s"+m[2]+"."+m[3];
+  if((m = code.match(/^C0(\d)_RB_(\w+)$/))) return "cases.case"+m[1]+".rubric."+m[2];
+  if((m = code.match(/^F(\d)_RB_(\w+)$/))) return "films.film"+m[1]+".rating."+m[2];
+  if((m = code.match(/^F(\d)_(\w+)$/))) return "films.film"+m[1]+"."+m[2];
+  if((m = code.match(/^MA_RB_(\w+)$/))) return "moduleA.rating."+m[1];
+  if((m = code.match(/^MA_(\w+)$/))) return "moduleA."+m[1];
+  if((m = code.match(/^MD_(\w+)$/))) return "moduleD."+m[1];
+  if((m = code.match(/^SR_(\w+)$/))) return "studentRubric."+m[1];
+  if((m = code.match(/^AI5CE_(PRE|POST)_(\w+)$/))) return "ai5ce."+m[1].toLowerCase()+"."+m[2];
+  return null;
+}
+
+/* ============ Default state ============ */
+function defaultState(){
+  const s = {
+    name: "", uid: "", updatedAt: "",
+    moduleA: {
+      clues:"", unsettled:"", stakeholders:"", whyEthical:"", firstQuestion:"",
+      emotions:[], emotionOther:"", emotionEffect:"", silenceReason:"", nextTime:"",
+      rating:{clue:3, expression:3, recognize:3}
+    },
+    cases: {},
+    films: {},
+    moduleD: {
+      goal:"", optionA:"", optionB:"", optionC:"", preferred:"", preferReason:"", followup:"",
+      report_initial:"", report_roleplay:"", report_transform:"", report_future:""
+    },
+    studentRubric: {
+      q1:3,q2:3,q3:3,q4:3,q5:3,q6:3,q7:3,q8:3,q9:3,
+      q10:"",q11:"",q12:"",q13:"",
+      aiUsed:"", aiTool:"", aiHelp:3,
+      submittedAt:""
+    },
+    ai5ce: { pre:{}, post:{}, preSubmittedAt:"", postSubmittedAt:"" }
+  };
+  AI5CE_STRUCTURE.forEach(g=>{
+    g.items.forEach((txt,idx)=>{
+      const key = g.code+"_"+(idx+1);
+      s.ai5ce.pre[key] = 3;
+      s.ai5ce.post[key] = 3;
+    });
+  });
+  CASES.forEach(c=>{
+    const co = {rubric:{sensitivity:3, reasoning:3, action:3, emotion:3}};
+    c.segments.forEach(seg=>{
+      co["s"+seg.seg] = {original:"", evidence:"", peer:"", revision:""};
+    });
+    s.cases[c.id] = co;
+  });
+  FILMS.forEach(f=>{
+    s.films[f.id] = {
+      keyScene:"", ethicalIssues:"",
+      patientNeed:"", patientConflict:"", familyNeed:"", familyConflict:"", teamNeed:"", teamConflict:"",
+      reason_emotionButEthical:"", reason_ifIWereRole:"", reason_emotionInfluence:"", reason_alternatives:"",
+      actionPlan:"", actionReason:"",
+      learned_conflict:"", learned_future:"",
+      theoryPrincipleLink:"", clinicalLink:"",
+      selfCheck_shortAnswer:"",
+      rating:{emotionAware:3, respectDiff:3, transform:3}
+    };
+  });
+  return s;
+}
+
+let STATE = defaultState();
+let studentId = "";
+let dbCap = null, downloadsCap = null, sampleCap = null;
+let saving = false, pendingSave = false, saveTimer = null;
+
+/* ============ Utility ============ */
+function sanitizeId(name){
+  return (name||"").trim().replace(/[^A-Za-z0-9_\-\.~:@\u4e00-\u9fff]+/g,"_").slice(0,80) || "guest";
+}
+function getPath(obj, path){
+  return path.split(".").reduce((o,k)=> (o==null?undefined:o[k]), obj);
+}
+function setPath(obj, path, value){
+  const parts = path.split(".");
+  let o = obj;
+  for(let i=0;i<parts.length-1;i++){
+    if(o[parts[i]] === undefined) o[parts[i]] = {};
+    o = o[parts[i]];
+  }
+  o[parts[parts.length-1]] = value;
+}
+function escapeHtml(s){
+  return (s||"").toString().replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function flattenAnswers(state){
+  const flat = {};
+  CASES.forEach(c=>{
+    c.segments.forEach(seg=>{
+      FIELD_DEFS.forEach(fd=>{
+        const path = "cases."+c.id+".s"+seg.seg+"."+fd.key;
+        flat[fieldCode(path)] = getPath(state, path) || "";
+      });
+    });
+    ["sensitivity","reasoning","action","emotion"].forEach(k=>{
+      const path = "cases."+c.id+".rubric."+k;
+      flat[fieldCode(path)] = getPath(state, path);
+    });
+  });
+  FILMS.forEach(f=>{
+    FILM_FIELDS.forEach(ff=>{
+      const path = "films."+f.id+"."+ff.key;
+      flat[fieldCode(path)] = getPath(state, path) || "";
+    });
+    ["emotionAware","respectDiff","transform"].forEach(k=>{
+      const path = "films."+f.id+".rating."+k;
+      flat[fieldCode(path)] = getPath(state, path);
+    });
+    flat[fieldCode("films."+f.id+".selfCheck_shortAnswer")] = getPath(state, "films."+f.id+".selfCheck_shortAnswer") || "";
+  });
+  MODULE_A_PATHS.forEach(p=>{ flat[fieldCode(p)] = getPath(state,p) || ""; });
+  ["moduleA.rating.clue","moduleA.rating.expression","moduleA.rating.recognize"].forEach(p=>{ flat[fieldCode(p)] = getPath(state,p); });
+  MODULE_D_PATHS.forEach(p=>{ flat[fieldCode(p)] = getPath(state,p) || ""; });
+  STUDENT_RUBRIC_LIKERT.forEach(it=>{ const p="studentRubric."+it.key; flat[fieldCode(p)] = getPath(state,p); });
+  STUDENT_RUBRIC_TEXT.forEach(it=>{ const p="studentRubric."+it.key; flat[fieldCode(p)] = getPath(state,p) || ""; });
+  ["aiUsed","aiTool","aiHelp"].forEach(k=>{ const p="studentRubric."+k; flat[fieldCode(p)] = getPath(state,p); });
+  ["pre","post"].forEach(mode=>{
+    AI5CE_STRUCTURE.forEach(g=>{
+      g.items.forEach((txt,idx)=>{
+        const p = "ai5ce."+mode+"."+g.code+"_"+(idx+1);
+        flat[fieldCode(p)] = getPath(state,p);
+      });
+    });
+  });
+  return flat;
+}
+
+/* ============ Progress ============ */
+function CASE_FIELD_PATHS(c){
+  const paths = [];
+  c.segments.forEach(seg=>{
+    FIELD_DEFS.forEach(fd=> paths.push("cases."+c.id+".s"+seg.seg+"."+fd.key));
+  });
+  return paths;
+}
+const FILM_FIELD_PATHS = f => FILM_FIELDS.map(ff => `films.${f.id}.${ff.key}`);
+const MODULE_A_PATHS = ["moduleA.clues","moduleA.unsettled","moduleA.stakeholders","moduleA.whyEthical","moduleA.firstQuestion","moduleA.emotionEffect","moduleA.silenceReason","moduleA.nextTime"];
+const MODULE_D_PATHS = ["moduleD.goal","moduleD.optionA","moduleD.optionB","moduleD.optionC","moduleD.preferred","moduleD.preferReason","moduleD.followup","moduleD.report_initial","moduleD.report_roleplay","moduleD.report_transform","moduleD.report_future"];
+
+function pct(paths){
+  let filled = 0;
+  paths.forEach(p=>{ if((getPath(STATE,p)||"").toString().trim().length>0) filled++; });
+  return paths.length ? Math.round(filled/paths.length*100) : 0;
+}
+function overallPct(){
+  let all = [...MODULE_A_PATHS, ...MODULE_D_PATHS];
+  CASES.forEach(c=> all = all.concat(CASE_FIELD_PATHS(c)));
+  FILMS.forEach(f=> all = all.concat(FILM_FIELD_PATHS(f)));
+  return pct(all);
+}
+function studentRubricPaths(){
+  return [...STUDENT_RUBRIC_LIKERT, ...STUDENT_RUBRIC_TEXT].map(it=>"studentRubric."+it.key);
+}
+function ai5cePaths(mode){
+  const paths = [];
+  AI5CE_STRUCTURE.forEach(g=>{ g.items.forEach((txt,idx)=> paths.push("ai5ce."+mode+"."+g.code+"_"+(idx+1))); });
+  return paths;
+}
+function pctOn(stateObj, paths){
+  let filled = 0;
+  paths.forEach(p=>{ if((getPath(stateObj,p)||"").toString().trim().length>0) filled++; });
+  return paths.length ? Math.round(filled/paths.length*100) : 0;
+}
+function overallPctOn(stateObj){
+  let all = [...MODULE_A_PATHS, ...MODULE_D_PATHS];
+  CASES.forEach(c=> all = all.concat(CASE_FIELD_PATHS(c)));
+  FILMS.forEach(f=> all = all.concat(FILM_FIELD_PATHS(f)));
+  return pctOn(stateObj, all);
+}
+
+/* ============ Persistence (Claude cloud) ============ */
+async function initCapabilities(){
+  if(window.claude && typeof window.claude.use === "function"){
+    try{ dbCap = await window.claude.use("db"); }catch(e){ dbCap = null; }
+    try{ downloadsCap = await window.claude.use("downloads"); }catch(e){ downloadsCap = null; }
+    try{ sampleCap = await window.claude.use("sample"); }catch(e){ sampleCap = null; }
+  }
+}
+async function loadState(id){
+  if(dbCap){
+    try{
+      const ref = dbCap.collection("students").doc(id);
+      const snap = await ref.get();
+      if(snap.exists && snap.data()) return Object.assign(defaultState(), snap.data());
+      return defaultState();
+    }catch(e){ console.warn("db load failed, falling back to local", e); }
+  }
+  try{
+    const raw = localStorage.getItem("ucs_state_"+id);
+    if(raw) return Object.assign(defaultState(), JSON.parse(raw));
+  }catch(e){}
+  return defaultState();
+}
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  setSaveStatus("編輯中…");
+  saveTimer = setTimeout(doSave, 1100);
+}
+async function doSave(){
+  if(saving){ pendingSave = true; return; }
+  saving = true;
+  STATE.name = STATE.name || studentId;
+  STATE.updatedAt = new Date().toISOString();
+  try{
+    if(dbCap){
+      const ref = dbCap.collection("students").doc(studentId);
+      await ref.set(STATE);
+      setSaveStatus("已同步至雲端（"+ new Date().toLocaleTimeString() +"）");
+    }else{
+      localStorage.setItem("ucs_state_"+studentId, JSON.stringify(STATE));
+      setSaveStatus("已儲存於本機瀏覽器（"+ new Date().toLocaleTimeString() +"）");
+    }
+  }catch(e){
+    console.warn("save failed", e);
+    try{
+      localStorage.setItem("ucs_state_"+studentId, JSON.stringify(STATE));
+      setSaveStatus("雲端同步失敗，已改存本機");
+    }catch(e2){ setSaveStatus("儲存失敗，請匯出JSON備份"); }
+  }
+  saving = false;
+  if(pendingSave){ pendingSave = false; scheduleSave(); }
+}
+function setSaveStatus(text){
+  const el = document.getElementById("saveStatus");
+  if(el) el.textContent = text;
+}
+
+/* ============ Weekly snapshot (history) ============ */
+async function saveWeeklySnapshot(presetLabel){
+  let label = presetLabel;
+  if(label === undefined){
+    label = prompt("為這次存檔輸入一個標籤（例如：第5週 / W5-W6），方便之後回顧本週進度：", "");
+    if(label === null) return;
+  }
+  const snap = {
+    name: STATE.name || studentId, uid: STATE.uid || "",
+    label: label || ("存檔 "+new Date().toLocaleDateString()),
+    time: new Date().toISOString(),
+    percent: overallPct(),
+    flatAnswers: flattenAnswers(STATE)
+  };
+  if(dbCap){
+    try{
+      const ref = dbCap.collection("history").doc(studentId+"_"+Date.now());
+      await ref.set(snap);
+      setSaveStatus("已儲存本週進度快照（雲端）");
+      return;
+    }catch(e){ console.warn("history save failed", e); }
+  }
+  try{
+    const key = "ucs_history_"+studentId;
+    const arr = JSON.parse(localStorage.getItem(key) || "[]");
+    arr.push(snap);
+    localStorage.setItem(key, JSON.stringify(arr));
+    setSaveStatus("已儲存本週進度快照（本機）");
+  }catch(e){
+    alert("快照儲存失敗，請改用「匯出JSON」備份整份資料。");
+  }
+}
+
+/* ============ Rendering helpers ============ */
+function fieldTag(path){
+  return `<span class="fcode" title="研究編碼（供資料分析比對用）">${fieldCode(path)}</span>`;
+}
+function ansField(label, path, placeholder){
+  return `<div class="field"><label>${label}${fieldTag(path)}</label>
+    <textarea data-path="${path}" placeholder="${escapeHtml(placeholder||"")}"></textarea></div>`;
+}
+function ratingRow(label, path, iconLo, iconHi){
+  return `<div class="rating-row"><label>${label}</label>
+    <span class="lo">${iconLo||"弱"}</span>
+    <input type="range" min="1" max="5" step="1" data-path="${path}">
+    <span class="hi">${iconHi||"強"}</span>
+    <span class="val" data-valfor="${path}">3</span></div>`;
+}
+function aiBox(scope, contextLabel){
+  return `<div class="ai-box" data-scope="${scope}">
+    <div class="ai-head">
+      <strong>🤖 AI 蘇格拉底助教</strong>
+      <button class="btn small ai-toggle">展開詢問</button>
+    </div>
+    <div class="ai-panel hidden">
+      <p class="note">AI 不會給你答案，只會用提問幫你想得更深。請先寫下你目前的想法，再詢問。（${contextLabel}）</p>
+      <div class="ai-log"></div>
+      <div class="ai-input-row">
+        <input type="text" class="ai-input" placeholder="想請教AI助教的問題…">
+        <button class="btn small ai-send">送出</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============ Module A ============ */
+function renderModuleA(){
+  const emoList = ["害怕","憤怒","無力","同情","不確定"];
+  const checks = emoList.map(e=>`<label><input type="checkbox" data-emocheck="${e}"> ${e}</label>`).join("");
+  document.getElementById("panel-A").innerHTML = `
+    <div class="card">
+      <h2>Module A · 倫理敏感度暖身（前測）</h2>
+      <div class="progress-track"><div class="progress-fill" id="progA" style="width:0%"></div></div>
+      <div class="intro-box"><strong>案例：沉默中的輪迴</strong>${PRE_STORY}</div>
+      <h3>一、我看到的倫理線索與情緒氛圍</h3>
+      ${ansField("請至少寫出三個線索","moduleA.clues")}
+      ${ansField("讓我感到不安或困惑的部分","moduleA.unsettled")}
+      ${ansField("此案例中有哪些利害關係人？","moduleA.stakeholders")}
+      ${ansField("我覺得這是倫理議題的原因是","moduleA.whyEthical")}
+      ${ansField("如果我是主護，我會開始詢問的問題","moduleA.firstQuestion")}
+      <h3>二、情緒與價值反思</h3>
+      <div class="field"><label>我在這個事件中感受到什麼情緒？</label>
+        <div class="checkrow" id="emoRow">${checks}</div>
+        <input type="text" data-path="moduleA.emotionOther" placeholder="其他情緒…" style="margin-top:6px;">
+      </div>
+      ${ansField("我的情緒是否影響了我的判斷？請說明","moduleA.emotionEffect")}
+      ${ansField("如果我選擇沉默，原因可能是","moduleA.silenceReason")}
+      ${ansField("我下一次遇到類似情況，可能會怎麼做","moduleA.nextTime")}
+      <h3>三、能力自評</h3>
+      ${ratingRow("覺察臨床現場中的倫理線索","moduleA.rating.clue")}
+      ${ratingRow("表達我的情緒經驗","moduleA.rating.expression")}
+      ${ratingRow("認出這是倫理議題","moduleA.rating.recognize")}
+      ${aiBox("moduleA","前測反思")}
+    </div>`;
+}
+
+/* ============ Module B: 6 UCS cases (v5 structure) ============ */
+function renderCases(){
+  let html = `<div class="card"><h2>Module B · 演變型情境案例（Unfolding Case Studies）</h2>
+    <p class="note">每個案例依授課週次分三階段（SEE 看見線索 → REASON 重建推理 → ACT 專業行動）。每段請先寫「個人原始判斷」，課堂討論後再補「同儕觀點」與「新想法」。所有欄位旁的灰色代碼是研究編碼，用於之後資料比對分析，不影響作答。</p></div>`;
+  CASES.forEach(c=>{
+    html += `<details class="case-block" data-caseid="${c.id}">
+      <summary><span><span class="tag">${c.code}｜${c.week}</span>${c.title}</span><span class="prog" data-progfor="${c.id}">0%</span></summary>
+      <div class="case-body">
+        <details class="resource"><summary>📚 相關學習資源／學習檢索</summary>
+          <ul>${c.resources.map(r=>`<li>${escapeHtml(r)}</li>`).join("")}</ul>
+          <p class="note">需要時再展開查閱；可用來檢查自己的推理，不是標準答案。</p>
+        </details>
+        <button class="btn small secondary export-one" data-exportcase="${c.id}">🖨️ 匯出本案例PDF（${c.code}，繳交用）</button>`;
+    c.segments.forEach(seg=>{
+      const stageTag = seg.label.replace(/<\/?b>/g,"");
+      let fieldsHtml = "";
+      FIELD_DEFS.forEach(fd=>{
+        fieldsHtml += ansField(fd.label, `cases.${c.id}.s${seg.seg}.${fd.key}`, fd.hint);
+      });
+      html += `<div class="seg">
+        <h4><span class="stage-tag">${stageTag}</span></h4>
+        <div class="seg-content"><p class="story">${seg.story}</p><p class="focus"><strong>焦點任務：</strong>${seg.focus}</p></div>
+        ${fieldsHtml}
+      </div>`;
+    });
+    html += `<div class="seg">
+        <h4><span class="stage-tag">自評</span>案例能力自評</h4>
+        ${ratingRow("倫理敏感度","cases."+c.id+".rubric.sensitivity")}
+        ${ratingRow("倫理推理","cases."+c.id+".rubric.reasoning")}
+        ${ratingRow("專業行動力","cases."+c.id+".rubric.action")}
+        ${ratingRow("情緒覺察","cases."+c.id+".rubric.emotion")}
+      </div>
+      ${aiBox(c.id, c.code+" "+c.title)}
+      </div>
+    </details>`;
+  });
+  document.getElementById("panel-B").innerHTML = html;
+}
+
+/* ============ Module C: films ============ */
+function renderFilms(){
+  let html = `<div class="card"><h2>Module C · 電影倫理推理</h2>
+    <p class="note">三部電影對應敏感度、推理與行動力的綜合演練，請於觀影後完成反思單。每部電影完成後可單獨匯出PDF，當週繳交TronClass。</p></div>`;
+  FILMS.forEach(f=>{
+    html += `<details class="case-block film-block" data-caseid="${f.id}">
+      <summary><span>🎬 ${f.title}</span><span class="prog" data-progfor="${f.id}">0%</span></summary>
+      <div class="case-body">
+        <p class="note">核心倫理焦點：${f.focus}</p>
+        <div class="intro-box">${f.content}</div>
+        <button class="btn small secondary export-one" data-exportfilm="${f.id}">🖨️ 匯出本片反思PDF（繳交用）</button>
+        <h3>反思單</h3>`;
+    FILM_FIELDS.forEach(ff=>{ html += ansField(ff.label, `films.${f.id}.${ff.key}`, ff.hint); });
+    html += `
+        <h3>七、自我評量</h3>
+        ${ratingRow("我是否有辨識自己的情緒","films."+f.id+".rating.emotionAware")}
+        ${ratingRow("我是否能尊重不同角色價值觀","films."+f.id+".rating.respectDiff")}
+        ${ratingRow("我是否能將情緒轉化為專業思考與倫理推理","films."+f.id+".rating.transform")}
+        ${ansField("情緒是否有影響我倫理判斷？我是否能覺察並處理？（簡答）", `films.${f.id}.selfCheck_shortAnswer`)}
+        ${aiBox(f.id, f.title)}
+      </div>
+    </details>`;
+  });
+  document.getElementById("panel-C").innerHTML = html;
+}
+
+/* ============ Module D ============ */
+function renderModuleD(){
+  document.getElementById("panel-D").innerHTML = `
+    <div class="card">
+      <h2>Module D · 綜合行動與期末反思</h2>
+      <div class="progress-track"><div class="progress-fill" id="progD" style="width:0%"></div></div>
+      <h3>專業行動方案表</h3>
+      ${ansField("倫理問題摘要（挑一個你印象最深的案例）","moduleD.goal")}
+      ${ansField("可行方案 A 及理由","moduleD.optionA")}
+      ${ansField("可行方案 B 及理由","moduleD.optionB")}
+      ${ansField("可行方案 C 及理由","moduleD.optionC")}
+      ${ansField("我最推薦的行動","moduleD.preferred")}
+      ${ansField("原因","moduleD.preferReason")}
+      ${ansField("行動後的追蹤與溝通計畫","moduleD.followup")}
+      <h3>期末個人報告｜倫理轉折與情緒成長</h3>
+      ${ansField("我在前測案例中的初步觀點","moduleD.report_initial")}
+      ${ansField("我在沙盤共演／課堂角色扮演中的角色與行動","moduleD.report_roleplay")}
+      ${ansField("課程學習後，我的倫理與情緒理解有何轉折","moduleD.report_transform")}
+      ${ansField("未來面對類似情境，我的行動意圖","moduleD.report_future")}
+      ${aiBox("moduleD","期末整合反思")}
+    </div>`;
+}
+
+/* ============ Standalone questionnaires (Appendix 7 & 12) — reachable only via ?form= link, not shown in regular student nav ============ */
+function studentRubricFormHtml(){
+  let h = `<div class="card"><h2>UCS 學生自評量表（計畫附件七）</h2>
+    <p class="note">請針對本學期學習經驗誠實作答，此為一次性課程自評，不影響案例作業分數。</p>
+    <h3>一、倫理敏感度</h3>`;
+  let curDim = "";
+  STUDENT_RUBRIC_LIKERT.forEach(it=>{
+    if(it.dim !== curDim && it.dim !== "倫理敏感度"){ h += `<h3>${it.dim==="倫理推理"?"二、倫理推理":"三、專業行動"}</h3>`; }
+    curDim = it.dim;
+    h += ratingRow(it.text, "studentRubric."+it.key);
+  });
+  h += `<h3>四、整體反思與建議</h3>`;
+  STUDENT_RUBRIC_TEXT.forEach(it=>{ h += ansField(it.text, "studentRubric."+it.key); });
+  h += `<h3>五、AI 使用揭露</h3>
+    ${ansField("是否使用 AI 工具協助？（是/否，及使用的工具名稱）", "studentRubric.aiUsed")}
+    ${ansField("使用的 AI 工具名稱（若有）", "studentRubric.aiTool")}
+    ${ratingRow("AI 對本次作業的幫助程度","studentRubric.aiHelp","無幫助","非常有幫助")}
+    </div>`;
+  return h;
+}
+function ai5ceFormHtml(mode){
+  const label = mode === "pre" ? "前測（W1）" : "後測（W18）";
+  let h = `<div class="card"><h2>AI-5C+E 能力量表｜${label}（計畫附件十二）</h2>
+    <p class="note">1＝非常不同意，5＝非常同意。請依實際感受作答。</p>`;
+  AI5CE_STRUCTURE.forEach(g=>{
+    h += `<h3>${g.name}</h3>`;
+    g.items.forEach((txt,idx)=>{
+      const n = idx+1;
+      const suffix = (g.reverse && g.reverse.indexOf(n)!==-1) ? "（反向題）" : "";
+      h += ratingRow((n)+". "+txt+suffix, `ai5ce.${mode}.${g.code}_${n}`);
+    });
+  });
+  h += `</div>`;
+  return h;
+}
+function renderStandaloneForm(kind){
+  document.getElementById("appNav").classList.add("hidden");
+  const toolbar = document.getElementById("appToolbar");
+  toolbar.classList.remove("hidden");
+  const wsBtn = document.getElementById("weeklySnapshotBtn");
+  if(wsBtn) wsBtn.classList.add("hidden");
+  const main = document.getElementById("appMain");
+  main.classList.remove("hidden");
+  main.innerHTML = `<div class="panel active" id="panel-standalone"></div>`;
+  const panel = document.getElementById("panel-standalone");
+  let formHtml = "", submitPath = "", doneMsg = "";
+  if(kind === "sr"){ formHtml = studentRubricFormHtml(); submitPath = "studentRubric.submittedAt"; doneMsg = "學生自評量表"; }
+  else if(kind === "ai5ce-pre"){ formHtml = ai5ceFormHtml("pre"); submitPath = "ai5ce.preSubmittedAt"; doneMsg = "AI-5C+E 前測"; }
+  else if(kind === "ai5ce-post"){ formHtml = ai5ceFormHtml("post"); submitPath = "ai5ce.postSubmittedAt"; doneMsg = "AI-5C+E 後測"; }
+  panel.innerHTML = formHtml + `<div class="card"><button class="btn secondary" id="standaloneSubmitBtn">✅ 送出${doneMsg}</button><p class="note" id="standaloneMsg"></p></div>`;
+  populateInputs();
+  document.getElementById("standaloneSubmitBtn").addEventListener("click", async ()=>{
+    setPath(STATE, submitPath, new Date().toISOString());
+    await doSave();
+    if(getGasUrl() && /^\d{3}$/.test((STATE.uid||"").trim())) await cloudSaveGas("Final");
+    document.getElementById("standaloneMsg").textContent = "已送出並儲存，謝謝作答！可以關閉此頁面。";
+  });
+}
+
+function renderResources(){
+  const groups = {};
+  PPTX_UNITS.forEach(u=>{ (groups[u.group] = groups[u.group]||[]).push(u); });
+  const groupNames = {1:"單元一｜倫理理論基礎", 2:"單元二｜人權、自主與四原則", 3:"單元三｜法律與護理專業責任", 7:"單元七｜倫理決策模式與案例分析"};
+  let html = `<div class="card"><h2>Module E · 課程講義資源</h2>
+    <p class="note">課程投影片主題總覽（依單元列出）。此處目前僅列出主題大綱，逐字稿／重點摘要將陸續補上。</p>`;
+  Object.keys(groups).sort((a,b)=>a-b).forEach(g=>{
+    html += `<h3>${groupNames[g] || ("單元"+g)}</h3><ul class="unit-list">`;
+    groups[g].sort((a,b)=>a.num-b.num).forEach(u=>{
+      html += `<li><b>${u.unit}</b>　${escapeHtml(u.title)}<span class="note"> — 內容之後補上</span></li>`;
+    });
+    html += `</ul>`;
+  });
+  html += `</div>`;
+  document.getElementById("panel-E").innerHTML = html;
+}
+
+/* ============ Home ============ */
+function renderHome(){
+  const modA = pct(MODULE_A_PATHS), modD = pct(MODULE_D_PATHS);
+  let weekCards = "";
+  WEEK_MAP.forEach(w=>{
+    weekCards += `<div class="week-card">
+      <div class="wk-label">${w.label}</div>
+      <div class="wk-topic">${escapeHtml(w.topic)}</div>
+      <div class="wk-actions">
+        <button class="btn small" data-weekgoto="${w.week}">進入本週</button>
+        <button class="btn small ghost-dark" data-weeksave="${w.week}">💾 存當週</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById("panel-home").innerHTML = `
+    <div class="card">
+      <h2>課程週曆｜18 週授課計畫</h2>
+      <p class="note">以演變型情境案例建構護理倫理三階能力（敏感度 → 推理 → 行動力）。點「進入本週」直接跳到當週內容，完成後可在案例／電影頁按「匯出PDF」繳交 TronClass。</p>
+      <div class="progress-track"><div class="progress-fill" id="progHome" style="width:0%"></div></div>
+      <p class="note">整體完成度：<span id="progHomeText">0%</span></p>
+      <div class="week-grid">${weekCards}</div>
+    </div>
+    <div class="card">
+      <h3>其他模組</h3>
+      <div class="grid-modules">
+        <div class="mod-tile" data-goto="A"><h4>Module A · 敏感度暖身</h4><div class="count">完成度 ${modA}%</div></div>
+        <div class="mod-tile" data-goto="D"><h4>Module D · 綜合行動與期末反思</h4><div class="count">完成度 ${modD}%</div></div>
+        <div class="mod-tile" data-goto="E"><h4>Module E · 課程講義資源</h4><div class="count">課程投影片主題總覽</div></div>
+      </div>
+    </div>`;
+}
+
+/* ============ Teacher view ============ */
+function renderTeacher(){
+  const base = location.origin + location.pathname;
+  document.getElementById("panel-teacher").innerHTML = `
+    <div class="card">
+      <h2>教師檢視（提交紀錄與完成度）</h2>
+      <p class="note">此頁面讀取雲端（db）中所有已儲存的學生紀錄，並顯示各模組完成度。若未連上雲端資料庫，僅能看到本機瀏覽器紀錄。</p>
+      <button class="btn secondary" id="refreshTeacher">重新整理名單</button>
+      <div id="teacherTableWrap" style="margin-top:14px;"></div>
+    </div>
+    <div class="card">
+      <h2>問卷發放連結（學生頁面不會顯示這些量表，需用連結分享）</h2>
+      <p class="note">把以下連結分享給學生（可貼到 TronClass 公告），學生點開後只會看到該份量表，不會看到案例內容。</p>
+      <div class="field"><label>UCS 學生自評量表（附件七，期末填寫）</label>
+        <input type="text" readonly value="${escapeHtml(base)}?form=sr" onclick="this.select()"></div>
+      <div class="field"><label>AI-5C+E 能力量表｜前測（W1）</label>
+        <input type="text" readonly value="${escapeHtml(base)}?form=ai5ce-pre" onclick="this.select()"></div>
+      <div class="field"><label>AI-5C+E 能力量表｜後測（W18）</label>
+        <input type="text" readonly value="${escapeHtml(base)}?form=ai5ce-post" onclick="this.select()"></div>
+      <p class="note">點連結框可全選複製網址。</p>
+    </div>
+    <div class="card">
+      <h2>教師評分規準（僅教師可見，不對學生顯示）</h2>
+      ${TEACHER_RUBRIC_HTML}
+    </div>`;
+  document.getElementById("refreshTeacher").addEventListener("click", loadTeacherList);
+  loadTeacherList();
+}
+async function loadTeacherList(){
+  const wrap = document.getElementById("teacherTableWrap");
+  if(!wrap) return;
+  wrap.innerHTML = "<p>載入中…</p>";
+  const rowsFor = (id, data)=>{
+    const course = overallPctOn(data);
+    const sr = data.studentRubric && data.studentRubric.submittedAt ? "✓" : "－";
+    const pre = data.ai5ce && data.ai5ce.preSubmittedAt ? "✓" : "－";
+    const post = data.ai5ce && data.ai5ce.postSubmittedAt ? "✓" : "－";
+    return `<tr><td>${escapeHtml(id)}</td><td>${course}%</td><td style="text-align:center">${sr}</td><td style="text-align:center">${pre}</td><td style="text-align:center">${post}</td><td>${data.updatedAt? new Date(data.updatedAt).toLocaleString() : "-"}</td><td><button class="btn small ghost-dark" data-delrecord="${escapeHtml(id)}">刪除此筆</button></td></tr>`;
+  };
+  const head = `<tr><th>研究序號</th><th>課程完成度</th><th>學生自評量表</th><th>AI5C+E前測</th><th>AI5C+E後測</th><th>最後更新</th><th></th></tr>`;
+  if(dbCap){
+    try{
+      const q = dbCap.collection("students").orderBy("updatedAt","desc").limit(100);
+      const snap = await q.get();
+      if(snap.empty){ wrap.innerHTML = "<p>目前尚無雲端提交紀錄。</p>"; return; }
+      let rows = "";
+      snap.docs.forEach(d=>{ rows += rowsFor(d.id, d.data() || {}); });
+      wrap.innerHTML = `<table class="teacher-table">${head}${rows}</table>`;
+    }catch(e){
+      wrap.innerHTML = "<p>讀取雲端名單失敗：" + escapeHtml(String(e && e.message || e)) + "</p>";
+    }
+  }else{
+    let rows = "";
+    let count = 0;
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.indexOf("ucs_state_")===0){
+        try{
+          const d = JSON.parse(localStorage.getItem(k));
+          const id = k.replace("ucs_state_","");
+          rows += rowsFor(id, d);
+          count++;
+        }catch(e){}
+      }
+    }
+    wrap.innerHTML = count? `<table class="teacher-table">${head}${rows}</table>` : "<p>本機瀏覽器目前沒有紀錄（雲端資料庫未連線）。</p>";
+  }
+}
+async function deleteRecord(id){
+  if(!confirm(`確定要刪除「${id}」這筆學習紀錄嗎？此動作無法復原。`)) return;
+  if(dbCap){
+    try{ await dbCap.collection("students").doc(id).delete(); }
+    catch(e){ alert("雲端刪除失敗：" + (e && e.message || e)); return; }
+  }
+  try{ localStorage.removeItem("ucs_state_"+id); }catch(e){}
+  if(id === studentId){ STATE = defaultState(); populateInputs(); }
+  loadTeacherList();
+}
+
+/* ============ Progress refresh (UI only) ============ */
+function refreshProgressUI(){
+  CASES.forEach(c=>{
+    const p = pct(CASE_FIELD_PATHS(c));
+    document.querySelectorAll(`[data-progfor="${c.id}"]`).forEach(el=> el.textContent = p+"%");
+  });
+  FILMS.forEach(f=>{
+    const p = pct(FILM_FIELD_PATHS(f));
+    document.querySelectorAll(`[data-progfor="${f.id}"]`).forEach(el=> el.textContent = p+"%");
+  });
+  const progA = document.getElementById("progA");
+  if(progA) progA.style.width = pct(MODULE_A_PATHS)+"%";
+  const progD = document.getElementById("progD");
+  if(progD) progD.style.width = pct(MODULE_D_PATHS)+"%";
+  const home = document.getElementById("progHome");
+  if(home){ const p = overallPct(); home.style.width = p+"%"; const t=document.getElementById("progHomeText"); if(t) t.textContent = p+"%"; }
+  document.querySelectorAll("nav.tabs button").forEach(btn=>{
+    const key = btn.getAttribute("data-tab");
+    const badge = btn.querySelector(".badge");
+    if(!badge) return;
+    let p = 0;
+    if(key==="A") p = pct(MODULE_A_PATHS);
+    else if(key==="D") p = pct(MODULE_D_PATHS);
+    else if(key==="B"){ let all=[]; CASES.forEach(c=>all=all.concat(CASE_FIELD_PATHS(c))); p = pct(all); }
+    else if(key==="C"){ let all=[]; FILMS.forEach(f=>all=all.concat(FILM_FIELD_PATHS(f))); p = pct(all); }
+    badge.textContent = p+"%";
+  });
+}
+
+/* ============ Populate inputs from STATE ============ */
+function populateInputs(){
+  document.querySelectorAll("[data-path]").forEach(el=>{
+    const path = el.getAttribute("data-path");
+    const v = getPath(STATE, path);
+    if(el.type === "range"){
+      el.value = (v===undefined||v===null||v==="") ? 3 : v;
+      const valEl = document.querySelector(`[data-valfor="${path}"]`);
+      if(valEl) valEl.textContent = el.value;
+    }else{
+      el.value = v===undefined||v===null ? "" : v;
+    }
+  });
+  document.querySelectorAll("[data-emocheck]").forEach(el=>{
+    const v = el.getAttribute("data-emocheck");
+    el.checked = (STATE.moduleA.emotions||[]).indexOf(v) !== -1;
+  });
+  const uidEl = document.getElementById("uidInput");
+  if(uidEl) uidEl.value = STATE.uid || "";
+  refreshProgressUI();
+}
+
+/* ============ Event binding ============ */
+function bindEvents(){
+  document.body.addEventListener("input", (e)=>{
+    const t = e.target;
+    if(t.matches("[data-path]")){
+      const path = t.getAttribute("data-path");
+      if(t.type === "range"){
+        setPath(STATE, path, Number(t.value));
+        const valEl = document.querySelector(`[data-valfor="${path}"]`);
+        if(valEl) valEl.textContent = t.value;
+      }else{
+        setPath(STATE, path, t.value);
+      }
+      refreshProgressUI();
+      scheduleSave();
+    }
+  });
+  document.body.addEventListener("change", (e)=>{
+    const t = e.target;
+    if(t.matches("[data-emocheck]")){
+      const v = t.getAttribute("data-emocheck");
+      let arr = STATE.moduleA.emotions || [];
+      if(t.checked){ if(arr.indexOf(v)===-1) arr.push(v); }
+      else{ arr = arr.filter(x=>x!==v); }
+      STATE.moduleA.emotions = arr;
+      scheduleSave();
+    }
+  });
+
+  document.body.addEventListener("click", (e)=>{
+    const goto = e.target.closest("[data-goto]");
+    if(goto){
+      const tab = goto.getAttribute("data-goto");
+      const caseId = goto.getAttribute("data-case");
+      switchTab(tab);
+      if(caseId){
+        setTimeout(()=>{
+          const d = document.querySelector(`details[data-caseid="${caseId}"]`);
+          if(d){ d.open = true; d.scrollIntoView({behavior:"smooth", block:"start"}); }
+        }, 60);
+      }
+      return;
+    }
+    const toggle = e.target.closest(".ai-toggle");
+    if(toggle){
+      const panel = toggle.closest(".ai-box").querySelector(".ai-panel");
+      panel.classList.toggle("hidden");
+      toggle.textContent = panel.classList.contains("hidden") ? "展開詢問" : "收合";
+      return;
+    }
+    const send = e.target.closest(".ai-send");
+    if(send){ handleAiSend(send); return; }
+    const del = e.target.closest("[data-delrecord]");
+    if(del){ deleteRecord(del.getAttribute("data-delrecord")); return; }
+    const wg = e.target.closest("[data-weekgoto]");
+    if(wg){
+      const wk = WEEK_MAP.find(w=> String(w.week) === wg.getAttribute("data-weekgoto"));
+      if(wk){
+        if(wk.type === "moduleA") switchTab("A");
+        else if(wk.type === "moduleD") switchTab("D");
+        else if(wk.type === "case"){
+          switchTab("B");
+          setTimeout(()=>{ const d = document.querySelector(`details[data-caseid="${wk.ref}"]`); if(d){ d.open = true; d.scrollIntoView({behavior:"smooth", block:"start"}); } }, 60);
+        }else if(wk.type === "film"){
+          switchTab("C");
+          setTimeout(()=>{ const d = document.querySelector(`details[data-caseid="${wk.ref}"]`); if(d){ d.open = true; d.scrollIntoView({behavior:"smooth", block:"start"}); } }, 60);
+        }
+      }
+      return;
+    }
+    const ws = e.target.closest("[data-weeksave]");
+    if(ws){
+      const wk = WEEK_MAP.find(w=> String(w.week) === ws.getAttribute("data-weeksave"));
+      saveWeeklySnapshot(wk ? (wk.label+"｜"+wk.topic) : undefined);
+      return;
+    }
+    const ec = e.target.closest("[data-exportcase]");
+    if(ec){ exportCasePdf(ec.getAttribute("data-exportcase")); return; }
+    const ef = e.target.closest("[data-exportfilm]");
+    if(ef){ exportFilmPdf(ef.getAttribute("data-exportfilm")); return; }
+  });
+
+  document.body.addEventListener("keydown", (e)=>{
+    if(e.target.matches(".ai-input") && e.key === "Enter"){
+      const box = e.target.closest(".ai-box");
+      const btn = box.querySelector(".ai-send");
+      handleAiSend(btn);
+    }
+  });
+
+  document.querySelectorAll("nav.tabs button").forEach(btn=>{
+    btn.addEventListener("click", ()=> switchTab(btn.getAttribute("data-tab")));
+  });
+}
+
+function switchTab(tab){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+  const panel = document.getElementById("panel-"+tab);
+  const btn = document.querySelector(`nav.tabs button[data-tab="${tab}"]`);
+  if(panel) panel.classList.add("active");
+  if(btn) btn.classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+  if(tab === "teacher") loadTeacherList();
+}
+
+/* ============ AI Assistant ============ */
+const aiHistory = {};
+async function handleAiSend(btn){
+  const box = btn.closest(".ai-box");
+  const scope = box.getAttribute("data-scope");
+  const input = box.querySelector(".ai-input");
+  const log = box.querySelector(".ai-log");
+  const q = input.value.trim();
+  if(!q) return;
+  if(!sampleCap){
+    appendAiMsg(log, "assistant", "（AI 助教僅在透過 Claude 發布的頁面中可用；目前此檢視無法使用 AI 功能，但你仍可繼續填寫學習單並儲存進度。）");
+    input.value = "";
+    return;
+  }
+  appendAiMsg(log, "user", q);
+  input.value = "";
+  const thinking = appendAiMsg(log, "assistant", "思考中…");
+
+  const caseInfo = CASES.find(c=>c.id===scope) || FILMS.find(f=>f.id===scope);
+  const contextTitle = caseInfo ? (caseInfo.title) : (scope==="moduleA" ? "前測反思" : "期末整合反思");
+  const studentWork = collectScopeText(scope);
+
+  const prompt = "你是護理倫理課程的蘇格拉底式助教。學生正在討論案例「" + contextTitle + "」。" +
+    "以下是學生目前寫下的內容（可能不完整）：\n" + (studentWork || "（尚未填寫）") +
+    "\n\n學生的問題：" + q +
+    "\n\n請用繁體中文回答，語氣溫和鼓勵。不要直接給答案或替學生做出倫理判斷，" +
+    "而是用1到2個具體的提問引導學生看到被忽略的角色觀點、倫理原則或情境線索，" +
+    "並可簡短提醒可運用的分析工具（如四原則、四象限）。回答控制在120字以內。";
+
+  aiHistory[scope] = aiHistory[scope] || [];
+  aiHistory[scope].push({role:"user", content: prompt});
+
+  try{
+    const result = await sampleCap(aiHistory[scope], {
+      modelTier:"quick", cache:false,
+      onText: ({text})=>{ thinking.textContent = text; }
+    });
+    thinking.textContent = result.text;
+    aiHistory[scope].push({role:"assistant", content: result.text});
+  }catch(err){
+    const code = err && err.code;
+    let msg = "AI 助教暫時無法回應，請稍後再試。";
+    if(code === "not_granted") msg = "你尚未允許本頁使用 AI 功能。";
+    else if(code === "rate_limited") msg = "詢問太頻繁了，請稍等片刻再問。";
+    thinking.textContent = msg;
+  }
+}
+function appendAiMsg(log, role, text){
+  const div = document.createElement("div");
+  div.className = "ai-msg " + role;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+function collectScopeText(scope){
+  let obj = null;
+  if(scope === "moduleA") obj = STATE.moduleA;
+  else if(scope === "moduleD") obj = STATE.moduleD;
+  else if(STATE.cases[scope]) obj = STATE.cases[scope];
+  else if(STATE.films[scope]) obj = STATE.films[scope];
+  if(!obj) return "";
+  const parts = [];
+  (function walk(o){
+    Object.keys(o).forEach(k=>{
+      const v = o[k];
+      if(typeof v === "string" && v.trim()) parts.push(k+"："+v);
+      else if(v && typeof v === "object" && !Array.isArray(v)) walk(v);
+    });
+  })(obj);
+  return parts.join("\n");
+}
+
+/* ============ JSON Export / Import ============ */
+async function exportJson(){
+  const payload = {
+    format: "UCS-platform-export-v2",
+    name: STATE.name || studentId, uid: STATE.uid || "",
+    time: new Date().toISOString(), overallPercent: overallPct(),
+    state: STATE, flatAnswers: flattenAnswers(STATE)
+  };
+  const data = JSON.stringify(payload, null, 2);
+  const filename = (studentId||"student") + "_UCS學習紀錄.json";
+  if(downloadsCap){
+    try{ await downloadsCap.save({filename, data}); setSaveStatus("已匯出 JSON 備份"); return; }
+    catch(e){ console.warn("downloads.save failed, falling back", e); }
+  }
+  try{
+    const blob = new Blob([data], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setSaveStatus("已匯出 JSON 備份");
+  }catch(e){
+    alert("匯出失敗，請改用「列印/存為PDF」功能保存紀錄。");
+  }
+}
+function importJsonFile(file){
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    try{
+      const o = JSON.parse(r.result);
+      if(!confirm("匯入會覆蓋目前這台裝置上對應欄位的作答，是否繼續？")) return;
+      if(o.state){
+        STATE = Object.assign(defaultState(), o.state);
+        if(o.uid) STATE.uid = o.uid;
+      }else if(o.answers || o.flatAnswers){
+        const flat = o.answers || o.flatAnswers;
+        Object.keys(flat).forEach(code=>{
+          const path = codeToPath(code);
+          if(path) setPath(STATE, path, flat[code]);
+        });
+        if(o.uid) STATE.uid = o.uid;
+      }else{
+        alert("這個檔案看起來不是本平台或 UCS-v5 的備份格式。");
+        return;
+      }
+      populateInputs();
+      scheduleSave();
+      setSaveStatus("已匯入備份資料");
+    }catch(e){
+      alert("備份檔格式不正確：" + (e && e.message || e));
+    }
+  };
+  r.readAsText(file);
+}
+
+/* ============ Google Apps Script cloud sync (for TronClass / non-Claude hosting) ============ */
+function getGasUrl(){ try{ return localStorage.getItem("ucs_gas_url") || ""; }catch(e){ return ""; } }
+function setGasUrl(url){ try{ localStorage.setItem("ucs_gas_url", url); }catch(e){} }
+function configureGas(){
+  const cur = getGasUrl();
+  const url = prompt("請貼上老師的 Google Apps Script Web App 網址（部署後的 /exec 連結）：\n（此設定僅存在你目前使用的瀏覽器）", cur);
+  if(url === null) return;
+  setGasUrl(url.trim());
+  alert(url.trim() ? "已設定雲端同步網址。" : "已清除雲端同步網址。");
+}
+async function cloudSaveGas(status){
+  const url = getGasUrl();
+  if(!url){ alert("尚未設定 Google 雲端同步網址，請按「⚙ 雲端設定」輸入老師提供的網址。"); return; }
+  const uid = (STATE.uid||"").trim();
+  if(!/^\d{3}$/.test(uid)){ alert("同步前請先在上方輸入 3 位數研究序號（001–300）。"); return; }
+  const flat = flattenAnswers(STATE);
+  const answers = Object.keys(flat)
+    .map(k=>({key:k, answer: flat[k]===undefined||flat[k]===null ? "" : String(flat[k])}));
+  setSaveStatus("同步 Google 雲端中…");
+  try{
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({code: uid, status: status, answers: answers})
+    });
+    const j = await res.json().catch(()=>({ok:true}));
+    if(j && j.ok===false) throw new Error(j.error || "未知錯誤");
+    setSaveStatus("☁ 已同步 Google 雲端（"+(j.time || new Date().toLocaleTimeString())+"）");
+  }catch(e){
+    console.warn("GAS sync failed", e);
+    setSaveStatus("Google 雲端同步失敗，請確認網址或稍後再試（資料已在本機/Claude雲端保存）");
+  }
+}
+
+/* ============ Report / PDF (research code only — no name shown) ============ */
+const MODULE_A_LABELS = {
+  clues:"我看到的倫理線索", unsettled:"讓我感到不安或困惑的部分", stakeholders:"利害關係人",
+  whyEthical:"我覺得這是倫理議題的原因", firstQuestion:"我會開始詢問的問題",
+  emotionEffect:"情緒是否影響判斷", silenceReason:"選擇沉默的原因", nextTime:"下一次會怎麼做"
+};
+const MODULE_D_LABELS = {
+  goal:"倫理問題摘要", optionA:"方案 A", optionB:"方案 B", optionC:"方案 C",
+  preferred:"最推薦的行動", preferReason:"原因", followup:"追蹤與溝通計畫",
+  report_initial:"前測案例的初步觀點", report_roleplay:"沙盤共演中的角色與行動",
+  report_transform:"倫理與情緒理解的轉折", report_future:"未來的行動意圖"
+};
+const CASE_RUBRIC_LABELS = {sensitivity:"倫理敏感度自評", reasoning:"倫理推理自評", action:"專業行動力自評", emotion:"情緒覺察自評"};
+const FILM_RATING_LABELS = {emotionAware:"我是否有辨識自己的情緒", respectDiff:"我是否能尊重不同角色價值觀", transform:"我是否能將情緒轉化為專業思考與倫理推理"};
+
+function fld(label, path){
+  const value = getPath(STATE, path);
+  const v = (value===undefined||value===null||value==="") ? "（未填寫）" : escapeHtml(String(value)).replace(/\n/g,"<br>");
+  return `<p><strong>${escapeHtml(label)}：</strong>${v}<span class="rcode">${fieldCode(path)}</span></p>`;
+}
+function ratingLine(label, path){
+  const value = getPath(STATE, path);
+  return `<p><strong>${escapeHtml(label)}：</strong>${value||3} / 5<span class="rcode">${fieldCode(path)}</span></p>`;
+}
+function reportHeaderHtml(){
+  return `<p class="meta">研究序號：${escapeHtml(STATE.uid ? ("UCS-"+STATE.uid) : "（未填寫）")}　｜　匯出時間：${new Date().toLocaleString()}</p>
+  <p class="printtip">📌 若沒有自動跳出列印視窗，請按 <strong>Ctrl+P</strong>（Mac：<strong>Cmd+P</strong>），在列印對話框中將「目的地／印表機」選為「另存為 PDF」即可。此報告不含研究序號原始明碼於畫面外，可直接用於 TronClass 當週繳交。</p>`;
+}
+function moduleASectionHtml(){
+  let h = `<h2>Module A · 倫理敏感度暖身（前測）</h2>`;
+  MODULE_A_PATHS.forEach(p=>{ h += fld(MODULE_A_LABELS[p.split(".")[1]] || p, p); });
+  h += `<p><strong>感受到的情緒：</strong>${escapeHtml((STATE.moduleA.emotions||[]).join("、") + (STATE.moduleA.emotionOther? "、"+STATE.moduleA.emotionOther : "")) || "（未填寫）"}</p>`;
+  ["clue","expression","recognize"].forEach(k=>{
+    const labels = {clue:"覺察倫理線索", expression:"表達情緒經驗", recognize:"認出倫理議題"};
+    h += ratingLine(labels[k], "moduleA.rating."+k);
+  });
+  return h;
+}
+function caseSectionHtml(c){
+  let h = `<h3>${c.code}｜${c.week}｜${escapeHtml(c.title)}</h3>`;
+  c.segments.forEach(seg=>{
+    h += `<p class="stagehead">${seg.label.replace(/<\/?b>/g,"")}</p>`;
+    FIELD_DEFS.forEach(fd=>{ h += fld(fd.label, `cases.${c.id}.s${seg.seg}.${fd.key}`); });
+  });
+  ["sensitivity","reasoning","action","emotion"].forEach(k=>{ h += ratingLine(CASE_RUBRIC_LABELS[k], `cases.${c.id}.rubric.${k}`); });
+  return h;
+}
+function filmSectionHtml(f){
+  let h = `<h3>${escapeHtml(f.title)}</h3>`;
+  FILM_FIELDS.forEach(ff=>{ h += fld(ff.label, `films.${f.id}.${ff.key}`); });
+  ["emotionAware","respectDiff","transform"].forEach(k=>{ h += ratingLine(FILM_RATING_LABELS[k], `films.${f.id}.rating.${k}`); });
+  h += fld("情緒是否有影響我倫理判斷？我是否能覺察並處理？（簡答）", `films.${f.id}.selfCheck_shortAnswer`);
+  return h;
+}
+function moduleDSectionHtml(){
+  let h = `<h2>Module D · 綜合行動與期末反思</h2>`;
+  MODULE_D_PATHS.forEach(p=>{ h += fld(MODULE_D_LABELS[p.split(".")[1]] || p, p); });
+  return h;
+}
+function reportShell(title, bodyHtml){
+  return `<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">
+  <title>${escapeHtml(title)}</title>
+  <style>
+    body{font-family:"Microsoft JhengHei","PingFang TC",Arial,sans-serif; line-height:1.7; color:#222; max-width:840px; margin:30px auto; padding:0 20px;}
+    h1{color:#5a3d99; border-bottom:3px solid #764ba2; padding-bottom:8px;}
+    h2{color:#764ba2; margin-top:34px; border-bottom:2px solid #ddd; padding-bottom:6px;}
+    h3{color:#4a3b7a; margin-top:24px;}
+    p.meta{color:#666; font-size:.92em;}
+    p.printtip{background:#fff5da; border:1px solid #e2c46b; border-radius:8px; padding:8px 12px; font-size:.9em;}
+    p.stagehead{font-weight:700; color:#fff; background:#8a7ac2; display:inline-block; padding:2px 10px; border-radius:6px; margin:12px 0 6px;}
+    p{margin:6px 0;}
+    .rcode{color:#aaa; font-size:.75em; margin-left:6px;}
+    .pagebreak{page-break-before:always;}
+    @media print{ a{color:#000;} p.printtip{display:none;} .rcode{display:none;} }
+  </style>
+  </head><body><h1>${escapeHtml(title)}</h1>${reportHeaderHtml()}${bodyHtml}
+  <script>window.onload=function(){ setTimeout(function(){ try{ window.print(); }catch(e){} }, 350); };<\/script>
+  </body></html>`;
+}
+function buildReportHtml(){
+  let body = moduleASectionHtml();
+  body += `<div class="pagebreak"></div><h2>Module B · 演變型情境案例</h2>`;
+  CASES.forEach(c=>{ body += caseSectionHtml(c); });
+  body += `<div class="pagebreak"></div><h2>Module C · 電影倫理推理</h2>`;
+  FILMS.forEach(f=>{ body += filmSectionHtml(f); });
+  body += `<div class="pagebreak"></div>` + moduleDSectionHtml();
+  return reportShell("護理倫理 UCS 學習歷程報告", body);
+}
+function buildCaseReportHtml(caseId){
+  const c = CASES.find(x=>x.id===caseId);
+  if(!c) return reportShell("找不到案例", "<p>找不到此案例。</p>");
+  const body = `<h2>Module B · 演變型情境案例</h2>` + caseSectionHtml(c);
+  return reportShell(c.code+"｜"+c.title+"｜學習報告", body);
+}
+function buildFilmReportHtml(filmId){
+  const f = FILMS.find(x=>x.id===filmId);
+  if(!f) return reportShell("找不到電影", "<p>找不到此電影。</p>");
+  const body = `<h2>Module C · 電影倫理推理</h2>` + filmSectionHtml(f);
+  return reportShell(f.title+"｜反思報告", body);
+}
+
+async function deliverReport(html, filenameBase){
+  let opened = null;
+  try{ opened = window.open("", "_blank"); }catch(e){ opened = null; }
+  if(opened && !opened.closed){
+    try{
+      opened.document.open();
+      opened.document.write(html);
+      opened.document.close();
+      setTimeout(()=>{ try{ opened.focus(); }catch(e){} try{ opened.print(); }catch(e){ console.warn("auto-print failed", e); } }, 500);
+      setSaveStatus("已在新分頁開啟報表；若未自動跳出列印視窗，請在該分頁按 Ctrl+P（Mac：Cmd+P）另存為PDF");
+      return;
+    }catch(e){
+      console.warn("open/write failed", e);
+      try{ opened.close(); }catch(e2){}
+    }
+  }
+  const filename = filenameBase + ".html";
+  if(downloadsCap){
+    try{ await downloadsCap.save({filename, data: html}); setSaveStatus("已下載報表檔案，請開啟後用瀏覽器「列印 → 另存為PDF」"); return; }
+    catch(e){ console.warn("downloads save failed", e); }
+  }
+  try{
+    const blob = new Blob([html], {type:"text/html"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setSaveStatus("已下載報表檔案，請開啟後列印為PDF");
+  }catch(e){
+    alert("目前瀏覽器封鎖了新視窗與下載，請改用「匯出JSON」備份資料，再請老師協助列印。");
+  }
+}
+function idBase(){ return studentId || "student"; }
+async function exportPdf(){ await deliverReport(buildReportHtml(), idBase()+"_UCS學習報告"); }
+async function exportCasePdf(caseId){
+  const c = CASES.find(x=>x.id===caseId);
+  await deliverReport(buildCaseReportHtml(caseId), idBase()+"_"+(c?c.code:caseId)+"_學習報告");
+}
+async function exportFilmPdf(filmId){
+  await deliverReport(buildFilmReportHtml(filmId), idBase()+"_"+filmId+"_反思報告");
+}
+
+/* ============ Login / boot ============ */
+async function enterCourse(){
+  const uidInput = document.getElementById("uidInput");
+  const uidVal = uidInput.value.trim();
+  if(!/^\d{3}$/.test(uidVal)){ alert("請輸入研究助理提供的 3 位數研究序號（例如 007），格式為 UCS-XXX。"); return; }
+  studentId = "UCS-" + uidVal;
+  document.getElementById("enterBtn").disabled = true;
+  setSaveStatus("載入紀錄中…");
+  STATE = await loadState(studentId);
+  STATE.uid = uidVal;
+  STATE.name = studentId;
+  document.getElementById("appMain").classList.remove("hidden");
+  const standaloneKind = getStandaloneFormKind();
+  if(standaloneKind){
+    document.getElementById("appToolbar").classList.remove("hidden");
+    renderStandaloneForm(standaloneKind);
+    setSaveStatus(dbCap ? "已連線雲端資料庫" : "以本機瀏覽器模式運作（未連線雲端）");
+    try{ localStorage.setItem("ucs_uid", uidVal); }catch(e){}
+    document.getElementById("enterBtn").disabled = false;
+    return;
+  }
+  document.getElementById("appNav").classList.remove("hidden");
+  document.getElementById("appToolbar").classList.remove("hidden");
+  renderHome(); renderModuleA(); renderCases(); renderFilms(); renderModuleD(); renderResources(); renderTeacher();
+  populateInputs();
+  switchTab("home");
+  setSaveStatus(dbCap ? "已連線雲端資料庫" : "以本機瀏覽器模式運作（未連線雲端）");
+  try{ localStorage.setItem("ucs_uid", uidVal); }catch(e){}
+  document.getElementById("enterBtn").disabled = false;
+}
+function getStandaloneFormKind(){
+  try{
+    const v = new URLSearchParams(location.search).get("form");
+    if(v==="sr" || v==="ai5ce-pre" || v==="ai5ce-post") return v;
+  }catch(e){}
+  return null;
+}
+
+async function boot(){
+  await initCapabilities();
+  bindEvents();
+  document.getElementById("enterBtn").addEventListener("click", enterCourse);
+  document.getElementById("uidInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") enterCourse(); });
+  document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
+  document.getElementById("exportPdfBtn").addEventListener("click", exportPdf);
+  document.getElementById("weeklySnapshotBtn").addEventListener("click", ()=> saveWeeklySnapshot());
+  document.getElementById("gasConfigBtn").addEventListener("click", configureGas);
+  document.getElementById("gasSyncBtn").addEventListener("click", ()=> cloudSaveGas("Draft"));
+  const finishBtn = document.getElementById("finishBtn");
+  if(finishBtn){
+    finishBtn.addEventListener("click", async ()=>{
+      await doSave();
+      if(getGasUrl() && /^\d{3}$/.test((STATE.uid||"").trim())) await cloudSaveGas("Final");
+      await exportPdf();
+    });
+  }
+  document.getElementById("importJsonInput").addEventListener("change", (e)=>{
+    importJsonFile(e.target.files[0]);
+    e.target.value = "";
+  });
+  try{
+    const last = localStorage.getItem("ucs_uid");
+    if(last) document.getElementById("uidInput").value = last;
+  }catch(e){}
+  const capNote = document.getElementById("capNote");
+  if(capNote){
+    if(dbCap && sampleCap) capNote.textContent = "✅ 雲端儲存與 AI 助教已就緒";
+    else if(window.claude) capNote.textContent = "⚠️ 部分功能（雲端儲存／AI助教）未授權，將以本機模式運作";
+    else capNote.textContent = "ℹ️ 目前以本機檔案模式開啟：學習紀錄僅儲存在此瀏覽器，AI助教與Claude雲端提交需在 Claude 發布頁面中使用；可用「⚙ 雲端設定」串接老師的 Google 雲端同步";
+  }
+  const kind = getStandaloneFormKind();
+  if(kind){
+    const sub = document.getElementById("headerSub");
+    const titles = {sr:"學生自評量表（附件七）", "ai5ce-pre":"AI-5C+E 能力量表｜前測（W1）", "ai5ce-post":"AI-5C+E 能力量表｜後測（W18）"};
+    if(sub) sub.textContent = titles[kind] + " — 請先輸入研究序號再作答";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", boot);
+})();
+
+</script>
+</body>
+</html>
