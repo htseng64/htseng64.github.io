@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>案例1｜預立醫囑的兩難｜學生學習版</title>
+<style>
+:root{--p:#285b75;--pd:#173b4d;--a:#c78e55;--bg:#f7f4ef;--card:#fff;--ink:#25313a;--muted:#68737c;--ok:#477b55;--warn:#a86820}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#faf8f4,#eee8df);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;line-height:1.75}
+header{background:linear-gradient(135deg,var(--pd),var(--p));color:#fff;padding:38px 18px}.wrap{max-width:1040px;margin:auto;padding:18px}
+h1{font-size:clamp(27px,4vw,44px);margin:0 0 8px}h2{color:var(--p)}h3{color:var(--pd)}
+.topbar{position:sticky;top:0;z-index:30;background:#ffffffed;backdrop-filter:blur(8px);border-bottom:1px solid #ddd;padding:9px}.topbar .wrap{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px}
+button,.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;background:var(--p);color:#fff}.secondary{background:#e9edf0;color:#25313a}.danger{background:#8b3b3b}
+.progress{background:#fff;border-radius:14px;padding:18px;margin:20px 0;box-shadow:0 3px 16px #0001}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step{padding:12px;border-radius:10px;background:#edf0f2;text-align:center;font-weight:700}.step.on{background:#d9ebf3;color:var(--pd)}.step.done{background:#dcebdc;color:#285b36}
+.segment,.reveal,.resource,.reflect{background:#fff;border-radius:16px;padding:24px;margin:20px 0;box-shadow:0 4px 18px #0001}.segment.locked{display:none}
+.reveal{border-left:6px solid var(--a)}.scene{background:#faf6ef;border-radius:12px;padding:20px;margin:14px 0;font-family:"Microsoft JhengHei",sans-serif}.new{background:#fff1dc;border:1px solid #e6bd83;padding:15px;border-radius:10px;margin:14px 0}
+.record{border:2px solid var(--p);border-radius:12px;overflow:hidden;margin:16px 0}.record .rh{background:var(--p);color:white;padding:12px 16px;font-weight:800}.row{display:grid;grid-template-columns:160px 1fr;border-top:1px dashed #ddd;padding:10px 16px}.label{font-weight:800;color:var(--p)}
+.q{border:1px solid #e1e4e7;border-radius:12px;padding:18px;margin:14px 0}.q strong{display:block;color:var(--pd);margin-bottom:8px}
+textarea,input[type=text]{width:100%;padding:12px;border:2px solid #dfe3e6;border-radius:8px;font:inherit;resize:vertical}textarea:focus,input:focus{outline:0;border-color:var(--a)}
+.hint{display:block;background:#fff8e9;border-left:4px solid var(--a);padding:12px;margin-top:10px;border-radius:8px}.hint.show{display:block}
+.hintbtn{background:#b77b3f;margin-top:8px}.next{display:block;margin:18px auto 2px;padding:13px 24px;background:var(--ok)}
+.feedback{display:none;padding:12px;border-radius:8px;margin-top:10px}.feedback.show{display:block;background:#e5f2e8;color:#275b35}
+.concepts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.concept{background:#f5f8fa;padding:14px;border-radius:10px;border-left:4px solid var(--p)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.badge{display:inline-block;background:#e8d4bc;color:#5c3a1c;padding:3px 9px;border-radius:20px;font-size:.88rem}
+.saveState{margin-left:auto;color:#356240;font-weight:700;align-self:center}
+small.code{color:#8a8f94;font-family:monospace}
+@media(max-width:720px){.steps,.concepts,.compare{grid-template-columns:1fr}.row{grid-template-columns:1fr}.segment,.reveal{padding:16px}.saveState{width:100%;margin-left:0}}
+@media print{.topbar,.hintbtn,.next{display:none!important}.segment.locked{display:block}.hint{display:block}.wrap{max-width:none}.segment,.reveal,.resource,.reflect{box-shadow:none;break-inside:avoid}}
+
+.research-id{background:#eef3f6;border:1px solid #c8d5dc;border-radius:12px;padding:16px;margin:14px 0}.research-id label{font-weight:800;color:#173b4d}.research-id input{width:220px;max-width:100%;padding:10px;border:2px solid #bccbd3;border-radius:8px;font:inherit}.code{display:inline-block;font:700 12px/1.2 monospace;background:#e8edf0;color:#36505e;border-radius:5px;padding:3px 6px;margin-left:6px}.submitbox{background:#edf6ee;border:2px solid #94b99a;border-radius:14px;padding:20px;margin:18px 0}.submitbox h3{margin-top:0}.hidden-eval{display:none}.hidden-eval.show{display:block}
+</style>
+<style id="v9h">.answer-guide{margin:8px 0 10px;padding:10px 12px;border-left:4px solid #c7853f;background:#fff8ed;border-radius:7px;color:#5b5147}.answer-guide b{color:#94591e}</style><style id="v12-assessment-css">
+.case-final-assessment{margin-top:28px;padding:20px;border:2px solid #c7d6dc;border-radius:14px;background:#fbfcfc}
+.case-final-assessment .eval-item{padding:12px 0;border-top:1px solid #dde5e8}
+.case-final-assessment .eval-item:first-child{border-top:0}
+.case-final-assessment textarea{width:100%;min-height:88px;padding:9px}
+.required-note{background:#fff3d8;border-left:4px solid #c7853f;padding:10px;margin:10px 0}
+.next-scene-locked{opacity:.55;pointer-events:none}
+</style></head>
+<body>
+<header><div class="wrap"><div class="badge">案例 1｜W03–W04</div><h1>預立醫囑的兩難：王先生的善終抉擇</h1><p>演變型情境案例｜倫理敏感度 → 倫理推理 → 專業行動</p></div></header>
+<div class="topbar"><div class="wrap">
+<button onclick="saveAll()">💾 儲存</button><button class="secondary" onclick="exportResearchJSON()">匯出研究 JSON</button><button class="secondary" onclick="exportResearchCSV()">匯出分析 CSV</button><button class="secondary" onclick="window.print()">列印／存 PDF</button><button class="danger" onclick="clearAll()">清除</button><span class="saveState" id="saveState">尚未修改</span>
+</div></div>
+<main class="wrap"><nav id="free-segment-nav" style="position:sticky;top:0;z-index:50;background:#fff;padding:10px 12px;border:1px solid #d9e0e3;border-radius:12px;margin:12px 0;display:flex;gap:8px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.08)"><b style="padding:8px 4px">自由瀏覽：</b><button type="button" onclick="document.getElementById('seg1').scrollIntoView({behavior:'smooth'})">第一幕｜倫理敏感度</button><button type="button" onclick="document.getElementById('seg2').scrollIntoView({behavior:'smooth'})">第二幕｜倫理推理</button><button type="button" onclick="document.getElementById('seg3').scrollIntoView({behavior:'smooth'})">第三幕｜專業行動</button><button type="button" onclick="document.getElementById('c01-final-assessment').scrollIntoView({behavior:'smooth'})">三幕後評量</button><span style="width:100%;font-size:.9em;color:#68757d">可自由前後瀏覽，不需完成前一幕才能進入下一幕；作答會持續自動儲存。</span></nav><section class="research-id"><label for="researchId">研究 ID（只輸入 3 碼）</label><br><div style="display:flex;align-items:center;gap:8px;max-width:340px"><b style="font-size:20px">UCS-</b><input id="researchId" type="text" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" placeholder="001" autocomplete="off" style="max-width:120px"></div><p style="margin:7px 0 0;color:#687780">例如輸入 <b>027</b>，系統自動形成研究 ID <b>UCS-027</b>。請勿輸入姓名或學號。</p></section>
+<section class="progress"><div class="steps"><div class="step on" id="st1">1 倫理敏感度</div><div class="step" id="st2">2 倫理推理</div><div class="step" id="st3">3 專業行動</div></div></section>
+
+<section class="resource"><h2>開始前｜你的任務</h2><p>你是王先生的主護護理師。每一幕只會提供部分資訊。請先根據「當下已知資訊」作答，不要預測後續。新資訊出現後，請比較自己原先的判斷：哪些維持？哪些需要修正？為什麼？</p></section>
+
+<section class="segment" id="seg1">
+<h2>Segment I｜倫理敏感度</h2>
+<div class="reveal"><h3>Reveal 1｜接班時，你看到什麼？</h3>
+<div class="record"><div class="rh">病歷摘要｜王先生（教學虛構案例）</div>
+<div class="row"><div class="label">年齡／性別</div><div>68歲／男性</div></div>
+<div class="row"><div class="label">主要問題</div><div>左側大腦梗塞、嚴重肺部感染；加護病房治療中</div></div>
+<div class="row"><div class="label">目前狀態</div><div>深度昏迷，呼吸器支持、抗生素、鼻胃管灌食</div></div>
+<div class="row"><div class="label">病歷註記</div><div>半年前曾完成預立醫療照護諮商並簽署預立醫療決定（AD）；病歷摘要記載拒絕特定維持生命治療與人工營養及流體餵養。</div></div>
+<div class="row"><div class="label">家庭</div><div>配偶為主要照顧者；女兒同住；兒子旅居國外。</div></div></div>
+<div class="scene"><b>15:20，加護病房。</b>王太太坐在床邊緊握先生的手，一遍又一遍說：「你要加油，我們都在等你醒來。」交班護理師低聲告訴你：「太太好像還沒有真正談過那份AD。」晨間醫療團隊曾提到，若病況確認符合相關臨床條件，需要重新檢視目前治療與王先生先前意願是否一致。</div>
+<div class="q"><strong>1. 請找出「值得停下來確認」的倫理線索，不要急著下結論。</strong><div class="hint" id="guide_case_01_1"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R1_CLUES" rows="6" placeholder="例如：病人的狀態、先前意願、目前處置、家屬反應、尚未確認的資訊……"></textarea></div>
+<div class="q"><strong>2. 哪些是「事實」，哪些只是目前的「推測」？請分辨並舉例。</strong><div class="hint" id="guide_case_01_2"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R1_FACT" rows="5"></textarea></div>
+<div class="q"><strong>3. 此刻你最需要先確認的 3 個問題是什麼？</strong><div class="hint" id="guide_case_01_3"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R1_QUESTIONS" rows="5"></textarea></div>
+</div>
+
+<div class="reveal" id="r2"><h3>Reveal 2｜「文件存在」還不等於問題已經解決</h3>
+<div class="new"><b>新資訊：</b>醫師說明，目前仍需要確認兩件事：第一，王先生是否已符合啟動AD所需的臨床條件與程序；第二，病歷中的AD內容與目前正在進行的各項處置如何對應。此時女兒到院，她說：「爸爸簽的時候很清楚，他一直說不想只靠機器拖著。」王太太沒有回應，只看著床上的先生。</div>
+<div class="q"><strong>4. 新資訊改變了什麼？請分成「已較清楚」與「仍不確定」兩欄。</strong><div class="hint" id="guide_case_01_4"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R2_CHANGE" rows="6"></textarea></div>
+<div class="q"><strong>5. 此案例目前至少存在哪兩組價值衝突？</strong><div class="hint" id="guide_case_01_5"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R2_VALUES" rows="5" placeholder="不要只寫『家屬意見不同』；請寫出衝突的價值。"></textarea></div>
+<div class="q"><strong>6. 如果你現在就是主護護理師，你的第一個專業行動會是什麼？為什麼？</strong><div class="hint" id="guide_case_01_6"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R2_FIRSTACTION" rows="5"></textarea></div>
+<div class="q"><strong>同儕觀點｜與同學討論後，記下一個與你不同、但有理由支持的觀點。</strong><div class="hint" id="guide_case_01_7"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R2_PEER" rows="4"></textarea></div>
+<div class="q"><strong>修正想法｜討論後，你原本的判斷有哪些維持、補充或改變？請說明原因。</strong><div class="hint" id="guide_case_01_8"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R2_NEW" rows="5"></textarea></div>
+</div>
+</section>
+
+<section class="segment" id="seg2"><h2>Segment II｜倫理推理</h2>
+<div class="resource"><h3>學習資源｜先用工具，不急著找答案</h3><div class="concepts">
+<div class="concept"><b>四原則</b><br>自主：病人的價值與選擇是否被尊重？<br>行善：什麼真正促進病人利益？<br>不傷害：哪些傷害可避免？<br>公平：權益、資源與程序是否公平？</div>
+<div class="concept"><b>四象限</b><br>醫療適應性｜病人意願｜生活品質｜情境背景。用來整理「事實＋價值」，不是四個標準答案。</div>
+<div class="concept"><b>三倫理理論</b><br>義務論：有哪些義務／權利不可輕易交換？<br>結果論：不同方案的短長期後果？<br>德行倫理：值得信賴的護理師應展現什麼品格與實踐智慧？</div>
+<div class="concept"><b>比例性</b><br>不是只問治療「能不能做」，而是問在此治療目標下，預期效益與負擔是否成比例。</div></div></div>
+
+<div class="reveal"><h3>Reveal 3｜家屬反對，衝突升高</h3>
+<div class="scene">兩位相關專科醫師完成評估後，醫療團隊準備進一步討論AD的適用與照護目標。會議中，王太太突然站起來：「不行！不能看著他餓死！他簽那個時候根本不知道真的會變成今天這樣！」女兒回應：「可是爸爸當初就是怕自己沒有辦法說話時，沒有人照他的意思做。」</div>
+<div class="q"><strong>7. 用四象限整理目前案例。每一象限至少寫 2 項，並標記「已知／待確認」。</strong>
+<div class="hint" id="guide_case_01_9"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R3_QUADRANTS" rows="10" placeholder="醫療適應性：&#10;病人意願：&#10;生活品質：&#10;情境背景："></textarea></div>
+<div class="q"><strong>8. 王太太與女兒的理由，分別可能受到哪些倫理原則支持？同一原則是否也可能限制她們的立場？</strong><div class="hint" id="guide_case_01_10"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R3_PRINCIPLES" rows="7"></textarea></div>
+</div>
+
+<div class="reveal" id="r4"><h3>Reveal 4｜治療的「好處」與「負擔」開始改變</h3>
+<div class="new"><b>新資訊：</b>醫療團隊說明，神經功能恢復的可能性極低；持續侵入性支持無法逆轉主要神經損傷。王先生目前反覆感染、痰液增加，翻身與抽痰時出現明顯生理壓力反應。王太太問：「只要繼續灌食、繼續治療，是不是就還有機會？」</div>
+<div class="q"><strong>9. 請用三種倫理理論各分析一次，不必得到相同結論。</strong>
+<div class="hint" id="guide_case_01_11"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R4_THEORIES" rows="10" placeholder="義務論：&#10;&#10;結果論：&#10;&#10;德行倫理："></textarea></div>
+<div class="q"><strong>10. 比較方案，而不是只有「繼續／停止」兩選一。</strong>
+<div class="hint" id="guide_case_01_12"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R4_OPTIONS" rows="9" placeholder="方案A：可能利益／可能傷害&#10;方案B：可能利益／可能傷害&#10;方案C：可能利益／可能傷害"></textarea></div>
+<div class="q"><strong>11. 新資訊有沒有改變你在 Reveal 2 的第一個行動？請先寫「原判斷」，再寫「現在的判斷」與改變原因。</strong><div class="hint" id="guide_case_01_13"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R4_REVISE" rows="7"></textarea></div>
+<div class="q"><strong>同儕觀點｜與同學討論後，記下一個與你不同、但有理由支持的觀點。</strong><div class="hint" id="guide_case_01_14"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R4_PEER" rows="4"></textarea></div>
+<div class="q"><strong>修正想法｜討論後，你原本的判斷有哪些維持、補充或改變？請說明原因。</strong><div class="hint" id="guide_case_01_15"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R4_NEW" rows="5"></textarea></div>
+</div>
+</section>
+
+<section class="segment" id="seg3"><h2>Segment III｜專業行動</h2>
+<div class="resource"><h3>學習資源｜進入臨床溝通</h3><div class="concepts">
+<div class="concept"><b>SDM 共享決策</b><br>不是「病人自己決定」或「醫療團隊替病人決定」。整合可行選項與證據、病人的價值偏好，以及雙向溝通。可練習 Ask → Tell → Ask。</div>
+<div class="concept"><b>雙重效果</b><br>若一項以減輕痛苦為目的的處置同時可能有可預見但非意圖的負面效果，要分析行動本身、意圖、因果與比例性。</div>
+<div class="concept"><b>無效／非效益醫療</b><br>不要把「我不贊成」直接稱為無效。先釐清治療目標、能達成的生理效果、成功可能性、治療負擔、病人價值與替代方案。</div>
+<div class="concept"><b>NURSE 同理回應</b><br>Naming 命名情緒｜Understanding 理解｜Respecting 尊重｜Supporting 支持｜Exploring 探索。</div></div></div>
+
+<div class="reveal"><h3>Reveal 5｜真正的問題不是「誰贏」</h3>
+<div class="scene">家庭會議再次進行。王太太哭著說：「如果停止，我是不是等於害死他？」女兒則說：「如果我們一直做爸爸不要的事，是不是才是在傷害他？」醫師請護理師先協助家屬說出各自最害怕失去的是什麼，再討論照護目標與可行方案。</div>
+<div class="q"><strong>12. 你會如何用 NURSE + Ask–Tell–Ask 開始這段對談？請寫出實際可說出口的話。</strong><div class="hint" id="guide_case_01_16"  style="display:block"><b>填寫提示：</b> 把缺少的資訊改寫成真正可詢問的問題。｜例：我需要向＿＿確認＿＿，因為這會影響＿＿。</div><textarea id="C01_R5_DIALOGUE" rows="10" placeholder="護理師：……&#10;王太太：……&#10;護理師：……"></textarea></div>
+<div class="q"><strong>13. 在這個案例中，「尊重AD」與「照顧家屬」一定互相排斥嗎？提出至少兩個可以同時處理兩者的行動。</strong><div class="hint" id="guide_case_01_17"  style="display:block"><b>填寫提示：</b> 把缺少的資訊改寫成真正可詢問的問題。｜例：我需要向＿＿確認＿＿，因為這會影響＿＿。</div><textarea id="C01_R5_BOTH" rows="6"></textarea></div>
+</div>
+
+<div class="reveal" id="r6"><h3>Reveal 6｜你必須提出可執行的專業方案</h3>
+<div class="new"><b>最終任務：</b>團隊請你以主護護理師角色整理目前資訊，提出下一步照護與溝通方案。你不能只寫「尊重病人」「與家屬溝通」；方案必須說明誰、何時、做什麼、依據什麼、如何追蹤。</div>
+<div class="q"><strong>14. 倫理問題摘要（1–2句）</strong><div class="hint" id="guide_case_01_18"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_ISSUE" rows="3"></textarea></div>
+<div class="q"><strong>15. 行動目標</strong><div class="hint" id="guide_case_01_19"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_GOAL" rows="3"></textarea></div>
+<div class="q"><strong>16. 可行方案：每個方案寫「行動＋好處＋風險／限制」。</strong><div class="hint" id="guide_case_01_20"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_3OPTIONS" rows="10"></textarea></div>
+<div class="q"><strong>17. 你目前最支持哪個方案？請用理由說明，並指出仍需確認的資訊。</strong><div class="hint" id="guide_case_01_21"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_PREFERRED" rows="8"></textarea></div>
+<div class="q"><strong>18. 寫出具體追蹤計畫：與誰溝通？要補哪些資料？何時再評估？若仍有衝突如何升級處理？</strong><div class="hint" id="guide_case_01_22"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_FOLLOWUP" rows="8"></textarea></div>
+</div>
+
+<div class="reflect"><h3>整合／反思｜回看自己的推理軌跡</h3>
+<div class="q"><strong>19. 哪一個 Reveal 最明顯改變了你的判斷？為什麼？</strong><div class="hint" id="guide_case_01_23"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_REFLECT_TURN" rows="5"></textarea></div>
+<div class="q"><strong>20. 你最初忽略了哪個角色、價值或證據？</strong><div class="hint" id="guide_case_01_24"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_REFLECT_MISSED" rows="5"></textarea></div>
+<div class="q"><strong>21. 完成本案後，你對「善終」「自主」「行善／不傷害」的理解有何改變？</strong><div class="hint" id="guide_case_01_25"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_REFLECT_LEARN" rows="6"></textarea></div>
+<div class="q"><strong>同儕觀點｜與同學討論後，記下一個與你不同、但有理由支持的觀點。</strong><div class="hint" id="guide_case_01_26"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_PEER" rows="4"></textarea></div>
+<div class="q"><strong>修正想法｜討論後，你原本的判斷有哪些維持、補充或改變？請說明原因。</strong><div class="hint" id="guide_case_01_27"  style="display:block"><b>填寫提示：</b> 先引用本幕具體資訊，再寫「我的判斷＋理由＋仍需確認之處」；不要只寫一句結論。</div><textarea id="C01_R6_NEW" rows="5"></textarea></div>
+<div id="done" class="feedback"></div></div>
+</section>
+<section class="resource hidden-eval" id="evaluation"><h2>完成 Segment III 後評量</h2><p>請依本次案例學習經驗自評：1＝非常不同意，5＝非常同意。</p><div class="concepts"><div class="concept"><b>1. 我能辨識情境中不同的倫理線索。</b><br><select id="C01_SELF_1" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>2. 我能理解事件中角色的情緒與價值觀不同。</b><br><select id="C01_SELF_2" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>3. 我能察覺自己在此情境中的情緒反應。</b><br><select id="C01_SELF_3" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>4. 我能運用義務論、結果論與德行倫理進行判斷。</b><br><select id="C01_SELF_4" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>5. 我能應用四大原則與四象限做倫理分析。</b><br><select id="C01_SELF_5" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>6. 我能提出不同角色可能的觀點與看法。</b><br><select id="C01_SELF_6" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>7. 我能針對此情境設計合理的行動方案。</b><br><select id="C01_SELF_7" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>8. 我能預測行動的風險與效益。</b><br><select id="C01_SELF_8" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div class="concept"><b>9. 我能思考與誰溝通、如何追蹤與說明。</b><br><select id="C01_SELF_9" style="width:100%;padding:10px;margin-top:8px"><option value="">請選擇</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div></div><div class="submitbox"><h3>完成評量後｜課業與研究分流</h3>
+<p><b>A｜TronClass 課業繳交：</b>按「下載 TronClass 課業檔」。此檔<b>不含姓名、學號、研究 ID</b>。</p>
+<p><b>B｜研究資料：</b>確認上方三碼研究 ID，按「一鍵送出研究資料」。研究資料才包含 <code>UCS-三碼</code> 與答案研究編碼，送至老師設定的 Research Drive。</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="exportAcademicJSON()">① 下載 TronClass 課業檔</button><button onclick="submitResearchToDrive()">② 一鍵送出研究資料</button><button class="secondary" onclick="exportResearchJSON()">備份研究 JSON</button></div>
+<div id="submitStatus" style="margin-top:10px;font-weight:700"></div><div id="filenamePreview" style="margin-top:6px"></div></div></section><div style="max-width:1000px;margin:30px auto 14px;padding:16px 20px;background:#eef5f7;border-left:6px solid #285b75;border-radius:10px"><b>三大幕學習完成後｜案例評量</b><br><span style="color:#5f6b72">以下為附件六＋附件七評量區；上方 Segment I、II、III 可自由上下捲動與修改。</span></div><section class="case-final-assessment" id="c01-final-assessment">
+<h2>案例完成評量｜附件六＋附件七</h2>
+<p class="required-note"><b>完成規則：</b>除附件七第12題標示「選填」外，其餘題目請依學習情況作答，即可完成本案例。</p>
+<h3>附件六｜倫理能力專業評量規準（學生自我檢視）</h3>
+<p>請依本案例實際表現，以 1–4 分檢視三項專業倫理能力。教師仍可依相同規準另行評分。</p><div class="eval-item"><b>倫理敏感度</b><div style="font-size:.9em;color:#59656b">4＝能辨識多條倫理線索，掌握衝突與脆弱點；3＝能辨識主要問題；2＝僅表層觀察；1＝未辨識倫理議題</div><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_MS" data-code="C01.A6_MS" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_MS" data-code="C01.A6_MS" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_MS" data-code="C01.A6_MS" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_MS" data-code="C01.A6_MS" value="4"> 4</label></div></div><div class="eval-item"><b>倫理推理</b><div style="font-size:.9em;color:#59656b">4＝推理完整、多元視角、善用倫理原則；3＝基本完整但深度不足；2＝片段／不一致；1＝只有結論</div><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_ER" data-code="C01.A6_ER" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_ER" data-code="C01.A6_ER" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_ER" data-code="C01.A6_ER" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_ER" data-code="C01.A6_ER" value="4"> 4</label></div></div><div class="eval-item"><b>專業行動力</b><div style="font-size:.9em;color:#59656b">4＝具體可行、可追蹤、符合病人最佳利益；3＝可行但不完整；2＝模糊／缺乏執行性；1＝無行動或不當行動</div><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_PA" data-code="C01.A6_PA" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_PA" data-code="C01.A6_PA" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_PA" data-code="C01.A6_PA" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A6_PA" data-code="C01.A6_PA" value="4"> 4</label></div></div>
+<h3>附件七｜UCS 學生評量 Rubric</h3><p>1＝非常不同意；5＝非常同意</p><div class="eval-item"><b>我能辨識情境中不同的倫理線索。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_01" data-code="C01.A7_01" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_01" data-code="C01.A7_01" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_01" data-code="C01.A7_01" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_01" data-code="C01.A7_01" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_01" data-code="C01.A7_01" value="5"> 5</label></div></div><div class="eval-item"><b>我能理解事件中角色的情緒與價值觀不同。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_02" data-code="C01.A7_02" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_02" data-code="C01.A7_02" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_02" data-code="C01.A7_02" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_02" data-code="C01.A7_02" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_02" data-code="C01.A7_02" value="5"> 5</label></div></div><div class="eval-item"><b>我能察覺自己在此情境中的情緒反應。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_03" data-code="C01.A7_03" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_03" data-code="C01.A7_03" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_03" data-code="C01.A7_03" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_03" data-code="C01.A7_03" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_03" data-code="C01.A7_03" value="5"> 5</label></div></div><div class="eval-item"><b>我能運用倫理理論（義務論、結果論、德行論）進行判斷。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_04" data-code="C01.A7_04" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_04" data-code="C01.A7_04" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_04" data-code="C01.A7_04" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_04" data-code="C01.A7_04" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_04" data-code="C01.A7_04" value="5"> 5</label></div></div><div class="eval-item"><b>我能應用四大原則與四象限做倫理分析。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_05" data-code="C01.A7_05" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_05" data-code="C01.A7_05" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_05" data-code="C01.A7_05" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_05" data-code="C01.A7_05" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_05" data-code="C01.A7_05" value="5"> 5</label></div></div><div class="eval-item"><b>我能提出不同角色可能的觀點與看法。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_06" data-code="C01.A7_06" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_06" data-code="C01.A7_06" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_06" data-code="C01.A7_06" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_06" data-code="C01.A7_06" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_06" data-code="C01.A7_06" value="5"> 5</label></div></div><div class="eval-item"><b>我能針對此情境設計合理的行動方案。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_07" data-code="C01.A7_07" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_07" data-code="C01.A7_07" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_07" data-code="C01.A7_07" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_07" data-code="C01.A7_07" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_07" data-code="C01.A7_07" value="5"> 5</label></div></div><div class="eval-item"><b>我能預測行動的風險與效益。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_08" data-code="C01.A7_08" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_08" data-code="C01.A7_08" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_08" data-code="C01.A7_08" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_08" data-code="C01.A7_08" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_08" data-code="C01.A7_08" value="5"> 5</label></div></div><div class="eval-item"><b>我能思考與誰溝通、如何追蹤與說明。</b><div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_09" data-code="C01.A7_09" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_09" data-code="C01.A7_09" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_09" data-code="C01.A7_09" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_09" data-code="C01.A7_09" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_A7_09" data-code="C01.A7_09" value="5"> 5</label></div></div><div class="eval-item"><b>本次學習活動中，我最有收穫的部分是：</b><textarea data-code="C01.A7_10"></textarea></div><div class="eval-item"><b>我覺得自己還需要進步的地方是：</b><textarea data-code="C01.A7_11"></textarea></div><div class="eval-item"><b>若分數較低，是什麼原因影響了我的學習？（選填）</b><textarea data-code="C01.A7_12" ></textarea></div><div class="eval-item"><b>我對本次課程的建議：</b><textarea data-code="C01.A7_13"></textarea></div>
+<div class="eval-item"><b>是否使用 AI 工具協助？</b>
+<label><input type="radio" name="C01_AI_USED" data-code="C01.A7_AI_USED" value="yes"> 是</label>
+<label><input type="radio" name="C01_AI_USED" data-code="C01.A7_AI_USED" value="no"> 否</label>
+<p>若是，使用的工具：<input type="text" data-code="C01.A7_AI_TOOL" placeholder="例如：ChatGPT"></p>
+<b>AI 對本次作業的幫助程度</b>（1＝無幫助；5＝非常有幫助）
+<div class="required-scale"><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_AI_HELP" data-code="C01.A7_AI_HELP" value="1"> 1</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_AI_HELP" data-code="C01.A7_AI_HELP" value="2"> 2</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_AI_HELP" data-code="C01.A7_AI_HELP" value="3"> 3</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_AI_HELP" data-code="C01.A7_AI_HELP" value="4"> 4</label><label style="display:inline-block;margin:5px 8px 5px 0"><input type="radio" name="C01_AI_HELP" data-code="C01.A7_AI_HELP" value="5"> 5</label></div>
+</div></section></main>
+<script>
+const KEY="UCS115_C01_SELFSTUDY_V1";
+function fields(){return [...document.querySelectorAll("textarea,input[type=text]")]}
+function saveAll(silent=false){
+ const data={schema:"UCS115-C01-v1",saved_at:new Date().toISOString(),responses:{}};
+ fields().forEach(x=>data.responses[x.id]=x.value);
+ data.ui={r2:vis("r2"),seg2:vis("seg2"),r4:vis("r4"),seg3:vis("seg3"),r6:vis("r6")};
+ localStorage.setItem(KEY,JSON.stringify(data));
+ document.getElementById("saveState").textContent="已儲存 "+new Date().toLocaleTimeString();
+ if(!silent) flash("已儲存在此裝置");
+}
+function vis(id){const e=document.getElementById(id);return e && getComputedStyle(e).display!="none"}
+function restore(){
+ const raw=localStorage.getItem(KEY);if(!raw)return;
+ try{const d=JSON.parse(raw);Object.entries(d.responses||{}).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v});
+ if(d.ui?.r2) show("r2"); if(d.ui?.seg2) unlockUI(2); if(d.ui?.r4) show("r4"); if(d.ui?.seg3) unlockUI(3); if(d.ui?.r6) show("r6");
+ document.getElementById("saveState").textContent="已載入上次進度";}catch(e){}
+}
+function show(id){document.getElementById(id).style.display="block";document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+function unlockReveal(id,required){show(id);saveAll(true)}show(id);saveAll(true)}
+function unlockSegment(n,required){unlockUI(n);saveAll(true);document.getElementById("seg"+n).scrollIntoView({behavior:"smooth"})}unlockUI(n);saveAll(true);document.getElementById("seg"+n).scrollIntoView({behavior:"smooth"})}
+function unlockUI(n){document.getElementById("seg"+n).classList.remove("locked");for(let i=1;i<=3;i++){const s=document.getElementById("st"+i);s.className="step "+(i<n?"done":i==n?"on":"")}}
+function hint(id){document.getElementById(id).classList.toggle("show")}
+function completeCase(){saveAll(true);const d=document.getElementById("done");d.textContent="✓ 案例已完成並儲存在此裝置。你仍可返回修改，原答案不會因關閉頁面而消失。";d.classList.add("show")}
+function exportJSON(){saveAll(true);download("C01_預立醫囑的兩難_作答.json",localStorage.getItem(KEY),"application/json")}
+function exportTXT(){saveAll(true);const d=JSON.parse(localStorage.getItem(KEY));let t="案例1｜預立醫囑的兩難｜學生作答\\n"+"=".repeat(50)+"\\n";Object.entries(d.responses).forEach(([k,v])=>t+="\\n["+k+"]\\n"+v+"\\n");download("C01_預立醫囑的兩難_作答.txt",t,"text/plain")}
+function download(name,content,type){const b=new Blob([content],{type:type+";charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function clearAll(){if(confirm("確定清除本案例在此裝置的所有作答？")){localStorage.removeItem(KEY);location.reload()}}
+function flash(msg){const s=document.getElementById("saveState");s.textContent=msg}
+[...document.querySelectorAll('textarea,select,input[type=text]')].forEach(x=>x.addEventListener("input",()=>{document.getElementById("saveState").textContent="編輯中…";clearTimeout(window._sv);window._sv=setTimeout(()=>saveAll(true),700)}));
+window.addEventListener("load",restore);
+
+const ASSIGNMENT_CODE="C01"; const ASSIGNMENT_NAME="預立醫囑的兩難";
+// 將部署後的 Google Apps Script Web App URL 貼在這裡；留白時會自動改用備份 JSON。
+const RESEARCH_ENDPOINT="__CONFIGURE_GOOGLE_APPS_SCRIPT_WEB_APP_URL__";
+function allResponseFields(){return [...document.querySelectorAll('textarea,select,input[type=text]')].filter(x=>x.id!=='researchId')}
+function cleanRID(){let v=(document.getElementById('researchId')?.value||'').replace(/\D/g,'').slice(0,3);return v.length===3?'UCS-'+v:''}
+function requireRID(){let v=cleanRID();if(!v){alert('研究 ID 請只輸入 3 碼，例如 027。');document.getElementById('researchId').focus();return null}return v}
+function researchCodeFor(el){return el.dataset.rcode||el.id}
+function assignmentFilename(ext){let r=requireRID();if(!r)return null;return `${r}_${ASSIGNMENT_CODE}_${ASSIGNMENT_NAME}_研究資料.${ext}`}
+function annotateCodes(){let seg='';let counters={};document.querySelectorAll('.segment,.reflect,#evaluation').forEach(sec=>{if(sec.id==='seg1')seg='S1';else if(sec.id==='seg2')seg='S2';else if(sec.id==='seg3')seg='S3';else if(sec.classList.contains('reflect'))seg='REF';else if(sec.id==='evaluation')seg='EVAL';sec.querySelectorAll('textarea,select').forEach(el=>{let rev=el.closest('.reveal');let m=rev?.id?.match(/r(\d+)/);let bucket=m?`R${m[1]}`:seg;counters[bucket]=(counters[bucket]||0)+1;let code=`${ASSIGNMENT_CODE}.${seg}.${bucket}.Q${String(counters[bucket]).padStart(2,'0')}`;el.dataset.rcode=code;let q=el.closest('.q')||el.closest('.concept');let head=q?.querySelector('strong,b');if(head&&!head.querySelector('.code'))head.insertAdjacentHTML('beforeend',` <span class="code">${code}</span>`);})})}
+function buildResearchData(){let data={schema:'UCS115-RESEARCH-v3',assignment_code:ASSIGNMENT_CODE,assignment_name:ASSIGNMENT_NAME,research_id:cleanRID(),saved_at:new Date().toISOString(),responses:{},records:[]};allResponseFields().forEach(x=>{data.responses[x.id]=x.value;let q=x.closest('.q')||x.closest('.concept');let prompt=(q?.querySelector('strong,b')?.childNodes[0]?.textContent||'').trim();data.records.push({code:researchCodeFor(x),field_id:x.id,prompt,value:x.value})});data.ui={r2:vis('r2'),seg2:vis('seg2'),r4:vis('r4'),seg3:vis('seg3'),r6:vis('r6'),evaluation:document.getElementById('evaluation')?.classList.contains('show')};return data}
+function buildAcademicData(){let r=buildResearchData();return {schema:'UCS115-ACADEMIC-v1',assignment_code:r.assignment_code,assignment_name:r.assignment_name,saved_at:r.saved_at,responses:r.responses}}
+function saveAll(silent=false){let data=buildResearchData();localStorage.setItem(KEY,JSON.stringify(data));document.getElementById('saveState').textContent='已儲存 '+new Date().toLocaleTimeString();if(!silent)flash('已儲存在此裝置')}
+function restore(){let raw=localStorage.getItem(KEY);if(!raw)return;try{let d=JSON.parse(raw);if(d.research_id)document.getElementById('researchId').value=(d.research_id.match(/(\d{3})$/)||[])[1]||'';Object.entries(d.responses||{}).forEach(([k,v])=>{let e=document.getElementById(k);if(e)e.value=v});if(d.ui?.r2)showNoScroll('r2');if(d.ui?.seg2)unlockUI(2);if(d.ui?.r4)showNoScroll('r4');if(d.ui?.seg3)unlockUI(3);if(d.ui?.r6)showNoScroll('r6');if(d.ui?.evaluation)document.getElementById('evaluation')?.classList.add('show');document.getElementById('saveState').textContent='已載入上次進度'}catch(e){}}
+function showNoScroll(id){let e=document.getElementById(id);if(e)e.style.display='block'}
+function completeCase(){saveAll(true);let e=document.getElementById('evaluation');if(e){e.classList.add('show');e.scrollIntoView({behavior:'smooth'})}let d=document.getElementById('done');if(d){d.textContent='✓ Segment III 已完成。請完成下方評量，再分別繳交 TronClass 課業檔與研究資料。';d.classList.add('show')}saveAll(true)}
+function exportAcademicJSON(){let d=buildAcademicData();let fn=`${ASSIGNMENT_CODE}_${ASSIGNMENT_NAME}_TronClass課業.json`;download(fn,JSON.stringify(d,null,2),'application/json');document.getElementById('filenamePreview').textContent='TronClass 檔已產生：'+fn+'（不含研究 ID）'}
+function exportResearchJSON(){let fn=assignmentFilename('json');if(!fn)return;let d=buildResearchData();download(fn,JSON.stringify(d,null,2),'application/json');document.getElementById('filenamePreview').textContent='研究備份檔已產生：'+fn}
+async function submitResearchToDrive(){let rid=requireRID();if(!rid)return;let st=document.getElementById('submitStatus');if(RESEARCH_ENDPOINT.startsWith('__CONFIGURE')){st.textContent='尚未設定 Research Drive 接收網址；已改為下載研究 JSON 備份。';exportResearchJSON();return}st.textContent='正在送出研究資料…';try{let payload=buildResearchData();let res=await fetch(RESEARCH_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});let out=await res.json();if(!out.ok)throw new Error(out.error||'送出失敗');st.textContent='✓ 研究資料已送達老師 Research Drive｜'+rid+'｜'+ASSIGNMENT_CODE;}catch(err){st.textContent='送出未成功：'+err.message+'。請下載研究 JSON 備份後依老師指示補交。'}}
+window.addEventListener('load',()=>{annotateCodes();let rid=document.getElementById('researchId');if(rid){rid.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3);saveAll(true)})}});
+</script>
+<script src="research-config.js"></script><script src="research-submit.js"></script>
+<script>
+(function(){
+  function aiConditional(){
+    const used=[...document.querySelectorAll('input[type="radio"][data-code$=".A7_AI_USED"]')];
+    if(!used.length)return;
+    const tool=document.querySelector('[data-code$=".A7_AI_TOOL"]');
+    const help=[...document.querySelectorAll('input[type="radio"][data-code$=".A7_AI_HELP"]')];
+    function blockFor(el){
+      if(!el)return null;
+      let p=el.parentElement;
+      while(p && p!==document.body){
+        const text=(p.innerText||"");
+        if(text.length<500 && (text.includes("若是，使用的工具") || text.includes("AI 對本次作業的幫助程度"))) return p;
+        p=p.parentElement;
+      }
+      return el.parentElement;
+    }
+    const toolBlock=blockFor(tool);
+    const helpBlock=help.length?blockFor(help[0]):null;
+    function update(){
+      const checked=used.find(x=>x.checked);
+      const yes=checked && checked.value==="yes";
+      [toolBlock,helpBlock].forEach(b=>{if(b)b.style.display=yes?"":"none";});
+      if(tool){
+        tool.disabled=!yes;
+        tool.required=!!yes;
+        if(!yes)tool.value="";
+      }
+      help.forEach(x=>{
+        x.disabled=!yes;
+        x.required=!!yes;
+        if(!yes)x.checked=false;
+      });
+    }
+    used.forEach(x=>x.addEventListener("change",update));
+    update();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",aiConditional);else aiConditional();
+})();
+</script>
+
+</body></html>

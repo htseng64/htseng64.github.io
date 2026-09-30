@@ -1,0 +1,44 @@
+<!doctype html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>W01 前測｜倫理敏感度</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f6f3ee;color:#26323a;font-family:"Microsoft JhengHei",sans-serif;line-height:1.75}
+header{background:linear-gradient(135deg,#173b4d,#285b75);color:white;padding:42px 18px}.wrap{max-width:980px;margin:auto;padding:18px}
+h1{font-size:clamp(30px,5vw,46px);margin:0}h2{color:#285b75}.card{background:#fff;border-radius:15px;padding:22px;margin:18px 0;box-shadow:0 3px 14px #0001}
+.q{border-top:1px solid #e3e3e3;padding:16px 0}.q:first-child{border-top:0}textarea,input,select{width:100%;padding:11px;border:2px solid #d8dee2;border-radius:8px;font:inherit}
+textarea{min-height:110px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:0;border-radius:9px;padding:11px 15px;background:#285b75;color:white;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin:4px}
+.note{background:#fff5df;border-left:5px solid #c78e55;padding:14px;border-radius:8px}.code{font-family:Consolas,monospace;background:#eef2f4;padding:2px 6px;border-radius:5px;color:#173b4d}
+.sticky{position:sticky;top:0;background:#ffffffee;padding:8px;z-index:10;border-bottom:1px solid #ddd}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.scale label{text-align:center;background:#f0f3f4;padding:8px;border-radius:7px}
+@media(max-width:700px){.row{grid-template-columns:1fr}.scale{grid-template-columns:1fr}}
+@media print{.sticky{display:none}.card{box-shadow:none}}
+</style></head><body>
+<div class="sticky"><div class="wrap"><a class="btn" href="index.html">← 18週首頁</a><button class="btn" onclick="saveAll()">💾 儲存</button><button class="btn" onclick="exportAcademicJSON()">TronClass 課業檔</button><span id="status">尚未儲存</span></div></div>
+<header><div class="wrap"><small>W01｜PRE-ASSESSMENT｜研究作業編碼 PRE01</small><h1>《沉默的輪迴》倫理敏感度前測</h1><p>先依你現在的直覺回答，不需先查倫理理論；本前測用來保留你課程開始時的思考基準。</p></div></header>
+<main class="wrap">
+<div class="card"><h2>研究 ID</h2><div style="display:flex;align-items:center;gap:8px;max-width:340px"><b style="font-size:20px">UCS-</b><input id="research_id" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" placeholder="001" style="max-width:120px"></div><p class="note">只輸入研究 ID 的三碼數字，不填姓名與學號。完成後分流：TronClass 課業檔不含研究 ID；研究資料才以 UCS-三碼送至 Research Drive。</p></div>
+<div class="card"><h2>前測情境｜沉默的觀察者</h2><p>護生小安在臨床學習時，看見指導護理師小林遭病人家屬指責。小安注意到現場氣氛緊張，也感覺小林受到不公平對待，但因擔心自己只是學生、怕介入後造成更多麻煩，因此選擇沉默。數日後，小安自己又被同一家屬批評。這一次，她開始重新思考：當我看見不對勁卻沒有行動時，我究竟忽略了什麼？</p></div>
+<div class="card"><h2>附件三｜倫理敏感度反思單</h2><div class="q"><b>一、我看到的線索（What I Noticed）</b><div>研究編碼：<span class="code">PRE_MS01</span></div><p>請列出你在此情境中覺察到的倫理線索，至少 3 項。</p><textarea data-code="PRE_MS01"></textarea></div><div class="q"><b>二、我最初的疑問（My Initial Questions）</b><div>研究編碼：<span class="code">PRE_MS02</span></div><p>哪些地方讓你感到不安、不確定或想釐清？例如：誰受到影響？什麼資訊不足？</p><textarea data-code="PRE_MS02"></textarea></div><div class="q"><b>三、相關角色（Stakeholders）</b><div>研究編碼：<span class="code">PRE_MS03</span></div><p>請列出至少 3 位與事件有關的角色。</p><textarea data-code="PRE_MS03"></textarea></div><div class="q"><b>四、價值或利益可能的衝突（Value Conflicts）</b><div>研究編碼：<span class="code">PRE_MS04</span></div><p>此情境中可能存在的價值衝突是什麼？</p><textarea data-code="PRE_MS04"></textarea></div><div class="q"><b>五、我現在最擔心的事情（Concerns）</b><div>研究編碼：<span class="code">PRE_MS05</span></div><p>請用一句話描述讓你覺得「這是倫理議題」的原因。</p><textarea data-code="PRE_MS05"></textarea></div><div class="q"><b>六、如果我是主護，我會開始詢問的第一個問題</b><div>研究編碼：<span class="code">PRE_MS06</span></div><p>請寫下你的第一個問題，以及為什麼先問這一題。</p><textarea data-code="PRE_MS06"></textarea></div></div>
+<div class="card"><h2>前測專業能力基準</h2><p>這部分不要求你「答對」，而是讓後續教師依附件六專業評量規準，以相同標準比較前後改變。</p>
+<div class="q"><b>PRE_PR01｜請用 2–3 句話說明你目前如何判斷這個倫理問題。</b><textarea data-code="PRE_PR01"></textarea></div>
+<div class="q"><b>PRE_PR02｜如果你是小安，下一步你會做什麼？請寫到具體行動。</b><textarea data-code="PRE_PR02"></textarea></div>
+<div class="note"><b>教師評量維度：</b>倫理敏感度 1–4、倫理推理 1–4、專業行動力 1–4，總分 12 分。教師於分析頁依統一 Rubric 評分。</div></div>
+<div class="card"><h2>完成與繳交</h2><p>① 按「儲存」 → ② 下載繳交檔 → ③ 確認檔名以研究 ID 起頭，例如 <span class="code">UCS-001_PRE01_沉默的輪迴倫理敏感度前測.json</span> → ④ 上傳老師指定 Drive。</p><button class="btn" onclick="saveAll()">💾 儲存</button><button class="btn" onclick="exportAcademicJSON()">① 下載 TronClass 課業檔</button><button class="btn" onclick="submitResearchToDrive()">② 一鍵送出研究資料</button><button class="btn" onclick="exportResearchJSON()">備份研究 JSON</button><p id="submitStatus" class="note"></p></div>
+</main><script>
+const ASSIGN="PRE01", TITLE="沉默的輪迴倫理敏感度前測", KEY="UCS115_"+ASSIGN;
+function rid(){return document.getElementById("research_id").value.trim().toUpperCase()}
+function fields(){return [...document.querySelectorAll("[data-code]")]}
+function saveAll(){let d={schema:"UCS115-v7",research_id:rid(),assignment_code:ASSIGN,assignment_title:TITLE,saved_at:new Date().toISOString(),responses:{}};
+fields().forEach(x=>d.responses[x.dataset.code]=x.type==="radio"?(document.querySelector('[name="'+x.name+'"]:checked')?.value||""):x.value);
+localStorage.setItem(KEY,JSON.stringify(d));document.getElementById("status").textContent="已儲存 "+new Date().toLocaleTimeString();return d}
+function restore(){let raw=localStorage.getItem(KEY);if(!raw)return;try{let d=JSON.parse(raw);document.getElementById("research_id").value=((d.research_id||"").match(/(\d{3})$/)||[])[1]||"";fields().forEach(x=>{let v=d.responses?.[x.dataset.code];if(v==null)return;if(x.type==="radio"){if(x.value==v)x.checked=true}else x.value=v});document.getElementById("status").textContent="已載入上次進度"}catch(e){}}
+function dl(name,content,type){let b=new Blob([content],{type:type+";charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function exportJSON(){if(!rid()){alert("請先填研究 ID，例如 UCS-001");return}let d=saveAll();dl(rid()+"_"+ASSIGN+"_"+TITLE.replace(/[\\/:*?"<>|]/g,"-")+".json",JSON.stringify(d,null,2),"application/json")}
+function exportTXT(){if(!rid()){alert("請先填研究 ID");return}let d=saveAll(),t=rid()+"｜"+ASSIGN+"｜"+TITLE+"\n"+"=".repeat(45)+"\n";Object.entries(d.responses).forEach(([k,v])=>t+="\n["+k+"]\n"+v+"\n");dl(rid()+"_"+ASSIGN+"_"+TITLE.replace(/[\\/:*?"<>|]/g,"-")+".txt",t,"text/plain")}
+document.addEventListener("input",()=>{clearTimeout(window._t);window._t=setTimeout(saveAll,700)});window.addEventListener("load",restore);
+
+const RESEARCH_ENDPOINT="__CONFIGURE_GOOGLE_APPS_SCRIPT_WEB_APP_URL__";
+function rid(){let v=document.getElementById("research_id").value.replace(/\D/g,'').slice(0,3);return v.length===3?'UCS-'+v:''}
+function buildResearchData(){let d={schema:"UCS115-RESEARCH-v3",research_id:rid(),assignment_code:ASSIGN,assignment_title:TITLE,saved_at:new Date().toISOString(),responses:{},records:[]};fields().forEach(x=>{let v=x.type==="radio"?(document.querySelector('[name="'+x.name+'"]:checked')?.value||""):x.value;d.responses[x.dataset.code]=v;d.records.push({code:x.dataset.code,field_id:x.id||x.dataset.code,prompt:(x.closest('.q')?.querySelector('b')?.childNodes[0]?.textContent||'').trim(),value:v})});return d}
+function buildAcademicData(){let r=buildResearchData();return {schema:'UCS115-ACADEMIC-v1',assignment_code:r.assignment_code,assignment_title:r.assignment_title,saved_at:r.saved_at,responses:r.responses}}
+function exportAcademicJSON(){let d=buildAcademicData();dl(ASSIGN+'_'+TITLE.replace(/[\/:*?"<>|]/g,'-')+'_TronClass課業.json',JSON.stringify(d,null,2),'application/json')}
+function exportResearchJSON(){if(!rid()){alert('研究 ID 請只輸入三碼，例如 027');return}let d=buildResearchData();dl(rid()+'_'+ASSIGN+'_'+TITLE.replace(/[\/:*?"<>|]/g,'-')+'_研究資料.json',JSON.stringify(d,null,2),'application/json')}
+async function submitResearchToDrive(){if(!rid()){alert('研究 ID 請只輸入三碼，例如 027');return}let st=document.getElementById('submitStatus');if(RESEARCH_ENDPOINT.startsWith('__CONFIGURE')){st.textContent='尚未設定 Research Drive 接收網址；請先下載研究 JSON 備份。';exportResearchJSON();return}st.textContent='正在送出研究資料…';try{let res=await fetch(RESEARCH_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(buildResearchData())});let out=await res.json();if(!out.ok)throw new Error(out.error||'送出失敗');st.textContent='✓ 研究資料已送達老師 Research Drive。'}catch(e){st.textContent='送出未成功：'+e.message+'；請使用研究 JSON 備份。'}}
+document.getElementById('research_id')?.addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,3));
+</script><script src="research-config.js"></script><script src="research-submit.js"></script></body></html>
