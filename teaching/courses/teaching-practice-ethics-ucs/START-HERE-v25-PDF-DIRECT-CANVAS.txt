@@ -1,0 +1,4 @@
+UCS v25
+PDF 改為直接將正式題目與學生答案繪製到 Canvas，再輸出 PDF；不再使用 html2canvas 截取 HTML。
+Research ID 仍使用全站 localStorage UCS115_RESEARCH_ID。
+Apps Script 未修改。
