@@ -1,4 +1,5 @@
-<!doctype html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>W01 前測｜倫理敏感度</title><style>
+<!DOCTYPE html>
+<html lang="zh-TW"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>W01 前測｜倫理敏感度</title><style>
 *{box-sizing:border-box}body{margin:0;background:#f6f3ee;color:#26323a;font-family:"Microsoft JhengHei",sans-serif;line-height:1.75}
 header{background:linear-gradient(135deg,#173b4d,#285b75);color:white;padding:42px 18px}.wrap{max-width:980px;margin:auto;padding:18px}
 h1{font-size:clamp(30px,5vw,46px);margin:0}h2{color:#285b75}.card{background:#fff;border-radius:15px;padding:22px;margin:18px 0;box-shadow:0 3px 14px #0001}
@@ -8,18 +9,30 @@ textarea{min-height:110px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12
 .sticky{position:sticky;top:0;background:#ffffffee;padding:8px;z-index:10;border-bottom:1px solid #ddd}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.scale label{text-align:center;background:#f0f3f4;padding:8px;border-radius:7px}
 @media(max-width:700px){.row{grid-template-columns:1fr}.scale{grid-template-columns:1fr}}
 @media print{.sticky{display:none}.card{box-shadow:none}}
+</style>
+<style id="v23-mobile-first">
+/* v23 Mobile-first student experience */
+html{scroll-behavior:smooth} body{overflow-x:hidden} .wrap{width:min(100% - 24px,1000px);margin:auto}
+.topbar{display:none!important}.code{display:none!important} textarea,input,select{font-size:16px!important;max-width:100%} textarea{min-height:132px;line-height:1.6}
+#free-segment-nav{overflow-x:auto;flex-wrap:nowrap!important;white-space:nowrap;-webkit-overflow-scrolling:touch}#free-segment-nav span{display:none}
+.resource.collapsible{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+details.learning-resource{margin:16px 0;border:1px solid #c8d5dc;border-radius:12px;background:#f7fbfd;overflow:hidden}
+details.learning-resource>summary{cursor:pointer;list-style:none;padding:15px 16px;font-weight:800;color:#173b4d;background:#eef5f8}details.learning-resource>summary::-webkit-details-marker{display:none}
+details.learning-resource>summary:before{content:'＋ ';font-weight:900}details.learning-resource[open]>summary:before{content:'－ '}details.learning-resource>.resource-body{padding:14px 16px}
+#ucs-workflow{position:relative!important;margin:12px auto!important}#ucs-workflow .ucs-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}#ucs-workflow button,#ucs-workflow .ucs-import-label{min-height:48px;font-size:16px}
+@media(max-width:720px){header .wrap{padding:2px 0}.badge{font-size:14px}header h1{font-size:clamp(27px,8vw,38px);line-height:1.25}header p{font-size:16px}.segment,.reveal,.reflect,.submitbox,.case-final-assessment{padding:14px!important;border-radius:12px}.q{margin:16px 0}.q strong{font-size:18px;line-height:1.55}.hint,.answer-guide{font-size:15px}.research-id{padding:13px}.progress{display:none}#ucs-workflow .ucs-actions{grid-template-columns:1fr}.concepts,.compare,.row{grid-template-columns:1fr!important}}
 </style></head><body>
 <div class="sticky"><div class="wrap"><a class="btn" href="index.html">← 18週首頁</a><button class="btn" onclick="saveAll()">💾 儲存</button><button class="btn" onclick="exportAcademicJSON()">TronClass 課業檔</button><span id="status">尚未儲存</span></div></div>
 <header><div class="wrap"><small>W01｜PRE-ASSESSMENT｜研究作業編碼 PRE01</small><h1>《沉默的輪迴》倫理敏感度前測</h1><p>先依你現在的直覺回答，不需先查倫理理論；本前測用來保留你課程開始時的思考基準。</p></div></header>
 <main class="wrap">
-<div class="card"><h2>研究 ID</h2><div style="display:flex;align-items:center;gap:8px;max-width:340px"><b style="font-size:20px">UCS-</b><input id="research_id" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" placeholder="001" style="max-width:120px"></div><p class="note">只輸入研究 ID 的三碼數字，不填姓名與學號。完成後分流：TronClass 課業檔不含研究 ID；研究資料才以 UCS-三碼送至 Research Drive。</p></div>
+<div class="card"><h2>研究 ID</h2><div style="display:flex;align-items:center;gap:8px;max-width:340px"><b style="font-size:20px">UCS-</b><input id="research_id" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" placeholder="001" style="max-width:120px"/></div><p class="note">只輸入研究 ID 的三碼數字，不填姓名與學號。完成後分流：TronClass 課業檔不含研究 ID；研究資料才以 UCS-三碼送至 Research Drive。</p></div>
 <div class="card"><h2>前測情境｜沉默的觀察者</h2><p>護生小安在臨床學習時，看見指導護理師小林遭病人家屬指責。小安注意到現場氣氛緊張，也感覺小林受到不公平對待，但因擔心自己只是學生、怕介入後造成更多麻煩，因此選擇沉默。數日後，小安自己又被同一家屬批評。這一次，她開始重新思考：當我看見不對勁卻沒有行動時，我究竟忽略了什麼？</p></div>
 <div class="card"><h2>附件三｜倫理敏感度反思單</h2><div class="q"><b>一、我看到的線索（What I Noticed）</b><div>研究編碼：<span class="code">PRE_MS01</span></div><p>請列出你在此情境中覺察到的倫理線索，至少 3 項。</p><textarea data-code="PRE_MS01"></textarea></div><div class="q"><b>二、我最初的疑問（My Initial Questions）</b><div>研究編碼：<span class="code">PRE_MS02</span></div><p>哪些地方讓你感到不安、不確定或想釐清？例如：誰受到影響？什麼資訊不足？</p><textarea data-code="PRE_MS02"></textarea></div><div class="q"><b>三、相關角色（Stakeholders）</b><div>研究編碼：<span class="code">PRE_MS03</span></div><p>請列出至少 3 位與事件有關的角色。</p><textarea data-code="PRE_MS03"></textarea></div><div class="q"><b>四、價值或利益可能的衝突（Value Conflicts）</b><div>研究編碼：<span class="code">PRE_MS04</span></div><p>此情境中可能存在的價值衝突是什麼？</p><textarea data-code="PRE_MS04"></textarea></div><div class="q"><b>五、我現在最擔心的事情（Concerns）</b><div>研究編碼：<span class="code">PRE_MS05</span></div><p>請用一句話描述讓你覺得「這是倫理議題」的原因。</p><textarea data-code="PRE_MS05"></textarea></div><div class="q"><b>六、如果我是主護，我會開始詢問的第一個問題</b><div>研究編碼：<span class="code">PRE_MS06</span></div><p>請寫下你的第一個問題，以及為什麼先問這一題。</p><textarea data-code="PRE_MS06"></textarea></div></div>
 <div class="card"><h2>前測專業能力基準</h2><p>這部分不要求你「答對」，而是讓後續教師依附件六專業評量規準，以相同標準比較前後改變。</p>
 <div class="q"><b>PRE_PR01｜請用 2–3 句話說明你目前如何判斷這個倫理問題。</b><textarea data-code="PRE_PR01"></textarea></div>
 <div class="q"><b>PRE_PR02｜如果你是小安，下一步你會做什麼？請寫到具體行動。</b><textarea data-code="PRE_PR02"></textarea></div>
 <div class="note"><b>教師評量維度：</b>倫理敏感度 1–4、倫理推理 1–4、專業行動力 1–4，總分 12 分。教師於分析頁依統一 Rubric 評分。</div></div>
-<div class="card"><h2>完成與繳交</h2><p>① 按「儲存」 → ② 下載繳交檔 → ③ 確認檔名以研究 ID 起頭，例如 <span class="code">UCS-001_PRE01_沉默的輪迴倫理敏感度前測.json</span> → ④ 上傳老師指定 Drive。</p><button class="btn" onclick="saveAll()">💾 儲存</button><button class="btn" onclick="exportAcademicJSON()">① 下載 TronClass 課業檔</button><button class="btn" onclick="submitResearchToDrive()">② 一鍵送出研究資料</button><button class="btn" onclick="exportResearchJSON()">備份研究 JSON</button><p id="submitStatus" class="note"></p></div>
+<div class="card"><h2>完成與繳交</h2><p>① 按「儲存」 → ② 下載繳交檔 → ③ 確認檔名以研究 ID 起頭，例如 <span class="code">UCS-001_PRE01_沉默的輪迴倫理敏感度前測.json</span> → ④ 上傳老師指定 Drive。</p><button class="btn" onclick="saveAll()">💾 儲存</button><button class="btn" onclick="exportAcademicJSON()">① 下載 TronClass 課業檔</button><button class="btn" onclick="submitResearchToDrive()">② 一鍵送出研究資料</button><button class="btn" onclick="exportResearchJSON()">備份研究 JSON</button><p class="note" id="submitStatus"></p></div>
 </main><script>
 const ASSIGN="PRE01", TITLE="沉默的輪迴倫理敏感度前測", KEY="UCS115_"+ASSIGN;
 function rid(){return document.getElementById("research_id").value.trim().toUpperCase()}
@@ -41,4 +54,4 @@ function exportAcademicJSON(){let d=buildAcademicData();dl(ASSIGN+'_'+TITLE.repl
 function exportResearchJSON(){if(!rid()){alert('研究 ID 請只輸入三碼，例如 027');return}let d=buildResearchData();dl(rid()+'_'+ASSIGN+'_'+TITLE.replace(/[\/:*?"<>|]/g,'-')+'_研究資料.json',JSON.stringify(d,null,2),'application/json')}
 async function submitResearchToDrive(){if(!rid()){alert('研究 ID 請只輸入三碼，例如 027');return}let st=document.getElementById('submitStatus');if(RESEARCH_ENDPOINT.startsWith('__CONFIGURE')){st.textContent='尚未設定 Research Drive 接收網址；請先下載研究 JSON 備份。';exportResearchJSON();return}st.textContent='正在送出研究資料…';try{let res=await fetch(RESEARCH_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(buildResearchData())});let out=await res.json();if(!out.ok)throw new Error(out.error||'送出失敗');st.textContent='✓ 研究資料已送達老師 Research Drive。'}catch(e){st.textContent='送出未成功：'+e.message+'；請使用研究 JSON 備份。'}}
 document.getElementById('research_id')?.addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,3));
-</script><script src="student-workflow-v21.js"></script><script src="research-config.js"></script><script src="research-submit.js"></script></body></html>
+</script><script src="student-workflow-v23.js"></script><script src="research-config.js"></script><script src="research-submit.js"></script></body></html>
