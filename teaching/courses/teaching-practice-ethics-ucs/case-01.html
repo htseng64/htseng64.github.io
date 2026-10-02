@@ -196,7 +196,7 @@ function exportResearchJSON(){let fn=assignmentFilename('json');if(!fn)return;le
 async function submitResearchToDrive(){let rid=requireRID();if(!rid)return;let st=document.getElementById('submitStatus');if(RESEARCH_ENDPOINT.startsWith('__CONFIGURE')){st.textContent='尚未設定 Research Drive 接收網址；已改為下載研究 JSON 備份。';exportResearchJSON();return}st.textContent='正在送出研究資料…';try{let payload=buildResearchData();let res=await fetch(RESEARCH_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});let out=await res.json();if(!out.ok)throw new Error(out.error||'送出失敗');st.textContent='✓ 研究資料已送達老師 Research Drive｜'+rid+'｜'+ASSIGNMENT_CODE;}catch(err){st.textContent='送出未成功：'+err.message+'。請下載研究 JSON 備份後依老師指示補交。'}}
 window.addEventListener('load',()=>{annotateCodes();let rid=document.getElementById('researchId');if(rid){rid.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3);saveAll(true)})}});
 </script>
-<script src="research-config.js"></script><script src="research-submit.js"></script>
+<script src="student-workflow-v21.js"></script><script src="research-config.js"></script><script src="research-submit.js"></script>
 <script>
 (function(){
   function aiConditional(){

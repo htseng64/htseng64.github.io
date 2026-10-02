@@ -64,7 +64,7 @@ async function send(){
 function add(){
  if(document.getElementById("ucs-research-submit"))return;
  const box=document.createElement("div");box.style.cssText="max-width:1000px;margin:22px auto;padding:16px;background:#eef5f7;border-radius:12px;border:1px solid #c8d8df";
- box.innerHTML='<h3 style="margin-top:0">研究資料送出</h3><p>可自由前後瀏覽與作答，不限制作答長度或題數。再次修改後可重新送出；系統只保留此 Research ID 與本作業的最新版研究資料。研究資料不包含姓名或學號。</p><button id="ucs-research-submit" type="button" style="background:#285b75;color:white;border:0;border-radius:8px;padding:11px 16px;font-weight:700">送出研究資料</button>';
+ box.innerHTML='<h3 style="margin-top:0">研究資料送出</h3><p>可自由前後瀏覽與作答，不限制作答長度或題數。再次修改後可重新送出；系統只保留此 Research ID 與本作業的最新版研究資料。研究資料只送 Research ID、作業代碼與編碼答案；不包含題目、姓名或學號。</p><button id="ucs-research-submit" type="button" style="background:#285b75;color:white;border:0;border-radius:8px;padding:11px 16px;font-weight:700">送出研究資料</button>';
  document.body.appendChild(box);button().addEventListener("click",send);
  document.addEventListener("input",refreshState,true);document.addEventListener("change",refreshState,true);
  refreshState();
