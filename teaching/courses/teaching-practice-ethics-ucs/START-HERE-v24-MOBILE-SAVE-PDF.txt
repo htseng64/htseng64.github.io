@@ -1,0 +1,7 @@
+UCS v24 hotfix
+1. Research ID is stored once globally on the same browser/device (UCS115_RESEARCH_ID) and reused across C01-C06/assessment pages.
+2. Assignment answers remain stored per assignment.
+3. Disabled legacy per-page restore collision that caused saved state/research ID to be overwritten.
+4. PDF generation no longer previews a PDF blob inside an iOS iframe. It renders the actual assignment to canvas, shows that canvas as the visible preview, and creates the PDF from the exact same canvas.
+5. TronClass PDF filename: assignment code + assignment name + TronClass作業.pdf.
+6. Google Apps Script/backend unchanged.

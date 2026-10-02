@@ -105,7 +105,7 @@ function download(name,content,type){const b=new Blob([content],{type:type+";cha
 function clearAll(){if(confirm("確定清除本案例在此裝置的所有作答？")){localStorage.removeItem(KEY);location.reload()}}
 function flash(msg){const s=document.getElementById("saveState");s.textContent=msg}
 [...document.querySelectorAll('textarea,select,input[type=text]')].forEach(x=>x.addEventListener("input",()=>{document.getElementById("saveState").textContent="編輯中…";clearTimeout(window._sv);window._sv=setTimeout(()=>saveAll(true),700)}));
-window.addEventListener("load",restore);
+/* v24: legacy restore disabled; centralized workflow restores state */
 
 const ASSIGNMENT_CODE="C02"; const ASSIGNMENT_NAME="行善與不傷害的衝突";
 // 將部署後的 Google Apps Script Web App URL 貼在這裡；留白時會自動改用備份 JSON。
@@ -125,7 +125,7 @@ function completeCase(){saveAll(true);let e=document.getElementById('evaluation'
 function exportAcademicJSON(){let d=buildAcademicData();let fn=`${ASSIGNMENT_CODE}_${ASSIGNMENT_NAME}_TronClass課業.json`;download(fn,JSON.stringify(d,null,2),'application/json');document.getElementById('filenamePreview').textContent='TronClass 檔已產生：'+fn+'（不含研究 ID）'}
 function exportResearchJSON(){let fn=assignmentFilename('json');if(!fn)return;let d=buildResearchData();download(fn,JSON.stringify(d,null,2),'application/json');document.getElementById('filenamePreview').textContent='研究備份檔已產生：'+fn}
 async function submitResearchToDrive(){let rid=requireRID();if(!rid)return;let st=document.getElementById('submitStatus');if(RESEARCH_ENDPOINT.startsWith('__CONFIGURE')){st.textContent='尚未設定 Research Drive 接收網址；已改為下載研究 JSON 備份。';exportResearchJSON();return}st.textContent='正在送出研究資料…';try{let payload=buildResearchData();let res=await fetch(RESEARCH_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});let out=await res.json();if(!out.ok)throw new Error(out.error||'送出失敗');st.textContent='✓ 研究資料已送達老師 Research Drive｜'+rid+'｜'+ASSIGNMENT_CODE;}catch(err){st.textContent='送出未成功：'+err.message+'。請下載研究 JSON 備份後依老師指示補交。'}}
-window.addEventListener('load',()=>{annotateCodes();let rid=document.getElementById('researchId');if(rid){rid.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3);saveAll(true)})}});
+window.addEventListener('load',()=>{annotateCodes();});
 </script>
 <script src="student-workflow-v23.js"></script><script src="research-config.js"></script><script src="research-submit.js"></script>
 <script>

@@ -44,7 +44,7 @@ function restore(){let raw=localStorage.getItem(KEY);if(!raw)return;try{let d=JS
 function dl(name,content,type){let b=new Blob([content],{type:type+";charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 function exportJSON(){if(!rid()){alert("請先填研究 ID，例如 UCS-001");return}let d=saveAll();dl(rid()+"_"+ASSIGN+"_"+TITLE.replace(/[\\/:*?"<>|]/g,"-")+".json",JSON.stringify(d,null,2),"application/json")}
 function exportTXT(){if(!rid()){alert("請先填研究 ID");return}let d=saveAll(),t=rid()+"｜"+ASSIGN+"｜"+TITLE+"\n"+"=".repeat(45)+"\n";Object.entries(d.responses).forEach(([k,v])=>t+="\n["+k+"]\n"+v+"\n");dl(rid()+"_"+ASSIGN+"_"+TITLE.replace(/[\\/:*?"<>|]/g,"-")+".txt",t,"text/plain")}
-document.addEventListener("input",()=>{clearTimeout(window._t);window._t=setTimeout(saveAll,700)});window.addEventListener("load",restore);
+document.addEventListener("input",()=>{clearTimeout(window._t);window._t=setTimeout(saveAll,700)});/* v24: legacy restore disabled; centralized workflow restores state */
 
 const RESEARCH_ENDPOINT="__CONFIGURE_GOOGLE_APPS_SCRIPT_WEB_APP_URL__";
 function rid(){let v=document.getElementById("research_id").value.replace(/\D/g,'').slice(0,3);return v.length===3?'UCS-'+v:''}
