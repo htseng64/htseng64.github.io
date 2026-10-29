@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="zh-TW"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>老師總控台｜研究與實證護理概論</title>
+<script src="../../config/course-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+body{margin:0;background:#070c1a;color:#e2e8f0;font-family:Arial,'Noto Sans TC',sans-serif}.header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 26px;background:#0d1628;border-bottom:1px solid rgba(255,255,255,.12)}
+h1{margin:0;color:#f5c842;font-size:26px}.main{max-width:1250px;margin:auto;padding:24px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#0d1628;border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:22px}
+.act{cursor:pointer}.act:hover{background:#121f38}.ico{font-size:36px}a,button{display:inline-block;text-decoration:none;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#e2e8f0;border-radius:11px;padding:10px 13px;font-weight:900;margin:4px}.primary{background:linear-gradient(135deg,#f5c842,#d97706)!important;color:#111!important;border:0}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.num{font-size:32px;color:#2dd4bf;font-weight:900}.label{color:#8892a8;font-size:13px}.log{white-space:pre-wrap;font-size:12px;color:#dbe4f0}input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:white;margin:7px 0}@media(max-width:900px){.grid,.kpis{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}}
+</style></head><body>
+<div class="header"><div><h1>🎛 老師總控台｜研究與實證護理概論</h1><div style="color:#8892a8;font-size:13px;margin-top:5px">開課、學生、遊戲、評值、報告一頁整合</div></div><div><a href="../index.html">回教學版</a><a class="primary" href="start.html">開課展示</a></div></div>
+<div class="main">
+<section class="kpis"><div class="card"><div class="num" id="joined">0</div><div class="label">已加入學生</div></div><div class="card"><div class="num" id="teams">0</div><div class="label">組別數</div></div><div class="card"><div class="num" id="scores">0</div><div class="label">成績紀錄</div></div><div class="card"><div class="num">18</div><div class="label">週課程</div></div></section>
+<section class="grid">
+<div class="card act" onclick="location.href='start.html'"><div class=ico>🚀</div><h2>開課展示</h2><p>投影 QR、通關密語、學生加入狀態。</p></div>
+<div class="card act" onclick="location.href='student-entry.html'"><div class=ico>📱</div><h2>學生入口</h2><p>學生學號驗證、暱稱與組別連結。</p></div>
+<div class="card act" onclick="location.href='nursing-research-games.html'"><div class=ico>🎮</div><h2>研究遊戲中心</h2><p>Bingo、翻翻樂、Jeopardy、選擇題。</p></div>
+<div class="card act" onclick="location.href='leaderboard.html'"><div class=ico>🏆</div><h2>排行榜</h2><p>個人與小組排行。</p></div>
+<div class="card act" onclick="location.href='links.html'"><div class=ico>🔗</div><h2>表單 QR</h2><p>課程評值與小組互評 QR。</p></div>
+<div class="card act" onclick="location.href='report.html'"><div class=ico>📊</div><h2>成果報告</h2><p>匯出教學成果資料。</p></div>
+<div class="card act" onclick="location.href='student-list-manager.html'"><div class=ico>👥</div><h2>學生名單管理</h2><p>新學期可貼上 CSV，匯入或更新 Supabase students 表。</p></div>
+</section>
+<section class="grid" style="margin-top:18px"><div class="card"><h2>Supabase 設定</h2><input id=url placeholder="Supabase URL"><input id=key placeholder="Publishable / anon key"><button class=primary onclick=save()>儲存</button><button onclick=check()>檢查連線</button></div><div class="card" style="grid-column:span 2"><h2>檢查紀錄</h2><div id=log class=log>等待檢查...</div></div></section>
+</div>
+<script>
+url.value=localStorage.getItem('SUPABASE_URL')||'';key.value=localStorage.getItem('SUPABASE_KEY')||'';
+function save(){localStorage.setItem('SUPABASE_URL',url.value.trim());localStorage.setItem('SUPABASE_KEY',key.value.trim());alert('已儲存')}
+function l(t){if(log.textContent==='等待檢查...')log.textContent='';log.textContent+=t+'\n'}
+async function check(){log.textContent='';const sb=supabase.createClient(localStorage.getItem('SUPABASE_URL'),localStorage.getItem('SUPABASE_KEY'));for(const table of ['sessions','students','participants','scores']){const r=await sb.from(table).select('*').limit(1);l((r.error?'❌ ':'✅ ')+table+(r.error?': '+r.error.message:' 正常'))}}
+</script></body></html>

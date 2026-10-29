@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>通用教學計畫表｜研究與實證護理概論</title>
+<script src="../config/course-config.js">
+function toggleFullScreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}else{document.exitFullscreen?.();} }
+function togglePlanIndex(){ document.getElementById('planIndex').classList.toggle('hidden'); }
+let planLastY=window.scrollY;
+window.addEventListener('scroll',()=>{
+  const p=document.getElementById('planIndex'); if(!p) return;
+  const y=window.scrollY;
+  if(y>planLastY+18 && y>120){ p.classList.add('hidden'); }
+  if(y<planLastY-30 || y<40){ p.classList.remove('hidden'); }
+  planLastY=y;
+},{passive:true});
+
+</script>
+<script src="../config/units-config.js">
+function toggleFullScreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}else{document.exitFullscreen?.();} }
+function togglePlanIndex(){ document.getElementById('planIndex').classList.toggle('hidden'); }
+let planLastY=window.scrollY;
+window.addEventListener('scroll',()=>{
+  const p=document.getElementById('planIndex'); if(!p) return;
+  const y=window.scrollY;
+  if(y>planLastY+18 && y>120){ p.classList.add('hidden'); }
+  if(y<planLastY-30 || y<40){ p.classList.remove('hidden'); }
+  planLastY=y;
+},{passive:true});
+
+</script>
+<style>
+:root{--bg:#0b1724;--card:#142234;--text:#e2eaf4;--dim:#8aaac8;--gold:#e8c455;--teal:#3ec9b9;--border:rgba(255,255,255,.14)}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1724;color:var(--text);font-family:Arial,"Noto Sans TC",sans-serif;line-height:1.7}
+.header{padding:24px 30px;background:#142234;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center}
+h1{margin:0;color:var(--gold);font-size:30px}.sub{color:var(--dim);margin-top:4px}
+.main{max-width:1100px;margin:auto;padding:24px}.card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid var(--border);border-radius:20px;padding:22px;margin:16px 0}
+h2{color:var(--gold);border-left:4px solid var(--gold);padding-left:10px}
+table{width:100%;border-collapse:collapse;margin:10px 0;background:rgba(255,255,255,.03)}
+th,td{border:1px solid var(--border);padding:9px 11px;vertical-align:top}
+th{background:rgba(232,196,85,.12);color:var(--gold);width:22%}
+a,button{display:inline-block;text-decoration:none;border:0;border-radius:10px;padding:10px 14px;font-weight:900;background:linear-gradient(135deg,var(--gold),#b8870f);color:#08111d;margin:4px;cursor:pointer}
+.btn2{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border)}
+.module{border:1px solid var(--border);border-radius:16px;margin:12px 0;overflow:hidden;background:rgba(255,255,255,.035)}
+.module summary{cursor:pointer;padding:14px 16px;color:var(--gold);font-weight:900;background:rgba(255,255,255,.04)}
+.week{border-top:1px solid var(--border);padding:10px 16px}.week b{color:var(--teal)}
+.note{background:rgba(62,201,185,.08);border:1px solid rgba(62,201,185,.25);border-radius:14px;padding:12px;color:#b2f0e8}
+
+.plan-index{position:fixed;right:18px;top:86px;width:250px;max-height:70vh;overflow:auto;background:#142234;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:20;transition:.25s}
+.plan-index.hidden{transform:translateX(290px);opacity:.15}
+.plan-index h3{margin:0 0 8px;color:var(--gold)}
+.plan-index a{display:block;color:var(--text);background:rgba(255,255,255,.06);padding:8px 10px;border-radius:10px;margin:6px 0;text-decoration:none;font-size:13px}
+@media(max-width:1000px){.plan-index{display:none}}
+
+@media print{.header a,.print-btn{display:none}body{background:white;color:#111}.card{border:1px solid #aaa;box-shadow:none}h1,h2,th,.module summary{color:#111}.sub,.note{color:#333}.module,.card{background:white}.week b{color:#111}}
+@media(max-width:800px){.header{flex-direction:column;align-items:flex-start}th,td{display:block;width:100%}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <h1>通用教學計畫表</h1>
+    <div class="sub"></div>
+  </div>
+  <div>
+    <a class="btn2" href="index.html">回課程首頁</a>
+    <button class="print-btn" onclick="togglePlanIndex()">☰ 指標</button><button class="print-btn" onclick="toggleFullScreen()">⛶ 全螢幕</button><button class="print-btn" onclick="window.print()">列印 / 另存 PDF</button>
+  </div>
+</div>
+
+<aside id="planIndex" class="plan-index">
+<h3>指標與章節</h3>
+<a href="#basic">一、基本資料</a>
+<a href="#overview">二、課程概述</a>
+<a href="#objectives">三、教學目標</a>
+<a href="#core">四、核心能力指標與學習成果</a>
+<a href="#methods">五、教學方法</a>
+<a href="#grading">六、成績評定</a>
+<a href="#outline">八、課程綱要</a>
+<a href="#schedule">九、模組化進度</a>
+</aside>
+<div class="main">
+<section class="card">
+<h2 id="basic">一、課程基本資料</h2>
+<table>
+<tr><th>課程名稱（中文）</th><td id="courseNameZh"></td></tr>
+<tr><th>課程名稱（英文）</th><td id="courseNameEn"></td></tr>
+<tr><th>開課系所</th><td id="department"></td></tr>
+<tr><th>開課年級</th><td id="program"></td></tr>
+<tr><th>學分數</th><td id="credits"></td></tr>
+<tr><th>必／選修</th><td id="required"></td></tr>
+<tr><th>先修科目或先備能力</th><td id="prerequisite"></td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2 id="overview">二、課程概述</h2>
+<p>本課程旨在使護理系學生認識護理研究，並透過質性與量性論文導讀與討論，使學生具備參與、閱讀與批判護理研究之基本能力。課程內容包括護理研究目的、文獻查證、實證護理應用、研究方法、研究倫理、研究進行步驟，以及研究報告判讀與文章導讀訓練。</p>
+<p><strong>Course Description:</strong> This course introduces nursing research and evidence-based nursing. Through qualitative and quantitative article reading and discussion, students develop basic competence in understanding, critiquing, and applying nursing research.</p>
+</section>
+
+<section class="card">
+<h2 id="objectives">三、教學目標</h2>
+<ol id="objectives"></ol>
+</section>
+
+<section class="card">
+<h2 id="core">四、核心能力、核心能力指標與學習成果標準</h2>
+<table id="coreTable"></table>
+</section>
+
+<section class="card">
+<h2 id="methods">五、教學方法</h2>
+<p>講述法、提問法、討論、文章評析、自主學習平台、互動遊戲、形成性評量、質性與量性文章導讀。</p>
+</section>
+
+<section class="card">
+<h2 id="grading">六、成績評定方式</h2>
+<table id="gradingTable"></table>
+</section>
+
+<section class="card">
+<h2>七、SDGs 目標設定</h2>
+<p>SDG 03 健康與福祉：結合護理研究、實證應用與健康照護品質提升。</p>
+</section>
+
+<section class="card">
+<h2 id="outline">八、課程綱要</h2>
+<table>
+<tr><th>護理研究概論</th><td>護理研究定義與特性、實證應用、研究目的與分類、研究步驟、倫理觀。</td></tr>
+<tr><th>研究問題與假設</th><td>研究題目選擇、研究問題、研究目的、研究提案與假設。</td></tr>
+<tr><th>文獻查證</th><td>文獻查證意義、功能、進行方式、閱讀分析與撰寫。</td></tr>
+<tr><th>研究架構與名詞界定</th><td>變項、名詞界定、研究架構形成。</td></tr>
+<tr><th>取樣與測量</th><td>取樣理論、機率與非機率取樣、樣本大小、信度與效度。</td></tr>
+<tr><th>研究設計</th><td>非實驗性與實驗性研究設計之類型、特性、干擾因素與適用情境。</td></tr>
+<tr><th>研究倫理</th><td>倫理原則、研究對象保護、法律考量與倫理困境因應。</td></tr>
+<tr><th>質性與量性文章導讀</th><td>質性研究設計、質性報告判讀、量性研究文章評讀與綜合應用。</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2 id="schedule">九、模組化教學進度表（W1–W18）</h2>
+
+<div id="modules"></div>
+</section>
+
+<section class="card">
+<h2>十、參考資料</h2>
+<ol>
+<li>李選等（2023）．護理研究與應用（第六版）．台北：華杏。</li>
+<li>Lee, S. (2017). <em>Nursing Research: Principles and Practice</em>. Taipei: Farseeing.</li>
+<li>Polit, D., & Hungler, B. P. (2004). <em>Nursing research: Principles and methods</em> (7th ed.). Philadelphia: Lippincott.</li>
+<li>Houser, J. (2016). <em>Nursing research: Reading, using and creating evidence</em>. New York: Jones & Bartlett Learning.</li>
+</ol>
+</section>
+</div>
+
+<script>
+const c=COURSE_CONFIG;
+courseNameZh.textContent=c.courseNameZh;
+courseNameEn.textContent=c.courseNameEn;
+department.textContent=c.department;
+program.textContent=c.program;
+credits.textContent=c.credits+" 學分";
+required.textContent=c.required;
+prerequisite.textContent=c.prerequisite;
+objectives.innerHTML=c.objectives.map(x=>`<li>${x}</li>`).join("");
+const coreRows = [
+  ["Ⅱ.基礎生物醫學科學（40%）", "Ⅱ-3. 能分析各項護理技能之基礎生物醫學知識原理。", "知道護理研究各步驟之定義；知道質性與量性護理研究設計之重點；瞭解質性與量性設計過程建立信度與效度。"],
+  ["Ⅳ.批判性思考（30%）", "Ⅳ-1. 思辨護理研究結果的正常性。", "能將所學之護理研究步驟、研究方法、工具信效度、結果與討論等知識，於文章導讀時指出研究內容之優缺點。"],
+  ["Ⅳ.批判性思考（30%）", "Ⅳ-5. 能評價護理措施之成效。", "能分析研究結果之意義並探究其原因與臨床應用之價值性。"],
+  ["Ⅵ.倫理素養（10%）", "Ⅵ-3. 能闡述倫理原則之應用。", "能指出研究者對研究相關事物的倫理原則。"],
+  ["Ⅵ.倫理素養（10%）", "Ⅵ-4. 能熟練個案權益維護之技巧。", "能指出研究者對研究對象的保護措施。"],
+  ["Ⅶ.克盡職責（10%）", "Ⅶ-3. 有效率地完成個人份內工作。", "有效率的完成自我的工作職分。"],
+  ["Ⅷ.終身學習（10%）", "Ⅷ-2. 能表現出自動自發的學習精神。", "展現自我管理能力。"]
+];
+coreTable.innerHTML="<tr><th>核心能力</th><th>核心能力指標</th><th>學習成果標準</th></tr>"+
+coreRows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join("");
+gradingTable.innerHTML="<tr><th>項目</th><th>比例</th></tr>"+c.grading.map(x=>`<tr><td>${x.item}</td><td>${x.weight}%</td></tr>`).join("");
+modules.innerHTML=UNITS_CONFIG.map((m,idx)=>`
+<details class="module" ${idx===0?'open':''}>
+  <summary>${m.module}｜${m.moduleTitle}</summary>
+  ${m.weeks.map(w=>`<div class="week"><b>${w.week}</b>｜${w.title}<br><small>${w.en}</small></div>`).join('')}
+</details>`).join("");
+
+function toggleFullScreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}else{document.exitFullscreen?.();} }
+function togglePlanIndex(){ document.getElementById('planIndex').classList.toggle('hidden'); }
+let planLastY=window.scrollY;
+window.addEventListener('scroll',()=>{
+  const p=document.getElementById('planIndex'); if(!p) return;
+  const y=window.scrollY;
+  if(y>planLastY+18 && y>120){ p.classList.add('hidden'); }
+  if(y<planLastY-30 || y<40){ p.classList.remove('hidden'); }
+  planLastY=y;
+},{passive:true});
+
+</script>
+</body>
+</html>

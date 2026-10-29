@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>學生名單管理｜115-1</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{--bg:#070c1a;--card:#0d1628;--text:#e2e8f0;--dim:#8892a8;--gold:#f5c842;--teal:#2dd4bf;--red:#fb7185;--border:rgba(255,255,255,.12)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 10%,rgba(245,200,66,.12),transparent 35%),radial-gradient(circle at 90% 90%,rgba(45,212,191,.12),transparent 35%),var(--bg);color:var(--text);font-family:Arial,"Noto Sans TC",sans-serif}
+.header{padding:18px 26px;background:rgba(13,22,40,.96);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.main{max-width:1180px;margin:auto;padding:24px}.card{background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.03));border:1px solid var(--border);border-radius:22px;padding:22px;margin:16px 0}
+h1{margin:0;color:var(--gold)}button,a{border:0;border-radius:12px;padding:10px 14px;font-weight:900;background:linear-gradient(135deg,var(--gold),#d97706);color:#111;text-decoration:none;margin:4px;cursor:pointer}.btn2{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border)}
+input,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:white;margin:8px 0;font-family:Consolas,"Noto Sans TC",monospace}
+textarea{min-height:210px}.hint{color:var(--dim);line-height:1.7}.ok{color:var(--teal)}.bad{color:var(--red)}
+table{width:100%;border-collapse:collapse;margin-top:12px}td,th{border-bottom:1px solid var(--border);padding:8px;text-align:left;font-size:14px}th{color:var(--gold)}
+.log{white-space:pre-wrap;background:#030712;border:1px solid var(--border);border-radius:14px;padding:12px;color:#dbe4f0;min-height:120px}
+</style></head>
+<body>
+<div class="header"><div><h1>👥 學生名單管理｜115-1</h1><div class="hint">尚未有新學期名單時可先空著；拿到名單後再匯入。</div></div><div><a class="btn2" href="index.html">← 總控台</a><a class="btn2" href="../index.html">教學版</a></div></div>
+<div class="main">
+<section class="card">
+  <h2>1. Supabase 設定</h2>
+  <input id="url" placeholder="Supabase URL">
+  <input id="key" placeholder="Publishable / anon key">
+  <button onclick="saveConfig()">儲存設定</button>
+  <button class="btn2" onclick="check()">檢查 students 表</button>
+</section>
+
+<section class="card">
+  <h2>2. 貼上學生名單 CSV</h2>
+  <div class="hint">格式必須包含標題列：<b>學期,學號,姓名,組別,暱稱</b>。暱稱可空白。Excel 可另存 CSV 後貼上。</div>
+  <textarea id="csv">學期,學號,姓名,組別,暱稱
+115-1,範例學號001,範例姓名,第一組,</textarea>
+  <button onclick="preview()">預覽名單</button>
+  <button onclick="upload()">匯入 / 更新 Supabase</button>
+  <button class="btn2" onclick="clearBox()">清空貼上區</button>
+</section>
+
+<section class="card">
+  <h2>3. 預覽</h2>
+  <div id="preview"></div>
+</section>
+
+<section class="card">
+  <h2>4. 執行紀錄</h2>
+  <div id="log" class="log">尚未執行。</div>
+</section>
+</div>
+
+<script>
+url.value=localStorage.getItem("SUPABASE_URL")||"";
+key.value=localStorage.getItem("SUPABASE_KEY")||"";
+let parsed=[];
+
+function saveConfig(){
+  localStorage.setItem("SUPABASE_URL",url.value.trim());
+  localStorage.setItem("SUPABASE_KEY",key.value.trim());
+  write("✅ 已儲存 Supabase 設定。");
+}
+function write(t){log.textContent=t}
+function getClient(){
+  const u=url.value.trim()||localStorage.getItem("SUPABASE_URL");
+  const k=key.value.trim()||localStorage.getItem("SUPABASE_KEY");
+  if(!u||!k){alert("請先填 Supabase URL/key");return null}
+  return supabase.createClient(u,k);
+}
+function parseCSV(text){
+  const lines=text.trim().split(/\r?\n/).filter(Boolean);
+  if(lines.length<2) return [];
+  const headers=lines[0].split(",").map(x=>x.trim());
+  const idx=n=>headers.indexOf(n);
+  return lines.slice(1).map(line=>{
+    const c=line.split(",").map(x=>x.trim());
+    return {
+      semester:c[idx("學期")]||"115-1",
+      student_id:c[idx("學號")]||"",
+      name:c[idx("姓名")]||"",
+      team_name:c[idx("組別")]||"",
+      nickname:c[idx("暱稱")]||""
+    };
+  }).filter(x=>x.student_id && x.name);
+}
+function preview(){
+  parsed=parseCSV(csv.value);
+  if(!parsed.length){preview.innerHTML="<p class='bad'>沒有讀到有效資料，請確認標題列與欄位。</p>";return}
+  preview.innerHTML="<p class='ok'>讀到 "+parsed.length+" 筆資料。</p><table><tr><th>學期</th><th>學號</th><th>姓名</th><th>組別</th><th>暱稱</th></tr>"+
+    parsed.map(x=>`<tr><td>${x.semester}</td><td>${x.student_id}</td><td>${x.name}</td><td>${x.team_name}</td><td>${x.nickname}</td></tr>`).join("")+"</table>";
+}
+async function check(){
+  const sb=getClient(); if(!sb)return;
+  const r=await sb.from("students").select("*").limit(5);
+  write(r.error ? "❌ students 表讀取失敗：\n"+r.error.message : "✅ students 表可讀取。前5筆：\n"+JSON.stringify(r.data,null,2));
+}
+async function upload(){
+  const sb=getClient(); if(!sb)return;
+  parsed=parseCSV(csv.value);
+  if(!parsed.length){alert("沒有有效資料");return}
+  write("匯入中...");
+  let ok=0, fail=0, messages=[];
+  for(const row of parsed){
+    const r=await sb.from("students").upsert(row,{onConflict:"student_id"});
+    if(r.error){fail++;messages.push("❌ "+row.student_id+" "+row.name+"："+r.error.message)}
+    else{ok++}
+  }
+  write(`完成。成功 ${ok} 筆，失敗 ${fail} 筆。\n`+messages.join("\n"));
+}
+function clearBox(){csv.value="學期,學號,姓名,組別,暱稱\n";preview.innerHTML=""}
+</script>
+</body></html>

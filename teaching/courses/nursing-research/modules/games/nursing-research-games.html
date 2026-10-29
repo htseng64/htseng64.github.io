@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>護理研究 · 學習遊戲中心</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070c1a;--bg2:#0d1628;--bg3:#121f38;--tx:#e2e8f0;--dim:#8892a8;--br:rgba(255,255,255,.08);--gold:#f5c842;--teal:#2dd4bf;--pink:#f472b6;--purple:#818cf8;}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 10% 5%,rgba(245,200,66,.07),transparent 45%),radial-gradient(ellipse at 90% 95%,rgba(45,212,191,.07),transparent 45%)}
+.sc{display:none;position:relative;z-index:1;min-height:100vh;flex-direction:column}.sc.on{display:flex}
+.nav{display:flex;align-items:center;gap:9px;padding:11px 16px;background:rgba(7,12,26,.97);border-bottom:1px solid rgba(245,200,66,.2);position:sticky;top:0;z-index:50;flex-wrap:wrap}
+.nav-logo{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:7px}
+.nav-back{background:rgba(255,255,255,.06);border:1px solid var(--br);border-radius:7px;padding:5px 11px;color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;transition:.2s}
+.nav-back:hover{background:rgba(255,255,255,.12);color:var(--tx)}.sp{flex:1}
+.rbadge{padding:4px 11px;border-radius:100px;font-size:10px;font-weight:900;letter-spacing:.1em;border:1px solid}
+.rbadge.host{background:rgba(245,200,66,.15);border-color:rgba(245,200,66,.5);color:var(--gold)}
+/* LOBBY */
+.hero{text-align:center;padding:44px 20px 28px}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(24px,5vw,46px);font-weight:700;color:#fff;margin-bottom:7px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--dim);font-size:12px;letter-spacing:.05em}
+.gcards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:0 18px 28px}
+.gc{width:200px;background:var(--bg2);border:1px solid var(--br);border-radius:16px;padding:22px 18px;cursor:pointer;transition:.3s;text-align:center;position:relative;overflow:hidden}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gc,#fff)}
+.gc:hover{transform:translateY(-7px);box-shadow:0 18px 44px rgba(0,0,0,.5)}
+.gc-ico{font-size:40px;margin-bottom:10px;display:block}
+.gc-name{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:5px}
+.gc-desc{font-size:11px;color:var(--dim);line-height:1.6;margin-bottom:10px}
+.gc-tag{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--dim);border:1px solid var(--br)}
+/* SETTINGS */
+.swrap{display:flex;justify-content:center;padding:0 18px 50px}
+.scard{background:var(--bg2);border:1px solid rgba(245,200,66,.2);border-radius:16px;padding:24px;width:100%;max-width:700px}
+.scard h2{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--gold);margin-bottom:18px}
+.srow{margin-bottom:18px}
+.srow>label{display:block;font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:7px}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:6px}
+.ubtn{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:9px;padding:8px 11px;cursor:pointer;transition:.2s;text-align:left}
+.ubtn:hover{background:rgba(255,255,255,.08)}.ubtn.on{border-color:var(--uc,#fff);background:rgba(255,255,255,.08)}
+.ubtn .un{font-size:9px;font-weight:700;letter-spacing:.1em;margin-bottom:3px}
+.ubtn .ut{font-size:11px;font-weight:700;color:#fff}
+.mbts{display:flex;gap:7px;flex-wrap:wrap}
+.mbtn{padding:8px 16px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:12px;font-weight:700;transition:.2s;font-family:inherit}
+.mbtn:hover{background:rgba(255,255,255,.08);color:var(--tx)}.mbtn.on{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold)}
+.tcbtn{width:38px;height:38px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;transition:.2s}
+.tcbtn:hover{background:rgba(255,255,255,.08);color:var(--tx)}.tcbtn.on{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--gold)}
+.tcrow{display:flex;gap:9px;flex-wrap:wrap}
+.gobtn{display:block;width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#f5c842,#e6a800);color:#000;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;transition:.25s;margin-top:4px}
+.gobtn:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(245,200,66,.4)}
+/* SCORE BAR */
+.sbar{display:flex;gap:6px;padding:8px 14px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--br);overflow-x:auto;flex-wrap:wrap}
+.tchip{padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;border:2px solid;display:flex;align-items:center;gap:6px;transition:.2s}
+.tchip.hi{transform:scale(1.1);box-shadow:0 0 16px var(--tc,#fff)}
+.tchip .tn{font-size:10px;opacity:.8}.tchip .ts{font-family:'JetBrains Mono',monospace;font-size:14px}
+/* RANKING SIDEBAR */
+.rsidebar{position:fixed;right:-260px;top:0;width:256px;height:100vh;background:rgba(7,12,26,.97);border-left:1px solid var(--br);z-index:40;overflow-y:auto;transition:.3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.rsidebar.open{right:0;box-shadow:-8px 0 30px rgba(0,0,0,.5)}
+.rsidebar-head{padding:14px 14px 10px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between}
+.rsidebar-head h3{font-family:'Noto Serif TC',serif;font-size:15px;color:var(--gold)}
+.rsidebar-close{background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer}
+.rs-body{flex:1;padding:10px;overflow-y:auto}
+.rs-row{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);margin-bottom:3px;position:relative;overflow:hidden}
+.rs-bar{position:absolute;left:0;top:0;bottom:0;border-radius:7px;transition:.4s}
+.rs-pos{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--dim);min-width:16px;position:relative}
+.rs-name{flex:1;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+.rs-pts{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);position:relative}
+.rank-toggle{background:rgba(255,255,255,.06);border:1px solid var(--br);border-radius:7px;padding:5px 11px;color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+/* BINGO */
+.bing-layout{display:grid;grid-template-columns:300px 1fr;flex:1}
+@media(max-width:820px){.bing-layout{grid-template-columns:1fr}}
+.cpanel{background:rgba(0,0,0,.4);border-right:1px solid var(--br);padding:16px;display:flex;flex-direction:column;gap:14px}
+.ccount{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.2em;text-transform:uppercase}
+.cdisplay{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:12px;padding:18px;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.cnum{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--gold);line-height:1}
+.cclue{font-size:13px;color:var(--tx);line-height:1.55;font-weight:700}
+.cans{font-size:11px;color:var(--dim);padding:4px 12px;background:rgba(255,255,255,.05);border-radius:100px;display:none}
+.cans.on{display:block}
+.drawbtn{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;transition:.2s}
+.drawbtn:hover{transform:translateY(-2px)}.drawbtn:disabled{opacity:.4;cursor:default;transform:none}
+.ansbtn{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:7px;padding:6px;font-size:11px;color:var(--dim);cursor:pointer;font-family:inherit}
+.clist{flex:1;overflow-y:auto;max-height:200px;display:flex;flex-direction:column;gap:3px}
+.clist h4{font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
+.citem{background:rgba(255,255,255,.04);border-radius:5px;padding:5px 9px;font-size:10px;color:var(--dim);border:1px solid var(--br)}
+.citem b{color:var(--tx);margin-right:4px}
+.carea{padding:14px;overflow-y:auto}
+.ctabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.ctab{padding:5px 12px;border-radius:7px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--dim);cursor:pointer;font-size:11px;font-weight:700;transition:.2s}
+.bwrap{display:none}.bwrap.on{display:block}
+.blbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--dim);margin-bottom:7px;text-transform:uppercase}
+.bhrow{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:460px;margin-bottom:4px}
+.bhr{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:900;text-align:center;padding:6px;border-radius:6px;background:rgba(245,200,66,.12);color:var(--gold)}
+.bgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:460px}
+.btile{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:7px;padding:6px 4px;min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10.5px;font-weight:700;cursor:pointer;transition:.22s;line-height:1.3;color:var(--tx)}
+.btile:hover{background:rgba(255,255,255,.1)}
+.btile.fr{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.3);color:var(--teal);font-size:13px;cursor:default}
+.bbtn{margin-top:9px;padding:10px 22px;border-radius:10px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.4);color:var(--teal);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:none}
+/* MEMORY */
+.mwrap{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px}
+.minfo{display:flex;gap:10px;flex-wrap:wrap}
+.mstat{background:var(--bg2);border:1px solid var(--br);border-radius:9px;padding:7px 13px;display:flex;align-items:center;gap:6px}
+.mstat .ml{font-size:10px;color:var(--dim)}.mstat .mv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--gold)}
+.mpeekbar-wrap{height:5px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;display:none}
+.mpeekfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--gold))}
+.mgrid{display:grid;gap:8px;flex:1}
+.mcard{cursor:pointer;perspective:1000px}
+.minner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1)}
+.mcard.fl .minner,.mcard.ok .minner{transform:rotateY(180deg)}
+.mface,.mback{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;padding:9px;border:1px solid var(--br)}
+.mface{background:linear-gradient(135deg,#0d1526,#121f38)}
+.mface-ico{font-size:22px}
+.mback{transform:rotateY(180deg)}
+.mback.tr{background:linear-gradient(135deg,rgba(0,180,216,.15),rgba(0,180,216,.05));border-color:rgba(0,180,216,.3)}
+.mback.df{background:linear-gradient(135deg,rgba(245,200,66,.12),rgba(245,200,66,.04));border-color:rgba(245,200,66,.3)}
+.mback-lbl{font-size:8px;font-weight:700;letter-spacing:.1em;margin-bottom:4px;text-transform:uppercase;opacity:.6}
+.mback-txt{font-size:11px;font-weight:700;line-height:1.35}
+/* MCQ QUIZ */
+.qwrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 16px;gap:14px}
+.qcard{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:16px;padding:26px;max-width:680px;width:100%;text-align:center}
+.qnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.15em;margin-bottom:10px}
+.qunit{font-size:10px;color:var(--dim);margin-bottom:6px}
+.qtext{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:#fff;line-height:1.7;margin-bottom:14px}
+.qtbar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.qtfill{height:100%;border-radius:3px;transition:width .1s linear;background:linear-gradient(90deg,#f5c842,#e879f9)}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:680px;width:100%}
+.qopt{padding:12px 14px;border-radius:11px;border:1px solid var(--br);background:rgba(255,255,255,.04);color:var(--tx);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:left;transition:.2s;display:flex;align-items:flex-start;gap:8px}
+.qopt:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.qopt.ok{border-color:var(--teal);background:rgba(45,212,191,.15);color:var(--teal)}
+.qopt.ng{border-color:#f472b6;background:rgba(244,114,182,.12);color:#f472b6}
+.qopt.dis{cursor:default;pointer-events:none}
+.qopt-letter{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;margin-top:1px}
+.qopt.ok .qopt-letter{background:var(--teal);color:#000}
+.qopt.ng .qopt-letter{background:#f472b6;color:#000}
+.qexpl{padding:10px 16px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.25);border-radius:10px;color:#a5b4fc;font-size:13px;line-height:1.6;display:none;max-width:680px;width:100%}
+.qbrow{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:680px;width:100%}
+.qbbtn{flex:1;min-width:90px;padding:12px 9px;border-radius:10px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit}
+.qbbtn:hover{transform:scale(1.04)}
+.award-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:680px;width:100%}
+.aw-ok{padding:9px 14px;border-radius:9px;border:2px solid var(--teal);background:rgba(45,212,191,.1);color:var(--teal);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.aw-ng{padding:9px 14px;border-radius:9px;border:2px solid var(--pink);background:rgba(244,114,182,.1);color:var(--pink);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.qctrl{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.qcbtn{padding:9px 18px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.06);color:var(--tx);cursor:pointer;font-size:12px;font-weight:700;transition:.2s;font-family:inherit}
+.qcbtn:hover{background:rgba(255,255,255,.12)}
+.qcbtn.pr{background:linear-gradient(135deg,#f5c842,#d97706);color:#000;border:none}
+.qrevbtn{padding:9px 20px;border-radius:9px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.4);color:var(--gold);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:none}
+@media(max-width:560px){.qopts{grid-template-columns:1fr}}
+/* JEOPARDY */
+.jwrap{flex:1;display:flex;flex-direction:column}
+.jboard{display:grid;gap:4px;padding:12px;flex:1}
+.jhead{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:10px 6px;text-align:center;font-size:11px;font-weight:900;color:var(--gold);letter-spacing:.05em}
+.jtile{background:var(--bg3);border:1px solid var(--br);border-radius:8px;padding:8px 4px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:900;color:var(--gold);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;min-height:56px}
+.jtile:hover{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.4)}
+.jtile.used{opacity:.3;cursor:default;font-size:14px;color:var(--dim)}
+.jmodal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center}
+.jmodal.on{display:flex}
+.jmc{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:36px;max-width:600px;width:92%;text-align:center}
+.jm-pts{font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:900;color:var(--gold);margin-bottom:4px}
+.jm-cat{font-size:12px;color:var(--dim);letter-spacing:.1em;margin-bottom:18px}
+.jm-clue{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#fff;line-height:1.7;margin-bottom:18px;padding:16px;background:rgba(255,255,255,.04);border-radius:10px}
+.jm-ans{font-size:14px;font-weight:700;color:var(--teal);padding:12px 18px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:10px;display:none;margin-bottom:14px;line-height:1.6}
+.jm-revbtn{padding:10px 22px;border-radius:10px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.4);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:14px}
+.jm-arow{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.jbbtn{padding:9px 14px;border-radius:9px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--tx)}
+.jbbtn:hover{background:rgba(255,255,255,.08)}
+.jbbtn-ng{padding:9px 14px;border-radius:9px;border:1px dashed;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--dim)}
+.jm-skip{padding:8px 18px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.05);color:var(--dim);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+/* ESCAPE ROOM */
+.er-wrap{flex:1;display:grid;grid-template-columns:1.2fr .8fr;gap:0}
+@media(max-width:820px){.er-wrap{grid-template-columns:1fr}}
+.er-main{padding:22px;overflow-y:auto}
+.er-side{background:rgba(0,0,0,.35);border-left:1px solid var(--br);padding:18px;display:flex;flex-direction:column;gap:14px}
+.er-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.er-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px}
+.er-scene{background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:12px;padding:14px;font-size:13px;line-height:1.75;color:var(--dim);margin-bottom:12px}
+.er-scene h4{color:#fff;margin-bottom:6px;font-size:14px}
+.er-clue{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25);color:#bffcf2;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.7}
+.er-q{font-size:16px;font-weight:700;color:#fff;margin-bottom:12px}
+.er-opts{display:flex;flex-direction:column;gap:8px}
+.er-opt{padding:11px 14px;border-radius:11px;border:1px solid var(--br);background:rgba(255,255,255,.055);color:var(--tx);font-weight:700;cursor:pointer;font-family:inherit;font-size:13px;text-align:left;transition:.2s;display:flex;align-items:flex-start;gap:9px}
+.er-opt:hover{border-color:var(--gold);background:rgba(245,200,66,.07)}
+.er-opt.ok{border-color:var(--teal);background:rgba(45,212,191,.14);cursor:default;pointer-events:none}
+.er-opt.ng{border-color:var(--pink);background:rgba(244,114,182,.1);cursor:default;pointer-events:none}
+.er-opt-l{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;margin-top:1px}
+.er-fb{display:none;margin-top:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.6}
+.er-fb.on{display:block}
+.er-fb.ok{background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);color:#bffcf2}
+.er-fb.ng{background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.3);color:#fecdd3}
+.er-prog{height:10px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.er-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:99px;transition:.4s}
+.er-lock{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.er-lock-dot{height:28px;border-radius:8px;border:1px solid var(--br);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;transition:.3s}
+.er-lock-dot.open{background:rgba(45,212,191,.2);border-color:var(--teal);color:var(--teal)}
+.er-lock-dot.fail{background:rgba(244,114,182,.1);border-color:var(--pink);color:var(--pink)}
+.er-final{display:none;text-align:center;padding:24px;border-radius:16px;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.3);margin-top:14px}
+.er-final.on{display:block}
+.er-setup{background:var(--bg2);border:1px solid rgba(45,212,191,.2);border-radius:12px;padding:18px}
+.er-setup h3{color:var(--teal);font-size:15px;margin-bottom:14px}
+.er-timer-big{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--teal);text-align:center}
+.er-scorebox{background:var(--bg3);border-radius:10px;padding:12px;text-align:center}
+.er-score-val{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--gold)}
+.er-score-lbl{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+/* WIN */
+.wino{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}
+.wino.on{display:flex}
+.winc{background:var(--bg2);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:36px 30px;text-align:center;max-width:420px;width:90%;animation:winpop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes winpop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.wine{font-size:60px;display:block;margin-bottom:14px;animation:bb 1s ease infinite alternate}
+@keyframes bb{to{transform:translateY(-11px)}}
+.wint{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.wins{color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:18px;white-space:pre-line}
+.winsc{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;color:var(--teal)}
+.winacts{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.wina{padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:.2s}
+.wina:hover{transform:translateY(-2px)}.wa1{background:linear-gradient(135deg,#f5c842,#d97706);color:#000}.wa2{background:rgba(255,255,255,.08);color:var(--tx);border:1px solid var(--br)!important}
+/* TOAST CONFETTI */
+.toast{position:fixed;bottom:18px;right:18px;z-index:700;background:var(--bg3);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:0 8px 26px rgba(0,0,0,.6);transform:translateY(70px);opacity:0;transition:.3s;pointer-events:none}
+.toast.on{transform:translateY(0);opacity:1}.toast.ok{border-color:rgba(45,212,191,.4);color:var(--teal)}.toast.ng{border-color:rgba(244,114,182,.4);color:var(--pink)}
+#cc{position:fixed;inset:0;z-index:550;pointer-events:none;display:none}
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+.ubadge{padding:4px 11px;border-radius:100px;font-size:10px;font-weight:700;border:1px solid}
+</style>
+</head>
+<body>
+<div id="ribbon" style="position:fixed;top:0;left:0;right:0;height:4px;z-index:200;pointer-events:none;background:linear-gradient(90deg,var(--gold),var(--teal))"></div>
+
+<!-- ═══ LOBBY ═══ -->
+<div id="s-lobby" class="sc on">
+  <div class="hero">
+    <h1>護理研究 <em>學習遊戲中心</em></h1>
+    <p>弘光科技大學 · 護理研究課程 · 16 單元 · 5 種遊戲模式</p>
+    <a href="nursing-research-full.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:10px 22px;border-radius:99px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.4);color:var(--teal);font-size:13px;font-weight:700;text-decoration:none;transition:.2s" onmouseover="this.style.background='rgba(45,212,191,.25)'" onmouseout="this.style.background='rgba(45,212,191,.15)'">📚 返回學習教材</a>
+  </div>
+  <div class="gcards">
+    <div class="gc" style="--gc:#e55252" onclick="pickGame('escape')"><span class="gc-ico">🔐</span><div class="gc-name">密室逃脫</div><div class="gc-desc">5道研究判斷鎖<br>解鎖完成研究任務</div><div class="gc-tag">16單元</div></div>
+    <div class="gc" style="--gc:#2dd4bf" onclick="pickGame('bingo')"><span class="gc-ico">🎱</span><div class="gc-name">賓 果 遊 戲</div><div class="gc-desc">叫號猜術語<br>五連線BINGO</div><div class="gc-tag">2–6組競賽</div></div>
+    <div class="gc" style="--gc:#f5c842" onclick="pickGame('memory')"><span class="gc-ico">🃏</span><div class="gc-name">翻 翻 樂</div><div class="gc-desc">術語↔定義記憶配對<br>可設置預覽秒數</div><div class="gc-tag">個人/小組</div></div>
+    <div class="gc" style="--gc:#f472b6" onclick="pickGame('quiz')"><span class="gc-ico">⚡</span><div class="gc-name">MCQ 搶 答</div><div class="gc-desc">四選一選擇題搶答<br>記錄個人+團體排名</div><div class="gc-tag">小組競賽</div></div>
+    <div class="gc" style="--gc:#818cf8" onclick="pickGame('jeopardy')"><span class="gc-ico">📺</span><div class="gc-name">Jeopardy</div><div class="gc-desc">6大研究主題×5題<br>分層挑戰</div><div class="gc-tag">點格作答</div></div>
+  </div>
+  <div class="swrap" id="swrap" style="display:none"><div class="scard">
+    <h2 id="stitle">⚙ 遊戲設定</h2>
+    <div class="srow"><label>選擇單元</label><div class="ugrid" id="ugrid"></div></div>
+    <div class="srow" id="mrow"><label>競賽模式</label><div class="mbts"><button class="mbtn on" onclick="pickMode('group')">👥 小組競賽</button><button class="mbtn" onclick="pickMode('solo')">🧑 個人計時</button></div></div>
+    <div class="srow" id="tcrow-wrap"><label>隊伍數量</label><div class="tcrow" id="tcrow"></div></div>
+    <div class="srow" id="peekrow" style="display:none"><label>翻翻樂預覽秒數 <span id="peekVal">3秒</span></label><div style="display:flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--dim)">1s</span><input type="range" min="1" max="10" value="3" oninput="setPeek(+this.value)" style="flex:1;background:transparent"><span style="font-size:11px;color:var(--dim)">10s</span></div></div>
+    <div class="srow" id="trow" style="display:none"><label>每題時間</label><div class="mbts"><button class="dbtn" data-t="15" onclick="pickTimer(15)">15秒</button><button class="dbtn on" data-t="20" onclick="pickTimer(20)">20秒</button><button class="dbtn" data-t="30" onclick="pickTimer(30)">30秒</button></div></div>
+    <button class="gobtn" onclick="startGame()">🚀 開始遊戲！</button>
+  </div></div>
+</div>
+
+<!-- ═══ BINGO ═══ -->
+<div id="s-bingo" class="sc">
+  <div class="nav" id="nav-bingo"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>🎱</span>賓果遊戲</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="b-ubadge"></div></div>
+  <div class="sbar" id="b-sbar"></div>
+  <div class="bing-layout">
+    <div class="cpanel">
+      <div class="ccount" id="ccount">已抽 0 題</div>
+      <div class="cdisplay"><div class="cnum" id="cnum">—</div><div class="cclue" id="cclue">按「抽題」開始</div><div class="cans" id="cans"></div></div>
+      <button class="drawbtn" id="drawbtn" onclick="draw()">🎲 抽 題</button>
+      <button class="ansbtn" id="ansbtn" onclick="toggleAns()" style="display:none">👁 顯示答案</button>
+      <div class="clist"><h4>已抽 <span id="cnt">0</span> 題</h4><div id="citems"></div></div>
+    </div>
+    <div class="carea"><div class="ctabs" id="ctabs"></div><div id="ccards"></div></div>
+  </div>
+</div>
+
+<!-- ═══ MEMORY ═══ -->
+<div id="s-memory" class="sc">
+  <div class="nav" id="nav-memory"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>🃏</span>翻翻樂</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="m-ubadge"></div></div>
+  <div class="sbar" id="m-sbar"></div>
+  <div class="mwrap">
+    <div class="minfo">
+      <div class="mstat"><span class="ml">已配對</span><span class="mv" id="mmatch">0</span></div>
+      <div class="mstat"><span class="ml">剩餘</span><span class="mv" id="mrem">0</span></div>
+      <div class="mstat" id="mtimewrap"><span class="ml">時間</span><span class="mv" id="mtime">0:00</span></div>
+      <div class="mstat" id="mturnwrap"><span class="ml">輪到</span><span class="mv" id="mturn">—</span></div>
+    </div>
+    <div class="mpeekbar-wrap" id="mpeekbar"><div class="mpeekfill" id="mpeekfill"></div></div>
+    <div class="mgrid" id="mgrid"></div>
+  </div>
+</div>
+
+<!-- ═══ MCQ QUIZ ═══ -->
+<div id="s-quiz" class="sc">
+  <div class="nav" id="nav-quiz"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>⚡</span>MCQ搶答</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="q-ubadge"></div></div>
+  <div class="sbar" id="q-sbar"></div>
+  <div class="qwrap">
+    <div class="qcard">
+      <div class="qnum" id="qnum">Q 0 / 0</div>
+      <div class="qunit" id="qunit"></div>
+      <div class="qtext" id="qtext">準備…</div>
+      <div class="qtbar"><div class="qtfill" id="qtfill" style="width:100%"></div></div>
+    </div>
+    <div class="qopts" id="qopts"></div>
+    <div class="qexpl" id="qexpl"></div>
+    <div class="qbrow" id="qbrow"></div>
+    <div class="award-row" id="arow" style="display:none"></div>
+    <div class="qctrl">
+      <button class="qrevbtn" id="qrevbtn" onclick="revealAns()">👁 公布答案</button>
+      <button class="qcbtn pr" onclick="nextQ()">下一題 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ JEOPARDY ═══ -->
+<div id="s-jeopardy" class="sc">
+  <div class="nav" id="nav-jeopardy"><button class="nav-back" onclick="goLobby()">← 大廳</button><div class="nav-logo"><span>📺</span>Jeopardy</div><div class="sp"></div><button class="rank-toggle" onclick="toggleRank()">📊</button><div class="ubadge" id="j-ubadge"></div></div>
+  <div class="sbar" id="j-sbar"></div>
+  <div class="jwrap"><div class="jboard" id="jboard"></div></div>
+</div>
+<div class="jmodal" id="jmodal">
+  <div class="jmc">
+    <div class="jm-pts" id="jm-pts">100</div>
+    <div class="jm-cat" id="jm-cat"></div>
+    <div class="jm-clue" id="jm-clue"></div>
+    <div class="jm-ans" id="jm-ans"></div>
+    <button class="jm-revbtn" id="jm-revbtn" onclick="revealJAns()">👁 公布答案</button>
+    <div id="jarow" style="display:none">
+      <div class="jm-arow" id="jm-arow"></div>
+      <button class="jm-skip" onclick="skipJTile()">跳過此題</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ESCAPE ROOM ═══ -->
+<div id="s-escape" class="sc">
+  <div class="nav" id="nav-escape">
+    <button class="nav-back" onclick="goLobby()">← 大廳</button>
+    <div class="nav-logo"><span>🔐</span>密室逃脫</div>
+    <div class="sp"></div>
+    <div class="er-timer-big" id="er-timer" style="font-size:18px">00:00</div>
+    <div class="rbadge host" id="er-unittitle" style="margin-left:8px"></div>
+  </div>
+  <div class="sbar" id="er-sbar"></div>
+  <div class="er-wrap">
+    <div class="er-main" id="er-main">
+      <div id="er-setup-box" style="padding:20px 0">
+        <div class="er-setup">
+          <h3>🔐 護理研究密室逃脫</h3>
+          <p style="color:var(--dim);font-size:13px;line-height:1.8;margin-bottom:14px">
+            進入護理研究密室！每個單元有 <strong style="color:var(--gold)">5道研究判斷鎖</strong>，答對解鎖+20分，答錯+5分（鼓勵分）。<br>
+            解鎖全部5道鎖即完成任務，並獲得解鎖密碼！
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div><label style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">暱稱</label><input id="er-nick" placeholder="輸入你的名字" style="width:100%;padding:10px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.05);color:#fff;font-family:inherit"></div>
+            <div><label style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">小組</label><input id="er-team" placeholder="小組名稱" style="width:100%;padding:10px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.05);color:#fff;font-family:inherit"></div>
+          </div>
+        </div>
+      </div>
+      <div id="er-room-box" style="display:none"></div>
+      <div class="er-final" id="er-final">
+        <div style="font-size:50px;margin-bottom:10px">🏆</div>
+        <div style="font-family:'Noto Serif TC',serif;font-size:22px;color:var(--gold);margin-bottom:8px">密室解鎖完成！</div>
+        <div id="er-final-text" style="color:var(--dim);font-size:14px;line-height:1.8;margin-bottom:16px"></div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:8px">解鎖密碼</div>
+        <div id="er-lockcode" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:280px;margin:0 auto"></div>
+        <button onclick="erReset()" style="margin-top:16px;padding:10px 24px;border-radius:10px;background:var(--gold);color:#000;border:none;font-weight:700;cursor:pointer;font-family:inherit">重新挑戰</button>
+      </div>
+    </div>
+    <div class="er-side">
+      <div>
+        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:6px">單元選擇</div>
+        <select id="er-unit-sel" style="width:100%;padding:9px;border-radius:9px;border:1px solid var(--br);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:12px"></select>
+        <button onclick="erStart()" style="width:100%;margin-top:8px;padding:11px;border-radius:9px;background:linear-gradient(135deg,#e55252,#c0392b);color:#fff;border:none;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit">🔐 進入密室</button>
+      </div>
+      <div class="er-scorebox" id="er-scorebox">
+        <div class="er-score-val" id="er-score">0</div>
+        <div class="er-score-lbl">個人得分</div>
+      </div>
+      <div>
+        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:8px">進度</div>
+        <div class="er-prog"><div class="er-prog-fill" id="er-prog-fill" style="width:0%"></div></div>
+        <div class="er-lock" id="er-lock-dots"></div>
+      </div>
+      <div id="er-rank-box">
+        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:8px">🏆 排行榜</div>
+        <div id="er-rank-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RANKING SIDEBAR ═══ -->
+<div class="rsidebar" id="rsidebar">
+  <div class="rsidebar-head">
+    <h3>📊 即時排名</h3>
+    <button class="rsidebar-close" onclick="toggleRank()">✕</button>
+  </div>
+  <div class="rs-body" id="rsBody"></div>
+</div>
+
+<!-- ═══ WIN OVERLAY ═══ -->
+<div class="wino" id="wino">
+  <div class="winc">
+    <span class="wine" id="wine"></span>
+    <div class="wint" id="wint"></div>
+    <div class="wins" id="wins"></div>
+    <div class="winsc" id="winsc"></div>
+    <div class="winacts">
+      <button class="wina wa1" onclick="restartGame()">🔄 再玩一次</button>
+      <button class="wina wa2" onclick="closeWin();goLobby()">← 回大廳</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<canvas id="cc"></canvas>
+
+<script>
+// ═══════════════════════════════════════════════
+// BINGO / MEMORY DATA (術語 ↔ 定義)
+// ═══════════════════════════════════════════════
+const BINGO_UNITS=[
+{id:1,title:"護理研究概論",color:"#e55252",items:[
+{t:"護理研究",c:"以實證基礎提升護理品質的科學探索過程"},
+{t:"IRB",c:"人體試驗委員會，審查涉及人類的研究計畫"},
+{t:"量性研究",c:"以客觀科學方法測量驗證真理、進行推論的研究典範"},
+{t:"質性研究",c:"強調主觀經驗，探索現象意義與脈絡的研究典範"},
+{t:"自決原則",c:"保護研究對象自由選擇是否參與研究的倫理原則"},
+{t:"利益原則",c:"維護受試者最大福祉，不得欺瞞或強迫的倫理原則"},
+{t:"公平原則",c:"對所有參與對象給予公平對待的研究倫理原則"},
+{t:"知情同意",c:"研究對象有權在充分了解下自主決定是否參與的倫理保障"},
+{t:"匿名保密",c:"保護研究對象個人資料不被濫用的研究倫理原則"},
+{t:"研究步驟",c:"從確立主題到發表成果的系統性科學探究程序"},
+]},
+{id:2,title:"研擬研究主題與假設",color:"#f59e0b",items:[
+{t:"研究假設",c:"依理論或文獻提出的暫時性答案，以句號呈現"},
+{t:"虛無假設",c:"假設變項間無差別、無影響或無差異（H₀）"},
+{t:"對立假設",c:"與虛無假設相反，研究者期望接受的假設（H₁）"},
+{t:"方向假設",c:"明確指出預測關係方向（如較高、較低）的假設"},
+{t:"零假設",c:"未指明方向，只說明兩者有差異或相關的假設型態"},
+{t:"研究目的",c:"以肯定句呈現，含研究對象、變項與動詞的研究陳述"},
+{t:"研究問題",c:"以疑問句呈現，隨研究目的延伸而來的具體探究問題"},
+{t:"研究複製",c:"在不同地方或時代重新執行類似研究以驗證結果的方式"},
+{t:"知識缺口",c:"Gap，文獻查證中發現目前知識不足或未被探討的部分"},
+{t:"相關性研究問題",c:"包含兩個變項，探討其關係的問題類型"},
+]},
+{id:3,title:"文獻查證",color:"#10b981",items:[
+{t:"文獻查證",c:"系統性找出相關研究文章、整合資料並提出結論的過程"},
+{t:"拼圖概念",c:"他人研究已完成部分，文獻查證找出可接續探索的片段"},
+{t:"第一手資料",c:"研究者本身所寫的原始研究報告，最優先採用"},
+{t:"第二手資料",c:"引述他人研究的回顧性文獻，不可代替第一手資料"},
+{t:"AND邏輯",c:"關鍵詞交集，縮小搜尋範圍，找出更精確的文獻"},
+{t:"OR邏輯",c:"關鍵詞聯集，擴大搜尋範圍，增加文獻篇數"},
+{t:"護理雜誌",c:"臺灣本土護理研究期刊之一"},
+{t:"PubMed",c:"美國國家醫學圖書館的醫學文獻資料庫"},
+{t:"MeSH Terms",c:"醫學主題詞，用於資料庫搜尋時提高精確性的詞彙"},
+{t:"近五年文獻",c:"文獻查證中最理想的文獻年代範圍"},
+]},
+{id:4,title:"名詞界定與研究架構",color:"#a78bfa",items:[
+{t:"概念性定義",c:"引述理論或學者對抽象概念的解釋，附有文獻出處"},
+{t:"操作性定義",c:"將概念具體化、符合研究情境且可供測量的定義方式"},
+{t:"變項",c:"Variable，由概念操作化後可供研究探討與測量的項目"},
+{t:"研究架構",c:"呈現研究變項間關係的圖示或文字說明，因在左果在右"},
+{t:"抽象概念",c:"如疼痛、壓力、焦慮等需進行名詞界定才能測量的概念"},
+{t:"具體概念",c:"如蘋果、椅子、血壓等可直接觀察或測量的概念"},
+{t:"概念架構功能",c:"整合文獻知識、呈現概念關係、引導研究設計的架構"},
+{t:"名詞界定目的",c:"使讀者清楚明白變項的意思，整篇研究保持用詞一致"},
+{t:"框框",c:"研究架構圖中代表概念的圖形元素"},
+{t:"箭頭",c:"研究架構圖中標明概念間影響方向與關係的元素"},
+]},
+{id:5,title:"研究取樣之考量與方法",color:"#2dd4bf",items:[
+{t:"目標母群體",c:"研究者想研究和推論的全部對象"},
+{t:"可及母群體",c:"目標母群體的子集合，研究者實際可接近的對象"},
+{t:"樣本",c:"從可及母群體中抽出代表母群體特徵的一部分單元"},
+{t:"取樣誤差",c:"樣本統計量與母群體參數之間的差異"},
+{t:"取樣架構",c:"整體取樣單位的詳細名單，供取樣之用"},
+{t:"方便取樣",c:"就近依賴現有對象的非機率取樣，樣本代表性最弱"},
+{t:"滾雪球取樣",c:"透過人際網路引薦，適用於特殊或不易取得的樣本"},
+{t:"分層隨機取樣",c:"依研究特性分層，再從各層進行隨機取樣的方法"},
+{t:"系統隨機取樣",c:"等距取樣，間隔數不可與母群體變異週期相同"},
+{t:"取樣代表性",c:"樣本能反映母群體特徵的程度，遠比樣本數目更重要"},
+]},
+{id:6,title:"研究設計",color:"#818cf8",items:[
+{t:"研究設計",c:"研究者對研究對象、變項、資料收集、場所與取樣的整體計畫"},
+{t:"自然情境",c:"護理研究多選擇的非實驗室研究場所，具較高外在效度"},
+{t:"描述性設計",c:"用於發展理論、確認臨床問題、形成假設的研究設計"},
+{t:"因果性設計",c:"驗證變項間因果關係的研究設計，以實驗性研究為代表"},
+{t:"探索性設計",c:"對不熟悉現象進行探索的設計，質性研究為典型代表"},
+{t:"多重變項設計",c:"人類複雜性導致護理研究多採用的設計類型"},
+{t:"局外者",c:"研究者角色的一種：完全不介入研究情境的角色"},
+{t:"參與觀察者",c:"研究者既參與又觀察的雙重角色類型"},
+{t:"前驅研究",c:"Pilot Research，評估研究可行性並修正設計的預試研究"},
+{t:"研究情境",c:"資料收集的場所與環境，分為實驗室內和非實驗室內"},
+]},
+{id:7,title:"非實驗性研究設計",color:"#f97316",items:[
+{t:"非實驗性研究",c:"在自然分配下進行，未涉及隨機分配、操縱變項的研究"},
+{t:"典型描述性",c:"針對單一樣本某些特性進行描述與解釋的研究設計"},
+{t:"比較描述性",c:"針對不同群體或不同時間點進行比較的描述性設計"},
+{t:"相關性研究",c:"探討變項間關係的方向、程度與強度，無法建立因果"},
+{t:"縱貫面研究",c:"隨時間推移在不同時間點收集資料的研究設計"},
+{t:"橫斷面研究",c:"在某一時間點測量所欲探討變項，最常見的非實驗設計"},
+{t:"病例對照研究",c:"由果追因的回溯性研究，計算勝算比（Odds Ratio）"},
+{t:"趨勢研究",c:"從同一母群體定期取樣，分析變項隨時間的變動方向"},
+{t:"整合分析",c:"Meta-analysis，系統性整合高等級文獻的非傳統研究設計"},
+{t:"次級資料分析",c:"使用現成資料庫（如健保）進行分析的非傳統研究設計"},
+]},
+{id:8,title:"實驗性研究設計",color:"#e879f9",items:[
+{t:"真實驗性",c:"具備隨機化、操控、控制三要素齊備的研究設計"},
+{t:"類實驗性",c:"三要素缺一或缺二的實驗性研究設計，又稱準實驗"},
+{t:"隨機化",c:"樣本被隨機分配到不同組別，使兩組達到同質性"},
+{t:"操控",c:"研究者主動提供自變項（處置/措施）的行為"},
+{t:"控制",c:"設置對照組，避免干擾因素影響研究結果推論"},
+{t:"霍商效應",c:"研究對象因被觀察而刻意改變行為的干擾效應"},
+{t:"寬慰效應",c:"Placebo Effect，實驗組因信賴處置而產生的預期效果"},
+{t:"統計迴歸",c:"極佳者及極差者過一段時間後趨向平均數的現象"},
+{t:"前測效應",c:"因前測暗示研究對象刻意注意相關內容的測試偏差"},
+{t:"雙盲設計",c:"不告知研究人員和受試者分組情況，避免行為改變偏差"},
+]},
+{id:9,title:"質性研究",color:"#f472b6",items:[
+{t:"現象學研究",c:"探討人類生活經驗主觀意義與本質的質性研究類型"},
+{t:"紮根理論",c:"Grounded Theory，由資料歸納建構新理論的質性研究"},
+{t:"民族誌研究",c:"了解特定文化群體共享意義，在田野中進行的研究"},
+{t:"詮釋學研究",c:"透過自我述說探究人的屬己歷程，強調詮釋循環"},
+{t:"歷史性研究",c:"系統性收集評估過去事件，以了解現在預測未來"},
+{t:"批判理論",c:"透過批判與反思促進解放，應用行動研究螺旋的方法"},
+{t:"資料飽和",c:"資料分析達穩定不再歸納出新類別，質性研究停止收案的依據"},
+{t:"三角交叉法",c:"Triangulation，合併兩種或以上研究法增加可信度"},
+{t:"詮釋循環",c:"從整體→部分→整體不斷來回的詮釋理解過程"},
+{t:"胡塞爾",c:"超驗現象學創始者，強調「回到事物本身」不受成見影響"},
+]},
+{id:10,title:"個案報告與個案研究",color:"#06b6d4",items:[
+{t:"個案報告",c:"記錄以個案為中心之整體護理，呈現有效護理處置的過程"},
+{t:"個案研究",c:"通過一種或多種方法對人、事件或機構進行整體探討"},
+{t:"前驅研究",c:"Pilot Research，個案研究常作為大型研究計畫的參考基礎"},
+{t:"居家訪視",c:"個案研究資料收集方式之一，深入自然情境收集資料"},
+{t:"驗證理論",c:"個案研究的目的之一：驗證發展中的護理概念或理論架構"},
+{t:"批判性思考",c:"個案研究對護理教育的重要貢獻：訓練學生批判分析能力"},
+{t:"增進護理新知",c:"個案報告與個案研究的四大目的之一"},
+{t:"特殊護理經驗",c:"個案報告珍貴之處：使特殊護理經驗得以分享及傳承"},
+{t:"護理教學工具",c:"個案研究對護理教育的重要功能"},
+{t:"真實性",c:"個案報告最珍貴的特質：資料的真實性"},
+]},
+{id:11,title:"研究工具之信度與效度",color:"#8b5cf6",items:[
+{t:"信度",c:"研究工具的一致性、穩定性及準確性三者的統稱"},
+{t:"效度",c:"測量工具能精準測量到所欲測量概念的程度"},
+{t:"再測信度",c:"Test-Retest，在不同時間重複測試應得到相同結果"},
+{t:"Cronbach's α",c:"測量量表內在一致性的指標，0.7-0.9為可接受範圍"},
+{t:"內容效度",c:"量表是否充分涵蓋所要測量概念，由專家審查判斷"},
+{t:"建構效度",c:"量表是否真正測量到目標抽象構念的程度"},
+{t:"預估效度",c:"量表得分是否能預測個案未來狀態的效標關聯效度"},
+{t:"Kappa係數",c:"類別型數據信度檢定指標，>0.75為極佳信度"},
+{t:"ICC",c:"Intra-class Correlation，內在等級相關，較嚴謹的信度指標"},
+{t:"折半信度",c:"將量表題目奇偶分為兩半，比較兩部分相關程度的信度"},
+]},
+{id:12,title:"資料收集方法與處理技巧",color:"#f97316",items:[
+{t:"自我陳述",c:"Self-Report，研究對象自行提供主觀感受的資料收集方式"},
+{t:"他人陳述",c:"研究對象無法親自提供時，由親友代為提供資料的方式"},
+{t:"觀察法",c:"由第三者觀察研究對象一段時間的資料收集方式"},
+{t:"儀器測量",c:"使用儀器設備測量生理指標，結果較為客觀精準"},
+{t:"訪員偏差",c:"訪員的先入為主影響資料品質的誤差來源"},
+{t:"直欄（Column）",c:"資料表格中相同意義的資料值，稱為變項"},
+{t:"橫列（Row）",c:"資料表格中來自某一位研究對象的所有資料"},
+{t:"連續型數據",c:"理論上可有小數點的數量型數據，如血壓、身高"},
+{t:"離散型數據",c:"只能為整數的數量型數據，如病床數、小孩數目"},
+{t:"類別型數據",c:"性質是分類的數據，如性別（Nominal）或嚴重度（Ordinal）"},
+]},
+{id:13,title:"資料統計分析與方法",color:"#f5c842",items:[
+{t:"p值",c:"虛無假設為真時，觀察到此樣本或更極端結果的機率"},
+{t:"t檢定",c:"比較兩個群體平均值是否有差異的統計方法"},
+{t:"ANOVA",c:"變異數分析，比較三組或三組以上平均值的統計方法"},
+{t:"卡方檢定",c:"Chi-square，檢定類別型數據關聯性的統計方法"},
+{t:"相關係數",c:"表示兩變項相關程度的指標，介於-1到+1之間"},
+{t:"ANCOVA",c:"共變數分析，控制共變數影響後比較組間差異"},
+{t:"成對t檢定",c:"Paired t-test，比較同一組前後測差異的統計方法"},
+{t:"中位數",c:"Median，排序後中間的點，不受極端值影響"},
+{t:"標準差",c:"SD，描述一組數據的分散幅度與變異程度"},
+{t:"線性迴歸",c:"由自變項的數值預估依變項的統計方法"},
+]},
+{id:14,title:"撰寫研究計畫書",color:"#10b981",items:[
+{t:"研究計畫書",c:"Research Proposal，為學習、爭取經費、爭取IRB審查的文件"},
+{t:"IRB審查",c:"人體試驗委員會審核研究計畫書，評值人權保護措施"},
+{t:"善加包裝",c:"展現研究創新性、印刷精美、符合申請機構發展方向"},
+{t:"核心內容",c:"研究目的、文獻查證、研究方法、統計分析、倫理考量"},
+{t:"概念一致性",c:"計畫書中核心概念用詞保持一致，以邏輯方式串連"},
+{t:"倫理考量",c:"計畫書必須說明對研究對象的人權保護措施"},
+{t:"附錄",c:"過於繁瑣的資料（問卷、設備說明）的放置位置"},
+{t:"創新性",c:"提升研究計畫書競爭力的關鍵要素之一"},
+{t:"五年文獻",c:"計畫書中文獻查證以近五年與實證研究成果為佳"},
+{t:"前驅研究",c:"建議在正式收案前先進行，評估計畫書可行性"},
+]},
+{id:15,title:"判讀研究報告",color:"#e55252",items:[
+{t:"摘要",c:"全篇研究報告的縮影，麻雀雖小五臟俱全"},
+{t:"前言",c:"Introduction，劃定研究領域、引起動機、說明背景"},
+{t:"文獻查證",c:"研究的基礎，需切題、有組織邏輯性和系統性"},
+{t:"研究結果",c:"呈現客觀數據，不摻雜情感，不使用「竟然」等詞"},
+{t:"討論",c:"闡明研究結果意義，說明研究者對資料的解讀"},
+{t:"研究限制",c:"研究者現有能力做不到但可使研究更完善的部分"},
+{t:"結論",c:"研究者針對研究發現的事實所作之個人判斷"},
+{t:"建議",c:"針對實務、教育、研究提出的具體改善方向"},
+{t:"250英文字",c:"APA建議摘要的字數上限"},
+{t:"不超過15字",c:"研究題目的建議長度上限（英文字母少於100個）"},
+]},
+{id:16,title:"實證健康照護",color:"#8b5cf6",items:[
+{t:"EBHC",c:"Evidenced-based Health Care，實證健康照護"},
+{t:"PICO",c:"P病人+I介入+C比較+O結果，形成可回答臨床問題的架構"},
+{t:"5A步驟",c:"Ask-Acquire-Appraise-Apply-Audit，執行EBHC的步驟"},
+{t:"整合分析",c:"Meta-analysis，系統性整合多個研究結果的最高等級證據"},
+{t:"系統性回顧",c:"Systematic Review，針對特定主題系統性評析文獻的方法"},
+{t:"RCT",c:"隨機對照試驗，具高等級實證的研究設計"},
+{t:"Cochrane",c:"全球考科藍合作組織，提供系統性文獻回顧的實證資源"},
+{t:"Archie Cochrane",c:"首次提出醫療行為需有嚴謹實證依據的學者"},
+{t:"Gordon Guyatt",c:"1992年正式提出EBM名詞的McMaster大學學者"},
+{t:"Level 1",c:"系統性文獻回顧/整合分析在OCEBM證據等級中的最高等級"},
+]},
+];
+
+// ═══════════════════════════════════════════════
+// MCQ DATA (4-OPTION QUESTIONS)
+// ═══════════════════════════════════════════════
+const MCQ_UNITS=[
+{id:1,title:"護理研究概論",color:"#e55252",
+qs:[
+{q:"護理研究的最主要目標是什麼？",opts:["增加護理師的薪資與福利","追求實證基礎以提升整體健康照護品質","建立護理行政管理的效率","減少醫院的醫療糾紛"],ans:1,exp:"護理研究的目的在追求實證基礎，以提升對病人、家屬、健康照護者及整個健康照護系統之照護品質。"},
+{q:"依 Best（1981），下列哪項「不屬於」研究的特性？",opts:["研究需力求客觀與合理","研究結論應消弭個人偏見","依研究者主觀偏好選擇收集資料方式","研究需運用專門知識與技術"],ans:2,exp:"研究程序需力求客觀、合理，應消弭個人偏見；依研究者主觀偏好選擇方式違背研究客觀原則。"},
+{q:"護理研究的倫理三大原則中，「自主原則」的核心意義是？",opts:["維護受試者最大福祉，不得欺瞞","尊重受試者的自我選擇與隨時退出研究之權利","對所有參與對象給予公平對待","研究者應有勇氣公開發表研究成果"],ans:1,exp:"自主原則指護理師執行研究時應尊重並維護受試者的自主、自我選擇及隨時退出研究之權利。"},
+{q:"臺灣護理研究發展的「研究沙漠期」是指哪個時期？",opts:["1982年至今","1960～1981年","1960年之前","2000年之後"],ans:2,exp:"1960年之前屬發展前期，以學徒式教育為主，護理研究發表者極為有限，故稱研究沙漠期。"},
+{q:"研究樣本的「避免傷害之權利」涵蓋哪些層面？",opts:["只涉及生理傷害","只涉及心理傷害","涵蓋生理、情緒、經濟與社會關係等層面","只涉及隱私權的保護"],ans:2,exp:"傷害危險包括樣本暴露於日常生活之外，對其身體、情緒、經濟與社會關係均可能產生之損傷。"},
+]},
+{id:2,title:"研究問題與假設",color:"#f59e0b",
+qs:[
+{q:"「研究的複製」最主要的目的是什麼？",opts:["節省研究者的時間與成本","在不同條件下驗證是否能得到新的有意義的答案","確認所有研究結果都相同","替代文獻查證的步驟"],ans:1,exp:"研究複製假設某研究的結果在不同地方可能不同，可從新的研究中得到新的且有意義的答案。"},
+{q:"「虛無假設（H₀）」的正確意涵是？",opts:["研究者期望的結果","假設變項間無差別、無影響或無差異","研究者必須接受的假設","只適用於質性研究的統計方法"],ans:1,exp:"虛無假設假設變項間都無差別、無影響或無差異，對立假設正好相反。"},
+{q:"研究目的的書寫必須包含哪些要素？",opts:["只需包含研究對象","研究對象、研究變項、動詞","研究者姓名、研究日期、研究地點","統計方法、樣本數、研究期限"],ans:1,exp:"研究目的以肯定句形式呈現，必須包含：研究對象、研究變項，以及動詞（探究/了解/比較）。"},
+{q:"下列哪一個研究問題屬於「相關性研究問題」？",opts:["慢性思覺失調症患者主觀幸福感為何？","社會支持與患者主觀幸福感的相關性為何？","改良式衛教是否能改善術前焦慮？","探討護理師的職場壓力現況"],ans:1,exp:"相關性研究問題包含兩個變項，目的在探討變項間的關係；社會支持與主觀幸福感是兩個明確變項的相關探討。"},
+{q:"「方向假設」相較於「零假設」的優點是？",opts:["方向假設更容易通過假設檢定","容許更具說服力的推論，也更具統計意義","兩者完全相同，只是名稱不同","零假設更適合用於探索性研究"],ans:1,exp:"方向假設明確指出預測關係的方向，比零假設更具說服力，也更有統計上的意義。"},
+]},
+{id:3,title:"文獻查證",color:"#10b981",
+qs:[
+{q:"文獻查證的「拼圖概念」最正確的意涵是？",opts:["文獻查證需將所有文章一一拼湊排列","他人研究已對現象有一定程度了解，研究者需找出可接續完成的片段","文獻越多越好","文獻查證需要團隊合作"],ans:1,exp:"他人的研究如同已拼好部分的拼圖，文獻查證讓研究者了解已完成的部分，並找出可接續探索的方向。"},
+{q:"文獻查證的邏輯運算元「AND」的功能是？",opts:["擴大搜尋範圍，增加文獻篇數","縮小範圍，找出同時包含兩個關鍵詞的文獻","排除特定主題","合併多個資料庫"],ans:1,exp:"AND用於關鍵詞交集，結果文獻需同時包含所有關鍵詞，可縮小搜尋範圍，找到更精確的文獻。"},
+{q:"下列何者為「第一手資料（Primary Source）」？",opts:["回顧性文獻報告","引述他人研究結果的文章","研究者本身所寫的原始研究報告","教科書中對研究主題的介紹"],ans:2,exp:"第一手資料是研究者本身所寫的研究報告，多出現在以研究性文章為主的期刊中，引用時以採用第一手資料為佳。"},
+{q:"下列哪本「不屬於」臺灣本土護理期刊？",opts:["護理雜誌","長庚護理","The Journal of Nursing Research","Journal of Advanced Nursing"],ans:3,exp:"Journal of Advanced Nursing 是西方英文期刊，非臺灣本土護理期刊。"},
+{q:"文獻查證何時特別需要「批判性態度」？",opts:["只使用支持自己立場的資料時","全面評論各研究結果的異同，不偏頗一方","只需列出文獻清單即可","只查近一年文獻"],ans:1,exp:"文獻查證需以批判性態度評論、比較各文獻，同時呈現正反兩面不同觀點的研究結果。"},
+]},
+{id:4,title:"名詞界定與研究架構",color:"#a78bfa",
+qs:[
+{q:"「以 Taylor 顯著焦慮量表測量所得分數作為焦慮程度指標」屬於哪種定義？",opts:["概念性定義","操作性定義","統計性定義","功能性定義"],ans:1,exp:"操作性定義是將概念具體化，使其符合研究情境且可供測量；量表名稱及評分方式即是焦慮的操作性定義。"},
+{q:"研究架構的功能「不包括」下列哪一項？",opts:["統整文獻知識","呈現研究概念間的關係","直接決定研究結果是否顯著","作為研究結果統整分析依據"],ans:2,exp:"研究架構四大功能：統整文獻知識、呈現概念關係、呈現研究設計、作為結果統整分析依據；不能決定結果顯著與否。"},
+{q:"研究架構圖中「箭頭」的功能是？",opts:["代表概念本身","標明概念間的影響方向與關係","代表研究的統計方法","表示文獻引用的出處"],ans:1,exp:"研究架構圖以「框框」置入概念，以「箭頭」表示概念間的關係，箭頭的指向標明影響方向。"},
+{q:"操作性定義的最重要特性是？",opts:["引述理論或學者對概念的解釋","具體化，使概念符合研究情境且可供測量","需與概念性定義完全相同","提供概念的哲學背景說明"],ans:1,exp:"操作性定義是將概念性定義進一步具體化，使概念符合研究情境且可供測量，是將抽象概念轉為可測量變項的關鍵步驟。"},
+{q:"進行名詞界定時，最佳做法為何？",opts:["只呈現操作性定義即可","只呈現概念性定義即可","同時呈現概念性定義與操作性定義","依研究者習慣選擇其中一種"],ans:2,exp:"研究者最好能同時呈現概念性定義與操作性定義，前者說明理論基礎，後者說明如何在研究中測量。"},
+]},
+{id:5,title:"研究取樣",color:"#2dd4bf",
+qs:[
+{q:"「可及母群體」與「目標母群體」的關係為何？",opts:["兩者完全相同","可及母群體是目標母群體的子集合","目標母群體是可及母群體的子集合","兩者完全不相關"],ans:1,exp:"可及母群體是目標母群體中的一部分，是研究者可以取得的研究對象之集合體。"},
+{q:"「系統隨機取樣（等距取樣）」需特別注意什麼？",opts:["樣本數不能超過100","間隔數不可與母群體的變異週期相同，否則產生嚴重偏差","只能用於質性研究","不需要建立取樣架構"],ans:1,exp:"系統隨機取樣最重要的關鍵是間隔數不可與母群體的變異情形（週期）一致，否則會產生嚴重錯誤或偏差。"},
+{q:"「滾雪球取樣」最適合用於哪種情況？",opts:["母群體同質性高的大規模調查","樣本相當特殊、不易取得，如藥物成癮者","需要具代表性樣本的全國性調查","有完整取樣架構的系統性研究"],ans:1,exp:"滾雪球取樣通常用於樣本相當特殊、不易取得時，如藥物成癮者、性工作者、罕見疾病病人等。"},
+{q:"研究者設定取樣標準，主要目的是？",opts:["為了讓研究看起來更嚴謹","控制外來變項，使樣本盡量代表母群體","增加研究樣本數","符合人體試驗委員會的規定"],ans:1,exp:"取樣標準目的是盡可能對外來變項加以控制，使樣本具有代表性，研究發現才能推論至母群體。"},
+{q:"關於「樣本數」，下列陳述何者正確？",opts:["樣本數越大，代表性一定越高","樣本數是最重要考量，遠比代表性重要","代表性遠比樣本數目重要，且每項研究至少需30個樣本","只要使用隨機取樣，樣本數多少無關緊要"],ans:2,exp:"樣本數大並不一定具有代表性，研究樣本之代表性遠比樣本數目重要；一般每項研究至少要有30個樣本以上。"},
+]},
+{id:6,title:"研究設計",color:"#818cf8",
+qs:[
+{q:"護理研究最常見的資料收集方法，下列何者「不包括」？",opts:["問卷調查法","訪談","動物實驗","儀器測量法"],ans:2,exp:"護理研究最常使用問卷調查法、訪談、觀察法、儀器測量法及線上表單；動物實驗不屬其常用方式。"},
+{q:"護理研究的場所多選擇「非實驗室內（自然情境）」的原因是？",opts:["費用較低","護理研究對象是人類，探究人類在自然情境中的現象","結果更精準","實驗室設備取得不易"],ans:1,exp:"護理研究的對象是人類，探究的是人類在自然情境中的現象，所以多數護理研究選擇在非實驗室內進行。"},
+{q:"「前驅研究（Pilot Research）」在研究設計中的功能是？",opts:["正式收集所有研究資料","評估研究的可行性，預測困難並在正式研究前修正設計","決定最終的研究題目","替代正式研究的進行"],ans:1,exp:"前驅研究在正式資料收集前先進行，藉此了解有何尚未周延之處，若可及時修正，有助於避免正式研究中造成難以彌補的缺憾。"},
+{q:"「探索性研究設計」最典型的代表是？",opts:["隨機對照試驗（RCT）","質性研究","問卷調查研究","整合分析"],ans:1,exp:"探索性研究設計當研究者對研究現象不熟悉時使用，以訪談、參與性觀察等方法進行；質性研究是典型的探索性研究設計。"},
+{q:"若研究設計中有研究助理協助收集資料，應如何處理？",opts:["不需特別說明","應描述其專業背景、與研究的相關性及接受研究訓練的過程","只需在謝辭中提及","由助理自行決定收集方式"],ans:1,exp:"應描述研究助理的專業背景、與研究的相關性及接受研究訓練過程，以維持資料收集的一致性與內在效度。"},
+]},
+{id:7,title:"非實驗性研究設計",color:"#f97316",
+qs:[
+{q:"「病例對照研究」探討因果關係的方向是？",opts:["由因探果","由果探因（由現在的結果，追溯過去的原因）","同時測量原因和結果","不探討因果關係"],ans:1,exp:"病例對照研究針對目前存在的現象（果），探討是否與過去發生的因素（因）有相關，方向是由「果」追問「因」，屬回溯性設計。"},
+{q:"橫斷面研究設計最大的限制是？",opts:["無法進行統計分析","只能在同一時間點收集資料，無法判斷因果方向","樣本數必須非常大","只適用於護理教育研究"],ans:1,exp:"橫斷面研究設計雖然可以同時收集因與果的兩種資料，但僅能判斷兩者間的相關性，無法判斷何者為因、何者為果。"},
+{q:"「整合分析（Meta-analysis）」屬於哪種研究設計類型？",opts:["真實驗性研究設計","橫斷面研究設計","非傳統非實驗性研究設計（用於EBP）","縱貫面前瞻性研究"],ans:2,exp:"整合分析屬於非傳統研究設計，常用於實證實務（EBP），針對重要主題進行系統性文獻回顧並整合分析高等級證據。"},
+{q:"研究者想了解1998-2018年台灣民眾白內障就診率的變化，最適合採用哪種研究設計？",opts:["典型描述性研究設計","比較描述性研究設計","趨勢研究設計","病例對照研究設計"],ans:2,exp:"趨勢研究設計從同一母群體在不同時間點收集相同變項資料，分析其變動方向，由結果趨勢預測未來；追蹤多年就診率變化正是趨勢研究的典型應用。"},
+{q:"「比較描述性研究設計」與「典型描述性研究設計」的主要差異是？",opts:["前者有操縱變項","前者針對不同群體或時間點進行比較，後者只探討單一樣本","前者是量性研究，後者是質性研究","兩者完全相同"],ans:1,exp:"比較描述性研究設計針對不同研究對象進行比較（如病患家屬 vs 護理人員的壓力感受），典型描述性研究設計只針對單一樣本特性進行描述。"},
+]},
+{id:8,title:"實驗性研究設計",color:"#e879f9",
+qs:[
+{q:"真實驗性研究設計的三大要素是？",opts:["觀察、分析、推論","隨機化、操控、控制","描述、相關、因果","樣本、工具、統計"],ans:1,exp:"真實驗性研究設計的三大要素為：①樣本被「隨機」分配到不同組別；②自變項由研究者「操控」；③研究情境需受到某些程度的「控制」，三者缺一不可。"},
+{q:"「霍商效應（Hawthorne Effect）」是指？",opts:["研究對象因信賴實驗處置而產生預期效果","參與研究的人員因被觀察而刻意改變自身行為","研究者因愧疚而給予對照組額外補償","研究對象的得分趨近於平均數的現象"],ans:1,exp:"霍商效應是指參與研究的人員，為了因應研究目的而刻意關注研究情境，並改變自身的行為或態度，影響研究結果的真實性。"},
+{q:"「統計迴歸現象（Regression to the Mean）」的意義是？",opts:["統計結果必須達顯著水準","縱使沒有實驗處置，極佳者及極差者的得分也會逐漸趨向平均數","研究對象的資料必須進行迴歸分析","統計誤差越來越小的過程"],ans:1,exp:"統計迴歸現象：樣本之得分概況可能在過了一段時間後趨近於「團體平均數」，縱使沒有實驗處置，極佳者及極差者也會逐漸地趨向平均數。"},
+{q:"「雙盲（Double Blind）設計」的目的是？",opts:["讓所有參與者都了解研究目的","不告知相關人員被分到哪一組，避免因了解研究而引發行為改變效應","讓兩組都接受相同的介入措施","確保樣本數足夠代表母群體"],ans:1,exp:"雙盲設計不告知參與研究的相關人員（含工作人員及受試者）被分到哪一組，可避免因對研究的了解而引發興趣或好奇心，導致行為改變而影響研究結果的內在效度。"},
+{q:"「不隨機分配取樣之雙組前後測設計」相較於單組前後測設計的優點是？",opts:["不需要隨機分配即可建立因果關係","前測可監測兩組的同質性，且前測效應同時影響兩組，可排除前測效應干擾","樣本數更少","完全不受選擇偏差影響"],ans:1,exp:"不隨機分配雙組前後測設計的優點：前測資料可監測兩組同質性；且前測效應同時影響兩組，可排除前測效應干擾；比單組設計多一個對照組的比較。"},
+]},
+{id:9,title:"質性研究",color:"#f472b6",
+qs:[
+{q:"質性研究「資料飽和」的意義是？",opts:["收集到30人樣本","資料分析達統計顯著水準","資料以歸納方式分析已達穩定，不會歸納出新的類別","研究者主觀認為已收集足夠資料"],ans:2,exp:"資料飽和指資料以歸納的方式進行分析達穩定而不會歸納出新的類別，表示資料量已足夠；個案數目不是判斷樣本數是否足夠的標準。"},
+{q:"「紮根理論研究（Grounded Theory）」的核心特色是？",opts:["驗證既有理論是否成立","由所收集的資料中歸納孕育出新理論","描述人類生活經驗的主觀意義","了解特定文化群體的共享文化意義"],ans:1,exp:"紮根理論的核心是利用歸納方式，將所收集的資料發展為理論——理論是從資料中「長出來的」，而不是先有理論再找資料驗證。"},
+{q:"護理師想研究「糖尿病婦女在台灣文化中的疾病經驗與生活型態」，最適合採用哪種質性研究類型？",opts:["現象學研究","紮根理論研究","民族誌研究","歷史性研究"],ans:2,exp:"民族誌研究的目的是了解不同人群的文化，研究者在個案熟悉的環境下進行系統化觀察，了解人們共享的文化意義；研究糖尿病婦女在台灣文化脈絡中的疾病經驗，正是民族誌的核心目的。"},
+{q:"質性研究可信度中，對應量性研究「外在效度」的指標是？",opts:["確實性（Credibility）——真實性","推廣性（Transferability）——運用性","信賴性（Dependability）——一致性","確認性（Confirmability）——中立性"],ans:1,exp:"推廣性（Transferability）對應量性研究的外在效度，指研究結果是否可適用於其他情境；達成方式是提供豐富、詳細的描述。"},
+{q:"「詮釋循環（Hermeneutic Circle）」的意義是？",opts:["每次收集資料都要從頭開始","從整體→部分→整體不斷來回，理解是循環性的過程","研究資料分析後需循環三次才算完整","每個訪談都需要重複進行三次"],ans:1,exp:"詮釋循環是理解的一個循環過程：從整體→部分→整體，不斷來回。就像理解一本書需要先讀一章，再回頭看全書意義，再深入章節。"},
+]},
+{id:10,title:"個案報告與個案研究",color:"#06b6d4",
+qs:[
+{q:"「個案研究」作為「前驅研究」的意義是？",opts:["個案研究可以直接取代大型研究","個案研究提供豐富知識資料供後續大型研究計畫之參考","個案研究比大型研究更有說服力","前驅研究的目的是減少研究經費"],ans:1,exp:"個案報告與個案研究常是前驅研究（pilot research），由個案研究所獲得的知識能提供豐富資料供後續大型研究計畫之參考。"},
+{q:"個案報告與個案研究的目的，下列何者「不屬於」？",opts:["增進護理新知","提供大型研究計畫參考","取代隨機對照試驗","驗證發展中的護理概念或理論架構"],ans:2,exp:"個案報告與個案研究的目的為：增進護理新知、提供大型研究計畫參考、驗證發展中的護理概念或理論架構；取代RCT不是其目的。"},
+{q:"個案報告珍貴之處在於？",opts:["樣本數最多","資料的真實性，使特殊護理經驗得以分享及傳承","統計方法最複雜","可推論至所有類似個案"],ans:1,exp:"個案報告與個案研究珍貴之處在於資料的真實性，藉由個案的呈現，特殊護理經驗得以分享及傳承，也促進護理教育與批判性思考的訓練。"},
+{q:"個案研究的資料收集方式，最符合其多元特色的是？",opts:["只使用問卷調查法","採用居家訪視、電話訪談、觀察等多種方法","只使用隨機抽樣","只使用統計分析資料庫"],ans:1,exp:"個案研究通過一種或多種方法進行整體探討，可採用居家訪視、電話訪談、觀察等多元資料收集方式。"},
+{q:"下列何者最能說明「個案報告」與「個案研究」的主要區別？",opts:["個案報告規模較大","個案研究以研究形式深入探討；個案報告著重呈現護理處置過程與經驗","兩者完全相同","個案研究不需要通過IRB審查"],ans:1,exp:"個案報告主要記錄護理處置過程與整體護理，建立護理經驗資料；個案研究則以研究形式，深入探討個人、團體或機構，目的在理解特殊問題。"},
+]},
+{id:11,title:"研究工具之信度與效度",color:"#8b5cf6",
+qs:[
+{q:"信度（Reliability）的三個必要條件是？",opts:["準確性、可行性、穩定性","一致性、穩定性、準確性","信效度、可信度、可靠性","敏感性、特異性、準確性"],ans:1,exp:"信度建立目的為測試研究工具的一致性、穩定性及準確性，三者缺一不可。"},
+{q:"「Cronbach's Alpha（α）= 0.85」代表量表具有？",opts:["需要修改，部分題目同質性受質疑","可以接受的內在一致性（α介於0.7-0.9之間）","各題目重複過多，需刪減","信度極佳，無須任何修改"],ans:1,exp:"Cronbach's α介於0.7～0.9之間，一般都認為可以接受；α<0.7表示問卷可能需要修改，α>0.9則各題目間可能重複過多。"},
+{q:"某壓瘡風險量表的得分可以預測病人日後是否發生壓瘡，此量表具有哪種效度？",opts:["內容效度","建構效度","預估效度（效標關聯效度）","表面效度"],ans:2,exp:"預估效度是效標關聯效度的一種，量表的目的在預測個案未來的狀態，如壓瘡風險量表得分與是否發生壓瘡的相關。"},
+{q:"類別型數據（Categorical Data）的信度檢定應使用哪個統計指標？",opts:["皮爾森相關係數（r）","Kappa係數","Cronbach's Alpha（α）","成對t檢定"],ans:1,exp:"處理類別型數據時，應以Kappa係數代替皮爾森相關係數作為信度指標；Kappa>0.75為極佳信度，0.4-0.75為可接受的良好信度。"},
+{q:"再測信度的兩次測試間隔時間，綜合文獻建議以多久為宜？",opts:["1-2天","1-4週（平均2週）","3-6個月","1年以上"],ans:1,exp:"再測信度兩次測試間隔太久會有外在因素介入，相隔太短又可能因受測者記憶而影響客觀性；綜合多數研究，以相隔1-4週、平均2週較為合理。"},
+]},
+{id:12,title:"資料收集方法",color:"#f97316",
+qs:[
+{q:"在研究資料表格中，「直欄（Column）」代表什麼？",opts:["來自某一位研究對象的所有資料","相同意義的資料值，稱為變項","資料的收集日期","研究對象的編號"],ans:1,exp:"研究者通常把相同意義的資料值以直欄列出，稱為變項，並給予每個變項一個名稱；橫列代表某位研究對象的資料。"},
+{q:"「自我陳述（Self-Report）」的最大限制是？",opts:["需要特殊儀器設備","只能用於量性研究","資料常具主觀性，且無法取得需測量的客觀數據（如血液生化值）","花費時間比訪談更長"],ans:2,exp:"自我陳述的資料常是主觀或心理感受；若需要客觀測量（如血液生化值），自我陳述無法提供此類資料，此為其主要限制。"},
+{q:"「雙盲（Double Blind）設計」在資料收集中的目的是？",opts:["讓所有研究人員都知道分組情況","不讓評估者或訪員知道研究對象接受哪一種處置，避免訪員偏差","要求研究對象自行填寫問卷","減少研究樣本數"],ans:1,exp:"雙盲設計中，不讓評估者或訪員知道研究對象接受哪一種藥物或護理方案，可以避免評估者或訪員偏差，提高資料的客觀性。"},
+{q:"「他人陳述（Report by Others）」最適合用於何種情況？",opts:["研究對象能清楚表達自身感受","研究對象為一般健康成人","研究對象為無意識者、幼兒或已辭世者等無法親自提供資料的情況","資料需要高度客觀測量"],ans:2,exp:"他人陳述適用於研究對象無法親自提供資料時，如已辭世者、無意識者、幼兒等，可由研究對象的親友代為提供所需資料。"},
+{q:"「資料收集方法」包含兩個層面，分別為？",opts:["研究目的與研究假設","收集變項的方法與收案方法（如何聯繫研究對象）","統計分析方法與文獻查證","研究設計與結果呈現"],ans:1,exp:"資料收集方法包括：①收集變項的方法（變項值如何產生）；②收案方法（如何聯繫研究對象）——兩者均影響研究品質。"},
+]},
+{id:13,title:"資料統計分析",color:"#10b981",
+qs:[
+{q:"若研究者想同時比較A、B、C三家醫院護理師的職業倦怠平均分數，應使用哪種統計方法？",opts:["進行三次雙樣本t檢定分別比較","卡方檢定","變異數分析（ANOVA）","皮爾森相關係數"],ans:2,exp:"比較三組以上的平均值應使用ANOVA，而非分別進行多次t檢定（多次t檢定會使錯誤機率累積至約15%）；ANOVA可維持整體顯著水準在5%以內。"},
+{q:"在比較A藥與B藥的治療效果時，發現兩組病人的年齡分佈有很大差異，應使用哪種統計方法來排除年齡的干擾？",opts:["成對t檢定","共變數分析（ANCOVA）","皮爾森相關係數","卡方檢定"],ans:1,exp:"ANCOVA的目的在比較兩組或多組差異時，控制共變數（如年齡）的影響，調整後再比較組間差異，相當於「排除年齡干擾後的真正比較」。"},
+{q:"迴歸分析中，若「b（斜率）= -3.42」代表什麼意義？",opts:["自變項增加3.42個單位，依變項不會改變","自變項每增加1個單位，依變項平均減少3.42個單位","自變項與依變項完全不相關","自變項每增加1個單位，依變項平均增加3.42個單位"],ans:1,exp:"斜率（b）代表當自變項（x）每增加一個單位時，依變項（y）會增加（b為正）或減少（b為負）多少個單位；b=-3.42表示依變項平均下降3.42個單位。"},
+{q:"若卡方檢定的電腦報表出現「50%的格子期望值小於5」的警告，應改用哪種方法？",opts:["改用ANOVA","改用成對t檢定","改用Fisher's Exact Test","改用皮爾森相關係數"],ans:2,exp:"卡方檢定的統計量只是近似值，樣本數過小時不準確；若超過50%的格子期望值小於5，應改用Fisher's Exact Test（費雪精確檢定）取代卡方檢定。"},
+{q:"「病床數」屬於哪種類型的數據？",opts:["連續型數據","離散型數據","有排序的類別型數據（Ordinal）","無排序的類別型數據（Nominal）"],ans:1,exp:"離散型數據只可能有整數值，不可能有小數點；病床數只能是整數（如50床，不能是50.5床），屬離散型數據。"},
+]},
+{id:14,title:"撰寫研究計畫書",color:"#f5c842",
+qs:[
+{q:"撰寫研究計畫書「爭取行政支持」目的，主要涉及哪個審查機構？",opts:["教育部課程審查委員會","人體試驗委員會（IRB）","衛生福利部","國科會研究補助審查委員會"],ans:1,exp:"IRB（人體試驗委員會）審慎評值研究計畫書，決定是否針對人權保護採取各項防範措施，以此作為是否核准研究在機構中執行之依據。"},
+{q:"研究計畫書撰寫時，「考慮審查者之認知背景」的主要建議是？",opts:["使用越多專業術語越能展現研究深度","專有名詞應具體說明，避免過量使用專業術語，文詞盡量簡單清晰","不需考慮審查者背景","計畫書越長越好"],ans:1,exp:"計畫書中專有名詞應具體說明，避免過量使用專業術語或名詞縮寫，文詞盡量簡單清晰，以利審查者理解研究內容。"},
+{q:"研究計畫書中文獻查證的建議重點是？",opts:["只需引用10年以上的經典文獻","以近五年與實證研究成果為佳","文獻越多越好，不限年代","只引用臺灣本土研究文獻"],ans:1,exp:"文獻查證有助於研究者界定研究問題的範圍；計畫書中文獻查證以近五年與實證研究成果為佳。"},
+{q:"研究計畫書的核心內容「不包括」下列哪一項？",opts:["研究目的","研究方法","研究者個人履歷表（CV）","倫理考量"],ans:2,exp:"研究計畫書的核心內容包括研究目的、文獻查證、研究方法、資料分析及倫理考量；研究者個人履歷雖有時需附上，但不是計畫書的核心內容。"},
+{q:"為使研究計畫書順利通過審核，研究者可採取哪些策略？",opts:["只申請熟悉的審查委員所在機構","諮詢相關人員、參閱已核准計畫書，使研究目的與申請機構的整體發展方向契合","盡量縮短計畫書篇幅","避免附上圖表以保持計畫書的簡潔性"],ans:1,exp:"研究者可諮詢申請機構受理研究計畫之相關人員，或參閱該機構曾核准的研究計畫書，使計畫目的能與申請機構的整體發展方向契合，提升計畫通過的成功率。"},
+]},
+{id:15,title:"判讀研究報告",color:"#818cf8",
+qs:[
+{q:"依APA規範，一篇研究報告摘要的理想字數為？",opts:["不超過100個英文字，1-2個關鍵字","不超過250個英文字，3-5個關鍵字","不超過500個英文字，10個關鍵字","字數無限制，越詳細越好"],ans:1,exp:"APA建議摘要不超過250個英文字，3-5個關鍵字；中文摘要通常以200-300字為宜，不超過500字；摘要需「麻雀雖小，五臟俱全」。"},
+{q:"一個優良的研究題目，應包含哪些必要元素？",opts:["研究者姓名、研究機構、研究日期","樣本群體、主要變項（自/依變項）、研究設計種類","研究假設、統計方法、預期結果","文獻引用、理論架構、研究目的"],ans:1,exp:"研究題目應包含研究的樣本群體及主要的變項（自變項與依變項），並應能看出研究設計的種類；最好不超過15個字。"},
+{q:"「前言（Introduction）」的五大要項「不包括」哪一項？",opts:["研究問題的背景","先前的相關研究現況","詳細的統計分析結果","預期成果（對護理理論/實務/教育的貢獻）"],ans:2,exp:"前言通常包含：研究問題背景、先前相關研究現況、問題所在（知識缺口）、如何解決問題的構想、預期成果；詳細的統計分析結果屬於結果部分。"},
+{q:"「方向假設（Directional Hypothesis）」相較於「零假設」的優點是？",opts:["方向假設比較容易通過假設檢定","方向假設容許更具說服力的推論，也更具統計上的意義","兩者完全相同","零假設更適合用於探索性研究"],ans:1,exp:"方向假設明確指出預測關係的方向（正相關或負相關），比零假設（只說有相關性但不說方向）更具說服力，也更有統計上的意義。"},
+{q:"判讀「研究限制（Research Limitation）」時，最重要的評估標準是？",opts:["研究限制是否足夠多","研究者是否忠實坦白地承認限制，說明其影響並提出改善方法","研究限制是否與研究結果相關","研究限制的長度是否適當"],ans:1,exp:"研究限制是指研究者現有能力做不到但可使研究更完善的部分；判讀時需考量研究者是否忠實坦白承認自己在研究上的限制，說明這些限制對研究的影響，以及日後可以改善的方法。"},
+]},
+{id:16,title:"實證健康照護",color:"#8b5cf6",
+qs:[
+{q:"「實證醫學（EBM）」的概念最早由哪位學者提出？",opts:["Gordon Guyatt","Archie Cochrane","Iain Chalmers","Florence Nightingale"],ans:1,exp:"實證醫學的概念首次由Archie Cochrane提出：所有醫療行為都應有嚴謹研究、實證及有效依據才能最佳利用醫療資源。"},
+{q:"PICO架構中，「C」代表什麼？",opts:["臨床（Clinical）","比較（Comparisons）——比較措施或指標","照護（Care）","結論（Conclusion）"],ans:1,exp:"PICO架構中C代表Comparisons（比較），清楚描述比較措施或指標，比較各種可能介入因素的特質及差異，通常為常規護理或無介入措施。"},
+{q:"在EBHC文獻搜尋時，哪種類型的資料庫應優先使用？",opts:["PubMed等一般醫學資料庫","Cochrane Library等實證資料庫","Google Scholar","只使用中文資料庫"],ans:1,exp:"文獻搜尋建議優先使用實證資料庫（如Cochrane Library、UpToDate），不需太多搜尋技巧，可快速支援臨床決策；一般醫學資料庫（如PubMed）則需要較多搜尋技巧，列為次之。"},
+{q:"「系統性文獻回顧（Systematic Review）/ 整合分析（Meta-analysis）」在OCEBM證據等級中屬於哪個等級？",opts:["Level 3（中等）","Level 5（最低）","Level 1（最高等級）","Level 2"],ans:2,exp:"系統性文獻回顧與整合分析整合了最多高品質研究的結果，在OCEBM證據等級中屬於Level 1（最高等級）。"},
+{q:"EBHC執行的「5A步驟」依正確順序排列是？",opts:["Acquire→Ask→Appraise→Apply→Audit","Ask→Acquire→Appraise→Apply→Audit","Apply→Ask→Acquire→Appraise→Audit","Appraise→Ask→Acquire→Apply→Audit"],ans:1,exp:"EBHC的5A步驟：①Ask（提問：形成PICO問題）→②Acquire（取得最佳證據）→③Appraise（評析文獻可信度）→④Apply（應用於臨床）→⑤Audit（稽核評值成效）。"},
+]},
+];
+
+// ═══════════════════════════════════════════════
+// JEOPARDY DATA
+// ═══════════════════════════════════════════════
+const JEOP_CATS=[
+{name:"研究基礎與倫理",color:"#e55252",qs:[
+{pts:100,clue:"護理研究的三大倫理原則",ans:"利益原則（維護受試者福祉）、自主原則（尊重自我選擇）、公平原則（公平對待）"},
+{pts:200,clue:"研究樣本的四大基本權利",ans:"避免傷害、充分認知、自決、隱私匿名保密之權利"},
+{pts:300,clue:"IRB的全稱及最低委員人數",ans:"Institutional Review Board（人體試驗委員會）；需有5位以上不同背景學術成員"},
+{pts:400,clue:"「前驅研究（Pilot Research）」的定義與功能",ans:"正式資料收集前先進行的小規模研究，評估可行性、預測困難，以便在正式研究前修正設計"},
+{pts:500,clue:"臺灣護理研究發展的三個時期名稱與時間",ans:"①發展前期（研究沙漠期，1960前）②發展期（1960-1981）③茁壯期（1982至今）"},
+]},
+{name:"研究問題與文獻",color:"#f59e0b",qs:[
+{pts:100,clue:"研究假設的書寫形式與性質",ans:"以句號呈現（而非問號）；是依據理論或文獻提出的暫時性答案"},
+{pts:200,clue:"「虛無假設（H₀）」與「對立假設（H₁）」的定義差異",ans:"H₀：假設變項間無差別/無影響；H₁：正好相反；研究者希望推翻H₀而接受H₁"},
+{pts:300,clue:"文獻查證的「拼圖概念」意涵",ans:"他人研究如同已拼好部分的拼圖，文獻查證讓研究者了解現有知識，找出可接續探索的知識缺口"},
+{pts:400,clue:"「第一手資料」與「第二手資料」的區別及使用建議",ans:"第一手：研究者本身所寫的原始研究報告（優先採用）；第二手：引述他人研究的回顧性文獻（供參考）"},
+{pts:500,clue:"文獻搜尋邏輯運算元AND、OR、NOT各自的功能",ans:"AND=關鍵詞交集（縮小範圍，精確）；OR=關鍵詞聯集（擴大範圍）；NOT=排除特定主題"},
+]},
+{name:"名詞界定與研究設計",color:"#10b981",qs:[
+{pts:100,clue:"「概念性定義」與「操作性定義」的核心差異",ans:"概念性定義：引述理論或學者對抽象概念的解釋；操作性定義：將概念具體化，使其可在研究情境中測量"},
+{pts:200,clue:"研究架構圖中「框框」與「箭頭」各自代表什麼",ans:"框框=概念/變項；箭頭=概念間的關係與影響方向（通常因在左、果在右）"},
+{pts:300,clue:"研究設計的六大基本成分（任舉四項）",ans:"研究對象、研究變項、資料收集方法、研究場所與情境、取樣方法、研究者角色職責"},
+{pts:400,clue:"自變項（IV）、依變項（DV）、干擾變項、中介變項的定義",ans:"IV=研究者主動操控的處置；DV=期望改變的結果；干擾=可辨識的外在因素；中介=介於IV與DV間無法辨識的內在因素"},
+{pts:500,clue:"「非實驗性研究設計」選用的五大理由",ans:"①人的特質無法操控/隨機分配②倫理考量不允許介入③執行實驗有實務困難④描述真實情境的需要⑤為實驗研究作準備"},
+]},
+{name:"研究取樣方法",color:"#2dd4bf",qs:[
+{pts:100,clue:"「可及母群體」與「目標母群體」的關係",ans:"可及母群體是目標母群體的子集合；是研究者實際可以接觸到的研究對象"},
+{pts:200,clue:"機率性取樣的四種方法",ans:"①簡單隨機取樣②分層隨機取樣③叢聚取樣（集群取樣）④系統隨機取樣（等距取樣）"},
+{pts:300,clue:"「系統隨機取樣」最需注意的陷阱",ans:"間隔數不可與母群體的變異週期相同，否則會產生嚴重偏差"},
+{pts:400,clue:"「滾雪球取樣」的定義與最適合的三類研究對象",ans:"透過人際網路引薦的非機率取樣；適合：藥物成癮者、非法移民、罕見疾病病人等特殊不易取得的對象"},
+{pts:500,clue:"關於樣本數的三項重要原則",ans:"①至少30人以上具代表性②每個條件至少10人以上③代表性遠比樣本數目重要（大樣本不一定具代表性）"},
+]},
+{name:"實驗性研究設計",color:"#818cf8",qs:[
+{pts:100,clue:"真實驗性研究設計三大要素，及類實驗性的定義",ans:"三要素：隨機化、操控、控制；類實驗性=三要素缺一或缺二（又稱準實驗性研究設計）"},
+{pts:200,clue:"霍商效應、寬慰效應、統計迴歸現象各自的定義",ans:"霍商=被觀察而改變行為；寬慰=信賴處置產生預期效果；統計迴歸=極佳/極差者趨向平均數"},
+{pts:300,clue:"「雙盲設計（Double Blind）」的目的與操作方式",ans:"不告知評估者與受試者分組情況，由第三方保管資料；目的：避免因了解研究而引發行為改變，影響內在效度"},
+{pts:400,clue:"「單組前後測設計」的優點與最大缺點",ans:"優點：提供前後測差異可印證介入效果，樣本需求較少；缺點：無對照組，前測可能產生練習效應"},
+{pts:500,clue:"影響外在效度（External Validity）的四大因素",ans:"①研究對象基本屬性限制越多越難推論②實驗室控制過於完善③樣本來源過於特定④設計前後測的研究難以推論至未接受前測的真實情境"},
+]},
+{name:"質性研究方法",color:"#f472b6",qs:[
+{pts:100,clue:"質性研究停止收案的依據——「資料飽和」的意義",ans:"資料以歸納方式分析達穩定，不會再歸納出新的類別；個案數目不是判斷標準，資料多寡才是關鍵"},
+{pts:200,clue:"「現象學研究」的核心目的與兩位代表哲學家",ans:"了解人類生活經驗的主觀意義與本質；代表：胡塞爾（回到事物本身）、海德格（存有，Being）"},
+{pts:300,clue:"「紮根理論」的核心特色，及「紮根」的比喻意義",ans:"由資料歸納孕育出新理論（而非驗證既有理論）；比喻：理論是從資料這片「土地」中長出來的"},
+{pts:400,clue:"「民族誌研究」與「歷史性研究」各自的核心目的",ans:"民族誌：了解特定文化群體共享意義（田野研究）；歷史性：系統性收集評估過去事件，以了解現在並預測未來"},
+{pts:500,clue:"質性研究可信度的四個評估指標，及各自的達成方式",ans:"確實性（成員確認/三角交叉法）、推廣性（豐富描述）、信賴性（詳細記錄過程/同儕檢視）、確認性（存而不論/研究者反思）"},
+]},
+{name:"信效度與統計分析",color:"#06b6d4",qs:[
+{pts:100,clue:"信度的三個必要條件，及信度與效度的先後關係",ans:"一致性、穩定性、準確性；信度是效度的先決條件（無信度則效度一定有問題）"},
+{pts:200,clue:"Cronbach's α值的三個判讀標準（<0.7、0.7-0.9、>0.9）",ans:"<0.7：部分題目同質性受質疑，需修改；0.7-0.9：可接受範圍；>0.9：題目間重複過多，可刪減部分題目"},
+{pts:300,clue:"統計分析中，為何比較三組以上平均值需用ANOVA而非多次t檢定？",ans:"多次t檢定會使整體錯誤機率累積（3次×5%≈15%）；ANOVA可維持整體顯著水準在5%以內，需達顯著後再進行事後比較"},
+{pts:400,clue:"「建構效度」的四種評估方法及各自的核心邏輯",ans:"因素分析（濃縮題目為因子）、對照組比較法（已知組別有顯著差異）、收斂法（相關構念量表高相關）、分歧法（不同構念量表低相關）"},
+{pts:500,clue:"「ANCOVA共變數分析」的使用前提與功能，並舉一個護理研究例子",ans:"前提：無交互作用；功能：控制共變數影響後比較組間差異；例：比較A藥vs.B藥效果時，先統計調整兩組年齡差異再比較"},
+]},
+{name:"計畫書撰寫與實證照護",color:"#8b5cf6",qs:[
+{pts:100,clue:"撰寫研究計畫書的三大目的",ans:"①增進研究者學習②爭取研究經費③爭取行政支持（IRB核准）"},
+{pts:200,clue:"PICO架構中四個字母各自代表的意義，並舉一個臨床例子",ans:"P=病人/問題、I=介入措施、C=比較措施、O=預期結果；例：安胎孕婦(P)接受音樂治療(I)vs.未接受(C)，降低焦慮(O)"},
+{pts:300,clue:"「研究結果（Results）」部分最常被批判的問題，及正確的書寫原則",ans:"不當：使用「竟然」等含價值判斷的詞語；正確：客觀陳述統計數據，不摻雜情感，需回應研究目的"},
+{pts:400,clue:"OCEBM（2011）五個證據等級由高到低，各對應的研究設計類型",ans:"Level1=系統性回顧/整合分析；Level2=RCT；Level3=非隨機對照/世代研究；Level4=病例對照/個案研究；Level5=專家意見/動物研究"},
+{pts:500,clue:"EBHC執行的5A步驟與台灣實證護理學會成立的年份",ans:"Ask→Acquire→Appraise→Apply→Audit；台灣實證護理學會成立於2011年"},
+]},
+];
+
+// ═══════════════════════════════════════════════
+// ESCAPE ROOM DATA (using MCQ_UNITS)
+// ═══════════════════════════════════════════════
+const ER_SCENES=[
+"🏥 病房護理研究室 — 研究主任指出今日有五道研究知識鎖待解開！",
+"📚 圖書文獻室 — 文獻資料庫當機，需要回答正確問題才能恢復！",
+"🔬 研究設計實驗室 — 研究設計圖紙散落，需要你的知識拼回完整圖像！",
+"📊 統計資料中心 — 資料遭加密，正確回答才能解鎖分析系統！",
+"🎓 護理學術殿堂 — 五道研究智慧之鎖，等待最強護理研究者解開！",
+];
+
+// ═══════════════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════════════
+const TC=['#2dd4bf','#f5c842','#f472b6','#818cf8','#f97316','#10b981'];
+const G={game:null,unit:0,mode:'group',tc:4,diff:12,timer:20};
+let TEAMS=[];
+let PEEK_SEC=3;
+let _activeTurn=-1;
+let _memInt=null;
+let _qInt=null;
+let _qAnswerShown=false;
+let _qBuzzed=false;
+let _qCurrent=null;
+let _jUsed={};
+let _jRevealedAns=false;
+let _jActiveTile=null;
+
+function buildTeams(){
+  const n=G.mode==='solo'?1:G.tc;
+  TEAMS=Array.from({length:n},(_,i)=>({name:G.mode==='solo'?'我的成績':`第${['一','二','三','四','五','六'][i]}組`,score:0,color:TC[i]}));
+}
+
+// ═══════════════════════════════════════════════
+// LOBBY INIT
+// ═══════════════════════════════════════════════
+function uLabel(id){return 'Unit '+String(id).padStart(2,'0');}
+
+function initLobby(){
+  const ug=document.getElementById('ugrid');
+  if(!ug)return;
+  ug.innerHTML=BINGO_UNITS.map((u,i)=>`<div class="ubtn ${i===0?'on':''}" style="--uc:${u.color}" onclick="pickUnit(${i})"><div class="un" style="color:${u.color}">${uLabel(u.id)}</div><div class="ut">${u.title}</div></div>`).join('');
+  const tc=document.getElementById('tcrow');
+  if(tc) tc.innerHTML=[2,3,4,5,6].map(n=>`<button class="tcbtn ${n===4?'on':''}" onclick="pickTC(${n})">${n}</button>`).join('');
+}
+
+function pickGame(g){
+  G.game=g;
+  document.getElementById('swrap').style.display='flex';
+  document.getElementById('stitle').textContent=({escape:'🔐 密室逃脫設定',bingo:'🎱 賓果遊戲設定',memory:'🃏 翻翻樂設定',quiz:'⚡ MCQ搶答設定',jeopardy:'📺 Jeopardy設定'})[g]||'⚙ 遊戲設定';
+  document.getElementById('mrow').style.display=(g==='bingo'||g==='jeopardy'||g==='escape')?'none':'';
+  document.getElementById('tcrow-wrap').style.display=(g==='escape')?'none':'';
+  document.getElementById('peekrow').style.display=g==='memory'?'':'none';
+  document.getElementById('trow').style.display=g==='quiz'?'':'none';
+  // Update unit grid — all games use 16 units
+  const ug=document.getElementById('ugrid');
+  const SRC=g==='quiz'||g==='escape'?MCQ_UNITS:BINGO_UNITS;
+  ug.innerHTML=SRC.map((u,i)=>`<div class="ubtn ${i===0?'on':''}" style="--uc:${u.color}" onclick="pickUnit(${i})"><div class="un" style="color:${u.color}">${uLabel(u.id)}</div><div class="ut">${u.title}</div></div>`).join('');
+  document.getElementById('swrap').scrollIntoView({behavior:'smooth'});
+}
+
+function pickUnit(i){G.unit=i;document.querySelectorAll('.ubtn').forEach((b,j)=>b.classList.toggle('on',j===i));}
+function pickMode(m){G.mode=m;document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('on',b.textContent.includes(m==='group'?'小組':'個人')));document.getElementById('tcrow-wrap').style.display=m==='solo'?'none':'';}
+function pickTC(n){G.tc=n;document.querySelectorAll('.tcbtn').forEach(b=>b.classList.toggle('on',+b.textContent===n));}
+function pickDiff(n){G.diff=n;}
+function pickTimer(n){G.timer=n;document.querySelectorAll('.dbtn[data-t]').forEach(b=>b.classList.toggle('on',+b.dataset.t===n));}
+function setPeek(n){PEEK_SEC=n;document.getElementById('peekVal').textContent=n+'秒';}
+
+function startGame(){
+  buildTeams();
+  if(G.game==='bingo') startBingo();
+  else if(G.game==='memory') startMem();
+  else if(G.game==='quiz') startQuiz();
+  else if(G.game==='jeopardy') startJeopardy();
+  else if(G.game==='escape') startEscape();
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN / UTILITY
+// ═══════════════════════════════════════════════
+function showSc(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));const el=document.getElementById(id);if(el)el.classList.add('on');}
+function goLobby(){clearInterval(_memInt);clearInterval(_qInt);showSc('s-lobby');}
+function restartGame(){closeWin();if(G.game==='bingo')startBingo();else if(G.game==='memory')startMem();else if(G.game==='quiz')startQuiz();else if(G.game==='jeopardy')startJeopardy();}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function setBadge(id,u){const el=document.getElementById(id);if(!el)return;el.textContent='Unit '+u.id+' '+u.title;el.style.color=u.color;el.style.borderColor=u.color;}
+let _tt;
+function toast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='toast'+(type?' '+type:'');el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),2200);}
+function showWin(e,t,s,sc){document.getElementById('wine').textContent=e;document.getElementById('wint').textContent=t;document.getElementById('wins').textContent=s;document.getElementById('winsc').textContent=sc;document.getElementById('wino').classList.add('on');}
+function closeWin(){document.getElementById('wino').classList.remove('on');}
+
+function renderSbar(id,active=-1){
+  const el=document.getElementById(id);if(!el)return;
+  const n=G.mode==='solo'?1:Math.min(G.tc,TEAMS.length);
+  el.innerHTML=TEAMS.slice(0,n).map((t,i)=>`<div class="tchip ${i===active?'hi':''}" style="--tc:${t.color};border-color:${t.color};background:${i===active?t.color+'30':'rgba(255,255,255,.04)'}"><span class="tn">${t.name}</span><span class="ts">${t.score}</span></div>`).join('');
+}
+function renderAllScoreBars(){['b-sbar','m-sbar','q-sbar','j-sbar'].forEach(id=>renderSbar(id,_activeTurn));renderRankSidebar();}
+function toggleRank(){document.getElementById('rsidebar').classList.toggle('open');}
+function renderRankSidebar(){
+  const body=document.getElementById('rsBody');if(!body)return;
+  const sorted=[...TEAMS].sort((a,b)=>b.score-a.score);
+  const max=Math.max(...sorted.map(t=>t.score),1);
+  const medals=['🥇','🥈','🥉'];
+  body.innerHTML='<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:6px">團體排名</div>'+
+    sorted.map((t,i)=>`<div class="rs-row"><div class="rs-bar" style="width:${Math.round(t.score/max*100)}%;background:${t.color}18"></div><span style="font-size:13px;position:relative">${medals[i]||''}</span><span class="rs-pos" style="color:${t.color}">${i+1}</span><span class="rs-name" style="color:${t.color}">${t.name}</span><span class="rs-pts" style="color:${t.color}">${t.score}</span></div>`).join('');
+}
+
+function confetti(){
+  const cv=document.getElementById('cc');const ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;cv.style.display='block';
+  const cols=['#f5c842','#2dd4bf','#f472b6','#818cf8','#f97316','#10b981'];
+  const P=Array.from({length:110},()=>({x:Math.random()*cv.width,y:-20,vx:(Math.random()-.5)*5,vy:Math.random()*4+2,col:cols[Math.floor(Math.random()*cols.length)],sz:Math.random()*9+4,rot:Math.random()*360,rs:(Math.random()-.5)*11,sh:Math.random()>.5}));
+  let fr;function run(){ctx.clearRect(0,0,cv.width,cv.height);let alive=false;P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.vy+=.08;if(p.y<cv.height+20)alive=true;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;if(p.sh){ctx.beginPath();ctx.arc(0,0,p.sz/2,0,Math.PI*2);ctx.fill();}else ctx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz);ctx.restore();});if(alive)fr=requestAnimationFrame(run);else{cv.style.display='none';cancelAnimationFrame(fr);}}
+  run();setTimeout(()=>{cv.style.display='none';cancelAnimationFrame(fr);},5000);
+}
+
+// ═══════════════════════════════════════════════
+// BINGO
+// ═══════════════════════════════════════════════
+function startBingo(){
+  const u=BINGO_UNITS[G.unit];
+  const b={pool:shuffle([...u.items]),called:[],calledIdx:0,cards:TEAMS.slice(0,G.tc).map(()=>genCard(u.items)),marked:TEAMS.slice(0,G.tc).map(()=>{const m=new Array(25).fill(false);m[12]=true;return m;})};
+  window._BINGO=b;
+  setBadge('b-ubadge',u);renderSbar('b-sbar');
+  document.getElementById('cnum').textContent='—';document.getElementById('cclue').textContent='按「抽題」開始';document.getElementById('cans').classList.remove('on');document.getElementById('ccount').textContent='已抽 0 題';document.getElementById('cnt').textContent='0';document.getElementById('citems').innerHTML='';document.getElementById('drawbtn').disabled=false;document.getElementById('ansbtn').style.display='none';
+  renderBCards();showSc('s-bingo');
+}
+function genCard(pool){const s=shuffle([...pool]).slice(0,24);s.splice(12,0,{t:'FREE★',c:''});return s;}
+function renderBCards(){
+  const b=window._BINGO;const n=Math.min(G.tc,TEAMS.length);
+  document.getElementById('ctabs').innerHTML=TEAMS.slice(0,n).map((t,i)=>`<button class="ctab ${i===0?'on':''}" onclick="switchBTab(${i})" style="${i===0?'border-color:'+t.color+';color:'+t.color+';background:'+t.color+'20':''}">${t.name}</button>`).join('');
+  document.getElementById('ccards').innerHTML=TEAMS.slice(0,n).map((t,i)=>`<div class="bwrap ${i===0?'on':''}" id="bw${i}"><div class="blbl">${t.name} — ${BINGO_UNITS[G.unit].title}</div><div class="bhrow">${['B','I','N','G','O'].map(l=>`<div class="bhr">${l}</div>`).join('')}</div><div class="bgrid" id="bg${i}">${b.cards[i].map((item,idx)=>`<div class="btile ${idx===12?'fr':''} ${b.marked[i][idx]?'mk':''}" onclick="markTile(${i},${idx})" style="${b.marked[i][idx]&&idx!==12?'background:'+t.color+'28;border-color:'+t.color+';color:'+t.color+';':''}">${item.t}</div>`).join('')}</div><button class="bbtn" id="bb${i}" style="border-color:${t.color};color:${t.color};background:${t.color}18" onclick="annBingo(${i})">🎉 宣告 BINGO！</button></div>`).join('');
+}
+function switchBTab(ti){document.querySelectorAll('.bwrap').forEach((el,i)=>el.classList.toggle('on',i===ti));document.querySelectorAll('.ctab').forEach((el,i)=>{const t=TEAMS[i];el.classList.toggle('on',i===ti);el.style.borderColor=i===ti?t.color:'rgba(255,255,255,.08)';el.style.color=i===ti?t.color:'';el.style.background=i===ti?t.color+'20':'';});}
+function draw(){const b=window._BINGO;if(b.calledIdx>=b.pool.length){toast('所有題目都抽完了！','');return;}const item=b.pool[b.calledIdx++];b.called.push(item);document.getElementById('cnum').textContent='#'+b.calledIdx;document.getElementById('cclue').textContent=item.c;document.getElementById('cans').textContent='答案：'+item.t;document.getElementById('cans').classList.remove('on');document.getElementById('ccount').textContent='已抽 '+b.calledIdx+' 題';document.getElementById('cnt').textContent=b.calledIdx;document.getElementById('ansbtn').style.display='';document.getElementById('ansbtn').textContent='👁 顯示答案';const li=document.createElement('div');li.className='citem';li.innerHTML=`<b>${item.t}</b>${item.c.slice(0,22)}…`;document.getElementById('citems').prepend(li);if(b.calledIdx>=b.pool.length)document.getElementById('drawbtn').disabled=true;}
+function toggleAns(){const el=document.getElementById('cans');const s=el.classList.toggle('on');document.getElementById('ansbtn').textContent=s?'🙈 隱藏答案':'👁 顯示答案';}
+function markTile(ti,idx){const b=window._BINGO;if(idx===12||!b.called.length)return;b.marked[ti][idx]=!b.marked[ti][idx];const tile=document.querySelector(`#bg${ti} .btile:nth-child(${idx+1})`);const t=TEAMS[ti];if(tile){tile.classList.toggle('mk',b.marked[ti][idx]);tile.style.background=b.marked[ti][idx]?t.color+'28':'';tile.style.borderColor=b.marked[ti][idx]?t.color:'';tile.style.color=b.marked[ti][idx]?t.color:'';}document.getElementById('bb'+ti).style.display=chkBingo(b.marked[ti])?'':'none';}
+function chkBingo(m){for(let r=0;r<5;r++)if([0,1,2,3,4].every(c=>m[r*5+c]))return true;for(let c=0;c<5;c++)if([0,1,2,3,4].every(r=>m[r*5+c]))return true;return[0,6,12,18,24].every(i=>m[i])||[4,8,12,16,20].every(i=>m[i]);}
+function annBingo(ti){TEAMS[ti].score+=50;renderAllScoreBars();document.getElementById('bb'+ti).style.display='none';showWin('🎉','BINGO！',TEAMS[ti].name+' 達成五連線！\n+50 分！','');confetti();}
+
+// ═══════════════════════════════════════════════
+// MEMORY
+// ═══════════════════════════════════════════════
+function startMem(){
+  clearInterval(_memInt);
+  const u=BINGO_UNITS[G.unit];
+  const pairs=Math.min(G.diff/2,u.items.length);
+  const cols=G.diff===12?4:G.diff===20?5:6;
+  const rows=G.diff===12?3:G.diff===20?4:5;
+  const sel=shuffle([...u.items]).slice(0,pairs);
+  const cards=shuffle(sel.flatMap(it=>[{type:'tr',text:it.t,match:it.t},{type:'df',text:it.c,match:it.t}]));
+  window._MEM={cards,cols,rows,pairs,flipped:[],matched:[],lock:false,turnIdx:0,start:Date.now(),peeking:false};
+  setBadge('m-ubadge',u);renderSbar('m-sbar',G.mode==='group'?0:-1);
+  document.getElementById('mmatch').textContent='0';document.getElementById('mrem').textContent=String(pairs);
+  document.getElementById('mtimewrap').style.display=G.mode==='solo'?'':'none';
+  document.getElementById('mturnwrap').style.display=G.mode==='group'?'':'none';
+  if(G.mode==='solo'){_memInt=setInterval(()=>{const el=Math.floor((Date.now()-window._MEM.start)/1000);document.getElementById('mtime').textContent=fmt(el);},1000);}
+  else updateMemTurn();
+  renderMemGrid(cols,rows,pairs);startPeek(pairs);showSc('s-memory');
+}
+function startPeek(pairs){const m=window._MEM;m.peeking=true;m.lock=true;document.querySelectorAll('#mgrid .mcard').forEach(c=>c.classList.add('fl'));document.getElementById('mpeekbar').style.display='';document.getElementById('mpeekfill').style.transition='none';document.getElementById('mpeekfill').style.width='100%';setTimeout(()=>{document.getElementById('mpeekfill').style.transition=`width ${PEEK_SEC}s linear`;document.getElementById('mpeekfill').style.width='0%';},80);setTimeout(()=>{document.querySelectorAll('#mgrid .mcard:not(.ok)').forEach(c=>c.classList.remove('fl'));m.peeking=false;m.lock=false;document.getElementById('mpeekbar').style.display='none';},PEEK_SEC*1000+100);}
+function renderMemGrid(cols,rows,pairs){const grid=document.getElementById('mgrid');const h=Math.max(68,Math.min(110,Math.floor((window.innerHeight-240)/rows)));grid.style.gridTemplateColumns=`repeat(${cols},1fr)`;grid.style.gridTemplateRows=`repeat(${rows},${h}px)`;grid.innerHTML=window._MEM.cards.map((c,i)=>`<div class="mcard" id="mc${i}" onclick="flipCard(${i})"><div class="minner"><div class="mface"><span class="mface-ico">🔬</span></div><div class="mback ${c.type}"><div class="mback-lbl">${c.type==='tr'?'術語':'定義'}</div><div class="mback-txt">${c.text}</div></div></div></div>`).join('');}
+function flipCard(i){const m=window._MEM;if(m.lock||m.peeking||m.flipped.includes(i)||m.matched.includes(i))return;m.flipped.push(i);document.getElementById('mc'+i).classList.add('fl');if(m.flipped.length===2){m.lock=true;checkPair();}}
+function checkPair(){const m=window._MEM;const[a,b]=m.flipped;const ca=m.cards[a],cb=m.cards[b];const ok=ca.match===cb.match&&ca.type!==cb.type;if(ok){m.matched.push(a,b);const col=G.mode==='group'?TEAMS[m.turnIdx].color:TC[0];[a,b].forEach(i=>{const el=document.getElementById('mc'+i);el.classList.add('ok');el.querySelector('.mback').style.borderColor=col;});if(G.mode==='group'){TEAMS[m.turnIdx].score+=10;_activeTurn=m.turnIdx;renderAllScoreBars();}m.flipped=[];m.lock=false;const done=m.matched.length/2,tot=m.pairs;document.getElementById('mmatch').textContent=done;document.getElementById('mrem').textContent=tot-done;toast('✓ 配對成功！+10分','ok');if(done===tot){clearInterval(_memInt);setTimeout(endMem,600);}}else{toast('✗ 不符合','ng');setTimeout(()=>{m.flipped.forEach(i=>document.getElementById('mc'+i).classList.remove('fl'));m.flipped=[];m.lock=false;if(G.mode==='group'){m.turnIdx=(m.turnIdx+1)%Math.min(G.tc,TEAMS.length);_activeTurn=m.turnIdx;updateMemTurn();renderAllScoreBars();}},1100);}}
+function updateMemTurn(){const t=TEAMS[window._MEM.turnIdx];document.getElementById('mturn').textContent=t.name;document.getElementById('mturn').style.color=t.color;}
+function endMem(){clearInterval(_memInt);if(G.mode==='solo'){const el=Math.floor((Date.now()-window._MEM.start)/1000);showWin('⏱','完成所有配對！','時間：'+fmt(el),fmt(el));}else{const w=TEAMS.reduce((a,b)=>a.score>b.score?a:b);showWin('🎊','翻翻樂結束！',w.name+' 獲最高分！',w.score+'分');}confetti();}
+
+// ═══════════════════════════════════════════════
+// MCQ QUIZ
+// ═══════════════════════════════════════════════
+function startQuiz(){
+  clearInterval(_qInt);
+  const u=MCQ_UNITS[G.unit];
+  window._QUIZ={pool:shuffle([...u.qs].map((q,i)=>({...q,orig_idx:i}))),idx:0};
+  setBadge('q-ubadge',u);_activeTurn=-1;renderSbar('q-sbar');
+  renderBuzzRow();loadQ();showSc('s-quiz');
+}
+function renderBuzzRow(){const n=Math.min(G.tc,TEAMS.length);document.getElementById('qbrow').innerHTML=TEAMS.slice(0,n).map((t,i)=>`<button class="qbbtn" style="color:${t.color};border-color:${t.color};background:${t.color}18" onclick="buzzIn(${i})">${t.name}<br><span style="font-size:11px;opacity:.7">搶答</span></button>`).join('');}
+function loadQ(){
+  clearInterval(_qInt);_qBuzzed=false;_qAnswerShown=false;
+  document.getElementById('qexpl').style.display='none';document.getElementById('arow').style.display='none';document.getElementById('qbrow').style.display='flex';document.getElementById('qrevbtn').style.display='none';
+  document.querySelectorAll('.qbbtn').forEach(b=>{b.disabled=false;b.style.opacity='1';});
+  document.querySelectorAll('.qopt').forEach(b=>{b.className='qopt';b.onclick=null;});
+  if(window._QUIZ.idx>=window._QUIZ.pool.length){endQuiz();return;}
+  const q=window._QUIZ.pool[window._QUIZ.idx];
+  _qCurrent=q;
+  document.getElementById('qnum').textContent=`Q ${window._QUIZ.idx+1} / ${window._QUIZ.pool.length}`;
+  document.getElementById('qunit').textContent=MCQ_UNITS[G.unit].title;
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<button class="qopt dis" id="qopt${i}" onclick=""><span class="qopt-letter">${['A','B','C','D'][i]}</span><span>${o}</span></button>`).join('');
+  document.getElementById('qtfill').style.transition='none';document.getElementById('qtfill').style.width='100%';
+  setTimeout(()=>{document.getElementById('qtfill').style.transition=`width ${G.timer}s linear`;document.getElementById('qtfill').style.width='0%';},50);
+  _qInt=setInterval(()=>{clearInterval(_qInt);timeUp();},G.timer*1000);
+}
+function buzzIn(ti){
+  if(_qBuzzed)return;_qBuzzed=true;clearInterval(_qInt);
+  document.getElementById('qtfill').style.transition='none';
+  document.querySelectorAll('.qbbtn').forEach((b,i)=>{b.disabled=true;b.style.opacity=i===ti?'1':'.3';});
+  _activeTurn=ti;toast('🔔 '+TEAMS[ti].name+' 搶答！','ok');
+  window._QUIZ.buzzedTeam=ti;
+  // Enable option selection for buzzed team
+  document.querySelectorAll('.qopt').forEach((b,i)=>{b.classList.remove('dis');b.onclick=()=>selectQOpt(ti,i);});
+  document.getElementById('qrevbtn').style.display='';
+}
+function selectQOpt(ti,chosen){
+  document.querySelectorAll('.qopt').forEach((b,i)=>{b.classList.add('dis');b.onclick=null;if(i===_qCurrent.ans)b.classList.add('ok');if(i===chosen&&i!==_qCurrent.ans)b.classList.add('ng');});
+  const ok=chosen===_qCurrent.ans;
+  if(ok){TEAMS[ti].score+=20;toast('✓ 答對！+20分','ok');}else{toast('✗ 答錯！','ng');}
+  renderAllScoreBars();
+  if(ok){document.getElementById('qexpl').style.display='block';document.getElementById('qexpl').textContent='✓ '+_qCurrent.exp;document.getElementById('arow').style.display='none';}
+  else{document.getElementById('qrevbtn').style.display='';document.getElementById('arow').style.display='none';}
+}
+function revealAns(){
+  _qAnswerShown=true;
+  document.getElementById('qrevbtn').style.display='none';
+  document.querySelectorAll('.qopt').forEach((b,i)=>{b.classList.add('dis');b.onclick=null;if(i===_qCurrent.ans)b.classList.add('ok');});
+  document.getElementById('qexpl').style.display='block';document.getElementById('qexpl').textContent='解析：'+_qCurrent.exp;
+  if(_qBuzzed&&window._QUIZ.buzzedTeam!==undefined&&!document.querySelector('.qopt.ok')){
+    const ti=window._QUIZ.buzzedTeam;document.getElementById('arow').style.display='flex';
+    document.getElementById('arow').innerHTML=`<div style="font-size:12px;color:var(--dim);width:100%;text-align:center;margin-bottom:4px">手動判斷 ${TEAMS[ti].name} 的答案：</div><button class="aw-ok" onclick="awardQ(${ti},true)">✓ 答對 +20</button><button class="aw-ng" onclick="awardQ(${ti},false)">✗ 答錯 −5</button>`;
+  }
+}
+function awardQ(ti,ok){if(ok)TEAMS[ti].score+=20;else TEAMS[ti].score=Math.max(0,TEAMS[ti].score-5);renderAllScoreBars();toast(ok?'✓ 答對 +20':'✗ 答錯 −5',ok?'ok':'ng');document.getElementById('arow').style.display='none';}
+function timeUp(){toast('⏰ 時間到！','');if(!_qAnswerShown)revealAns();}
+function nextQ(){window._QUIZ.idx++;loadQ();}
+function endQuiz(){const w=TEAMS.reduce((a,b)=>a.score>b.score?a:b);showWin('⚡','MCQ搶答結束！',w.name+' 以 '+w.score+' 分獲勝！',w.score+'分');confetti();}
+
+// ═══════════════════════════════════════════════
+// JEOPARDY
+// ═══════════════════════════════════════════════
+function startJeopardy(){
+  _jUsed={};_jActiveTile=null;buildTeams();
+  const u={id:'J',title:'護理研究八大主題',color:'#f5c842'};
+  setBadge('j-ubadge',u);renderSbar('j-sbar');
+  renderJBoard();showSc('s-jeopardy');
+}
+function renderJBoard(){
+  const board=document.getElementById('jboard');
+  board.style.gridTemplateColumns=`repeat(${JEOP_CATS.length},minmax(100px,1fr))`;
+  board.style.overflowX='auto';
+  let html=JEOP_CATS.map(c=>`<div class="jhead" style="border-bottom:3px solid ${c.color}">${c.name}</div>`).join('');
+  for(let qi=0;qi<5;qi++){html+=JEOP_CATS.map((c,ci)=>{const q=c.qs[qi];const key=`${ci}-${qi}`;return`<div class="jtile ${_jUsed[key]?'used':''}" onclick="openJTile(${ci},${qi})">${_jUsed[key]?'—':q.pts}</div>`;}).join('');}
+  board.innerHTML=html;
+}
+function openJTile(ci,qi){const key=`${ci}-${qi}`;if(_jUsed[key])return;const cat=JEOP_CATS[ci];const q=cat.qs[qi];_jActiveTile={ci,qi,key,pts:q.pts,ans:q.ans,clue:q.clue};_jRevealedAns=false;document.getElementById('jmodal').classList.add('on');document.getElementById('jm-pts').textContent=q.pts+'分';document.getElementById('jm-cat').textContent=cat.name;document.getElementById('jm-clue').textContent=q.clue;document.getElementById('jm-ans').textContent='答案：'+q.ans;document.getElementById('jm-ans').style.display='none';document.getElementById('jm-revbtn').style.display='';document.getElementById('jarow').style.display='none';renderJBuzzBtns();}
+function renderJBuzzBtns(){const n=Math.min(G.tc,TEAMS.length);document.getElementById('jm-arow').innerHTML=TEAMS.slice(0,n).map((t,i)=>`<button class="jbbtn" style="border-color:${t.color};color:${t.color}" onclick="jBuzz(${i})">${t.name} 答對 +${_jActiveTile.pts}</button><button class="jbbtn-ng" style="border-color:${t.color}" onclick="jBuzzNg(${i})">${t.name} 答錯 −${Math.floor(_jActiveTile.pts/2)}</button>`).join('');}
+function revealJAns(){_jRevealedAns=true;document.getElementById('jm-ans').style.display='block';document.getElementById('jm-revbtn').style.display='none';document.getElementById('jarow').style.display='block';}
+function jBuzz(ti){if(!_jRevealedAns){toast('請先公布答案','ng');return;}TEAMS[ti].score+=_jActiveTile.pts;renderAllScoreBars();_jUsed[_jActiveTile.key]=true;toast(TEAMS[ti].name+' +'+_jActiveTile.pts,'ok');closeJModal();}
+function jBuzzNg(ti){if(!_jRevealedAns){toast('請先公布答案','ng');return;}const ded=Math.floor(_jActiveTile.pts/2);TEAMS[ti].score=Math.max(0,TEAMS[ti].score-ded);renderAllScoreBars();toast(TEAMS[ti].name+' −'+ded,'ng');}
+function skipJTile(){_jUsed[_jActiveTile.key]=true;closeJModal();}
+function closeJModal(){document.getElementById('jmodal').classList.remove('on');renderJBoard();}
+
+// ═══════════════════════════════════════════════
+// ESCAPE ROOM
+// ═══════════════════════════════════════════════
+let _erState={unit:0,curr:0,score:0,startTime:null,timer:null,answered:false};
+let _erRanks=JSON.parse(localStorage.getItem('NR_ER_RANKS')||'[]');
+
+function erInitUnits(){
+  const sel=document.getElementById('er-unit-sel');
+  sel.innerHTML=MCQ_UNITS.map((u,i)=>`<option value="${i}">Unit ${u.id} — ${u.title}</option>`).join('');
+}
+function erStart(){
+  const uIdx=parseInt(document.getElementById('er-unit-sel').value);
+  const nick=document.getElementById('er-nick').value.trim()||'匿名研究員';
+  const team=document.getElementById('er-team').value.trim()||'未分組';
+  _erState={unit:uIdx,curr:0,score:0,startTime:Date.now(),timer:null,answered:false,nick,team};
+  clearInterval(_erState.timer);
+  _erState.timer=setInterval(erUpdateTimer,1000);
+  document.getElementById('er-setup-box').style.display='none';
+  document.getElementById('er-final').classList.remove('on');
+  document.getElementById('er-unittitle').textContent='Unit '+MCQ_UNITS[uIdx].id+' '+MCQ_UNITS[uIdx].title;
+  erRenderDots();erRenderRoom();erUpdateScore();
+  renderSbar('er-sbar');
+}
+function erUpdateTimer(){const s=Math.floor((Date.now()-_erState.startTime)/1000);document.getElementById('er-timer').textContent=fmt(s);}
+function erUpdateScore(){document.getElementById('er-score').textContent=_erState.score;document.getElementById('er-prog-fill').style.width=(_erState.curr/5*100)+'%';}
+function erRenderDots(){
+  const u=MCQ_UNITS[_erState.unit];
+  document.getElementById('er-lock-dots').innerHTML=Array.from({length:5},(_,i)=>`<div class="er-lock-dot ${i<_erState.curr?'open':''}" id="dot${i}">${i<_erState.curr?'🔓':'🔒'}</div>`).join('');
+}
+function erRenderRoom(){
+  const u=MCQ_UNITS[_erState.unit];
+  const qi=_erState.curr;
+  if(qi>=u.qs.length){erFinish();return;}
+  const q=u.qs[qi];
+  const sceneIdx=qi%ER_SCENES.length;
+  _erState.answered=false;
+  document.getElementById('er-room-box').style.display='block';
+  document.getElementById('er-room-box').innerHTML=`
+    <div class="er-badge">第 ${qi+1} 道鎖 / 共 5 道鎖</div>
+    <div class="er-title">${u.title} — 第${['一','二','三','四','五'][qi]}鎖</div>
+    <div class="er-scene"><h4>📍 場景</h4><p>${ER_SCENES[sceneIdx]}</p></div>
+    <div class="er-clue">🔎 <strong>研究線索：</strong>${q.q.substring(0,30)}…  需要你的護理研究知識！</div>
+    <div class="er-q">${q.q}</div>
+    <div class="er-opts">${q.opts.map((o,i)=>`<button class="er-opt" id="eopt${i}" onclick="erAnswer(${i})"><span class="er-opt-l">${['A','B','C','D'][i]}</span><span>${o}</span></button>`).join('')}</div>
+    <div class="er-fb" id="er-fb"></div>
+  `;
+}
+function erAnswer(chosen){
+  if(_erState.answered)return;_erState.answered=true;
+  const u=MCQ_UNITS[_erState.unit];const q=u.qs[_erState.curr];
+  const ok=chosen===q.ans;
+  for(let i=0;i<4;i++){const b=document.getElementById('eopt'+i);if(!b)continue;b.classList.add(i===q.ans?'ok':i===chosen?'ng':'');b.classList.add('er-opt-dis');}
+  const fb=document.getElementById('er-fb');
+  if(ok){_erState.score+=20;toast('🔓 解鎖成功！+20分','ok');fb.className='er-fb on ok';fb.innerHTML='<strong>✅ 解鎖成功！+20分</strong><br>'+q.exp;}
+  else{_erState.score+=5;toast('❌ 答錯，但學習積分+5','ng');fb.className='er-fb on ng';fb.innerHTML='<strong>⚠️ 學習挑戰 +5分</strong><br>正確答案：'+['A','B','C','D'][q.ans]+'選項 — '+q.opts[q.ans]+'<br>'+q.exp;}
+  document.getElementById('dot'+_erState.curr).className='er-lock-dot open';document.getElementById('dot'+_erState.curr).textContent='🔓';
+  erUpdateScore();
+  setTimeout(()=>{_erState.curr++;if(_erState.curr>=5)erFinish();else erRenderRoom();},2200);
+}
+function erFinish(){
+  clearInterval(_erState.timer);
+  const elapsed=Math.floor((Date.now()-_erState.startTime)/1000);
+  document.getElementById('er-room-box').style.display='none';
+  const final=document.getElementById('er-final');final.classList.add('on');
+  document.getElementById('er-final-text').innerHTML=`<strong>${_erState.nick}</strong>（${_erState.team}）<br>單元：${MCQ_UNITS[_erState.unit].title}<br>個人分數：<span style="color:var(--gold);font-size:18px;font-weight:900">${_erState.score}</span> 分　時間：${fmt(elapsed)}`;
+  const code=String(10000+_erState.score+Math.floor(elapsed/10)).slice(-5).split('');
+  document.getElementById('er-lockcode').innerHTML=code.map(x=>`<div style="background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);border-radius:9px;padding:12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:900;color:var(--gold)">${x}</div>`).join('');
+  // Save rank
+  _erRanks=_erRanks.filter(r=>!(r.nick===_erState.nick&&r.unit===_erState.unit));
+  _erRanks.push({nick:_erState.nick,team:_erState.team,unit:MCQ_UNITS[_erState.unit].title,score:_erState.score,time:elapsed});
+  _erRanks.sort((a,b)=>b.score-a.score);
+  localStorage.setItem('NR_ER_RANKS',JSON.stringify(_erRanks.slice(0,30)));
+  erRenderRanks();
+  confetti();
+}
+function erRenderRanks(){
+  const el=document.getElementById('er-rank-list');
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML=_erRanks.slice(0,8).map((r,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:7px;background:rgba(255,255,255,.04);margin-bottom:3px"><span style="font-size:13px">${medals[i]||''}</span><span style="font-size:11px;color:var(--dim);min-width:14px">${i+1}</span><span style="flex:1;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.nick}</span><span style="font-size:11px;color:var(--dim)">${r.unit.slice(0,4)}</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--gold)">${r.score}</span></div>`).join('')||'<div style="color:var(--dim);font-size:11px;padding:8px">尚無紀錄</div>';
+}
+function erReset(){
+  clearInterval(_erState.timer);
+  _erState={unit:0,curr:0,score:0,startTime:null,timer:null,answered:false};
+  document.getElementById('er-setup-box').style.display='block';
+  document.getElementById('er-final').classList.remove('on');
+  document.getElementById('er-room-box').style.display='none';
+  document.getElementById('er-prog-fill').style.width='0%';
+  document.getElementById('er-score').textContent='0';
+  document.getElementById('er-timer').textContent='00:00';
+  document.getElementById('er-unittitle').textContent='';
+  erRenderDots();erRenderRanks();
+}
+
+function startEscape(){
+  // From lobby settings, go to escape room with unit pre-selected
+  showSc('s-escape');
+  document.getElementById('er-unit-sel').value=String(G.unit);
+  erRenderRanks();
+  erRenderDots();
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  initLobby();
+  erInitUnits();
+  erRenderRanks();
+  erRenderDots();
+  // Initialize default teams
+  buildTeams();
+  document.getElementById('wino').addEventListener('click',e=>{if(e.target===e.currentTarget)closeWin();});
+  document.getElementById('jmodal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeJModal();});
+});
+</script>
+</body>
+</html>

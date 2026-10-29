@@ -1,0 +1,13 @@
+create table if not exists students (id uuid primary key default gen_random_uuid(), semester text, student_id text unique, name text, team_name text, nickname text, created_at timestamptz default now());
+create table if not exists sessions (id uuid primary key default gen_random_uuid(), session_name text, passcode text, active boolean default true, created_at timestamptz default now());
+create table if not exists participants (id uuid primary key default gen_random_uuid(), session_id uuid, student_id text, name text, nickname text, team_name text, created_at timestamptz default now());
+create table if not exists scores (id uuid primary key default gen_random_uuid(), session_id uuid, student_id text, nickname text, team_name text, game_name text, individual_score numeric default 0, team_score numeric default 0, created_at timestamptz default now());
+alter table students enable row level security; alter table sessions enable row level security; alter table participants enable row level security; alter table scores enable row level security;
+drop policy if exists "public read students" on students; create policy "public read students" on students for select to public using (true);
+drop policy if exists "public insert students" on students; create policy "public insert students" on students for insert to public with check (true);
+drop policy if exists "public read sessions" on sessions; create policy "public read sessions" on sessions for select to public using (true);
+drop policy if exists "public insert sessions" on sessions; create policy "public insert sessions" on sessions for insert to public with check (true);
+drop policy if exists "public read participants" on participants; create policy "public read participants" on participants for select to public using (true);
+drop policy if exists "public insert participants" on participants; create policy "public insert participants" on participants for insert to public with check (true);
+drop policy if exists "public read scores" on scores; create policy "public read scores" on scores for select to public using (true);
+drop policy if exists "public insert scores" on scores; create policy "public insert scores" on scores for insert to public with check (true);

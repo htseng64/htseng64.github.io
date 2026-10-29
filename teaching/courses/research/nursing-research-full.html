@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>護理研究 · 完整自主學習平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1724; --mid:#142234; --card:#182d45; --light:#1e3a56;
+  --gold:#c9a227; --gold2:#e8c455; --gold3:#faeab0;
+  --teal:#2fa89a; --teal2:#3ec9b9; --teal3:#b2f0e8;
+  --coral:#e05c5c; --coral2:#f5aaaa;
+  --green:#3ab87f; --green2:#a0f0cb;
+  --purple:#7b5ccc; --purple2:#c4b0f5;
+  --text:#e2eaf4; --dim:#8aaac8; --muted:#496680;
+  --border:#1e3558; --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sb{width:270px;min-height:100vh;background:var(--mid);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;transition:transform .3s}
+.sb-head{padding:24px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-brand{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--gold2);line-height:1.25}
+.sb-sub{font-size:.65rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-wrap{padding:12px 18px 14px;border-bottom:1px solid var(--border)}
+.prog-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:flex;justify-content:space-between;margin-bottom:7px}
+.prog-bar{height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal2));transition:width .5s ease}
+.nav-list{list-style:none;padding:8px 0}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;font-size:.78rem;color:var(--dim);border-left:3px solid transparent;transition:all .18s;line-height:1.3}
+.nav-item:hover{background:rgba(201,162,39,.07);color:var(--text)}
+.nav-item.active{background:rgba(201,162,39,.13);color:var(--gold2);border-left-color:var(--gold)}
+.nav-item.done .nav-num{background:var(--green);color:#fff}
+.nav-num{min-width:24px;height:24px;border-radius:50%;background:var(--light);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;transition:all .18s}
+.nav-item.active .nav-num{background:var(--gold);color:var(--bg)}
+
+/* MAIN */
+#main{margin-left:270px;flex:1;padding:52px 44px 36px;max-width:920px}
+.page{display:none;animation:fadeIn .35s ease}
+.page.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* UNIT HEADER */
+.u-tag{display:inline-block;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.3);padding:3px 10px;border-radius:99px;margin-bottom:10px}
+.u-title{font-family:'Noto Serif TC',serif;font-size:1.75rem;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:4px}
+.u-en{font-size:.8rem;color:var(--muted);font-style:italic;margin-bottom:20px}
+.u-divider{height:1px;background:var(--border);margin-bottom:24px}
+
+/* SECTION LABELS */
+.sec-lbl{font-size:.63rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal2);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CONTENT BLOCKS */
+.content-body{margin-bottom:32px}
+
+/* Definition box */
+.def-box{background:var(--card);border-left:4px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:14px 18px;margin:12px 0;font-size:.86rem;line-height:1.7;color:var(--dim)}
+.def-box .def-term{color:var(--gold2);font-weight:700;font-size:.9rem;display:block;margin-bottom:4px}
+.def-box .def-en{color:var(--muted);font-size:.75rem;font-style:italic}
+
+/* Highlight text */
+.hl-gold{color:var(--gold2);font-weight:700}
+.hl-teal{color:var(--teal2);font-weight:700}
+.hl-coral{color:var(--coral2);font-weight:700}
+.hl-green{color:var(--green2);font-weight:700}
+.hl-purple{color:var(--purple2);font-weight:700}
+
+/* Key term pill */
+.kp{display:inline-block;background:rgba(201,162,39,.15);color:var(--gold2);border:1px solid rgba(201,162,39,.3);padding:1px 7px;border-radius:4px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.kp-t{display:inline-block;background:rgba(47,168,154,.15);color:var(--teal2);border:1px solid rgba(47,168,154,.3);padding:1px 7px;border-radius:4px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.kp-r{display:inline-block;background:rgba(224,92,92,.15);color:var(--coral2);border:1px solid rgba(224,92,92,.3);padding:1px 7px;border-radius:4px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.kp-g{display:inline-block;background:rgba(58,184,127,.15);color:var(--green2);border:1px solid rgba(58,184,127,.3);padding:1px 7px;border-radius:4px;font-size:.78rem;font-weight:700;white-space:nowrap}
+
+/* Content paragraph */
+.cp{font-size:.86rem;line-height:1.8;color:var(--dim);margin-bottom:12px}
+.cp strong{color:var(--text);font-weight:600}
+
+/* Numbered list */
+.num-list{counter-reset:nc;list-style:none;margin:10px 0 16px;padding:0}
+.num-list li{display:flex;gap:12px;font-size:.84rem;line-height:1.7;color:var(--dim);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.num-list li:last-child{border-bottom:none}
+.num-list li::before{counter-increment:nc;content:counter(nc);min-width:24px;height:24px;background:var(--gold);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+
+/* Bullet list */
+.b-list{list-style:none;margin:8px 0 14px;padding:0}
+.b-list li{font-size:.84rem;line-height:1.7;color:var(--dim);padding:4px 0 4px 18px;position:relative}
+.b-list li::before{content:'▸';position:absolute;left:0;color:var(--teal2);font-size:.7rem;top:6px}
+.b-list li strong{color:var(--gold3)}
+
+/* 2-col grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+@media(max-width:700px){.g3{grid-template-columns:1fr}}
+
+/* Card */
+.c-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;font-size:.83rem;line-height:1.65;color:var(--dim);position:relative;overflow:hidden}
+.c-card .c-head{font-weight:700;color:var(--gold2);margin-bottom:6px;font-size:.86rem;display:flex;align-items:center;gap:6px}
+.c-card .c-head .ico{font-size:1.1rem}
+.c-card-t{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;font-size:.83rem;line-height:1.65;color:var(--dim)}
+.c-card-t .c-head{font-weight:700;color:var(--teal2);margin-bottom:6px;font-size:.86rem}
+.c-card-r{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;font-size:.83rem;line-height:1.65;color:var(--dim)}
+.c-card-r .c-head{font-weight:700;color:var(--coral2);margin-bottom:6px;font-size:.86rem}
+.c-card-g{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;font-size:.83rem;line-height:1.65;color:var(--dim)}
+.c-card-g .c-head{font-weight:700;color:var(--green2);margin-bottom:6px;font-size:.86rem}
+
+/* Accent top border */
+.accent-gold{border-top:3px solid var(--gold)}
+.accent-teal{border-top:3px solid var(--teal2)}
+.accent-coral{border-top:3px solid var(--coral2)}
+.accent-green{border-top:3px solid var(--green)}
+.accent-purple{border-top:3px solid var(--purple2)}
+
+/* Example box */
+.ex-box{background:rgba(47,168,154,.07);border:1px solid rgba(47,168,154,.25);border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:.82rem;line-height:1.7;color:#b0d9d3}
+.ex-box .ex-tag{font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal2);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ex-box .ex-tag::before{content:'📋';font-size:.85rem}
+
+/* Warning / important box */
+.imp-box{background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);border-radius:var(--r);padding:13px 16px;margin:14px 0;font-size:.83rem;line-height:1.7;color:var(--gold3)}
+.imp-box::before{content:'⭐ 重點提示　';font-weight:700;color:var(--gold2)}
+
+/* Comparison table */
+.cmp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.8rem}
+.cmp-table th{background:var(--light);color:var(--gold2);padding:9px 12px;text-align:left;font-weight:700;font-size:.78rem;letter-spacing:.5px}
+.cmp-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--dim);line-height:1.55}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table tr:hover td{background:rgba(255,255,255,.02)}
+.cmp-table .good{color:var(--green2)}
+.cmp-table .bad{color:var(--coral2)}
+
+/* Flow steps */
+.flow{display:flex;flex-wrap:wrap;gap:0;margin:14px 0;align-items:stretch}
+.flow-step{flex:1;min-width:100px;background:var(--card);border:1px solid var(--border);padding:12px 10px;text-align:center;font-size:.75rem;color:var(--dim);position:relative}
+.flow-step:not(:last-child)::after{content:'▶';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--gold);z-index:1;font-size:.8rem}
+.flow-step .fs-num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--bg);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.flow-step .fs-txt{color:var(--text);font-weight:600;font-size:.76rem;margin-bottom:3px}
+
+/* Subheading */
+.sh{font-size:.95rem;font-weight:700;color:var(--text);margin:18px 0 8px;padding-left:10px;border-left:3px solid var(--gold)}
+.sh2{font-size:.88rem;font-weight:700;color:var(--teal2);margin:14px 0 7px}
+
+/* QUIZ */
+.quiz-wrap{margin-top:4px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;transition:border-color .2s}
+.q-card.answered{border-color:rgba(47,168,154,.4)}
+.q-n{font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.q-txt{font-size:.91rem;font-weight:500;color:var(--text);line-height:1.65;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;background:var(--light);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.83rem;color:var(--dim);transition:all .18s;line-height:1.45}
+.opt:hover{border-color:var(--gold);color:var(--text);background:rgba(201,162,39,.07)}
+.opt.sel{border-color:var(--gold2);color:var(--gold3);background:rgba(201,162,39,.1)}
+.opt.ok{border-color:var(--green);color:var(--green2);background:rgba(58,184,127,.1);cursor:default;pointer-events:none}
+.opt.no{border-color:var(--coral);color:var(--coral2);background:rgba(224,92,92,.09);cursor:default;pointer-events:none}
+.opt.dis{cursor:default;pointer-events:none}
+.opt-l{min-width:22px;height:22px;border-radius:50%;background:var(--mid);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .18s}
+.opt.sel .opt-l{background:var(--gold);color:var(--bg)}
+.opt.ok .opt-l{background:var(--green);color:#fff}
+.opt.no .opt-l{background:var(--coral);color:#fff}
+.fb{display:none;margin-top:11px;padding:10px 13px;border-radius:8px;font-size:.78rem;line-height:1.55}
+.fb.show{display:block}
+.fb.ok{background:rgba(58,184,127,.1);color:var(--green2);border:1px solid rgba(58,184,127,.28)}
+.fb.no{background:rgba(224,92,92,.09);color:var(--coral2);border:1px solid rgba(224,92,92,.22)}
+.score-pnl{display:none;background:var(--card);border:1px solid var(--gold);border-radius:var(--r);padding:26px;text-align:center;margin-top:22px;animation:fadeIn .4s ease}
+.score-pnl.show{display:block}
+.sc-circle{width:86px;height:86px;border-radius:50%;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--gold2)}
+.sc-msg{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:5px}
+.sc-sub{font-size:.78rem;color:var(--dim);margin-bottom:18px}
+.btn-retry{background:var(--gold);color:var(--bg);border:none;border-radius:8px;padding:9px 26px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .18s}
+.btn-retry:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* HOMEPAGE */
+.home-hero{text-align:center;padding:40px 0 44px}
+.home-hero h1{font-family:'DM Serif Display',serif;font-size:2.5rem;color:var(--gold2);line-height:1.2;margin-bottom:10px}
+.home-hero p{font-size:.86rem;color:var(--dim);max-width:480px;margin:0 auto 30px;line-height:1.75}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.uc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.uc:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.uc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal2));transform:scaleX(0);transition:.2s;transform-origin:left}
+.uc:hover::after{transform:scaleX(1)}
+.uc-n{font-size:.63rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:7px}
+.uc-t{font-size:.82rem;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:5px}
+.uc-e{font-size:.68rem;color:var(--muted)}
+.uc-done{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--green);display:none;align-items:center;justify-content:center;font-size:.6rem;color:#fff}
+.uc.done .uc-done{display:flex}
+
+/* mobile */
+#mb-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 11px;cursor:pointer;color:var(--gold2);font-size:1rem}
+@media(max-width:820px){
+  #sb{transform:translateX(-100%)}
+  #sb.open{transform:translateX(0)}
+  #main{margin-left:0;padding:88px 18px 28px}
+  .mode-bar{left:0}
+  #mb-toggle{display:flex;align-items:center;justify-content:center}
+  #game-fab{display:flex!important}
+  .g2,.g3{grid-template-columns:1fr}
+  .flow{flex-direction:column}
+  .flow-step:not(:last-child)::after{display:none}
+}
+/* ── MODE TOGGLE ── */
+.mode-bar{display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(7,12,26,.97);border-bottom:1px solid rgba(201,162,39,.2);position:fixed;top:0;left:270px;right:0;z-index:95;backdrop-filter:blur(8px)}
+.mode-btn{padding:6px 18px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;letter-spacing:.5px}
+.mode-btn.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.mode-btn:hover:not(.on){border-color:var(--gold);color:var(--gold2)}
+/* ── WEEKLY VIEW ── */
+.wk-page{display:none;animation:fadeIn .35s ease}.wk-page.on{display:block}
+.wk-hero{background:linear-gradient(135deg,var(--card),var(--light));border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:22px;display:flex;gap:18px;align-items:flex-start}
+.wk-num{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--gold);line-height:1;min-width:72px;text-align:center}
+.wk-meta{}
+.wk-tag{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal2);margin-bottom:4px}
+.wk-title{font-family:'Noto Serif TC',serif;font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.wk-en{font-size:.75rem;color:var(--muted);font-style:italic;margin-bottom:8px}
+.wk-chips{display:flex;gap:6px;flex-wrap:wrap}
+.wk-chip{padding:3px 10px;border-radius:99px;font-size:.65rem;font-weight:700;border:1px solid}
+.comp-II{background:rgba(201,162,39,.1);border-color:rgba(201,162,39,.4);color:var(--gold2)}
+.comp-IV{background:rgba(47,168,154,.1);border-color:rgba(47,168,154,.4);color:var(--teal2)}
+.comp-VI{background:rgba(224,92,92,.1);border-color:rgba(224,92,92,.4);color:var(--coral2)}
+.comp-VII{background:rgba(58,184,127,.1);border-color:rgba(58,184,127,.4);color:var(--green2)}
+.comp-VIII{background:rgba(123,92,204,.1);border-color:rgba(123,92,204,.4);color:var(--purple2)}
+.wk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+@media(max-width:680px){.wk-grid{grid-template-columns:1fr}}
+.wk-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.wk-box-title{font-size:.63rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.wk-full{grid-column:1/-1}
+.rubric-table{width:100%;border-collapse:collapse;font-size:.77rem;margin-top:8px}
+.rubric-table th{padding:8px 10px;text-align:left;font-weight:700;font-size:.7rem;letter-spacing:.5px}
+.rubric-table td{padding:7px 10px;border-bottom:1px solid var(--border);line-height:1.55;vertical-align:top}
+.rubric-table tr:last-child td{border-bottom:none}
+.r-exc{background:rgba(58,184,127,.08);color:var(--green2)}.r-gd{background:rgba(47,168,154,.07);color:var(--teal2)}
+.r-ok{background:rgba(201,162,39,.07);color:var(--gold2)}.r-ng{background:rgba(224,92,92,.07);color:var(--coral2)}
+.wk-obj-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;background:rgba(201,162,39,.12);color:var(--gold2);border:1px solid rgba(201,162,39,.25);margin-right:4px;margin-bottom:3px}
+.wk-act-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;color:var(--dim);line-height:1.6}
+.wk-act-item:last-child{border-bottom:none}
+.wk-act-ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.wk-act-item strong{color:var(--text);font-weight:600}
+.wk-link-btn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:9px 20px;border-radius:8px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.3);color:var(--gold2);font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s}
+.wk-link-btn:hover{background:rgba(201,162,39,.22)}
+.wk-special{background:linear-gradient(135deg,rgba(224,92,92,.08),rgba(224,92,92,.03));border-color:rgba(224,92,92,.3)}
+.wk-special .wk-box-title{color:var(--coral2)}
+/* sidebar weeks */
+.nav-section{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 18px 4px;font-weight:700}
+.nav-item.wk-item .nav-num{background:var(--light);font-size:.65rem}
+.nav-item.wk-item.done .nav-num{background:var(--green);color:#fff}
+.nav-item.wk-item.exam-item .nav-num{background:rgba(224,92,92,.3);color:var(--coral2)}
+</style>
+</head>
+<body>
+<button id="mb-toggle" onclick="toggleSb()">☰</button>
+<a href="nursing-research-games.html" id="game-fab" style="display:none;position:fixed;top:12px;right:12px;z-index:200;background:linear-gradient(135deg,var(--gold),#b8870f);color:var(--bg);border-radius:8px;padding:7px 14px;font-size:.72rem;font-weight:700;text-decoration:none;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(201,162,39,.4)">🎮 遊戲中心</a>
+
+<nav id="sb">
+  <div class="sb-head">
+    <div class="sb-brand">護理研究<br>自主學習平台</div>
+    <div class="sb-sub" id="sb-sub-ch">Nursing Research · 16 Units</div>
+    <div class="sb-sub" id="sb-sub-wk" style="display:none">18-Week Teaching Plan</div>
+    <a href="nursing-research-games.html" style="display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px;padding:9px 14px;border-radius:99px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.35);color:var(--gold2);font-size:.72rem;font-weight:700;text-decoration:none;transition:.2s;letter-spacing:.5px" onmouseover="this.style.background='rgba(201,162,39,.22)'" onmouseout="this.style.background='rgba(201,162,39,.12)'">🎮 進入遊戲中心</a>
+  </div>
+  <div class="prog-wrap" id="prog-wrap-ch">
+    <div class="prog-lbl"><span>學習進度</span><span id="pl">0 / 16</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+  </div>
+  <div class="prog-wrap" id="prog-wrap-wk" style="display:none">
+    <div class="prog-lbl"><span>18 週教學計畫</span><span style="color:var(--teal2)">進修部二技一年級</span></div>
+    <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
+      <span style="padding:2px 7px;border-radius:4px;font-size:.6rem;background:rgba(58,184,127,.15);color:var(--green2);border:1px solid rgba(58,184,127,.3)">🎓 教學週×12</span>
+      <span style="padding:2px 7px;border-radius:4px;font-size:.6rem;background:rgba(47,168,154,.15);color:var(--teal2);border:1px solid rgba(47,168,154,.3)">📖 導讀週×4</span>
+      <span style="padding:2px 7px;border-radius:4px;font-size:.6rem;background:rgba(224,92,92,.15);color:var(--coral2);border:1px solid rgba(224,92,92,.3)">📝 考試週×2</span>
+    </div>
+  </div>
+  <ul class="nav-list" id="nav-list"></ul>
+</nav>
+
+<div class="mode-bar">
+  <button class="mode-btn on" id="mb-ch" onclick="setMode('chapter')">📚 章節自學版</button>
+  <button class="mode-btn" id="mb-wk" onclick="setMode('weekly')">🗓️ 18週教學版</button>
+  <div style="flex:1"></div>
+  <span style="font-size:.65rem;color:var(--muted);letter-spacing:.5px">研究與實證護理概論</span>
+</div>
+
+<main id="main">
+  <div id="page-home" class="page on"></div>
+  <div id="wk-overview" class="wk-page"></div>
+</main>
+
+<script>
+// ════════════════════════════════════════════
+// UNIT DATA
+// ════════════════════════════════════════════
+const UNITS = [
+{num:1,title:"護理研究概論",en:"Introduction to Nursing Research",
+content:`
+<div class="def-box"><span class="def-term">科學 Science</span><span class="def-en">以觀察、實驗與歸納為方法，藉有系統的探究自然現象以確定真理；或將已知事實做有次序與規則性排列，以助人類對自然現象之了解。</span></div>
+<div class="def-box"><span class="def-term">研究 Research</span><span class="def-en">藉由深入的探索，以<span class="hl-gold">實證資料</span>呈現事實；科學收集之事實旨在<span class="hl-teal">考驗或發展理論</span>。科學需以研究為基礎，可分為自然科學與社會科學兩類。</span></div>
+<div class="def-box"><span class="def-term">護理研究 Nursing Research</span><span class="def-en">以社會科學或生物科學為主體之探索過程，目標在<span class="hl-gold">追求實證基礎</span>，以提升對<span class="hl-teal">病人、家屬、健康照護者及整個健康照護系統</span>之照護品質。</span></div>
+
+<div class="sh">Best（1981）研究的12項特性</div>
+<ul class="num-list">
+  <li>發現變異項間之<strong class="hl-gold">因果關係或相關性</strong>來呈現現況與解決問題</li>
+  <li>藉觀察與分析特定個體或情境，<strong>推論目標母群體</strong>之特徵</li>
+  <li>以<strong>可觀察的經驗或實際證據</strong>為基礎，建立理論架構與更新知識</li>
+  <li>需使用<strong class="hl-teal">量化的測量工具</strong>，以便精準觀察與描述</li>
+  <li>應收集<strong>第一手、原創性或直接獲取</strong>的新資料</li>
+  <li>審慎設計的程序，以<strong>嚴謹的分析</strong>為特徵</li>
+  <li>力求<strong class="hl-gold">客觀與合理</strong>，消弭個人偏見與情緒反應</li>
+  <li>需運用<strong>專門知識與技術</strong></li>
+  <li>目標在拓展<strong class="hl-teal">未知領域及追求知識創新</strong></li>
+  <li>需有<strong>耐心</strong>，切忌急躁半途而廢</li>
+  <li>嚴謹審視資料來源，指出<strong>研究限制與倫理考量</strong>，詳附參考資料</li>
+  <li>發表研究成果時應有<strong class="hl-gold">勇氣，秉持真理</strong></li>
+</ul>
+
+<div class="sh">護理研究的重要性（5大面向）</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head"><span class="ico">📚</span>建立獨特知識領域</div>藉多方面研究數據與實證資料，了解與掌控外在環境變遷，建立優質護理服務品質與精確護理標準。</div>
+  <div class="c-card accent-teal"><div class="c-head"><span class="ico">🔧</span>解決臨床問題</div>針對<span class="hl-coral">醫療疏失、跌倒率增高、針扎事件、拔管率、病人滿意度、護理師離職率</span>等問題收集分析資料，提供解決途徑。</div>
+  <div class="c-card accent-coral"><div class="c-head"><span class="ico">📋</span>制定政策依據</div>高齡社會賦能訓練成效、失能老人需求、安寧療護比例、器官捐贈意願等——需以研究數據為依歸。</div>
+  <div class="c-card accent-green"><div class="c-head"><span class="ico">🎓</span>修正教學內容</div>比較 <span class="kp">PBL問題導向教學</span>、<span class="kp">OSCE客觀結構式臨床技能測驗</span>等新教學法之成效，更新教材。</div>
+  <div class="c-card accent-purple"><div class="c-head"><span class="ico">🌏</span>連結全球護理專業</div>臺灣本土性研究（中醫護理、芳香療法、音樂療法）在國際學術會議發表，提升護理學術地位。</div>
+</div>
+
+<div class="sh">護理研究的分類</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>定義</th><th>常用方法</th></tr>
+<tr><td><span class="hl-gold">描述性研究</span></td><td>不操縱變項，系統性收集資料描述現況</td><td>田野研究法、調查研究法、相關性研究法、發展性研究法</td></tr>
+<tr><td><span class="hl-teal">探索性研究</span></td><td>探索現實情境中現象的相關性與影響因子</td><td>訪談、參與性觀察、文獻分析</td></tr>
+<tr><td><span class="hl-coral">因果性研究</span></td><td>操作與控制研究情境，探討自變項與依變項間關係</td><td>實驗性研究設計</td></tr>
+</table>
+
+<div class="sh">護理研究步驟（9步驟）</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">確立研究主題</div>目的、可行性評估</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">文獻查證</div>廣泛收集資料</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">確立研究方法</div>名詞界定、取樣、IRB</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">提出計畫申請</div>經費與行政支持</div>
+  <div class="flow-step"><div class="fs-num">5</div><div class="fs-txt">前驅研究</div>Pilot Research</div>
+  <div class="flow-step"><div class="fs-num">6</div><div class="fs-txt">資料收集</div>確保一致性</div>
+  <div class="flow-step"><div class="fs-num">7</div><div class="fs-txt">統計分析</div>編碼、輸入、統計</div>
+  <div class="flow-step"><div class="fs-num">8</div><div class="fs-txt">撰寫報告</div>背景至建議</div>
+  <div class="flow-step"><div class="fs-num">9</div><div class="fs-txt">發表成果</div>期刊、學術會議</div>
+</div>
+
+<div class="sh">護理研究的倫理原則</div>
+<div class="g2">
+  <div class="c-card-t"><div class="c-head">🛡️ IRB審查</div><span class="kp-t">人體試驗委員會</span>（Institutional Review Board）：凡涉及以人類為個案的研究，均須通過IRB審查。每個IRB須有<strong>5位以上</strong>不同背景學術成員。</div>
+  <div class="c-card-t"><div class="c-head">⚖️ 三大倫理原則</div>
+    <ul class="b-list">
+      <li><span class="hl-gold">利益原則</span>：維護受試者最大福祉，不得欺瞞或強迫</li>
+      <li><span class="hl-teal">自主原則</span>：尊重受試者自我選擇與退出研究之權利</li>
+      <li><span class="hl-coral">公平原則</span>：對所有參與對象給予公平對待</li>
+    </ul>
+  </div>
+</div>
+<div class="sh">研究樣本的四大基本權利</div>
+<ul class="b-list">
+  <li><strong class="hl-gold">避免傷害之權利</strong>：保護受試者免於生理、情緒、經濟及社會關係受損</li>
+  <li><strong class="hl-teal">充分認知之權利</strong>：研究前有權要求充分說明目的、步驟、可能問題</li>
+  <li><strong class="hl-coral">自決之權利</strong>：決定是否參與或退出，退出後基本就醫權益不受影響</li>
+  <li><strong class="hl-green">隱私、匿名與保密之權利</strong>：個人資料不得被濫用，錄音錄影需事先同意</li>
+</ul>
+
+<div class="imp-box">學術研究倫理基本原則：理性（rationality）、客觀（objectivity）、一致（integrity）、誠實（honesty）、負責（responsibility）、合作（collegiality）、公平（fairness）、開放（openness）。違反者可能面臨書面告誡、停權1-10年乃至終身停權等處分。</div>
+
+<div class="sh">臺灣護理研究發展三個階段</div>
+<table class="cmp-table">
+<tr><th>階段</th><th>時期</th><th>重要事件</th></tr>
+<tr><td><span class="hl-coral">發展前期（研究沙漠期）</span></td><td>1960年之前</td><td>學徒式教育為主，1954-1956年護理學系相繼成立，研究發表極為有限</td></tr>
+<tr><td><span class="hl-gold">發展期</span></td><td>1960～1981年</td><td>1967年《護理雜誌》設立護理研究專欄，1974年生物統計學列入必修</td></tr>
+<tr><td><span class="hl-green">茁壯期</span></td><td>1982年至今</td><td>1979-1984年護研所碩士班成立，1997年臺大護理博士班，各類研究雜誌陸續出刊</td></tr>
+</table>
+`,
+quiz:[
+{q:"護理研究的目標，下列何者最正確？",opts:["增加護理師薪資","追求實證基礎以提升整體健康照護系統之照護品質","建立護理行政管理效率","減少醫院醫療糾紛"],ans:1,exp:"護理研究是以社會科學或生物科學為主體之探索過程，目標在追求實證基礎，以提升對病人、家屬、健康照護者及整個健康照護系統之照護品質。"},
+{q:"依 Best（1981）的說明，下列哪一項「不屬於」研究的特性？",opts:["研究需力求客觀與合理","研究結論應消弭個人偏見","研究可依研究者主觀偏好選擇收集資料","研究需運用專門知識與技術"],ans:2,exp:"研究程序需力求客觀、合理，應消弭個人偏見；依研究者主觀偏好選擇方式違背研究客觀原則。"},
+{q:"護理研究的倫理三大原則中，「自主原則」的核心意義是？",opts:["維護受試者最大福祉，不得欺瞞","尊重受試者的自我選擇與隨時退出研究之權利","對所有參與對象給予公平對待","研究者應有勇氣公開發表研究成果"],ans:1,exp:"自主原則指護理師於執行研究時應尊重與維護受試者的自主、自我選擇、提出詢問或隨時退出研究之權利。"},
+{q:"臺灣護理研究發展的「研究沙漠期」是指哪個時期？",opts:["1982年至今","1960～1981年","1960年之前","2000年之後"],ans:2,exp:"1960年之前屬發展前期，以學徒式教育為主，護理研究發表者極為有限，故稱研究沙漠期。"},
+{q:"研究樣本的「避免傷害之權利」涵蓋哪些層面？",opts:["只涉及生理傷害","只涉及心理傷害","涵蓋生理、情緒、經濟與社會關係等層面的損傷","只涉及隱私權的保護"],ans:2,exp:"根據美國衛生與人力服務部的定義，傷害危險包括樣本暴露於日常生活之外，對其身體、情緒、經濟與社會關係均可能產生之損傷。"}
+]},
+
+{num:2,title:"研擬研究主題、目的、問題及假設的設立",en:"Formulating Research Topic, Purpose, Question and Hypothesis",
+content:`
+<div class="sh">研究問題的四種來源類型</div>
+<div class="def-box"><span class="def-term">研究問題的定義</span><span class="def-en">①尚未找到方法解決，有待研究者去發掘的現象 ②已獲相關訊息，需要尋找解決方法 ③已知現象，若經修正是否會有不一樣的結果 ④完全無知的現象，有待發掘探索</span></div>
+
+<div class="sh">獲得研究問題的六大管道</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head"><span class="ico">💼</span>① 自身或他人的臨床經驗</div>在執行業務時發現問題。可自問：<em>在臨床上遇到最困擾的事是什麼？如何解決？做了改善後結果是否不同？</em>
+  <div class="ex-box" style="margin-top:8px"><div class="ex-tag">臨床思考範例</div>術前病人常感焦慮 → 為什麼緊張？緊張什麼？如何降低焦慮？ → <span class="kp">術前衛教</span>研究問題</div></div>
+  <div class="c-card accent-teal"><div class="c-head"><span class="ico">📖</span>② 文獻查證</div>大量閱讀期刊文章，了解研究設計與不足之處。<span class="kp-t">文獻查證</span>（literature review）是研究非常重要的步驟，占比非常多，研究者切莫輕忽。</div>
+  <div class="c-card accent-coral"><div class="c-head"><span class="ico">🔄</span>③ 研究的複製</div>假設某研究在不同地方結果可能不同；因<span class="hl-gold">文化差異</span>或<span class="hl-teal">時代變遷</span>而有必要再重新探究；研究者必須有足夠論述以證明複製的必要。</div>
+  <div class="c-card accent-green"><div class="c-head"><span class="ico">📰</span>④ 時事</div>研究目的就是解決現實問題。例如：<span class="kp-g">COVID-19疫情</span>下的議題、<span class="kp-g">AR/VR於護理教育</span>的運用。研究者須隨時注意專業發展趨勢。</div>
+  <div class="c-card accent-purple"><div class="c-head"><span class="ico">👨‍🏫</span>⑤ 指導老師的研究主題</div>在指導教授大架構下，學生協助子研究；護理整合型研究已逐漸增加趨勢。</div>
+  <div class="c-card accent-gold"><div class="c-head"><span class="ico">🏛️</span>⑥ 特定機構研究方向</div>衛生福利部委外科技研究計畫、國民健康署政策性研究、國科會性別研究、台灣護理學會等。</div>
+</div>
+
+<div class="sh">研究目的（Research Purpose）的書寫要素</div>
+<div class="imp-box">研究目的以<span class="hl-gold">肯定句形式</span>呈現，以2～4行精簡表達，必須包含：<span class="hl-teal">研究對象</span> + <span class="hl-gold">研究變項</span> + <span class="hl-coral">動詞（探究/了解/比較/檢驗）</span>。</div>
+
+<div class="sh">研究問題的三種類型</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>特徵</th><th>範例</th></tr>
+<tr><td><span class="hl-gold">描述性研究問題</span></td><td>一個變項，描述現象</td><td>慢性思覺失調症患者主觀幸福感為何？</td></tr>
+<tr><td><span class="hl-teal">相關性研究問題</span></td><td>兩個變項，探討關係</td><td>社會支持與患者主觀幸福感的相關性為何？</td></tr>
+<tr><td><span class="hl-coral">實驗性研究問題</span></td><td>自變項+依變項，測試介入效果</td><td>改良式藥物衛教計畫能否改善精神病病人的服藥遵從性？</td></tr>
+</table>
+
+<div class="sh">研究假設（Hypothesis）</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">研究假設</span><span class="def-en">研究者在進行研究前，依據研究問題的理解，以過去相關的<span class="hl-gold">理論與研究</span>為基礎，提出<span class="hl-teal">暫時性答案</span>。研究問題是<strong>問號</strong>，研究假設是<strong>句號</strong>呈現。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">統計假設</span><span class="def-en"><span class="kp">虛無假設 H₀</span>：假設變項間無差別、無影響或無差異。<span class="kp-r">對立假設 H₁</span>：正好相反。所有研究都希望能<span class="hl-gold">推翻虛無假設</span>而接受對立假設，書寫時只需寫出對立假設。</span></div>
+</div>
+
+<div class="sh">研究假設的四大特性</div>
+<ul class="b-list">
+  <li><strong class="hl-gold">以具體文字說明</strong>研究期待的結果</li>
+  <li>對研究問題有<strong class="hl-teal">特定的預測</strong></li>
+  <li>可以有<strong>方向性</strong>（較高/較低）或<strong>無方向性</strong>（有差異）</li>
+  <li>必須建立在<strong class="hl-coral">好的研究問題</strong>上，且有理論或文獻依據</li>
+</ul>
+<div class="ex-box"><div class="ex-tag">範例比較</div>
+<strong>有方向性假設：</strong>接受支持性成長團體的思覺失調症病人，其自我烙印<span class="hl-green">較低</span>。<br>
+<strong>無方向性假設：</strong>有無接受支持性成長團體的思覺失調症病人，其自我烙印<span class="hl-teal">有差異</span>。</div>
+`,
+quiz:[
+{q:"下列哪種情況「不屬於」研究問題的來源？",opts:["臨床工作中發現護理問題","閱讀文獻發現研究缺口","個人主觀認為某事重要但無任何實證根據","複製其他文化背景的研究"],ans:2,exp:"研究問題應來自臨床經驗、文獻查證、研究複製及時事；單純個人主觀認為重要而無任何依據，不符合研究問題的條件。"},
+{q:"「研究的複製」最主要的目的是什麼？",opts:["節省研究者的時間與成本","在不同條件下驗證是否能得到新的有意義的答案","確認所有研究結果都相同","替代文獻查證的步驟"],ans:1,exp:"研究複製假設某研究的結果在不同地方可能不同，研究者可從新的研究中得到新的且有意義的答案；需有足夠論述以證明複製的必要性。"},
+{q:"「虛無假設（H₀）」的正確意涵是？",opts:["研究者期望的結果","假設變項間無差別、無影響或無差異","研究者必須接受的假設","只適用於質性研究的統計方法"],ans:1,exp:"虛無假設假設變項間都無差別、無影響或無差異，對立假設正好相反。所有研究都希望推翻虛無假設而接受對立假設。"},
+{q:"研究目的的書寫必須包含哪些要素？",opts:["只需包含研究對象","研究對象、研究變項、動詞（探究/了解/比較）","研究者姓名、研究日期、研究地點","統計方法、樣本數、研究期限"],ans:1,exp:"研究目的以肯定句形式呈現，必須包含：研究對象、研究變項，以及動詞（要去探究、了解或是檢驗）。"},
+{q:"下列哪一個研究問題屬於「相關性研究問題」？",opts:["慢性思覺失調症患者主觀幸福感為何？","社會支持與患者主觀幸福感的相關性為何？","改良式衛教是否能改善術前焦慮？","探討護理師的職場壓力現況"],ans:1,exp:"相關性研究問題包含兩個變項，目的在探討變項間的關係；「社會支持」與「主觀幸福感」是兩個明確變項的相關性探討。"}
+]},
+
+{num:3,title:"文獻查證",en:"The Literature Review",
+content:`
+<div class="def-box"><span class="def-term">文獻查證（Literature Review）</span><span class="def-en">運用<span class="hl-gold">系統性、明確方法</span>找出所欲探討主題之相關研究文章，整合文獻資料並提出結論，找出<span class="hl-teal">未來研究領域</span>和發展<span class="hl-coral">臨床實務指引</span>的過程。亦稱文獻探討、文獻搜索、文獻評析。</span></div>
+
+<div class="sh">文獻查證的七大功能</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">① 發現與確立研究題目</div>可從文獻中發現研究問題，將泛泛主題（<em>高危險妊娠孕婦</em>）具體化為可行題目（<em>強迫臥床安胎孕婦照護需求</em>）。</div>
+  <div class="c-card accent-teal"><div class="c-head">② 了解研究現況（拼圖概念）</div>他人研究如同已完成的部分拼圖，文獻查證讓研究者找出可<span class="hl-teal">接續完成</span>的片段。</div>
+  <div class="c-card accent-coral"><div class="c-head">③ 熟悉相關理論與知識</div>相關理論知識查證有助於擬定<span class="hl-coral">資料收集工具</span>、設計研究情境，提升資料分析的周延性與信效度。</div>
+  <div class="c-card accent-green"><div class="c-head">④ 名詞確立與假設形成</div>決定相關概念與<span class="hl-green">名詞界定</span>，獲悉先前研究問題，進而決定研究假設。假設需有文獻基礎。</div>
+  <div class="c-card accent-purple"><div class="c-head">⑤ 發展概念架構</div>多方查證後可截長補短整合理論模式，形成所需概念架構；文獻查證左右了研究架構的形成。</div>
+  <div class="c-card accent-gold"><div class="c-head">⑥ 獲得研究設計線索</div>哪些變項需控制？樣本數是否足夠？現行研究工具是否可用？相關研究的限制與建議是重要參考。</div>
+</div>
+<div class="c-card accent-teal" style="margin-top:8px"><div class="c-head">⑦ 提供與研究結果相較之資料</div>研究結果需與整個知識體系連結；查證哪個知識體系有相關理論？有無相關研究發現可供分析比較？</div>
+
+<div class="sh">重要護理期刊資源</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>期刊名稱</th></tr>
+<tr><td><span class="hl-gold">臺灣本土</span></td><td>《護理雜誌》、《長庚護理》、The Journal of Nursing Research</td></tr>
+<tr><td><span class="hl-teal">西文綜合</span></td><td>Nursing Research、Research in Nursing & Health、Journal of Advanced Nursing、Advanced Nursing Science</td></tr>
+<tr><td><span class="hl-coral">神經科學護理</span></td><td>Journal of Neuroscience Nursing、International Journal of Neurological Nursing</td></tr>
+<tr><td><span class="hl-green">婦產科/癌症護理</span></td><td>The American Journal of Maternal Child Nursing、Cancer Nursing</td></tr>
+</table>
+
+<div class="sh">資料庫檢索策略</div>
+<div class="g2">
+  <div class="c-card-g"><div class="c-head">縮小主題範圍（Limit Set）</div>在語言、年代、文章類型作選擇，例如：限定<span class="hl-green">英文全文，2017年後</span>。</div>
+  <div class="c-card-t"><div class="c-head">邏輯運算元</div>
+    <ul class="b-list">
+      <li><span class="kp-g">AND</span>：關鍵詞交集（更精確）</li>
+      <li><span class="kp-t">OR</span>：關鍵詞聯集（更廣泛）</li>
+      <li><span class="kp-r">NOT</span>：排除特定主題</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh">文獻閱讀四步驟</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">瀏覽</div>閱讀題目與摘要，初步分類</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">精讀</div>逐字逐句理解，畫線關鍵內容</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">分析</div>分類概念、理論、研究方法</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">整合</div>建立新架構，重新組織知識</div>
+</div>
+
+<div class="sh">第一手資料 vs 第二手資料</div>
+<table class="cmp-table">
+<tr><th>資料類型</th><th>定義</th><th>適用性</th></tr>
+<tr><td><span class="hl-gold">第一手資料（Primary Source）</span></td><td>研究者本身所寫的研究報告，多出現於研究性期刊</td><td class="good">優先採用，提供詳細客觀內容</td></tr>
+<tr><td><span class="hl-teal">第二手資料（Secondary Source）</span></td><td>非原始研究者所寫，或引述他人研究的回顧性文獻</td><td class="bad">可提供參考資料目錄，但不可代替第一手資料</td></tr>
+</table>
+`,
+quiz:[
+{q:"文獻查證的「拼圖概念」最正確的意涵是？",opts:["文獻查證需將所有文章一一拼湊排列","他人研究已對現象有一定程度了解，研究者需找出可接續完成的片段","文獻越多拼圖越完整就越好","文獻查證需要團隊合作完成"],ans:1,exp:"他人的研究如同已拼好部分的拼圖，文獻查證讓研究者了解目前已完成的部分，並找出可接續探索的方向。"},
+{q:"文獻查證的邏輯運算元「AND」的功能是？",opts:["擴大搜尋範圍，增加文獻篇數","縮小範圍，找出同時包含兩個關鍵詞的文獻","排除特定主題的文獻","合併多個資料庫"],ans:1,exp:"AND用於關鍵詞交集，結果文獻需同時包含所有關鍵詞，可縮小搜尋範圍，找到更精確的文獻。"},
+{q:"下列何者為「第一手資料（Primary Source）」？",opts:["回顧性文獻報告","引述他人研究結果的文章","研究者本身所寫的原始研究報告","教科書中對研究主題的介紹"],ans:2,exp:"第一手資料是研究者本身所寫的研究報告，多出現在以研究性文章為主的期刊中，引用文獻時以採用第一手資料為佳。"},
+{q:"研究者對「高危險妊娠孕婦」有興趣，但此主題尚不夠具體，藉由文獻查證後具體化為「強迫臥床安胎孕婦照護需求之探討」，此說明了文獻查證的哪項功能？",opts:["了解研究現況（拼圖概念）","發現與確立研究題目","獲得研究設計的線索","提供與研究結果相較之資料"],ans:1,exp:"文獻查證能將泛泛的研究主題（高危險妊娠孕婦）具體化為更精確可行的研究題目（強迫臥床安胎孕婦照護需求），是文獻查證「發現與確立研究題目」的功能。"},
+{q:"文獻閱讀的正確步驟順序為何？",opts:["精讀→瀏覽→分析→整合","瀏覽→精讀→分析→整合","分析→瀏覽→精讀→整合","整合→分析→精讀→瀏覽"],ans:1,exp:"文獻資料的閱讀與分析步驟為：瀏覽文獻（先看題目與摘要）→精讀文獻（逐字閱讀）→分析文獻（按面向分類）→整合文獻（建立新架構）。"}
+]},
+
+{num:4,title:"名詞界定與研究架構之形成",en:"Define Research Variables and Formulating Research Framework",
+content:`
+<div class="sh">名詞界定的意義</div>
+<div class="def-box"><span class="def-term">名詞界定</span><span class="def-en">對研究主題中的「<span class="hl-gold">概念（concept）</span>」加以說明的過程。概念分為<span class="hl-teal">具體概念</span>（蘋果、椅子、手指——可見、可測量）與<span class="hl-coral">抽象概念</span>（疼痛、壓力、焦慮、健康、滿意度——需界定才能測量）兩類。</span></div>
+
+<div class="sh">兩種定義的比較</div>
+<table class="cmp-table">
+<tr><th>定義類型</th><th>英文</th><th>定義</th><th>功能</th></tr>
+<tr><td><span class="hl-gold">概念性定義</span></td><td>Conceptual Definition</td><td>運用理論中的抽象概念，對研究欲探討的變項加以解釋；需引述<strong>理論或學者</strong>的定義，並寫出文獻出處</td><td>提供具理論意義的概念說明</td></tr>
+<tr><td><span class="hl-teal">操作性定義</span></td><td>Operational Definition</td><td>將概念性定義具體化描述，使概念<strong>符合研究情境</strong>且可供測量</td><td>將概念轉為可供測量的「<span class="kp-t">變項</span>」</td></tr>
+</table>
+
+<div class="imp-box">研究者於進行名詞界定時，最好<span class="hl-gold">同時呈現概念性定義與操作性定義</span>，前者說明理論基礎，後者說明如何在研究中測量，兩者共同確保研究具體可行。</div>
+
+<div class="sh">名詞界定範例</div>
+<div class="ex-box"><div class="ex-tag">範例一：心跳速率</div>
+<strong>研究主題：</strong>安撫性奶嘴對加護病房保溫箱中早產兒餵食前後心跳速率及動脈血氧飽和度成效性探討<br><br>
+<span class="hl-gold">概念性定義：</span>每分鐘<span class="kp">心室收縮次數</span>（Astrand & Rodahl, 1970）<br>
+<span class="hl-teal">操作性定義：</span>以<span class="kp-t">心電圖</span>測量早產兒每分鐘心跳次數</div>
+
+<div class="ex-box"><div class="ex-tag">範例二：創傷</div>
+<strong>研究主題：</strong>美國非裔女性的社會創傷與力量對其產下低體重兒之體重預測研究<br><br>
+<span class="hl-gold">概念性定義：</span>創傷是個人因經歷涉及自我或他人的實際或潛在威脅，而造成參與者身心受創（Dailey, 2009）<br>
+<span class="hl-teal">操作性定義：</span>以「<span class="kp-t">創傷史問卷（THQ）</span>」評估工具所評得的創傷程度，<strong>分數越高表示遭受創傷程度越高</strong></div>
+
+<div class="sh">操作性定義的書寫要點</div>
+<ul class="b-list">
+  <li>應<strong class="hl-gold">具體化</strong>，避免抽象或籠統的描述</li>
+  <li>必須考量<strong class="hl-teal">研究情境</strong>（如收案場所特性）</li>
+  <li><strong class="hl-coral">不佳範例：</strong>焦慮定義為「個人遭遇壓力時產生的害怕擔心的情緒反應」→ 難以量化</li>
+  <li><strong class="hl-green">良好範例：</strong>「以 Taylor 顯著焦慮量表測量所得分數，20-39分輕度，40-59分中度，60分以上重度」</li>
+</ul>
+
+<div class="sh">研究架構（Research Framework）</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">研究架構的意義</span><span class="def-en">研究者如何看待一個問題或現象的觀點；協助研究者清楚呈現<span class="hl-gold">研究變項間的關係</span>，並將研究結果與護理知識相連結。不一定是圖，也可以是文字敘述。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">研究架構的四大功能</span><span class="def-en">① 統整文獻知識 ② 呈現概念及概念間關係 ③ 呈現研究設計方法 ④ 作為研究結果統整、分析與解釋的依據</span></div>
+</div>
+
+<div class="sh">研究架構擬定四步驟</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">陳述研究問題</div>明確列出相關概念</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">概念選擇與界定</div>給予操作性定義</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">連結概念關係</div>確認影響方向</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">繪製架構圖</div>框框+箭頭呈現</div>
+</div>
+<div class="imp-box">研究架構圖中，<span class="hl-gold">「框框」</span>代表概念，<span class="hl-teal">「線條/箭頭」</span>代表概念間的關係，箭頭方向標明影響方向。通常<span class="hl-coral">因果發生序列由左向右</span>呈現。</div>
+`,
+quiz:[
+{q:"「以 Taylor 顯著焦慮量表測量所得分數作為焦慮程度指標」屬於哪種定義？",opts:["概念性定義","操作性定義","統計性定義","功能性定義"],ans:1,exp:"操作性定義是將概念性定義具體化描述，使概念符合研究情境且可供測量；量表名稱及評分方式即是焦慮的操作性定義。"},
+{q:"研究架構的功能「不包括」下列哪一項？",opts:["統整文獻知識","呈現研究概念間的關係","直接決定研究結果是否顯著","作為研究結果統整分析與解釋的依據"],ans:2,exp:"研究架構的四大功能為：統整文獻知識、呈現概念及概念間關係、呈現研究設計方法、作為研究結果統整分析依據；直接決定研究結果顯著與否不是架構的功能。"},
+{q:"研究架構中「箭頭」的功能是？",opts:["代表概念本身","標明概念間的影響方向與關係","代表研究的統計方法","表示文獻引用的出處"],ans:1,exp:"研究架構圖以「框框」置入概念，以「線條或箭頭」表示概念間的關係，箭頭的指向標明影響方向，說明研究假設與研究欲測試的問題。"},
+{q:"操作性定義的最重要特性是？",opts:["引述理論或學者對概念的解釋","具體化，使概念符合研究情境且可供測量","需與概念性定義完全相同","提供概念的哲學背景說明"],ans:1,exp:"操作性定義是將概念性定義進一步具體化，使概念符合研究情境且可供測量，是將抽象概念轉為可測量變項的關鍵步驟。"},
+{q:"下列哪個概念屬於「抽象概念」，需進行名詞界定後才能研究測量？",opts:["蘋果","椅子","焦慮","手指"],ans:2,exp:"焦慮、壓力、滿意度等都是抽象概念，需進行名詞界定（概念性定義+操作性定義）後才能在研究中測量；蘋果、椅子、手指是具體可見可測量的概念。"}
+]},
+
+{num:5,title:"研究取樣之考量與方法",en:"The Methods and Considerations of Sampling",
+content:`
+<div class="sh">取樣的核心概念</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">母群體（Population）</span><span class="def-en">研究調查所有對象的集合體，也就是所有符合指定標準的個案（包括人、動物、文件、事件、行為等）集合體。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">樣本（Sample）</span><span class="def-en">從可及母群體中抽出代表母群體的部分單元；<span class="hl-gold">樣本越能真確代表母群體特徵，即越「好」的樣本</span>。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">目標母群體（Target Population）</span><span class="def-en">研究者想研究和推論的所有對象（如：全台乳房切除術後的婦女）。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">可及母群體（Accessible Population）</span><span class="def-en">研究者可實際接近的子集合（如：某醫學中心的乳房切除術後婦女）；是目標母群體的一部分。</span></div>
+</div>
+<div class="def-box"><span class="def-term">取樣架構（Sampling Frame）</span><span class="def-en">整體取樣單位的詳細名單，可供取樣之用。以「學校班級」為取樣單位，則「全校所有班級名冊」即為取樣架構。</span></div>
+<div class="def-box"><span class="def-term">取樣誤差（Sampling Error）</span><span class="def-en">樣本偏離母群體的差異。<span class="hl-gold">取樣誤差越大，樣本代表性越差；樣本數越大，越能降低隨機誤差</span>。</span></div>
+
+<div class="sh">機率性取樣 vs 非機率性取樣</div>
+<table class="cmp-table">
+<tr><th>取樣方式</th><th>特徵</th><th>代表性</th><th>適用情境</th></tr>
+<tr><td><span class="hl-gold">機率性取樣</span></td><td>每個單元都有被抽取的機率，以「隨機」為基礎</td><td class="good">較高</td><td>需要大型具代表性樣本的調查</td></tr>
+<tr><td><span class="hl-teal">非機率性取樣</span></td><td>以非隨機方式選擇，無法說明每個抽樣單元的抽取機率</td><td class="bad">較低</td><td>實際可行、時間金錢有限時</td></tr>
+</table>
+
+<div class="sh">機率性取樣四種方法</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">① 簡單隨機取樣</div>完全依機率抽取；先將母群體各單元編號，再隨機選出所需樣本數（抽籤、亂數表、電腦）。<br><span class="hl-coral">缺點：</span>耗時費力，母群體太大時不適用。</div>
+  <div class="c-card accent-teal"><div class="c-head">② 分層隨機取樣</div>依研究特性（性別、教育程度）將母群體分層，再從各層進行隨機取樣。分為<span class="kp-t">比例取樣</span>與<span class="kp-t">非比例取樣</span>。適合確保特定分層的代表性。</div>
+  <div class="c-card accent-coral"><div class="c-head">③ 叢聚取樣（集群取樣）</div>多步驟取樣，先抽叢聚（縣市→鄉鎮→村里），再從叢聚中抽樣。<span class="hl-green">優點：</span>省時省費，母群體名冊不易取得時適用。<span class="hl-coral">缺點：</span>取樣誤差較高。</div>
+  <div class="c-card accent-green"><div class="c-head">④ 系統隨機取樣（等距取樣）</div>先隨機選第一個樣本，之後依<span class="hl-gold">固定間隔距離</span>抽取（母群體數÷樣本數＝間隔數）。注意間隔數不可與變異週期相同，否則產生嚴重偏差。</div>
+</div>
+
+<div class="sh">非機率性取樣四種方法</div>
+<div class="g2">
+  <div class="c-card-r"><div class="c-head">① 方便取樣（便利取樣）</div>就近依賴身邊現有的人為研究對象。<span class="hl-coral">樣本代表性最弱</span>，但最簡易、常用。研究結果無法推論至整個母群體。</div>
+  <div class="c-card-t"><div class="c-head">② 滾雪球取樣</div>樣本由小而大，透過關係或人際網路引薦；適用於<span class="hl-teal">樣本特殊、不易取得</span>時（藥物成癮者、罕見疾病、非法移民）。常用於質性研究田野調查。</div>
+  <div class="c-card"><div class="c-head">③ 配額取樣</div>先了解母群體的分層情形，決定各層比例，再以方便取樣方式選取樣本。與<span class="hl-gold">分層隨機取樣</span>雷同，但後者是隨機取樣，配額取樣是方便取樣（非隨機）。</div>
+  <div class="c-card-g"><div class="c-head">④ 立意取樣（判斷式取樣）</div>依研究者對母群體的了解、研究目的決定取樣方式；較主觀，通常用於<span class="hl-green">樣本數小或無法隨機取樣</span>時，如問卷前測。</div>
+</div>
+
+<div class="sh">樣本數的考量因素</div>
+<ul class="b-list">
+  <li>一般每項研究至少要有 <span class="kp">30個樣本</span>以上才具代表性</li>
+  <li>研究的每個條件或特性（如性別）至少需要 <span class="kp">10個以上</span>的樣本</li>
+  <li>變項數目增加時，樣本數也需隨之增加（10個變項 → 100個以上樣本）</li>
+  <li><span class="hl-gold">樣本數大不一定具有代表性</span>，<strong>代表性遠比樣本數目重要</strong></li>
+  <li>取樣誤差通常以<strong>正負百分點</strong>表示，信心水準多採 <span class="kp-t">95%</span> 以上</li>
+</ul>
+`,
+quiz:[
+{q:"「可及母群體（Accessible Population）」與「目標母群體（Target Population）」的關係為何？",opts:["兩者完全相同","可及母群體是目標母群體的子集合","目標母群體是可及母群體的子集合","兩者完全不相關"],ans:1,exp:"可及母群體是目標母群體中的一部分，是研究者可以取得的研究對象之集合體；目標母群體範圍較廣，可及母群體是研究者實際能接觸的部分。"},
+{q:"「系統隨機取樣（等距取樣）」需特別注意什麼？",opts:["樣本數不能超過100","間隔數不可與母群體的變異週期相同，否則產生嚴重偏差","只能用於質性研究","不需要建立取樣架構"],ans:1,exp:"系統隨機取樣最重要的關鍵是間隔數不可與母群體的變異情形（週期）一致，若兩者相同則研究會產生嚴重錯誤或偏差而失去價值。"},
+{q:"「滾雪球取樣（Snowball Sampling）」最適合用於哪種情況？",opts:["母群體同質性高的大規模調查","樣本相當特殊、不易取得，如藥物成癮者或非法移民","需要具代表性樣本的全國性調查","有完整取樣架構的系統性研究"],ans:1,exp:"滾雪球取樣通常用於樣本相當特殊、不易取得時，或在很難找到母群體成員時，如藥物成癮者、性工作者、罕見疾病病人等。"},
+{q:"「分層比例取樣」與「分層非比例取樣」的最主要差異是？",opts:["前者使用隨機取樣，後者不使用","前者依母群體各層的比例取樣，後者不依比例取樣","前者適用於質性研究，後者適用於量性研究","兩者完全相同，只是名稱不同"],ans:1,exp:"分層比例取樣依母群體各層的比例進行取樣；分層非比例取樣不依比例，通常用於某層樣本數太少時，增加少數群體的抽樣比例。"},
+{q:"下列哪項陳述關於「樣本數」是正確的？",opts:["樣本數越大，代表性一定越高","樣本數大小是最重要的考量，遠比代表性重要","代表性遠比樣本數目重要，且每項研究至少需30個樣本","只要使用隨機取樣，樣本數多少無關緊要"],ans:2,exp:"樣本數大並不一定具有代表性，研究樣本之代表性遠比樣本數目重要。一般每項研究至少要有30個樣本以上才具代表性。"}
+]},
+
+{num:6,title:"研究設計",en:"Research Design",
+content:`
+<div class="sh">研究設計的六大基本成分</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">① 研究對象（Research Object）</div>需考量研究對象、年齡、性別、職業別等<span class="hl-gold">人口學變項</span>，以及疾病診斷、症狀徵象、患病年限、併發症等<span class="hl-teal">疾病特徵</span>。</div>
+  <div class="c-card accent-teal"><div class="c-head">② 研究的現象或變項</div>研究設計之<span class="hl-teal">重心</span>；可針對單一變項或多重變項；護理研究多為多重變項設計（因人類的複雜性）。</div>
+  <div class="c-card accent-coral"><div class="c-head">③ 資料收集方法</div>常用：<span class="kp-r">問卷調查法</span>、<span class="kp-r">訪談</span>、<span class="kp-r">觀察法</span>、<span class="kp-r">儀器測量法</span>、線上表單。需描述收集者背景、資料收集期間、方式及頻率。</div>
+  <div class="c-card accent-green"><div class="c-head">④ 研究場所與情境</div><span class="hl-gold">實驗室內（人工化情境）</span> vs <span class="hl-teal">非實驗室內（自然情境）</span>；護理研究多選擇自然情境，因研究對象為人類。</div>
+  <div class="c-card accent-purple"><div class="c-head">⑤ 取樣方法</div>考量研究目的、取得難易度、時間人力財力限制；護理研究多採<span class="hl-purple">非隨機取樣</span>。</div>
+  <div class="c-card accent-gold"><div class="c-head">⑥ 研究者的角色職責</div>四種角色：<span class="kp">局外者</span>、<span class="kp">觀察者的參與</span>、<span class="kp">參與觀察者</span>、<span class="kp">完全參與者</span>。需清楚描述自己在研究歷程的定位。</div>
+</div>
+
+<div class="sh">研究設計的考量因素</div>
+<ul class="b-list">
+  <li><strong class="hl-gold">研究現象與目的的本質</strong>：決定研究設計的基本方向</li>
+  <li><strong class="hl-teal">研究者的認知程度</strong>：初次研究者宜選擇熟悉的情境與對象</li>
+  <li><strong class="hl-coral">倫理或人權因素</strong>：涉及人的研究計畫需先送IRB申請計畫審查</li>
+  <li><strong class="hl-green">研究經費與時間預算</strong>：某些儀器設備或長時間研究需申請補助</li>
+  <li><strong class="hl-purple">知識發展趨勢</strong>：進行資料庫搜尋，避免主題重複</li>
+  <li><strong>實際研究情境的限制</strong>：前驅研究（Pilot Research）評估並修正設計</li>
+</ul>
+
+<div class="sh">研究設計的分類</div>
+<div class="sh2">一、依研究目的或結果</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>定義</th><th>次分類</th></tr>
+<tr><td><span class="hl-gold">描述性研究設計</span></td><td>呈現資料收集結果、變項間相關性或比較</td><td>調查性、相關性、發展性</td></tr>
+<tr><td><span class="hl-teal">探索性研究設計</span></td><td>對不熟悉的現象一窺究竟；質性研究是典型代表</td><td>訪談、參與性觀察、個案報告</td></tr>
+<tr><td><span class="hl-coral">因果性研究設計</span></td><td>驗證研究假設中變項間的因果關係</td><td>實驗性研究設計為主要代表</td></tr>
+</table>
+<div class="sh2">二、依研究場所與情境</div>
+<div class="g2">
+  <div class="c-card-g"><div class="c-head">🔬 實驗室研究</div>研究者可有效掌握和控制場所。<span class="hl-teal">優點：</span>較能推論因果關係。<span class="hl-coral">缺點：</span>難以推論到自然情境。</div>
+  <div class="c-card-t"><div class="c-head">🏥 非實驗室研究</div>選擇自然情境收集研究對象的自然行為；護理研究中臨床情境均屬此類。<span class="hl-teal">優點：</span>具有較高的<span class="kp-t">外在效度</span>。</div>
+</div>
+`,
+quiz:[
+{q:"護理研究最常見的資料收集方法中，下列何者「不屬於」？",opts:["問卷調查法","訪談","動物實驗","儀器測量法"],ans:2,exp:"護理研究最常使用的資料收集方法包括問卷調查法、訪談、觀察法、儀器測量法及線上表單；動物實驗不屬其常用方式。"},
+{q:"護理研究大多選擇「非實驗室內（自然情境）」的主要原因是？",opts:["因為自然情境費用較低","護理研究對象是人類，探究人類在自然情境中的現象","因為自然情境的研究結果更精準","因為實驗室設備取得不易"],ans:1,exp:"護理研究的對象是人類，探究的是人類在自然情境中的現象，所以多數護理研究選擇在非實驗室內進行，且具有較高的外在效度。"},
+{q:"若研究設計中有「研究助理」協助收集資料，應如何處理？",opts:["不需特別說明，助理只是輔助","應描述其專業背景、與研究的相關性及接受研究訓練的過程，以維持資料收集一致性","只需在謝辭中提及","由助理自行決定收集方式"],ans:1,exp:"若有其他資料收集者參與，應描述其專業背景、與研究的相關性及接受研究訓練過程，清楚呈現資料收集過程的一致性，以維持較理想的內在效度。"},
+{q:"「探索性研究設計」最典型的代表是？",opts:["隨機對照試驗（RCT）","質性研究","問卷調查研究","整合分析（Meta-analysis）"],ans:1,exp:"探索性研究設計當研究者對研究現象不熟悉時使用，以訪談、參與性觀察等方法進行；質性研究是典型的探索性研究設計。"},
+{q:"「前驅研究（Pilot Research）」在研究設計中的功能是？",opts:["正式收集所有研究資料","評估研究的可行性，預測困難並在正式研究前修正設計","決定最終的研究題目","替代正式研究的進行"],ans:1,exp:"前驅研究在正式資料收集前先進行，藉此了解有何尚未周延之處，若可及時修正，有助於避免在正式研究中造成難以彌補的缺憾。"}
+]},
+
+{num:7,title:"非實驗性研究設計",en:"Non-experimental Research Design",
+content:`
+<div class="def-box"><span class="def-term">非實驗性研究設計</span><span class="def-en">針對變項、群體或情境，進行<span class="hl-gold">描述、區別或檢查變項關係</span>的研究；處於<span class="hl-teal">自然分配</span>下，未涉及隨機分配、控制組或操縱變項，主要以<span class="hl-coral">觀察</span>為主。最常見的是描述性或相關性研究設計。</span></div>
+
+<div class="sh">選用非實驗性研究的五大理由</div>
+<ul class="num-list">
+  <li><strong class="hl-gold">與人相關的特質</strong>：考量人的特質不能採用實驗方式，無法控制或無法隨機分配</li>
+  <li><strong class="hl-teal">倫理考量</strong>：某些情況在倫理上不允許進行介入</li>
+  <li><strong class="hl-coral">執行真實實驗有實務困難</strong>：無法控制所有干擾因素</li>
+  <li><strong class="hl-green">描述真實的研究</strong>：記錄現象的真實狀態</li>
+  <li><strong class="hl-purple">為執行實驗研究作準備</strong>：先了解現況，作為日後因果性研究的先驅</li>
+</ul>
+
+<div class="sh">第一大類：描述性研究設計（Descriptive Research Design）</div>
+<div class="cp">使用在<strong>發展理論、確認目前實務遭遇的問題</strong>、形成假設或臨床決策等；一般不包括變項操縱。此類研究可獲取現象的事實，有助研擬策略解決問題，是因果性研究的前身。</div>
+
+<div class="sh2">① 典型描述性研究設計（Typical Descriptive）</div>
+<div class="cp">檢測<span class="hl-gold">單一樣本的某些特性</span>，探討一個或多個變項，直接進行各變項意義的解釋。</div>
+<div class="ex-box"><div class="ex-tag">範例 7-1</div>
+<strong>研究題目：</strong>失智症病人停止駕駛與其心理健康初探（劉淑慧等，2021）<br>
+<strong>研究方法：</strong>問卷調查78位失智症病人的駕駛行為與心理健康<br>
+<strong>研究結果：</strong>41％的失智症病人仍會騎車或開車；不再駕駛的主要原因為：年齡較大、無配偶、無社交活動、日常生活功能較差<br>
+<strong>研究說明：</strong>此研究針對「停止駕駛」與「心理健康」兩變項分別進行解釋，<span class="hl-teal">屬典型描述性研究</span>，未操縱任何變項。</div>
+
+<div class="sh2">② 比較描述性研究設計（Comparative Descriptive）</div>
+<div class="cp">不涉及變項操作，研究者針對<span class="hl-gold">不同研究對象</span>進行資料變項的比較，或同一對象在<span class="hl-teal">不同時間點</span>的變化比較。</div>
+<div class="ex-box"><div class="ex-tag">範例 7-3</div>
+<strong>研究題目：</strong>成人加護病房病患家屬壓力感受與護理人員知覺之比較（林雅華等，2011）<br>
+<strong>兩組比較：</strong>① 病患家屬的自覺壓力感受 vs ② 護理人員知覺病患家屬的壓力感受<br>
+<strong>結果：</strong>兩者間無顯著相關<br>
+<strong>說明：</strong>以「病患家屬」及「護理人員」兩群體進行同一壓力變項的比較，<span class="hl-teal">屬比較描述性研究設計</span>。</div>
+
+<div class="sh">第二大類：相關性研究設計（Correlational Research Design）</div>
+<div class="cp">研究者為了解哪些因素與事件或情況有關，探討<span class="hl-gold">研究變項間之相關</span>。採用此設計前需有基本文獻支持，並提出變項間關係的研究假設。<span class="hl-coral">無法總結因果關係</span>，因未對自變項進行控制。</div>
+
+<div class="g3">
+  <div class="c-card accent-gold"><div class="c-head">描述相關性研究</div>探討某情況下變項間<span class="hl-gold">存在的關係</span>；可確認短時間內變項間的交互關係，結果可發展未來研究假設。</div>
+  <div class="c-card accent-teal"><div class="c-head">預測相關性研究</div>由已知變項<span class="hl-teal">預測依變項</span>的結果；如：由護理師的工作壓力預測其職業倦怠程度。</div>
+  <div class="c-card accent-coral"><div class="c-head">模式測試相關性研究</div>測試理論模型中各變項間<span class="hl-coral">整體關係</span>是否成立；通常採用路徑分析或結構方程模式。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">範例 7-13</div>
+<strong>研究題目：</strong>加護病房護理人員生命態度與死亡因應自我效能之相關性探討（連如玉等，2020）<br>
+<strong>研究對象：</strong>北部某醫學中心216位護理人員<br>
+<strong>研究結果：</strong>生命態度量表中的「理想、生命自主、愛與關懷」與「死亡因應自我效能」達顯著正相關<br>
+<strong>說明：</strong>探討兩個主要變項（生命態度、死亡因應自我效能）之間的關係，<span class="hl-teal">屬描述相關性研究設計</span>。</div>
+
+<div class="sh">第三大類：時間層面研究設計（Time Dimensional）</div>
+
+<div class="sh2">① 縱貫面研究設計（Longitudinal Research Design）</div>
+<div class="cp">針對一群人進行<span class="hl-gold">長期追蹤</span>，掌握研究主題的變化，獲得較完整的資料。</div>
+<div class="cp"><span class="hl-coral">缺點：</span>個案流失率較高；需重複測量，必須謹慎計畫。</div>
+
+<div class="sh2">② 病例對照研究設計（Case-Control Research Design）</div>
+<div class="cp">針對目前存在的現象連結到<span class="hl-coral">過去</span>所發生的現象——由「果」探討「因」的<span class="hl-gold">回溯性研究設計</span>。比較「有病（病例組）」和「無病（對照組）」兩群人的病史，分析危險因子。計算<span class="kp">勝算比（Odds Ratio）</span>估計危險因子的相關危險程度。</div>
+<div class="imp-box">💡 <strong>比喻：</strong>你已經知道結果（肺癌），往回追問原因（曾經抽菸嗎？）——這就是病例對照研究的邏輯。與前瞻性研究相反，前瞻性是「先看原因，等結果」。對罕見疾病或需要數年才有結果的研究，病例對照研究更可行。</div>
+<div class="ex-box"><div class="ex-tag">範例 7-7</div>
+<strong>研究題目：</strong>放置水袋與壓瘡前期症狀關係之病例對照研究（戴瑞芬等，2009）<br>
+<strong>病例組：</strong>出現壓瘡前期症狀（皮膚發紅）的個案<br>
+<strong>對照組：</strong>無壓瘡前期症狀的個案<br>
+<strong>回溯變項：</strong>是否曾放置水袋（過去的曝露因子）<br>
+<strong>結果：</strong>無論是否在受壓部位放置水袋，都不會減輕壓瘡前期症狀</div>
+<div class="ex-box"><div class="ex-tag">範例 7-8</div>
+<strong>研究題目：</strong>牙周炎與COVID-19併發症的關係（Marouf et al., 2021）<br>
+<strong>病例組：</strong>COVID-19有重大併發症（死亡/入住ICU/需呼吸器）<br>
+<strong>對照組：</strong>COVID-19出院且無重大併發症<br>
+<strong>結果：</strong>牙周炎與COVID-19重大併發症顯著相關，包括顯著增加死亡、入住ICU的風險</div>
+
+<div class="sh2">③ 趨勢研究設計（Trend Research Design）</div>
+<div class="cp">從<span class="hl-gold">同一母群體</span>中，於每一段時間選取樣本，收集相同變項資料，分析其<span class="hl-teal">變動方向</span>，由研究結果的趨勢預測未來趨勢。需特別重視取樣方法的代表性。</div>
+<div class="ex-box"><div class="ex-tag">範例 7-9</div>
+<strong>研究題目：</strong>臺灣地區民眾白內障門急診就診率之趨勢研究（陳思潔等，2022）<br>
+<strong>方法：</strong>採用1998～2018年全民健保醫療統計資料分析（次級資料分析）<br>
+<strong>結果：</strong>臺灣民眾的白內障門急診標準化就診率呈現<span class="hl-coral">上升趨勢</span></div>
+
+<div class="sh2">④ 橫斷面研究設計（Cross-Sectional Research Design）</div>
+<div class="cp">在<span class="hl-gold">某一特定時間</span>內收集一組或多組樣本的資料；可廣泛探討與比較，但<span class="hl-coral">僅能判斷兩者間的相關性，無法判斷因果方向</span>（何者為因、何者為果）。</div>
+<div class="ex-box"><div class="ex-tag">範例 7-12</div>
+<strong>研究題目：</strong>臨床護理人員受到職場暴力的危險因素和心理健康（Pai & Lee, 2011）<br>
+<strong>方法：</strong>521位護理人員完成問卷，同一時間點調查<br>
+<strong>結果：</strong>102位曾遭受肢體暴力（19.6%），268位曾遭受語言暴力（51.4%）<br>
+<strong>說明：</strong>針對一個群組（護理人員）在特定時間點的職場暴力經歷，<span class="hl-teal">屬橫斷面研究設計</span>。</div>
+
+<div class="sh">非傳統研究設計（用於實證實務 EBP）</div>
+<div class="g2">
+  <div class="c-card accent-teal"><div class="c-head">📊 次級資料分析（Secondary Data Analysis）</div>使用<span class="hl-teal">現成資料庫</span>（如健保資料庫、病歷資料）進行資料分析並提出發現；不需要新的資料收集。<br><strong>例：</strong>利用健保資料庫分析台灣20年燒燙傷就診趨勢。</div>
+  <div class="c-card accent-gold"><div class="c-head">🔍 整合分析（Meta-analysis）</div>針對重要主題執行<span class="hl-gold">系統性文獻回顧</span>，有系統地評析與篩選高證據等級文獻，最後整合分析全部資料結果，是實證實務（EBP）中最高等級的研究設計之一。</div>
+</div>
+
+<div class="sh">全面比較表</div>
+<table class="cmp-table">
+<tr><th>設計類型</th><th>時間特性</th><th>因果推論</th><th>主要用途</th></tr>
+<tr><td><span class="hl-gold">典型描述性</span></td><td>單一時間點</td><td class="bad">❌</td><td>描述現況，探索單一或多個變項的特性</td></tr>
+<tr><td><span class="hl-teal">比較描述性</span></td><td>單一或多個</td><td class="bad">❌</td><td>比較不同群體或不同時間點的差異</td></tr>
+<tr><td><span class="hl-coral">相關性</span></td><td>多半為單一</td><td class="bad">❌</td><td>探討變項間關係的方向、程度與強度</td></tr>
+<tr><td><span class="hl-teal">縱貫面（前瞻性）</span></td><td>多個時間點追蹤</td><td>較弱</td><td>追蹤長期變化，比較有無危險因子的差異</td></tr>
+<tr><td><span class="hl-coral">病例對照（回溯性）</span></td><td>由現在→追溯過去</td><td>較弱</td><td>探討罕見疾病的危險因子；由果追因</td></tr>
+<tr><td><span class="hl-gold">趨勢研究</span></td><td>多個時間點</td><td class="bad">❌</td><td>分析趨勢，預測未來</td></tr>
+<tr><td><span class="hl-green">橫斷面</span></td><td>單一時間點</td><td class="bad">❌</td><td>描述現況及變項間的相關性</td></tr>
+</table>
+`,
+quiz:[
+{q:"「病例對照研究（Case-control Study）」探討因果關係的方向是？",opts:["由因探果（先看原因，再看結果）","由果探因（由現在的結果，追溯過去的原因）","同時測量原因和結果，無方向性","不探討因果關係，只描述現況"],ans:1,exp:"病例對照研究針對目前存在的現象（果/依變項），探討是否與過去發生的因素（因/自變項）有相關，方向是由「果」追問「因」，屬回溯性研究設計。"},
+{q:"橫斷面研究設計最大的限制是？",opts:["無法進行統計分析","只能在同一時間點收集資料，無法判斷因果方向","樣本數必須非常大","只適用於護理教育研究"],ans:1,exp:"橫斷面研究設計雖然可以同時收集因與果的兩種資料，但僅能判斷兩者間的相關性為何，無法判斷何者為因、何者為果。"},
+{q:"研究者想了解1998-2018年台灣民眾白內障就診率的變化，最適合採用哪種研究設計？",opts:["典型描述性研究設計","比較描述性研究設計","趨勢研究設計","病例對照研究設計"],ans:2,exp:"趨勢研究設計從同一母群體在不同時間點收集相同變項資料，分析其變動方向，由結果趨勢預測未來；追蹤多年就診率變化正是趨勢研究的典型應用。"},
+{q:"「比較描述性研究設計」與「典型描述性研究設計」的最主要差異是？",opts:["前者有操縱變項","前者針對不同群體或不同時間點進行比較，後者只探討單一樣本的特性","前者是量性研究，後者是質性研究","兩者完全相同，只是名稱不同"],ans:1,exp:"比較描述性研究設計針對不同研究對象進行資料比較（如病患家屬 vs 護理人員的壓力感受），而典型描述性研究設計則只針對單一樣本的某些特性進行描述與解釋。"},
+{q:"「整合分析（Meta-analysis）」在實證實務（EBP）中的地位是？",opts:["是最低等級的研究設計","是非傳統非實驗性研究設計，在EBP中具有最高的證據等級","只適合質性研究使用","整合分析等同於系統性文獻回顧，兩者完全相同"],ans:1,exp:"整合分析屬於非傳統研究設計，常用於實證實務（EBP），針對重要主題系統性回顧並整合高等級證據，在實證健康照護的證據層級中位於最高等級。"}
+]},
+
+{num:8,title:"實驗性研究設計",en:"Experimental Research Design",
+content:`
+<div class="def-box"><span class="def-term">實驗性研究設計</span><span class="def-en">提供<span class="hl-gold">處置、改變、治療、措施或介入</span>，目的在驗證<span class="hl-teal">自變項（IV）與依變項（DV）之間的因果關係</span>；研究結果可預測或解釋現象，或推翻、創新理論。研究者對研究現象通常是較為積極主動的觀察者。</span></div>
+
+<div class="sh">真實驗性研究設計的三大要素</div>
+<div class="g3">
+  <div class="c-card accent-gold"><div class="c-head">🎲 隨機化（Randomization）</div>樣本被<span class="hl-gold">隨機分配</span>到不同的組別（實驗組、對照組），使兩組屬性盡量相同，達到<strong>同質性</strong>，避免因研究對象特質差異影響推論。隨機化是控制干擾變項的最佳方法。</div>
+  <div class="c-card accent-teal"><div class="c-head">🔧 操控（Manipulation）</div>自變項由<span class="hl-teal">研究者主動操控</span>，如提供特定的護理介入措施、教育方案、藥物等。操控的自變項應盡量具體明確，讓實驗組及對照組所接受的處置明顯不同。</div>
+  <div class="c-card accent-coral"><div class="c-head">🛡️ 控制（Control）</div>研究情境需受到某些程度的<span class="hl-coral">控制</span>，最少需有一個對照組作為比較基準；盡量使干擾變項保持不變，確認依變項改變來自自變項的操控。</div>
+</div>
+<div class="imp-box">真實驗性研究設計的三大要素：<span class="hl-gold">隨機化</span>、<span class="hl-teal">操控</span>、<span class="hl-coral">控制</span>——三者<strong>缺一不可</strong>。三要素缺一或缺二者，稱為「<span class="hl-coral">類實驗性研究設計（Quasi-experimental）</span>」，又稱準實驗性研究設計。</div>
+
+<div class="sh">實驗性研究的四大變項</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">自變項（Independent Variable, IV）</span><span class="def-en">研究過程中所提供的<span class="hl-gold">處置、改變、治療或措施</span>（研究者主動操控的變項）。<br>例如：術前衛教、穴位按摩介入、飲食衛教方案。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">依變項（Dependent Variable, DV）</span><span class="def-en">提供處置之後<span class="hl-teal">期望獲得改變的現象</span>（被測量的結果）。<br>例如：術前焦慮程度、睡眠品質、自我照顧效能。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">干擾變項（Extraneous Variable）</span><span class="def-en">具體顯著且<span class="hl-coral">可辨識</span>的外在因素，可能影響依變項的變化。需加以控制。<br>例如：受試者的年齡、慢性病史、用藥情況。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">中介變項（Intervening Variable）</span><span class="def-en">介於自變項與依變項之間，<span class="hl-purple">無法明顯辨識</span>的內在因素，僅能從外顯行為推測。<br>例如：受試者的動機、期望、信念等心理因素。</span></div>
+</div>
+
+<div class="sh">五種常見的實驗性研究設計類型</div>
+<div class="imp-box">📝 <strong>設計圖符號說明：</strong><br>
+R = 隨機分配（Random）　O1 = 前測　O2 = 後測　X = 實驗處置（自變項）　E = 實驗組　C = 對照/控制組</div>
+
+<div class="sh2">① 單組後測設計（One-Group Post-test Only）</div>
+<div class="cp">設計：<code style="background:var(--light);padding:2px 6px;border-radius:4px;">E: X → O2</code>（只有實驗組，無前測，只有後測）</div>
+<div class="g2">
+  <div class="c-card-g"><div class="c-head">✅ 優點</div>樣本數少；適用於個案數稀少的母群體（如骨髓移植者、愛滋病病人）；無前測效應干擾。</div>
+  <div class="c-card-r"><div class="c-head">⚠️ 缺點</div>缺乏對照組；無法辨識結果是來自選擇效應或實驗處置介入；無法排除自然成熟的影響。</div>
+</div>
+
+<div class="sh2">② 單組前後測設計（One-Group Pre-test / Post-test）——前實驗設計</div>
+<div class="cp">設計：<code style="background:var(--light);padding:2px 6px;border-radius:4px;">E: O1 → X → O2</code>（有前後測對比，但無對照組）</div>
+<div class="g2">
+  <div class="c-card-g"><div class="c-head">✅ 優點</div>提供前後測差異可印證研究對象接受實驗處置後之效果；樣本需求較少，增加可行性。</div>
+  <div class="c-card-r"><div class="c-head">⚠️ 缺點</div>缺乏對照組；前測可能產生<span class="hl-coral">練習效應（testing effect）</span>；研究結果無法推論到未曾接受前測的樣本群。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">範例 8-6</div>
+<strong>研究題目：</strong>導入「3D列印恥骨上聯合膀胱造瘻模具」提升居家尿管留置異常評估與處置之成效（陳乃菁等，2020）<br>
+<strong>設計：</strong>單組前後測類實驗設計，探討擬真情境教學在尿管錯置異常情境處置的知能、技能差異<br>
+<strong>結果：</strong>此擬真情境教學可增加居家護理師對恥骨上尿管錯置異常事件評估的處置能力</div>
+
+<div class="sh2">③ 不隨機分配之雙組前後測設計（Nonequivalent Control Group Design）</div>
+<div class="cp">設計：<code style="background:var(--light);padding:2px 6px;border-radius:4px;">E: O1 → X → O2 / C: O1 → O2</code>（兩組皆有前後測，但非隨機分配）</div>
+<div class="g2">
+  <div class="c-card-g"><div class="c-head">✅ 優點</div>前後測差異可顯示實驗處置效果；前測可監測兩組依變項的同質性；前測效應同時影響兩組，可排除前測效應干擾。</div>
+  <div class="c-card-r"><div class="c-head">⚠️ 缺點</div>未採隨機分配，無法完全控制干擾變項；研究結果難以推論到未接受前測的樣本群；所需樣本數較多。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">範例 8-7</div>
+<strong>研究題目：</strong>團體多媒體護理指導光碟對心導管檢查病人認知及焦慮成效（鍾凱吉等，2017）<br>
+<strong>對照組：</strong>四份常規紙本護理指導單張 ／ <strong>實驗組：</strong>紙本＋多媒體心導管護理指導影片（團體衛教）<br>
+<strong>結果：</strong>實驗組個案的認知成效更佳</div>
+
+<div class="sh2">④ 隨機分配之雙組前後測設計（Randomized Pre-test / Post-test Control Group）</div>
+<div class="cp">設計：<code style="background:var(--light);padding:2px 6px;border-radius:4px;">R: E: O1 → X → O2 / R: C: O1 → O2</code>（隨機分配＋前後測）——<span class="hl-gold">真實驗性研究設計</span></div>
+<div class="ex-box"><div class="ex-tag">範例 8-10</div>
+<strong>研究題目：</strong>探討團隊導向學習策略（TBL）於護理人員在職教育之學習成效（游錦淑等，2019）<br>
+<strong>對照組：</strong>課室教學 ／ <strong>實驗組：</strong>採TBL策略（隨機分派）<br>
+<strong>測量時間點：</strong>課前知識測驗 + 課後立即測驗 + 授課後1個月後測</div>
+
+<div class="sh2">⑤ 多組後測設計（Multiple Group Post-test）</div>
+<div class="ex-box"><div class="ex-tag">範例 8-8</div>
+<strong>研究題目：</strong>腹部手術病人使用保暖設備改善術中低體溫（黃欣誼等，2018）<br>
+<strong>對照組：</strong>未使用保暖設備 ／ <strong>實驗組一：</strong>強制空氣加溫毯 ／ <strong>實驗組二：</strong>熱風滲透手術袍（共三組）<br>
+<strong>結果：</strong>兩種保暖設備均優於對照組；實驗組二在2.5小時後效果最佳</div>
+
+<div class="sh">影響內在效度的六大干擾因素</div>
+<div class="imp-box">💡 <strong>內在效度（Internal Validity）</strong>：研究結果是否真正反應實驗本身發生的事項（即依變項的改變，確實是自變項造成的）。內在無效度指研究結果受到非自變項的因素影響。</div>
+<div class="g2">
+  <div class="c-card accent-coral"><div class="c-head">① 時間演進的因素</div>
+    <ul class="b-list">
+      <li><span class="hl-coral">成熟化（Maturation）</span>：受試者隨時間自然成長或身心改變，影響研究結果</li>
+      <li><span class="hl-gold">歷史事件（History）</span>：研究期間發生不可預期事件（如：地震、COVID-19疫情），影響受試者填答</li>
+      <li><span class="hl-teal">變項對時間過度敏感</span>：如大面積燒傷病人在研究期間的自然康復或死亡</li>
+    </ul>
+  </div>
+  <div class="c-card accent-gold"><div class="c-head">② 研究工具的信效度因素</div>測量儀器需定期保養校正；量表問卷需測試信效度；以確保測量結果的精確性。<br><em>例：陳虹如等研究每年維修校正生理監測儀器，並在收案前再次校正。</em></div>
+  <div class="c-card accent-teal"><div class="c-head">③ 選擇樣本的因素</div><span class="hl-teal">選擇偏差（Selection Bias）</span>：未隨機分配導致實驗組與對照組不同質，在實驗處置介入前兩組已出現偏差。</div>
+  <div class="c-card accent-purple"><div class="c-head">④ 測試的因素</div>
+    <ul class="b-list">
+      <li><span class="hl-purple">前測效應（Testing Effect）</span>：研究對象因前測的暗示或提醒，刻意注意研究相關內容</li>
+      <li><span class="hl-coral">練習效應</span>：多次測試導致熟悉測試內容；測量間隔越短越明顯</li>
+    </ul>
+  </div>
+  <div class="c-card accent-gold"><div class="c-head">⑤ 參與研究者之個人因素</div>
+    <ul class="b-list">
+      <li><span class="hl-gold">霍商效應（Hawthorne Effect）</span>：參與研究的人員因被觀察而刻意改變行為</li>
+      <li><span class="hl-teal">新奇效應（Novelty Effect）</span>：初次參與或好奇而改變原本行為反應</li>
+      <li><span class="hl-coral">寬慰效應（Placebo Effect）</span>：實驗組個案因信賴實驗處置，產生預期性效果</li>
+    </ul>
+  </div>
+  <div class="c-card accent-coral"><div class="c-head">⑥ 其他影響因素</div>
+    <ul class="b-list">
+      <li><span class="hl-coral">統計迴歸（Regression to Mean）</span>：極佳者及極差者的得分，過一段時間後趨近於平均數</li>
+      <li><span class="hl-gold">實驗處置的傳布</span>：實驗組樣本將處置內容告知對照組，導致「汙染」</li>
+      <li><span class="hl-teal">補償（Compensation）</span>：研究者對控制組備感愧疚而給予額外補償</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh">影響外在效度的因素</div>
+<div class="def-box"><span class="def-term">外在效度（External Validity）</span><span class="def-en">研究結果的<span class="hl-gold">普遍性及推論性</span>——研究結果能否推論到其他情境或樣本。外在無效度是指研究結果無法概化到真實世界。</span></div>
+<ul class="b-list">
+  <li>研究對象的<strong>個人基本屬性限制越多</strong>（年齡、性別、地區），研究結果越難普遍推論</li>
+  <li>實驗室情境控制<strong>過於完善</strong>，結果無法推論到自然情境</li>
+  <li>樣本來源<strong>過於特定</strong>（志願者、特定醫院），代表性不足</li>
+  <li>設計前後測的研究，結果難以推論到<strong>未曾接受前測</strong>的真實情境</li>
+</ul>
+<div class="imp-box">避免內在效度威脅的重要策略：採用<span class="hl-gold">雙盲（Double Blind）設計</span>——不告知相關人員（含工作人員及受試者）被分到哪一組，由第三方保管相關資料，可避免因了解研究而引發行為改變效應。</div>
+`,
+quiz:[
+{q:"真實驗性研究設計的三大要素是？",opts:["觀察、分析、推論","隨機化、操控、控制","描述、相關、因果","樣本、工具、統計"],ans:1,exp:"真實驗性研究設計的三大要素為：①樣本被「隨機」分配到不同的組別；②自變項由研究者「操控」；③研究情境需受到某些程度的「控制」，三者缺一不可。"},
+{q:"「霍商效應（Hawthorne Effect）」是指？",opts:["研究對象因信賴實驗處置而產生預期效果","參與研究的人員因被觀察而刻意關注情境，改變自身行為","研究者因愧疚而給予控制組額外補償","研究對象的得分趨近於平均數的現象"],ans:1,exp:"霍商效應是指參與研究的人員，為了因應研究目的而刻意關注研究情境，並改變自身的行為或態度，影響研究結果的真實性。"},
+{q:"「不隨機分配取樣之雙組前後測設計（Nonequivalent Control Group Design）」相較於單組前後測設計的優點是？",opts:["不需要隨機分配即可建立因果關係","前測可監測兩組的同質性，且前測效應同時影響兩組，可排除前測效應干擾","樣本數更少，更節省資源","完全不受選擇偏差影響"],ans:1,exp:"不隨機分配雙組前後測設計的優點：前測資料可監測兩組同質性；且前測效應同時影響兩組，可排除前測效應干擾；比單組設計多一個對照組的比較。"},
+{q:"「統計迴歸現象（Regression to the Mean）」的意義是？",opts:["統計結果必須達顯著水準","縱使沒有實驗處置，極佳者及極差者的得分也會逐漸趨向平均數","研究對象的資料必須進行迴歸分析","統計誤差越來越小的過程"],ans:1,exp:"統計迴歸現象（Regression to the Mean）：樣本之得分概況可能在過了一段時間後趨近於「團體平均數」，縱使沒有實驗處置，極佳者及極差者也會逐漸地趨向平均數。"},
+{q:"「雙盲（Double Blind）設計」的目的是？",opts:["讓所有參與者都了解研究目的","不告知相關人員被分到哪一組，避免因了解研究而引發行為改變效應","讓兩組都接受相同的介入措施","確保樣本數足夠代表母群體"],ans:1,exp:"雙盲設計不告知參與研究的相關人員（含工作人員及受試者）被分到哪一組，由第三方保管相關資料，可避免因對研究的了解而引發興趣或好奇心，導致行為改變而影響研究結果的內在效度。"}
+]},
+
+{num:9,title:"質性研究",en:"Qualitative Research",
+content:`
+<div class="sh">為什麼需要質性研究？</div>
+<div class="cp">護理是一門有關<strong>人類經驗、健康和疾病</strong>的專業，而人的經驗受到歷史、重要他人、社會結構、性別或文化等因素影響，產生非常多元的面貌。許多護理知識（倫理性、個別性、美學性知識）比較抽象，<span class="hl-gold">量性研究的問卷或數字無法完全捕捉</span>這些豐富的人類經驗，因此需要質性研究。</div>
+<div class="imp-box">💡 <strong>簡單比喻：</strong>量性研究像拍一張病人疼痛程度的「數字快照」（VAS 7分）；質性研究像是坐下來聽病人<span class="hl-teal">說出疼痛如何改變他的生活、他的恐懼、他的家庭關係</span>——兩者缺一不可。</div>
+
+<div class="sh">兩大研究典範的比較</div>
+<table class="cmp-table">
+<tr><th>面向</th><th>實證主義（量性研究）</th><th>自然主義（質性研究）</th></tr>
+<tr><td>對真理的看法</td><td>世上原就有<span class="hl-gold">客觀真理</span>，可被測量驗證</td><td>真理透過<span class="hl-teal">感官知覺與主觀經驗</span>才存在</td></tr>
+<tr><td>思考模式</td><td>假設事實存在→設計方法測量→推論</td><td>深入情境→收集經驗→歸納意義</td></tr>
+<tr><td>研究目的</td><td>測量、驗證、<span class="hl-coral">推論通則</span></td><td>理解、詮釋、<span class="hl-teal">描述現象意義</span></td></tr>
+<tr><td>樣本數</td><td>較多（統計代表性）</td><td>較少（<span class="hl-gold">資料飽和</span>為停止依據）</td></tr>
+<tr><td>資料性質</td><td>數字、統計</td><td>文字、語言、觀察記錄</td></tr>
+<tr><td>研究者角色</td><td>客觀局外者</td><td><span class="hl-teal">研究工具本身</span>，主動參與</td></tr>
+<tr><td>資料分析時機</td><td>資料收集完整後統一分析</td><td><span class="hl-gold">資料收集同時進行分析</span>，直到飽和</td></tr>
+</table>
+
+<div class="sh">質性研究的哲學根源</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">🏛️ 胡塞爾的「超驗現象學」</div>
+    核心主張：<span class="hl-gold">「回到事物本身」</span><br>
+    意思：把所有先入為主的成見「括弧起來」（存而不論），讓事物的真實樣貌自然呈現。<br><br>
+    <strong>護理舉例：</strong>研究「臨終病人的靈性需求」時，不預設「靈性就是宗教信仰」，而是完全開放地聆聽病人描述什麼對他有意義。
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">🌀 海德格的「基礎存在學」</div>
+    核心主張：<span class="hl-teal">「存有」（Being）</span>，人的存在是時間性的<br>
+    意思：事物的意義不是獨立存在的，而是存在於「人與世界的關係」之中。對死亡的恐懼、對家人的愛——這些才是真實。<br><br>
+    <strong>護理舉例：</strong>探討「中風病人的適應經驗」，重視病人在「發病前的我→發病→現在的我」這個時間脈絡中的意義轉變。
+  </div>
+</div>
+
+<div class="sh">資料飽和（Data Saturation）——質性研究停止收案的依據</div>
+<div class="def-box"><span class="def-term">資料飽和</span><span class="def-en">指資料以歸納的方式進行分析，已達穩定而<span class="hl-gold">不會歸納出新的類別</span>時，表示資料量已足夠。質性研究的個案數目不是判斷樣本數是否足夠的標準，<span class="hl-teal">資料多寡才是決定的關鍵</span>。<br><br><strong>比喻：</strong>就像倒不同顏色的彩色筆：前幾支會出現新顏色，但當你繼續倒，發現都是重複的顏色了，那就是「飽和」了。</span></div>
+
+<div class="sh">質性研究資料分析的步驟</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">逐字聽寫</div>訪談錄音→文字稿</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">重要陳述</div>找出有意義的片段</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">開放譯碼</div>確認訊息單元並編碼</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">類別形成</div>依特質歸納不同類別</div>
+  <div class="flow-step"><div class="fs-num">5</div><div class="fs-txt">主題形成</div>類別→主題</div>
+  <div class="flow-step"><div class="fs-num">6</div><div class="fs-txt">成員確認</div>交回受訪者確認是否符合其經驗</div>
+</div>
+
+<div class="sh" style="margin-top:24px">🔬 六大質性研究類型詳解</div>
+<div class="imp-box">以下六種類型各有不同的哲學背景、研究目的與分析方法，選擇時需依<span class="hl-gold">研究目的</span>來決定——不是隨意選擇！</div>
+
+<div class="sh2" style="margin-top:16px">① 現象學研究（Phenomenological Research）</div>
+<div class="c-card accent-gold" style="margin-bottom:14px">
+  <div class="c-head">🎯 核心目的</div>
+  <div class="cp">了解<span class="hl-gold">人類生活經驗的主觀意義與本質</span>——「這個現象對當事人來說，到底是什麼感受？」不切割地描述整個經驗的完整結構。</div>
+  <div class="c-head" style="margin-top:10px">🔍 適合問題類型</div>
+  <div class="cp">「<em>接受化療的乳癌病人，其疾病適應的經驗是什麼？</em>」「<em>初為人母的護理師，其工作與家庭平衡的主觀感受？</em>」</div>
+  <div class="c-head" style="margin-top:10px">📋 資料收集</div>
+  <div class="cp">深度訪談為主，請受訪者<strong>述說生活經驗</strong>；研究者以直觀方式閱讀資料，尋找隱藏在敘述中的意義（連結「背景脈絡」與「可被看到的對象」）。</div>
+  <div class="c-head" style="margin-top:10px">🧪 分析方法</div>
+  <div class="cp"><span class="kp">沉浸／結晶分析型</span>：研究者不斷深入閱讀原始資料，將體會「結晶化」成研究結論。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——現象學</div>
+<strong>研究題目：</strong>工作與生命意義的實踐：急重症護理師的疫起挑戰（李美秀、許欽津，2022）<br>
+<strong>研究對象：</strong>15位急重症護理師進行深度訪談<br>
+<strong>研究發現：</strong><br>
+▸ <span class="hl-gold">工作意義</span>：讓生活安定、因使命固守崗位、看見自己的價值<br>
+▸ <span class="hl-teal">生命意義</span>：照顧家人、生死無常、行善、把握當下<br>
+<strong>研究結論：</strong>急重症護理師能以正面態度面對疫情挑戰，體現自我的生命意義。</div>
+
+<div class="sh2" style="margin-top:20px">② 詮釋學研究（Hermeneutics Research）</div>
+<div class="c-card accent-teal" style="margin-bottom:14px">
+  <div class="c-head">🎯 核心目的</div>
+  <div class="cp">透過「<span class="hl-teal">自我述說</span>」探究人的屬己歷程——受訪者回顧過去生活經驗脈絡中的印象，形成自然的故事（通常是回憶重整）。</div>
+  <div class="c-head" style="margin-top:10px">🔑 兩項重要原則</div>
+  <div class="g2" style="margin:6px 0">
+    <div class="c-card-t"><div class="c-head">前了解（Pre-understanding）</div>研究者在進入研究前，已有某些先存的理解與假設；這些前了解既可能幫助理解，也可能形成偏見，需要持續反思。</div>
+    <div class="c-card-t"><div class="c-head">詮釋循環（Hermeneutic Circle）</div>理解是一個循環過程：從整體→部分→整體，不斷來回。就像理解一本書需要先讀一章，再回頭看全書意義，再深入章節……</div>
+  </div>
+  <div class="c-head" style="margin-top:10px">📋 資料收集</div>
+  <div class="cp">受訪者向研究者進行「自我述說」；以<span class="kp-t">主題分析</span>為主要分析方式。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——詮釋學</div>
+<strong>研究題目：</strong>The essence of spirituality of terminally ill patients（Chao et al., 2002）<br>
+<strong>研究方法：</strong>詮釋學方法探討末期病人的靈性本質<br>
+<strong>研究發現（四大類別模型、10個主題）：</strong><br>
+▸ <span class="hl-gold">與自己共融</span>：自我認同、完整的自我、內在平安<br>
+▸ <span class="hl-teal">與他人共融</span>：愛（與他人的關懷關係）、和解（寬恕與被寬恕）<br>
+▸ <span class="hl-coral">與大自然共融</span>：從大自然而來的靈感、創造力<br>
+▸ <span class="hl-green">與至高者共融</span>：信仰、希望、感恩</div>
+
+<div class="sh2" style="margin-top:20px">③ 紮根理論研究（Grounded Theory Research）</div>
+<div class="c-card accent-coral" style="margin-bottom:14px">
+  <div class="c-head">🎯 核心目的</div>
+  <div class="cp">利用<span class="hl-coral">歸納方式</span>，由所收集的資料中<span class="hl-gold">孕育出理論</span>（而非驗證既有理論）；修改理論模式或建立新的理論模式。強調社會學，注重人們對社會生活所賦予的意義。</div>
+  <div class="c-head" style="margin-top:10px">💡 「紮根」的意思</div>
+  <div class="cp">理論是從資料中「長出來的」，就像植物從土地中生長——必須<span class="hl-teal">紮根於真實資料</span>，而不是先有理論再找資料驗證。</div>
+  <div class="c-head" style="margin-top:10px">📋 資料收集與分析</div>
+  <div class="cp">深度訪談 + 觀察 + 參與性觀察；將個案資料進行<strong>沉澱→觀察→歸納→比較→概念化→具體化</strong>，最終形成理論。在國內護理研究中相當多。</div>
+  <div class="c-head" style="margin-top:10px">特色取樣方式</div>
+  <div class="cp"><span class="kp-r">理論性取樣（Theoretical Sampling）</span>：隨著分析進行，選擇能補充或驗證正在發展理論的新個案。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——紮根理論</div>
+<strong>研究題目：</strong>探討首次腦中風病患初期之調適過程（蔡惠如等，2016）<br>
+<strong>取樣：</strong>12位初次腦中風病患（先立意取樣，後採理論性取樣）<br>
+<strong>研究發現（2個範疇、6個次範疇）：</strong><br>
+▸ <span class="hl-coral">中風的衝擊</span>：①失去身體自主權 ②喪失自我價值 ③難以承受，產生社交隔離<br>
+▸ <span class="hl-green">中風後的因應</span>：④積極復健，重獲自主權 ⑤家人支持，努力不成為負擔 ⑥由苦難中昇華，轉趨正向<br>
+<strong>核心範疇：</strong>「面對中風，懷抱希望，人生就此改變」</div>
+
+<div class="sh2" style="margin-top:20px">④ 民族誌研究（Ethnographic Research）</div>
+<div class="c-card accent-green" style="margin-bottom:14px">
+  <div class="c-head">🎯 核心目的</div>
+  <div class="cp">了解<span class="hl-green">不同人群的文化</span>，在個案熟悉的環境下，進行系統化觀察與研究——「這群人共享的文化意義是什麼？」</div>
+  <div class="c-head" style="margin-top:10px">💡 「民族誌」的意思</div>
+  <div class="cp">原本用於研究原住民部落文化，現擴展至任何「文化群體」。例如：加護病房的護理文化、癌症病房的病童世界、糖尿病患者的飲食文化。研究者需要長時間<span class="hl-teal">進入其中</span>，真正了解這個群體「從裡面看出去」是什麼樣子。</div>
+  <div class="c-head" style="margin-top:10px">📋 資料收集</div>
+  <div class="cp"><span class="kp-g">田野研究（Field Research）</span>為主：訪談、文獻收集、<span class="hl-teal">參與性觀察</span>。結果可以文化報告或個案報告方式呈現。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——民族誌</div>
+<strong>研究題目：</strong>生活世界的失序：臺灣糖尿病婦女疾病經驗之探討（許敏桃等，2015）<br>
+<strong>方法：</strong>民族誌、深度訪談 + 田野觀察，18位糖尿病婦女（病史至少1年），詮釋循環分析<br>
+<strong>研究主軸：</strong>「生活世界失序」四個主題：<br>
+▸ <span class="hl-coral">身體失序</span>：仰賴醫療者（他人）來理解自己身體<br>
+▸ <span class="hl-gold">生活失序</span>：從控制食物到反過來被食物控制<br>
+▸ <span class="hl-teal">家庭失序</span>：生病的人就是無能的人<br>
+▸ <span class="hl-purple">自我失序</span>：必須為家人（他人）控制身體<br>
+<strong>建議：</strong>應將性別文化角色納入糖尿病自我管理的動力，並納入家庭整體照護角度。</div>
+
+<div class="sh2" style="margin-top:20px">⑤ 歷史性研究（Historical Research）</div>
+<div class="c-card accent-purple" style="margin-bottom:14px">
+  <div class="c-head">🎯 核心目的</div>
+  <div class="cp">對<span class="hl-purple">過去事件進行有系統的資料收集和評估</span>，藉以發現事件發生的因果關係、發展規律並加以解釋，以作為<span class="hl-gold">了解現在及預測未來</span>的基礎。</div>
+  <div class="c-head" style="margin-top:10px">💡 「歷史研究」不只是查資料！</div>
+  <div class="cp">需要對過去的護理發展、政策演變、特定事件進行<strong>批判性分析</strong>，找出其中的規律與意義。</div>
+  <div class="g2" style="margin-top:8px">
+    <div class="c-card-g"><div class="c-head">✅ 優點</div>資料現成，不需求取研究對象合作；可了解長期歷史發展脈絡。</div>
+    <div class="c-card-r"><div class="c-head">⚠️ 缺點</div>若資料來源為多年前，將無法追查記錄的正確性；可能存在史料偏頗。</div>
+  </div>
+  <div class="c-head" style="margin-top:10px">📋 資料收集</div>
+  <div class="cp">訪談曾經歷該歷史事件而目前仍存活的人（<span class="kp-g">口述歷史</span>），或直接收集文獻、照片、相關檔案資料加以分析判讀。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——歷史性研究</div>
+<strong>研究題目：</strong>An oral historical study of the development of the discipline of military nursing in Taiwan from 1948 to 1970（Mu & Lin, 2007）<br>
+<strong>方法：</strong>與趙鳳宜女士進行四次深度訪談（口述歷史），並納入文獻、照片、相關檔案資料查考<br>
+<strong>研究發現（四項主題）：</strong>個人經驗及成長、護理奠基期、護理專業的發展及傳統、發展與趨勢<br>
+<strong>貢獻：</strong>不僅記錄了軍護的專業發展，更展現其價值意義。</div>
+
+<div class="sh2" style="margin-top:20px">⑥ 批判理論研究（Critical Theory Research）</div>
+<div class="c-card" style="border-top:3px solid #7b5ccc;margin-bottom:14px">
+  <div class="c-head" style="color:#c4b0f5">🎯 核心目的</div>
+  <div class="cp">透過<span class="hl-purple">批判及解放性知識的反思</span>，讓人類從錯誤意識中解放——保護人類免於被錯誤意識矇蔽對真理的認識。應用於健康研究，可使個人<span class="hl-gold">培力與覺醒</span>，弱勢者重獲控制權。</div>
+  <div class="c-head" style="margin-top:10px;color:#c4b0f5">💡 「批判」的意思</div>
+  <div class="cp">不是單純的「批評」，而是<strong>反思社會結構、權力關係、意識形態</strong>如何影響人們的健康與生活。例如：貧窮為什麼導致健康不平等？醫療體制如何壓制病人的自主性？</div>
+  <div class="c-head" style="margin-top:10px;color:#c4b0f5">🔁 行動研究歷程（衍生方法）</div>
+  <div class="flow" style="margin-top:6px">
+    <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">找出起始點</div>發現不平等</div>
+    <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">情境釐清</div>分析問題結構</div>
+    <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">行動策略</div>制定改變方案</div>
+    <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">轉入實踐</div>執行並反思</div>
+  </div>
+  <div class="cp" style="margin-top:8px">研究者需從經驗中學習，不斷擬定新策略，直到發展適當策略而達到預定結果。哲學家：<span class="hl-purple">哈伯瑪斯（Habermas）</span>。</div>
+</div>
+<div class="ex-box"><div class="ex-tag">📌 臨床研究範例——批判理論</div>
+<strong>研究題目：</strong>哈伯瑪斯的批判理論對高齡教育教師專業之啟示（徐敏容，2016）<br>
+<strong>核心主張：</strong>樂齡教育應與傳統以知識傳遞為主的教育不同，需重視師生互動與學生主體性<br>
+<strong>三項啟示：</strong><br>
+▸ <span class="hl-teal">師生關係</span>：加強師生互動，建立良好關係並營造合宜學習氛圍<br>
+▸ <span class="hl-gold">教學內容</span>：以學生為主體，融合多元性教學方式並適時調整<br>
+▸ <span class="hl-coral">教師素養</span>：持續學習（示範者）並進行反思實踐</div>
+
+<div class="sh">六大類型一覽比較</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>哲學背景</th><th>研究目的</th><th>分析方式</th><th>適合問題</th></tr>
+<tr><td><span class="hl-gold">現象學</span></td><td>胡塞爾、海德格的現象學</td><td>了解生活經驗的主觀意義與本質</td><td>沉浸/結晶分析、主題分析</td><td>「某經驗對當事人是什麼感受？」</td></tr>
+<tr><td><span class="hl-teal">詮釋學</span></td><td>海德格、高達美的詮釋學</td><td>透過自我述說探究屬己歷程</td><td>主題分析、詮釋循環</td><td>「某生命歷程的個人意義？」</td></tr>
+<tr><td><span class="hl-coral">紮根理論</span></td><td>符號互動論、社會學</td><td>由資料歸納建構理論</td><td>比較分析、編輯分析型</td><td>「某現象如何發展？能建立什麼理論？」</td></tr>
+<tr><td><span class="hl-green">民族誌</span></td><td>社會科學、人種學</td><td>了解特定文化群體的共享意義</td><td>田野研究、詮釋循環</td><td>「這個群體的文化是什麼？」</td></tr>
+<tr><td><span class="hl-purple">歷史性</span></td><td>社會科學、歷史學</td><td>了解過去事件以預測未來</td><td>歷史文獻分析、口述歷史</td><td>「歷史如何發展？有何規律？」</td></tr>
+<tr><td><span style="color:#c4b0f5;font-weight:700">批判理論</span></td><td>哈伯瑪斯、批判學派</td><td>解放不必要的宰制，促進培力</td><td>反思、行動研究螺旋</td><td>「誰被壓迫？如何改變不平等？」</td></tr>
+</table>
+
+<div class="sh">質性研究的資料收集方法</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">深度訪談（In-depth Interview）</div>
+    <ul class="b-list">
+      <li><span class="hl-gold">半結構式訪談</span>：先設計訪談指引作為引導，但依受訪者回應彈性調整。<em>例：「此次住院的感受及經歷為何？」</em></li>
+      <li><span class="hl-teal">非結構式訪談</span>：只有方向，無固定問題。<em>例：「請您談談您對希望的想法。」</em></li>
+      <li><span class="hl-coral">圖畫投射法</span>：對兒童使用圖表作為投射工具，如請氣喘兒童描述打針的感受。</li>
+    </ul>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">田野研究（Field Research）</div>在自然環境中，對某現象的本質加以探索。研究者可扮演四種角色：<span class="kp-t">完全參與</span>、<span class="kp-t">觀察的參與</span>、<span class="kp-t">參與的觀察</span>、<span class="kp-t">完全觀察</span>。</div>
+  <div class="c-card accent-coral"><div class="c-head">焦點團體訪談（Focus Group Interview）</div>針對某議題，對「特定團體」進行「焦點訪談」，允許團體成員彼此交談討論，研究者引導訪談並從中收集資料。</div>
+  <div class="c-card accent-green"><div class="c-head">三角交叉法（Triangulation）</div>在同一研究中，合併<span class="hl-green">兩種或兩種以上</span>的理論、資料來源、研究法或研究對象，以確保研究結果的正確性；可增加質性研究的可信度。</div>
+</div>
+
+<div class="sh">質性研究的可信度（Trustworthiness）</div>
+<table class="cmp-table">
+<tr><th>量性研究</th><th>對應</th><th>質性研究</th><th>達成方式</th></tr>
+<tr><td>內在效度</td><td>→</td><td><span class="hl-gold">確實性（Credibility）真實性</span></td><td>成員確認、長期觀察、三角交叉法</td></tr>
+<tr><td>外在效度</td><td>→</td><td><span class="hl-teal">推廣性（Transferability）運用性</span></td><td>豐富、詳細的描述</td></tr>
+<tr><td>信度</td><td>→</td><td><span class="hl-coral">信賴性（Dependability）一致性</span></td><td>詳細記錄研究過程、同儕檢視</td></tr>
+<tr><td>客觀性</td><td>→</td><td><span class="hl-green">確認性（Confirmability）中立性</span></td><td>研究者反思、存而不論（Bracketing）</td></tr>
+</table>
+`,
+quiz:[
+{q:"質性研究「資料飽和（Data Saturation）」的意義是？",opts:["收集到30人樣本","資料分析達統計顯著水準（p<0.05）","資料以歸納方式分析已達穩定，不會歸納出新的類別","研究者主觀認為已收集足夠資料"],ans:2,exp:"資料飽和指資料以歸納的方式進行分析達穩定而不會歸納出新的類別，表示資料量已足夠；個案數目不是判斷樣本數是否足夠的標準，資料多寡才是決定的關鍵。"},
+{q:"「紮根理論研究（Grounded Theory Research）」的核心特色是？",opts:["驗證既有理論是否成立","由所收集的資料中歸納孕育出新理論","描述人類生活經驗的主觀意義與本質","了解特定文化群體的共享文化意義"],ans:1,exp:"紮根理論的核心是利用歸納方式，將所收集的資料發展為理論的研究過程——理論是從資料中「長出來的」，而不是先有理論再找資料驗證。"},
+{q:"護理師想研究「糖尿病婦女在台灣文化中的疾病經驗與生活型態」，最適合採用哪種質性研究類型？",opts:["現象學研究","紮根理論研究","民族誌研究","歷史性研究"],ans:2,exp:"民族誌研究的目的是了解不同人群的文化，研究者在個案熟悉的環境下進行系統化觀察，了解人們共享的文化意義；研究糖尿病婦女在台灣文化脈絡中的疾病經驗，正是民族誌的核心目的。"},
+{q:"下列哪種質性研究類型最適合探討「1950-1970年台灣護理專業的發展脈絡與演變」？",opts:["現象學研究","批判理論研究","紮根理論研究","歷史性研究"],ans:3,exp:"歷史性研究對過去事件進行有系統的資料收集和評估，藉以發現事件發生的因果關係與發展規律，以作為了解現在及預測未來的基礎；探討護理專業歷史發展正是歷史性研究的典型應用。"},
+{q:"質性研究可信度中，對應量性研究「外在效度」的指標是？",opts:["確實性（Credibility）——真實性","推廣性（Transferability）——運用性","信賴性（Dependability）——一致性","確認性（Confirmability）——中立性"],ans:1,exp:"推廣性（Transferability）對應量性研究的外在效度，指研究結果是否可適用於其他情境；達成方式是提供豐富、詳細的描述，讓讀者判斷是否可遷移至其他情境。"}
+]},
+
+{num:10,title:"個案報告與個案研究",en:"Case Report and Case Study",
+content:`
+<div class="sh">定義與區別</div>
+<div class="g2">
+<div class="def-box" style="margin:0"><span class="def-term">個案報告（Case Report）</span><span class="def-en">將對個案有效的<span class="hl-gold">護理處置過程</span>與分析個案問題的護理過程呈現；記錄各護理人員以個案為中心之整體護理，建立護理經驗資料，豐富教學題材，促進護理專業化。<br><br><strong>重點：</strong>以護理過程（評估→診斷→計畫→執行→評值）為框架，呈現一位個案的完整照護故事。</span></div>
+<div class="def-box" style="margin:0"><span class="def-term">個案研究（Case Study）</span><span class="def-en">通過一種或多種方法，進行人、事件、決策及機構或其他系統的<span class="hl-teal">整體探討過程</span>；是有意義的小規模研究，目的在深入描述經驗，也是一種研究策略。<br><br><strong>重點：</strong>以研究形式深入探討特殊問題，允許研究者從研討過程及結果中學習對特殊問題的了解。</span></div>
+</div>
+
+<div class="sh">個案報告的四大目的（含臨床範例）</div>
+<div class="c-card accent-gold" style="margin-bottom:10px">
+  <div class="c-head">① 增進護理新知</div>
+  <div class="cp">記錄有效的護理處置，分享臨床創新智慧。</div>
+  <div class="ex-box" style="margin:6px 0 0"><div class="ex-tag">範例：脊髓腫瘤居家護理（陳淑玲等，2015）</div>
+  62歲婦人，脊髓腫瘤壓迫導致下肢麻痺，尾骨三級壓力性損傷<strong>長達一年未癒</strong>。<br>
+  <span class="hl-teal">創新做法：</span>居家護理師以智慧型手機上傳傷口照片至資訊雲端，讓家屬及醫師共同討論，便於協調就診與跨專業醫療團隊介入。<br>
+  <span class="hl-green">結果：</span>傷口在一個月內癒合。</div>
+</div>
+<div class="c-card accent-teal" style="margin-bottom:10px">
+  <div class="c-head">② 提供大型研究計畫參考（前驅研究）</div>
+  <div class="cp">個案報告常是<span class="kp-t">前驅研究（Pilot Research）</span>，所獲知識提供後續大型研究之參考。</div>
+  <div class="ex-box" style="margin:6px 0 0"><div class="ex-tag">範例：失智失能居家護理（蕭瑋鈴等，2020）</div>
+  84歲輕度失智失能個案，資料收集：居家訪視、電話訪談、觀察。<br>
+  護理問題與介入：<br>
+  ▸ <span class="hl-coral">潛在危險性跌倒</span> → 影片指導簡易健康操<br>
+  ▸ <span class="hl-gold">自我照顧能力缺失</span> → 中醫穴位圖卡、鼓勵參與沐浴如廁<br>
+  ▸ <span class="hl-teal">吞嚥障礙</span> → 衛教正確食物攝取、進食技巧、健口操<br>
+  目標：增進生活品質，延緩病程，作為照護類似個案參考。</div>
+</div>
+<div class="c-card accent-coral" style="margin-bottom:10px">
+  <div class="c-head">③ 驗證發展中的護理概念或理論架構</div>
+  <div class="cp">提供較單純卻更容易實際驗證的空間。</div>
+  <div class="ex-box" style="margin:6px 0 0"><div class="ex-tag">範例：乳癌復發照護（陳思穎、潘雪幸，2021）</div>
+  44歲乳癌復發多處轉移合併肋膜積液個案。以「<span class="hl-gold">Swanson關懷理論</span>」進行整體性評估：<br>
+  ▸ 無效性呼吸型態 → 協助胸腔放液，指導端坐呼吸、噘嘴式呼吸<br>
+  ▸ 疼痛 → 定時探視觀察，依醫囑給予止痛藥，鼓勵分散注意力<br>
+  ▸ 哀傷 → 會診心理師、安寧共照師協助</div>
+</div>
+<div class="c-card accent-green" style="margin-bottom:10px">
+  <div class="c-head">④ 分享特殊護理經驗</div>
+  <div class="cp">珍貴之處在於資料的<span class="hl-green">真實性</span>，藉由個案呈現使特殊護理經驗得以分享及傳承。</div>
+  <div class="ex-box" style="margin:6px 0 0"><div class="ex-tag">範例：急診特殊個案（洪佩君、盧美言，2020）</div>
+  一位因性行為導致黃體囊腫破裂的急診個案。除以護理計畫改善體液容積缺失、急性疼痛，並運用多媒體護理指導提供「性知識」資訊，設計「性隱私調查表」增進資料收集完整性。<br>
+  分享此例可提升急診護理人員對特殊個案的敏感度，注意維護病人隱私。</div>
+</div>
+
+<div class="sh">個案研究的三種類型</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>定義</th><th>臨床範例</th></tr>
+<tr><td><span class="hl-gold">本質性個案研究</span><br><small>Intrinsic</small></td><td>研究者對個案所呈現的某一問題特別關注，針對某個臨床個案深入探討</td><td>一位乳房重建個案的手術全期護理；確立身體心像紊亂、焦慮、潛在危險性感染等問題並介入</td></tr>
+<tr><td><span class="hl-teal">工具性個案研究</span><br><small>Instrumental</small></td><td>利用個案研究修正相關理論或建立合宜護理措施</td><td>思覺失調症合併酒癮個案，運用「Watson關懷理論」設計個別化照護，改善憂鬱、建立自我價值感</td></tr>
+<tr><td><span class="hl-coral">多元個案研究</span><br><small>Multiple/Collective</small></td><td>由工具性延伸到一個以上的個案；了解某現象時單一個案無法回答問題</td><td>護理人員照護COVID-19病患的2例心靈記事；描述負壓隔離病房個案的心理支持需求</td></tr>
+</table>
+
+<div class="sh">個案報告的撰寫結構</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">前言</div>選案動機、重要性說明</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">文獻查證</div>理論架構與相關文獻</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">護理評估</div>生理心理社會靈性</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">問題確立</div>護理診斷、優先順序</div>
+  <div class="flow-step"><div class="fs-num">5</div><div class="fs-txt">護理措施</div>目標訂立、具體執行</div>
+  <div class="flow-step"><div class="fs-num">6</div><div class="fs-txt">目標評值</div>達成情形、修正護理措施</div>
+  <div class="flow-step"><div class="fs-num">7</div><div class="fs-txt">討論與結論</div>文獻比較、心得建議</div>
+</div>
+
+<div class="sh">護理評估的四大面向</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">生理健康</div>一般外表、營養、排泄、運動、衛生習慣、特殊藥物或菸酒、睡眠休息、性生活、就醫情況、過敏、免疫、生長發育、家族病史</div>
+  <div class="c-card accent-teal"><div class="c-head">心理健康</div>適應方式、互動型態、認知型態、自我概念、情緒型態、家庭適應型態</div>
+  <div class="c-card accent-coral"><div class="c-head">社會健康</div>文化型態、重要人物、娛樂型態、環境</div>
+  <div class="c-card accent-green"><div class="c-head">靈性健康</div>宗教信仰及參與、價值觀</div>
+</div>
+<div class="imp-box">常使用<span class="hl-gold">戈登（Gordon）11項功能性健康型態</span>作為系統性評估工具；亦可引用護理理論（如歐倫護理理論、華森關懷理論）作為評估架構。資料來源包括：個案、家屬、病歷、檢查報告及其他醫療成員。</div>
+
+<div class="sh">撰寫個案報告常見的錯誤</div>
+<table class="cmp-table">
+<tr><th>問題項目</th><th>常見錯誤</th><th>改善建議</th></tr>
+<tr><td><span class="hl-coral">題目</span></td><td>未能代表全文，缺乏關鍵詞</td><td>題目應有中心思想，清楚表達文章重點</td></tr>
+<tr><td><span class="hl-gold">文獻查證</span></td><td>深廣度不足，與主題相關性不夠</td><td>應包含與個案問題、護理措施有相關性的近期中英文文獻</td></tr>
+<tr><td><span class="hl-teal">護理評估</span></td><td>缺乏整體性、系統評估，廣度深度不足</td><td>引用適當評估架構或理論，確保評估的全面性</td></tr>
+<tr><td><span class="hl-green">護理措施</span></td><td>缺乏具體性與個別性，缺乏文獻支持</td><td>目標訂立必須以個案為中心，措施需有文獻支持，且護理人員可獨立執行</td></tr>
+<tr><td><span class="hl-purple">討論與結論</span></td><td>未能將全文扼要總結，未提限制或困難</td><td>應比較文獻與個案異同，提出護理限制，並有具體可行的建議</td></tr>
+</table>
+`,
+quiz:[
+{q:"「本質性個案研究（Intrinsic Case Study）」的主要特色是？",opts:["研究者利用個案研究修正相關理論","研究者對個案所呈現的某一問題特別關注，針對某臨床個案深入探討","研究多個不同的個案以了解某現象","研究者預先設定要驗證的理論"],ans:1,exp:"本質性個案研究是指研究者對個案所呈現的某一問題特別關注，並非為了印證既存理論而進行，而是針對某個臨床個案本身深入探討。"},
+{q:"個案報告的護理評估涵蓋哪四大面向？",opts:["生理、心理、社會、靈性","診斷、計畫、執行、評值","問題確立、目標訂立、措施執行、結果評值","文獻查證、研究設計、資料收集、統計分析"],ans:0,exp:"個案報告的護理評估應涵蓋生理健康、心理健康、社會健康、靈性健康四大面向，可使用戈登11項功能性健康型態作為系統性評估工具。"},
+{q:"個案報告「護理措施」部分最重要的要求是？",opts:["措施越多越詳細越好","必須針對個案問題的潛在原因設立，且護理人員可以獨立執行，並有文獻支持","只要抄錄教科書上的護理措施即可","護理措施必須由醫師開立"],ans:1,exp:"護理措施必須針對個案問題的潛在原因及相關因素逐一設立，有優先順序、合理可行且具個別性；護理措施必須有文獻支持，且護理人員可以獨立執行。"},
+{q:"「多元或收集性個案研究（Multiple Case Study）」適用於何種情況？",opts:["只探討一位特殊個案","想了解某現象但單一個案無法回答研究問題，需研究多個不同個案","研究者希望驗證已知護理理論","護理人員對單一個案特別關注"],ans:1,exp:"多元或收集性個案研究由工具性個案研究延伸到一個以上的個案，當有興趣的問題無法單純由單一個案身上獲得解答時，研究者為了解某現象而研究幾個不同的對象。"},
+{q:"個案報告中「討論與結論」的核心功能是什麼？",opts:["呈現護理評估資料","主要在比較文獻與個案表現之異同，討論護理過程的應用，並提出護理限制與具體建議","列出所有使用的護理診斷","說明研究對象的基本資料"],ans:1,exp:"討論與結論是個案報告的精華，主要在比較文獻與個案表現之異同並申論其代表意義；討論護理過程的應用與評值個案反應，進而提出護理限制與困難，並提出具體可行的建議。"}
+]},
+
+{num:11,title:"研究工具之信度與效度",en:"Reliability and Validity of Research Tools",
+content:`
+<div class="def-box"><span class="def-term">信度（Reliability）</span><span class="def-en">測試研究工具的<span class="hl-gold">一致性（Consistency）</span>、<span class="hl-teal">穩定性（Stability）</span>及<span class="hl-coral">準確性（Accuracy）</span>是否值得信賴，三者缺一不可。</span></div>
+<div class="imp-box"><span class="hl-gold">信度是效度的先決條件：</span>一個可信的工具不一定有效；但若工具根本不可信，效度一定有問題。<br>比喻：一把每次量都不一樣的尺，根本無法說它準不準。</div>
+
+<div class="sh">體重計範例：理解信度與效度的關係</div>
+<table class="cmp-table">
+<tr><th>情境</th><th>三次測量值</th><th>真實體重</th><th>信度</th><th>效度</th><th>問題所在</th></tr>
+<tr><td>體重計A</td><td>60, 70, 80 kg</td><td>70 kg</td><td class="bad">低（差異大）</td><td class="bad">無法評估</td><td>一致性、穩定性差</td></tr>
+<tr><td>體重計B</td><td>39, 40, 41 kg</td><td>70 kg</td><td class="good">高（一致）</td><td class="bad">低（偏差大）</td><td>準確性不足</td></tr>
+<tr><td>理想工具</td><td>69, 70, 71 kg</td><td>70 kg</td><td class="good">高</td><td class="good">高</td><td>✓ 可信賴</td></tr>
+</table>
+
+<div class="sh">信度的四種類型</div>
+
+<div class="sh2">① 再測信度（Test-Retest Reliability）</div>
+<div class="cp">在<span class="hl-gold">不同時間</span>重複測試，應得到相同結果；又稱穩定信度（Stability Reliability）。</div>
+<div class="cp">使用 <span class="kp">皮爾森相關係數（r）</span> 檢定，一般以 <span class="hl-gold">r ≥ 0.7</span> 為高度相關標準（非金科玉律，僅為經驗值）。</div>
+<div class="imp-box">再測信度完整判斷需同時滿足兩條件：<br>① <span class="hl-gold">r ≥ 0.7（高度相關）</span> + ② 成對t檢定（paired t-test）或 Wilcoxon符號等級檢定顯示<span class="hl-teal">兩次無顯著差異</span><br>建議亦使用 <span class="kp-t">ICC（內在等級相關係數）</span> 作為更嚴謹的指標。<br>間隔時間：以<span class="hl-coral">1-4週（平均2週）</span>為宜——太久外在因素介入，太短受記憶影響。</div>
+
+<div class="sh2">② 內在一致性（Internal Consistency）— Cronbach’s Alpha（α）</div>
+<div class="cp">假設量表內12個題目都與「疲憊程度」有關，若這些題目<span class="hl-teal">相互間存在相關性且能互相補足</span>，則稱為內在一致性高。可將12題分數相加成一個「疲憊程度總分」統一分析。</div>
+<div class="g3">
+  <div class="c-card-r"><div class="c-head">α &lt; 0.7</div>部分題目同質性受到質疑，<span class="hl-coral">問卷可能需要修改</span>。</div>
+  <div class="c-card-g"><div class="c-head">α = 0.7 ~ 0.9</div><span class="hl-green">一般認為可以接受</span>的範圍。</div>
+  <div class="c-card-r"><div class="c-head">α &gt; 0.9</div>各題目間重複過多，<span class="hl-coral">或許可以刪減部分題目</span>。</div>
+</div>
+<div class="cp">若量表每個題目只有<strong>是/否（0/1）</strong>兩個答案，應使用 <span class="kp">KR-20（Kuder-Richardson 20）係數</span>，計算方式與Cronbach’s α 相似。</div>
+
+<div class="sh2">③ 折半信度（Split-Half Reliability）</div>
+<div class="cp">把量表的題目一分為二（<span class="hl-gold">奇數題為一組、偶數題為另一組</span>），若兩部分的平均得分相差無幾且具高度相關，則信度得到進一步證實。注意：不要以前半部和後半部作分組（會因題目性質相似而使後段受試者感到厭倦，影響信度）。</div>
+
+<div class="sh2">④ 測試者一致性信度（Inter-Rater Reliability）</div>
+<div class="cp">由<span class="hl-teal">不同的研究人員</span>觀察同一名個案，應得到十分類似的結果。若兩名評分者分數相類似，便可算評審程序具可靠性、客觀性。使用的統計方法與再測信度相同（連續型：ICC；類別型：Kappa係數）。</div>
+
+<div class="sh2">⑤ 類別型數據的信度指標——Kappa 係數</div>
+<div class="cp">類別型數據應使用 <span class="kp">Kappa係數</span> 代替皮爾森相關係數，用 <span class="kp">McNemar檢定</span> 代替成對t檢定。</div>
+<table class="cmp-table">
+<tr><th>Kappa值</th><th>信度判讀</th></tr>
+<tr><td>&gt; 0.75</td><td class="good">極佳信度</td></tr>
+<tr><td>0.4 ~ 0.75</td><td>可接受之良好信度</td></tr>
+<tr><td>&lt; 0.4</td><td class="bad">研究工具信度不可靠</td></tr>
+</table>
+
+<div class="sh">信度測試常見錯誤</div>
+<ul class="b-list">
+  <li><span class="hl-coral">以偏概全：</span>只測試Cronbach’s α，以為工具可信。殊不知量表雖有高度內在一致性，但不同訪員訪問同一對象可能有不同答案（測試者一致性信度未建立）</li>
+  <li><span class="hl-gold">未說明信度係數種類：</span>只報告係數數值，未說明是哪一種信度係數</li>
+  <li>建議：在可能且合適的情況下，進行<strong>最少兩項</strong>信度檢定</li>
+</ul>
+
+<div class="sh">效度（Validity）的三大類型</div>
+<div class="def-box"><span class="def-term">效度</span><span class="def-en">測量工具能<span class="hl-gold">精準測量到所欲測量概念</span>的程度；即測量的準確性。證明效度比證明信度更複雜、更困難。</span></div>
+
+<div class="sh2">① 內容效度（Content Validity）</div>
+<div class="cp">在量表設計完成後，請該領域的<span class="hl-gold">專家及研究對象</span>對量表內容提供意見，評估工具是否充分涵蓋所要測量的概念。</div>
+<div class="g2">
+  <div class="c-card-t"><div class="c-head">專家效度（Expert Validity）</div>完全由<span class="hl-teal">專家</span>審定工具之有效與否；需選擇該研究領域的權威專家進行審查，提供具體建議。</div>
+  <div class="c-card"><div class="c-head">表面效度（Face Validity）</div>以比較粗淺的方法，就量表或工具是否「<span class="hl-gold">看似</span>」足夠收集研究所需資料進行評估；是最簡單但也是最主觀的效度評估方式。</div>
+</div>
+
+<div class="sh2">② 建構效度（Construct Validity）</div>
+<div class="cp"><span class="hl-gold">建構（Construct）</span>是一個概念（concept）、一種特質（trait），利用一些可以觀察到的事物來反映無法直接測量的理念。<br>例如：「失智」是一個建構——無法直接測量，但可透過定向感、反應時間、語言及分析能力等可觀察的表現加以評估。</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">因素分析（Factor Analysis）</div>將問卷中有相關的變項組合成「因子」，每個因子代表一個建構；若p個題目可濃縮為k個因子（k&lt;p），每個因子代表一種概念。<br><span class="hl-coral">限制：</span>若問卷包含兩個高度相關的建構（如「憂鬱」和「焦慮」），因素分析可能將兩者混合。<span class="hl-teal">解決：</span>使用羅素分析（Rasch Analysis）篩選題目。</div>
+  <div class="c-card accent-teal"><div class="c-head">對照組比較法（Contrasted Group）</div>又稱「已知組別比較」，刻意選擇在欲研究建構上有顯著差異的兩組，以t檢定或ANOVA證實兩組在該建構上有顯著差異，間接肯定建構效度。<br><em>例：用「憂鬱量表」比較憂鬱病人 vs 健康人群，若能顯著區分則建構效度成立。</em></div>
+  <div class="c-card accent-coral"><div class="c-head">收斂法（Convergent Validity）</div>與另一份已具良好效度的相關量表進行相關分析，若<span class="hl-green">相關係數高</span>，表示兩份量表測量相同的構念。<br><em>例：新憂鬱量表與已驗證的BDI量表高度相關（r=0.85）。</em></div>
+  <div class="c-card accent-green"><div class="c-head">分歧法（Divergent Validity）</div>又稱辨別效度，若是<span class="hl-coral">兩個不同建構</span>，則應該沒有多大相關。<br><em>例：「憂鬱量表」與「社會支持量表」應呈<strong>負相關</strong>（憂鬱高者社會支持較少）；若相關係數為負且低於設定值，則分歧效度成立。</em></div>
+</div>
+<div class="imp-box">建構效度需經過<span class="hl-gold">一連串步驟</span>，而非只執行其中一個方法。最起碼應執行<strong>兩個或兩個以上</strong>的建構效度檢定方法。</div>
+
+<div class="sh2">③ 效標關聯效度（Criterion-Related Validity）</div>
+<div class="cp">計算量表得分與<span class="hl-gold">實際效果、實際現象的相關</span>（並非與另一建構的相關）。</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">預估效度（Predictive Validity）</div>量表目的在<span class="hl-gold">預測</span>個案未來的狀態。例如：入院時的壓瘡風險評估量表（Braden Scale）得分，與個案日後實際是否發生壓瘡的機率相關——若有壓瘡者得分顯著低於無壓瘡者，表示預估效度成立。<br>統計方法：雙樣本t檢定比較兩組平均分數是否達顯著差異。</div>
+  <div class="c-card accent-teal"><div class="c-head">同時效度（Concurrent Validity）</div>不需要等待結果，<span class="hl-teal">同時</span>收集量表得分與效標資料進行相關分析。例如：護生的考試成績與其畢業後立即評估的臨床照護能力的相關性。<br>統計方法：皮爾森或斯皮爾曼相關係數。</div>
+</div>
+
+<div class="sh">信度 vs 效度 關係總整理</div>
+<table class="cmp-table">
+<tr><th>類型</th><th>問的問題</th><th>評估方式</th><th>常用統計</th></tr>
+<tr><td><span class="hl-gold">再測信度</span></td><td>不同時間測量結果是否一致？</td><td>間隔1-4週重測</td><td>r, ICC, paired t-test</td></tr>
+<tr><td><span class="hl-teal">內在一致性</span></td><td>量表題目間是否測量同一構念？</td><td>所有題目同時施測</td><td>Cronbach’s α, KR-20</td></tr>
+<tr><td><span class="hl-coral">測試者一致性</span></td><td>不同評分者的判斷是否一致？</td><td>兩位評分者同時評估</td><td>Kappa, ICC</td></tr>
+<tr><td><span class="hl-gold">內容效度</span></td><td>量表是否涵蓋所要測量的概念？</td><td>專家審查</td><td>內容效度指標（CVI）</td></tr>
+<tr><td><span class="hl-teal">建構效度</span></td><td>量表是否真正測量到目標構念？</td><td>因素分析、對照組比較</td><td>FA, t-test, r</td></tr>
+<tr><td><span class="hl-coral">效標關聯效度</span></td><td>量表得分是否與實際結果相符？</td><td>與效標（標準）比較</td><td>t-test, r</td></tr>
+</table>
+`,
+quiz:[
+{q:"信度（Reliability）的三個必要條件是？",opts:["準確性、可行性、穩定性","一致性、穩定性、準確性","信效度、可信度、可靠性","敏感性、特異性、準確性"],ans:1,exp:"信度建立目的為測試研究工具的一致性、穩定性及準確性，三者缺一不可。"},
+{q:"某壓瘡風險量表的得分可以預測病人日後是否發生壓瘡，有壓瘡者得分顯著低於無壓瘡者，此量表具有哪種效度？",opts:["內容效度","建構效度","預估效度（效標關聯效度）","表面效度"],ans:2,exp:"預估效度是效標關聯效度的一種，量表的目的在預測個案未來的狀態，用t檢定比較有壓瘡與無壓瘡兩組的量表平均分數是否達顯著差異，來驗證預估效度。"},
+{q:"「折半信度」在量表題目分組時，建議採用哪種方式？",opts:["前半部題目為一組，後半部為另一組","奇數題為一組，偶數題為另一組","隨機選取題目分為兩組","研究者依判斷決定分組方式"],ans:1,exp:"折半信度建議以奇數題為一組、偶數題為另一組，避免使用前後半部分組，因為後半段受試者容易因題目性質類似而感到厭倦，影響後半段信度，造成前後半部信度不一。"},
+{q:"「建構效度（Construct Validity）」的核心概念是什麼？",opts:["量表包含足夠的題目涵蓋研究主題","量表確實測量到所欲測量的抽象概念（建構），而非只是看起來像","量表在不同時間施測結果一致","量表題目間具有高度相關"],ans:1,exp:"建構效度是指量表確實測量到目標「建構」（概念/特質）的程度；建構是用可觀察事物反映無法直接測量的理念，如以定向感等測量「失智程度」這個建構。"},
+{q:"「收斂法（Convergent Validity）」與「分歧法（Divergent Validity）」的差異是？",opts:["前者需要使用因素分析，後者需要對照組比較","前者驗證兩個相關構念量表間的高相關；後者驗證兩個不同構念量表間的低相關（或負相關）","前者適用於量性研究，後者適用於質性研究","兩者使用完全相同的統計方法"],ans:1,exp:"收斂法：新量表與已驗證的相關量表呈高度正相關，表示兩者測量相同構念。分歧法：與不同構念的量表呈低相關或負相關（如憂鬱與社會支持），表示能辨別不同構念，具辨別效度。"}
+]},
+
+{num:12,title:"資料收集方法與處理技巧",en:"Data Collection and Management Techniques",
+content:`
+<div class="def-box"><span class="def-term">資料（Data）</span><span class="def-en">來自不同研究對象的許多變項所組成，包含<span class="hl-gold">變項值（variables）</span>和<span class="hl-teal">研究對象（subjects）</span>。變項值依所屬型態歸為：文字型、數字型、日期型及邏輯型。</span></div>
+
+<div class="sh">資料的排列方式</div>
+<table class="cmp-table">
+<tr><th>排列方式</th><th>意涵</th><th>範例</th></tr>
+<tr><td><span class="hl-gold">直欄（Column）</span></td><td>相同意義的資料值，稱為變項；給予每個變項一個名稱</td><td>「身高」欄：170, 165, 162</td></tr>
+<tr><td><span class="hl-teal">橫列（Row）</span></td><td>表示變項的值來自哪一位研究對象</td><td>「張三」列：男, 170cm, 68kg</td></tr>
+</table>
+
+<div class="sh">變項收集方法（六大類）</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">① 自我陳述（Self-Report）</div>由研究對象本人述說；資料常是<span class="hl-gold">主觀或心理感受</span>。<br><span class="hl-coral">不適合：</span>資料非常敏感、研究對象無法提供，或需測量的客觀數據（如血液生化值）。<br>分為<span class="kp">自填</span>與<span class="kp">訪談</span>兩種形式。</div>
+  <div class="c-card accent-teal"><div class="c-head">② 他人陳述（Report by Others）</div>研究對象無法親自提供資料時，由<span class="hl-teal">親友代為提供</span>（如辭世者、無意識者、幼兒）。<br><span class="hl-coral">限制：</span>若資料為心理感受，他人未必能反映真相。</div>
+  <div class="c-card accent-coral"><div class="c-head">③ 觀察法（Observation）</div>由第三者觀察研究對象一段時間；分為<span class="kp-r">參與性觀察</span>（研究者參與其中）與<span class="kp-r">非參與性觀察</span>（旁觀者角色）。</div>
+  <div class="c-card accent-green"><div class="c-head">④ 儀器測量（Instrument Measurement）</div>使用儀器設備測量生理指標，如血壓計、心電圖、血氧測定儀等；結果較為<span class="hl-green">客觀精準</span>。</div>
+  <div class="c-card accent-purple"><div class="c-head">⑤ 生理測量（Physiological Measurement）</div>包括血液生化檢查、尿液分析等實驗室檢查；資料客觀可靠但侵入性較高。</div>
+  <div class="c-card accent-gold"><div class="c-head">⑥ 現有資料（Existing Data）</div>使用病歷、健保資料庫、醫院記錄等已存在的資料；即次級資料分析（Secondary Analysis）。</div>
+</div>
+
+<div class="sh">自填 vs 訪談的比較</div>
+<table class="cmp-table">
+<tr><th>方法</th><th>優點</th><th>缺點</th><th>適用對象</th></tr>
+<tr><td><span class="hl-gold">自填（Self-written）</span></td><td>經濟、可短期收集大量資料；不受訪員偏差影響</td><td>研究對象可能對題目有不同解讀</td><td>識字的研究對象</td></tr>
+<tr><td><span class="hl-teal">訪談（Interview）</span></td><td>訪員可解釋題目、提高資料品質、判斷答案合理性</td><td>耗費人力金錢；可能產生<span class="hl-coral">訪員偏差</span>；只適合小樣本</td><td>識字程度低或需要解釋的情況</td></tr>
+</table>
+
+<div class="imp-box">避免訪員偏差的方法：製作<span class="hl-gold">訪談手冊</span>、訓練訪員、採用<span class="hl-teal">雙盲（Double Blind）</span>設計——不讓評估者知道研究對象接受哪一種處置。</div>
+`,
+quiz:[
+{q:"在研究資料表格中，「直欄（Column）」代表什麼？",opts:["來自某一位研究對象的所有資料","相同意義的資料值，稱為變項，並給予每個變項一個名稱","資料的收集日期","研究對象的編號"],ans:1,exp:"研究者通常把相同意義的資料值以直欄列出，稱為變項，並給予每個變項一個名稱以便日後統計分析；橫列代表某位研究對象的資料。"},
+{q:"「自我陳述（Self-Report）」的最大限制是？",opts:["需要特殊儀器設備","只能用於量性研究","資料常具主觀性，且無法取得需測量的客觀數據（如血液生化值）","花費時間比訪談更長"],ans:2,exp:"自我陳述的資料常是主觀或心理感受；若需要客觀測量（如血液生化值），自我陳述無法提供此類資料，此為其主要限制。"},
+{q:"「雙盲（Double Blind）設計」在資料收集中的目的是？",opts:["讓所有研究人員都知道分組情況","不讓評估者或訪員知道研究對象接受哪一種藥物或護理方案，避免訪員偏差","要求研究對象自行填寫問卷","減少研究樣本數"],ans:1,exp:"雙盲設計中，不讓評估者或訪員知道研究對象接受哪一種藥物或護理方案，可以避免評估者或訪員偏差，提高資料的客觀性。"},
+{q:"「他人陳述（Report by Others）」最適合用於何種情況？",opts:["研究對象能清楚表達自身感受","研究對象為一般健康成人","研究對象為無意識者、幼兒或已辭世者等無法親自提供資料的情況","資料需要高度客觀測量"],ans:2,exp:"他人陳述適用於研究對象無法親自提供資料時，如已辭世者、無意識者、幼兒等，可由研究對象的親友代為提供所需資料。"},
+{q:"「參與性觀察（Participant Observation）」與「非參與性觀察（Nonparticipant Observation）」的主要差異是？",opts:["前者由儀器進行，後者由人工完成","前者研究者參與其中，後者研究者只是旁觀者","前者適用於量性研究，後者適用於質性研究","兩者收集的資料類型完全不同"],ans:1,exp:"觀察法中，參與性觀察是研究者參與研究對象的活動中進行觀察；非參與性觀察則是以旁觀者角色，不介入研究對象的活動而進行觀察。"}
+]},
+
+{num:13,title:"資料統計分析與方法",en:"Data Analysis Techniques",
+content:`
+<div class="sh">數據的分類體系</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">📊 數量型數據（Numerical Data）</div>與數字有關，數值大小及差異均有意義。<br>
+    <ul class="b-list" style="margin-top:6px">
+      <li><span class="kp">連續型（Continuous）</span>：理論上可有小數點<br>例：血壓、血糖、身高、體重</li>
+      <li><span class="kp">離散型（Discrete）</span>：只有整數值，不可能有小數點<br>例：病床數、小孩數目</li>
+    </ul>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">🏷️ 類別型數據（Categorical Data）</div>性質是分類的，數字本身無具體意義。<br>
+    <ul class="b-list" style="margin-top:6px">
+      <li><span class="kp-t">無排序（Nominal）</span>：無先後次序，可互調<br>例：性別（男/女）、血型、婚姻狀況</li>
+      <li><span class="kp-t">有排序（Ordinal）</span>：有先後次序，不能互調<br>例：傷情嚴重度（輕度/中度/重度）、Likert量表</li>
+    </ul>
+  </div>
+</div>
+<div class="imp-box">研究者<span class="hl-gold">不應一成不變</span>，宜靈活選擇統計方法。Likert量表嚴格屬Ordinal數據，應用卡方；但使用t檢定也不一定不合理，且通常所需樣本數較低，提高<span class="hl-teal">統計效度（Statistical Power）</span>。</div>
+
+<div class="sh">描述統計（Descriptive Statistics）</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">集中趨勢（Central Tendency）</div>
+    <ul class="b-list">
+      <li><span class="hl-gold">平均值（Mean）</span>：所有數值相加÷樣本數；優點：概念簡單；<span class="hl-coral">缺點：受極端值影響</span></li>
+      <li><span class="hl-teal">中位數（Median）</span>：排序後中間的點（左右各占50%）；<span class="hl-green">優點：不受極端值影響</span>；<span class="hl-coral">缺點：未完全利用每個數值</span></li>
+    </ul>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">分散幅度（Spread）</div>
+    <ul class="b-list">
+      <li><span class="hl-gold">標準差（SD）</span>：各數值與平均值的平均距離；容易受極端值影響</li>
+      <li><span class="hl-teal">變異數（Variance）</span>：標準差的平方</li>
+      <li><span class="hl-green">四分位差（IQR）</span>：第75百分點 - 第25百分點；<strong>穩健（Robust）</strong>，不受極端值影響</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh">推論統計：假設檢定的基本概念</div>
+<div class="def-box"><span class="def-term">p 值（p-value）</span><span class="def-en">在虛無假設為真的前提下，觀察到「此樣本或更極端結果」的機率。<span class="hl-gold">p值越小，越有證據推翻虛無假設</span>。<br>判斷規則：若 p值 ≤ α（通常設定為<span class="hl-coral">0.05</span>，即5%顯著水準）→ 推翻虛無假設；若 p值 ＞ α → 不能推翻虛無假設。</span></div>
+<div class="imp-box">⚠️ <strong>重要提醒：</strong>統計上「顯著差異」≠「臨床上有意義的差異」。研究者需同時考量效應量（Effect Size）與臨床意義。</div>
+
+<div class="sh">七大常用統計方法詳解</div>
+
+<div class="sh2">① 雙樣本 t 檢定（Two-Sample t-Test）</div>
+<div class="cp">目的：比較<span class="hl-gold">兩個獨立群體</span>的平均值是否有所差異（又稱「非成對t檢定」）。</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">使用時機</span><span class="def-en">比較A、B兩家醫院病人的平均住院天數 / 比較實驗組與對照組的後測分數</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">合併vs分開t檢定</span><span class="def-en">先以 <span class="hl-coral">Levene’s F 檢定</span>檢驗兩組變異數是否相同：<br>若 p &gt; α → 兩組變異數相等 → 使用<span class="hl-green">合併t檢定（Pooled t-test）</span><br>若 p ≤ α → 兩組變異數不等 → 使用<span class="hl-coral">分開t檢定（Separate t-test）</span></span></div>
+</div>
+
+<div class="sh2">② 成對 t 檢定（Paired t-Test）</div>
+<div class="cp">目的：比較<span class="hl-teal">同一組個案在不同時間點</span>（前後測）的差異，或同一個人兩種條件下的比較（配對設計）。</div>
+<div class="ex-box"><div class="ex-tag">臨床範例</div>
+比較參加減重計畫者<strong>減重前後</strong>的體重差異；5人減重前後平均差3公斤<br>
+<strong>95%信賴區間（Confidence Interval）：</strong>有95%的信心，真正的減重效果介於-2.8到8.8公斤之間<br>
+<strong>p值判斷：</strong>若p = 0.113 &gt; 0.05 → 未達統計顯著，不能說減重計畫有效（樣本太少）</div>
+
+<div class="sh2">③ 變異數分析（ANOVA）</div>
+<div class="cp">目的：比較<span class="hl-gold">三組或三組以上</span>的平均值。不可分別進行多次t檢定（會使錯誤機率累積至15%），ANOVA可維持整體顯著水準在5%以內。</div>
+<div class="cp">ANOVA後若達顯著（p ≤ 0.05），只能說「並非每一組的平均都一樣」，需進行<span class="hl-gold">多重比較（Post-hoc test）</span>（如Scheffe或Tukey法）進一步了解哪兩組間有差異。</div>
+<div class="ex-box"><div class="ex-tag">臨床範例</div>
+比較三家醫院門診部的平均候診時間（分鐘）是否相等。若ANOVA的p值 = 0.0022 &lt; 0.05，推翻虛無假設，三組平均候診時間不完全相同。再以Scheffe事後檢定確認哪兩組間有顯著差異。</div>
+
+<div class="sh2">④ 共變數分析（ANCOVA）</div>
+<div class="cp">目的：在比較兩組或多組差異時，<span class="hl-teal">控制共變數（Covariate）的影響</span>。相當於先統計「調整」某個已知影響因子後，再比較組間差異。</div>
+<div class="imp-box">使用ANCOVA的前提：需先確認<span class="hl-coral">無交互作用（No Interaction）</span>——即共變數對依變項的影響不會因組別不同而有差異。若有交互作用（p ≤ 0.05），則不可使用ANCOVA。</div>
+<div class="ex-box"><div class="ex-tag">臨床範例</div>
+比較A藥 vs B藥的康復時間，但A藥組年齡較輕、B藥組年齡較大。若直接比較，年齡可能是混淆因素。<br>以ANCOVA「調整年齡影響」後，若p = 0.9973 &gt; 0.05 → 兩種藥物的康復時間<strong>無顯著差異</strong>，原來的差異是年齡造成的！</div>
+
+<div class="sh2">⑤ 相關（Correlation）</div>
+<div class="cp">目的：分析兩個變項之間是否有相關存在，及相關的方向、程度與強度。</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">相關係數（r）的範圍</span><span class="def-en">+1 = 完全正相關 ／ -1 = 完全負相關 ／ 0 = 無相關<br>r的解讀（一般參考）：0.6以上=強相關；0.4=中度；0.2以下=弱相關</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">選擇哪種相關係數？</span><span class="def-en"><span class="hl-gold">皮爾森相關（Pearson r）</span>：兩個連續型變項，且具有線性關係<br><span class="hl-teal">斯皮爾曼相關（Spearman r）</span>：有排序的類別型數據，或非線性關係<br><span class="hl-coral">Phi 係數（φ）</span>：兩個二元變項（是/否）</span></div>
+</div>
+<div class="imp-box">⚠️ r = 0 並非代表完全無關，只代表<span class="hl-coral">無線性關係</span>！兩變項間可能存在曲線關係。</div>
+
+<div class="sh2">⑥ 簡單線性迴歸（Simple Linear Regression）</div>
+<div class="cp">目的：由<span class="hl-gold">自變項的數值預估依變項</span>的數值；探討自變項每增加一個單位，依變項增加（或減少）多少。</div>
+<div class="cp">公式：<strong>y = a + bx</strong>（a = 截距；b = 斜率）</div>
+<div class="ex-box"><div class="ex-tag">臨床範例</div>
+以「支持程度（x，0-10分）」預測「憂鬱程度（y，0-40分）」<br>
+迴歸方程式：y = 36.5 + (-3.42)x<br>
+→ <span class="hl-gold">b = -3.42</span>：支持程度每增加1分，憂鬱程度平均<strong>下降3.42分</strong>（負相關）<br>
+→ <span class="hl-teal">a = 36.5</span>：完全無支持（x=0）時，預期憂鬱程度為36.5分<br>
+→ 若某人支持程度10分：預期憂鬱 = 36.5 - (3.42×10) = <strong>2.3分</strong></div>
+
+<div class="sh2">⑦ 卡方檢定（Chi-Squared Test, χ²）</div>
+<div class="cp">目的：檢定<span class="hl-gold">類別型數據</span>之間是否有相關；最常見為「獨立性檢定」——探討兩個類別變項是否彼此相關。</div>
+<div class="ex-box"><div class="ex-tag">臨床範例</div>
+研究「性別」與「職業滿意度」之間是否有相關（2×2列聯表）<br>
+若 p = 0.674 &gt; 0.05 → 未推翻虛無假設 → 無足夠證據顯示性別和職業滿意度有相關<br>
+<span class="hl-coral">注意：</span>若樣本過小（超過50%的格子期望值 &lt; 5），使用 <span class="kp-r">Fisher’s Exact Test</span> 取代卡方檢定</div>
+
+<div class="sh">無母數分析（Non-Parametric Analysis）</div>
+<div class="cp">當母群體分布未知、不符合常態分布假設，或樣本數過小時，使用無母數分析。將原始數據轉換為等級（Rank）進行分析，又稱「排序檢定」。</div>
+<table class="cmp-table">
+<tr><th>情境</th><th>參數檢定法</th><th>對應無母數方法</th></tr>
+<tr><td>兩獨立樣本比較</td><td>雙樣本t檢定</td><td>Wilcoxon等級和檢定（Mann-Whitney U）</td></tr>
+<tr><td>配對樣本比較</td><td>成對t檢定</td><td>Wilcoxon符號等級檢定</td></tr>
+<tr><td>三組以上比較</td><td>ANOVA</td><td>Kruskal-Wallis檢定</td></tr>
+</table>
+
+<div class="sh">統計方法選擇全覽</div>
+<table class="cmp-table">
+<tr><th>研究問題</th><th>數據類型</th><th>最適統計方法</th></tr>
+<tr><td>比較兩組差異（獨立）</td><td>連續型</td><td><span class="kp">獨立樣本t檢定</span></td></tr>
+<tr><td>同一組前後測比較</td><td>連續型</td><td><span class="kp">成對t檢定</span></td></tr>
+<tr><td>比較三組以上差異</td><td>連續型</td><td><span class="kp">ANOVA + 事後檢定</span></td></tr>
+<tr><td>控制共變數後比較組間差異</td><td>連續型</td><td><span class="kp">ANCOVA</span></td></tr>
+<tr><td>兩連續變項的相關</td><td>連續型</td><td><span class="kp">皮爾森相關係數</span></td></tr>
+<tr><td>由自變項預測依變項</td><td>連續型</td><td><span class="kp">線性迴歸</span></td></tr>
+<tr><td>兩類別變項的相關</td><td>類別型</td><td><span class="kp-t">卡方檢定（χ²）</span></td></tr>
+<tr><td>不符常態分布，兩組比較</td><td>任何型</td><td><span class="kp-r">Wilcoxon等級和檢定</span></td></tr>
+</table>
+`,
+quiz:[
+{q:"「病床數」屬於哪種類型的數據？",opts:["連續型數據","離散型數據","有排序的類別型數據（Ordinal）","無排序的類別型數據（Nominal）"],ans:1,exp:"離散型數據只可能有整數值，不可能有小數點；病床數只能是整數（如50床，不能是50.5床），屬離散型數據。"},
+{q:"若研究者想同時比較A、B、C三家醫院護理師的職業倦怠平均分數，應使用哪種統計方法？",opts:["進行三次雙樣本t檢定分別比較","卡方檢定","變異數分析（ANOVA）","皮爾森相關係數"],ans:2,exp:"比較三組以上的平均值應使用ANOVA，而非分別進行多次t檢定（多次t檢定會使錯誤機率累積至約15%）；ANOVA可維持整體顯著水準在5%以內。"},
+{q:"在比較A藥與B藥的治療效果時，發現兩組病人的年齡分佈有很大差異，應使用哪種統計方法來排除年齡的干擾？",opts:["成對t檢定","共變數分析（ANCOVA）","皮爾森相關係數","卡方檢定"],ans:1,exp:"ANCOVA（共變數分析）的目的在比較兩組或多組差異時，控制共變數（如年齡）的影響，調整共變數後再比較組間差異，相當於「排除年齡干擾後的真正比較」。"},
+{q:"迴歸分析中，若「b（斜率）= -3.42」代表什麼意義？",opts:["自變項增加3.42個單位，依變項不會改變","自變項每增加1個單位，依變項平均減少3.42個單位","自變項與依變項完全不相關","自變項每增加1個單位，依變項平均增加3.42個單位"],ans:1,exp:"斜率（b）代表當自變項（x）每增加一個單位時，依變項（y）會增加（b為正）或減少（b為負）多少個單位；b = -3.42表示自變項每增加1分，依變項平均下降3.42分（負向關係）。"},
+{q:"若卡方檢定的電腦報表出現「50%的格子期望值小於5」的警告，應改用哪種方法？",opts:["改用ANOVA","改用成對t檢定","改用Fisher’s Exact Test","改用皮爾森相關係數"],ans:2,exp:"卡方檢定的統計量只是近似值，樣本數過小時不準確；若超過50%的格子期望值小於5，應改用Fisher’s Exact Test（費雪精確檢定）取代卡方檢定。"}
+]},
+
+{num:14,title:"撰寫研究計畫書",en:"Writing Research Proposal",
+content:`
+<div class="sh">撰寫研究計畫書的三大目的</div>
+<div class="g3">
+  <div class="c-card accent-gold"><div class="c-head">① 增進研究者學習</div>要求學生事先設想，掌握研究問題；強調研究目的、文獻查證、研究方法的具體性與可行性；可分送同儕與領域專長教授批判。</div>
+  <div class="c-card accent-teal"><div class="c-head">② 爭取研究經費</div>提報研究計畫書，受理機構依特定需要有不同格式；研究計畫審查委員會審慎評核，決定是否核發補助經費。計畫書印製裝訂不可草率。</div>
+  <div class="c-card accent-coral"><div class="c-head">③ 爭取行政支持（IRB）</div>透過<span class="kp-r">IRB</span>（Institutional Review Board）及<span class="kp-r">HRC</span>（Human Rights Committee），評值是否針對人權保護採取防範措施，決定是否核准研究執行。</div>
+</div>
+
+<div class="sh">撰寫計畫書應掌握的三大原則</div>
+<div class="g3">
+  <div class="c-card accent-gold"><div class="c-head">① 考慮審查者認知背景</div>
+    <ul class="b-list">
+      <li>專有名詞應具體說明，<span class="hl-coral">避免過量使用專業術語</span></li>
+      <li>核心概念用詞保持<strong>一致</strong>，以邏輯方式串連</li>
+      <li>適需加入<strong>流程圖、理論架構、表格</strong>等輔助說明</li>
+      <li>敘述需符合現有理論或以近期研究實證為<strong>佐證</strong></li>
+    </ul>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">② 善加包裝提升競爭性</div>
+    <ul class="b-list">
+      <li>展現研究主題的<span class="hl-teal">創新性</span></li>
+      <li>印刷精美、排版適中、附 <span class="kp-t">QR code</span></li>
+      <li>全文標上頁碼，符合申請機構格式</li>
+      <li>研究目的與申請機構的<strong>整體發展方向契合</strong></li>
+    </ul>
+  </div>
+  <div class="c-card accent-coral"><div class="c-head">③ 兼顧詳盡與彈性</div>
+    <ul class="b-list">
+      <li>詳盡包含研究執行過程</li>
+      <li>尊重篇幅字數之<span class="hl-coral">限制</span>，不宜過於冗長</li>
+      <li>過於繁瑣的資料（問卷、設備說明）置於<strong>附錄</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh">研究計畫書的核心內容架構</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">研究背景</div>目的、重要性、政策走勢</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">文獻查證</div>近5年實證研究</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">研究方法</div>名詞界定、設計、取樣</div>
+  <div class="flow-step"><div class="fs-num">4</div><div class="fs-txt">資料收集</div>工具信效度測試</div>
+  <div class="flow-step"><div class="fs-num">5</div><div class="fs-txt">統計分析</div>與研究目的對應</div>
+  <div class="flow-step"><div class="fs-num">6</div><div class="fs-txt">倫理考量</div>IRB審查、人權保護</div>
+  <div class="flow-step"><div class="fs-num">7</div><div class="fs-txt">預期效益</div>學術與實務貢獻</div>
+</div>
+`,
+quiz:[
+{q:"撰寫研究計畫書「爭取行政支持」目的，主要涉及哪個審查機構？",opts:["教育部課程審查委員會","人體試驗委員會（IRB）","衛生福利部","國科會研究補助審查委員會"],ans:1,exp:"IRB（人體試驗委員會）審慎評值研究計畫書，決定是否針對人權保護採取各項防範措施，以此作為是否核准研究在機構中執行之依據。"},
+{q:"研究計畫書撰寫時，「考慮審查者之認知背景」的主要建議是？",opts:["使用越多專業術語越能展現研究深度","專有名詞應具體說明，避免過量使用專業術語，文詞盡量簡單清晰","不需考慮審查者背景，以研究者慣用語言呈現","計畫書越長越好"],ans:1,exp:"計畫書中專有名詞應具體說明，避免過量使用專業術語或名詞縮寫，文詞盡量簡單清晰，以利審查者理解研究內容。"},
+{q:"研究計畫書若資料過於繁瑣（如問卷、設備說明），最佳處理方式是？",opts:["刪除這些繁瑣資料","全部放在正文中以顯示研究的完整性","有系統地置於附錄中，供審查者依需要自行參閱","縮小字體放入計畫書中"],ans:2,exp:"研究者應尊重篇幅字數之限制，可將過於繁瑣的資料（問卷、研究情境、設備等）有系統地置於附錄中，以供審查者依需要自行參閱。"},
+{q:"為使研究計畫書順利通過審核，研究者可採取哪些策略？",opts:["只申請熟悉的審查委員所在機構","諮詢相關人員、參閱已核准計畫書，使研究目的與申請機構的整體發展方向契合","盡量縮短計畫書篇幅節省審查者時間","避免附上圖表以保持計畫書的簡潔性"],ans:1,exp:"研究者可諮詢申請機構受理研究計畫之相關人員，或參閱該機構曾核准的研究計畫書，使計畫目的能與申請機構的整體發展方向、組織目標相契合，提升計畫通過的成功率。"},
+{q:"研究計畫書中文獻查證的建議重點是？",opts:["只需引用10年以上的經典文獻","以近五年與實證研究成果為佳","文獻越多越好，不限年代","只引用臺灣本土研究文獻"],ans:1,exp:"文獻查證有助於研究者界定研究問題的範圍，了解相關理論，掌握研究工具；計畫書中文獻查證以近五年與實證研究成果為佳。"}
+]},
+
+{num:15,title:"判讀研究報告",en:"The Critique of Research Report",
+content:`
+<div class="sh">判讀量性研究報告的步驟</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">1</div><div class="fs-txt">瀏覽全文架構</div>研究者學經歷背景</div>
+  <div class="flow-step"><div class="fs-num">2</div><div class="fs-txt">初步概略閱讀</div>主體、邏輯、流暢度</div>
+  <div class="flow-step"><div class="fs-num">3</div><div class="fs-txt">逐步深入批判</div>依研究報告各步驟</div>
+</div>
+<div class="cp" style="margin-top:14px">判讀時應先了解文章的主體為何？次標題是否清楚？文字的流暢性與清晰度如何？是否使用過於華麗或複雜的詞彙？內容的邏輯安排如何？</div>
+
+<div class="sh">量性研究報告的十三大批判要素</div>
+
+<div class="sh2">① 題目（Title）</div>
+<div class="c-card accent-gold" style="margin-bottom:12px">
+  <div class="c-head">好的研究題目標準</div>
+  <ul class="b-list">
+    <li><span class="hl-gold">言簡意賅</span>，能清楚表達整篇研究的範疇</li>
+    <li>包含<span class="kp">研究的樣本群體</span></li>
+    <li>包含<span class="kp">主要的變項</span>（自變項與依變項）</li>
+    <li>能看出<span class="kp">研究設計的種類</span></li>
+    <li>最好<span class="hl-coral">不超過15個字</span>（英文字母少於100個）</li>
+  </ul>
+</div>
+<div class="ex-box"><div class="ex-tag">改善範例</div>
+<strong>原題目（過長）：</strong>臺北市低收入戶民眾生活型態與罹患高血壓關係之調查<br>
+→ 樣本群體：臺北市低收入戶民眾；變項：生活型態 + 罹患高血壓；研究設計：調查（Survey）<br>
+<strong>改善後（次標題形式）：</strong>生活型態與罹患高血壓之研究：以臺北市低收入戶為例</div>
+
+<div class="sh2">② 摘要（Abstract）</div>
+<div class="c-card accent-teal" style="margin-bottom:12px">
+  <div class="c-head">摘要的六大要素（麻雀雖小，五臟俱全）</div>
+  <ul class="b-list">
+    <li><span class="hl-teal">背景（Background）</span>：研究為何需要進行</li>
+    <li><span class="hl-gold">目的（Purpose）</span>：研究要達到什麼</li>
+    <li><span class="hl-coral">材料與方法（Methods）</span>：如何研究、樣本情況</li>
+    <li><span class="hl-green">結果（Results）</span>：主要發現數據</li>
+    <li><span class="hl-purple">評論與展望（Discussion & Conclusion）</span></li>
+    <li>關鍵字：3~5個</li>
+  </ul>
+  <div class="imp-box" style="margin-top:8px">APA建議：<span class="hl-gold">不超過250個英文字</span>；中文以200-300字為宜，不超過500字。</div>
+</div>
+
+<div class="sh2">③ 前言（Introduction）</div>
+<div class="cp">目的：劃定研究領域和引起動機，說明背景知識及目標企圖。</div>
+<ul class="num-list">
+  <li><strong class="hl-gold">研究問題的背景</strong>：詳實說明背景，交代研究議題發展的相關沿革</li>
+  <li><strong class="hl-teal">先前的相關研究（現況）</strong>：適當引證重要數據，交代過去的相關研究發現</li>
+  <li><strong class="hl-coral">這個研究的問題所在</strong>：知識缺口（Gap）——讓讀者相信研究者提出了正確問題</li>
+  <li><strong class="hl-green">如何解決問題（構想）</strong>：研究動機，研究者為何想做此研究</li>
+  <li><strong class="hl-purple">預期成果</strong>：此研究對護理理論、實務工作或教育上是否有所貢獻？</li>
+</ul>
+
+<div class="sh2">④ 文獻查證（Literature Review）</div>
+<div class="cp">文獻查證是研究的<span class="hl-gold">基礎</span>，研究者有責任讓讀者了解該領域最新研究現況。</div>
+<ul class="b-list">
+  <li>文獻需<span class="hl-gold">切題</span>、具有組織邏輯性和系統性</li>
+  <li>說明研究問題<strong>如何形成</strong>？為何選擇此研究策略？</li>
+  <li>是否同時呈現正、反兩面（不同觀點）的研究結果？或只採一面倒的資料？</li>
+  <li>是否為最近期文獻？（<span class="hl-teal">近五年</span>的文獻資料最為理想）</li>
+  <li>是否能以<strong>批判性態度</strong>評論或比較各文獻？</li>
+</ul>
+
+<div class="sh2">⑤ 研究架構（Research Framework）</div>
+<div class="cp">清楚列出<span class="hl-gold">研究變項</span>（包括自變項和依變項），並說明這些變項間的關係；通常用<strong>圖示</strong>呈現較為簡單清楚。</div>
+<ul class="b-list">
+  <li>是否與研究主題相關？是否有<strong>理論依據</strong>？</li>
+  <li>概念間或研究變項間的關係是否說明詳盡、定義清楚？</li>
+  <li>研究架構圖的表達是否清楚、明確？</li>
+</ul>
+
+<div class="sh2">⑥ 研究目的與假設（Research Purpose & Hypothesis）</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">研究目的</span><span class="def-en">以<span class="hl-gold">肯定句</span>呈現，建立研究問題並確認研究者如何及為何想找到答案。較為籠統、整體、重點式的敘述，屬包裹式論說。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">研究問題</span><span class="def-en">以<span class="hl-teal">疑問句</span>呈現，隨著研究目的延伸而來，具體闡述研究想探究的問題。一個研究目的可能會有許多研究問題。</span></div>
+</div>
+<div class="g2" style="margin-top:8px">
+  <div class="def-box" style="margin:0"><span class="def-term">零假設（Null Hypothesis）</span><span class="def-en">如：「教育程度和對高血壓的認知<span class="hl-coral">具有相關性</span>」——未指明方向</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">方向假設（Directional Hypothesis）</span><span class="def-en">如：「教育程度和對高血壓的認知<span class="hl-gold">呈正相關</span>」——明確指出預測方向，更具說服力、更有統計意義</span></div>
+</div>
+
+<div class="sh2">⑦ 名詞界定（Define Research Variables）</div>
+<div class="cp">名詞界定的目的是<span class="hl-gold">定義研究中的重要變項</span>，使讀者能清楚了解變項的意思，整篇研究中對同一變項的描述須保持一致。需兼具<strong>概念性（一般性）定義</strong>與<strong>操作性定義</strong>。</div>
+<div class="ex-box"><div class="ex-tag">判讀範例</div>
+<strong>研究題目：</strong>老年人健康行為之研究<br>
+→ 必須清楚界定「老年人」是<strong>60歲、65歲，還是70歲以上</strong>？<br>
+→ 「健康行為」包括哪些項目？是<strong>休閒、運動，還是不抽菸、不喝酒</strong>？<br>
+不同的操作性定義會有不同的研究結果，研究者必須詳加定義，避免認知差異。</div>
+
+<div class="sh2">⑧ 研究方法（Research Methods）</div>
+<div class="cp">研究方法是整篇研究報告中敘述觀察計畫的精髓，必須受到最嚴格的監督。研究方法需呼應研究目的，並清楚指出研究細節以作為整個研究的操作指南。</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">研究設計批判要點</div>
+    <ul class="b-list">
+      <li>屬於橫斷面還是縱貫面研究？</li>
+      <li>使用的研究方法是否適合研究目的？</li>
+      <li>是否盡量排除各種可能影響研究的變數？</li>
+      <li>是否能經得起重複驗證？</li>
+    </ul>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">研究對象批判要點</div>
+    <ul class="b-list">
+      <li>樣本的<span class="hl-teal">納入條件</span>與<span class="hl-coral">排除條件</span>是否清楚？</li>
+      <li>樣本數和其估算依據是否說明？</li>
+      <li>取樣方法是否適當？樣本的回覆率為何？</li>
+      <li>是否陳述取樣可能遭遇的偏差？</li>
+      <li>是否有適當的<strong>倫理/人權保護</strong>（匿名處理、知情同意書）？</li>
+    </ul>
+  </div>
+  <div class="c-card accent-coral"><div class="c-head">研究工具批判要點</div>
+    <ul class="b-list">
+      <li>研究工具（量表、問卷）是否具有<span class="hl-coral">客觀性</span>——信效度是否已驗證？</li>
+      <li>若使用自行研發的量表：如何發展而來？信效度如何測試？</li>
+      <li>若使用他人量表：是否重新測試信效度？</li>
+      <li>量表用字是否清晰？封閉式答案是否周延且互斥？</li>
+    </ul>
+  </div>
+  <div class="c-card accent-green"><div class="c-head">資料收集批判要點</div>
+    <ul class="b-list">
+      <li>是否經過<span class="hl-green">前驅試驗（Pilot Test）</span>？</li>
+      <li>資料收集方法（個案自填或訪員面談）是否說明？</li>
+      <li>若由訪員填寫，是否有進行<strong>訪員訓練</strong>？</li>
+      <li>若縱貫性研究，是否每個時間點都使用相同的測量？</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh2">⑨ 研究結果（Research Results）</div>
+<div class="cp">「研究結果」呈現經過研究者整理、統計、分析後的研究發現——給予讀者一個有關資料的<span class="hl-gold">完整圖像</span>。必須<span class="hl-teal">回應研究目的</span>，盡量客觀，不摻雜情感，避免呈現不相干的資料。</div>
+<div class="imp-box">⚠️ <strong>常見錯誤：</strong>「竟然高達50%的老年人罹患高血壓」——「竟然」二字含有個人價值判斷，不適合在研究結果中出現。</div>
+<ul class="b-list">
+  <li>敘述是否<span class="hl-gold">清楚客觀</span>？統計結果是否清楚書寫出來？</li>
+  <li>是否根據<span class="hl-teal">研究架構</span>陳述？是否與研究假設相符合？</li>
+  <li>圖表呈現是否清楚易懂？是否有對圖表內容加以說明或解釋？</li>
+  <li>所使用的統計分析方式是否合適？是否說明統計軟體名稱？</li>
+</ul>
+<div class="cp">📊 <strong>圖表呈現的重要性：</strong>圖表具有「畫龍點睛」的效果，讓讀者直接從圖表一目了然看出研究結果。但圖表不能作為文字解說的替代品——研究結果的論述應以<span class="hl-gold">文字說明為主，圖表為輔</span>。</div>
+
+<div class="sh2">⑩ 討論（Discussion）</div>
+<div class="cp">「討論」是研究者闡明研究結果意義，說出自己的想法——自身對資料的解讀，是研究報告中較為主觀的部分，較難批判。</div>
+<ul class="b-list">
+  <li>文中是否出現<span class="hl-coral">尚未被承認的敘述</span>，或資料數據不能充分支持的結論？</li>
+  <li>是否將每一項研究結果與<span class="hl-gold">最原始的研究問題或假設</span>加以討論？</li>
+  <li>是否考慮所有可能性或<strong>替代性的解釋</strong>？</li>
+  <li>是否將本研究和<span class="hl-teal">前人研究結果或文獻</span>作一比較？</li>
+  <li>是否對預期之外的發現進行討論？</li>
+</ul>
+
+<div class="sh2">⑪ 結論與建議（Conclusions & Recommendations）</div>
+<div class="g2">
+  <div class="def-box" style="margin:0"><span class="def-term">結論（Conclusion）</span><span class="def-en">研究者針對研究發現的事實所作之<span class="hl-gold">個人判斷</span>，需有明白證據才能成立。必須根據原本的研究假設或目的加以陳述，呼應前言中的研究動機及預期成果；精簡、濃縮最重要的結果，無須過於冗長。</span></div>
+  <div class="def-box" style="margin:0"><span class="def-term">建議（Recommendation）</span><span class="def-en">研究過程中發現的副產品；對超出原先假設或具重要意義的事實提出個人見解；說明研究設計或執行上的瑕疵，以及<span class="hl-teal">日後可以改善的方法</span>；對護理實務、行政、教育或研究上的具體建議。</span></div>
+</div>
+
+<div class="sh2">⑫ 研究限制（Research Limitation）</div>
+<div class="cp">任何一篇研究不可避免地都有其<span class="hl-coral">特定範圍或限制</span>——指具有限制性的條件或缺點，也就是研究者現有能力做不到、無法完成，但可使研究更完善的部分。</div>
+<ul class="b-list">
+  <li>研究者是否<span class="hl-coral">忠實、坦白</span>地承認自己在研究上的限制？</li>
+  <li>是否說明這些限制對研究的影響？</li>
+  <li>是否提出日後可以改善的方法或進一步探究的內容？</li>
+</ul>
+
+<div class="sh2">⑬ 參考文獻（References）</div>
+<ul class="b-list">
+  <li>書寫格式是否<span class="hl-gold">正確且一致</span>？（包含文中引用格式和文後陳列方式）</li>
+  <li>書寫是否完整，有無疏漏？</li>
+  <li>引用資料年代是否過於久遠？（以<span class="hl-teal">近五年</span>的文獻資料為佳）</li>
+</ul>
+
+<div class="sh">量性 vs 質性研究報告判讀的主要差異</div>
+<table class="cmp-table">
+<tr><th>面向</th><th>量性研究報告判讀</th><th>質性研究報告判讀</th></tr>
+<tr><td>研究描述</td><td>客觀、統計數據清楚</td><td>生動、讓讀者有身歷其境感</td></tr>
+<tr><td>信效度評估</td><td>量化的信效度係數</td><td>確實性、推廣性、信賴性、確認性</td></tr>
+<tr><td>結果呈現</td><td>統計圖表為輔，文字說明為主</td><td>描述生動鮮活，附上原始引語</td></tr>
+<tr><td>批判難度</td><td>有明確準則可循</td><td>較難直接批判，需追隨研究者思維邏輯</td></tr>
+</table>
+`,
+quiz:[
+{q:"依APA規範，一篇研究報告摘要的理想字數為？",opts:["不超過100個英文字，1-2個關鍵字","不超過250個英文字，3-5個關鍵字","不超過500個英文字，10個關鍵字","字數無限制，越詳細越好"],ans:1,exp:"APA建議摘要不超過250個英文字，3-5個關鍵字；中文摘要通常以200-300字為宜，不超過500字；摘要需「麻雀雖小，五臟俱全」。"},
+{q:"「方向假設（Directional Hypothesis）」相較於「零假設（Null Hypothesis）」的優點是？",opts:["方向假設比較容易通過假設檢定","方向假設容許更具說服力的推論，也更具統計上的意義","兩者完全相同，只是名稱不同","零假設更適合用於探索性研究"],ans:1,exp:"方向假設明確指出預測關係的方向（正相關或負相關），如「教育程度和高血壓認知呈正相關」，比零假設（只說有相關性但不說方向）更具說服力，也更有統計上的意義。"},
+{q:"研究結果中出現「竟然高達50%的老年人罹患高血壓」，這個描述有什麼問題？",opts:["數字太小","「竟然」二字含有個人價值判斷，不適合出現在客觀的研究結果描述中","應該用百分比以外的方式呈現","研究結果應以圖表取代文字"],ans:1,exp:"研究結果需客觀陳述，不摻雜情感；「竟然」二字含有個人的價值判斷，似乎認為老年人高血壓罹患率不該如此高，是一種不合適的主觀描寫方式。"},
+{q:"判讀「研究限制（Research Limitation）」時，最重要的評估標準是？",opts:["研究限制是否足夠多，越多越好","研究者是否忠實坦白地承認限制，說明其影響並提出改善方法","研究限制是否與研究結果相關","研究限制的長度是否適當"],ans:1,exp:"研究限制是指研究者現有能力做不到但可使研究更完善的部分；判讀時需考量研究者是否忠實坦白承認自己在研究上的限制，說明這些限制對研究的影響，以及日後可以改善的方法。"},
+{q:"「研究討論（Discussion）」部分最常被批判的問題是？",opts:["統計方法選擇不當","出現尚未被證實資料支持的結論，或未考慮替代性解釋","摘要字數過長","前言缺乏研究背景說明"],ans:1,exp:"討論是研究報告中較為主觀的部分；最常被批判的問題是文中出現尚未被承認的敘述、資料數據不能充分支持的結論，或未能考慮所有可能性或替代性的解釋。"}
+]},
+
+{num:16,title:"實證健康照護：概念與臨床實務應用",en:"Evidenced-based Health Care: Concepts & Clinical Practice",
+content:`
+<div class="sh">實證醫學的發展脈絡</div>
+<div class="def-box"><span class="def-term">實證醫學（Evidence-based Medicine, EBM）</span><span class="def-en">首次由學者 <span class="hl-gold">Archie Cochrane</span> 提出：所有醫療行為都應有嚴謹的研究、實證及有效依據，才能將醫療資源作最佳利用。<br>1992年，加拿大 McMaster University 的 <span class="hl-teal">Gordon Guyatt</span> 正式提出EBM名詞：「<strong>有目的、正確地運用現有最好的科學依據來指導病人的治療</strong>」。亦稱<span class="kp">證據醫學</span>或<span class="kp">循證醫學</span>。</span></div>
+
+<div class="sh">EBHC 的廣泛定義（四大要素）</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">📄 最佳研究證據</div>經嚴謹設計、系統性文獻回顧的<span class="hl-gold">科學依據</span>；包含RCT、系統性回顧等高等級研究。</div>
+  <div class="c-card accent-teal"><div class="c-head">👨‍⚕️ 臨床專家經驗</div>臨床工作者多年累積的<span class="hl-teal">實務經驗與判斷力</span>，彌補研究結果在個案應用上的不足。</div>
+  <div class="c-card accent-coral"><div class="c-head">🧑 病人價值觀</div>尊重<span class="hl-coral">病人個人及家庭的價值觀與期待</span>做出決策，以達到以病人為中心的照護。</div>
+  <div class="c-card accent-green"><div class="c-head">🏥 環境資源</div>考量<span class="hl-green">醫療機構的資源、政策、環境因素</span>，確保照護措施的可行性與成本效益。</div>
+</div>
+<div class="imp-box">三者統稱 <span class="hl-gold">EBHC（Evidenced-based Health Care）</span>：<span class="kp">EBM（實證醫學）</span> + <span class="kp-t">EBN（實證護理）</span> + <span class="kp-g">EBP（實證實務）</span>。概念：將搜尋所得資料經<span class="hl-teal">有系統地實證評析</span>，應用於解決臨床問題。</div>
+
+<div class="sh">考科藍合作組織（Cochrane Collaboration）</div>
+<table class="cmp-table">
+<tr><th>年份</th><th>重要事件</th></tr>
+<tr><td><span class="hl-gold">1979年</span></td><td>Cochrane 提出醫療決定需有足夠證據支持，醫學界應週期性整合研究文獻</td></tr>
+<tr><td><span class="hl-teal">1992年</span></td><td>英國NHS在牛津大學成立研究中心，提供相關、最新、嚴謹且正確的系統性文獻回顧</td></tr>
+<tr><td><span class="hl-coral">1993年</span></td><td>在<strong>Iain Chalmers</strong>教授努力下，英國Cochrane Center正式成立；隨時對臨床試驗進行系統性文獻回顧，避免研究議題重複</td></tr>
+</table>
+<div class="cp">根據統計，PubMed在2021年已達<span class="hl-gold">33,136,289篇</span>資料，醫護研究資料快速增加，實證健康照護已成為21世紀重要的照護模式。</div>
+
+<div class="sh">21世紀五大核心能力（IOM, 2003）</div>
+<ul class="num-list">
+  <li><strong class="hl-gold">以病人為中心的醫療照護</strong></li>
+  <li><strong class="hl-teal">跨領域的醫療團隊工作</strong></li>
+  <li><strong class="hl-coral">執行實證健康照護（EBHC）</strong></li>
+  <li><strong class="hl-green">醫療品質促進</strong></li>
+  <li><strong class="hl-purple">資訊技術運用</strong></li>
+</ul>
+
+<div class="sh">執行 EBHC 的 5A 步驟</div>
+<div class="flow">
+  <div class="flow-step"><div class="fs-num">A1</div><div class="fs-txt">Ask 提問</div>形成可回答的臨床問題</div>
+  <div class="flow-step"><div class="fs-num">A2</div><div class="fs-txt">Acquire 取得</div>找出最佳文獻證據</div>
+  <div class="flow-step"><div class="fs-num">A3</div><div class="fs-txt">Appraise 評析</div>評析文獻可信度</div>
+  <div class="flow-step"><div class="fs-num">A4</div><div class="fs-txt">Apply 應用</div>應用最佳證據於臨床</div>
+  <div class="flow-step"><div class="fs-num">A5</div><div class="fs-txt">Audit 稽核</div>評值照護成效，持續改善</div>
+</div>
+
+<div class="sh">Step 1 — Ask：PICO 架構</div>
+<div class="def-box"><span class="def-term">PICO 架構（Straus et al., 2018）</span><span class="def-en">將臨床遭遇的情境，整理形成一個<span class="hl-gold">可以回答的臨床問題</span>，作為文獻搜尋的依據。</span></div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">P — 病人／問題／族群<br><small>Patient / Problem / Population</small></div>清楚描述病人、問題或族群。可依6W原則（Who對象、When時間、Where地點、What發生什麼事、How如何發生、Why為何）簡化成可回答問題。</div>
+  <div class="c-card accent-teal"><div class="c-head">I — 介入<br><small>Interventions</small></div>清楚描述主要的<span class="hl-teal">介入措施</span>或指標，如：臨床治療方式、危險因子暴露、診斷性檢查、預後因子。</div>
+  <div class="c-card accent-coral"><div class="c-head">C — 比較<br><small>Comparisons</small></div>清楚描述<span class="hl-coral">比較措施</span>或指標，比較各種可能介入因素的特質及差異（常為常規護理或無介入）。</div>
+  <div class="c-card accent-green"><div class="c-head">O — 結果<br><small>Outcomes</small></div>清楚描述<span class="hl-green">期望達到的結果</span>，考量病人生理、心理、家庭、社會與經濟的重要問題。</div>
+</div>
+
+<div class="ex-box"><div class="ex-tag">PICO 範例 16-1</div>
+<strong>臨床問題：</strong>安胎孕婦接受音樂治療是否會降低焦慮程度？<br><br>
+▸ <span class="hl-gold">P（病人）：</span>安胎的孕婦<br>
+▸ <span class="hl-teal">I（介入措施）：</span>音樂治療<br>
+▸ <span class="hl-coral">C（比較措施）：</span>未執行音樂治療（常規護理）<br>
+▸ <span class="hl-green">O（結果）：</span>降低焦慮程度</div>
+
+<div class="ex-box"><div class="ex-tag">PICO 範例 16-2</div>
+<strong>臨床問題：</strong>哮吼病童有無使用氧氣帳，對改善喘鳴症狀及減少住院天數是否有差異？<br><br>
+▸ <span class="hl-gold">P：</span>哮吼病童 ／ <span class="hl-teal">I：</span>有使用氧氣帳 ／ <span class="hl-coral">C：</span>無使用氧氣帳 ／ <span class="hl-green">O：</span>改善喘鳴症狀及減少住院天數</div>
+
+<div class="sh">Step 2 — Acquire：文獻搜尋策略</div>
+<div class="sh2">搜尋資料庫的種類</div>
+<div class="g2">
+  <div class="c-card accent-gold"><div class="c-head">✅ 優先搜尋：實證資料庫</div>
+    <ul class="b-list">
+      <li><span class="kp">Cochrane Library</span>：系統性文獻回顧</li>
+      <li><span class="kp">UpToDate</span>：臨床決策支援系統</li>
+      <li><span class="kp">BMJ Clinical Evidence</span></li>
+    </ul>
+    <em>不需太多搜尋技巧，快速支援臨床決策</em>
+  </div>
+  <div class="c-card accent-teal"><div class="c-head">次之搜尋：一般醫學資料庫</div>
+    <ul class="b-list">
+      <li><span class="kp-t">PubMed / MEDLINE</span></li>
+      <li><span class="kp-t">CINAHL</span>（護理與醫療照護）</li>
+      <li><span class="kp-t">EMBASE</span></li>
+      <li><span class="kp-t">華藝線上圖書館</span>（中文資料庫）</li>
+    </ul>
+    <em>收錄原始文獻，量多但需較多搜尋技巧</em>
+  </div>
+</div>
+
+<div class="sh2">搜尋技巧</div>
+<ul class="b-list">
+  <li>將PICO各要素轉換為<span class="hl-gold">關鍵字</span>（Free Text）與<span class="hl-teal">MeSH Terms</span>（醫學主題詞）</li>
+  <li>同義字及相關詞用 <span class="kp-g">OR</span>（聯集，擴大範圍）</li>
+  <li>P、I、C、O 的不同組合用 <span class="kp-t">AND</span>（交集，縮小範圍）</li>
+  <li>文章類型優先選擇：<span class="hl-coral">系統性文獻回顧、隨機對照試驗（RCT）</span></li>
+</ul>
+
+<div class="sh">Step 3 — Appraise：證據等級</div>
+<div class="cp">英國牛津大學實證醫學中心（OCEBM）2011年的<span class="hl-gold">醫學研究文獻證據等級</span>分類（由高到低）：</div>
+<table class="cmp-table">
+<tr><th>等級</th><th>研究設計</th><th>代表性</th></tr>
+<tr><td><span class="hl-green">Level 1（最高）</span></td><td>系統性文獻回顧（Systematic Review）/ 整合分析（Meta-analysis）</td><td class="good">最高等級，最多證據</td></tr>
+<tr><td><span class="hl-teal">Level 2</span></td><td>隨機對照試驗（RCT）</td><td class="good">高等級證據</td></tr>
+<tr><td><span class="hl-gold">Level 3</span></td><td>非隨機對照試驗、世代研究</td><td>中等級證據</td></tr>
+<tr><td><span class="hl-coral">Level 4</span></td><td>病例對照研究、個案研究</td><td>較低等級</td></tr>
+<tr><td><span class="bad" style="color:var(--coral2)">Level 5（最低）</span></td><td>專家意見、動物研究、機制性研究</td><td class="bad">最低等級，需謹慎</td></tr>
+</table>
+<div class="imp-box">💡 <strong>新版實證金字塔（2014年）更新：</strong>「系統性文獻回顧」從金字塔頂端<span class="hl-gold">切割分離</span>，視為「檢視或應用證據的一種透視鏡」，不再屬於金字塔結構，傳統金字塔變為「梯型」。</div>
+
+<div class="sh">Step 3 — Appraise：文獻評析的兩大方向</div>
+<div class="g2">
+  <div class="c-card accent-teal"><div class="c-head">真實性（Validity）評析</div>研究結果是否<span class="hl-teal">真實可信</span>？<br>
+    <ul class="b-list" style="margin-top:6px">
+      <li>是否採用隨機分派（RCT）？</li>
+      <li>是否盲化（blind）設計？</li>
+      <li>樣本流失率是否過高？</li>
+      <li>研究族群是否具代表性？</li>
+    </ul>
+  </div>
+  <div class="c-card accent-gold"><div class="c-head">重要性（Importance）評析</div>研究結果的<span class="hl-gold">臨床意義</span>是否足夠？<br>
+    <ul class="b-list" style="margin-top:6px">
+      <li>效應量（Effect Size）是否足夠大？</li>
+      <li>95%信賴區間是否夠窄（精準）？</li>
+      <li>Number Needed to Treat（NNT）是否合理？</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sh">Step 4-5 — Apply & Audit：應用與稽核</div>
+<div class="g2">
+  <div class="c-card accent-coral"><div class="c-head">🔬 Apply 應用</div>結合：<span class="hl-gold">最佳研究證據</span> + <span class="hl-teal">臨床專家經驗</span> + <span class="hl-coral">病人個人及家庭價值觀與期待</span>，施行醫療照護措施，確保臨床照護的合理性與正確性，降低醫療資源浪費。</div>
+  <div class="c-card accent-green"><div class="c-head">📊 Audit 稽核</div>評值照護成效：是否達到預期結果（O）？整個EBHC過程是否達到<span class="hl-green">持續品質改善</span>的目標？找出可改善之處，進入下一個5A循環。</div>
+</div>
+
+<div class="sh">台灣EBHC推動歷程</div>
+<table class="cmp-table">
+<tr><th>年份</th><th>重要事件</th></tr>
+<tr><td><span class="hl-gold">2002年</span></td><td>行政院衛生署開始推動實證醫學計畫，對區域層級以上醫院利用網路平台執行</td></tr>
+<tr><td><span class="hl-teal">2005年</span></td><td>陽明大學成立「台灣實證卓越中心」</td></tr>
+<tr><td><span class="hl-coral">2007年</span></td><td>醫策會將「實證醫學應用類」納入競賽；台灣實證醫學學會成立</td></tr>
+<tr><td><span class="hl-green">2010年</span></td><td>台灣護理學會開始舉辦「實證護理臨床應用競賽」</td></tr>
+<tr><td><span class="hl-purple">2011年</span></td><td>台灣實證護理學會成立</td></tr>
+<tr><td><span class="hl-gold">2015年</span></td><td>台灣護理學會成立「台灣護理學會卓越中心」</td></tr>
+<tr><td><span class="hl-teal">2018年</span></td><td>成立「實證健康照護知識館」，護理人員可投稿A/B/C三類實證成果</td></tr>
+</table>
+`,
+quiz:[
+{q:"「實證醫學（EBM）」的概念最早由哪位學者提出？",opts:["Gordon Guyatt","Archie Cochrane","Iain Chalmers","Florence Nightingale"],ans:1,exp:"實證醫學的概念首次由Archie Cochrane提出：所有醫療行為都應有嚴謹研究、實證及有效依據才能最佳利用醫療資源；Gordon Guyatt於1992年正式提出EBM名詞。"},
+{q:"PICO架構中，「C」代表什麼？",opts:["臨床（Clinical）","比較（Comparisons）——比較措施或指標","照護（Care）","結論（Conclusion）"],ans:1,exp:"PICO架構中C代表Comparisons（比較），清楚描述比較措施或指標，比較各種可能介入因素的特質及差異，通常為常規護理或無介入措施。"},
+{q:"在EBHC文獻搜尋時，哪種類型的資料庫應優先使用？",opts:["PubMed等一般醫學資料庫","Cochrane Library等實證資料庫","Google Scholar等學術搜尋引擎","只使用中文資料庫"],ans:1,exp:"文獻搜尋建議優先使用實證資料庫（如Cochrane Library、UpToDate），不需太多搜尋技巧，可快速支援臨床決策；一般醫學資料庫（如PubMed）則需要較多搜尋技巧，列為次之。"},
+{q:"「系統性文獻回顧（Systematic Review）/ 整合分析（Meta-analysis）」在OCEBM證據等級中屬於哪個等級？",opts:["Level 3（中等）","Level 5（最低）","Level 1（最高等級）","Level 2"],ans:2,exp:"系統性文獻回顧與整合分析整合了最多高品質研究的結果，在OCEBM證據等級中屬於Level 1（最高等級），具有最強的臨床決策依據。"},
+{q:"EBHC執行的「5A步驟」依正確順序排列是？",opts:["Acquire→Ask→Appraise→Apply→Audit","Ask→Acquire→Appraise→Apply→Audit","Apply→Ask→Acquire→Appraise→Audit","Appraise→Ask→Acquire→Apply→Audit"],ans:1,exp:"EBHC的5A步驟：①Ask（提問：形成PICO問題）→②Acquire（取得最佳證據）→③Appraise（評析文獻可信度）→④Apply（應用於臨床）→⑤Audit（稽核評值成效）。"}
+]}
+];
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let done = new Set();
+let answers = {}; // answers[num][qi] = chosen
+
+function getAns(num){ if(!answers[num]) answers[num]={}; return answers[num]; }
+
+// ════════════════════════════════════════════
+// BUILD SIDEBAR
+// ════════════════════════════════════════════
+function buildSidebar(){
+  const ul=document.getElementById('nav-list');
+  ul.innerHTML='';
+  if(_mode==='chapter'){
+    const hi=document.createElement('li');hi.className='nav-item';hi.id='nav-home';
+    hi.innerHTML='<span class="nav-num">⌂</span><span>課程總覽</span>';
+    hi.onclick=showHome;ul.appendChild(hi);
+    const sl=document.createElement('div');sl.className='nav-section';sl.textContent='16 Chapters · 自主學習';ul.appendChild(sl);
+    UNITS.forEach(u=>{
+      const li=document.createElement('li');li.className='nav-item';li.id='nav-'+u.num;
+      li.innerHTML='<span class="nav-num">'+u.num+'</span><span>'+u.title+'</span>';
+      li.onclick=()=>showUnit(u.num);ul.appendChild(li);
+    });
+  } else {
+    const ov=document.createElement('li');ov.className='nav-item';ov.id='nav-wk-ov';
+    ov.innerHTML='<span class="nav-num">⌂</span><span>課程總覽 ＆ 評分方式</span>';
+    ov.onclick=showWkOverview;ul.appendChild(ov);
+    const sl=document.createElement('div');sl.className='nav-section';sl.textContent='18 Weeks Teaching Plan';ul.appendChild(sl);
+    WEEKS.forEach(wk=>{
+      const li=document.createElement('li');
+      li.className='nav-item wk-item'+(wk.type==='exam'?' exam-item':'');li.id='nav-wk-'+wk.w;
+      const ico=wk.type==='exam'?'📝':wk.type==='reading'?'📖':'🎓';
+      const short=wk.title.length>14?wk.title.slice(0,14)+'…':wk.title;
+      li.innerHTML='<span class="nav-num">'+ico+'</span><span>W'+wk.w+' '+short+'</span>';
+      li.onclick=()=>showWeek(wk.w);ul.appendChild(li);
+    });
+  }
+}
+
+function updateProg(){
+  const n = done.size;
+  const pl=document.getElementById('pl');if(pl)pl.textContent = `${n} / 16`;
+  const pf=document.getElementById('pf');if(pf)pf.style.width = `${(n/16)*100}%`;
+  UNITS.forEach(u => {
+    const el = document.getElementById(`nav-${u.num}`);
+    if(el) el.classList.toggle('done', done.has(u.num));
+  });
+  document.querySelectorAll('.uc').forEach(c => {
+    c.classList.toggle('done', done.has(parseInt(c.dataset.num)));
+  });
+}
+
+// ════════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════════
+function buildHome(){
+  const el = document.getElementById('page-home');
+  el.innerHTML = `
+    <div class="home-hero">
+      <h1>護理研究<br>自主學習平台</h1>
+      <p>16 個單元完整涵蓋課程內容 · 每單元包含詳細重點解說、重要概念色彩標示與隨堂測驗<br>點選單元開始學習，完成測驗即標記為已學習</p>
+      <a href="nursing-research-games.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:12px 28px;border-radius:99px;background:linear-gradient(135deg,rgba(201,162,39,.2),rgba(47,168,154,.15));border:1px solid rgba(201,162,39,.4);color:var(--gold2);font-size:.85rem;font-weight:700;text-decoration:none;transition:.2s;letter-spacing:.5px" onmouseover="this.style.background='linear-gradient(135deg,rgba(201,162,39,.35),rgba(47,168,154,.25))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(201,162,39,.2),rgba(47,168,154,.15))'">🎮 進入遊戲學習中心 →</a>
+    </div>
+    <div class="sec-lbl">全部 16 個單元</div>
+    <div class="unit-grid">
+      ${UNITS.map(u=>`<div class="uc" data-num="${u.num}" onclick="showUnit(${u.num})">
+        <div class="uc-n">Unit ${u.num}</div>
+        <div class="uc-t">${u.title}</div>
+        <div class="uc-e">${u.en}</div>
+        <div class="uc-done">✓</div>
+      </div>`).join('')}
+    </div>`;
+}
+
+function showHome(){
+  if(_mode==='weekly'){ showWkOverview(); return; }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('page-home').classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  const nh=document.getElementById('nav-home');if(nh)nh.classList.add('active');
+  closeSb(); window.scrollTo(0,0); updateProg();
+}
+
+// ════════════════════════════════════════════
+// UNIT PAGE
+// ════════════════════════════════════════════
+function showUnit(num){
+  if(_mode==='weekly') setMode('chapter');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  let pg = document.getElementById(`page-${num}`);
+  if(!pg){ pg = buildUnitPage(UNITS.find(u=>u.num===num)); document.getElementById('main').appendChild(pg); }
+  pg.classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  const ni=document.getElementById(`nav-${num}`);if(ni)ni.classList.add('active');
+  closeSb(); window.scrollTo(0,0);
+}
+
+function buildUnitPage(u){
+  const pg = document.createElement('div');
+  pg.className = 'page'; pg.id = `page-${u.num}`;
+  pg.innerHTML = `
+    <div class="u-tag">Unit ${u.num} of 16</div>
+    <div class="u-title">${u.title}</div>
+    <div class="u-en">${u.en}</div>
+    <div class="u-divider"></div>
+    <div class="sec-lbl">單元內容</div>
+    <div class="content-body">${u.content}</div>
+    <div class="sec-lbl">隨堂測驗 · ${u.quiz.length} 題</div>
+    <div class="quiz-wrap">
+      ${u.quiz.map((q,qi)=>`
+        <div class="q-card" id="qc-${u.num}-${qi}">
+          <div class="q-n">題目 ${qi+1} / ${u.quiz.length}</div>
+          <div class="q-txt">${q.q}</div>
+          <div class="opts">
+            ${['A','B','C','D'].map((l,oi)=>`
+              <div class="opt" id="opt-${u.num}-${qi}-${oi}" onclick="pick(${u.num},${qi},${oi})">
+                <span class="opt-l">${l}</span>
+                <span>${q.opts[oi]}</span>
+              </div>`).join('')}
+          </div>
+          <div class="fb" id="fb-${u.num}-${qi}"></div>
+        </div>`).join('')}
+    </div>
+    <div class="score-pnl" id="sc-${u.num}">
+      <div class="sc-circle" id="sc-n-${u.num}">0/${u.quiz.length}</div>
+      <div class="sc-msg" id="sc-m-${u.num}"></div>
+      <div class="sc-sub" id="sc-s-${u.num}"></div>
+      <button class="btn-retry" onclick="retry(${u.num})">🔄 重新作答</button>
+    </div>`;
+  return pg;
+}
+
+function pick(num, qi, chosen){
+  const u = UNITS.find(x=>x.num===num);
+  const q = u.quiz[qi];
+  const st = getAns(num);
+  if(st[qi]!==undefined) return;
+  st[qi]=chosen;
+  ['A','B','C','D'].forEach((_,oi)=>{
+    const el = document.getElementById(`opt-${num}-${qi}-${oi}`);
+    el.classList.add('dis');
+    if(oi===q.ans) el.classList.add('ok');
+    else if(oi===chosen) el.classList.add('no');
+  });
+  const fb = document.getElementById(`fb-${num}-${qi}`);
+  const ok = chosen===q.ans;
+  fb.className=`fb show ${ok?'ok':'no'}`;
+  fb.textContent = (ok ? '✓ 正確！' : `✗ 正確答案是 ${['A','B','C','D'][q.ans]}。`) + '　' + q.exp;
+  document.getElementById(`qc-${num}-${qi}`).classList.add('answered');
+  if(Object.keys(st).length===u.quiz.length) showScore(num);
+}
+
+function showScore(num){
+  const u = UNITS.find(x=>x.num===num);
+  const st = getAns(num);
+  const correct = u.quiz.filter((q,i)=>st[i]===q.ans).length;
+  const pct = Math.round(correct/u.quiz.length*100);
+  const pnl = document.getElementById(`sc-${num}`);
+  pnl.classList.add('show');
+  document.getElementById(`sc-n-${num}`).textContent=`${correct}/${u.quiz.length}`;
+  let msg,sub;
+  if(pct===100){msg='🏆 滿分！完美掌握本單元！';sub='所有重點均已熟練，繼續保持！'}
+  else if(pct>=80){msg='🌟 優秀！';sub=`答對 ${correct} 題，建議再次複習答錯的重點。`}
+  else if(pct>=60){msg='📚 及格，繼續加油！';sub=`答對 ${correct} 題，建議重新閱讀核心重點後再次作答。`}
+  else{msg='💡 需要加強';sub=`答對 ${correct} 題，請仔細閱讀單元內容後再試一次。`}
+  document.getElementById(`sc-m-${num}`).textContent=msg;
+  document.getElementById(`sc-s-${num}`).textContent=sub;
+  if(pct>=60){ done.add(num); updateProg(); }
+  setTimeout(()=>pnl.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+function retry(num){
+  const u = UNITS.find(x=>x.num===num);
+  answers[num]={};
+  u.quiz.forEach((_,qi)=>{
+    document.getElementById(`qc-${num}-${qi}`).classList.remove('answered');
+    ['A','B','C','D'].forEach((_,oi)=>{
+      document.getElementById(`opt-${num}-${qi}-${oi}`).className='opt';
+    });
+    const fb=document.getElementById(`fb-${num}-${qi}`);
+    fb.className='fb'; fb.textContent='';
+  });
+  document.getElementById(`sc-${num}`).classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSb(){ document.getElementById('sb').classList.toggle('open'); }
+function closeSb(){ document.getElementById('sb').classList.remove('open'); }
+
+// ════════════════════════════════════════════
+// MODE STATE
+// ════════════════════════════════════════════
+let _mode = 'chapter';
+
+// ════════════════════════════════════════════
+// CORE COMPETENCIES & LEARNING OBJECTIVES
+// ════════════════════════════════════════════
+const COMPS = {
+  II:  {label:'Ⅱ 基礎生物醫學科學',pct:'40%',cls:'comp-II'},
+  IV:  {label:'Ⅳ 批判性思考',       pct:'30%',cls:'comp-IV'},
+  VI:  {label:'Ⅵ 倫理素養',         pct:'10%',cls:'comp-VI'},
+  VII: {label:'Ⅶ 克盡職責',         pct:'10%',cls:'comp-VII'},
+  VIII:{label:'Ⅷ 終身學習',         pct:'10%',cls:'comp-VIII'}
+};
+const OBJ_LABELS = [
+  '① 瞭解護理研究及實證與護理專業發展的重要性（10%）',
+  '② 瞭解護理研究的步驟（20%）',
+  '③ 比較質性與量性研究方法的優缺點（30%）',
+  '④ 指出建立研究工具之信度、效度的方法（10%）',
+  '⑤ 區辨不同研究方法與已發表研究文獻內容（30%）'
+];
+const RUBRIC_LEVELS = [
+  {cls:'r-exc',grade:'優秀（90-100）'},
+  {cls:'r-gd', grade:'良好（80-89）'},
+  {cls:'r-ok', grade:'及格（70-79）'},
+  {cls:'r-ng', grade:'待加強（＜70）'}
+];
+
+// ════════════════════════════════════════════
+// 18-WEEK TEACHING DATA
+// ════════════════════════════════════════════
+const WEEKS = [
+{w:1,title:'課程介紹 ＆ 護理研究概論（I）',en:'Introduction to Course & Nursing Research (I)',type:'normal',ch:[1],obj:[1,2],comp:['II','VIII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅷ-2 能表現出自動自發的學習精神'],
+outcomes:['了解課程目標、評分方式與學習規劃','知道護理研究的定義、特性與重要性','說出護理研究的目的與分類'],
+acts:[{ico:'📋',t:'課程說明',d:'介紹教學計劃、評分方式、課堂規則、導讀筆記要求與研究倫理時數規定（需完成ethics.moe.edu.tw 2小時線上課程）'},{ico:'🎯',t:'講述法',d:'介紹護理研究定義、Best（1981）12項研究特性、護理研究的重要性五大面向、台灣護理研究發展三個時期'},{ico:'💬',t:'提問討論',d:'「護理師為什麼需要學習研究？臨床護理師用得到研究方法嗎？」引導學生分享臨床觀察到的護理問題'},{ico:'📚',t:'課後任務',d:'預習教科書第一章，列出3個自己在臨床或生活中觀察到可以進行護理研究的問題'}],
+rubric:['完整說出護理研究12項特性，連結研究與護理實務重要性，舉出三個有意義的研究問題','能說出8項以上研究特性，大致了解護理研究與護理實務的關聯','能說出5項以上研究特性，了解基本概念','能說出3項以下研究特性，需要加強課前預習']},
+{w:2,title:'護理研究概論（II）＆ 實證護理應用',en:'Nursing Research (II) & Evidence-Based Nursing Practice',type:'normal',ch:[1,16],obj:[1,2],comp:['II','VIII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅷ-2 能表現出自動自發的學習精神'],
+outcomes:['說出護理研究的9個步驟','理解EBHC的定義與四大要素','能運用PICO架構提出臨床問題','知道台灣實證護理發展歷程'],
+acts:[{ico:'🎯',t:'講述法',d:'護理研究9步驟流程圖，逐步說明從確立主題到發表成果的完整歷程；介紹EBHC的EBM/EBN/EBP三範疇'},{ico:'📊',t:'PICO教學',d:'介紹實證健康照護5A步驟與PICO架構，以「安胎孕婦音樂治療」為例示範如何形成可回答的臨床問題'},{ico:'💬',t:'小組討論',d:'每組設計一個臨床PICO問題，分享並接受同學提問、師生共同評析'},{ico:'📱',t:'資源介紹',d:'介紹Cochrane Library、PubMed、CINAHL等實證資料庫的使用方式與搜尋技巧（AND/OR/NOT邏輯）'}],
+rubric:['完整陳述護理研究9步驟，能以PICO設計完整臨床問題，說明Cochrane等實證資料庫的使用優先順序','能說出8個以上步驟，能以PICO設計基本臨床問題','能說出5個以上步驟，大致了解PICO格式','步驟說明不完整，PICO架構仍需加強']},
+{w:3,title:'研究題目、問題、目的、提案及研究假設之確立',en:'Research Questions, Purposes, and Hypotheses',type:'normal',ch:[2],obj:[2],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['說明選擇研究題目的六大管道','區分研究目的（肯定句）、研究問題（疑問句）與研究假設（句號）的書寫格式','辨別方向假設與零假設的差異與功能'],
+acts:[{ico:'🎯',t:'講述法',d:'研究問題的四種類型、六大獲得管道（臨床經驗/文獻/複製/時事/指導老師/機構），以及研究目的書寫必備三要素（對象+變項+動詞）'},{ico:'📝',t:'書寫練習',d:'學生從臨床護理情境中找出一個感興趣的問題，分別書寫研究目的、研究問題（描述性/相關性/實驗性）與研究假設（有方向性）'},{ico:'💬',t:'提問討論',d:'各組分享書寫結果，師生共同評析格式是否正確、假設是否有方向性、研究問題的類型歸屬'},{ico:'📚',t:'課後任務',d:'閱讀教科書第二章，從一篇已發表護理研究找出假設，判斷是否為方向假設，下週帶至課堂說明'}],
+rubric:['正確書寫研究目的（含三要素）、相關性研究問題與有方向性假設，格式無誤，能說明每項的功能差異','能正確書寫研究目的與研究問題，假設書寫格式大致正確','能書寫研究目的，假設概念理解需加強','書寫格式不熟悉，需要個別輔導']},
+{w:4,title:'文獻查證',en:'Reviews of Literature',type:'normal',ch:[3],obj:[2],comp:['II','VIII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅷ-2 能表現出自動自發的學習精神'],
+outcomes:['說明文獻查證的7大功能（含拼圖概念）','運用AND/OR/NOT邏輯運算元進行資料庫搜尋','區分第一手與第二手資料，說明使用建議'],
+acts:[{ico:'🎯',t:'講述法',d:'文獻查證的意義、7大功能（拼圖概念：他人已完成部分，研究者找出可接續的片段）、重要護理期刊介紹、第一/二手資料區辨'},{ico:'💻',t:'資料庫實作',d:'學生在課堂使用電腦/手機實際操作PubMed/CINAHL，以上週設計的PICO問題進行關鍵字搜尋，比較AND/OR/NOT對搜尋結果的影響'},{ico:'💬',t:'提問討論',d:'分享搜尋結果：找到幾篇相關文獻？關鍵字如何調整才更精確？哪些是第一手資料？'},{ico:'📚',t:'課後任務',d:'找到1篇與自己PICO相關的第一手資料（原始研究報告），下週帶至課堂：這篇文獻幫助你了解了什麼新知識？'}],
+rubric:['能說明文獻查證7大功能，熟練使用資料庫邏輯運算元，正確區分第一/二手資料並說明使用建議','能說明5項以上功能，基本操作資料庫，大致了解一/二手資料差異','能說明3項以上功能，了解基本概念','文獻查證功能說明不完整，資料庫操作需要大量指導']},
+{w:5,title:'名詞界定與研究架構之形成',en:'Define Research Variables and Formulating Research Framework',type:'normal',ch:[4],obj:[2],comp:['II'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理'],
+outcomes:['區分概念性定義與操作性定義的功能差異','說明如何將抽象概念轉化為可測量的變項','繪製基本研究架構圖（框框代表概念，箭頭代表影響方向）'],
+acts:[{ico:'🎯',t:'講述法',d:'名詞界定的意義與重要性；以「焦慮」為例，對比概念性定義（引述Taylor 1953學者）與操作性定義（Taylor顯著焦慮量表分數）'},{ico:'🗺️',t:'研究架構教學',d:'研究架構的四大功能；說明如何從文獻中找到概念間的關係並以框框+箭頭繪製架構圖（因在左/果在右）'},{ico:'✏️',t:'實作繪圖',d:'學生以自己的PICO問題為基礎，試著繪製研究架構圖，並寫出主要變項的概念性定義與操作性定義'},{ico:'💬',t:'同儕互評',d:'兩兩配對互相評論架構圖：箭頭方向是否正確？操作性定義是否具體可測量？概念性定義是否引述來源？'}],
+rubric:['正確區分概念性與操作性定義，操作性定義具體可測量，研究架構圖清楚呈現變項關係與影響方向','能區分兩種定義，操作性定義基本可測量，架構圖大致清楚','了解名詞界定概念，架構圖尚待完善','概念混淆，操作性定義過於抽象，需要大量補救']},
+{w:6,title:'研究設計',en:'Research Design',type:'normal',ch:[6],obj:[2,3],comp:['II'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理'],
+outcomes:['說明研究設計的六大基本成分','比較描述性、探索性、因果性研究設計','判斷特定研究問題最適合的研究場所與研究者角色'],
+acts:[{ico:'🎯',t:'講述法',d:'研究設計六大基本成分（研究對象/現象變項/資料收集方法/場所情境/取樣方法/研究者角色）；三種設計類型比較'},{ico:'📊',t:'案例分析',d:'以3個臨床護理研究為例，引導學生逐一分析每個研究的六大成分，判斷設計類型（描述/探索/因果）'},{ico:'💬',t:'辯論討論',d:'「護理研究選擇自然情境vs.實驗室情境，哪個更好？」分組辯論，說明外在效度與內在效度的trade-off'},{ico:'📚',t:'預習任務',d:'預習取樣章節，思考：如果你要研究「台灣護理師的職業倦怠」，你會如何設計取樣策略？'}],
+rubric:['完整說明六大設計成分，正確判斷3種研究設計類型，能分析案例並提出自己的設計建議','能說出5項以上成分，大致區分3種設計類型，案例分析基本正確','能說出4項成分，了解基本設計概念','成分說明不完整，設計類型區分混淆']},
+{w:7,title:'研究取樣之考量與方法',en:'Sampling Methods and Considerations',type:'normal',ch:[5],obj:[2],comp:['II'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理'],
+outcomes:['區分目標母群體與可及母群體','比較機率性取樣（4種）與非機率性取樣（4種）的優缺點','說明系統隨機取樣的注意事項與滾雪球取樣的適用情境'],
+acts:[{ico:'🎯',t:'講述法',d:'取樣核心概念（目標/可及母群體/取樣架構/取樣誤差）、機率性取樣4種方法、非機率性取樣4種方法，各附護理研究真實範例'},{ico:'🎲',t:'取樣模擬',d:'以「弘光大學護理系學生的學習動機」為場景，帶學生討論如何設計取樣策略（可及母群體→取樣架構→取樣方法選擇）'},{ico:'💬',t:'提問討論',d:'「樣本數越大越好嗎？代表性與樣本數哪個更重要？」「哪些臨床情況適合滾雪球取樣？」'},{ico:'🔍',t:'文章分析',d:'比較上週找到文章的取樣方法：屬於哪種取樣？樣本數多少？有無說明取樣的限制？'}],
+rubric:['正確比較機率性與非機率性取樣各4種方法，能針對具體情境設計完整取樣策略','能說出各3種以上方法，大致了解取樣策略原則','能說出各2種方法，基本了解取樣概念','取樣方法說明不完整，概念混淆']},
+{w:8,title:'研究工具之信度與效度',en:'Measurement & Instrumentation: Reliability & Validity',type:'normal',ch:[11],obj:[4],comp:['II'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理'],
+outcomes:['說明信度的三個必要條件（一致性/穩定性/準確性）','解釋Cronbach’s α係數的三個判讀標準','區分內容效度、建構效度與效標關聯效度','判斷特定研究工具的信效度問題並提出改善建議'],
+acts:[{ico:'🎯',t:'講述法',d:'信度三要素；再測信度/折半信度/內在一致性/測試者一致性的定義、統計指標；效度三大類型（內容/建構/效標關聯）及評估方式'},{ico:'📊',t:'體重計類比',d:'用「三種體重計」視覺比喻，幫助學生理解：信度高但效度低 vs. 信度低則效度必然有問題的概念'},{ico:'💬',t:'案例判讀',d:'提供3個研究工具描述（Cronbach’s α=0.65/α=0.88/α=0.95），學生判斷各自的信度問題與建議改善方向'},{ico:'🔍',t:'文章分析',d:'從上週找到的文章中找出研究工具的信效度描述，評論說明是否完整'}],
+rubric:['正確說明信度3條件與效度3類型，能判讀Cronbach’s α並提出改善建議，能分析文章中工具信效度的完整性','能說明信效度主要類型，基本判讀α值，文章分析大致正確','了解信效度基本概念，判讀有部分錯誤','信效度概念混淆，需要補充學習']},
+{w:9,title:'期中考試',en:'Midterm Examination',type:'exam',ch:[],obj:[1,2,3,4],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['統合應用Week 1-8所有核心概念','展現批判性思考：分析研究設計的優缺點','正確識別並解釋研究工具的信效度問題'],
+acts:[{ico:'📝',t:'期中考試',d:'涵蓋Week 1-8全部內容，題型：選擇題（基本概念）+ 簡答題（名詞界定/取樣/信效度）+ 案例分析題（判斷研究設計類型/提出改善建議）'},{ico:'📊',t:'考試比重（A班）',d:'期中考佔40%：選擇題 40分（護理研究基本概念/研究步驟/信效度）+ 簡答題 30分（研究問題/假設/文獻查證）+ 案例分析 30分'},{ico:'💬',t:'考後反思',d:'考試結束後，教師引導學生自我評估：哪個概念最難理解？後半學期如何有效加強？'},{ico:'📋',t:'研究倫理提醒',d:'提醒學生上台灣學術倫理教育資源中心（ethics.moe.edu.tw）完成2小時修課及測驗並繳交修課證明（佔成績5%）'}],
+rubric:['90分以上：完整掌握Week 1-8核心概念，案例分析邏輯嚴謹，能提出具體改善建議','80-89分：大致掌握核心概念，案例分析基本正確，部分細節有誤','70-79分：基本概念了解，案例分析有明顯缺漏','69分以下：需要補救學習，建議安排個別輔導']},
+{w:10,title:'研究倫理與法律考量',en:'Ethical and Legal Issues in Research',type:'normal',ch:[1],obj:[1],comp:['VI','VII'],
+indicator:['Ⅵ-3 能闡述倫理原則之應用','Ⅵ-4 能熟練個案權益維護之技巧','Ⅶ-3 有效率地完成個人份內工作'],
+outcomes:['說明護理研究的三大倫理原則（利益/自主/公平）','說明研究樣本的四大基本權利','指出IRB的功能與護理研究常見倫理議題','辨識護理研究情境中的倫理困境並提出處理方式'],
+acts:[{ico:'⚖️',t:'講述法',d:'護理研究倫理三大原則（利益/自主/公平）、四大基本權利（避免傷害/充分認知/自決/隱私保密）、IRB審查程序（5位以上不同背景成員）'},{ico:'🎭',t:'情境角色扮演',d:'提供3個倫理兩難情境（研究者想省略知情同意/受試者為失智症患者/研究發現傷害數據），分組討論如何處理'},{ico:'💬',t:'案例分析',d:'討論台灣過去護理研究倫理問題案例，分析倫理問題所在及符合IRB標準的正確做法'},{ico:'✅',t:'倫理時數確認',d:'確認學生台灣學術倫理教育資源中心2小時修課進度；討論研究倫理在實際臨床工作中的日常應用'}],
+rubric:['正確說明三大倫理原則與四大基本權利，能分析倫理困境情境並提出符合IRB要求的具體做法','能說明三大原則與主要基本權利，倫理情境分析大致正確','了解基本倫理原則，情境分析有部分缺漏','倫理原則說明不完整，需要補充學習']},
+{w:11,title:'質性研究：緒論與研究設計種類（I）',en:'Introduction to Qualitative Research (I)',type:'normal',ch:[9],obj:[3],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['比較量性與質性研究的哲學典範差異','說明質性研究的定義、特徵與資料飽和的意義','介紹現象學研究（胡塞爾/海德格）與紮根理論的核心目的、資料收集與分析方式'],
+acts:[{ico:'🎯',t:'講述法',d:'實證主義vs.自然主義典範比較表、質性研究特徵（主觀/脈絡/飽和）；「資料飽和」比喻（倒彩色筆：前幾支出現新顏色，後來都是重複了）'},{ico:'🔬',t:'現象學深度講解',d:'胡塞爾「回到事物本身/存而不論」vs.海德格「存有/Being」；現象學護理研究資料收集（深度訪談）與分析（沉浸結晶法）；引用「急重症護理師的疫起挑戰」研究'},{ico:'🌱',t:'紮根理論講解',d:'「理論從資料土地中長出來」比喻；理論性取樣概念；從個案資料到核心範疇的分析歷程；引用「中風病患初期調適過程」研究'},{ico:'💬',t:'討論',d:'「質性研究適合探討哪些護理問題？量性研究無法解答的是什麼？兩者如何互補？」'}],
+rubric:['清楚比較兩種典範差異，能說明現象學與紮根理論的核心目的、資料收集方式與臨床範例','能說明典範差異，大致了解現象學與紮根理論的主要特徵','了解量性vs.質性的基本差異，研究設計種類說明需加強','典範概念混淆，研究設計種類說明不足']},
+{w:12,title:'質性研究：緒論與研究設計種類（II）',en:'Introduction to Qualitative Research (II)',type:'normal',ch:[9],obj:[3],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['說明民族誌、詮釋學、歷史性研究與批判理論的核心目的','比較六種質性研究類型的哲學背景與適用問題類型','說明質性研究可信度的四個指標（確實性/推廣性/信賴性/確認性）'],
+acts:[{ico:'🎯',t:'講述法',d:'民族誌（田野研究/文化共享意義）、詮釋學（詮釋循環/自我述說/前了解）、歷史性研究（口述歷史/由現在追溯過去）、批判理論（解放知識/行動研究螺旋）；各附護理研究臨床範例'},{ico:'📊',t:'六種類型比較表',d:'帶學生共同填寫「質性研究六大類型比較表」（哲學背景/研究目的/分析方式/適合問題），加強記憶辨別能力'},{ico:'⭐',t:'可信度教學',d:'確實性/推廣性/信賴性/確認性與量性信效度的對應關係；三角交叉法（Triangulation）、成員確認（Member Checking）、存而不論（Bracketing）的操作方式'},{ico:'💬',t:'角色扮演',d:'學生抽籤，每人扮演一種質性研究類型，向全班自我介紹：「我是XXX研究，我最適合研究……我的資料收集方式是……」'}],
+rubric:['能完整說明六種質性研究類型，比較哲學背景與適用問題，說明可信度四指標的達成方式','能說明四種以上類型的主要特徵，可信度基本了解','了解主要類型差異，部分類型說明需加強','六種類型說明不完整，可信度概念混淆']},
+{w:13,title:'質性論文導讀與討論',en:'Reading and Discussing Qualitative Research',type:'reading',ch:[9,10],obj:[3,5],comp:['II','IV','VI','VII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性','Ⅳ-5 能評價護理措施之成效','Ⅵ-3 能闡述倫理原則之應用'],
+outcomes:['閱讀並理解一篇質性護理研究報告','指出研究類型、資料收集方式、資料分析方法','評析研究的優缺點（可信度/研究限制/臨床應用價值）','導讀當天完成並繳交隨堂筆記（佔成績質性10%）'],
+acts:[{ico:'📖',t:'指定文章導讀',d:'教師帶領全班精讀一篇質性護理研究，逐段分析研究目的/方法/結果/討論；重點分析研究類型、資料飽和判斷依據、可信度策略'},{ico:'✏️',t:'導讀隨堂筆記',d:'學生一邊聆聽導讀一邊書寫筆記（直接在文章空白處），內容以教師講解重點為主，個人觀點可加分'},{ico:'💬',t:'批判性討論',d:'①這篇研究屬於哪種質性設計？②如何達成資料飽和？③研究倫理的處理是否完善？④臨床上如何應用研究結論？研究限制對臨床推論有何影響？'},{ico:'📋',t:'筆記繳交',d:'下課前繳交隨堂筆記給導讀教師批改（佔成績：質性10%）；未繳交不予給分（下課前收回）'}],
+rubric:['筆記完整記錄導讀重點，清楚標註研究類型/收集方式/分析方法，提出有見地的個人觀點與臨床應用建議','筆記記錄大部分重點，基本分析研究設計特徵，少數個人觀點','筆記記錄基本重點，分析較為表面','筆記記錄不完整或缺交，需要補救']},
+{w:14,title:'非實驗性研究設計',en:'Non-experimental Research Design',type:'normal',ch:[7],obj:[2,3,5],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['說明選用非實驗性研究的五大理由','比較典型描述性/比較描述性/相關性/縱貫面/橫斷面/病例對照研究設計的特徵','判斷各類非實驗性設計的因果推論能力'],
+acts:[{ico:'🎯',t:'講述法',d:'五大選用理由、典型描述性/比較描述性/相關性三種核心設計、縱貫面vs.橫斷面vs.病例對照研究；整合分析（Meta-analysis）在EBP中的位置；各附臨床範例'},{ico:'📊',t:'設計類型比較表',d:'引導學生填寫「非實驗性研究設計比較表」：時間特性/因果推論能力/代表統計方法；「病例對照研究由果追因」的比喻（你已知結果，往回問原因）'},{ico:'🔍',t:'文章判斷',d:'提供5篇已發表護理研究的摘要，學生判斷各屬於哪種非實驗性設計，並說明判斷依據'},{ico:'💬',t:'討論',d:'「病例對照研究為何適合研究罕見疾病？」「橫斷面研究為何無法判斷因果方向？」'}],
+rubric:['正確說明五大理由，能區分所有非實驗性設計類型，文章判斷全部正確並說明依據','能說明主要設計特徵，文章判斷大致正確','了解基本設計概念，文章判斷有部分錯誤','設計類型辨別困難，需要補救學習']},
+{w:15,title:'量性論文導讀與討論（I）— 調查法',en:'Reading Quantitative Research (I): Survey Design',type:'reading',ch:[7,12,13,15],obj:[5],comp:['II','IV','VII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性','Ⅶ-3 有效率地完成個人份內工作'],
+outcomes:['閱讀調查法（Survey Design）量性研究報告','運用判讀13大要素批判研究報告','評析研究工具的信效度說明是否完整','導讀當天完成並繳交隨堂筆記（量性20%之一部分）'],
+acts:[{ico:'📖',t:'指定文章導讀（調查法）',d:'教師帶領精讀一篇橫斷面調查法護理研究，逐一分析13大批判要素：題目/摘要/前言/文獻查證/研究架構/目的假設/名詞界定/研究方法/結果/討論/結論/限制/參考文獻'},{ico:'✏️',t:'導讀隨堂筆記',d:'學生邊聽邊寫，重點：研究題目是否包含三要素（樣本群體/主要變項/研究設計）？摘要是否涵蓋六大要素？樣本取樣方法？工具信效度？'},{ico:'💬',t:'批判性討論',d:'①研究結果有無使用「竟然」等主觀詞語？②討論部分是否與文獻查證相呼應？③研究限制是否坦誠？④研究結果的臨床應用價值？'},{ico:'📋',t:'筆記繳交',d:'下課前繳交隨堂筆記（佔量性20%的部分；另一部分為Week 17）；未繳交不予給分'}],
+rubric:['筆記完整，能運用13大要素系統性批判，指出具體優缺點並提出臨床應用建議','筆記涵蓋主要批判要素，分析大致完整','筆記記錄基本重點，部分批判要素遺漏','筆記不完整或缺交，批判分析流於表面']},
+{w:16,title:'實驗性研究設計',en:'Experimental Research Design',type:'normal',ch:[8],obj:[2,3,5],comp:['II','IV'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性'],
+outcomes:['說明真實驗性研究設計的三大要素（隨機化/操控/控制）','比較五種實驗性研究設計類型及其R/O/X符號圖','說明六大內在效度干擾因素（霍商效應/寬慰效應/統計迴歸等）','區分真實驗性與類實驗性研究設計的差異'],
+acts:[{ico:'🎯',t:'講述法',d:'三大要素（隨機化/操控/控制）、五種設計類型含R/O/X符號圖解析、六大內在效度干擾因素、外在效度影響因素、雙盲設計的控制原理'},{ico:'🔬',t:'設計圖解析',d:'以白板逐步畫出五種設計類型的符號圖（單組後測/單組前後測/不隨機雙組前後測/隨機雙組前後測/多組後測），學生跟著記錄，理解每種設計的邏輯與優缺點'},{ico:'💬',t:'效度威脅討論',d:'「若只有實驗組沒有對照組，最可能的內在效度威脅是什麼？」「霍商效應如何用雙盲設計控制？」「統計迴歸現象對哪種設計影響最大？」'},{ico:'🔍',t:'文章判斷',d:'看5個研究設計描述，判斷屬於真實驗或類實驗，說明理由，指出可能存在的內在效度威脅'}],
+rubric:['正確說明三大要素，能畫出五種設計圖並說明各自優缺點，正確識別六大效度威脅並提出控制方法','能說明三大要素，畫出三種以上設計圖，識別主要效度威脅','了解真實驗性基本概念，效度威脅說明不完整','三大要素混淆，設計類型區辨困難']},
+{w:17,title:'量性論文導讀與討論（II）— 實驗法',en:'Reading Quantitative Research (II): Experimental Design',type:'reading',ch:[8,13,15],obj:[5],comp:['II','IV','VII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性','Ⅳ-5 能評價護理措施之成效','Ⅶ-3 有效率地完成個人份內工作'],
+outcomes:['閱讀實驗法（RCT或類實驗）量性護理研究報告','判斷研究設計類型及三大要素的完整性','評析統計分析方法是否符合數據類型與研究目的','評估介入效果的臨床意義與應用可行性'],
+acts:[{ico:'📖',t:'指定文章導讀（實驗法）',d:'教師帶領精讀一篇類實驗性護理介入研究（如術前衛教降低焦慮、穴位按摩改善睡眠），分析研究設計三要素、統計方法選用、結果詮釋方式'},{ico:'✏️',t:'導讀隨堂筆記',d:'重點：①屬於哪種實驗設計（含R/O/X符號）？②自變項/依變項/干擾變項？③統計方法（t檢定/ANOVA/ANCOVA）是否選用正確？④p值的判斷與效應量說明'},{ico:'💬',t:'批判性討論',d:'①研究結果是否能推論因果關係？②有哪些內在效度威脅未被控制？③實驗組vs.控制組的處置是否清楚說明？④臨床實務上，這個介入方法可行嗎？'},{ico:'📋',t:'筆記繳交',d:'下課前繳交隨堂筆記（佔成績量性20%的第二部分）；未繳交不予給分'}],
+rubric:['筆記完整，能識別設計類型/三大要素/效度威脅，評析統計方法適切性，提出臨床應用可行性建議','筆記涵蓋主要分析要素，評析大致正確','基本識別設計類型，評析較為表面','筆記不完整，設計判斷或統計評析有明顯錯誤']},
+{w:18,title:'期末考試與課程評值',en:'Final Exam and Course Evaluation',type:'exam',ch:[],obj:[1,2,3,4,5],comp:['II','IV','VI','VII','VIII'],
+indicator:['Ⅱ-3 能分析各項護理技能之基礎生物醫學知識原理','Ⅳ-1 思辨護理研究結果的正常性','Ⅳ-5 能評價護理措施之成效'],
+outcomes:['統合應用18週全部課程知識','展現質量性研究方法的比較與應用能力','批判性分析護理研究報告的優缺點','繳交研究倫理2小時修課證明'],
+acts:[{ico:'📝',t:'期末考試',d:'涵蓋Week 10-18內容（重點：研究倫理/質性研究設計/實驗性設計/統計方法/研究報告判讀）；題型：選擇題+案例分析+研究報告批判'},{ico:'📊',t:'考試比重',d:'選擇題 35%（研究設計類型/統計方法/信效度/倫理）+ 案例分析 35%（研究報告判斷/設計改善建議）+ 研究報告批判 30%（短篇文章評析）'},{ico:'💬',t:'課程評值',d:'學生完成教學評量問卷，對課程提出建議與回饋；教師整理全學期學習成果，說明哪些知識最常在臨床中應用'},{ico:'📋',t:'研究倫理證明繳交',d:'確認所有學生已繳交台灣學術倫理教育資源中心2小時修課證明（佔成績5%）；提醒護理師執照考試中研究倫理相關考題'}],
+rubric:['90分以上：統合掌握全學期知識，批判分析論點嚴謹，能提出具體且有臨床依據的改善建議','80-89分：大致掌握全學期知識，分析基本正確，改善建議有一定深度','70-79分：基本知識了解，分析有明顯缺漏，改善建議較為表面','69分以下：核心知識薄弱，批判能力需大量加強']},
+];
+
+// ════════════════════════════════════════════
+// WEEKLY VIEW FUNCTIONS
+// ════════════════════════════════════════════
+function setMode(m){
+  _mode=m;
+  document.getElementById('mb-ch').classList.toggle('on',m==='chapter');
+  document.getElementById('mb-wk').classList.toggle('on',m==='weekly');
+  const esc=document.getElementById('sb-sub-ch');if(esc)esc.style.display=m==='chapter'?'':'none';
+  const esw=document.getElementById('sb-sub-wk');if(esw)esw.style.display=m==='weekly'?'':'none';
+  const epc=document.getElementById('prog-wrap-ch');if(epc)epc.style.display=m==='chapter'?'':'none';
+  const epw=document.getElementById('prog-wrap-wk');if(epw)epw.style.display=m==='weekly'?'':'none';
+  document.querySelectorAll('.page').forEach(p=>{p.style.display=m==='chapter'?'':'none';});
+  document.querySelectorAll('.wk-page').forEach(p=>{p.style.display=m==='weekly'?'':'none';});
+  buildSidebar();
+  if(m==='weekly') showWkOverview(); else showHome();
+}
+
+function showWkOverview(){
+  document.querySelectorAll('.wk-page').forEach(p=>p.classList.remove('on'));
+  const el=document.getElementById('wk-overview');
+  if(el&&!el.innerHTML.trim()) buildWkOverview();
+  if(el) el.classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  const ov=document.getElementById('nav-wk-ov');if(ov)ov.classList.add('active');
+  closeSb();window.scrollTo(0,0);
+}
+
+function buildWkOverview(){
+  const el=document.getElementById('wk-overview');if(!el)return;
+  const tc={normal:'var(--gold2)',reading:'var(--teal2)',exam:'var(--coral2)'};
+  const ti={normal:'🎓 教學週',reading:'📖 文章導讀週',exam:'📝 考試週'};
+  const rows=WEEKS.map(wk=>'<div onclick="showWeek('+wk.w+')" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.2s;border-left:3px solid '+tc[wk.type]+';display:flex;align-items:flex-start;gap:12px;margin-bottom:8px" onmouseover="this.style.background=\'var(--light)\'" onmouseout="this.style.background=\'var(--card)\'"><div style="font-family:monospace;font-size:1.4rem;color:'+tc[wk.type]+';min-width:40px;text-align:center;line-height:1.2">'+wk.w+'</div><div style="flex:1"><div style="font-size:.6rem;color:'+tc[wk.type]+';letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">'+ti[wk.type]+'</div><div style="font-weight:700;color:var(--text);font-size:.88rem;margin-bottom:2px">'+wk.title+'</div><div style="font-size:.72rem;color:var(--muted);font-style:italic;margin-bottom:5px">'+wk.en+'</div><div style="display:flex;gap:5px;flex-wrap:wrap">'+wk.comp.map(c=>'<span class="wk-chip '+COMPS[c].cls+'" style="font-size:.58rem;padding:2px 6px">'+c+'</span>').join('')+'</div></div><div style="color:var(--muted);font-size:1.1rem;margin-top:4px">›</div></div>').join('');
+  el.innerHTML='<div class="u-tag">弘光科技大學 護理系</div><div class="u-title">研究與實證護理概論 · 18週教學計畫</div><div class="u-en">Introduction and Implications of Nursing Research · 進修部二技一年級 · 2學分</div><div class="u-divider"></div><div class="g2" style="margin-bottom:20px"><div class="c-card accent-gold"><div class="c-head">📋 五大課程目標</div><ul class="b-list" style="margin-top:4px"><li><span class="hl-gold">①</span> 瞭解護理研究及實證護理專業發展的重要性（10%）</li><li><span class="hl-teal">②</span> 瞭解護理研究的步驟（20%）</li><li><span class="hl-coral">③</span> 比較質性與量性研究方法的優缺點（30%）</li><li><span class="hl-green">④</span> 指出建立研究工具之信度、效度的方法（10%）</li><li><span class="hl-purple">⑤</span> 區辨不同研究方法與已發表研究文獻內容（30%）</li></ul></div><div class="c-card accent-teal"><div class="c-head">📊 成績評定方式</div><table style="width:100%;font-size:.78rem;border-collapse:collapse;margin-top:4px"><tr><td style="padding:4px 0;color:var(--dim)">期中考</td><td style="text-align:right;color:var(--gold2);font-weight:700">40%</td></tr><tr><td style="padding:4px 0;color:var(--dim)">期末考</td><td style="text-align:right;color:var(--gold2);font-weight:700">30%</td></tr><tr><td style="padding:4px 0;color:var(--dim)">課堂參與</td><td style="text-align:right;color:var(--gold2);font-weight:700">10%</td></tr><tr><td style="padding:4px 0;color:var(--dim)">量性導讀筆記</td><td style="text-align:right;color:var(--gold2);font-weight:700">15%</td></tr><tr><td style="padding:4px 0;color:var(--dim)">質性導讀筆記</td><td style="text-align:right;color:var(--teal2);font-weight:700">10%</td></tr><tr style="border-top:1px solid var(--border)"><td style="padding:4px 0;color:var(--dim)">研究倫理時數</td><td style="text-align:right;color:var(--coral2);font-weight:700">5%</td></tr></table></div><div class="c-card accent-coral"><div class="c-head">🏅 核心能力與比重</div><ul class="b-list" style="margin-top:4px"><li><span class="wk-chip comp-II">Ⅱ 基礎生物醫學科學</span> <span class="hl-gold">40%</span></li><li><span class="wk-chip comp-IV">Ⅳ 批判性思考</span> <span class="hl-gold">30%</span></li><li><span class="wk-chip comp-VI">Ⅵ 倫理素養</span> <span class="hl-gold">10%</span></li><li><span class="wk-chip comp-VII">Ⅶ 克盡職責</span> <span class="hl-gold">10%</span></li><li><span class="wk-chip comp-VIII">Ⅷ 終身學習</span> <span class="hl-gold">10%</span></li></ul></div><div class="c-card accent-green"><div class="c-head">📚 教科書 ＆ 教學法</div><div class="cp">李選等（2023）·護理研究與應用（第六版）</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="kp">講述法</span><span class="kp">提問法</span><span class="kp-t">討論</span><span class="kp-t">文章評析</span></div></div></div><div class="sec-lbl">18 週課程進度表 — 點擊週次查看完整教學計畫</div>'+rows;
+}
+
+function showWeek(w){
+  document.querySelectorAll('.wk-page').forEach(p=>p.classList.remove('on'));
+  let pg=document.getElementById('wk-page-'+w);
+  if(!pg){pg=buildWeekPage(WEEKS.find(x=>x.w===w));document.getElementById('main').appendChild(pg);}
+  pg.classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  const ni=document.getElementById('nav-wk-'+w);if(ni)ni.classList.add('active');
+  closeSb();window.scrollTo(0,0);
+}
+
+function buildWeekPage(wk){
+  const pg=document.createElement('div');pg.className='wk-page';pg.id='wk-page-'+wk.w;
+  const tc={normal:'var(--gold2)',reading:'var(--teal2)',exam:'var(--coral2)'};
+  const tl={normal:'🎓 教學週',reading:'📖 文章導讀週',exam:'📝 考試週'};
+  const compsHtml=wk.comp.map(c=>'<span class="wk-chip '+COMPS[c].cls+'">'+COMPS[c].label+' ('+COMPS[c].pct+')</span>').join('');
+  const objHtml=wk.obj.map(i=>'<div class="wk-obj-tag">'+OBJ_LABELS[i-1]+'</div>').join('');
+  const indHtml=wk.indicator.map(x=>'<div style="padding:5px 0 5px 16px;position:relative;font-size:.82rem;color:var(--dim);line-height:1.65;border-bottom:1px solid rgba(255,255,255,.04)"><span style="position:absolute;left:0;color:var(--teal2)">▸</span>'+x+'</div>').join('');
+  const outHtml=wk.outcomes.map((x,i)=>'<div style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start"><span style="min-width:20px;height:20px;border-radius:50%;background:rgba(58,184,127,.2);color:var(--green2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;margin-top:1px">'+(i+1)+'</span><div style="font-size:.83rem;color:var(--dim);line-height:1.65">'+x+'</div></div>').join('');
+  const actIcos=['一','二','三','四'];
+  const actHtml=wk.acts.map((a,i)=>'<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start"><div style="min-width:32px;height:32px;border-radius:8px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">'+a.ico+'</div><div><div style="font-weight:700;color:var(--gold2);font-size:.83rem;margin-bottom:2px">活動'+actIcos[i]+'：'+a.t+'</div><div style="font-size:.81rem;color:var(--dim);line-height:1.65">'+a.d+'</div></div></div>').join('');
+  const rubricRows=RUBRIC_LEVELS.map((l,i)=>'<tr><td class="'+l.cls+'" style="width:110px;font-size:.72rem;font-weight:700"><strong>'+l.grade+'</strong></td><td class="'+l.cls+'" style="font-size:.78rem">'+wk.rubric[i]+'</td></tr>').join('');
+  const chLinks=wk.ch.length?wk.ch.map(n=>{const u=UNITS.find(x=>x.num===n);return u?'<button class="wk-link-btn" onclick="setMode(\'chapter\');setTimeout(()=>showUnit('+n+'),100)">📘 Chapter '+String(n).padStart(2,'0')+' — '+u.title+'</button>':''}).join(''):'<span style="color:var(--muted);font-size:.82rem;padding:8px">📝 考試週 — 複習所有章節</span>';
+  const navPrev=wk.w>1?'<button onclick="showWeek('+(wk.w-1)+')" style="padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:.78rem;font-family:inherit">← Week '+(wk.w-1)+'</button>':'';
+  const navNext=wk.w<18?'<button onclick="showWeek('+(wk.w+1)+')" style="padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:.78rem;font-family:inherit">Week '+(wk.w+1)+' →</button>':'';
+  pg.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px"><button onclick="showWkOverview()" style="display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:.75rem;font-family:inherit">⌂ 課程總覽</button><div style="display:flex;gap:7px">'+navPrev+navNext+'</div></div><div class="wk-hero'+(wk.type==='exam'?' wk-special':'')+'"><div class="wk-num" style="color:'+tc[wk.type]+'">'+wk.w+'</div><div class="wk-meta" style="flex:1"><div class="wk-tag" style="color:'+tc[wk.type]+'">第 '+wk.w+' 週 ／ 18週 ・ '+tl[wk.type]+'</div><div class="wk-title">'+wk.title+'</div><div class="wk-en">'+wk.en+'</div><div class="wk-chips" style="margin-top:10px">'+compsHtml+'</div></div></div><div class="wk-grid"><div class="wk-box"><div class="wk-box-title" style="color:var(--gold2)">🎯 對應課程目標</div><div style="margin-top:6px">'+objHtml+'</div></div><div class="wk-box"><div class="wk-box-title" style="color:var(--teal2)">🏅 核心能力指標</div><div style="margin-top:4px">'+indHtml+'</div></div><div class="wk-box wk-full"><div class="wk-box-title" style="color:var(--green2)">✅ 學習成果標準 — 本週學生應能達到</div><div style="margin-top:4px">'+outHtml+'</div></div><div class="wk-box wk-full"><div class="wk-box-title" style="color:var(--purple2)">🗺️ 教學活動規劃（4個教學活動）</div><div style="margin-top:4px">'+actHtml+'</div></div><div class="wk-box wk-full"><div class="wk-box-title" style="color:var(--coral2)">📊 評量尺規（Assessment Rubric）</div><table class="rubric-table"><thead><tr style="background:var(--light)"><th style="color:var(--muted);width:110px">等級</th><th style="color:var(--muted)">本週學習成果具體表現描述</th></tr></thead><tbody>'+rubricRows+'</tbody></table></div><div class="wk-box wk-full"><div class="wk-box-title" style="color:var(--teal2)">📘 切換至對應自學章節（Chapter版）</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">'+chLinks+'</div></div></div>';
+  return pg;
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+_mode = 'chapter';
+buildSidebar();
+buildHome();
+updateProg();
+// Ensure chapter mode UI is correct on load
+const _esc=document.getElementById('sb-sub-ch');if(_esc)_esc.style.display='';
+const _esw=document.getElementById('sb-sub-wk');if(_esw)_esw.style.display='none';
+const _epc=document.getElementById('prog-wrap-ch');if(_epc)_epc.style.display='';
+const _epw=document.getElementById('prog-wrap-wk');if(_epw)_epw.style.display='none';
+</script>
+</body>
+</html>

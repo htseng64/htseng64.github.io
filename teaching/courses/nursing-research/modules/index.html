@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>研究與實證護理概論｜115-1 網路學習平台</title>
+<script src="../config/course-config.js"></script>
+<script src="../config/units-config.js"></script>
+<style>
+:root{--bg:#0b1724;--card:#142234;--text:#e2eaf4;--dim:#8aaac8;--gold:#e8c455;--teal:#3ec9b9;--border:rgba(255,255,255,.12)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 10%,rgba(232,196,85,.12),transparent 35%),radial-gradient(circle at 90% 90%,rgba(62,201,185,.12),transparent 35%),var(--bg);color:var(--text);font-family:Arial,"Noto Sans TC",sans-serif}
+.header{padding:28px 34px;background:rgba(20,34,52,.96);border-bottom:1px solid var(--border)}
+h1{margin:0;color:var(--gold)}.sub{color:var(--dim);margin-top:6px;line-height:1.6}
+.main{max-width:1200px;margin:auto;padding:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid var(--border);border-radius:22px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+a.btn{display:inline-block;text-decoration:none;background:linear-gradient(135deg,var(--gold),#b8870f);color:#08111d;border-radius:12px;padding:12px 16px;font-weight:900;margin-top:12px}.btn2{background:rgba(255,255,255,.08)!important;color:var(--text)!important;border:1px solid var(--border)}
+.module{border:1px solid var(--border);border-radius:18px;margin:12px 0;overflow:hidden;background:rgba(255,255,255,.035)}
+.module summary{cursor:pointer;padding:16px 18px;font-weight:900;color:var(--gold);font-size:18px;background:rgba(255,255,255,.04)}
+.week{border-top:1px solid var(--border);padding:13px 18px}.week b{color:var(--teal)}.week small{display:block;color:var(--dim);margin-top:4px;line-height:1.5}
+.note{background:rgba(62,201,185,.08);border:1px solid rgba(62,201,185,.25);border-radius:16px;padding:14px;color:#b2f0e8;line-height:1.7;margin:18px 0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body>
+<div class="header">
+  <h1 id="title">研究與實證護理概論</h1>
+  <div class="sub" id="sub"></div>
+</div>
+<div class="main">
+<section class="grid">
+<div class="card"><h2>📘 自主學習平台</h2><p>完整章節式學習內容、重點整理與測驗。</p><a class="btn" href="nursing-research-full.html">進入學習平台</a></div>
+<div class="card"><h2>🎞 教室展示版</h2><p>以簡報 slide 方式呈現各模組重點，支援全螢幕、簡報筆與下一頁播放。</p><a class="btn" href="classroom-presentation.html">進入展示版</a></div>
+<div class="card"><h2>🎮 遊戲中心</h2><p>Bingo、翻翻樂、Jeopardy 與測驗。</p><a class="btn" href="games/nursing-research-games.html">進入遊戲中心</a></div>
+<div class="card"><h2>🎛 老師總控台</h2><p>開課、QR、評值、排行榜、名單與成果報告。</p><a class="btn" href="games/index.html">進入總控台</a></div>
+<div class="card"><h2>👥 學生名單</h2><p>新學期尚未有名單也沒關係，開學後再匯入或更新。</p><a class="btn btn2" href="games/student-list-manager.html">名單管理</a></div>
+<div class="card"><h2>📊 成果報告</h2><p>整合遊戲分數、評值、回饋與成績統計。</p><a class="btn btn2" href="games/report.html">查看報告</a></div>
+<div class="card"><h2>📄 通用教學計畫表</h2><p>去除授課教師與實際日期，採 W1–W18 與模組化 Chapters。</p><a class="btn btn2" href="teaching-plan.html">查看教學計畫表</a></div>
+<div class="card"><h2>📝 評值表單 Script</h2><p>Google Apps Script 一鍵建立課程評值與小組互評。</p><a class="btn btn2" href="../forms/course-evaluation-generator.gs">下載 Script</a></div>
+</section>
+
+<div class="note">115-1 預備版：教學進度以 W1–W18 表示，不綁定實際日期。等學校行事曆確定後，可再於 config/units-config.js 更新日期。</div>
+
+<section class="card">
+  <h2>模組化教學進度表（可收合 Chapters / Modules）</h2>
+  <div id="modules"></div>
+</section>
+</div>
+<script>
+title.textContent=COURSE_CONFIG.courseNameZh;
+sub.textContent=COURSE_CONFIG.courseNameEn+"｜"+COURSE_CONFIG.semester+"｜"+COURSE_CONFIG.program+"｜"+COURSE_CONFIG.credits+"學分";
+modules.innerHTML = UNITS_CONFIG.map((m,idx)=>`
+<details class="module" ${idx===0?'open':''}>
+  <summary>${m.module}｜${m.moduleTitle}</summary>
+  ${m.weeks.map(w=>`<div class="week"><b>${w.week}</b>｜${w.title}<small>${w.en}</small></div>`).join('')}
+</details>`).join('');
+</script>
+</body></html>
